@@ -1,0 +1,38 @@
+name: Capturar Balanços
+
+on:
+  # Executar manualmente (botão no GitHub)
+  workflow_dispatch:
+    inputs:
+      empresas:
+        description: 'Quantas empresas processar? (10, 50, 308=todas)'
+        required: true
+        default: '10'
+
+jobs:
+  capturar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    
+    steps:
+    - name: 📥 Baixar código
+      uses: actions/checkout@v3
+    
+    - name: 🐍 Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: 📦 Instalar bibliotecas
+      run: pip install pandas requests
+    
+    - name: 🚀 Executar captura
+      run: python captura_simples.py ${{ github.event.inputs.empresas }}
+    
+    - name: 💾 Salvar no GitHub
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add balancos/
+        git diff --quiet && git diff --staged --quiet || git commit -m "Balanços atualizados - $(date +'%Y-%m-%d')"
+        git push
