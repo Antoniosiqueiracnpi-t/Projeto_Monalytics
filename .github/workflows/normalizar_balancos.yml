@@ -3,12 +3,12 @@ name: Normalizar Balancos (todas as pastas)
 on:
   workflow_dispatch:
   schedule:
-    - cron: "15 3 * * *"  # todo dia 03:15 UTC (ajuste)
+    - cron: "15 3 * * *"
   push:
     paths:
       - "balancos/**"
-      - "normalizar_dre.py"
-      - "normalize_all.py"
+      - "src/**"
+      - "padronizar_dre_trimestral_e_anual.py"
       - ".github/workflows/normalizar_balancos.yml"
 
 permissions:
@@ -34,13 +34,15 @@ jobs:
 
       - name: Run normalization
         run: |
-          python normalize_all.py
+          export PYTHONPATH="$GITHUB_WORKSPACE"
+          python src/normalize_all.py
 
       - name: Commit and push if changed
         run: |
           git config user.name "actions-user"
           git config user.email "actions@users.noreply.github.com"
 
+          # Ajuste aqui se você gerar mais arquivos além do dre_padronizado.csv
           git add balancos/**/dre_padronizado.csv
 
           if git diff --cached --quiet; then
