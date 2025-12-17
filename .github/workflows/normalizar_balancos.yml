@@ -42,8 +42,8 @@ jobs:
           git config user.name "actions-user"
           git config user.email "actions@users.noreply.github.com"
 
-          # Ajuste aqui se você gerar mais arquivos além do dre_padronizado.csv
-          git add balancos/**/dre_padronizado.csv
+          # adiciona qualquer dre_padronizado.csv que tenha sido gerado
+          git add -A balancos || true
 
           if git diff --cached --quiet; then
             echo "Sem mudanças para commit."
@@ -52,3 +52,4 @@ jobs:
 
           git commit -m "Normalização DRE padronizada (todas as pastas)"
           git push
+
