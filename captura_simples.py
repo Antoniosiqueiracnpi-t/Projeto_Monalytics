@@ -87,7 +87,7 @@ class CapturaBalancos:
         pasta.mkdir(exist_ok=True)
 
         # Suas 4 demonstrações (você pode adicionar outras depois)
-        demos = ["DRE", "BPA", "BPP", "DFC_MD"]
+        demos = ['DRE', 'BPA', 'BPP', 'DFC_MI']
 
         cnpj_digits = re.sub(r"\D", "", str(cnpj))
 
