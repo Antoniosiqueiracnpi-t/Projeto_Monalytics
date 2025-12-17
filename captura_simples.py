@@ -40,10 +40,10 @@ class CapturaBalancos:
         pasta = self.pasta_balancos / ticker
         pasta.mkdir(exist_ok=True)
         
-        # Formatar CNPJ (remover pontos e traços)
+        # Limpar CNPJ para comparação
         cnpj_limpo = cnpj.replace('.', '').replace('/', '').replace('-', '')
         
-        # Identificar se é financeira (simplificado por nome)
+        # Processar todas as demonstrações
         demos = ['DRE', 'BPA', 'BPP', 'DFC_MD']
         
         for demo in demos:
@@ -55,21 +55,31 @@ class CapturaBalancos:
                 if df is None:
                     continue
                 
-                # Filtrar por CNPJ (limpar CNPJ da CVM também)
-                df['CNPJ_LIMPO'] = df['CNPJ_CIA'].str.replace('.', '').str.replace('/', '').str.replace('-', '')
+                # Limpar CNPJ_CIA do arquivo também
+                df['CNPJ_LIMPO'] = df['CNPJ_CIA'].astype(str).str.replace('.', '').str.replace('/', '').str.replace('-', '')
+                
+                # Filtrar por CNPJ
                 df = df[df['CNPJ_LIMPO'] == cnpj_limpo].copy()
                 
                 if len(df) == 0:
                     continue
                 
+                # Filtrar apenas consolidado e último exercício
                 df = df[df['ORDEM_EXERC'] == 'ÚLTIMO']
+                
+                if len(df) == 0:
+                    continue
+                
+                # Extrair trimestre
                 df['TRIMESTRE'] = df['DT_FIM_EXERC'].str[5:7].map({
                     '03': 'T1', '06': 'T2', '09': 'T3', '12': 'T4'
                 })
                 
+                # Converter valores
                 df['VL_CONTA'] = pd.to_numeric(df['VL_CONTA'], errors='coerce')
                 df['VALOR_MIL'] = df['VL_CONTA'] / 1000
                 
+                # Selecionar colunas
                 df = df[['DT_FIM_EXERC', 'TRIMESTRE', 'CD_CONTA', 'DS_CONTA', 'VALOR_MIL']]
                 df.columns = ['data_fim', 'trimestre', 'cd_conta', 'ds_conta', 'valor_mil']
                 
@@ -78,6 +88,7 @@ class CapturaBalancos:
             if dados:
                 consolidado = pd.concat(dados, ignore_index=True)
                 consolidado = consolidado.sort_values(['data_fim', 'cd_conta'])
+                consolidado = consolidado.drop_duplicates(subset=['data_fim', 'trimestre', 'cd_conta'], keep='last')
                 arquivo = pasta / f"{demo.lower()}_consolidado.csv"
                 consolidado.to_csv(arquivo, index=False, encoding='utf-8-sig')
                 print(f"✅ {len(consolidado)} linhas")
