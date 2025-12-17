@@ -32,17 +32,19 @@ class CapturaBalancos:
             pass
         return None
     
-    def processar_empresa(self, ticker, cvm):
+    def processar_empresa(self, ticker, cnpj):
         """Processa uma empresa"""
         print(f"\n{'='*50}")
-        print(f"📊 {ticker} (CVM: {cvm})")
+        print(f"📊 {ticker} (CNPJ: {cnpj})")
         
         pasta = self.pasta_balancos / ticker
         pasta.mkdir(exist_ok=True)
         
-        # Identificar se é financeira
-        financeiras = [1, 1023, 17663, 1170, 18945, 21610]
-        demos = ['DRE', 'BPA', 'BPP'] if cvm in financeiras else ['DRE', 'BPA', 'BPP', 'DFC_MD']
+        # Formatar CNPJ (remover pontos e traços)
+        cnpj_limpo = cnpj.replace('.', '').replace('/', '').replace('-', '')
+        
+        # Identificar se é financeira (simplificado por nome)
+        demos = ['DRE', 'BPA', 'BPP', 'DFC_MD']
         
         for demo in demos:
             print(f"  {demo}:", end=' ')
@@ -53,7 +55,10 @@ class CapturaBalancos:
                 if df is None:
                     continue
                 
-                df = df[df['CD_CVM'] == cvm].copy()
+                # Filtrar por CNPJ (limpar CNPJ da CVM também)
+                df['CNPJ_LIMPO'] = df['CNPJ_CIA'].str.replace('.', '').str.replace('/', '').str.replace('-', '')
+                df = df[df['CNPJ_LIMPO'] == cnpj_limpo].copy()
+                
                 if len(df) == 0:
                     continue
                 
@@ -90,13 +95,14 @@ class CapturaBalancos:
             # Se falhar, tentar ISO-8859-1 com separador ;
             df = pd.read_csv('mapeamento_final_b3_completo.csv', sep=';', encoding='ISO-8859-1')
         
-        df = df[df['codigo_cvm'].notna()].head(limite)
+        # Filtrar apenas empresas com CNPJ
+        df = df[df['cnpj'].notna()].head(limite)
         
         print(f"\n🚀 Processando {len(df)} empresas...\n")
         
         for _, row in df.iterrows():
             try:
-                self.processar_empresa(row['ticker'], int(row['codigo_cvm']))
+                self.processar_empresa(row['ticker'], row['cnpj'])
             except Exception as e:
                 print(f"❌ Erro: {e}")
         
