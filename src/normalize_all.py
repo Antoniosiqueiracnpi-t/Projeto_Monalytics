@@ -1,11 +1,15 @@
 from pathlib import Path
-import pandas as pd
+import sys
 
-# importe sua função pronta
-from normalizar_dre import padronizar_dre_trimestral_e_anual  # ajuste o nome do arquivo conforme você salvar
+# garante que a raiz do repo esteja no PYTHONPATH (para importar arquivo na raiz)
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
+
+from padronizar_dre_trimestral_e_anual import padronizar_dre_trimestral_e_anual
+
 
 def main():
-    base = Path("balancos")
+    base = REPO_ROOT / "balancos"
     if not base.exists():
         print("[ERRO] Pasta balancos/ não existe.")
         return
@@ -38,6 +42,7 @@ def main():
             print(f"[ERRO] {pasta.name}: {e}")
 
     print(f"Concluído. Arquivos gerados: {gerados}")
+
 
 if __name__ == "__main__":
     main()
