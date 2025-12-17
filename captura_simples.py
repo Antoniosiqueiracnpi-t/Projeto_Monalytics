@@ -82,8 +82,8 @@ class CapturaBalancos:
     def processar_lote(self, limite=10):
         """Processa múltiplas empresas"""
         
-        # Carregar mapeamento
-        df = pd.read_csv('mapeamento_final_b3_completo.csv')
+        # Carregar mapeamento (com encoding correto)
+        df = pd.read_csv('mapeamento_final_b3_completo.csv', encoding='utf-8-sig')
         df = df[df['codigo_cvm'].notna()].head(limite)
         
         print(f"\n🚀 Processando {len(df)} empresas...\n")
