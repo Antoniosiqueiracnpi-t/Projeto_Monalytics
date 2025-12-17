@@ -35,7 +35,6 @@ def main():
             df = padronizar_dre_trimestral_e_anual(
                 str(tri),
                 str(anu),
-                itr_is_ytd=True,
                 unidade="mil",
                 preencher_derivadas=True
             )
