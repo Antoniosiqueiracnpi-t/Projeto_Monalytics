@@ -1,0 +1,52 @@
+name: Normalizar Balancos (todas as pastas)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 3 * * *"  # todo dia 03:15 UTC (ajuste)
+  push:
+    paths:
+      - "balancos/**"
+      - "normalizar_dre.py"
+      - "normalize_all.py"
+      - ".github/workflows/normalizar_balancos.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  normalizar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy requests
+
+      - name: Run normalization
+        run: |
+          python normalize_all.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "actions-user"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add balancos/**/dre_padronizado.csv
+
+          if git diff --cached --quiet; then
+            echo "Sem mudanças para commit."
+            exit 0
+          fi
+
+          git commit -m "Normalização DRE padronizada (todas as pastas)"
+          git push
