@@ -82,8 +82,14 @@ class CapturaBalancos:
     def processar_lote(self, limite=10):
         """Processa múltiplas empresas"""
         
-        # Carregar mapeamento (com encoding correto)
-        df = pd.read_csv('mapeamento_final_b3_completo.csv', encoding='utf-8-sig')
+        # Tentar carregar com diferentes encodings
+        try:
+            # Tentar UTF-8 primeiro (padrão)
+            df = pd.read_csv('mapeamento_final_b3_completo.csv', encoding='utf-8')
+        except UnicodeDecodeError:
+            # Se falhar, tentar ISO-8859-1 com separador ;
+            df = pd.read_csv('mapeamento_final_b3_completo.csv', sep=';', encoding='ISO-8859-1')
+        
         df = df[df['codigo_cvm'].notna()].head(limite)
         
         print(f"\n🚀 Processando {len(df)} empresas...\n")
