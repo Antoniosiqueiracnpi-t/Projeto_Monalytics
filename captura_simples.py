@@ -1,18 +1,16 @@
 """
-CAPTURA DE BALANÇOS - VERSÃO GITHUB ACTIONS (corrigida p/ estrutura atual da CVM)
-- Baixa 1 ZIP por ano: itr_cia_aberta_{ano}.zip (T1, T2, T3)
-- Baixa 1 ZIP por ano: dfp_cia_aberta_{ano}.zip (ANUAL)
-- DRE/DFC: Calcula T4 = ANUAL - (T1 + T2 + T3)
-- BPA/BPP: Apenas adiciona posição de 31/12 (sem cálculo)
-- Cache local para não baixar o mesmo ZIP várias vezes
+CAPTURA DE BALANÇOS - VERSÃO GITHUB ACTIONS
+- ITR trimestral (T1..T4) + ANUAL (apenas T4) no mesmo run
+- Usa DFC pelo MÉTODO INDIRETO: DFC_MI
+- Baixa 1 ZIP por ano: itr_cia_aberta_{ano}.zip
 """
 
 import pandas as pd
 import requests
-from io import BytesIO
-import zipfile
 from pathlib import Path
 from datetime import datetime
+from io import BytesIO
+import zipfile
 import re
 
 class CapturaBalancos:
@@ -27,61 +25,35 @@ class CapturaBalancos:
         self.ano_inicio = 2015
         self.ano_atual = datetime.now().year
 
-        # Classificação de demonstrações
-        self.demos_fluxo = ['DRE', 'DFC_MD', 'DFC_MI', 'DVA', 'DMPL']  # Precisa calcular T4
-        self.demos_estoque = ['BPA', 'BPP']  # Apenas buscar posição 31/12
+        # Consolidado (con). Se quiser individual, troque para False
+        self.consolidado = True
+
+    # ------------------------- DOWNLOAD / LEITURA CVM -------------------------
 
     def _download_zip_itr_ano(self, ano: int) -> Path:
-        """
-        Estrutura atual CVM (ITR): 1 ZIP por ano
-        Ex.: https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip
-        """
         url = f"https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_{ano}.zip"
         dest = self.cache_dir / f"itr_cia_aberta_{ano}.zip"
 
         if dest.exists() and dest.stat().st_size > 0:
             return dest
 
-        r = requests.get(url, timeout=120)
+        r = requests.get(url, timeout=180)
         r.raise_for_status()
         dest.write_bytes(r.content)
         return dest
 
-    def _download_zip_dfp_ano(self, ano: int) -> Path:
+    def baixar_cvm(self, ano: int, demo: str, consolidado: bool = True) -> pd.DataFrame | None:
         """
-        Estrutura atual CVM (DFP): 1 ZIP por ano (dados ANUAIS)
-        Ex.: https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2024.zip
-        """
-        url = f"https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_{ano}.zip"
-        dest = self.cache_dir / f"dfp_cia_aberta_{ano}.zip"
-
-        if dest.exists() and dest.stat().st_size > 0:
-            return dest
-
-        r = requests.get(url, timeout=120)
-        r.raise_for_status()
-        dest.write_bytes(r.content)
-        return dest
-
-    def baixar_cvm(self, ano: int, demo: str, consolidado: bool = True, tipo: str = "ITR") -> pd.DataFrame | None:
-        """
-        Lê o CSV de uma demonstração (demo) dentro do ZIP anual.
-        demo exemplos: 'DRE', 'BPA', 'BPP', 'DFC_MD', 'DFC_MI', 'DMPL', 'DRA', 'DVA'
-        tipo: 'ITR' (trimestral) ou 'DFP' (anual)
+        demo exemplos: DRE, BPA, BPP, DFC_MI, DFC_MD, DRA, DMPL, DVA...
         """
         try:
-            if tipo == "ITR":
-                zip_path = self._download_zip_itr_ano(ano)
-                prefixo = "itr"
-            else:  # DFP
-                zip_path = self._download_zip_dfp_ano(ano)
-                prefixo = "dfp"
+            zip_path = self._download_zip_itr_ano(ano)
         except Exception as e:
-            print(f"[AVISO] Falha ao baixar ZIP {tipo} {ano}: {e}")
+            print(f"[AVISO] Falha ao baixar ZIP ITR {ano}: {e}")
             return None
 
         sufixo = "con" if consolidado else "ind"
-        alvo = f"{prefixo}_cia_aberta_{demo}_{sufixo}_{ano}.csv"
+        alvo = f"itr_cia_aberta_{demo}_{sufixo}_{ano}.csv"
 
         try:
             with zipfile.ZipFile(zip_path) as z:
@@ -89,12 +61,10 @@ class CapturaBalancos:
                 name_map = {n.lower(): n for n in z.namelist()}
                 real_name = name_map.get(alvo.lower())
                 if not real_name:
-                    # se não existir essa demo no ano, retorna None
                     return None
 
                 with z.open(real_name) as f:
-                    # dtype=str evita problemas com CNPJ/zeros e mantém tudo consistente
-                    df = pd.read_csv(
+                    return pd.read_csv(
                         f,
                         sep=";",
                         encoding="ISO-8859-1",
@@ -102,153 +72,127 @@ class CapturaBalancos:
                         dtype=str,
                         low_memory=False
                     )
-                    return df
         except Exception as e:
             print(f"[AVISO] Falha ao ler {alvo} dentro do ZIP {ano}: {e}")
             return None
 
-    def processar_empresa(self, ticker, cnpj):
+    # ------------------------- HELPERS -------------------------
+
+    def _normalizar_cnpj(self, cnpj: str) -> str:
+        return re.sub(r"\D", "", str(cnpj))
+
+    def _filtrar_empresa_e_exercicio(self, df: pd.DataFrame, cnpj_digits: str) -> pd.DataFrame:
+        # CNPJ
+        if "CNPJ_CIA" not in df.columns:
+            return df.iloc[0:0]
+        df_cnpj_digits = df["CNPJ_CIA"].astype(str).str.replace(r"\D", "", regex=True)
+        df = df[df_cnpj_digits == cnpj_digits].copy()
+        if df.empty:
+            return df
+
+        # ÚLTIMO exercício
+        if "ORDEM_EXERC" in df.columns:
+            ordv = df["ORDEM_EXERC"].astype(str).str.upper()
+            df = df[ordv.isin(["ÚLTIMO", "ULTIMO"])].copy()
+            if df.empty:
+                return df
+
+        # Datas
+        if "DT_FIM_EXERC" not in df.columns:
+            return df.iloc[0:0]
+        df["DT_FIM_EXERC"] = df["DT_FIM_EXERC"].astype(str)
+
+        # Trimestre pelo mês
+        mes = df["DT_FIM_EXERC"].str[5:7]
+        df["TRIMESTRE"] = mes.map({"03": "T1", "06": "T2", "09": "T3", "12": "T4"})
+
+        return df
+
+    def _calcular_valor_mil(self, df: pd.DataFrame) -> pd.DataFrame:
+        if "VL_CONTA" not in df.columns:
+            df["VALOR_MIL"] = pd.NA
+            return df
+
+        df["VL_CONTA"] = pd.to_numeric(df["VL_CONTA"], errors="coerce")
+
+        # Respeita ESCALA_MOEDA (muito comum ser MIL)
+        if "ESCALA_MOEDA" in df.columns:
+            escala = df["ESCALA_MOEDA"].astype(str).str.upper()
+            fator = escala.map({"UNIDADE": 1/1000, "MIL": 1}).fillna(1)
+            df["VALOR_MIL"] = df["VL_CONTA"] * fator
+        else:
+            # fallback: assume UNIDADE e converte para mil
+            df["VALOR_MIL"] = df["VL_CONTA"] / 1000
+
+        return df
+
+    def _padronizar_saida(self, df: pd.DataFrame) -> pd.DataFrame:
+        required = ["DT_FIM_EXERC", "TRIMESTRE", "CD_CONTA", "DS_CONTA", "VALOR_MIL"]
+        if not all(c in df.columns for c in required):
+            return df.iloc[0:0]
+
+        out = df[required].copy()
+        out.columns = ["data_fim", "trimestre", "cd_conta", "ds_conta", "valor_mil"]
+        return out
+
+    def _consolidar_e_limpar(self, frames: list[pd.DataFrame]) -> pd.DataFrame:
+        consolidado = pd.concat(frames, ignore_index=True)
+        consolidado = consolidado.sort_values(["data_fim", "cd_conta"])
+        consolidado = consolidado.drop_duplicates(
+            subset=["data_fim", "trimestre", "cd_conta"],
+            keep="last"
+        )
+        return consolidado
+
+    # ------------------------- PROCESSAMENTO -------------------------
+
+    def processar_empresa(self, ticker: str, cnpj: str):
         print(f"\n{'='*50}")
         print(f"📊 {ticker} (CNPJ: {cnpj})")
 
         pasta = self.pasta_balancos / ticker
         pasta.mkdir(exist_ok=True)
 
-        # Suas 4 demonstrações (você pode adicionar outras depois)
-        demos = ['DRE', 'BPA', 'BPP', 'DFC_MI']
+        # Trimestral (mantém como estava) + DFC método indireto
+        demos = ["DRE", "BPA", "BPP", "DFC_MI"]
 
-        cnpj_digits = re.sub(r"\D", "", str(cnpj))
+        cnpj_digits = self._normalizar_cnpj(cnpj)
 
         for demo in demos:
             print(f"  {demo}:", end=" ")
-            dados_itr = []
-            dados_t4 = []
+            dados_trimestral = []
 
             for ano in range(self.ano_inicio, self.ano_atual + 1):
-                # ============================================
-                # 1. BAIXAR ITR (T1, T2, T3)
-                # ============================================
-                df_itr = self.baixar_cvm(ano, demo, consolidado=True, tipo="ITR")
-                if df_itr is not None and not df_itr.empty:
-                    # Filtro CNPJ robusto (compara só dígitos)
-                    if "CNPJ_CIA" in df_itr.columns:
-                        df_cnpj_digits = df_itr["CNPJ_CIA"].astype(str).str.replace(r"\D", "", regex=True)
-                        df_itr = df_itr[df_cnpj_digits == cnpj_digits].copy()
+                df = self.baixar_cvm(ano, demo, consolidado=self.consolidado)
+                if df is None or df.empty:
+                    continue
 
-                    if not df_itr.empty:
-                        # Filtrar apenas "ÚLTIMO"
-                        if "ORDEM_EXERC" in df_itr.columns:
-                            ordv = df_itr["ORDEM_EXERC"].astype(str).str.upper()
-                            df_itr = df_itr[ordv.isin(["ÚLTIMO", "ULTIMO"])].copy()
+                df = self._filtrar_empresa_e_exercicio(df, cnpj_digits)
+                if df.empty:
+                    continue
 
-                        if not df_itr.empty and "DT_FIM_EXERC" in df_itr.columns:
-                            df_itr["DT_FIM_EXERC"] = df_itr["DT_FIM_EXERC"].astype(str)
+                df = self._calcular_valor_mil(df)
+                out = self._padronizar_saida(df)
+                if out.empty:
+                    continue
 
-                            # Extrair trimestre (baseado no mês)
-                            df_itr["TRIMESTRE"] = df_itr["DT_FIM_EXERC"].str[5:7].map({
-                                "03": "T1", "06": "T2", "09": "T3", "12": "T4"
-                            })
+                dados_trimestral.append(out)
 
-                            # Converter valores
-                            if "VL_CONTA" in df_itr.columns:
-                                df_itr["VL_CONTA"] = pd.to_numeric(df_itr["VL_CONTA"], errors="coerce")
-
-                                escala = df_itr["ESCALA_MOEDA"].astype(str).str.upper() if "ESCALA_MOEDA" in df_itr.columns else ""
-                                fator_mil = escala.map({"UNIDADE": 1/1000, "MIL": 1}).fillna(1)
-                                df_itr["VALOR_MIL"] = df_itr["VL_CONTA"] * fator_mil
-
-                                # Selecionar colunas
-                                keep = ["DT_FIM_EXERC", "TRIMESTRE", "CD_CONTA", "DS_CONTA", "VALOR_MIL"]
-                                if all(c in df_itr.columns for c in keep):
-                                    out_itr = df_itr[keep].copy()
-                                    out_itr.columns = ["data_fim", "trimestre", "cd_conta", "ds_conta", "valor_mil"]
-                                    dados_itr.append(out_itr)
-
-                # ============================================
-                # 2. BAIXAR DFP (ANUAL)
-                # ============================================
-                df_dfp = self.baixar_cvm(ano, demo, consolidado=True, tipo="DFP")
-                if df_dfp is not None and not df_dfp.empty:
-                    # Filtro CNPJ
-                    if "CNPJ_CIA" in df_dfp.columns:
-                        df_cnpj_digits = df_dfp["CNPJ_CIA"].astype(str).str.replace(r"\D", "", regex=True)
-                        df_dfp = df_dfp[df_cnpj_digits == cnpj_digits].copy()
-
-                    if not df_dfp.empty:
-                        # Filtrar apenas "ÚLTIMO"
-                        if "ORDEM_EXERC" in df_dfp.columns:
-                            ordv = df_dfp["ORDEM_EXERC"].astype(str).str.upper()
-                            df_dfp = df_dfp[ordv.isin(["ÚLTIMO", "ULTIMO"])].copy()
-
-                        if not df_dfp.empty and "DT_FIM_EXERC" in df_dfp.columns:
-                            df_dfp["DT_FIM_EXERC"] = df_dfp["DT_FIM_EXERC"].astype(str)
-
-                            # Converter valores
-                            if "VL_CONTA" in df_dfp.columns and "CD_CONTA" in df_dfp.columns:
-                                df_dfp["VL_CONTA"] = pd.to_numeric(df_dfp["VL_CONTA"], errors="coerce")
-
-                                escala = df_dfp["ESCALA_MOEDA"].astype(str).str.upper() if "ESCALA_MOEDA" in df_dfp.columns else ""
-                                fator_mil = escala.map({"UNIDADE": 1/1000, "MIL": 1}).fillna(1)
-                                df_dfp["VALOR_MIL"] = df_dfp["VL_CONTA"] * fator_mil
-
-                                # Pegar apenas dados de 31/12
-                                df_anual = df_dfp[df_dfp["DT_FIM_EXERC"].str.endswith("-12-31")].copy()
-
-                                if not df_anual.empty:
-                                    # ==========================================
-                                    # DECISÃO: FLUXO vs ESTOQUE
-                                    # ==========================================
-                                    
-                                    if demo in self.demos_fluxo:
-                                        # DEMONSTRAÇÕES DE FLUXO: calcular T4
-                                        if dados_itr:
-                                            df_itr_ano = pd.concat([d for d in dados_itr if d["data_fim"].str.startswith(str(ano))], ignore_index=True)
-                                            
-                                            if not df_itr_ano.empty:
-                                                soma_t123 = df_itr_ano.groupby(["cd_conta", "ds_conta"])["valor_mil"].sum().reset_index()
-                                                soma_t123.columns = ["cd_conta", "ds_conta", "soma_t123"]
-
-                                                # Merge com anual
-                                                df_anual_sel = df_anual[["DT_FIM_EXERC", "CD_CONTA", "DS_CONTA", "VALOR_MIL"]].copy()
-                                                df_anual_sel.columns = ["data_fim", "cd_conta", "ds_conta", "valor_anual"]
-
-                                                df_t4 = df_anual_sel.merge(soma_t123, on=["cd_conta", "ds_conta"], how="left")
-                                                df_t4["soma_t123"] = df_t4["soma_t123"].fillna(0)
-                                                df_t4["valor_mil"] = df_t4["valor_anual"] - df_t4["soma_t123"]
-                                                df_t4["trimestre"] = "T4"
-
-                                                # Selecionar colunas finais
-                                                out_t4 = df_t4[["data_fim", "trimestre", "cd_conta", "ds_conta", "valor_mil"]].copy()
-                                                dados_t4.append(out_t4)
-                                    
-                                    elif demo in self.demos_estoque:
-                                        # BALANÇOS PATRIMONIAIS: apenas adicionar posição 31/12
-                                        df_anual_sel = df_anual[["DT_FIM_EXERC", "CD_CONTA", "DS_CONTA", "VALOR_MIL"]].copy()
-                                        df_anual_sel.columns = ["data_fim", "cd_conta", "ds_conta", "valor_mil"]
-                                        df_anual_sel["trimestre"] = "T4"
-                                        
-                                        # Selecionar colunas finais
-                                        out_t4 = df_anual_sel[["data_fim", "trimestre", "cd_conta", "ds_conta", "valor_mil"]].copy()
-                                        dados_t4.append(out_t4)
-
-            # ============================================
-            # 3. CONSOLIDAR TUDO (ITR + T4)
-            # ============================================
-            if dados_itr or dados_t4:
-                todos = dados_itr + dados_t4
-                consolidado = pd.concat(todos, ignore_index=True)
-                consolidado = consolidado.sort_values(["data_fim", "cd_conta"])
-                consolidado = consolidado.drop_duplicates(
-                    subset=["data_fim", "trimestre", "cd_conta"],
-                    keep="last"
-                )
-                arquivo = pasta / f"{demo.lower()}_consolidado.csv"
-                consolidado.to_csv(arquivo, index=False, encoding="utf-8-sig")
-                
-                tipo_processamento = "calculado" if demo in self.demos_fluxo else "posição 31/12"
-                print(f"✅ {len(consolidado)} linhas (T4 {tipo_processamento})")
-            else:
+            if not dados_trimestral:
                 print("❌")
+                continue
+
+            # 1) Salvar TRIMESTRAL (T1..T4 juntos) - como estava
+            tri = self._consolidar_e_limpar(dados_trimestral)
+            arq_tri = pasta / f"{demo.lower()}_consolidado.csv"
+            tri.to_csv(arq_tri, index=False, encoding="utf-8-sig")
+
+            # 2) Salvar ANUAL (apenas T4) - adicional
+            anual = tri[tri["trimestre"] == "T4"].copy()
+            arq_anual = pasta / f"{demo.lower()}_anual.csv"
+            anual.to_csv(arq_anual, index=False, encoding="utf-8-sig")
+
+            print(f"✅ {len(tri)} linhas | anual(T4): {len(anual)}")
 
     def processar_lote(self, limite=10):
         try:
