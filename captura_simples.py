@@ -40,9 +40,6 @@ class CapturaBalancos:
         pasta = self.pasta_balancos / ticker
         pasta.mkdir(exist_ok=True)
         
-        # Limpar CNPJ para comparação
-        cnpj_limpo = cnpj.replace('.', '').replace('/', '').replace('-', '')
-        
         # Processar todas as demonstrações
         demos = ['DRE', 'BPA', 'BPP', 'DFC_MD']
         
@@ -55,11 +52,8 @@ class CapturaBalancos:
                 if df is None:
                     continue
                 
-                # Limpar CNPJ_CIA do arquivo também
-                df['CNPJ_LIMPO'] = df['CNPJ_CIA'].astype(str).str.replace('.', '').str.replace('/', '').str.replace('-', '')
-                
-                # Filtrar por CNPJ
-                df = df[df['CNPJ_LIMPO'] == cnpj_limpo].copy()
+                # CORREÇÃO CRÍTICA: Usar CNPJ COM formatação (não limpar)
+                df = df[df['CNPJ_CIA'] == cnpj].copy()
                 
                 if len(df) == 0:
                     continue
