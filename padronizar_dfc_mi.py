@@ -1,18 +1,21 @@
 import pandas as pd
 import numpy as np
 
-# Plano padrão (coarse) para manter padronização entre empresas.
-# Se quiser mais granularidade depois, ampliamos esse plano.
+# Plano mínimo correto (compatível com os seus CSVs)
+# - REMOVIDO 6.00 (não faz sentido somar "o DFC inteiro")
+# - USANDO 6.05.01 e 6.05.02 (saldo inicial/final) que existem nos seus dados
 DFC_MI_PADRAO = [
-    ("6", "Demonstração do Fluxo de Caixa (Método Indireto)"),
     ("6.01", "Fluxo de Caixa das Atividades Operacionais"),
     ("6.02", "Fluxo de Caixa das Atividades de Investimento"),
     ("6.03", "Fluxo de Caixa das Atividades de Financiamento"),
-    ("6.04", "Variação Cambial sobre Caixa e Equivalentes"),
-    ("6.05", "Aumento/Redução de Caixa e Equivalentes"),
-    ("6.06", "Caixa e Equivalentes no Início do Período"),
-    ("6.07", "Caixa e Equivalentes no Final do Período"),
+    ("6.04", "Variação Cambial s/ Caixa e Equivalentes"),
+    ("6.05", "Aumento (Redução) de Caixa e Equivalentes"),
+    ("6.05.01", "Saldo Inicial de Caixa e Equivalentes"),
+    ("6.05.02", "Saldo Final de Caixa e Equivalentes"),
 ]
+
+# Contas "de saldo" (nível/estoque) — NÃO diferenciar como YTD
+SALDO_ACCOUNTS = {"6.05.01", "6.05.02"}
 
 
 def padronizar_dfc_mi_trimestral_e_anual(
@@ -27,14 +30,21 @@ def padronizar_dfc_mi_trimestral_e_anual(
     Saída:
       cd_conta_padrao | ds_conta_padrao | YYYY-T1 | YYYY-T2 | YYYY-T3 | YYYY-T4 | ...
 
-    Regras (DFC = fluxo, ITR vem YTD):
-      - T1 isolado = YTD(T1)
-      - T2 isolado = YTD(T2) - YTD(T1)
-      - T3 isolado = YTD(T3) - YTD(T2)
-      - T4 isolado = Anual(DFP) - YTD(T3)
+    Regras (DFC ITR em YTD):
+      Fluxos (ex.: 6.01..6.05):
+        - Q1 = YTD(T1)
+        - Q2 = YTD(T2) - YTD(T1)
+        - Q3 = YTD(T3) - YTD(T2)
+        - Q4 = Anual(DFP) - YTD(T3)
 
-    Observação:
-      - Aqui NÃO fazemos "anual - (T1+T2+T3)" porque T2/T3 já são acumulados.
+      Saldos (6.05.01 / 6.05.02):
+        - 6.05.02 (Saldo Final):
+            Q1 = Final(T1), Q2 = Final(T2), Q3 = Final(T3), Q4 = Final(Anual)
+        - 6.05.01 (Saldo Inicial):
+            Q1 = Inicial(T1) (= início do ano)
+            Q2 = Final(T1)
+            Q3 = Final(T2)
+            Q4 = Final(T3)
     """
 
     if plano_contas is None:
@@ -57,7 +67,7 @@ def padronizar_dfc_mi_trimestral_e_anual(
         df["ds_conta"] = df["ds_conta"].astype(str)
         df["valor_mil"] = pd.to_numeric(df["valor_mil"], errors="coerce")
 
-    # anual sempre T4 (representa 12M)
+    # anual sempre T4
     anu["trimestre"] = "T4"
 
     # unidade
@@ -80,19 +90,16 @@ def padronizar_dfc_mi_trimestral_e_anual(
     anu["ano"] = anu["data_fim"].dt.year
     anu["q"] = 4
 
-    # ITR normalmente só T1..T3; mas deixamos robusto
+    # tri normalmente T1..T3; anual T4
     tri = tri[tri["q"].isin([1, 2, 3])].copy()
     anu = anu[anu["ano"].notna()].copy()
 
     contas = [c for c, _ in plano_contas]
     nomes = {c: n for c, n in plano_contas}
 
-    # períodos existentes
+    # períodos existentes (garantimos q=4 se anual existir)
     periodos = pd.concat(
-        [
-            tri[["ano", "q"]].dropna(),
-            anu[["ano", "q"]].dropna(),
-        ],
+        [tri[["ano", "q"]].dropna(), anu[["ano", "q"]].dropna()],
         ignore_index=True,
     ).drop_duplicates().sort_values(["ano", "q"]).astype(int)
 
@@ -102,19 +109,15 @@ def padronizar_dfc_mi_trimestral_e_anual(
             {"cd_conta_padrao": contas, "ds_conta_padrao": [nomes[c] for c in contas]}
         )
 
-    cols_mi = pd.MultiIndex.from_tuples(periodos, names=["ano", "q"])
-
-    # matriz YTD (T1,T2,T3 do ITR + T4 do anual)
-    ytd = pd.DataFrame(index=contas, columns=cols_mi, dtype="float64")
+    # matriz YTD: (ano,q) -> valor da conta naquele período
+    ytd = pd.DataFrame(index=contas, columns=pd.MultiIndex.from_tuples(periodos, names=["ano", "q"]), dtype="float64")
 
     def _valor_total_periodo(df_periodo: pd.DataFrame, codigo: str) -> float:
-        # conta exata
         exact = df_periodo[df_periodo["cd_conta"] == codigo]
         if not exact.empty:
             s = exact["valor"].dropna()
             return float(s.iloc[-1]) if not s.empty else np.nan
 
-        # rollup descendente (opcional)
         if permitir_rollup_descendentes:
             desc = df_periodo[df_periodo["cd_conta"].str.startswith(codigo + ".")]
             if not desc.empty:
@@ -127,31 +130,56 @@ def padronizar_dfc_mi_trimestral_e_anual(
             dfp = tri[(tri["ano"] == ano) & (tri["q"] == q)]
         else:
             dfp = anu[(anu["ano"] == ano) & (anu["q"] == 4)]
+
         if dfp.empty:
             continue
 
         for cod in contas:
             ytd.at[cod, (ano, q)] = _valor_total_periodo(dfp, cod)
 
-    # converter para trimestres isolados (quarter)
+    # converter para trimestral isolado (quarter)
     qt = ytd.copy()
-
     anos = sorted({a for (a, _) in periodos})
+
     for ano in anos:
-        # precisa de T1..T4 no mínimo para Q4, mas calcula o que der.
         has = {(a, q) for (a, q) in periodos if a == ano}
 
-        # Q2 = YTD2 - YTD1
-        if (ano, 2) in has and (ano, 1) in has:
-            qt[(ano, 2)] = ytd[(ano, 2)] - ytd[(ano, 1)]
+        # Fluxos: diferenciação YTD -> quarter
+        for cod in contas:
+            if cod in SALDO_ACCOUNTS:
+                continue  # saldos tratados depois
 
-        # Q3 = YTD3 - YTD2
-        if (ano, 3) in has and (ano, 2) in has:
-            qt[(ano, 3)] = ytd[(ano, 3)] - ytd[(ano, 2)]
+            if (ano, 1) in has:
+                qt.loc[cod, (ano, 1)] = ytd.loc[cod, (ano, 1)]
+            if (ano, 2) in has and (ano, 1) in has:
+                qt.loc[cod, (ano, 2)] = ytd.loc[cod, (ano, 2)] - ytd.loc[cod, (ano, 1)]
+            if (ano, 3) in has and (ano, 2) in has:
+                qt.loc[cod, (ano, 3)] = ytd.loc[cod, (ano, 3)] - ytd.loc[cod, (ano, 2)]
+            if (ano, 4) in has and (ano, 3) in has:
+                qt.loc[cod, (ano, 4)] = ytd.loc[cod, (ano, 4)] - ytd.loc[cod, (ano, 3)]
 
-        # Q4 = YTD4(Anual) - YTD3
-        if (ano, 4) in has and (ano, 3) in has:
-            qt[(ano, 4)] = ytd[(ano, 4)] - ytd[(ano, 3)]
+        # Saldos:
+        # 6.05.02 (saldo final): Q1=final T1, Q2=final T2, Q3=final T3, Q4=final anual
+        if "6.05.02" in contas:
+            if (ano, 1) in has:
+                qt.loc["6.05.02", (ano, 1)] = ytd.loc["6.05.02", (ano, 1)]
+            if (ano, 2) in has:
+                qt.loc["6.05.02", (ano, 2)] = ytd.loc["6.05.02", (ano, 2)]
+            if (ano, 3) in has:
+                qt.loc["6.05.02", (ano, 3)] = ytd.loc["6.05.02", (ano, 3)]
+            if (ano, 4) in has:
+                qt.loc["6.05.02", (ano, 4)] = ytd.loc["6.05.02", (ano, 4)]
+
+        # 6.05.01 (saldo inicial): Q1=inicial do ano; Q2=final T1; Q3=final T2; Q4=final T3
+        if "6.05.01" in contas:
+            if (ano, 1) in has:
+                qt.loc["6.05.01", (ano, 1)] = ytd.loc["6.05.01", (ano, 1)]
+            if (ano, 2) in has and (ano, 1) in has:
+                qt.loc["6.05.01", (ano, 2)] = ytd.loc["6.05.02", (ano, 1)]
+            if (ano, 3) in has and (ano, 2) in has:
+                qt.loc["6.05.01", (ano, 3)] = ytd.loc["6.05.02", (ano, 2)]
+            if (ano, 4) in has and (ano, 3) in has:
+                qt.loc["6.05.01", (ano, 4)] = ytd.loc["6.05.02", (ano, 3)]
 
     # saída final
     out = pd.DataFrame(
