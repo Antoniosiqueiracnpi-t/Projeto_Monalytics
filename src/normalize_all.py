@@ -7,13 +7,11 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
 from padronizar_dre_trimestral_e_anual import padronizar_dre_trimestral_e_anual
-from padronizar_bpa_bpp import (
-    padronizar_bpa_trimestral_e_anual,
-    padronizar_bpp_trimestral_e_anual,
-)
+from padronizar_bpa_bpp import padronizar_bpa_trimestral_e_anual, padronizar_bpp_trimestral_e_anual
+from padronizar_dfc_mi import padronizar_dfc_mi_trimestral_e_anual
 
 
-def _print_file_sizes(pasta: Path, pairs: list[tuple[str, Path, Path]]):
+def _print_file_sizes(pairs):
     for label, tri, anu in pairs:
         tri_sz = tri.stat().st_size if tri.exists() else 0
         anu_sz = anu.stat().st_size if anu.exists() else 0
@@ -46,13 +44,17 @@ def main():
         bpp_anu = pasta / "bpp_anual.csv"
         bpp_out = pasta / "bpp_padronizado.csv"
 
+        dfc_tri = pasta / "dfc_mi_consolidado.csv"
+        dfc_anu = pasta / "dfc_mi_anual.csv"
+        dfc_out = pasta / "dfc_mi_padronizado.csv"
+
         _print_file_sizes(
-            pasta,
             [
                 ("DRE", dre_tri, dre_anu),
                 ("BPA", bpa_tri, bpa_anu),
                 ("BPP", bpp_tri, bpp_anu),
-            ],
+                ("DFC_MI", dfc_tri, dfc_anu),
+            ]
         )
 
         # ---------------- DRE ----------------
@@ -108,6 +110,24 @@ def main():
                 traceback.print_exc()
         else:
             print(f"[SKIP] {pasta.name} BPP: faltam bpp_consolidado.csv ou bpp_anual.csv")
+
+        # ---------------- DFC_MI ----------------
+        if dfc_tri.exists() and dfc_anu.exists():
+            try:
+                df = padronizar_dfc_mi_trimestral_e_anual(
+                    str(dfc_tri),
+                    str(dfc_anu),
+                    unidade="mil",
+                    permitir_rollup_descendentes=True,
+                )
+                df.to_csv(dfc_out, index=False, encoding="utf-8-sig")
+                print(f"[OK] {pasta.name}: gerou {dfc_out.name} ({df.shape[0]} linhas, {df.shape[1]} cols)")
+                gerados += 1
+            except Exception as e:
+                print(f"[ERRO] {pasta.name} DFC_MI: {repr(e)}")
+                traceback.print_exc()
+        else:
+            print(f"[SKIP] {pasta.name} DFC_MI: faltam dfc_mi_consolidado.csv ou dfc_mi_anual.csv")
 
     print(f"\nConcluído. Arquivos gerados: {gerados}")
 
