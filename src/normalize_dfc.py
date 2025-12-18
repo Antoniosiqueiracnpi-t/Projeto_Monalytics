@@ -1,6 +1,7 @@
 from pathlib import Path
 import sys
 import traceback
+import argparse
 from typing import Optional, Dict, Tuple, List
 
 import pandas as pd
@@ -144,7 +145,63 @@ def _pick_original_named_dfc(tdir: Path) -> Dict[str, Optional[Path]]:
     }
 
 
+def _filtrar_tickers(all_tickers: List[Path], modo: str, quantidade: str, ticker: str, lista: str, faixa: str) -> List[Path]:
+    """
+    Filtra a lista de tickers baseado no modo de seleção.
+    """
+    if modo == "quantidade":
+        try:
+            n = int(quantidade) if quantidade else 10
+            return all_tickers[:n]
+        except ValueError:
+            print(f"[AVISO] Quantidade inválida '{quantidade}', usando 10")
+            return all_tickers[:10]
+    
+    elif modo == "ticker":
+        if not ticker:
+            print("[AVISO] Ticker não especificado, processando todos")
+            return all_tickers
+        ticker_upper = ticker.strip().upper()
+        return [t for t in all_tickers if t.name.upper() == ticker_upper]
+    
+    elif modo == "lista":
+        if not lista:
+            print("[AVISO] Lista vazia, processando todos")
+            return all_tickers
+        tickers_list = [t.strip().upper() for t in lista.split(",") if t.strip()]
+        return [t for t in all_tickers if t.name.upper() in tickers_list]
+    
+    elif modo == "faixa":
+        if not faixa or "-" not in faixa:
+            print(f"[AVISO] Faixa inválida '{faixa}', usando 1-50")
+            start, end = 1, 50
+        else:
+            try:
+                parts = faixa.split("-")
+                start = int(parts[0].strip())
+                end = int(parts[1].strip())
+            except (ValueError, IndexError):
+                print(f"[AVISO] Faixa inválida '{faixa}', usando 1-50")
+                start, end = 1, 50
+        
+        # Ajusta índices (base 1 para base 0)
+        start_idx = max(0, start - 1)
+        end_idx = end
+        return all_tickers[start_idx:end_idx]
+    
+    else:
+        return all_tickers
+
+
 def main():
+    parser = argparse.ArgumentParser(description="Normalizar DFC")
+    parser.add_argument("--modo", default="quantidade", choices=["quantidade", "ticker", "lista", "faixa"])
+    parser.add_argument("--quantidade", default="10")
+    parser.add_argument("--ticker", default="")
+    parser.add_argument("--lista", default="")
+    parser.add_argument("--faixa", default="1-50")
+    args = parser.parse_args()
+
     if padronizar_dfc_mi_trimestral_e_anual is None:
         print("[AVISO] padronizar_dfc_mi não encontrado.")
         print("        Verifique se src/padronizar_dfc_mi.py existe e se src/ está no sys.path.")
@@ -155,8 +212,12 @@ def main():
         print("[ERRO] Pasta balancos/ não existe.")
         return
 
-    tickers = [p for p in base.iterdir() if p.is_dir()]
-    print(f"Encontradas {len(tickers)} pastas de empresas.")
+    all_tickers = sorted([p for p in base.iterdir() if p.is_dir()])
+    print(f"Encontradas {len(all_tickers)} pastas de empresas.")
+
+    # Aplicar filtro
+    tickers = _filtrar_tickers(all_tickers, args.modo, args.quantidade, args.ticker, args.lista, args.faixa)
+    print(f"Selecionadas {len(tickers)} empresas para processar (modo: {args.modo}).")
 
     gerados: List[str] = []
     erros = 0
