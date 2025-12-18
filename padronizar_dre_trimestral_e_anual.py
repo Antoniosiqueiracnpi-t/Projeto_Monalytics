@@ -1,8 +1,10 @@
 import pandas as pd
 import numpy as np
+from functools import lru_cache
 from typing import Optional, Dict, List, Tuple
 
 
+# -------------------- DRE PADRÃO (original) --------------------
 DRE_PADRAO: List[Tuple[str, str]] = [
     ("3.01", "Receita de Venda de Bens e/ou Serviços"),
     ("3.02", "Custo dos Bens e/ou Serviços Vendidos"),
@@ -18,7 +20,7 @@ DRE_PADRAO: List[Tuple[str, str]] = [
     ("3.99", "Lucro por Ação - (Reais / Ação)"),
 ]
 
-# --- NOVO: Plano padronizado para Seguros (setor segurador) ---
+# -------------------- NOVO: DRE Seguros --------------------
 DRE_SEGUROS_PADRAO: List[Tuple[str, str]] = [
     ("3.01", "Receita de Prêmios Retidos"),
     ("3.02", "Sinistros Ocorridos"),
@@ -40,8 +42,7 @@ def _norm_ticker(t: Optional[str]) -> Optional[str]:
     if t is None:
         return None
     t = str(t).upper().strip()
-    t = t.replace(".SA", "").replace("SA", "") if t.endswith(".SA") else t
-    return t
+    return t.replace(".SA", "")
 
 
 def _infer_ticker_from_paths(*paths: str) -> Optional[str]:
@@ -50,6 +51,36 @@ def _infer_ticker_from_paths(*paths: str) -> Optional[str]:
         if tk in joined:
             return tk
     return None
+
+
+@lru_cache(maxsize=8)
+def _load_b3_mapping(csv_path: str) -> pd.DataFrame:
+    # Arquivo do usuário é separado por ';'
+    df = pd.read_csv(csv_path, sep=";", encoding="utf-8")
+    df["ticker"] = df["ticker"].astype(str).str.upper().str.strip()
+    df["setor"] = df["setor"].astype(str)
+    df["segmento"] = df["segmento"].astype(str)
+    return df
+
+
+def _get_setor_segmento_from_b3_mapping(
+    ticker: Optional[str],
+    b3_mapping_csv: Optional[str],
+) -> Tuple[Optional[str], Optional[str]]:
+    if not ticker or not b3_mapping_csv:
+        return (None, None)
+
+    t = _norm_ticker(ticker)
+    df = _load_b3_mapping(b3_mapping_csv)
+
+    hit = df.loc[df["ticker"] == t, ["setor", "segmento"]]
+    if hit.empty:
+        return (None, None)
+
+    setor = hit.iloc[0]["setor"]
+    segmento = hit.iloc[0]["segmento"]
+    return (None if pd.isna(setor) else str(setor),
+            None if pd.isna(segmento) else str(segmento))
 
 
 def _split_plus(expr: str) -> List[str]:
@@ -67,32 +98,35 @@ def padronizar_dre_trimestral_e_anual(
     unidade: str = "mil",
     preencher_derivadas: bool = True,
     ticker: Optional[str] = None,
+    b3_mapping_csv: Optional[str] = None,
 ) -> pd.DataFrame:
     """
-    Padrão de saída:
+    Saída:
       cd_conta_padrao | ds_conta_padrao | YYYY-T1 | YYYY-T2 | YYYY-T3 | YYYY-T4 | ...
 
-    Regras (mantidas):
-    - T1/T2/T3: usa exatamente o que vier no trimestral (SEM YTD)
-    - T4: calcula isolado como:
-         T4 = Anual(DFP) - (T1 + T2 + T3)
-      para contas de resultado (exceto EPS).
-    - EPS (3.99): pega 1 valor por período e NÃO subtrai.
+    Lógica original mantida:
+    - T1/T2/T3: vem do trimestral (ITR)
+    - T4: vem do anual (DFP), mas para DRE é isolado:
+         T4_isolado = Anual - (T1 + T2 + T3)
+      (exceto EPS 3.99, que não é subtraído)
+    - EPS (3.99): pega 1 valor por período e NÃO subtrai
 
-    NOVO (Seguros):
-    - Se ticker ∈ {BBSE3, CXSE3, IRBR3, PSSA3}, troca o plano de contas e
-      aplica mapeamentos específicos para EBIT/Financeiro/Equivalência/LAIR conforme instruções.
+    NOVO:
+    - Detecção de Seguros por:
+        (a) ticker em {_SEGUROS_TICKERS} OU
+        (b) b3_mapping_csv com setor == "Previdência e Seguros"
+    - Mapeamentos específicos de Seguros para EBIT/Financeiro/Equivalência/LAIR
     """
 
     ticker_norm = _norm_ticker(ticker) or _infer_ticker_from_paths(dre_trimestral_csv, dre_anual_csv)
-    modo_seguros = ticker_norm in _SEGUROS_TICKERS
+    setor, _segmento = _get_setor_segmento_from_b3_mapping(ticker_norm, b3_mapping_csv)
 
-    # Mapeamentos específicos (código-fonte por conta padronizada) — Seguros
-    # Obs: para contas não listadas aqui, cai no "mesmo código".
-    # - EBIT (pad 3.05): BBSE/IRBR -> 3.07 ; CXSE/PSSA -> 3.05
-    # - Financeiro (pad 3.06): BBSE/IRBR -> 3.08 ; CXSE/PSSA -> 3.06
-    # - Equivalência (pad 3.07): BBSE/IRBR -> 3.06 ; CXSE/PSSA -> 3.07
-    # - LAIR (pad 3.08): BBSE -> 3.09 ; CXSE -> 3.08 ; IRBR -> 3.09 ; PSSA -> 3.07
+    modo_seguros = (
+        (ticker_norm in _SEGUROS_TICKERS) or
+        (setor is not None and setor.strip().lower() == "previdência e seguros")
+    )
+
+    # Seguros: remapeamento por ticker (conforme sua tabela)
     seguros_map_por_ticker: Dict[str, Dict[str, str]] = {
         "BBSE3": {"3.05": "3.07", "3.06": "3.08", "3.07": "3.06", "3.08": "3.09"},
         "CXSE3": {"3.05": "3.05", "3.06": "3.06", "3.07": "3.07", "3.08": "3.08"},
@@ -114,7 +148,7 @@ def padronizar_dre_trimestral_e_anual(
         if missing:
             raise ValueError(f"Arquivo {name} sem colunas esperadas: {missing}")
 
-    # normalização (mantida)
+    # Normalização (mantida)
     for df in (tri, anu):
         df["data_fim"] = pd.to_datetime(df["data_fim"], errors="coerce")
         df["trimestre"] = df["trimestre"].astype(str).str.upper().str.strip()
@@ -122,10 +156,10 @@ def padronizar_dre_trimestral_e_anual(
         df["ds_conta"] = df["ds_conta"].astype(str)
         df["valor_mil"] = pd.to_numeric(df["valor_mil"], errors="coerce")
 
-    # anual sempre T4 (mantido)
+    # Anual sempre T4 (mantido)
     anu["trimestre"] = "T4"
 
-    # unidade (mantido)
+    # Unidade (mantida)
     if unidade == "mil":
         fator = 1.0
     elif unidade == "unidade":
@@ -141,15 +175,15 @@ def padronizar_dre_trimestral_e_anual(
     qmap = {"T1": 1, "T2": 2, "T3": 3, "T4": 4}
     tri["ano"] = tri["data_fim"].dt.year
     tri["q"] = tri["trimestre"].map(qmap)
+
     anu["ano"] = anu["data_fim"].dt.year
     anu["q"] = 4
 
-    # Mantém o comportamento original:
-    # - DRE trimestral usa só T1..T3 (T4 virá do anual e depois será isolado)
+    # Mantido: DRE trimestral usa só T1..T3; T4 vem do anual
     tri = tri[tri["q"].isin([1, 2, 3])].copy()
     anu = anu[anu["ano"].notna()].copy()
 
-    # períodos (mantido)
+    # Períodos (mantido)
     periodos = pd.concat(
         [tri[["ano", "q"]].dropna(), anu[["ano", "q"]].dropna()],
         ignore_index=True,
@@ -164,17 +198,16 @@ def padronizar_dre_trimestral_e_anual(
 
     def _valor_total_periodo(df_periodo: pd.DataFrame, codigo_expr: str) -> float:
         """
-        Mantém a regra original: tenta conta exata, senão soma descendentes.
-        NOVO: aceita expressão com:
-          - "+" para somar contas (ex.: "3.04.01+3.04.02")
-          - "|" para fallback (primeiro não-NaN) (ex.: "3.07|3.05")
+        Regra original: tenta conta exata, senão soma descendentes.
+        Extensão compatível:
+          - "+" soma contas (ex.: "3.04.01+3.04.02")
+          - "|" fallback (primeiro não-NaN) (ex.: "3.07|3.05")
         """
         if codigo_expr is None or str(codigo_expr).strip() == "":
             return np.nan
 
         codigo_expr = str(codigo_expr).strip()
 
-        # fallback pipe
         if "|" in codigo_expr:
             for part in _split_pipe(codigo_expr):
                 v = _valor_total_periodo(df_periodo, part)
@@ -182,22 +215,17 @@ def padronizar_dre_trimestral_e_anual(
                     return float(v)
             return np.nan
 
-        # soma plus
         if "+" in codigo_expr:
-            vals = []
-            for part in _split_plus(codigo_expr):
-                vals.append(_valor_total_periodo(df_periodo, part))
+            vals = [_valor_total_periodo(df_periodo, part) for part in _split_plus(codigo_expr)]
             if all(pd.isna(v) for v in vals):
                 return np.nan
             return float(np.nansum(vals))
 
-        # 1) conta exata
         exact = df_periodo[df_periodo["cd_conta"] == codigo_expr]
         if not exact.empty:
             s = exact["valor"].dropna()
             return float(s.iloc[-1]) if not s.empty else np.nan
 
-        # 2) soma descendentes
         desc = df_periodo[df_periodo["cd_conta"].str.startswith(codigo_expr + ".")]
         if not desc.empty:
             return float(desc["valor"].sum(skipna=True))
@@ -231,7 +259,7 @@ def padronizar_dre_trimestral_e_anual(
 
         return 0.0
 
-    # preencher T1..T3 (trimestral) e T4 (anual)
+    # Preenche T1..T3 (tri) e T4 (anual)
     for (ano, q) in periodos:
         if q in (1, 2, 3):
             dfp = tri[(tri["ano"] == ano) & (tri["q"] == q)]
@@ -248,7 +276,7 @@ def padronizar_dre_trimestral_e_anual(
             cod_fonte = seguros_map.get(cod_padrao, cod_padrao) if modo_seguros else cod_padrao
             mat.at[cod_padrao, (ano, q)] = _valor_total_periodo(dfp, cod_fonte)
 
-    # derivadas (mantido para o padrão; adaptado no modo seguros)
+    # Derivadas (mantidas; adaptadas no modo Seguros)
     if preencher_derivadas:
         def _fill(code: str, expr_codes: List[str]):
             if code not in mat.index:
@@ -272,7 +300,7 @@ def padronizar_dre_trimestral_e_anual(
         else:
             # Seguros: 3.03 = 3.01 + 3.02
             _fill("3.03", ["3.01", "3.02"])
-            # LAIR (3.08) costuma ser: EBIT (3.05) + Fin (3.06) + Equiv (3.07)
+            # LAIR (3.08) normalmente = EBIT (3.05) + Fin (3.06) + Equiv (3.07)
             _fill("3.08", ["3.05", "3.06", "3.07"])
 
     # T4 isolado (mantido): anual - (T1+T2+T3), exceto EPS
@@ -301,9 +329,8 @@ def padronizar_dre_trimestral_e_anual(
             if ok:
                 mat.at[cod_padrao, (ano, 4)] = float(a) - s
 
-    out = pd.DataFrame(
-        {"cd_conta_padrao": contas, "ds_conta_padrao": [nomes[c] for c in contas]}
-    )
+    # Saída final
+    out = pd.DataFrame({"cd_conta_padrao": contas, "ds_conta_padrao": [nomes[c] for c in contas]})
     for (ano, q) in periodos:
         out[f"{ano}-T{q}"] = mat[(ano, q)].values
 
