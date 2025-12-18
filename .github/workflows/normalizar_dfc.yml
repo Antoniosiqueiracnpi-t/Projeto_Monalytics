@@ -8,7 +8,7 @@ on:
     paths:
       - "balancos/**"
       - "src/**"
-      - "padronizar_dfc_trimestral_e_anual.py"
+      - "padronizar_dfc_mi.py"
       - ".github/workflows/normalizar_dfc.yml"
 
 permissions:
