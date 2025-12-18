@@ -256,11 +256,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     captura = CapturaBalancos()
 
-    try:
-        df = pd.read_csv("mapeamento_final_b3_completo.csv", encoding="utf-8")
-    except UnicodeDecodeError:
-        df = pd.read_csv("mapeamento_final_b3_completo.csv", sep=";", encoding="ISO-8859-1")
-
+    df = pd.read_csv("mapeamento_final_b3_completo_utf8.csv", sep=";", encoding="utf-8-sig")
     df = df[df["cnpj"].notna()].reset_index(drop=True)
 
     if args.modo == "quantidade":
