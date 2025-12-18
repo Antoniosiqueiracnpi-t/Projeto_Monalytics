@@ -193,15 +193,37 @@ def main():
         print(f"  ... e mais {len(tickers_selecionados) - 10} tickers")
     print()
     
-    # Localiza o script de captura
-    captura_script = REPO_ROOT / "captura_balancos.py"
-    if not captura_script.exists():
-        captura_script = REPO_ROOT / "src" / "captura_balancos.py"
+    # Localiza o script de captura - tenta múltiplos nomes
+    script_names = [
+        "captura_balancos.py",
+        "src/captura_balancos.py", 
+        "captura_simples.py",
+        "src/captura_simples.py",
+    ]
     
-    if not captura_script.exists():
-        print("[ERRO] Script captura_balancos.py não encontrado")
-        print("       Procurado em: raiz e src/")
+    captura_script = None
+    for script_name in script_names:
+        possible_path = REPO_ROOT / script_name
+        if possible_path.exists():
+            captura_script = possible_path
+            break
+    
+    # Se não encontrou, procura qualquer arquivo que comece com "captura"
+    if captura_script is None:
+        for pattern in ["captura*.py", "src/captura*.py"]:
+            matches = list(REPO_ROOT.glob(pattern))
+            if matches:
+                captura_script = matches[0]
+                break
+    
+    if captura_script is None:
+        print("[ERRO] Script de captura não encontrado")
+        print("       Crie um arquivo chamado captura_balancos.py que aceite ticker como argumento")
+        print("       Exemplo: python captura_balancos.py PETR4")
         sys.exit(1)
+    
+    print(f"[INFO] Usando script: {captura_script}")
+    print()
     
     # Processa cada ticker
     sucesso = 0
