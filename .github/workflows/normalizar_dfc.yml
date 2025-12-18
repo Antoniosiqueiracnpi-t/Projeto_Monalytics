@@ -2,6 +2,33 @@ name: Normalizar DFC (todas as pastas)
 
 on:
   workflow_dispatch:
+    inputs:
+      modo:
+        description: 'Modo de seleção'
+        required: true
+        default: 'quantidade'
+        type: choice
+        options:
+          - quantidade
+          - ticker
+          - lista
+          - faixa
+      quantidade:
+        description: 'Quantidade (modo quantidade): 10, 50, 308=todas'
+        required: false
+        default: '10'
+      ticker:
+        description: 'Ticker único (modo ticker): ex: PETR4'
+        required: false
+        default: ''
+      lista:
+        description: 'Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4'
+        required: false
+        default: ''
+      faixa:
+        description: 'Faixa (modo faixa): ex: 1-50, 51-150, 151-308'
+        required: false
+        default: '1-50'
   schedule:
     - cron: "35 3 * * *"
   push:
@@ -44,7 +71,16 @@ jobs:
       - name: Run normalization (DFC)
         run: |
           export PYTHONPATH="$GITHUB_WORKSPACE"
-          python src/normalize_dfc.py
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python src/normalize_dfc.py \
+              --modo "${{ github.event.inputs.modo }}" \
+              --quantidade "${{ github.event.inputs.quantidade }}" \
+              --ticker "${{ github.event.inputs.ticker }}" \
+              --lista "${{ github.event.inputs.lista }}" \
+              --faixa "${{ github.event.inputs.faixa }}"
+          else
+            python src/normalize_dfc.py
+          fi
 
       - name: Commit and push if changed
         run: |
