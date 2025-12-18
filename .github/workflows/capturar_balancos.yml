@@ -4,10 +4,36 @@ on:
   # Executar manualmente (botão no GitHub)
   workflow_dispatch:
     inputs:
-      empresas:
-        description: 'Quantas empresas processar? (10, 50, 308=todas)'
+      modo:
+        description: 'Modo de seleção'
         required: true
+        type: choice
+        options:
+          - 'quantidade'
+          - 'ticker'
+          - 'lista'
+          - 'faixa'
+        default: 'quantidade'
+      
+      quantidade:
+        description: 'Quantidade (modo quantidade): 10, 50, 308=todas'
+        required: false
         default: '10'
+      
+      ticker:
+        description: 'Ticker único (modo ticker): ex: PETR4'
+        required: false
+        default: ''
+      
+      lista:
+        description: 'Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4'
+        required: false
+        default: ''
+      
+      faixa:
+        description: 'Faixa (modo faixa): ex: 1-50, 51-150, 151-308'
+        required: false
+        default: '1-50'
 
 jobs:
   capturar:
@@ -27,7 +53,13 @@ jobs:
       run: pip install pandas requests
     
     - name: 🚀 Executar captura
-      run: python captura_simples.py ${{ github.event.inputs.empresas }}
+      run: |
+        python captura_simples.py \
+          --modo "${{ github.event.inputs.modo }}" \
+          --quantidade "${{ github.event.inputs.quantidade }}" \
+          --ticker "${{ github.event.inputs.ticker }}" \
+          --lista "${{ github.event.inputs.lista }}" \
+          --faixa "${{ github.event.inputs.faixa }}"
     
     - name: 💾 Salvar no GitHub
       run: |
