@@ -16,9 +16,9 @@ if SRC_DIR.exists():
 
 # tenta importar a padronização DFC (se existir)
 try:
-    from padronizar_dfc_mi import padronizar_dfc_mi  # src/padronizar_dfc_mi.py
+    from padronizar_dfc_mi import padronizar_dfc_mi_trimestral_e_anual
 except Exception:
-    padronizar_dfc_mi = None  # type: ignore
+    padronizar_dfc_mi_trimestral_e_anual = None  # type: ignore
 
 
 REQUIRED_COLS = {"data_fim", "trimestre", "cd_conta", "ds_conta", "valor_mil"}
@@ -144,22 +144,8 @@ def _pick_original_named_dfc(tdir: Path) -> Dict[str, Optional[Path]]:
     }
 
 
-def _find_b3_mapping_csv() -> Optional[str]:
-    """
-    Procura o mapeamento primeiro na raiz e depois em src/ (como no seu repo).
-    """
-    candidates = [
-        REPO_ROOT / "mapeamento_final_b3_completo_utf8.csv",
-        SRC_DIR / "mapeamento_final_b3_completo_utf8.csv",
-    ]
-    for p in candidates:
-        if p.exists():
-            return str(p)
-    return None
-
-
 def main():
-    if padronizar_dfc_mi is None:
+    if padronizar_dfc_mi_trimestral_e_anual is None:
         print("[AVISO] padronizar_dfc_mi não encontrado.")
         print("        Verifique se src/padronizar_dfc_mi.py existe e se src/ está no sys.path.")
         return
@@ -168,11 +154,6 @@ def main():
     if not base.exists():
         print("[ERRO] Pasta balancos/ não existe.")
         return
-
-    b3_map = _find_b3_mapping_csv()
-    if b3_map is None:
-        print("[AVISO] mapeamento_final_b3_completo_utf8.csv não encontrado (raiz ou src/).")
-        print("        Setor/segmento não será usado para exceções no DFC.")
 
     tickers = [p for p in base.iterdir() if p.is_dir()]
     print(f"Encontradas {len(tickers)} pastas de empresas.")
@@ -192,11 +173,11 @@ def main():
             dfc_anu = original["anual"] or fallback["anual"]
 
             if dfc_tri and dfc_anu:
-                out_dfc = padronizar_dfc_mi(
+                out_dfc = padronizar_dfc_mi_trimestral_e_anual(
                     str(dfc_tri),
                     str(dfc_anu),
-                    ticker=ticker,
-                    b3_mapping_csv=b3_map,
+                    unidade="mil",
+                    permitir_rollup_descendentes=True,
                 )
                 out_path = tdir / "dfc_padronizada.csv"
                 out_dfc.to_csv(out_path, index=False)
