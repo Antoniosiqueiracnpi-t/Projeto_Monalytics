@@ -1,0 +1,64 @@
+name: Normalizar DRE (todas as pastas)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 3 * * *"
+  push:
+    paths:
+      - "balancos/**"
+      - "src/**"
+      - "padronizar_dre_trimestral_e_anual.py"
+      - ".github/workflows/normalizar_dre.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: balancos-dre
+  cancel-in-progress: false
+
+jobs:
+  normalizar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # necessário para rebase funcionar bem
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy requests
+
+      - name: Run normalization (DRE)
+        run: |
+          export PYTHONPATH="$GITHUB_WORKSPACE"
+          python src/normalize_dre.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "actions-user"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add -A balancos
+
+          if git diff --cached --quiet; then
+            echo "Sem mudanças para commit."
+            exit 0
+          fi
+
+          git commit -m "Normalização DRE padronizada (todas as pastas)"
+
+          # pega mudanças remotas e reaplica seu commit por cima (evita rejected/fetch first)
+          git pull --rebase origin main
+
+          # tenta push; se houver corrida com outro job, tenta mais uma vez
+          git push origin main || (git pull --rebase origin main && git push origin main)
