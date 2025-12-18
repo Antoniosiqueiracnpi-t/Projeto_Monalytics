@@ -7,15 +7,28 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
 from padronizar_dre_trimestral_e_anual import padronizar_dre_trimestral_e_anual
-from padronizar_bpa_bpp import padronizar_bpa_trimestral_e_anual, padronizar_bpp_trimestral_e_anual
-from padronizar_dfc_mi import padronizar_dfc_mi_trimestral_e_anual
+from padronizar_bpa_bpp import (
+    padronizar_bpa_trimestral_e_anual,
+    padronizar_bpp_trimestral_e_anual,
+)
 
 
-def _print_file_sizes(pairs):
-    for label, tri, anu in pairs:
-        tri_sz = tri.stat().st_size if tri.exists() else 0
-        anu_sz = anu.stat().st_size if anu.exists() else 0
-        print(f"  - {label}: tri={tri_sz} bytes | anu={anu_sz} bytes")
+def _pick_file(ticker_dir: Path, candidates: list[str], patterns: list[str]) -> Path | None:
+    """
+    Tenta primeiro por nomes exatos (candidates). Se não achar,
+    tenta glob por patterns. Retorna o primeiro encontrado.
+    """
+    for name in candidates:
+        p = ticker_dir / name
+        if p.exists():
+            return p
+
+    for pat in patterns:
+        hits = sorted(ticker_dir.glob(pat))
+        if hits:
+            return hits[0]
+
+    return None
 
 
 def main():
@@ -24,112 +37,111 @@ def main():
         print("[ERRO] Pasta balancos/ não existe.")
         return
 
+    # --- NOVO: mapeamento B3 (setor/segmento) ---
+    b3_map_path = REPO_ROOT / "mapeamento_final_b3_completo_utf8.csv"
+    b3_map = str(b3_map_path) if b3_map_path.exists() else None
+    if b3_map is None:
+        print("[AVISO] mapeamento_final_b3_completo_utf8.csv não encontrado na raiz do repo.")
+        print("        Setor/segmento não será usado para ativar exceções (Seguros).")
+
     tickers = [p for p in base.iterdir() if p.is_dir()]
     print(f"Encontradas {len(tickers)} pastas de empresas.")
 
-    gerados = 0
+    gerados = []
+    erros = 0
 
-    for pasta in tickers:
-        print(f"\n==================== {pasta.name} ====================")
+    for tdir in tickers:
+        ticker = tdir.name.upper().strip()
+        try:
+            # -------------------- DRE --------------------
+            dre_tri = _pick_file(
+                tdir,
+                candidates=["dre_trimestral.csv", "DRE_trimestral.csv"],
+                patterns=["*dre*trimestral*.csv", "*DRE*trimestral*.csv"],
+            )
+            dre_anu = _pick_file(
+                tdir,
+                candidates=["dre_anual.csv", "DRE_anual.csv"],
+                patterns=["*dre*anual*.csv", "*DRE*anual*.csv", "*dre*dfp*.csv", "*DRE*dfp*.csv"],
+            )
 
-        dre_tri = pasta / "dre_consolidado.csv"
-        dre_anu = pasta / "dre_anual.csv"
-        dre_out = pasta / "dre_padronizado.csv"
-
-        bpa_tri = pasta / "bpa_consolidado.csv"
-        bpa_anu = pasta / "bpa_anual.csv"
-        bpa_out = pasta / "bpa_padronizado.csv"
-
-        bpp_tri = pasta / "bpp_consolidado.csv"
-        bpp_anu = pasta / "bpp_anual.csv"
-        bpp_out = pasta / "bpp_padronizado.csv"
-
-        dfc_tri = pasta / "dfc_mi_consolidado.csv"
-        dfc_anu = pasta / "dfc_mi_anual.csv"
-        dfc_out = pasta / "dfc_mi_padronizado.csv"
-
-        _print_file_sizes(
-            [
-                ("DRE", dre_tri, dre_anu),
-                ("BPA", bpa_tri, bpa_anu),
-                ("BPP", bpp_tri, bpp_anu),
-                ("DFC_MI", dfc_tri, dfc_anu),
-            ]
-        )
-
-        # ---------------- DRE ----------------
-        if dre_tri.exists() and dre_anu.exists():
-            try:
-                df = padronizar_dre_trimestral_e_anual(
+            if dre_tri and dre_anu:
+                out_dre = padronizar_dre_trimestral_e_anual(
                     str(dre_tri),
                     str(dre_anu),
-                    unidade="mil",
-                    preencher_derivadas=True,
+                    ticker=ticker,
+                    b3_mapping_csv=b3_map,
                 )
-                df.to_csv(dre_out, index=False, encoding="utf-8-sig")
-                print(f"[OK] {pasta.name}: gerou {dre_out.name} ({df.shape[0]} linhas, {df.shape[1]} cols)")
-                gerados += 1
-            except Exception as e:
-                print(f"[ERRO] {pasta.name} DRE: {repr(e)}")
-                traceback.print_exc()
-        else:
-            print(f"[SKIP] {pasta.name} DRE: faltam dre_consolidado.csv ou dre_anual.csv")
+                dre_out_path = tdir / "dre_padronizada.csv"
+                out_dre.to_csv(dre_out_path, index=False)
+                gerados.append(str(dre_out_path))
+            else:
+                print(f"[{ticker}] DRE: arquivos não encontrados (trimestral/anual). Pulando DRE.")
 
-        # ---------------- BPA ----------------
-        if bpa_tri.exists() and bpa_anu.exists():
-            try:
-                df = padronizar_bpa_trimestral_e_anual(
+            # -------------------- BPA --------------------
+            bpa_tri = _pick_file(
+                tdir,
+                candidates=["bpa_trimestral.csv", "BPA_trimestral.csv"],
+                patterns=["*bpa*trimestral*.csv", "*BPA*trimestral*.csv"],
+            )
+            bpa_anu = _pick_file(
+                tdir,
+                candidates=["bpa_anual.csv", "BPA_anual.csv"],
+                patterns=["*bpa*anual*.csv", "*BPA*anual*.csv", "*bpa*dfp*.csv", "*BPA*dfp*.csv"],
+            )
+
+            if bpa_tri and bpa_anu:
+                out_bpa = padronizar_bpa_trimestral_e_anual(
                     str(bpa_tri),
                     str(bpa_anu),
-                    unidade="mil",
-                    permitir_rollup_descendentes=True,
+                    ticker=ticker,
+                    b3_mapping_csv=b3_map,
                 )
-                df.to_csv(bpa_out, index=False, encoding="utf-8-sig")
-                print(f"[OK] {pasta.name}: gerou {bpa_out.name} ({df.shape[0]} linhas, {df.shape[1]} cols)")
-                gerados += 1
-            except Exception as e:
-                print(f"[ERRO] {pasta.name} BPA: {repr(e)}")
-                traceback.print_exc()
-        else:
-            print(f"[SKIP] {pasta.name} BPA: faltam bpa_consolidado.csv ou bpa_anual.csv")
+                bpa_out_path = tdir / "bpa_padronizada.csv"
+                out_bpa.to_csv(bpa_out_path, index=False)
+                gerados.append(str(bpa_out_path))
+            else:
+                print(f"[{ticker}] BPA: arquivos não encontrados (trimestral/anual). Pulando BPA.")
 
-        # ---------------- BPP ----------------
-        if bpp_tri.exists() and bpp_anu.exists():
-            try:
-                df = padronizar_bpp_trimestral_e_anual(
+            # -------------------- BPP --------------------
+            bpp_tri = _pick_file(
+                tdir,
+                candidates=["bpp_trimestral.csv", "BPP_trimestral.csv"],
+                patterns=["*bpp*trimestral*.csv", "*BPP*trimestral*.csv"],
+            )
+            bpp_anu = _pick_file(
+                tdir,
+                candidates=["bpp_anual.csv", "BPP_anual.csv"],
+                patterns=["*bpp*anual*.csv", "*BPP*anual*.csv", "*bpp*dfp*.csv", "*BPP*dfp*.csv"],
+            )
+
+            if bpp_tri and bpp_anu:
+                out_bpp = padronizar_bpp_trimestral_e_anual(
                     str(bpp_tri),
                     str(bpp_anu),
-                    unidade="mil",
-                    permitir_rollup_descendentes=True,
+                    ticker=ticker,
+                    b3_mapping_csv=b3_map,
                 )
-                df.to_csv(bpp_out, index=False, encoding="utf-8-sig")
-                print(f"[OK] {pasta.name}: gerou {bpp_out.name} ({df.shape[0]} linhas, {df.shape[1]} cols)")
-                gerados += 1
-            except Exception as e:
-                print(f"[ERRO] {pasta.name} BPP: {repr(e)}")
-                traceback.print_exc()
-        else:
-            print(f"[SKIP] {pasta.name} BPP: faltam bpp_consolidado.csv ou bpp_anual.csv")
+                bpp_out_path = tdir / "bpp_padronizada.csv"
+                out_bpp.to_csv(bpp_out_path, index=False)
+                gerados.append(str(bpp_out_path))
+            else:
+                print(f"[{ticker}] BPP: arquivos não encontrados (trimestral/anual). Pulando BPP.")
 
-        # ---------------- DFC_MI ----------------
-        if dfc_tri.exists() and dfc_anu.exists():
-            try:
-                df = padronizar_dfc_mi_trimestral_e_anual(
-                    str(dfc_tri),
-                    str(dfc_anu),
-                    unidade="mil",
-                    permitir_rollup_descendentes=True,
-                )
-                df.to_csv(dfc_out, index=False, encoding="utf-8-sig")
-                print(f"[OK] {pasta.name}: gerou {dfc_out.name} ({df.shape[0]} linhas, {df.shape[1]} cols)")
-                gerados += 1
-            except Exception as e:
-                print(f"[ERRO] {pasta.name} DFC_MI: {repr(e)}")
-                traceback.print_exc()
-        else:
-            print(f"[SKIP] {pasta.name} DFC_MI: faltam dfc_mi_consolidado.csv ou dfc_mi_anual.csv")
+            print(f"[OK] {ticker} finalizado.")
 
-    print(f"\nConcluído. Arquivos gerados: {gerados}")
+        except Exception as e:
+            erros += 1
+            print(f"[ERRO] Falha ao processar {ticker}: {e}")
+            traceback.print_exc()
+
+    print("\n================== RESUMO ==================")
+    print(f"Gerados: {len(gerados)} arquivo(s)")
+    print(f"Erros: {erros}")
+    if gerados:
+        print("Arquivos gerados:")
+        for p in gerados:
+            print(" -", p)
 
 
 if __name__ == "__main__":
