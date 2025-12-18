@@ -7,6 +7,7 @@ Segue a ordem do arquivo mapeamento_final_b3_completo_utf8.csv
 import sys
 import os
 import argparse
+import subprocess
 from pathlib import Path
 from typing import List
 import pandas as pd
@@ -14,14 +15,6 @@ import pandas as pd
 # Adiciona o diretório src ao path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
-
-# Importa a função de captura
-try:
-    from captura_balancos_b3 import capturar_balancos_empresa
-except ImportError:
-    print("[ERRO] Não foi possível importar captura_balancos_b3")
-    print("       Verifique se o arquivo existe em src/")
-    sys.exit(1)
 
 
 def carregar_tickers_ordenados(csv_path: Path) -> List[str]:
@@ -182,6 +175,16 @@ def main():
         print(f"  ... e mais {len(tickers_selecionados) - 10} tickers")
     print()
     
+    # Localiza o script de captura
+    captura_script = REPO_ROOT / "captura_balancos.py"
+    if not captura_script.exists():
+        captura_script = REPO_ROOT / "src" / "captura_balancos.py"
+    
+    if not captura_script.exists():
+        print("[ERRO] Script captura_balancos.py não encontrado")
+        print("       Procurado em: raiz e src/")
+        sys.exit(1)
+    
     # Processa cada ticker
     sucesso = 0
     falhas = 0
@@ -189,8 +192,18 @@ def main():
     for idx, ticker in enumerate(tickers_selecionados, 1):
         print(f"\n[{idx}/{len(tickers_selecionados)}] Processando {ticker}...")
         try:
-            capturar_balancos_empresa(ticker)
-            sucesso += 1
+            # Chama o script de captura passando o ticker como argumento
+            result = subprocess.run(
+                [sys.executable, str(captura_script), ticker],
+                capture_output=False,
+                text=True,
+                check=False
+            )
+            if result.returncode == 0:
+                sucesso += 1
+            else:
+                falhas += 1
+                print(f"[ERRO] Falha ao capturar {ticker}")
         except Exception as e:
             falhas += 1
             print(f"[ERRO] Falha ao capturar {ticker}: {e}")
