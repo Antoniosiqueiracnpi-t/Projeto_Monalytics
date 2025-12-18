@@ -241,27 +241,52 @@ class CapturaBalancos:
 
             print(f"  {demo}: trimestral(ITR) {tri_info} | anual(DFP) {anual_info}")
 
-    def processar_lote(self, limite=10):
-        try:
-            df = pd.read_csv("mapeamento_final_b3_completo.csv", encoding="utf-8")
-        except UnicodeDecodeError:
-            df = pd.read_csv("mapeamento_final_b3_completo.csv", sep=";", encoding="ISO-8859-1")
-
-        df = df[df["cnpj"].notna()].head(limite)
-
-        print(f"\n🚀 Processando {len(df)} empresas...\n")
-
-        for _, row in df.iterrows():
-            try:
-                self.processar_empresa(row["ticker"], row["cnpj"])
-            except Exception as e:
-                print(f"❌ Erro: {e}")
-
-        print(f"\n✅ Concluído! Dados em: balancos/")
-
 
 if __name__ == "__main__":
     import sys
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--modo", default="quantidade", choices=["quantidade", "ticker", "lista", "faixa"])
+    parser.add_argument("--quantidade", default="10")
+    parser.add_argument("--ticker", default="")
+    parser.add_argument("--lista", default="")
+    parser.add_argument("--faixa", default="1-50")
+
+    args = parser.parse_args()
     captura = CapturaBalancos()
-    limite = int(sys.argv[1]) if len(sys.argv) > 1 else 10
-    captura.processar_lote(limite=limite)
+
+    try:
+        df = pd.read_csv("mapeamento_final_b3_completo.csv", encoding="utf-8")
+    except UnicodeDecodeError:
+        df = pd.read_csv("mapeamento_final_b3_completo.csv", sep=";", encoding="ISO-8859-1")
+
+    df = df[df["cnpj"].notna()].reset_index(drop=True)
+
+    if args.modo == "quantidade":
+        limite = int(args.quantidade)
+        df_sel = df.head(limite)
+
+    elif args.modo == "ticker":
+        df_sel = df[df["ticker"].str.upper() == args.ticker.upper()]
+
+    elif args.modo == "lista":
+        tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
+        df_sel = df[df["ticker"].str.upper().isin(tickers)]
+
+    elif args.modo == "faixa":
+        inicio, fim = map(int, args.faixa.split("-"))
+        df_sel = df.iloc[inicio-1:fim]
+
+    else:
+        df_sel = df.head(10)
+
+    print(f"\n🚀 Processando {len(df_sel)} empresas (modo: {args.modo})...\n")
+
+    for _, row in df_sel.iterrows():
+        try:
+            captura.processar_empresa(row["ticker"], row["cnpj"])
+        except Exception as e:
+            print(f"❌ Erro: {e}")
+
+    print(f"\n✅ Concluído! Dados em: balancos/")
