@@ -1,0 +1,64 @@
+name: Normalizar BPA e BPP (todas as pastas)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "25 3 * * *"
+  push:
+    paths:
+      - "balancos/**"
+      - "src/**"
+      - "padronizar_bpa_bpp.py"
+      - ".github/workflows/normalizar_bpa_bpp.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: balancos-bpa-bpp
+  cancel-in-progress: false
+
+jobs:
+  normalizar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # necessário para rebase funcionar bem
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy requests
+
+      - name: Run normalization (BPA/BPP)
+        run: |
+          export PYTHONPATH="$GITHUB_WORKSPACE"
+          python src/normalize_bpp_bpa.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "actions-user"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add -A balancos
+
+          if git diff --cached --quiet; then
+            echo "Sem mudanças para commit."
+            exit 0
+          fi
+
+          git commit -m "Normalização BPA/BPP padronizada (todas as pastas)"
+
+          # pega mudanças remotas e reaplica seu commit por cima (evita rejected/fetch first)
+          git pull --rebase origin main
+
+          # tenta push; se houver corrida com outro job, tenta mais uma vez
+          git push origin main || (git pull --rebase origin main && git push origin main)
