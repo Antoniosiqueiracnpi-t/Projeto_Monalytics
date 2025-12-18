@@ -21,12 +21,30 @@ def carregar_tickers_ordenados(csv_path: Path) -> List[str]:
     """
     Carrega os tickers na ordem exata em que aparecem no CSV de mapeamento.
     """
-    if not csv_path.exists():
-        print(f"[AVISO] Arquivo de mapeamento não encontrado: {csv_path}")
+    # Tenta múltiplas localizações possíveis
+    possible_paths = [
+        csv_path,  # Caminho passado como argumento
+        REPO_ROOT / csv_path.name,  # Raiz do repo
+        Path.cwd() / csv_path.name,  # Diretório atual
+        Path(__file__).parent.parent / csv_path.name,  # Pai do src/
+        Path(os.environ.get('GITHUB_WORKSPACE', '.')) / csv_path.name,  # GitHub Actions workspace
+    ]
+    
+    csv_file = None
+    for path in possible_paths:
+        if path.exists():
+            csv_file = path
+            break
+    
+    if csv_file is None:
+        print(f"[AVISO] Arquivo de mapeamento não encontrado")
+        print(f"        Procurado em:")
+        for p in possible_paths:
+            print(f"        - {p}")
         return []
     
     try:
-        df = pd.read_csv(csv_path, sep=';', encoding='utf-8')
+        df = pd.read_csv(csv_file, sep=';', encoding='utf-8')
         if 'ticker' not in df.columns:
             print("[AVISO] Coluna 'ticker' não encontrada no CSV de mapeamento")
             return []
@@ -41,6 +59,7 @@ def carregar_tickers_ordenados(csv_path: Path) -> List[str]:
                 seen.add(t)
                 ordered_tickers.append(t)
         
+        print(f"[INFO] Usando arquivo: {csv_file}")
         return ordered_tickers
     except Exception as e:
         print(f"[ERRO] Falha ao ler CSV de mapeamento: {e}")
@@ -140,7 +159,6 @@ def main():
     
     if not all_tickers:
         print("[ERRO] Nenhum ticker encontrado no arquivo de mapeamento")
-        print(f"       Verifique se existe: {mapping_file}")
         sys.exit(1)
     
     print(f"Total de tickers disponíveis: {len(all_tickers)}")
