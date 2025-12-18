@@ -11,9 +11,9 @@ sys.path.insert(0, str(REPO_ROOT))
 
 # tenta importar a padronização DFC (se existir)
 try:
-    from padronizar_dfc_trimestral_e_anual import padronizar_dfc_trimestral_e_anual  # type: ignore
+    from padronizar_dfc_mi import padronizar_dfc_mi
 except Exception:
-    padronizar_dfc_trimestral_e_anual = None  # type: ignore
+    padronizar_dfc_mi = None  # type: ignore
 
 REQUIRED_COLS = {"data_fim", "trimestre", "cd_conta", "ds_conta", "valor_mil"}
 
