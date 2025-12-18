@@ -125,8 +125,8 @@ def _pick_original_named_dfc(tdir: Path) -> Dict[str, Optional[Path]]:
 
 
 def main():
-    if padronizar_dfc_trimestral_e_anual is None:
-        print("[AVISO] padronizar_dfc_trimestral_e_anual não encontrado.")
+    if padronizar_dfc_mi is None:
+        print("[AVISO] padronizar_dfc_mi não encontrado.")
         print("        Crie o arquivo/função de DFC e rode novamente este normalize_dfc.py.")
         return
 
@@ -155,7 +155,7 @@ def main():
             dfc_anu = original["anual"] or fallback["anual"]
 
             if dfc_tri and dfc_anu:
-                out_dfc = padronizar_dfc_trimestral_e_anual(
+                out_dfc = padronizar_dfc_mi(
                     str(dfc_tri),
                     str(dfc_anu),
                     ticker=ticker,
