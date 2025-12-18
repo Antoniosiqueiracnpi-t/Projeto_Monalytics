@@ -4,6 +4,12 @@ CAPTURA DE BALANÇOS - VERSÃO GITHUB ACTIONS
 - ANUAL:     DFP (fechamento do exercício) -> *_anual.csv
 - DFC pelo método indireto: DFC_MI
 - Cache local de ZIP por ano
+
+MODOS DE SELEÇÃO:
+  --modo quantidade --quantidade 50       : Primeiras N empresas
+  --modo ticker --ticker PETR4            : Ticker único
+  --modo lista --lista "PETR4,VALE3"      : Lista de tickers
+  --modo faixa --faixa "1-50"             : Faixa de posições
 """
 
 import pandas as pd
@@ -12,6 +18,7 @@ from pathlib import Path
 from datetime import datetime
 import zipfile
 import re
+import argparse
 
 class CapturaBalancos:
 
@@ -241,27 +248,218 @@ class CapturaBalancos:
 
             print(f"  {demo}: trimestral(ITR) {tri_info} | anual(DFP) {anual_info}")
 
-    def processar_lote(self, limite=10):
+    # ------------------------- SELEÇÃO DE EMPRESAS -------------------------
+
+    def _carregar_mapeamento(self) -> pd.DataFrame:
+        """Carrega o arquivo de mapeamento de empresas"""
         try:
             df = pd.read_csv("mapeamento_final_b3_completo.csv", encoding="utf-8")
         except UnicodeDecodeError:
             df = pd.read_csv("mapeamento_final_b3_completo.csv", sep=";", encoding="ISO-8859-1")
+        
+        df = df[df["cnpj"].notna()].copy()
+        return df
 
-        df = df[df["cnpj"].notna()].head(limite)
+    def selecionar_por_quantidade(self, quantidade: int) -> pd.DataFrame:
+        """Seleciona as primeiras N empresas"""
+        df = self._carregar_mapeamento()
+        return df.head(quantidade)
 
-        print(f"\n🚀 Processando {len(df)} empresas...\n")
+    def selecionar_por_ticker(self, ticker: str) -> pd.DataFrame:
+        """Seleciona uma empresa específica pelo ticker"""
+        df = self._carregar_mapeamento()
+        ticker = ticker.upper().strip()
+        resultado = df[df["ticker"].str.upper() == ticker]
+        
+        if resultado.empty:
+            print(f"⚠️ Ticker '{ticker}' não encontrado no mapeamento!")
+            return pd.DataFrame()
+        
+        return resultado
 
-        for _, row in df.iterrows():
+    def selecionar_por_lista(self, lista_tickers: str) -> pd.DataFrame:
+        """Seleciona múltiplas empresas por lista de tickers"""
+        df = self._carregar_mapeamento()
+        
+        # Limpa e separa os tickers
+        tickers = [t.upper().strip() for t in lista_tickers.split(",") if t.strip()]
+        
+        if not tickers:
+            print("⚠️ Nenhum ticker válido na lista!")
+            return pd.DataFrame()
+        
+        # Filtra empresas que estão na lista
+        resultado = df[df["ticker"].str.upper().isin(tickers)]
+        
+        # Verifica quais não foram encontrados
+        encontrados = set(resultado["ticker"].str.upper())
+        nao_encontrados = set(tickers) - encontrados
+        
+        if nao_encontrados:
+            print(f"⚠️ Tickers não encontrados: {', '.join(sorted(nao_encontrados))}")
+        
+        return resultado
+
+    def selecionar_por_faixa(self, faixa: str) -> pd.DataFrame:
+        """Seleciona empresas por faixa de posições (ex: '1-50', '51-150')"""
+        df = self._carregar_mapeamento()
+        
+        try:
+            # Parse da faixa "inicio-fim"
+            partes = faixa.split("-")
+            if len(partes) != 2:
+                raise ValueError("Formato inválido. Use: inicio-fim (ex: 1-50)")
+            
+            inicio = int(partes[0].strip())
+            fim = int(partes[1].strip())
+            
+            if inicio < 1:
+                raise ValueError("Posição inicial deve ser >= 1")
+            if fim < inicio:
+                raise ValueError("Posição final deve ser >= posição inicial")
+            
+            # Converte para índices Python (começam em 0)
+            idx_inicio = inicio - 1
+            idx_fim = fim
+            
+            total = len(df)
+            if idx_inicio >= total:
+                print(f"⚠️ Faixa começa além do total de empresas ({total})")
+                return pd.DataFrame()
+            
+            # Limita ao total disponível
+            idx_fim = min(idx_fim, total)
+            
+            resultado = df.iloc[idx_inicio:idx_fim]
+            print(f"📊 Selecionando empresas {inicio} a {idx_fim} (total: {len(resultado)})")
+            
+            return resultado
+            
+        except ValueError as e:
+            print(f"❌ Erro ao processar faixa '{faixa}': {e}")
+            return pd.DataFrame()
+
+    def processar_lote(self, modo: str = "quantidade", **kwargs):
+        """
+        Processa lote de empresas conforme o modo selecionado
+        
+        Modos disponíveis:
+        - quantidade: kwargs={'quantidade': 10}
+        - ticker: kwargs={'ticker': 'PETR4'}
+        - lista: kwargs={'lista': 'PETR4,VALE3,ITUB4'}
+        - faixa: kwargs={'faixa': '1-50'}
+        """
+        print(f"\n{'='*60}")
+        print(f"🔍 MODO DE SELEÇÃO: {modo.upper()}")
+        print(f"{'='*60}")
+        
+        # Seleciona empresas conforme o modo
+        if modo == "quantidade":
+            quantidade = int(kwargs.get("quantidade", 10))
+            df_empresas = self.selecionar_por_quantidade(quantidade)
+            
+        elif modo == "ticker":
+            ticker = kwargs.get("ticker", "")
+            if not ticker:
+                print("❌ Erro: Ticker não especificado!")
+                return
+            df_empresas = self.selecionar_por_ticker(ticker)
+            
+        elif modo == "lista":
+            lista = kwargs.get("lista", "")
+            if not lista:
+                print("❌ Erro: Lista de tickers não especificada!")
+                return
+            df_empresas = self.selecionar_por_lista(lista)
+            
+        elif modo == "faixa":
+            faixa = kwargs.get("faixa", "1-50")
+            df_empresas = self.selecionar_por_faixa(faixa)
+            
+        else:
+            print(f"❌ Modo '{modo}' não reconhecido!")
+            print("Modos válidos: quantidade, ticker, lista, faixa")
+            return
+        
+        # Verifica se há empresas para processar
+        if df_empresas.empty:
+            print("\n❌ Nenhuma empresa selecionada para processar!")
+            return
+        
+        print(f"\n🚀 Processando {len(df_empresas)} empresa(s)...\n")
+        
+        # Processa cada empresa
+        sucesso = 0
+        erros = 0
+        
+        for idx, row in df_empresas.iterrows():
             try:
                 self.processar_empresa(row["ticker"], row["cnpj"])
+                sucesso += 1
             except Exception as e:
-                print(f"❌ Erro: {e}")
+                print(f"❌ Erro em {row['ticker']}: {e}")
+                erros += 1
+        
+        print(f"\n{'='*60}")
+        print(f"✅ Processamento concluído!")
+        print(f"   Sucesso: {sucesso} | Erros: {erros}")
+        print(f"   Dados salvos em: balancos/")
+        print(f"{'='*60}\n")
 
-        print(f"\n✅ Concluído! Dados em: balancos/")
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Captura de Balanços da CVM com múltiplos modos de seleção"
+    )
+    
+    parser.add_argument(
+        "--modo",
+        choices=["quantidade", "ticker", "lista", "faixa"],
+        default="quantidade",
+        help="Modo de seleção de empresas"
+    )
+    
+    parser.add_argument(
+        "--quantidade",
+        type=int,
+        default=10,
+        help="Quantidade de empresas (modo: quantidade)"
+    )
+    
+    parser.add_argument(
+        "--ticker",
+        type=str,
+        default="",
+        help="Ticker único (modo: ticker)"
+    )
+    
+    parser.add_argument(
+        "--lista",
+        type=str,
+        default="",
+        help="Lista de tickers separados por vírgula (modo: lista)"
+    )
+    
+    parser.add_argument(
+        "--faixa",
+        type=str,
+        default="1-50",
+        help="Faixa de posições no formato 'inicio-fim' (modo: faixa)"
+    )
+    
+    args = parser.parse_args()
+    
+    # Cria instância e processa
+    captura = CapturaBalancos()
+    
+    captura.processar_lote(
+        modo=args.modo,
+        quantidade=args.quantidade,
+        ticker=args.ticker,
+        lista=args.lista,
+        faixa=args.faixa
+    )
 
 
 if __name__ == "__main__":
-    import sys
-    captura = CapturaBalancos()
-    limite = int(sys.argv[1]) if len(sys.argv) > 1 else 10
-    captura.processar_lote(limite=limite)
+    main()
