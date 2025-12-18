@@ -11,6 +11,7 @@ on:
       - "src/padronizar_dfc_mi.py"
       - ".github/workflows/normalizar_dfc.yml"
 
+
 permissions:
   contents: write
 
