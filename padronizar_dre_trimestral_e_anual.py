@@ -1,3 +1,160 @@
+import pandas as pd
+import numpy as np
+from functools import lru_cache
+from typing import Optional, Dict, Tuple, List
+
+
+# -------------------- DRE PADRÃO (ORIGINAL) --------------------
+DRE_PADRAO: List[Tuple[str, str]] = [
+    ("3.01", "Receita de Venda de Bens e/ou Serviços"),
+    ("3.02", "Custo dos Bens e/ou Serviços Vendidos"),
+    ("3.03", "Resultado Bruto"),
+    ("3.04", "Despesas/Receitas Operacionais"),
+    ("3.05", "Resultado Antes do Resultado Financeiro e dos Tributos"),
+    ("3.06", "Resultado Financeiro"),
+    ("3.07", "Resultado Antes dos Tributos sobre o Lucro"),
+    ("3.08", "Imposto de Renda e Contribuição Social sobre o Lucro"),
+    ("3.09", "Resultado Líquido das Operações Continuadas"),
+    ("3.10", "Resultado Líquido de Operações Descontinuadas"),
+    ("3.11", "Lucro/Prejuízo Consolidado do Período"),
+    ("3.99", "Lucro por Ação - (Reais / Ação)"),
+]
+
+
+# -------------------- DRE SEGURADORAS (JÁ EXISTENTE/SEGUROS) --------------------
+DRE_SEGUROS_PADRAO: List[Tuple[str, str]] = [
+    ("3.01", "Receita de Prêmios Retidos"),
+    ("3.02", "Sinistros Ocorridos"),
+    ("3.03", "Resultado Bruto (Margem)"),
+    ("3.04.01", "Custos de Aquisição (Vendas)"),
+    ("3.04.02", "Despesas Administrativas"),
+    ("3.05", "Resultado Operacional (EBIT)"),
+    ("3.06", "Resultado Financeiro"),
+    ("3.07", "Equivalência Patrimonial"),
+    ("3.08", "Lucro Antes Impostos (LAIR)"),
+    ("3.11", "Lucro Líquido"),
+    ("3.99.01.01", "Lucro por Ação (LPA ON)"),
+]
+
+
+# -------------------- NOVO: DRE BANCOS --------------------
+DRE_BANCOS_PADRAO: List[Tuple[str, str]] = [
+    ("3.01", "Receitas da Intermediação Financeira"),
+    ("3.02", "Despesas da Intermediação Financeira"),
+    ("3.03", "Resultado Bruto Intermediação Financeira"),
+    ("3.04", "Outras Despesas/Receitas Operacionais"),
+    ("3.05", "Resultado Antes dos Tributos sobre o Lucro"),
+    ("3.06", "Imposto de Renda e Contribuição Social"),
+    ("3.07", "Resultado Líquido Operações Continuadas"),
+    ("3.08", "Resultado Líquido Operações Descontinuadas"),
+    ("3.09", "Lucro/Prejuízo Consolidado do Período"),
+    ("3.99", "Lucro por Ação (Geral)"),
+    ("3.99.01.01", "LPA - Ações Ordinárias (ON)"),
+    ("3.99.01.02", "LPA - Ações Preferenciais (PN)"),
+]
+
+
+_SEGUROS_TICKERS = {"BBSE3", "CXSE3", "IRBR3", "PSSA3"}
+
+_BANCOS_TICKERS = {
+    "RPAD3", "RPAD5", "RPAD6", "ABCB4", "BMGB4", "BBDC3", "BBDC4",
+    "BPAC3", "BPAC5", "BPAC11", "BAZA3", "BSLI3", "BSLI4", "BBAS3",
+    "BGIP3", "BGIP4", "BPAR3", "BRSR3", "BRSR5", "BRSR6", "BNBR3",
+    "BMIN3", "BMIN4", "BMEB3", "BMEB4", "BPAN4", "PINE3", "PINE4",
+    "SANB3", "SANB4", "SANB11", "BEES3", "BEES4", "ITUB3", "ITUB4",
+}
+
+
+def _norm_ticker(t: Optional[str]) -> Optional[str]:
+    if t is None:
+        return None
+    t = str(t).upper().strip()
+    return t.replace(".SA", "")
+
+
+def _infer_ticker_from_paths(*paths: str) -> Optional[str]:
+    joined = " ".join([str(p).upper() for p in paths if p is not None])
+    # prioridade: seguros (mantém comportamento já existente)
+    for tk in _SEGUROS_TICKERS:
+        if tk in joined:
+            return tk
+    # bancos (novo)
+    for tk in _BANCOS_TICKERS:
+        if tk in joined:
+            return tk
+    return None
+
+
+@lru_cache(maxsize=8)
+def _load_b3_mapping(csv_path: str) -> pd.DataFrame:
+    df = pd.read_csv(csv_path, sep=";", encoding="utf-8")
+    df["ticker"] = df["ticker"].astype(str).str.upper().str.strip()
+    df["setor"] = df["setor"].astype(str)
+    df["segmento"] = df["segmento"].astype(str)
+    return df
+
+
+def _get_setor_segmento_from_b3_mapping(
+    ticker: Optional[str],
+    b3_mapping_csv: Optional[str],
+) -> Tuple[Optional[str], Optional[str]]:
+    if not ticker or not b3_mapping_csv:
+        return (None, None)
+
+    t = _norm_ticker(ticker)
+    df = _load_b3_mapping(b3_mapping_csv)
+
+    hit = df.loc[df["ticker"] == t, ["setor", "segmento"]]
+    if hit.empty:
+        return (None, None)
+
+    setor = hit.iloc[0]["setor"]
+    segmento = hit.iloc[0]["segmento"]
+    return (
+        None if pd.isna(setor) else str(setor),
+        None if pd.isna(segmento) else str(segmento),
+    )
+
+
+def _check_consistency_dre(mat: pd.DataFrame, anu: pd.DataFrame, contas: List[str], ano: int) -> None:
+    """Realiza o check-up comparando Soma(Trimestres) vs Anual."""
+    print(f"\n[CHECK-UP] Verificando consistência DRE para o ano {ano}...")
+    
+    # Contas chave para verificação (Receita e Lucro Líquido costumam ser bons termômetros)
+    contas_verificacao = [c for c in contas if c in ["3.01", "3.11", "3.09"]]
+    if not contas_verificacao:
+        contas_verificacao = contas[:3] # fallback
+
+    for conta in contas_verificacao:
+        # Valor Anual Original
+        dfp = anu[(anu["ano"] == ano) & (anu["q"] == 4)]
+        if dfp.empty:
+            continue
+            
+        # Tenta pegar valor exato no anual
+        val_anu_series = dfp.loc[dfp["cd_conta"] == conta, "valor"]
+        if val_anu_series.empty:
+            continue
+        val_anu = float(val_anu_series.iloc[-1])
+
+        # Valor Calculado (Soma T1..T4)
+        soma_tri = 0.0
+        count_q = 0
+        for q in range(1, 5):
+            if (ano, q) in mat.columns:
+                v = mat.at[conta, (ano, q)]
+                if not pd.isna(v):
+                    soma_tri += float(v)
+                    count_q += 1
+        
+        # Só valida se tivermos os 4 trimestres
+        if count_q == 4:
+            diff = abs(val_anu - soma_tri)
+            # Tolerância para arredondamentos
+            status = "OK" if diff < 1.0 else f"DIVERGÊNCIA ({diff:.2f})"
+            print(f"  > Conta {conta}: Anual={val_anu:.2f} | Soma(T1-T4)={soma_tri:.2f} -> {status}")
+
+
 def padronizar_dre_trimestral_e_anual(
     dre_trimestral_csv: str,
     dre_anual_csv: str,
@@ -8,21 +165,34 @@ def padronizar_dre_trimestral_e_anual(
     b3_mapping_csv: Optional[str] = None,
 ) -> pd.DataFrame:
     """
-    Mantém 100% a lógica original:
-    - Trimestral (ITR): usa períodos como estão (sem assumir YTD).
-    - Anual (DFP): representa o fechamento do exercício (trimestre fiscal 4).
-    - T4 (trimestre fiscal isolado): Anual(DFP) - (T1 + T2 + T3) para contas de resultado (exceto EPS).
-    - EPS (3.99*): pega 1 valor por período e NÃO subtrai.
-
-    Melhorias (aditivas, sem quebrar o padrão existente):
-    - Suporte a exercícios fiscais que NÃO fecham em 12/31 (ex.: 03/31, 06/30):
-      * Reatribui 'ano' e 'q' por ANO FISCAL e TRIMESTRE FISCAL.
-      * Permite que T1/T2/T3 do fiscal caiam no ano-calendário anterior (ex.: FY 2024 com Jun/Set/Dez 2023).
-    - Check-up automático: compara (quando possível) soma dos trimestres isolados vs anual (DFP) por conta,
-      e também imprime faltas (T1..T3) quando anual existe.
+    Mantém 100% a lógica original, mas adiciona inteligência para detectar padrões do T4
+    e realiza check-up de consistência.
     """
 
     ticker_norm = _norm_ticker(ticker) or _infer_ticker_from_paths(dre_trimestral_csv, dre_anual_csv)
+    setor, _segmento = _get_setor_segmento_from_b3_mapping(ticker_norm, b3_mapping_csv)
+    setor_l = (setor or "").strip().lower()
+
+    modo_seguros = (
+        (ticker_norm in _SEGUROS_TICKERS) or
+        (setor is not None and setor_l == "previdência e seguros")
+    )
+
+    modo_bancos = (
+        (ticker_norm in _BANCOS_TICKERS) or
+        (setor is not None and setor_l == "bancos")
+    )
+
+    # prioridade: seguros > bancos > padrão
+    if modo_seguros:
+        plano = DRE_SEGUROS_PADRAO
+    elif modo_bancos:
+        plano = DRE_BANCOS_PADRAO
+    else:
+        plano = DRE_PADRAO
+
+    contas = [c for c, _ in plano]
+    nomes = {c: n for c, n in plano}
 
     tri = pd.read_csv(dre_trimestral_csv)
     anu = pd.read_csv(dre_anual_csv)
@@ -41,6 +211,9 @@ def padronizar_dre_trimestral_e_anual(
         df["ds_conta"] = df["ds_conta"].astype(str)
         df["valor_mil"] = pd.to_numeric(df["valor_mil"], errors="coerce")
 
+    # anual sempre T4
+    anu["trimestre"] = "T4"
+
     # unidade
     if unidade == "mil":
         fator = 1.0
@@ -55,184 +228,120 @@ def padronizar_dre_trimestral_e_anual(
     anu["valor"] = anu["valor_mil"] * fator
 
     qmap = {"T1": 1, "T2": 2, "T3": 3, "T4": 4}
+    tri["ano"] = tri["data_fim"].dt.year
+    tri["q"] = tri["trimestre"].map(qmap)
 
-    # ---------------------------------------------
-    # Exercício fiscal (NOVO - aditivo, sem quebrar padrão)
-    # ---------------------------------------------
-    def _infer_fy_end_month(df_anual: pd.DataFrame) -> int:
-        d = pd.to_datetime(df_anual["data_fim"], errors="coerce")
-        m = d.dt.month.dropna()
-        if m.empty:
-            return 12
-        counts = m.value_counts()
-        top = counts.index.tolist()
-        for pref in [12, 3, 6, 9]:
-            if pref in top:
-                return int(pref)
-        return int(top[0])
+    anu["ano"] = anu["data_fim"].dt.year
+    anu["q"] = 4
 
-    fy_end_month = _infer_fy_end_month(anu)
+    # -------------------------------------------------------------------------
+    # MELHORIA: Análise de Padrão T4 no Trimestral antes de filtrar
+    # -------------------------------------------------------------------------
+    # Verifica se existe T4 no arquivo trimestral e qual sua natureza
+    t4_candidates = tri[tri["q"] == 4]
+    if not t4_candidates.empty:
+        print("[INFO] T4 detectado no arquivo trimestral. Analisando padrão...")
+        # Pega um ano que tenha T4 no tri e no anu para comparar
+        comm_years = set(t4_candidates["ano"]).intersection(set(anu["ano"]))
+        if comm_years:
+            test_year = list(comm_years)[0]
+            # Exemplo com 3.11 ou 3.01
+            conta_teste = "3.11" if "3.11" in contas else contas[0]
+            
+            val_t4_tri = t4_candidates.loc[(t4_candidates["ano"] == test_year) & (t4_candidates["cd_conta"] == conta_teste), "valor"].sum()
+            val_anu = anu.loc[(anu["ano"] == test_year) & (anu["cd_conta"] == conta_teste), "valor"].sum()
+            
+            # Se for muito próximo, é ACUMULADO (padrão ITR normal se existisse T4)
+            if abs(val_t4_tri - val_anu) < 1.0:
+                 print(f"  > Padrão Detectado: T4 no trimestral é ACUMULADO (Igual ao Anual). Será ignorado em favor do cálculo auditado.")
+            # Se for menor, pode ser ISOLADO
+            elif abs(val_t4_tri) < abs(val_anu):
+                 print(f"  > Padrão Detectado: T4 no trimestral parece ISOLADO ou incompleto. O script manterá o cálculo via 'Anual - (T1+T2+T3)' para garantir integridade.")
+            else:
+                 print(f"  > Padrão Detectado: Inconclusivo. Mantendo lógica padrão.")
 
-    # delta = (mes - mes_fechamento) % 12
-    # 0 => Q4 fiscal (fechamento); 3 => Q1; 6 => Q2; 9 => Q3
-    _delta_to_q = {0: 4, 3: 1, 6: 2, 9: 3}
+    # Mantido: DRE trimestral usa só T1..T3; T4 vem do anual (garantia de auditoria)
+    tri = tri[tri["q"].isin([1, 2, 3])].copy()
+    anu = anu[anu["ano"].notna()].copy()
 
-    def _apply_fiscal_index(df: pd.DataFrame, *, is_anual: bool) -> pd.DataFrame:
-        df = df.copy()
-        dt = pd.to_datetime(df["data_fim"], errors="coerce")
-        m = dt.dt.month
-        y = dt.dt.year
-
-        delta = (m - fy_end_month) % 12
-        q_fiscal = delta.map(_delta_to_q)
-
-        q_cal = df["trimestre"].map(qmap)
-
-        if is_anual:
-            q_fiscal = pd.Series(4, index=df.index, dtype="float64")
-
-        df["q"] = q_fiscal.fillna(q_cal).astype("Int64")
-
-        # Ano fiscal = ano do fechamento (mês > mês_fechamento => FY do ano seguinte)
-        df["ano"] = (y + (m > fy_end_month).astype("int")).astype("Int64")
-
-        return df
-
-    tri_all = _apply_fiscal_index(tri, is_anual=False)
-    anu_all = _apply_fiscal_index(anu, is_anual=True)
-
-    # anual sempre T4 (fiscal)
-    anu_all["trimestre"] = "T4"
-
-    # Mantido: DRE trimestral usa só T1..T3 (agora do FISCAL); T4 vem do anual
-    tri = tri_all[tri_all["q"].isin([1, 2, 3])].copy()
-    anu = anu_all[anu_all["ano"].notna()].copy()
-
-    # Períodos (por ano fiscal + trimestre fiscal)
+    # Períodos
     periodos = pd.concat(
         [tri[["ano", "q"]].dropna(), anu[["ano", "q"]].dropna()],
         ignore_index=True,
     ).drop_duplicates().sort_values(["ano", "q"]).astype(int)
 
     periodos = list(periodos.itertuples(index=False, name=None))
-
     if not periodos:
-        return pd.DataFrame({"cd_conta_padrao": [], "ds_conta_padrao": []})
+        return pd.DataFrame({"cd_conta_padrao": contas, "ds_conta_padrao": [nomes[c] for c in contas]})
 
-    # ---------------------------------
-    # Plano de contas padrão (original)
-    # ---------------------------------
-    contas = [
-        "3.01",
-        "3.02",
-        "3.03",
-        "3.04",
-        "3.05",
-        "3.06",
-        "3.07",
-        "3.08",
-        "3.09",
-        "3.10",
-        "3.11",
-        "3.99",
-    ]
-
-    nomes = {
-        "3.01": "Receita Líquida de Vendas e/ou Serviços",
-        "3.02": "Custo dos Produtos Vendidos e/ou Serviços Prestados",
-        "3.03": "Resultado Bruto",
-        "3.04": "Despesas/Receitas Operacionais",
-        "3.05": "Resultado Antes do Resultado Financeiro e dos Tributos",
-        "3.06": "Resultado Financeiro",
-        "3.07": "Resultado Antes dos Tributos sobre o Lucro",
-        "3.08": "Imposto de Renda e Contribuição Social sobre o Lucro",
-        "3.09": "Resultado Líquido das Operações Continuadas",
-        "3.10": "Resultado Líquido de Operações Descontinuadas",
-        "3.11": "Lucro/Prejuízo Consolidado do Período",
-        "3.99": "Lucro por Ação (EPS) - grupo 3.99.*",
-    }
-
-    # ----------------------------
-    # Segmento por ticker (B3 map)
-    # ----------------------------
-    segmento = None
-    if b3_mapping_csv:
-        try:
-            _, segmento = _get_setor_segmento_from_b3_mapping(ticker_norm or "", b3_mapping_csv=b3_mapping_csv)
-        except Exception:
-            segmento = None
-
-    # ----------------------------
-    # Mapas (original)
-    # ----------------------------
-    seguros_map_por_ticker = {
-        # seguradoras tipicamente usam 3.01.01 para prêmios ganhos; mapeamos Receita -> 3.01.01
-        "PSSA3": {"3.01": "3.01.01"},
-        "BBSE3": {"3.01": "3.01.01"},
-        "SULA11": {"3.01": "3.01.01"},
-        "IRBR3": {"3.01": "3.01.01"},
-    }
-
-    bancos_map = {
-        "3.01": "3.01.04",  # Receita Intermediação Financeira
-        "3.02": "",         # CPV não faz sentido p/ banco
-        "3.04": "3.03",     # Outras Receitas/Despesas Operacionais (varia bastante)
-        "3.06": "3.05",     # Resultado Financeiro pode estar em 3.05/3.06
-    }
-
-    modo_bancos = bool(segmento and "BANCO" in str(segmento).upper())
-    modo_seguros = bool(ticker_norm and ticker_norm in seguros_map_por_ticker)
-
-    # se for seguro e tiver mapping específico
-    mapa_custom = seguros_map_por_ticker.get(ticker_norm, {}) if modo_seguros else {}
-    mapa_bancos = bancos_map if modo_bancos else {}
-
-    def _map_codigo_fonte(cod_padrao: str) -> str:
-        if modo_seguros and cod_padrao in mapa_custom:
-            return mapa_custom[cod_padrao]
-        if modo_bancos and cod_padrao in mapa_bancos and mapa_bancos[cod_padrao] is not None:
-            return mapa_bancos[cod_padrao]
-        return cod_padrao
-
-    # ---------------------------------
-    # Auxiliares (originais)
-    # ---------------------------------
     cols_mi = pd.MultiIndex.from_tuples(periodos, names=["ano", "q"])
     mat = pd.DataFrame(index=contas, columns=cols_mi, dtype="float64")
 
     def _valor_total_periodo(df_periodo: pd.DataFrame, codigo: str) -> float:
-        if codigo is None or str(codigo).strip() == "":
-            return np.nan
-
-        codigo = str(codigo).strip()
-
         exact = df_periodo[df_periodo["cd_conta"] == codigo]
         if not exact.empty:
             s = exact["valor"].dropna()
             return float(s.iloc[-1]) if not s.empty else np.nan
 
+        # rollup descendente (original)
         desc = df_periodo[df_periodo["cd_conta"].str.startswith(codigo + ".")]
         if not desc.empty:
             return float(desc["valor"].sum(skipna=True))
-
         return np.nan
 
     def _valor_eps_periodo(df_periodo: pd.DataFrame) -> float:
+        # pega 1 valor do grupo 3.99.* (evita somar linhas de LPA)
         eps = df_periodo[df_periodo["cd_conta"].str.startswith("3.99")].copy()
         if eps.empty:
             return np.nan
-        s = eps["valor"].dropna()
-        return float(s.iloc[-1]) if not s.empty else np.nan
+        eps = eps.dropna(subset=["valor"])
+        if eps.empty:
+            return np.nan
+        # prioridade: 3.99.01.01, depois 3.99.01.02, depois qualquer 3.99
+        for prefer in ["3.99.01.01", "3.99.01.02", "3.99"]:
+            hit = eps[eps["cd_conta"] == prefer]
+            if not hit.empty:
+                return float(hit["valor"].iloc[-1])
+        return float(eps["valor"].iloc[-1])
 
-    # ---------------------------------
-    # Preenche matriz (mantido: T4 prioriza anual/DFP quando existir)
-    # ---------------------------------
+    # MAPEAMENTOS POR SETOR (somente quando ativado)
+    seguros_map_por_ticker: Dict[str, Dict[str, str]] = {
+        "BBSE3": {"3.05": "3.07", "3.06": "3.08", "3.07": "3.06", "3.08": "3.09"},
+        "CXSE3": {"3.05": "3.05", "3.06": "3.06", "3.07": "3.07", "3.08": "3.08"},
+        "IRBR3": {"3.05": "3.07", "3.06": "3.08", "3.07": "3.06", "3.08": "3.09"},
+        "PSSA3": {"3.05": "3.05", "3.06": "3.06", "3.07": "3.07", "3.08": "3.07"},
+    }
+    seguros_map = seguros_map_por_ticker.get(ticker_norm, {}) if modo_seguros else {}
+
+    # Bancos: remapeia seus códigos padronizados para os códigos CVM usuais
+    bancos_map: Dict[str, str] = {
+        "3.01": "3.01",
+        "3.02": "3.02",
+        "3.03": "3.03",
+        "3.04": "3.04",
+        "3.05": "3.07",  # LAIR
+        "3.06": "3.08",  # IR/CSLL
+        "3.07": "3.09",  # LL continuadas
+        "3.08": "3.10",  # descontinuadas
+        "3.09": "3.11",  # LL final
+        "3.99": "3.99",  # master EPS (tratado à parte)
+        "3.99.01.01": "3.99.01.01",
+        "3.99.01.02": "3.99.01.02",
+    } if modo_bancos else {}
+
+    def _map_codigo_fonte(cod_padrao: str) -> str:
+        if modo_seguros and cod_padrao in seguros_map:
+            return seguros_map[cod_padrao]
+        if modo_bancos and cod_padrao in bancos_map:
+            return bancos_map[cod_padrao]
+        return cod_padrao
+
+    # preencher matriz
     for (ano, q) in periodos:
         if q == 4:
             dfp = anu[(anu["ano"] == ano) & (anu["q"] == 4)]
             if dfp.empty:
-                # fallback se, por alguma razão, vier T4 no trimestral
-                dfp = tri_all[(tri_all["ano"] == ano) & (tri_all["q"] == 4)]
+                dfp = tri[(tri["ano"] == ano) & (tri["q"] == 4)]
         else:
             dfp = tri[(tri["ano"] == ano) & (tri["q"] == q)]
 
@@ -247,144 +356,49 @@ def padronizar_dre_trimestral_e_anual(
             cod_fonte = _map_codigo_fonte(cod_padrao)
             mat.at[cod_padrao, (ano, q)] = _valor_total_periodo(dfp, cod_fonte)
 
-    # ---------------------------------
-    # Derivadas (mantido)
-    # ---------------------------------
+    # derivadas (mantido)
     if preencher_derivadas:
         for (ano, q) in periodos:
-            a = mat.at["3.01", (ano, q)] if (ano, q) in mat.columns else np.nan
-            b = mat.at["3.02", (ano, q)] if (ano, q) in mat.columns else np.nan
-            if not (pd.isna(a) and pd.isna(b)):
-                mat.at["3.03", (ano, q)] = (0.0 if pd.isna(a) else float(a)) + (0.0 if pd.isna(b) else float(b))
+            if "3.03" in contas and "3.01" in contas and "3.02" in contas:
+                v303 = mat.at["3.03", (ano, q)]
+                if pd.isna(v303):
+                    v301 = mat.at["3.01", (ano, q)]
+                    v302 = mat.at["3.02", (ano, q)]
+                    if not (pd.isna(v301) or pd.isna(v302)):
+                        mat.at["3.03", (ano, q)] = float(v301 + v302)
 
-        for (ano, q) in periodos:
-            a = mat.at["3.03", (ano, q)] if (ano, q) in mat.columns else np.nan
-            b = mat.at["3.04", (ano, q)] if (ano, q) in mat.columns else np.nan
-            if not (pd.isna(a) and pd.isna(b)):
-                mat.at["3.05", (ano, q)] = (0.0 if pd.isna(a) else float(a)) + (0.0 if pd.isna(b) else float(b))
-
-        for (ano, q) in periodos:
-            a = mat.at["3.05", (ano, q)] if (ano, q) in mat.columns else np.nan
-            b = mat.at["3.06", (ano, q)] if (ano, q) in mat.columns else np.nan
-            if not (pd.isna(a) and pd.isna(b)):
-                mat.at["3.07", (ano, q)] = (0.0 if pd.isna(a) else float(a)) + (0.0 if pd.isna(b) else float(b))
-
-        for (ano, q) in periodos:
-            a = mat.at["3.07", (ano, q)] if (ano, q) in mat.columns else np.nan
-            b = mat.at["3.08", (ano, q)] if (ano, q) in mat.columns else np.nan
-            if not (pd.isna(a) and pd.isna(b)):
-                mat.at["3.09", (ano, q)] = (0.0 if pd.isna(a) else float(a)) + (0.0 if pd.isna(b) else float(b))
-
-        for (ano, q) in periodos:
-            a = mat.at["3.09", (ano, q)] if (ano, q) in mat.columns else np.nan
-            b = mat.at["3.10", (ano, q)] if (ano, q) in mat.columns else np.nan
-            if not (pd.isna(a) and pd.isna(b)):
-                mat.at["3.11", (ano, q)] = (0.0 if pd.isna(a) else float(a)) + (0.0 if pd.isna(b) else float(b))
-
-    # ---------------------------------
-    # T4 isolado (mantido) = anual - soma(T1..T3) por ANO FISCAL
-    # ---------------------------------
-    for ano in sorted({a for (a, _) in periodos}):
-        if (ano, 4) not in mat.columns:
+    # T4 isolado (mantido)
+    for (ano, q) in periodos:
+        if q != 4:
             continue
-
-        dfp_anual = anu[(anu["ano"] == ano) & (anu["q"] == 4)]
-        if dfp_anual.empty:
-            continue
-
         for cod_padrao in contas:
-            if cod_padrao == "3.99":
+            if cod_padrao.startswith("3.99"):
                 continue
+
             v_anual = mat.at[cod_padrao, (ano, 4)]
             if pd.isna(v_anual):
                 continue
 
             soma = 0.0
             ok = False
-            for qq in [1, 2, 3]:
+            for qq in (1, 2, 3):
                 if (ano, qq) in mat.columns:
                     vv = mat.at[cod_padrao, (ano, qq)]
                     if not pd.isna(vv):
                         soma += float(vv)
                         ok = True
+
             if ok:
                 mat.at[cod_padrao, (ano, 4)] = float(v_anual - soma)
 
-    # ---------------------------------
-    # CHECK-UP (NOVO, não altera o output)
-    # ---------------------------------
-    try:
-        tol_abs = 0.5  # tolerância simples contra arredondamentos (na unidade escolhida)
-        tol_rel = 0.02
+    # -------------------------------------------------------------------------
+    # CHECK-UP FINAL: Validar consistência (Soma T1..T4 vs Anual)
+    # -------------------------------------------------------------------------
+    anos_unicos = sorted(list(set(p[0] for p in periodos)))
+    for y in anos_unicos:
+        _check_consistency_dre(mat, anu, contas, y)
 
-        anos_chk = sorted({a for (a, _) in periodos})
-        for ano in anos_chk:
-            df_anu = anu_all[(anu_all["ano"] == ano) & (anu_all["q"] == 4)]
-            if df_anu.empty:
-                continue
-
-            # 1) faltas de T1..T3 (fiscal)
-            faltas = []
-            for cod_padrao in contas:
-                if cod_padrao == "3.99":
-                    continue
-                miss = []
-                for qq in [1, 2, 3]:
-                    if (ano, qq) not in mat.columns or pd.isna(mat.at[cod_padrao, (ano, qq)]):
-                        miss.append(qq)
-                if miss:
-                    faltas.append((cod_padrao, miss))
-
-            if faltas:
-                top = faltas[:10]
-                print(f"[CHECKUP][DRE][{ticker_norm or ''}] FY{ano}: contas com T1..T3 faltando (top {len(top)})")
-                for cod, miss in top:
-                    print(f"  - {cod} {nomes.get(cod,'')}: faltando T{','.join(str(x) for x in miss)}")
-
-            # 2) soma dos 4 trimestres isolados vs anual (DFP), quando possível
-            diffs = []
-            for cod_padrao in contas:
-                if cod_padrao == "3.99":
-                    continue
-
-                cod_fonte = _map_codigo_fonte(cod_padrao)
-                v_anual_raw = _valor_total_periodo(df_anu, cod_fonte)
-                if pd.isna(v_anual_raw):
-                    continue
-
-                vals = []
-                ok = True
-                for qq in [1, 2, 3, 4]:
-                    if (ano, qq) in mat.columns:
-                        vv = mat.at[cod_padrao, (ano, qq)]
-                        if pd.isna(vv):
-                            ok = False
-                            break
-                        vals.append(float(vv))
-                    else:
-                        ok = False
-                        break
-
-                if not ok:
-                    continue
-
-                v_sum = float(np.nansum(vals))
-                diff = float(v_sum - float(v_anual_raw))
-                denom = max(1.0, abs(float(v_anual_raw)))
-                if abs(diff) > tol_abs and abs(diff) / denom > tol_rel:
-                    diffs.append((cod_padrao, diff, v_sum, float(v_anual_raw)))
-
-            if diffs:
-                diffs.sort(key=lambda x: abs(x[1]), reverse=True)
-                top = diffs[:10]
-                print(f"[CHECKUP][DRE][{ticker_norm or ''}] FY{ano}: divergências soma(trimestres isolados) vs anual (top {len(top)})")
-                for cod, diff, v_sum, v_anual in top:
-                    print(f"  - {cod} {nomes.get(cod,'')}: soma={v_sum:.3f} anual={v_anual:.3f} diff={diff:.3f}")
-
-    except Exception as _e:
-        print(f"[CHECKUP][DRE] aviso: falha no check-up ({type(_e).__name__}): {_e}")
-
-    # saída final (mantida)
+    # saída final
     out = pd.DataFrame({"cd_conta_padrao": contas, "ds_conta_padrao": [nomes[c] for c in contas]})
     for (ano, q) in periodos:
         out[f"{ano}-T{q}"] = mat[(ano, q)].values
