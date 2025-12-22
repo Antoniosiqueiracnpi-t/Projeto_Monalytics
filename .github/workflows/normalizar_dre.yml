@@ -4,14 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       modo:
-        description: 'Modo de seleção (OBRIGATÓRIO)'
+        description: 'Modo de seleção'
         required: true
+        default: 'quantidade'
         type: choice
         options:
+          - quantidade
           - ticker
           - lista
           - faixa
-          - quantidade
+      quantidade:
+        description: 'Quantidade (modo quantidade): 10, 50, 308=todas'
+        required: false
+        default: '10'
       ticker:
         description: 'Ticker único (modo ticker): ex: PETR4'
         required: false
@@ -21,23 +26,27 @@ on:
         required: false
         default: ''
       faixa:
-        description: 'Faixa (modo faixa): ex: 1-50'
+        description: 'Faixa (modo faixa): ex: 1-50, 51-150, 151-308'
         required: false
-        default: ''
-      quantidade:
-        description: 'Quantidade (modo quantidade): ex: 10'
-        required: false
-        default: ''
+        default: '1-50'
+  schedule:
+    - cron: "15 3 * * *"  # 3:15 AM (APENAS DRE)
+  push:
+    paths:
+      - "balancos/**"
+      - "src/**"
+      - "padronizar_dre_trimestral_e_anual.py"
+      - ".github/workflows/normalizar_dre.yml"
 
 permissions:
   contents: write
 
 concurrency:
-  group: normalizar-dre
+  group: balancos-dre
   cancel-in-progress: false
 
 jobs:
-  normalizar-dre:
+  normalizar:
     runs-on: ubuntu-latest
 
     steps:
@@ -54,66 +63,23 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install pandas numpy
+          pip install pandas numpy requests
 
-      - name: Validar parâmetros
-        run: |
-          MODO="${{ github.event.inputs.modo }}"
-          TICKER="${{ github.event.inputs.ticker }}"
-          LISTA="${{ github.event.inputs.lista }}"
-          FAIXA="${{ github.event.inputs.faixa }}"
-          QUANTIDADE="${{ github.event.inputs.quantidade }}"
-          
-          echo "Modo: $MODO"
-          
-          if [ "$MODO" = "ticker" ] && [ -z "$TICKER" ]; then
-            echo "❌ ERRO: Modo 'ticker' requer --ticker"
-            exit 1
-          fi
-          
-          if [ "$MODO" = "lista" ] && [ -z "$LISTA" ]; then
-            echo "❌ ERRO: Modo 'lista' requer --lista"
-            exit 1
-          fi
-          
-          if [ "$MODO" = "faixa" ] && [ -z "$FAIXA" ]; then
-            echo "❌ ERRO: Modo 'faixa' requer --faixa"
-            exit 1
-          fi
-          
-          if [ "$MODO" = "quantidade" ] && [ -z "$QUANTIDADE" ]; then
-            echo "❌ ERRO: Modo 'quantidade' requer --quantidade"
-            exit 1
-          fi
-          
-          echo "✅ Parâmetros válidos"
-
-      - name: Normalizar DRE
+      - name: Run normalization (DRE ONLY)
         run: |
           export PYTHONPATH="$GITHUB_WORKSPACE"
-          
-          ARGS="--modo ${{ github.event.inputs.modo }}"
-          
-          if [ -n "${{ github.event.inputs.ticker }}" ]; then
-            ARGS="$ARGS --ticker ${{ github.event.inputs.ticker }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python src/normalize_dre.py \
+              --modo "${{ github.event.inputs.modo }}" \
+              --quantidade "${{ github.event.inputs.quantidade }}" \
+              --ticker "${{ github.event.inputs.ticker }}" \
+              --lista "${{ github.event.inputs.lista }}" \
+              --faixa "${{ github.event.inputs.faixa }}"
+          else
+            python src/normalize_dre.py
           fi
-          
-          if [ -n "${{ github.event.inputs.lista }}" ]; then
-            ARGS="$ARGS --lista ${{ github.event.inputs.lista }}"
-          fi
-          
-          if [ -n "${{ github.event.inputs.faixa }}" ]; then
-            ARGS="$ARGS --faixa ${{ github.event.inputs.faixa }}"
-          fi
-          
-          if [ -n "${{ github.event.inputs.quantidade }}" ]; then
-            ARGS="$ARGS --quantidade ${{ github.event.inputs.quantidade }}"
-          fi
-          
-          echo "Executando: python src/normalize_dre.py $ARGS"
-          python src/normalize_dre.py $ARGS
 
-      - name: Commit e push
+      - name: Commit and push if changed
         run: |
           git config user.name "actions-user"
           git config user.email "actions@users.noreply.github.com"
@@ -125,7 +91,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "DRE normalizada: ${{ github.event.inputs.modo }} - $(date +'%Y-%m-%d %H:%M')"
+          git commit -m "Normalização DRE padronizada (todas as pastas)"
 
-          git pull --rebase origin main || true
-          git push origin main
+          git pull --rebase origin main
+          git push origin main || (git pull --rebase origin main && git push origin main)
