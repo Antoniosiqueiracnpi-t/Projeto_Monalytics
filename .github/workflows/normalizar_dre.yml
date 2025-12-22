@@ -30,7 +30,7 @@ on:
         required: false
         default: '1-50'
   schedule:
-    - cron: "15 3 * * *"
+    - cron: "15 3 * * *"  # 3:15 AM (APENAS DRE)
   push:
     paths:
       - "balancos/**"
@@ -53,7 +53,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # necessário para rebase funcionar bem
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -65,7 +65,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas numpy requests
 
-      - name: Run normalization (DRE)
+      - name: Run normalization (DRE ONLY)
         run: |
           export PYTHONPATH="$GITHUB_WORKSPACE"
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -93,8 +93,5 @@ jobs:
 
           git commit -m "Normalização DRE padronizada (todas as pastas)"
 
-          # pega mudanças remotas e reaplica seu commit por cima (evita rejected/fetch first)
           git pull --rebase origin main
-
-          # tenta push; se houver corrida com outro job, tenta mais uma vez
           git push origin main || (git pull --rebase origin main && git push origin main)
