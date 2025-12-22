@@ -406,7 +406,7 @@ def padronizar_dre_trimestral_e_anual(
             return bancos_map[cod]
         return cod
 
-    # **PASSO 1:** Preencher matriz com valores dos ITRs
+    # **PASSO 1:** Preencher matriz com valores dos ITRs (YTD ou isolados, como vieram)
     for (ano, q) in tri_periodos:
         df_periodo = tri[(tri["ano"] == ano) & (tri["q"] == q)]
         if df_periodo.empty:
@@ -416,50 +416,26 @@ def padronizar_dre_trimestral_e_anual(
                 mat.at[cod, (ano, q)] = _valor_eps(df_periodo)
             else:
                 mat.at[cod, (ano, q)] = _valor_conta(df_periodo, _map_codigo(cod))
-    
-    # **PASSO 1.5:** Se padrão YTD, isolar os ITRs (converter acumulado → isolado)
-    if padrao == "ytd":
-        for ano in sorted(set(a for a, q in tri_periodos)):
-            itrs_ano = sorted([(a, q) for (a, q) in tri_periodos if a == ano], key=lambda x: x[1])
-            
-            if len(itrs_ano) <= 1:
-                continue  # nada a isolar
-            
-            # Isolar retroativamente: T3 = T3_ytd - T2_ytd, T2 = T2_ytd - T1
-            for i in range(len(itrs_ano) - 1, 0, -1):
-                (ano_curr, q_curr) = itrs_ano[i]
-                (ano_prev, q_prev) = itrs_ano[i-1]
-                
-                for cod in contas:
-                    if cod.startswith("3.99"):
-                        continue
-                    
-                    v_curr = mat.at[cod, (ano_curr, q_curr)]
-                    v_prev = mat.at[cod, (ano_prev, q_prev)]
-                    
-                    if not pd.isna(v_curr) and not pd.isna(v_prev):
-                        mat.at[cod, (ano_curr, q_curr)] = v_curr - v_prev
 
-    # **PASSO 2:** Processar DFP baseado no padrão detectado
+    # **PASSO 2:** Processar DFP e isolar valores (ORDEM CORRETA)
     for (ano_dfp, q_dfp) in anu_periodos:
         df_dfp = anu[(anu["ano"] == ano_dfp) & (anu["q"] == q_dfp)]
         if df_dfp.empty:
             continue
         
         # Encontrar ITRs do mesmo ano
-        itrs_ano = [(a, q) for (a, q) in tri_periodos if a == ano_dfp]
+        itrs_ano = sorted([(a, q) for (a, q) in tri_periodos if a == ano_dfp], key=lambda x: x[1])
         
         if padrao == "isolado":
             # **PADRÃO ISOLADO:** Verificar se ITRs já somam para o anual
             # Se sim: ITRs já estão corretos, IGNORAR DFP
-            # Se não: usar DFP para calcular trimestre faltante
             
-            # Testar com uma conta importante (Receita 3.01)
+            # Testar com Receita (3.01) - conta independente
             cod_teste = "3.01"
             v_anual_teste = _valor_conta(df_dfp, _map_codigo(cod_teste))
             
             if not pd.isna(v_anual_teste):
-                # Somar ITRs do ano
+                # Somar ITRs do ano para esta conta
                 soma_itrs_teste = 0.0
                 count_itrs = 0
                 for (a_itr, q_itr) in itrs_ano:
@@ -469,18 +445,18 @@ def padronizar_dre_trimestral_e_anual(
                             soma_itrs_teste += v
                             count_itrs += 1
                 
-                # Verificar se ITRs já somam para o anual (com tolerância)
+                # Verificar se ITRs já somam para o anual (tolerância)
                 if count_itrs > 0:
                     diff = abs(soma_itrs_teste - v_anual_teste)
                     diff_pct = (diff / abs(v_anual_teste) * 100) if v_anual_teste != 0 else 0
                     
                     if diff_pct <= TOLERANCIA_CHECKUP_PCT or diff <= TOLERANCIA_CHECKUP_ABS:
-                        # ITRs já estão isolados e corretos → IGNORAR DFP
+                        # ITRs já isolados e corretos → IGNORAR DFP
                         alertas.append(f"Ano {ano_dfp}: ITRs isolados verificados, DFP ignorado")
-                        continue  # pula processamento do DFP
+                        continue
             
-            # Se chegou aqui: ITRs NÃO batem ou não existem
-            # Processar DFP normalmente para calcular trimestre faltante
+            # ITRs não batem: processar DFP para calcular trimestre faltante
+            # CADA CONTA É INDEPENDENTE
             for cod in contas:
                 if cod.startswith("3.99"):
                     mat.at[cod, (ano_dfp, q_dfp)] = _valor_eps(df_dfp)
@@ -490,12 +466,11 @@ def padronizar_dre_trimestral_e_anual(
                 if pd.isna(v_anual):
                     continue
                 
-                # Verificar se já existe valor no período (de ITR)
+                # Se já tem valor de ITR, não sobrescrever
                 if (ano_dfp, q_dfp) in mat.columns and not pd.isna(mat.at[cod, (ano_dfp, q_dfp)]):
-                    # Já tem valor de ITR, não sobrescrever
                     continue
                 
-                # Calcular trimestre faltante = Anual - soma(outros ITRs)
+                # Calcular trimestre faltante desta conta
                 soma_outros = 0.0
                 tem_outros = False
                 for (a_itr, q_itr) in itrs_ano:
@@ -511,36 +486,48 @@ def padronizar_dre_trimestral_e_anual(
                     mat.at[cod, (ano_dfp, q_dfp)] = v_anual
         
         else:
-            # **PADRÃO YTD:** Isolar trimestre DFP = Anual - T3_ytd_original
-            # IMPORTANTE: Usar valor YTD ORIGINAL do T3 (antes de isolar)
+            # **PADRÃO YTD:** Processar CADA CONTA independentemente
+            # ORDEM: 1) Calcular T4, 2) Isolar T1,T2,T3
             
-            # Recalcular T3_ytd original (soma acumulada)
             for cod in contas:
                 if cod.startswith("3.99"):
                     mat.at[cod, (ano_dfp, q_dfp)] = _valor_eps(df_dfp)
                     continue
                 
+                # PASSO 2.1: Calcular T4 = Anual - T3_ytd (valor ORIGINAL)
                 v_anual = _valor_conta(df_dfp, _map_codigo(cod))
                 if pd.isna(v_anual):
                     continue
                 
-                # Encontrar T3 (último ITR antes do DFP)
-                itrs_anteriores = sorted([q for (a, q) in itrs_ano if q < q_dfp])
+                # Encontrar último ITR (T3) - ainda tem valor YTD original
+                ultimo_itr = max(itrs_ano, key=lambda x: x[1]) if itrs_ano else None
                 
-                if itrs_anteriores:
-                    # Somar T1 + T2 + T3 (valores isolados) para obter T3_ytd
-                    soma_ytd = 0.0
-                    for q_itr in itrs_anteriores:
-                        if (ano_dfp, q_itr) in mat.columns:
-                            v = mat.at[cod, (ano_dfp, q_itr)]
-                            if not pd.isna(v):
-                                soma_ytd += v
-                    
-                    # T4_isolado = Anual - T3_ytd
-                    mat.at[cod, (ano_dfp, q_dfp)] = v_anual - soma_ytd
+                if ultimo_itr and ultimo_itr in mat.columns:
+                    v_ultimo_ytd = mat.at[cod, ultimo_itr]
+                    if not pd.isna(v_ultimo_ytd):
+                        # T4_isolado = Anual - T3_ytd
+                        mat.at[cod, (ano_dfp, q_dfp)] = v_anual - v_ultimo_ytd
+                    else:
+                        mat.at[cod, (ano_dfp, q_dfp)] = v_anual
                 else:
-                    # Não tem ITRs anteriores, usa anual direto
                     mat.at[cod, (ano_dfp, q_dfp)] = v_anual
+                
+                # PASSO 2.2: Agora isolar T1, T2, T3 retroativamente
+                # T3 = T3_ytd - T2_ytd, T2 = T2_ytd - T1_ytd
+                itrs_ordenados = sorted(itrs_ano, key=lambda x: x[1])
+                
+                for i in range(len(itrs_ordenados) - 1, 0, -1):
+                    (a_curr, q_curr) = itrs_ordenados[i]
+                    (a_prev, q_prev) = itrs_ordenados[i-1]
+                    
+                    if (a_curr, q_curr) not in mat.columns or (a_prev, q_prev) not in mat.columns:
+                        continue
+                    
+                    v_curr = mat.at[cod, (a_curr, q_curr)]
+                    v_prev = mat.at[cod, (a_prev, q_prev)]
+                    
+                    if not pd.isna(v_curr) and not pd.isna(v_prev):
+                        mat.at[cod, (a_curr, q_curr)] = v_curr - v_prev
 
     # Preencher derivadas
     if preencher_derivadas:
