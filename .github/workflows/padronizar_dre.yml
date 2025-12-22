@@ -1,117 +1,92 @@
 name: Padronizar DRE
 
 on:
-  # Executar manualmente (botão no GitHub)
   workflow_dispatch:
     inputs:
       modo:
-        description: 'Modo de execução'
+        description: 'Modo de seleção'
         required: true
         type: choice
         options:
-          - 'todas'
+          - 'quantidade'
           - 'ticker'
-          - 'csv_quantidade'
-        default: 'todas'
-      
-      ticker:
-        description: 'Ticker específico (modo ticker): ex: PETR4'
-        required: false
-        default: ''
-      
+          - 'lista'
+          - 'faixa'
+        default: 'quantidade'
+
       quantidade:
-        description: 'Quantidade do CSV (modo csv_quantidade): ex: 10, 50'
+        description: 'Quantidade (modo quantidade): 10, 50, 308=todas'
         required: false
         default: '10'
-      
-      validar:
-        description: 'Executar validação?'
-        required: true
-        type: boolean
-        default: true
 
-  # Executar automaticamente após captura de balanços
-  workflow_run:
-    workflows: ["Capturar Balanços"]
-    types:
-      - completed
+      ticker:
+        description: 'Ticker único (modo ticker): ex: PETR4'
+        required: false
+        default: ''
+
+      lista:
+        description: 'Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4'
+        required: false
+        default: ''
+
+      faixa:
+        description: 'Faixa (modo faixa): ex: 1-50, 51-150, 151-308'
+        required: false
+        default: '1-50'
 
 jobs:
-  padronizar:
+  padronizar_dre:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    
+    timeout-minutes: 120
+
     steps:
-    - name: 📥 Baixar código
-      uses: actions/checkout@v3
-    
-    - name: 🐍 Configurar Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    
-    - name: 📦 Instalar bibliotecas
-      run: pip install pandas numpy
-    
-    - name: 🔍 Verificar arquivos disponíveis
-      run: |
-        echo "📂 Estrutura do repositório:"
-        ls -la
-        echo ""
-        echo "📂 Estrutura de balancos/:"
-        ls -la balancos/ || echo "Pasta balancos/ não encontrada"
-        echo ""
-        echo "📋 Empresas com DRE:"
-        find balancos/ -name "dre_*.csv" 2>/dev/null | wc -l || echo "0"
-        echo ""
-        echo "📄 Arquivo de mapeamento:"
-        ls -la mapeamento_*.csv 2>/dev/null || echo "Não encontrado"
-    
-    - name: 🚀 Executar padronização - Todas
-      if: github.event.inputs.modo == 'todas' || github.event_name == 'workflow_run'
-      run: |
-        cd src
-        python padronizar_dre.py
-    
-    - name: 🚀 Executar padronização - Ticker específico
-      if: github.event.inputs.modo == 'ticker' && github.event.inputs.ticker != ''
-      run: |
-        cd src
-        python padronizar_dre.py "${{ github.event.inputs.ticker }}"
-    
-    - name: 🚀 Executar padronização - CSV com quantidade
-      if: github.event.inputs.modo == 'csv_quantidade'
-      run: |
-        cd src
-        python padronizar_dre.py csv "${{ github.event.inputs.quantidade }}"
-    
-    - name: 📊 Relatório de padronização
-      if: always()
-      run: |
-        echo ""
-        echo "📊 RELATÓRIO DE PADRONIZAÇÃO"
-        echo "=============================="
-        
-        total_empresas=$(find balancos/ -type d -mindepth 1 -maxdepth 1 2>/dev/null | wc -l || echo "0")
-        total_dre_padronizado=$(find balancos/ -name "dre_padronizado.csv" 2>/dev/null | wc -l || echo "0")
-        
-        echo "Total de empresas: $total_empresas"
-        echo "DREs padronizados: $total_dre_padronizado"
-        echo ""
-        
-        if [ $total_dre_padronizado -gt 0 ]; then
-          echo "✅ Empresas com DRE padronizado:"
-          find balancos/ -name "dre_padronizado.csv" -exec dirname {} \; | xargs -n1 basename | head -10
-          
-          if [ $total_dre_padronizado -gt 10 ]; then
-            echo "... e mais $((total_dre_padronizado - 10)) empresas"
+      - name: 📥 Baixar código
+        uses: actions/checkout@v3
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Instalar bibliotecas
+        run: |
+          pip install --upgrade pip
+          pip install pandas numpy openpyxl requests
+
+      - name: 🚀 Executar padronização DRE
+        run: |
+          python src/padronizar_dre.py \
+            --modo "${{ github.event.inputs.modo }}" \
+            --quantidade "${{ github.event.inputs.quantidade }}" \
+            --ticker "${{ github.event.inputs.ticker }}" \
+            --lista "${{ github.event.inputs.lista }}" \
+            --faixa "${{ github.event.inputs.faixa }}"
+
+      - name: 💾 Salvar no GitHub
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          FILES=$(find balancos -type f -name "dre_padronizado.csv" 2>/dev/null || true)
+
+          if [ -z "$FILES" ]; then
+            echo "Nenhum dre_padronizado.csv foi gerado. Nada para commitar."
+            exit 0
           fi
-        fi
-    
-    - name: 💾 Salvar no GitHub
-      run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git add balancos/*/dre_padronizado.csv
-        git diff --quiet && git diff --staged --quiet || git commit -m "DRE padronizado - $(date +'%Y-%m-%d %H:%M')"
-        git push
+
+          echo "Arquivos encontrados:"
+          echo "$FILES"
+
+          # adiciona somente os arquivos gerados
+          while IFS= read -r f; do
+            [ -n "$f" ] && git add "$f"
+          done <<< "$FILES"
+
+          # commita apenas se houver mudanças staged
+          git diff --staged --quiet && {
+            echo "Sem alterações para commitar."
+            exit 0
+          }
+
+          git commit -m "DRE padronizado - $(date +'%Y-%m-%d')"
+          git push
