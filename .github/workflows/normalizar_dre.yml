@@ -91,7 +91,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Normalização DRE padronizada (todas as pastas)"
+          git commit -m "Normalização DRE padronizada"
 
           git pull --rebase origin main
           git push origin main || (git pull --rebase origin main && git push origin main)
