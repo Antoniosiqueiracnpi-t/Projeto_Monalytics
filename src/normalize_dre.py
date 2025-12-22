@@ -1,29 +1,30 @@
 #!/usr/bin/env python3
 """
-NORMALIZE DRE - SCRIPT INDEPENDENTE
-====================================
-APENAS DRE - NÃO PROCESSA BPA/BPP/DFC
+NORMALIZE_DRE.PY - VERSÃO DEFINITIVA
+=====================================
+PROCESSA APENAS DRE - NÃO TOCA EM BPA/BPP/DFC
 
 Modos de execução:
-  python src/normalize_dre.py --modo ticker --ticker AGRO3
-  python src/normalize_dre.py --modo lista --lista AGRO3,PETR4,VALE3
-  python src/normalize_dre.py --modo quantidade --quantidade 10
-  python src/normalize_dre.py --modo faixa --faixa 1-50
+  --modo ticker --ticker PETR4     → Processa apenas PETR4
+  --modo lista --lista PETR4,VALE3 → Processa lista específica
+  --modo faixa --faixa 1-10        → Processa faixa de índices
+  --modo quantidade --quantidade 5 → Processa N primeiras (CUIDADO)
+
+SEM ARGUMENTOS: NÃO PROCESSA NADA (segurança)
 """
 
 from pathlib import Path
 import sys
 import traceback
 import argparse
-from typing import Optional, List, Dict
+from typing import Optional, List
 
 import pandas as pd
 
-# Garante import da raiz do repo
+# Garantir import da raiz do repo
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-# IMPORTA APENAS A FUNÇÃO DE DRE - NENHUMA OUTRA
 from padronizar_dre_trimestral_e_anual import padronizar_dre_trimestral_e_anual
 
 REQUIRED_COLS = {"data_fim", "trimestre", "cd_conta", "ds_conta", "valor_mil"}
@@ -33,13 +34,13 @@ def _sniff_sep(path: Path) -> str:
     """Detecta separador do CSV"""
     try:
         sample = path.read_text(encoding="utf-8", errors="replace")[:4096]
-        return ";" if sample.count(";") > sample.count(",") else ","
     except Exception:
         return ","
+    return ";" if sample.count(";") > sample.count(",") else ","
 
 
 def _safe_read_head(path: Path, nrows: int = 200) -> Optional[pd.DataFrame]:
-    """Lê cabeçalho do CSV com segurança"""
+    """Lê cabeçalho do arquivo de forma segura"""
     sep = _sniff_sep(path)
     try:
         return pd.read_csv(path, sep=sep, nrows=nrows, encoding="utf-8", engine="python")
@@ -48,286 +49,252 @@ def _safe_read_head(path: Path, nrows: int = 200) -> Optional[pd.DataFrame]:
 
 
 def _is_dre(df: pd.DataFrame) -> bool:
-    """Verifica se arquivo é DRE (contas começando com 3)"""
+    """Verifica se é arquivo DRE (códigos começam com 3)"""
     if df is None or "cd_conta" not in df.columns:
         return False
     s = df["cd_conta"].astype(str).str.strip()
-    return s.str.startswith("3").sum() > 0
+    return (s.str.startswith("3").sum()) > 0
 
 
-def _score_periodicity(df: pd.DataFrame, path: Path, want: str) -> float:
-    """Pontua se arquivo é trimestral ou anual"""
-    name = path.name.lower()
-    bonus = 0.0
-
-    if want == "trimestral":
-        if "itr" in name or "consolid" in name:
-            bonus += 0.35
-        if "trimes" in name:
-            bonus += 0.25
-    else:
-        if "dfp" in name:
-            bonus += 0.35
-        if "anual" in name:
-            bonus += 0.25
-
-    # Evita outputs já gerados
-    if "padron" in name or "normaliz" in name:
-        bonus -= 0.50
-
-    tri_score = 0.0
-    anu_score = 0.0
-
-    if "trimestre" in df.columns:
-        t = df["trimestre"].astype(str).str.upper().str.strip()
-        if len(t) > 0:
-            tri_score += float(t.isin(["T1", "T2", "T3"]).mean())
-            anu_score += float((t == "T4").mean())
-
-    if "data_fim" in df.columns:
-        dt = pd.to_datetime(df["data_fim"], errors="coerce")
-        m = dt.dt.month.dropna()
-        if not m.empty:
-            tri_score += float(m.isin([3, 6, 9]).mean())
-            anu_score += float((m == 12).mean())
-
-    return (tri_score + bonus) if want == "trimestral" else (anu_score + bonus)
-
-
-def _discover_dre_files(ticker_dir: Path) -> Dict[str, Optional[Path]]:
-    """Descobre arquivos DRE na pasta (fallback)"""
-    out = {"trimestral": None, "anual": None}
-
-    files = [p for p in ticker_dir.rglob("*.csv") if p.is_file()]
-    files = [p for p in files if not p.name.lower().endswith("_padronizada.csv")]
-
-    tri_candidates = []
-    anu_candidates = []
-
-    for f in files:
-        dfh = _safe_read_head(f)
-        if dfh is None:
-            continue
-        if not REQUIRED_COLS.issubset(set(dfh.columns)):
-            continue
-        if not _is_dre(dfh):
-            continue
-
-        tri_candidates.append((_score_periodicity(dfh, f, "trimestral"), f))
-        anu_candidates.append((_score_periodicity(dfh, f, "anual"), f))
-
-    tri_candidates.sort(key=lambda x: x[0], reverse=True)
-    anu_candidates.sort(key=lambda x: x[0], reverse=True)
-
-    out["trimestral"] = tri_candidates[0][1] if tri_candidates and tri_candidates[0][0] > 0 else None
-    out["anual"] = anu_candidates[0][1] if anu_candidates and anu_candidates[0][0] > 0 else None
-
-    # Evita mesmo arquivo para ambos
-    if out["trimestral"] and out["anual"] and out["trimestral"].resolve() == out["anual"].resolve():
-        if len(anu_candidates) > 1 and anu_candidates[1][0] > 0:
-            out["anual"] = anu_candidates[1][1]
-
-    return out
-
-
-def _pick_original_named_dre(tdir: Path) -> Dict[str, Optional[Path]]:
-    """Tenta pegar arquivos com nomes padrão"""
-    tri = tdir / "dre_trimestral.csv"
-    anu = tdir / "dre_anual.csv"
+def _find_dre_files(ticker_dir: Path) -> dict:
+    """
+    Encontra arquivos DRE na pasta do ticker.
+    Prioriza nomes padrão, depois faz fallback por conteúdo.
+    """
+    result = {"trimestral": None, "anual": None}
     
-    # Fallback para nomes alternativos
-    if not tri.exists():
-        tri = tdir / "dre_consolidado.csv"
+    # Prioridade 1: Nomes padrão
+    for name, key in [("dre_consolidado.csv", "trimestral"), ("dre_anual.csv", "anual")]:
+        path = ticker_dir / name
+        if path.exists():
+            result[key] = path
     
-    return {
-        "trimestral": tri if tri.exists() else None,
-        "anual": anu if anu.exists() else None,
-    }
+    # Prioridade 2: Nomes alternativos
+    if result["trimestral"] is None:
+        for alt in ["dre_trimestral.csv", "dre_itr.csv"]:
+            path = ticker_dir / alt
+            if path.exists():
+                result["trimestral"] = path
+                break
+    
+    if result["anual"] is None:
+        for alt in ["dre_dfp.csv"]:
+            path = ticker_dir / alt
+            if path.exists():
+                result["anual"] = path
+                break
+    
+    # Prioridade 3: Fallback por conteúdo (apenas para arquivos não padronizados)
+    if result["trimestral"] is None or result["anual"] is None:
+        for csv_file in ticker_dir.glob("*.csv"):
+            # Ignora arquivos já padronizados
+            if "_padronizada" in csv_file.name.lower():
+                continue
+            if "dre" not in csv_file.name.lower():
+                continue
+            
+            dfh = _safe_read_head(csv_file)
+            if dfh is None or not REQUIRED_COLS.issubset(set(dfh.columns)):
+                continue
+            if not _is_dre(dfh):
+                continue
+            
+            # Classifica como trimestral ou anual
+            name_lower = csv_file.name.lower()
+            if "anual" in name_lower or "dfp" in name_lower:
+                if result["anual"] is None:
+                    result["anual"] = csv_file
+            else:
+                if result["trimestral"] is None:
+                    result["trimestral"] = csv_file
+    
+    return result
 
 
-def _filtrar_tickers(
-    all_tickers: List[Path], 
-    modo: str, 
-    quantidade: str, 
-    ticker: str, 
-    lista: str, 
-    faixa: str
-) -> List[Path]:
-    """Filtra lista de tickers baseado no modo"""
+def _filtrar_tickers(all_tickers: List[Path], args) -> List[Path]:
+    """
+    Filtra tickers baseado nos argumentos.
+    IMPORTANTE: Sem argumentos específicos, retorna lista VAZIA (segurança)
+    """
+    modo = args.modo
     
     if modo == "ticker":
-        if not ticker:
-            print("[ERRO] Modo 'ticker' requer --ticker especificado")
+        if not args.ticker:
+            print("[ERRO] --ticker não especificado!")
             return []
-        ticker_upper = ticker.strip().upper()
+        ticker_upper = args.ticker.strip().upper()
         result = [t for t in all_tickers if t.name.upper() == ticker_upper]
         if not result:
             print(f"[ERRO] Ticker '{ticker_upper}' não encontrado em balancos/")
         return result
     
     elif modo == "lista":
-        if not lista:
-            print("[ERRO] Modo 'lista' requer --lista especificado")
+        if not args.lista:
+            print("[ERRO] --lista não especificada!")
             return []
-        tickers_list = [t.strip().upper() for t in lista.split(",") if t.strip()]
+        tickers_list = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
         result = [t for t in all_tickers if t.name.upper() in tickers_list]
-        if not result:
-            print(f"[ERRO] Nenhum ticker da lista encontrado")
+        nao_encontrados = set(tickers_list) - {t.name.upper() for t in result}
+        if nao_encontrados:
+            print(f"[AVISO] Tickers não encontrados: {nao_encontrados}")
         return result
+    
+    elif modo == "faixa":
+        if not args.faixa or "-" not in args.faixa:
+            print(f"[ERRO] Faixa inválida: '{args.faixa}'")
+            return []
+        try:
+            parts = args.faixa.split("-")
+            start = int(parts[0].strip())
+            end = int(parts[1].strip())
+            start_idx = max(0, start - 1)
+            return all_tickers[start_idx:end]
+        except (ValueError, IndexError):
+            print(f"[ERRO] Faixa inválida: '{args.faixa}'")
+            return []
     
     elif modo == "quantidade":
         try:
-            n = int(quantidade) if quantidade else 10
+            n = int(args.quantidade) if args.quantidade else 0
+            if n <= 0:
+                print("[ERRO] Quantidade deve ser > 0")
+                return []
             return all_tickers[:n]
         except ValueError:
-            print(f"[AVISO] Quantidade inválida '{quantidade}', usando 10")
-            return all_tickers[:10]
+            print(f"[ERRO] Quantidade inválida: '{args.quantidade}'")
+            return []
     
-    elif modo == "faixa":
-        if not faixa or "-" not in faixa:
-            print(f"[AVISO] Faixa inválida '{faixa}', usando 1-50")
-            start, end = 1, 50
-        else:
-            try:
-                parts = faixa.split("-")
-                start = int(parts[0].strip())
-                end = int(parts[1].strip())
-            except (ValueError, IndexError):
-                print(f"[AVISO] Faixa inválida '{faixa}', usando 1-50")
-                start, end = 1, 50
+    else:
+        print(f"[ERRO] Modo desconhecido: '{modo}'")
+        return []
+
+
+def processar_dre_ticker(ticker_dir: Path, b3_map: Optional[str] = None) -> bool:
+    """
+    Processa DRE de um único ticker.
+    Retorna True se sucesso, False se erro.
+    """
+    ticker = ticker_dir.name.upper()
+    
+    files = _find_dre_files(ticker_dir)
+    
+    if not files["trimestral"]:
+        print(f"[{ticker}] ❌ DRE trimestral não encontrado")
+        return False
+    
+    if not files["anual"]:
+        print(f"[{ticker}] ❌ DRE anual não encontrado")
+        return False
+    
+    try:
+        out_dre = padronizar_dre_trimestral_e_anual(
+            str(files["trimestral"]),
+            str(files["anual"]),
+            ticker=ticker,
+            b3_mapping_csv=b3_map,
+        )
         
-        start_idx = max(0, start - 1)
-        return all_tickers[start_idx:end]
-    
-    else:
-        return all_tickers
-
-
-def processar_ticker(tdir: Path, b3_map: Optional[str]) -> Optional[str]:
-    """
-    Processa UM ticker - APENAS DRE
-    
-    Returns:
-        Caminho do arquivo gerado ou None se falhou
-    """
-    ticker = tdir.name.upper().strip()
-    
-    # Tenta nomes padrão primeiro
-    original = _pick_original_named_dre(tdir)
-    
-    # Fallback se não encontrou
-    if original["trimestral"] is None or original["anual"] is None:
-        fallback = _discover_dre_files(tdir)
-        dre_tri = original["trimestral"] or fallback["trimestral"]
-        dre_anu = original["anual"] or fallback["anual"]
-    else:
-        dre_tri = original["trimestral"]
-        dre_anu = original["anual"]
-    
-    if not dre_tri or not dre_anu:
-        print(f"[{ticker}] DRE: arquivos não encontrados. Pulando.")
-        return None
-    
-    # Executa padronização - APENAS DRE
-    out_dre = padronizar_dre_trimestral_e_anual(
-        str(dre_tri),
-        str(dre_anu),
-        ticker=ticker,
-        b3_mapping_csv=b3_map,
-    )
-    
-    out_path = tdir / "dre_padronizada.csv"
-    out_dre.to_csv(out_path, index=False)
-    
-    return str(out_path)
+        out_path = ticker_dir / "dre_padronizada.csv"
+        out_dre.to_csv(out_path, index=False)
+        print(f"[{ticker}] ✅ DRE padronizada -> {out_path.name}")
+        return True
+        
+    except Exception as e:
+        print(f"[{ticker}] ❌ Erro: {e}")
+        traceback.print_exc()
+        return False
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Normalizar DRE - APENAS DRE, independente",
+        description="Normalizar DRE - APENAS DRE",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Exemplos:
-  python src/normalize_dre.py --modo ticker --ticker AGRO3
-  python src/normalize_dre.py --modo lista --lista AGRO3,PETR4,VALE3
-  python src/normalize_dre.py --modo quantidade --quantidade 10
-  python src/normalize_dre.py --modo faixa --faixa 1-50
+  python normalize_dre.py --modo ticker --ticker PETR4
+  python normalize_dre.py --modo lista --lista PETR4,VALE3,ITUB4
+  python normalize_dre.py --modo faixa --faixa 1-10
+  python normalize_dre.py --modo quantidade --quantidade 5
         """
     )
-    parser.add_argument("--modo", default="quantidade", 
-                       choices=["quantidade", "ticker", "lista", "faixa"],
-                       help="Modo de seleção de tickers")
-    parser.add_argument("--quantidade", default="10",
-                       help="Quantidade de tickers (modo quantidade)")
+    parser.add_argument("--modo", required=True, 
+                        choices=["quantidade", "ticker", "lista", "faixa"],
+                        help="Modo de seleção de tickers")
+    parser.add_argument("--quantidade", default="0",
+                        help="Quantidade de tickers (modo quantidade)")
     parser.add_argument("--ticker", default="",
-                       help="Ticker único (modo ticker)")
+                        help="Ticker único (modo ticker)")
     parser.add_argument("--lista", default="",
-                       help="Lista de tickers separados por vírgula (modo lista)")
-    parser.add_argument("--faixa", default="1-50",
-                       help="Faixa de tickers (modo faixa)")
+                        help="Lista de tickers separados por vírgula (modo lista)")
+    parser.add_argument("--faixa", default="",
+                        help="Faixa de índices: 1-10 (modo faixa)")
     
     args = parser.parse_args()
-
+    
+    print("=" * 60)
+    print("NORMALIZAÇÃO DRE - VERSÃO DEFINITIVA")
+    print("=" * 60)
+    print(f"Modo: {args.modo}")
+    print()
+    
+    # Localizar pasta balancos
     base = REPO_ROOT / "balancos"
     if not base.exists():
-        print("[ERRO] Pasta balancos/ não existe.")
-        return 1
-
+        print(f"[ERRO] Pasta balancos/ não existe em {REPO_ROOT}")
+        sys.exit(1)
+    
+    # Carregar mapeamento B3 (opcional)
     b3_map_path = REPO_ROOT / "mapeamento_final_b3_completo_utf8.csv"
     b3_map = str(b3_map_path) if b3_map_path.exists() else None
-
+    
+    if b3_map:
+        print(f"✓ Mapeamento B3: {b3_map_path.name}")
+    else:
+        print("⚠ Mapeamento B3 não encontrado (setores não serão usados)")
+    
+    # Listar todos os tickers disponíveis
     all_tickers = sorted([p for p in base.iterdir() if p.is_dir()])
-    print(f"Total de {len(all_tickers)} pastas de empresas encontradas.")
-
-    # Filtra tickers
-    tickers = _filtrar_tickers(
-        all_tickers, 
-        args.modo, 
-        args.quantidade, 
-        args.ticker, 
-        args.lista, 
-        args.faixa
-    )
+    print(f"✓ Total de pastas em balancos/: {len(all_tickers)}")
+    
+    # Filtrar tickers conforme argumentos
+    tickers = _filtrar_tickers(all_tickers, args)
     
     if not tickers:
-        print("[ERRO] Nenhum ticker selecionado para processar.")
-        return 1
+        print("\n[!] Nenhum ticker selecionado para processamento.")
+        print("    Use --help para ver exemplos de uso.")
+        sys.exit(0)
     
-    print(f"Processando {len(tickers)} ticker(s) - APENAS DRE (modo: {args.modo})")
+    print(f"\n→ Selecionados para processamento: {len(tickers)} ticker(s)")
+    for t in tickers[:10]:
+        print(f"   - {t.name}")
+    if len(tickers) > 10:
+        print(f"   ... e mais {len(tickers) - 10}")
+    
+    print("\n" + "-" * 60)
+    print("PROCESSANDO DRE")
     print("-" * 60)
-
-    gerados = []
+    
+    # Processar
+    sucesso = 0
     erros = 0
-
-    for tdir in tickers:
-        ticker = tdir.name.upper()
-        try:
-            resultado = processar_ticker(tdir, b3_map)
-            
-            if resultado:
-                gerados.append(resultado)
-                print(f"[OK] {ticker}")
-            else:
-                print(f"[SKIP] {ticker}")
-                
-        except Exception as e:
-            erros += 1
-            print(f"[ERRO] {ticker}: {e}")
-            traceback.print_exc()
-
-    print("-" * 60)
-    print(f"\n{'='*20} RESUMO DRE {'='*20}")
-    print(f"Processados: {len(tickers)}")
-    print(f"Gerados: {len(gerados)}")
-    print(f"Erros: {erros}")
     
-    if gerados:
-        print("\nArquivos gerados:")
-        for p in gerados:
-            print(f"  - {p}")
-
-    return 0 if erros == 0 else 1
+    for ticker_dir in tickers:
+        if processar_dre_ticker(ticker_dir, b3_map):
+            sucesso += 1
+        else:
+            erros += 1
+    
+    # Resumo
+    print("\n" + "=" * 60)
+    print("RESUMO")
+    print("=" * 60)
+    print(f"✅ Sucesso: {sucesso}")
+    print(f"❌ Erros:   {erros}")
+    print(f"📊 Total:   {len(tickers)}")
+    
+    if erros > 0:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
