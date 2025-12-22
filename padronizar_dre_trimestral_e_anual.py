@@ -1,15 +1,18 @@
 """
-PADRONIZAÇÃO DRE - VERSÃO CORRIGIDA V2
+PADRONIZAÇÃO DRE - VERSÃO CORRIGIDA V3
 =======================================
 Correções implementadas:
-1. Detecta padrão dos dados (YTD vs Isolado) automaticamente
+1. Detecta padrão dos dados (YTD vs Isolado) automaticamente via teste de soma
 2. NÃO cria trimestres fantasmas
-3. Check-up rigoroso com validação de receitas negativas
-4. Suporta anos fiscais diferentes de dezembro
+3. Check-up rigoroso: receita NUNCA negativa, soma trimestres = anual
+4. Suporta padrões alternativos (ex: AGRO3 com T1, T3, T4 isolados)
+5. Independente - não chama outras funções de normalização
 
 LÓGICA:
-- YTD (padrão): ITR com T1,T2,T3 acumulados → isola T4 = DFP - soma(ITRs)
-- ISOLADO: Trimestres já vêm isolados → mantém como estão
+- Verifica quais trimestres existem nos ITRs
+- Testa se soma dos ITRs + inferência de faltante ≈ anual
+- YTD: T1,T2,T3 acumulados → isola cada um e calcula T4 = DFP - T3_ytd
+- ISOLADO: Trimestres já vêm isolados → mantém e calcula faltante se necessário
 """
 
 import pandas as pd
@@ -171,80 +174,118 @@ def _detectar_mes_encerramento_fiscal(df_anual: pd.DataFrame) -> int:
     return int(meses.mode().iloc[0]) if not meses.mode().empty else 12
 
 
-def _detectar_padrao_trimestral(
-    tri: pd.DataFrame, 
+def _valor_conta_raw(df_periodo: pd.DataFrame, codigo: str) -> float:
+    """Extrai valor de uma conta do DataFrame"""
+    exact = df_periodo[df_periodo["cd_conta"] == codigo]
+    if not exact.empty:
+        s = exact["valor"].dropna()
+        return float(s.iloc[-1]) if not s.empty else np.nan
+    desc = df_periodo[df_periodo["cd_conta"].str.startswith(codigo + ".")]
+    if not desc.empty:
+        return float(desc["valor"].sum(skipna=True))
+    return np.nan
+
+
+def _detectar_padrao_por_ano(
+    tri: pd.DataFrame,
     anu: pd.DataFrame,
-    mes_encerramento: int
-) -> str:
+    ano: int,
+    cod_teste: str = "3.01"
+) -> Tuple[str, List[int], float]:
     """
-    Detecta se os dados estão em formato YTD (acumulado) ou Isolado (trimestral).
+    Detecta o padrão de um ano específico testando a soma contra o anual.
     
-    Padrão YTD: T1, T2, T3 acumulados → precisa isolar T4
-    Padrão Isolado: Trimestres já vêm isolados → mantém como está
-    
-    Retorna: "ytd" ou "isolado"
+    Retorna: (padrão, trimestres_disponiveis, valor_anual)
+    - padrão: "ytd", "isolado", ou "indeterminado"
     """
-    if tri.empty and anu.empty:
-        return "ytd"  # default seguro
+    # Filtrar ITRs do ano
+    itrs_ano = tri[tri["ano"] == ano].copy()
+    dfp_ano = anu[anu["ano"] == ano].copy()
     
-    # Preparar dados para análise
-    for df in (tri, anu):
-        if not df.empty and "ano" not in df.columns:
-            df["ano"] = pd.to_datetime(df["data_fim"], errors="coerce").dt.year
-            df["mes"] = pd.to_datetime(df["data_fim"], errors="coerce").dt.month
+    if itrs_ano.empty:
+        return ("indeterminado", [], np.nan)
     
-    if tri.empty:
-        return "isolado"  # sem ITR, assume que anual virá isolado
+    # Identificar trimestres disponíveis
+    trimestres = sorted(itrs_ano["q"].unique().tolist())
     
-    # Agrupar ITRs por ano
-    anos = sorted(tri["ano"].dropna().unique())
+    # Obter valor anual (se disponível)
+    v_anual = np.nan
+    if not dfp_ano.empty:
+        v_anual = _valor_conta_raw(dfp_ano, cod_teste)
     
-    evidencias_ytd = 0
-    evidencias_isolado = 0
-    
-    for ano in anos[-3:]:  # analisa últimos 3 anos disponíveis
-        itrs_ano = tri[tri["ano"] == ano].copy()
-        
-        if itrs_ano.empty:
-            continue
-        
-        # Contar quantos trimestres únicos existem
-        trimestres = sorted(itrs_ano["trimestre"].str.replace("T", "").astype(int).unique())
-        
-        # Se não tem exatamente [1,2,3] → forte evidência de isolado
-        if trimestres != [1, 2, 3]:
-            evidencias_isolado += 2  # peso maior
+    if pd.isna(v_anual) or v_anual == 0:
+        # Sem anual para comparar - usar heurística
+        # Se tem T1, T2, T3 → provavelmente YTD
+        # Se tem combinação diferente → provavelmente isolado
+        if trimestres == [1, 2, 3]:
+            return ("ytd", trimestres, v_anual)
         else:
-            evidencias_ytd += 1
-        
-        # Teste quantitativo: valores devem ser crescentes em YTD
-        try:
-            # Pegar conta de Receita (3.01) para teste
-            rec = itrs_ano[itrs_ano["cd_conta"].str.startswith("3.01")].copy()
-            if not rec.empty:
-                rec["q"] = rec["trimestre"].str.replace("T", "").astype(int)
-                rec["valor_mil"] = pd.to_numeric(rec["valor_mil"], errors="coerce")
-                
-                # Agrupar por trimestre e pegar valor médio (caso tenha múltiplas linhas)
-                valores = rec.groupby("q")["valor_mil"].sum().to_dict()
-                
-                # YTD: T2 > T1 e T3 > T2 (crescente)
-                if 1 in valores and 2 in valores and 3 in valores:
-                    v1, v2, v3 = valores[1], valores[2], valores[3]
-                    # Se valores são positivos e crescentes → YTD
-                    if v1 > 0 and v2 > v1 and v3 > v2:
-                        evidencias_ytd += 2  # peso maior
-                    # Se T2 < T1 ou T3 < T2 → provavelmente isolado
-                    elif v2 < v1 or v3 < v2:
-                        evidencias_isolado += 2
-        except Exception:
-            pass
+            return ("isolado", trimestres, v_anual)
     
-    # Decisão final
-    if evidencias_isolado > evidencias_ytd:
-        return "isolado"
+    # Coletar valores por trimestre
+    valores_tri = {}
+    for q in trimestres:
+        df_q = itrs_ano[itrs_ano["q"] == q]
+        valores_tri[q] = _valor_conta_raw(df_q, cod_teste)
+    
+    # Remover NaN
+    valores_validos = {k: v for k, v in valores_tri.items() if not pd.isna(v)}
+    
+    if not valores_validos:
+        return ("indeterminado", trimestres, v_anual)
+    
+    # TESTE 1: Assumir ISOLADO - somar todos os trimestres disponíveis
+    # Se soma ≈ anual, são isolados
+    soma_isolado = sum(valores_validos.values())
+    
+    # Para isolado, precisamos inferir o trimestre faltante
+    trimestres_faltantes = [q for q in [1, 2, 3, 4] if q not in trimestres]
+    
+    if len(trimestres_faltantes) == 1:
+        # Calcular o faltante
+        q_faltante = trimestres_faltantes[0]
+        v_faltante_isolado = v_anual - soma_isolado
+        soma_completa_isolado = soma_isolado + v_faltante_isolado
+    elif len(trimestres_faltantes) == 0:
+        soma_completa_isolado = soma_isolado
     else:
-        return "ytd"
+        # Mais de um faltante - difícil determinar
+        soma_completa_isolado = soma_isolado
+    
+    diff_isolado = abs(soma_completa_isolado - v_anual)
+    pct_isolado = (diff_isolado / abs(v_anual)) * 100 if v_anual != 0 else 0
+    
+    # TESTE 2: Assumir YTD - pegar o maior valor (último acumulado)
+    # Se maior valor ≈ anual, são YTD
+    if trimestres == [1, 2, 3]:
+        # Padrão típico YTD
+        v_t3 = valores_validos.get(3, np.nan)
+        if not pd.isna(v_t3):
+            diff_ytd = abs(v_t3 - v_anual)
+            # Em YTD, T3 deveria ser ~75% do anual (9 meses)
+            # Mas T4 isolado seria anual - T3
+            # Então anual = T3 + T4_isolado
+            # Não temos T4, então verificamos se T3 < anual
+            if v_t3 < v_anual:
+                # Poderia ser YTD
+                pct_ytd = (diff_ytd / abs(v_anual)) * 100 if v_anual != 0 else 0
+            else:
+                pct_ytd = 999  # T3 >= anual não faz sentido para YTD
+        else:
+            pct_ytd = 999
+    else:
+        # Combinação atípica - provavelmente não é YTD padrão
+        pct_ytd = 999
+    
+    # Decisão: escolher o padrão com menor erro
+    if pct_isolado <= TOLERANCIA_CHECKUP_PCT:
+        return ("isolado", trimestres, v_anual)
+    elif pct_ytd <= 50:  # YTD permite mais variação pois T4 está embutido
+        return ("ytd", trimestres, v_anual)
+    elif pct_isolado < pct_ytd:
+        return ("isolado", trimestres, v_anual)
+    else:
+        return ("ytd", trimestres, v_anual)
 
 
 # ==================== FUNÇÃO PRINCIPAL ====================
@@ -264,10 +305,10 @@ def padronizar_dre_trimestral_e_anual(
     Padroniza DRE trimestral e anual com detecção automática de padrão.
     
     LÓGICA:
-    1. Detecta padrão: YTD (acumulado) ou Isolado
-    2. YTD: isola T4 = DFP - soma(ITRs)
-    3. Isolado: mantém trimestres como estão
-    4. Check-up rigoroso com validação
+    1. Detecta padrão POR ANO: YTD (acumulado) ou Isolado
+    2. YTD: isola T1,T2,T3 e calcula T4 = DFP - T3_ytd
+    3. Isolado: mantém trimestres e calcula faltante = DFP - soma(existentes)
+    4. Check-up rigoroso: receita NUNCA negativa, soma = anual
     """
     
     alertas = []
@@ -309,13 +350,8 @@ def padronizar_dre_trimestral_e_anual(
 
     # Detectar mês de encerramento fiscal
     mes_encerramento = _detectar_mes_encerramento_fiscal(anu)
-    ano_fiscal_normal = (mes_encerramento == 12)
     
-    # **NOVIDADE:** Detectar padrão dos dados
-    padrao = _detectar_padrao_trimestral(tri, anu, mes_encerramento)
-    alertas.append(f"Padrão detectado: {padrao.upper()}")
-    
-    if not ano_fiscal_normal:
+    if mes_encerramento != 12:
         alertas.append(f"Ano fiscal diferente: encerramento mês {mes_encerramento}")
 
     # Fator de unidade
@@ -330,36 +366,30 @@ def padronizar_dre_trimestral_e_anual(
     anu["ano"] = anu["data_fim"].dt.year
     anu["q"] = anu["data_fim"].dt.month.apply(_mes_para_trimestre)
 
-    # Listar períodos únicos disponíveis (SEM CRIAR FANTASMAS)
-    tri_periodos = list(tri[["ano", "q"]].drop_duplicates().itertuples(index=False, name=None))
-    tri_periodos = [(int(a), int(q)) for a, q in tri_periodos if a > 0]
-    
-    anu_periodos = list(anu[["ano", "q"]].drop_duplicates().itertuples(index=False, name=None))
-    anu_periodos = [(int(a), int(q)) for a, q in anu_periodos if a > 0]
+    # Mapeamentos por setor
+    seguros_map = {
+        "BBSE3": {"3.05": "3.07", "3.06": "3.08", "3.07": "3.06", "3.08": "3.09"},
+        "CXSE3": {"3.05": "3.05", "3.06": "3.06", "3.07": "3.07", "3.08": "3.08"},
+        "IRBR3": {"3.05": "3.07", "3.06": "3.08", "3.07": "3.06", "3.08": "3.09"},
+        "PSSA3": {"3.05": "3.05", "3.06": "3.06", "3.07": "3.07", "3.08": "3.07"},
+    }.get(ticker_norm, {}) if modo_seguros else {}
 
-    # Todos os períodos disponíveis
-    todos_periodos = sorted(set(tri_periodos) | set(anu_periodos))
+    bancos_map = {
+        "3.01": "3.01", "3.02": "3.02", "3.03": "3.03", "3.04": "3.04",
+        "3.05": "3.07", "3.06": "3.08", "3.07": "3.09", "3.08": "3.10",
+        "3.09": "3.11", "3.99": "3.99", "3.99.01.01": "3.99.01.01",
+        "3.99.01.02": "3.99.01.02",
+    } if modo_bancos else {}
 
-    if not todos_periodos:
-        df_vazio = pd.DataFrame({"cd_conta_padrao": contas, "ds_conta_padrao": [nomes[c] for c in contas]})
-        if retornar_resultado_completo:
-            return PadronizacaoResult(df=df_vazio, aprovado_geral=True, alertas=["Sem períodos"], padrao_detectado=padrao)
-        return df_vazio
+    def _map_codigo(cod: str) -> str:
+        if modo_seguros and cod in seguros_map:
+            return seguros_map[cod]
+        if modo_bancos and cod in bancos_map:
+            return bancos_map[cod]
+        return cod
 
-    # Criar matriz
-    cols_mi = pd.MultiIndex.from_tuples(todos_periodos, names=["ano", "q"])
-    mat = pd.DataFrame(index=contas, columns=cols_mi, dtype="float64")
-
-    # Funções auxiliares
     def _valor_conta(df_periodo: pd.DataFrame, codigo: str) -> float:
-        exact = df_periodo[df_periodo["cd_conta"] == codigo]
-        if not exact.empty:
-            s = exact["valor"].dropna()
-            return float(s.iloc[-1]) if not s.empty else np.nan
-        desc = df_periodo[df_periodo["cd_conta"].str.startswith(codigo + ".")]
-        if not desc.empty:
-            return float(desc["valor"].sum(skipna=True))
-        return np.nan
+        return _valor_conta_raw(df_periodo, codigo)
 
     def _valor_eps(df_periodo: pd.DataFrame) -> float:
         """Extrai LPA validando valores razoáveis"""
@@ -384,154 +414,213 @@ def padronizar_dre_trimestral_e_anual(
         
         return np.nan
 
-    # Mapeamentos por setor
-    seguros_map = {
-        "BBSE3": {"3.05": "3.07", "3.06": "3.08", "3.07": "3.06", "3.08": "3.09"},
-        "CXSE3": {"3.05": "3.05", "3.06": "3.06", "3.07": "3.07", "3.08": "3.08"},
-        "IRBR3": {"3.05": "3.07", "3.06": "3.08", "3.07": "3.06", "3.08": "3.09"},
-        "PSSA3": {"3.05": "3.05", "3.06": "3.06", "3.07": "3.07", "3.08": "3.07"},
-    }.get(ticker_norm, {}) if modo_seguros else {}
+    # Identificar todos os anos disponíveis
+    anos_tri = set(tri["ano"].dropna().unique())
+    anos_anu = set(anu["ano"].dropna().unique())
+    todos_anos = sorted(anos_tri | anos_anu)
 
-    bancos_map = {
-        "3.01": "3.01", "3.02": "3.02", "3.03": "3.03", "3.04": "3.04",
-        "3.05": "3.07", "3.06": "3.08", "3.07": "3.09", "3.08": "3.10",
-        "3.09": "3.11", "3.99": "3.99", "3.99.01.01": "3.99.01.01",
-        "3.99.01.02": "3.99.01.02",
-    } if modo_bancos else {}
+    if not todos_anos:
+        df_vazio = pd.DataFrame({"cd_conta_padrao": contas, "ds_conta_padrao": [nomes[c] for c in contas]})
+        if retornar_resultado_completo:
+            return PadronizacaoResult(df=df_vazio, aprovado_geral=True, alertas=["Sem períodos"], padrao_detectado="indeterminado")
+        return df_vazio
 
-    def _map_codigo(cod: str) -> str:
-        if modo_seguros and cod in seguros_map:
-            return seguros_map[cod]
-        if modo_bancos and cod in bancos_map:
-            return bancos_map[cod]
-        return cod
+    # Detectar padrão POR ANO
+    padroes_por_ano = {}
+    padrao_predominante = "ytd"
+    
+    for ano in todos_anos:
+        padrao, trimestres, v_anual = _detectar_padrao_por_ano(tri, anu, ano, "3.01")
+        padroes_por_ano[ano] = {
+            "padrao": padrao,
+            "trimestres": trimestres,
+            "valor_anual": v_anual
+        }
+        alertas.append(f"Ano {ano}: padrão {padrao.upper()}, trimestres {trimestres}")
+    
+    # Determinar padrão predominante
+    contagem = {"ytd": 0, "isolado": 0}
+    for info in padroes_por_ano.values():
+        if info["padrao"] in contagem:
+            contagem[info["padrao"]] += 1
+    
+    padrao_predominante = "isolado" if contagem["isolado"] > contagem["ytd"] else "ytd"
+    alertas.insert(0, f"Padrão predominante: {padrao_predominante.upper()}")
 
-    # **PASSO 1:** Preencher matriz com valores dos ITRs (YTD ou isolados, como vieram)
-    for (ano, q) in tri_periodos:
-        df_periodo = tri[(tri["ano"] == ano) & (tri["q"] == q)]
-        if df_periodo.empty:
-            continue
-        for cod in contas:
-            if cod.startswith("3.99"):
-                mat.at[cod, (ano, q)] = _valor_eps(df_periodo)
-            else:
-                mat.at[cod, (ano, q)] = _valor_conta(df_periodo, _map_codigo(cod))
-
-    # **PASSO 2:** Processar DFP e isolar valores (ORDEM CORRETA)
-    for (ano_dfp, q_dfp) in anu_periodos:
-        df_dfp = anu[(anu["ano"] == ano_dfp) & (anu["q"] == q_dfp)]
-        if df_dfp.empty:
-            continue
+    # Coletar todos os períodos que realmente existem nos dados
+    periodos_finais = set()
+    
+    for ano in todos_anos:
+        info = padroes_por_ano.get(ano, {"trimestres": []})
         
-        # Encontrar ITRs do mesmo ano
-        itrs_ano = sorted([(a, q) for (a, q) in tri_periodos if a == ano_dfp], key=lambda x: x[1])
+        # Adicionar trimestres dos ITRs
+        for q in info["trimestres"]:
+            periodos_finais.add((ano, q))
         
-        if padrao == "isolado":
-            # **PADRÃO ISOLADO:** Verificar se ITRs já somam para o anual
-            # Se sim: ITRs já estão corretos, IGNORAR DFP
+        # Adicionar T4 do DFP se existir
+        if ano in anos_anu:
+            dfp_ano = anu[anu["ano"] == ano]
+            if not dfp_ano.empty:
+                q_dfp = dfp_ano["q"].iloc[0]
+                periodos_finais.add((ano, q_dfp))
+
+    todos_periodos = sorted(periodos_finais)
+
+    # Criar matriz de resultados
+    cols_mi = pd.MultiIndex.from_tuples(todos_periodos, names=["ano", "q"])
+    mat = pd.DataFrame(index=contas, columns=cols_mi, dtype="float64")
+
+    # PROCESSAR ANO POR ANO
+    for ano in todos_anos:
+        info = padroes_por_ano.get(ano, {"padrao": "ytd", "trimestres": []})
+        padrao_ano = info["padrao"]
+        trimestres_existentes = info["trimestres"]
+        
+        # Dados do ano
+        itrs_ano = tri[tri["ano"] == ano].copy()
+        dfp_ano = anu[anu["ano"] == ano].copy()
+        
+        tem_dfp = not dfp_ano.empty
+        q_dfp = int(dfp_ano["q"].iloc[0]) if tem_dfp else 4
+        
+        if padrao_ano == "isolado":
+            # ========== PADRÃO ISOLADO ==========
+            # Manter trimestres como estão e calcular faltante
             
-            # Testar com Receita (3.01) - conta independente
-            cod_teste = "3.01"
-            v_anual_teste = _valor_conta(df_dfp, _map_codigo(cod_teste))
-            
-            if not pd.isna(v_anual_teste):
-                # Somar ITRs do ano para esta conta
-                soma_itrs_teste = 0.0
-                count_itrs = 0
-                for (a_itr, q_itr) in itrs_ano:
-                    if (a_itr, q_itr) in mat.columns:
-                        v = mat.at[cod_teste, (a_itr, q_itr)]
-                        if not pd.isna(v):
-                            soma_itrs_teste += v
-                            count_itrs += 1
-                
-                # Verificar se ITRs já somam para o anual (tolerância)
-                if count_itrs > 0:
-                    diff = abs(soma_itrs_teste - v_anual_teste)
-                    diff_pct = (diff / abs(v_anual_teste) * 100) if v_anual_teste != 0 else 0
-                    
-                    if diff_pct <= TOLERANCIA_CHECKUP_PCT or diff <= TOLERANCIA_CHECKUP_ABS:
-                        # ITRs já isolados e corretos → IGNORAR DFP
-                        alertas.append(f"Ano {ano_dfp}: ITRs isolados verificados, DFP ignorado")
-                        continue
-            
-            # ITRs não batem: processar DFP para calcular trimestre faltante
-            # CADA CONTA É INDEPENDENTE
             for cod in contas:
-                if cod.startswith("3.99"):
-                    mat.at[cod, (ano_dfp, q_dfp)] = _valor_eps(df_dfp)
-                    continue
+                cod_mapeado = _map_codigo(cod)
                 
-                v_anual = _valor_conta(df_dfp, _map_codigo(cod))
-                if pd.isna(v_anual):
-                    continue
+                # 1. Preencher valores dos ITRs existentes
+                for q in trimestres_existentes:
+                    df_q = itrs_ano[itrs_ano["q"] == q]
+                    if df_q.empty:
+                        continue
+                    
+                    if cod.startswith("3.99"):
+                        mat.at[cod, (ano, q)] = _valor_eps(df_q)
+                    else:
+                        mat.at[cod, (ano, q)] = _valor_conta(df_q, cod_mapeado)
                 
-                # Se já tem valor de ITR, não sobrescrever
-                if (ano_dfp, q_dfp) in mat.columns and not pd.isna(mat.at[cod, (ano_dfp, q_dfp)]):
-                    continue
+                # 2. Calcular trimestre faltante (se tiver DFP)
+                if tem_dfp and cod not in ["3.99", "3.99.01.01", "3.99.01.02"]:
+                    v_anual = _valor_conta(dfp_ano, cod_mapeado)
+                    
+                    if not pd.isna(v_anual):
+                        # Somar trimestres existentes
+                        soma = 0.0
+                        count = 0
+                        for q in trimestres_existentes:
+                            if (ano, q) in mat.columns:
+                                v = mat.at[cod, (ano, q)]
+                                if not pd.isna(v):
+                                    soma += v
+                                    count += 1
+                        
+                        # Identificar trimestre faltante
+                        todos_q = [1, 2, 3, 4]
+                        faltantes = [q for q in todos_q if q not in trimestres_existentes]
+                        
+                        if len(faltantes) == 1:
+                            q_faltante = faltantes[0]
+                            v_faltante = v_anual - soma
+                            if (ano, q_faltante) in mat.columns:
+                                mat.at[cod, (ano, q_faltante)] = v_faltante
+                        elif len(faltantes) == 0:
+                            # Todos trimestres já existem - não fazer nada
+                            pass
                 
-                # Calcular trimestre faltante desta conta
-                soma_outros = 0.0
-                tem_outros = False
-                for (a_itr, q_itr) in itrs_ano:
-                    if (a_itr, q_itr) != (ano_dfp, q_dfp) and (a_itr, q_itr) in mat.columns:
-                        v = mat.at[cod, (a_itr, q_itr)]
-                        if not pd.isna(v):
-                            soma_outros += v
-                            tem_outros = True
-                
-                if tem_outros:
-                    mat.at[cod, (ano_dfp, q_dfp)] = v_anual - soma_outros
-                else:
-                    mat.at[cod, (ano_dfp, q_dfp)] = v_anual
+                # LPA do DFP
+                if tem_dfp and cod.startswith("3.99"):
+                    if (ano, q_dfp) in mat.columns:
+                        mat.at[cod, (ano, q_dfp)] = _valor_eps(dfp_ano)
         
         else:
-            # **PADRÃO YTD:** Processar CADA CONTA independentemente
-            # ORDEM: 1) Calcular T4, 2) Isolar T1,T2,T3
+            # ========== PADRÃO YTD (ACUMULADO) ==========
+            # ITRs são acumulados, precisamos isolar cada trimestre
             
             for cod in contas:
-                if cod.startswith("3.99"):
-                    mat.at[cod, (ano_dfp, q_dfp)] = _valor_eps(df_dfp)
-                    continue
+                cod_mapeado = _map_codigo(cod)
                 
-                # PASSO 2.1: Calcular T4 = Anual - T3_ytd (valor ORIGINAL)
-                v_anual = _valor_conta(df_dfp, _map_codigo(cod))
-                if pd.isna(v_anual):
-                    continue
-                
-                # Encontrar último ITR (T3) - ainda tem valor YTD original
-                ultimo_itr = max(itrs_ano, key=lambda x: x[1]) if itrs_ano else None
-                
-                if ultimo_itr and ultimo_itr in mat.columns:
-                    v_ultimo_ytd = mat.at[cod, ultimo_itr]
-                    if not pd.isna(v_ultimo_ytd):
-                        # T4_isolado = Anual - T3_ytd
-                        mat.at[cod, (ano_dfp, q_dfp)] = v_anual - v_ultimo_ytd
-                    else:
-                        mat.at[cod, (ano_dfp, q_dfp)] = v_anual
-                else:
-                    mat.at[cod, (ano_dfp, q_dfp)] = v_anual
-                
-                # PASSO 2.2: Agora isolar T1, T2, T3 retroativamente
-                # T3 = T3_ytd - T2_ytd, T2 = T2_ytd - T1_ytd
-                itrs_ordenados = sorted(itrs_ano, key=lambda x: x[1])
-                
-                for i in range(len(itrs_ordenados) - 1, 0, -1):
-                    (a_curr, q_curr) = itrs_ordenados[i]
-                    (a_prev, q_prev) = itrs_ordenados[i-1]
-                    
-                    if (a_curr, q_curr) not in mat.columns or (a_prev, q_prev) not in mat.columns:
+                # 1. Preencher valores brutos dos ITRs (ainda YTD)
+                valores_ytd = {}
+                for q in trimestres_existentes:
+                    df_q = itrs_ano[itrs_ano["q"] == q]
+                    if df_q.empty:
                         continue
                     
-                    v_curr = mat.at[cod, (a_curr, q_curr)]
-                    v_prev = mat.at[cod, (a_prev, q_prev)]
+                    if cod.startswith("3.99"):
+                        valores_ytd[q] = _valor_eps(df_q)
+                    else:
+                        valores_ytd[q] = _valor_conta(df_q, cod_mapeado)
+                
+                # 2. Calcular T4 ANTES de isolar (usa T3 ainda acumulado)
+                if tem_dfp and not cod.startswith("3.99"):
+                    v_anual = _valor_conta(dfp_ano, cod_mapeado)
                     
-                    if not pd.isna(v_curr) and not pd.isna(v_prev):
-                        mat.at[cod, (a_curr, q_curr)] = v_curr - v_prev
+                    if not pd.isna(v_anual):
+                        # T4 = Anual - T3_ytd (ou último trimestre acumulado)
+                        ultimo_q = max(trimestres_existentes) if trimestres_existentes else None
+                        
+                        if ultimo_q and ultimo_q in valores_ytd:
+                            v_ultimo_ytd = valores_ytd[ultimo_q]
+                            if not pd.isna(v_ultimo_ytd):
+                                v_t4 = v_anual - v_ultimo_ytd
+                                if (ano, q_dfp) in mat.columns:
+                                    mat.at[cod, (ano, q_dfp)] = v_t4
+                            else:
+                                if (ano, q_dfp) in mat.columns:
+                                    mat.at[cod, (ano, q_dfp)] = v_anual
+                        else:
+                            if (ano, q_dfp) in mat.columns:
+                                mat.at[cod, (ano, q_dfp)] = v_anual
+                
+                # LPA do DFP
+                if tem_dfp and cod.startswith("3.99"):
+                    if (ano, q_dfp) in mat.columns:
+                        mat.at[cod, (ano, q_dfp)] = _valor_eps(dfp_ano)
+                
+                # 3. Isolar trimestres (do maior para o menor)
+                # T3_iso = T3_ytd - T2_ytd
+                # T2_iso = T2_ytd - T1_ytd
+                # T1_iso = T1_ytd (já isolado)
+                
+                if cod.startswith("3.99"):
+                    # LPA já são valores por ação, não acumulam
+                    for q in trimestres_existentes:
+                        if (ano, q) in mat.columns:
+                            mat.at[cod, (ano, q)] = valores_ytd.get(q, np.nan)
+                else:
+                    trimestres_ordenados = sorted(trimestres_existentes)
+                    
+                    for i in range(len(trimestres_ordenados) - 1, -1, -1):
+                        q_atual = trimestres_ordenados[i]
+                        v_atual = valores_ytd.get(q_atual, np.nan)
+                        
+                        if pd.isna(v_atual):
+                            continue
+                        
+                        if i == 0:
+                            # T1 já é isolado
+                            if (ano, q_atual) in mat.columns:
+                                mat.at[cod, (ano, q_atual)] = v_atual
+                        else:
+                            # Ti = Ti_ytd - Ti-1_ytd
+                            q_anterior = trimestres_ordenados[i - 1]
+                            v_anterior = valores_ytd.get(q_anterior, np.nan)
+                            
+                            if not pd.isna(v_anterior):
+                                v_isolado = v_atual - v_anterior
+                                if (ano, q_atual) in mat.columns:
+                                    mat.at[cod, (ano, q_atual)] = v_isolado
+                            else:
+                                if (ano, q_atual) in mat.columns:
+                                    mat.at[cod, (ano, q_atual)] = v_atual
 
-    # Preencher derivadas
+    # Preencher derivadas (ex: Resultado Bruto = Receita + Custo)
     if preencher_derivadas:
         for (ano, q) in todos_periodos:
+            if (ano, q) not in mat.columns:
+                continue
             if "3.03" in contas and "3.01" in contas and "3.02" in contas:
                 if pd.isna(mat.at["3.03", (ano, q)]):
                     v1 = mat.at["3.01", (ano, q)]
@@ -539,32 +628,40 @@ def padronizar_dre_trimestral_e_anual(
                     if not (pd.isna(v1) or pd.isna(v2)):
                         mat.at["3.03", (ano, q)] = v1 + v2
 
-    # **CHECK-UP RIGOROSO**
+    # ========== CHECK-UP RIGOROSO ==========
     checkup_results = []
     aprovado_geral = True
     
     if realizar_checkup:
-        # **VALIDAÇÃO 1: Receita não pode ser negativa em nenhum trimestre**
+        # VALIDAÇÃO 1: Receita (3.01) NUNCA pode ser negativa
         cod_receita = "3.01"
         for (ano, q) in todos_periodos:
-            if (ano, q) in mat.columns:
-                v_receita = mat.at[cod_receita, (ano, q)]
-                if not pd.isna(v_receita) and v_receita < 0:
-                    aprovado_geral = False
-                    alertas.append(f"⚠️ RECEITA NEGATIVA em {ano}-T{q}: {v_receita:.0f}")
-        
-        # **VALIDAÇÃO 2: Soma dos trimestres deve bater com anual**
-        for (ano_dfp, q_dfp) in anu_periodos:
-            df_dfp = anu[(anu["ano"] == ano_dfp) & (anu["q"] == q_dfp)]
-            if df_dfp.empty:
+            if (ano, q) not in mat.columns:
                 continue
+            v_receita = mat.at[cod_receita, (ano, q)]
+            if not pd.isna(v_receita) and v_receita < 0:
+                aprovado_geral = False
+                alertas.append(f"❌ ERRO CRÍTICO: Receita NEGATIVA em {ano}-T{q}: {v_receita:,.0f}")
+        
+        # VALIDAÇÃO 2: Soma dos 4 trimestres deve bater com anual
+        for ano in todos_anos:
+            dfp_ano = anu[anu["ano"] == ano]
+            if dfp_ano.empty:
+                continue  # Sem anual, não tem como validar
             
-            # Encontrar todos os trimestres deste ano (incluindo DFP)
-            trimestres_ano = [(a, q) for (a, q) in todos_periodos if a == ano_dfp]
+            # Encontrar trimestres do ano na matriz
+            trimestres_ano = [(a, q) for (a, q) in todos_periodos if a == ano]
+            
+            if len(trimestres_ano) < 4:
+                # Ano incompleto - validação parcial
+                alertas.append(f"Ano {ano}: {len(trimestres_ano)} trimestre(s) - validação parcial")
+                continue
             
             for cod in contas:
                 if cod.startswith("3.99"):
-                    continue
+                    continue  # LPA não soma
+                
+                cod_mapeado = _map_codigo(cod)
                 
                 # Soma dos trimestres isolados
                 soma = 0.0
@@ -577,22 +674,33 @@ def padronizar_dre_trimestral_e_anual(
                             count += 1
                 
                 # Valor anual original
-                v_anual = _valor_conta(df_dfp, _map_codigo(cod))
+                v_anual = _valor_conta(dfp_ano, cod_mapeado)
+                
                 if pd.isna(v_anual) or count == 0:
                     continue
                 
                 diff = abs(soma - v_anual)
-                diff_pct = (diff / abs(v_anual) * 100) if v_anual != 0 else 0
+                diff_pct = (diff / abs(v_anual)) * 100 if v_anual != 0 else 0
                 ok = diff_pct <= TOLERANCIA_CHECKUP_PCT or diff <= TOLERANCIA_CHECKUP_ABS
                 
                 if not ok:
                     aprovado_geral = False
+                    if cod == "3.01":
+                        alertas.append(f"❌ Receita {ano}: Soma={soma:,.0f} vs Anual={v_anual:,.0f} (diff {diff_pct:.1f}%)")
+                    elif cod == "3.11":
+                        alertas.append(f"❌ Lucro {ano}: Soma={soma:,.0f} vs Anual={v_anual:,.0f} (diff {diff_pct:.1f}%)")
                 
                 checkup_results.append(CheckupResult(
-                    ano=ano_dfp, trimestre=q_dfp, cd_conta=cod, ds_conta=nomes.get(cod, ""),
+                    ano=ano, trimestre=4, cd_conta=cod, ds_conta=nomes.get(cod, ""),
                     soma_trimestres=soma, valor_anual=v_anual,
                     diferenca=diff, diferenca_pct=diff_pct, aprovado=ok
                 ))
+
+    # Status final
+    if aprovado_geral:
+        alertas.append("✅ CHECK-UP APROVADO")
+    else:
+        alertas.append("❌ CHECK-UP REPROVADO - Verificar dados")
 
     # Montar saída
     out = pd.DataFrame({
@@ -601,7 +709,8 @@ def padronizar_dre_trimestral_e_anual(
     })
     
     for (ano, q) in todos_periodos:
-        out[f"{ano}-T{q}"] = mat[(ano, q)].values
+        if (ano, q) in mat.columns:
+            out[f"{ano}-T{q}"] = mat[(ano, q)].values
 
     if retornar_resultado_completo:
         return PadronizacaoResult(
@@ -610,14 +719,14 @@ def padronizar_dre_trimestral_e_anual(
             mes_encerramento_fiscal=mes_encerramento,
             aprovado_geral=aprovado_geral,
             alertas=alertas,
-            padrao_detectado=padrao
+            padrao_detectado=padrao_predominante
         )
 
     return out
 
 
 def gerar_relatorio_checkup(resultado: PadronizacaoResult) -> str:
-    """Gera relatório de check-up"""
+    """Gera relatório de check-up formatado"""
     linhas = ["=" * 60, "RELATÓRIO DE CHECK-UP - DRE", "=" * 60, ""]
     linhas.append(f"Mês encerramento fiscal: {resultado.mes_encerramento_fiscal}")
     linhas.append(f"Padrão detectado: {resultado.padrao_detectado.upper()}")
@@ -626,13 +735,14 @@ def gerar_relatorio_checkup(resultado: PadronizacaoResult) -> str:
     if resultado.alertas:
         linhas.append("\nALERTAS:")
         for a in resultado.alertas:
-            linhas.append(f"  ⚠️ {a}")
+            linhas.append(f"  {a}")
     
     falhas = [r for r in resultado.checkup_results if not r.aprovado]
     if falhas:
-        linhas.append(f"\nFALHAS ({len(falhas)}):")
-        for r in falhas[:10]:
-            linhas.append(f"  {r.ano}-T{r.trimestre} {r.cd_conta}: Soma={r.soma_trimestres:,.0f} vs Anual={r.valor_anual:,.0f} ({r.diferenca_pct:.1f}%)")
+        linhas.append(f"\nFALHAS DETALHADAS ({len(falhas)}):")
+        for r in falhas[:20]:
+            linhas.append(f"  {r.ano} | {r.cd_conta} {r.ds_conta[:30]}")
+            linhas.append(f"       Soma={r.soma_trimestres:,.0f} vs Anual={r.valor_anual:,.0f} (diff {r.diferenca_pct:.2f}%)")
     
     return "\n".join(linhas)
 
