@@ -2,8 +2,11 @@ name: Normalizar Balancos (todas as pastas)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "15 3 * * *"
+  # ⚠️ SCHEDULE DESABILITADO: Use workflows individuais (dre, bpa_bpp, dfc)
+  # Este workflow serve como backup/emergência para processar TUDO de uma vez
+  # Para habilitar, descomente as 2 linhas abaixo:
+  # schedule:
+  #   - cron: "45 3 * * *"
   push:
     paths:
       - "balancos/**"
@@ -26,7 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # necessário para rebase funcionar bem
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -38,7 +41,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas numpy requests
 
-      - name: Run normalization
+      - name: Run normalization (ALL)
         run: |
           export PYTHONPATH="$GITHUB_WORKSPACE"
           python src/normalize_all.py
@@ -55,10 +58,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Normalização DRE padronizada (todas as pastas)"
+          git commit -m "Normalização COMPLETA (DRE+BPA+BPP)"
 
-          # pega mudanças remotas e reaplica seu commit por cima (evita rejected/fetch first)
           git pull --rebase origin main
-
-          # tenta push; se houver corrida com outro job, tenta mais uma vez
           git push origin main || (git pull --rebase origin main && git push origin main)
