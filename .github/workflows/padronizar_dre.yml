@@ -66,6 +66,28 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add balancos/**/dre_padronizado.csv
-          git diff --quiet && git diff --staged --quiet || git commit -m "DRE padronizado - $(date +'%Y-%m-%d')"
+
+          FILES=$(find balancos -type f -name "dre_padronizado.csv" 2>/dev/null || true)
+
+          if [ -z "$FILES" ]; then
+            echo "Nenhum dre_padronizado.csv foi gerado. Nada para commitar."
+            exit 0
+          fi
+
+          echo "Arquivos encontrados:"
+          echo "$FILES"
+
+          # adiciona somente os arquivos gerados
+          while IFS= read -r f; do
+            [ -n "$f" ] && git add "$f"
+          done <<< "$FILES"
+
+          # commita apenas se houver mudanças staged
+          git diff --staged --quiet && {
+            echo "Sem alterações para commitar."
+            exit 0
+          }
+
+          git commit -m "DRE padronizado - $(date +'%Y-%m-%d')"
           git push
+
