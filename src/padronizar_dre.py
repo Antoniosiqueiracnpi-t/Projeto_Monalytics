@@ -172,28 +172,23 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> F
         avg_quarters = 0
 
     # 3. DECISÃO: ano fiscal padrão ou irregular?
+    # CRITÉRIO DEFINITIVO: baseado APENAS no mês de encerramento anual
+    # - Encerra em dezembro (mês 12) = ano fiscal PADRÃO
+    # - Encerra em outro mês = ano fiscal IRREGULAR
     has_all_quarters = {"T1", "T2", "T3", "T4"}.issubset(all_quarters)
     is_december_fiscal = (most_common_anu_month == 12)
     
-    # Critério DEFINITIVO: só é padrão se TODOS os critérios forem atendidos
-    is_standard = (
-        is_december_fiscal and 
-        has_all_quarters and 
-        avg_quarters >= 3.5  # Média de pelo menos 3.5 trimestres por ano
-    )
+    # Ano fiscal padrão = encerra em dezembro (independente de já ter T4)
+    is_standard = is_december_fiscal
     
     # Descrição para log
     if is_standard:
-        description = "Ano fiscal padrão (jan-dez)"
+        if has_all_quarters:
+            description = "Ano fiscal padrão (jan-dez) com T1-T4 completos"
+        else:
+            description = f"Ano fiscal padrão (jan-dez) - trimestres disponíveis: {sorted(all_quarters)}"
     else:
-        reasons = []
-        if not is_december_fiscal:
-            reasons.append(f"encerramento anual em mês {most_common_anu_month}")
-        if not has_all_quarters:
-            reasons.append(f"trimestres encontrados: {sorted(all_quarters)}")
-        if avg_quarters < 3.5:
-            reasons.append(f"média de {avg_quarters:.1f} trimestres/ano")
-        description = f"Ano fiscal IRREGULAR ({'; '.join(reasons)})"
+        description = f"Ano fiscal IRREGULAR (encerramento em mês {most_common_anu_month}, trimestres: {sorted(all_quarters)})"
 
     return FiscalYearInfo(
         is_standard=is_standard,
