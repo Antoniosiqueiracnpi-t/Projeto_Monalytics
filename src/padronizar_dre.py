@@ -48,6 +48,20 @@ def _quarter_order(q: str) -> int:
     return {"T1": 1, "T2": 2, "T3": 3, "T4": 4}.get(q, 99)
 
 
+def _normalize_value(v: float, decimals: int = 3) -> float:
+    """
+    Normaliza valor numérico para evitar erros de ponto flutuante.
+    
+    Regras:
+    - Arredonda para 'decimals' casas decimais
+    - Valores muito pequenos (EPS): mantém precisão adequada
+    - NaN permanece NaN
+    """
+    if not np.isfinite(v):
+        return np.nan
+    return round(float(v), decimals)
+
+
 def _pick_value_for_base_code(group: pd.DataFrame, base_code: str) -> float:
     """Extrai valor para um código base, buscando conta exata ou somando filhas."""
     exact = group[group["cd_conta"] == base_code]
@@ -269,12 +283,12 @@ class PadronizadorDRE:
         return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
 
     def _extract_annual_values(self, df_anu: pd.DataFrame) -> pd.DataFrame:
-        """Extrai valores anuais para comparação no check-up."""
+        """Extrai valores anuais para comparação no check-up, incluindo EPS."""
         target_codes = [c for c, _ in DRE_PADRAO]
-        wanted_prefixes = tuple([c + "." for c in target_codes])
+        wanted_prefixes = tuple([c + "." for c in target_codes] + [EPS_CODE + "."])
 
         mask = (
-            df_anu["cd_conta"].isin(target_codes)
+            df_anu["cd_conta"].isin(target_codes + [EPS_CODE])
             | df_anu["cd_conta"].astype(str).str.startswith(wanted_prefixes)
         )
         df = df_anu[mask].copy()
@@ -285,6 +299,9 @@ class PadronizadorDRE:
             for code, _name in DRE_PADRAO:
                 v = _pick_value_for_base_code(g, code)
                 rows.append((int(ano), code, v))
+            # Incluir EPS anual
+            eps_val = _compute_eps_value(g)
+            rows.append((int(ano), EPS_CODE, eps_val))
 
         return pd.DataFrame(rows, columns=["ano", "code", "anual_val"])
 
@@ -370,6 +387,8 @@ class PadronizadorDRE:
         """
         Adiciona T4 calculado quando faltante, APENAS para empresas com ano fiscal padrão.
         Para empresas com ano fiscal irregular, NÃO adiciona trimestres artificiais.
+        
+        IMPORTANTE: Calcula T4 para TODAS as contas, incluindo EPS (3.99).
         """
         # Se ano fiscal irregular, NÃO criar trimestres artificiais
         if not fiscal_info.is_standard:
@@ -377,6 +396,9 @@ class PadronizadorDRE:
         
         anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
         out = qiso.copy()
+
+        # Lista completa de códigos: DRE_PADRAO + EPS
+        all_codes = [c for c, _ in DRE_PADRAO] + [EPS_CODE]
 
         for ano in sorted(out["ano"].unique()):
             g = out[out["ano"] == ano]
@@ -388,7 +410,7 @@ class PadronizadorDRE:
                 continue
 
             new_rows = []
-            for code, _name in DRE_PADRAO:
+            for code in all_codes:
                 a = anual_map.get((int(ano), code), np.nan)
                 if not np.isfinite(a):
                     continue
@@ -401,7 +423,10 @@ class PadronizadorDRE:
         return out
 
     def _build_horizontal(self, qiso: pd.DataFrame) -> pd.DataFrame:
-        """Constrói tabela horizontal (períodos como colunas)."""
+        """
+        Constrói tabela horizontal (períodos como colunas).
+        Aplica normalização de valores para evitar erros de ponto flutuante.
+        """
         periods = (
             qiso[["ano", "trimestre"]]
             .drop_duplicates()
@@ -423,9 +448,22 @@ class PadronizadorDRE:
         pivot = pivot.reindex(idx_codes)
         pivot.columns = col_labels
 
+        # Normalizar valores numéricos para evitar erros de ponto flutuante
+        # EPS usa 8 casas decimais, demais usam 3 casas
+        for col in col_labels:
+            for idx in pivot.index:
+                val = pivot.at[idx, col]
+                if pd.notna(val):
+                    decimals = 8 if idx == EPS_CODE else 3
+                    pivot.at[idx, col] = _normalize_value(float(val), decimals)
+
         names = {c: n for c, n in DRE_PADRAO}
         names[EPS_CODE] = EPS_LABEL
-        pivot.insert(0, "conta", [f"{c} {names.get(c, '')}".strip() for c in pivot.index])
+        
+        # Inserir código e nome da conta como colunas separadas
+        # cd_conta como string para preservar formatação (ex: 3.10 não virar 3.1)
+        pivot.insert(0, "ds_conta", [names.get(c, '') for c in pivot.index])
+        pivot.insert(0, "cd_conta", [str(c) for c in pivot.index])
 
         return pivot.reset_index(drop=True)
 
