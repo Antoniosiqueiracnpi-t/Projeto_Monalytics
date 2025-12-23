@@ -2,9 +2,9 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 
 import numpy as np
 import pandas as pd
@@ -44,49 +44,12 @@ def _ensure_numeric(s: pd.Series) -> pd.Series:
     return pd.to_numeric(s, errors="coerce").astype(float)
 
 
-def _infer_fiscal_end_month(df_anual: pd.DataFrame) -> int:
-    if df_anual is None or df_anual.empty:
-        return 12
-    dt = _to_datetime(df_anual, "data_fim").dropna()
-    if dt.empty:
-        return 12
-    return int(dt.dt.month.value_counts().index[0])
-
-
-def _quarter_end_months(fiscal_end_month: int) -> List[int]:
-    m = fiscal_end_month
-
-    def norm(x: int) -> int:
-        x = x % 12
-        return 12 if x == 0 else x
-
-    return [norm(m - 9), norm(m - 6), norm(m - 3), norm(m)]  # Q1,Q2,Q3,Q4
-
-
-def _map_trimestre_by_fiscal_month(month: int, fiscal_end_month: int) -> Optional[str]:
-    qmonths = _quarter_end_months(fiscal_end_month)
-    if month == qmonths[0]:
-        return "T1"
-    if month == qmonths[1]:
-        return "T2"
-    if month == qmonths[2]:
-        return "T3"
-    if month == qmonths[3]:
-        return "T4"
-    return None
-
-
-def _fiscal_year(dt: pd.Timestamp, fiscal_end_month: int) -> int:
-    if pd.isna(dt):
-        return -1
-    return int(dt.year if dt.month <= fiscal_end_month else dt.year + 1)
-
-
 def _quarter_order(q: str) -> int:
     return {"T1": 1, "T2": 2, "T3": 3, "T4": 4}.get(q, 99)
 
 
 def _pick_value_for_base_code(group: pd.DataFrame, base_code: str) -> float:
+    """Extrai valor para um código base, buscando conta exata ou somando filhas."""
     exact = group[group["cd_conta"] == base_code]
     if not exact.empty:
         v = _ensure_numeric(exact["valor_mil"]).sum()
@@ -153,12 +116,123 @@ def _compute_eps_value(group: pd.DataFrame) -> float:
 
 
 # ======================================================================================
+# DETECTOR DE ANO FISCAL IRREGULAR
+# ======================================================================================
+
+@dataclass
+class FiscalYearInfo:
+    """Informações sobre o padrão de ano fiscal da empresa."""
+    is_standard: bool  # True se ano fiscal = ano calendário (jan-dez)
+    fiscal_end_month: int  # Mês de encerramento fiscal (12 = padrão)
+    quarters_pattern: Set[str]  # Padrão de trimestres encontrados (ex: {"T1","T2","T3","T4"})
+    has_all_quarters: bool  # True se tem T1, T2, T3, T4
+    description: str  # Descrição para log
+
+
+def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> FiscalYearInfo:
+    """
+    Detecta o padrão de ano fiscal da empresa de forma CIRÚRGICA.
+    
+    Critérios para ano fiscal PADRÃO (calendário):
+    1. Dados anuais encerram em dezembro (mês 12)
+    2. Dados trimestrais contêm T1, T2, T3, T4 para a maioria dos anos
+    3. Meses de encerramento trimestral são: março, junho, setembro, dezembro
+    
+    Se qualquer critério falhar => empresa tem ano fiscal IRREGULAR.
+    """
+    # 1. Verificar mês de encerramento dos dados ANUAIS
+    if df_anu is not None and not df_anu.empty:
+        dt_anu = _to_datetime(df_anu, "data_fim").dropna()
+        if not dt_anu.empty:
+            anu_months = dt_anu.dt.month.value_counts()
+            most_common_anu_month = int(anu_months.index[0])
+        else:
+            most_common_anu_month = 12
+    else:
+        most_common_anu_month = 12
+
+    # 2. Verificar padrão de trimestres nos dados TRIMESTRAIS
+    if df_tri is not None and not df_tri.empty:
+        # Pegar trimestres únicos por ano
+        df_tri_copy = df_tri.copy()
+        df_tri_copy["data_fim"] = _to_datetime(df_tri_copy, "data_fim")
+        df_tri_copy = df_tri_copy.dropna(subset=["data_fim"])
+        
+        if "trimestre" in df_tri_copy.columns:
+            all_quarters = set(df_tri_copy["trimestre"].dropna().unique())
+        else:
+            all_quarters = set()
+        
+        # Verificar meses de encerramento trimestral
+        tri_months = set(df_tri_copy["data_fim"].dt.month.unique())
+        
+        # Padrão esperado para ano calendário: {3, 6, 9, 12}
+        standard_months = {3, 6, 9, 12}
+        
+        # Verificar por ano quantos trimestres existem
+        df_tri_copy["ano"] = df_tri_copy["data_fim"].dt.year
+        quarters_per_year = df_tri_copy.groupby("ano")["trimestre"].nunique()
+        avg_quarters = quarters_per_year.mean() if len(quarters_per_year) > 0 else 0
+        
+    else:
+        all_quarters = set()
+        tri_months = set()
+        avg_quarters = 0
+
+    # 3. DECISÃO: ano fiscal padrão ou irregular?
+    has_all_quarters = {"T1", "T2", "T3", "T4"}.issubset(all_quarters)
+    is_december_fiscal = (most_common_anu_month == 12)
+    is_standard_months = tri_months.issubset({3, 6, 9, 12}) and len(tri_months) >= 3
+    
+    # Critério DEFINITIVO: só é padrão se TODOS os critérios forem atendidos
+    is_standard = (
+        is_december_fiscal and 
+        has_all_quarters and 
+        avg_quarters >= 3.5  # Média de pelo menos 3.5 trimestres por ano
+    )
+    
+    # Descrição para log
+    if is_standard:
+        description = "Ano fiscal padrão (jan-dez)"
+    else:
+        reasons = []
+        if not is_december_fiscal:
+            reasons.append(f"encerramento anual em mês {most_common_anu_month}")
+        if not has_all_quarters:
+            reasons.append(f"trimestres encontrados: {sorted(all_quarters)}")
+        if avg_quarters < 3.5:
+            reasons.append(f"média de {avg_quarters:.1f} trimestres/ano")
+        description = f"Ano fiscal IRREGULAR ({'; '.join(reasons)})"
+
+    return FiscalYearInfo(
+        is_standard=is_standard,
+        fiscal_end_month=most_common_anu_month,
+        quarters_pattern=all_quarters,
+        has_all_quarters=has_all_quarters,
+        description=description
+    )
+
+
+# ======================================================================================
 # PADRONIZADOR
 # ======================================================================================
 
 @dataclass
+class CheckupResult:
+    """Resultado do check-up linha a linha."""
+    code: str
+    ano: int
+    soma_trimestral: float
+    valor_anual: float
+    diferenca: float
+    percentual_diff: float
+    status: str  # "OK", "DIVERGE", "SEM_ANUAL", "INCOMPLETO"
+
+
+@dataclass
 class PadronizadorDRE:
     pasta_balancos: Path = Path("balancos")
+    checkup_results: List[CheckupResult] = field(default_factory=list)
 
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
         pasta = self.pasta_balancos / ticker.upper().strip()
@@ -184,54 +258,73 @@ class PadronizadorDRE:
 
         return df_tri, df_anu
 
-    def _add_fiscal_labels(self, df: pd.DataFrame, fiscal_end_month: int) -> pd.DataFrame:
-        out = df.copy()
-        dt = out["data_fim"]
-        out["fiscal_year"] = dt.apply(lambda x: _fiscal_year(x, fiscal_end_month))
-        out["trimestre_fiscal"] = dt.dt.month.apply(
-            lambda m: _map_trimestre_by_fiscal_month(int(m), fiscal_end_month)
-        )
-        out = out.dropna(subset=["trimestre_fiscal"])
-        out["trimestre_fiscal"] = out["trimestre_fiscal"].astype(str)
-        return out
-
-    def _build_quarter_totals(self, df_tri_fiscal: pd.DataFrame) -> pd.DataFrame:
+    def _build_quarter_totals_standard(self, df_tri: pd.DataFrame) -> pd.DataFrame:
+        """
+        Constrói totais trimestrais para empresas com ano fiscal PADRÃO.
+        Usa ano calendário direto.
+        """
         target_codes = [c for c, _ in DRE_PADRAO]
         wanted_prefixes = tuple([c + "." for c in target_codes] + [EPS_CODE + "."])
 
         mask = (
-            df_tri_fiscal["cd_conta"].isin(target_codes + [EPS_CODE])
-            | df_tri_fiscal["cd_conta"].astype(str).str.startswith(wanted_prefixes)
+            df_tri["cd_conta"].isin(target_codes + [EPS_CODE])
+            | df_tri["cd_conta"].astype(str).str.startswith(wanted_prefixes)
         )
-        df = df_tri_fiscal[mask].copy()
-
+        df = df_tri[mask].copy()
+        df["ano"] = df["data_fim"].dt.year
+        
         rows = []
-        for (fy, tq), g in df.groupby(["fiscal_year", "trimestre_fiscal"], sort=False):
+        for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
             for code, _name in DRE_PADRAO:
                 v = _pick_value_for_base_code(g, code)
-                rows.append((int(fy), tq, code, v))
-            rows.append((int(fy), tq, EPS_CODE, _compute_eps_value(g)))
+                rows.append((int(ano), str(trimestre), code, v))
+            rows.append((int(ano), str(trimestre), EPS_CODE, _compute_eps_value(g)))
 
-        return pd.DataFrame(rows, columns=["fiscal_year", "trimestre", "code", "valor"])
+        return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
 
-    def _extract_annual_values(self, df_anu_fiscal: pd.DataFrame) -> pd.DataFrame:
+    def _build_quarter_totals_irregular(self, df_tri: pd.DataFrame) -> pd.DataFrame:
+        """
+        Constrói totais trimestrais para empresas com ano fiscal IRREGULAR.
+        Preserva os trimestres EXATAMENTE como estão nos dados originais.
+        """
+        target_codes = [c for c, _ in DRE_PADRAO]
+        wanted_prefixes = tuple([c + "." for c in target_codes] + [EPS_CODE + "."])
+
+        mask = (
+            df_tri["cd_conta"].isin(target_codes + [EPS_CODE])
+            | df_tri["cd_conta"].astype(str).str.startswith(wanted_prefixes)
+        )
+        df = df_tri[mask].copy()
+        df["ano"] = df["data_fim"].dt.year
+        
+        rows = []
+        for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
+            for code, _name in DRE_PADRAO:
+                v = _pick_value_for_base_code(g, code)
+                rows.append((int(ano), str(trimestre), code, v))
+            rows.append((int(ano), str(trimestre), EPS_CODE, _compute_eps_value(g)))
+
+        return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
+
+    def _extract_annual_values(self, df_anu: pd.DataFrame) -> pd.DataFrame:
+        """Extrai valores anuais para comparação no check-up."""
         target_codes = [c for c, _ in DRE_PADRAO]
         wanted_prefixes = tuple([c + "." for c in target_codes])
 
         mask = (
-            df_anu_fiscal["cd_conta"].isin(target_codes)
-            | df_anu_fiscal["cd_conta"].astype(str).str.startswith(wanted_prefixes)
+            df_anu["cd_conta"].isin(target_codes)
+            | df_anu["cd_conta"].astype(str).str.startswith(wanted_prefixes)
         )
-        df = df_anu_fiscal[mask].copy()
+        df = df_anu[mask].copy()
+        df["ano"] = df["data_fim"].dt.year
 
         rows = []
-        # ✅ CORREÇÃO: groupby("fiscal_year") para não retornar (fy,) tuple
-        for fy, g in df.groupby("fiscal_year", sort=False):
+        for ano, g in df.groupby("ano", sort=False):
             for code, _name in DRE_PADRAO:
                 v = _pick_value_for_base_code(g, code)
-                rows.append((int(fy), code, v))
+                rows.append((int(ano), code, v))
 
-        return pd.DataFrame(rows, columns=["fiscal_year", "code", "anual_val"])
+        return pd.DataFrame(rows, columns=["ano", "code", "anual_val"])
 
     def _detect_cumulative_years(
         self,
@@ -241,26 +334,31 @@ class PadronizadorDRE:
         ratio_threshold: float = 1.10,
     ) -> Dict[int, bool]:
         """
-        Detecta se o trimestral está acumulado (YTD) por ano fiscal usando 3.01:
+        Detecta se o trimestral está acumulado (YTD) por ano usando 3.01:
           soma(trimestres) > anual * 1.10  => provavelmente acumulado
         """
-        anual_map = anual.set_index(["fiscal_year", "code"])["anual_val"].to_dict()
+        anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
         out: Dict[int, bool] = {}
 
-        # ✅ CORREÇÃO: groupby("fiscal_year") para não retornar (fy,) tuple
-        for fy, g in qtot[qtot["code"] == base_code_for_detection].groupby("fiscal_year"):
-            a = anual_map.get((int(fy), base_code_for_detection), np.nan)
+        for ano, g in qtot[qtot["code"] == base_code_for_detection].groupby("ano"):
+            a = anual_map.get((int(ano), base_code_for_detection), np.nan)
             if not np.isfinite(a) or a == 0:
                 continue
             s = float(np.nansum(g["valor"].values))
-            out[int(fy)] = bool(np.isfinite(s) and abs(s) > abs(a) * ratio_threshold)
+            out[int(ano)] = bool(np.isfinite(s) and abs(s) > abs(a) * ratio_threshold)
 
         return out
 
-    def _to_isolated_quarters(self, qtot: pd.DataFrame, cumulative_years: Dict[int, bool]) -> pd.DataFrame:
+    def _to_isolated_quarters(
+        self, 
+        qtot: pd.DataFrame, 
+        cumulative_years: Dict[int, bool],
+        fiscal_info: FiscalYearInfo
+    ) -> pd.DataFrame:
+        """Converte dados acumulados (YTD) para trimestres isolados quando necessário."""
         out_rows = []
 
-        for (fy, code), g in qtot.groupby(["fiscal_year", "code"], sort=False):
+        for (ano, code), g in qtot.groupby(["ano", "code"], sort=False):
             g = g.copy()
             g["qord"] = g["trimestre"].apply(_quarter_order)
             g = g.sort_values("qord")
@@ -268,9 +366,15 @@ class PadronizadorDRE:
             vals = g["valor"].values.astype(float)
             qs = g["trimestre"].tolist()
 
-            if cumulative_years.get(int(fy), False) and code != EPS_CODE:
+            # Só converte se:
+            # 1. Ano detectado como acumulado
+            # 2. Não é EPS (EPS nunca é acumulado)
+            # 3. Empresa tem ano fiscal padrão (para irregular, preserva como está)
+            if (cumulative_years.get(int(ano), False) and 
+                code != EPS_CODE and 
+                fiscal_info.is_standard):
                 qords = g["qord"].values
-                # só converte se for 1..k (sem gaps)
+                # só converte se for sequência contínua (1,2,3... ou 1,2,3,4)
                 if len(qords) >= 2 and np.array_equal(qords, np.arange(1, len(qords) + 1)):
                     iso = []
                     prev = None
@@ -280,16 +384,29 @@ class PadronizadorDRE:
                     vals = np.array(iso, dtype=float)
 
             for tq, v in zip(qs, vals):
-                out_rows.append((int(fy), tq, code, float(v) if np.isfinite(v) else np.nan))
+                out_rows.append((int(ano), tq, code, float(v) if np.isfinite(v) else np.nan))
 
-        return pd.DataFrame(out_rows, columns=["fiscal_year", "trimestre", "code", "valor"])
+        return pd.DataFrame(out_rows, columns=["ano", "trimestre", "code", "valor"])
 
-    def _add_t4_from_annual_when_missing(self, qiso: pd.DataFrame, anual: pd.DataFrame) -> pd.DataFrame:
-        anual_map = anual.set_index(["fiscal_year", "code"])["anual_val"].to_dict()
+    def _add_t4_from_annual_when_missing(
+        self, 
+        qiso: pd.DataFrame, 
+        anual: pd.DataFrame,
+        fiscal_info: FiscalYearInfo
+    ) -> pd.DataFrame:
+        """
+        Adiciona T4 calculado quando faltante, APENAS para empresas com ano fiscal padrão.
+        Para empresas com ano fiscal irregular, NÃO adiciona trimestres artificiais.
+        """
+        # Se ano fiscal irregular, NÃO criar trimestres artificiais
+        if not fiscal_info.is_standard:
+            return qiso
+        
+        anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
         out = qiso.copy()
 
-        for fy in sorted(out["fiscal_year"].unique()):
-            g = out[out["fiscal_year"] == fy]
+        for ano in sorted(out["ano"].unique()):
+            g = out[out["ano"] == ano]
             quarters = set(g["trimestre"].unique())
 
             if "T4" in quarters:
@@ -299,11 +416,11 @@ class PadronizadorDRE:
 
             new_rows = []
             for code, _name in DRE_PADRAO:
-                a = anual_map.get((int(fy), code), np.nan)
+                a = anual_map.get((int(ano), code), np.nan)
                 if not np.isfinite(a):
                     continue
                 s = g[(g["code"] == code) & (g["trimestre"].isin(["T1", "T2", "T3"]))]["valor"].sum(skipna=True)
-                new_rows.append((int(fy), "T4", code, float(a - s)))
+                new_rows.append((int(ano), "T4", code, float(a - s)))
 
             if new_rows:
                 out = pd.concat([out, pd.DataFrame(new_rows, columns=out.columns)], ignore_index=True)
@@ -311,19 +428,20 @@ class PadronizadorDRE:
         return out
 
     def _build_horizontal(self, qiso: pd.DataFrame) -> pd.DataFrame:
+        """Constrói tabela horizontal (períodos como colunas)."""
         periods = (
-            qiso[["fiscal_year", "trimestre"]]
+            qiso[["ano", "trimestre"]]
             .drop_duplicates()
             .assign(qord=lambda x: x["trimestre"].apply(_quarter_order))
-            .sort_values(["fiscal_year", "qord"])
+            .sort_values(["ano", "qord"])
         )
 
-        col_labels = [f"{int(r.fiscal_year)}{r.trimestre}" for r in periods.itertuples(index=False)]
-        ordered_cols = [(int(r.fiscal_year), r.trimestre) for r in periods.itertuples(index=False)]
+        col_labels = [f"{int(r.ano)}{r.trimestre}" for r in periods.itertuples(index=False)]
+        ordered_cols = [(int(r.ano), r.trimestre) for r in periods.itertuples(index=False)]
 
         pivot = qiso.pivot_table(
             index="code",
-            columns=["fiscal_year", "trimestre"],
+            columns=["ano", "trimestre"],
             values="valor",
             aggfunc="first",
         ).reindex(columns=ordered_cols)
@@ -338,73 +456,189 @@ class PadronizadorDRE:
 
         return pivot.reset_index(drop=True)
 
-    def _checkup_vs_anual(self, qiso: pd.DataFrame, anual: pd.DataFrame) -> Tuple[int, int, int]:
-        anual_map = anual.set_index(["fiscal_year", "code"])["anual_val"].to_dict()
+    def _checkup_linha_a_linha(
+        self, 
+        qiso: pd.DataFrame, 
+        anual: pd.DataFrame,
+        fiscal_info: FiscalYearInfo,
+        tolerancia_percentual: float = 0.1  # 0.1% de tolerância
+    ) -> Tuple[List[CheckupResult], int, int, int]:
+        """
+        Realiza check-up LINHA A LINHA comparando soma trimestral vs anual.
+        
+        Para cada combinação (ano, código de conta):
+        1. Soma os valores trimestrais disponíveis
+        2. Compara com o valor anual correspondente
+        3. Registra divergências
+        
+        Returns:
+            results: Lista de CheckupResult para cada verificação
+            diverge_count: Número de divergências
+            incompleto_count: Número de anos com trimestres incompletos
+            sem_anual_count: Número de anos sem dado anual
+        """
+        anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
+        results: List[CheckupResult] = []
+        
+        diverge_count = 0
+        incompleto_count = 0
+        sem_anual_count = 0
 
-        diverge = 0
-        incompleto = 0
-        sem_anual = 0
+        # Determinar trimestres esperados baseado no padrão fiscal
+        if fiscal_info.is_standard:
+            expected_quarters = {"T1", "T2", "T3", "T4"}
+        else:
+            # Para irregular, usar o padrão encontrado nos dados
+            expected_quarters = fiscal_info.quarters_pattern
 
-        for fy in sorted(qiso["fiscal_year"].unique()):
+        for ano in sorted(qiso["ano"].unique()):
+            g_ano = qiso[qiso["ano"] == ano]
+            quarters_present = set(g_ano["trimestre"].unique())
+            
             for code, _name in DRE_PADRAO:
-                a = anual_map.get((int(fy), code), np.nan)
-                qs = qiso[(qiso["fiscal_year"] == fy) & (qiso["code"] == code)]
-                have = set(qs["trimestre"].unique())
+                anual_val = anual_map.get((int(ano), code), np.nan)
+                
+                # Soma trimestral
+                g_code = g_ano[g_ano["code"] == code]
+                soma_tri = float(g_code["valor"].sum(skipna=True))
+                
+                # Determinar status
+                if not np.isfinite(anual_val):
+                    status = "SEM_ANUAL"
+                    sem_anual_count += 1
+                    diferenca = np.nan
+                    percentual = np.nan
+                elif not expected_quarters.issubset(quarters_present):
+                    # Para empresas irregulares, verificar se tem todos os trimestres do padrão
+                    status = "INCOMPLETO"
+                    incompleto_count += 1
+                    diferenca = soma_tri - anual_val
+                    percentual = (diferenca / abs(anual_val) * 100) if anual_val != 0 else np.nan
+                else:
+                    diferenca = soma_tri - anual_val
+                    percentual = (diferenca / abs(anual_val) * 100) if anual_val != 0 else 0.0
+                    
+                    # Verificar tolerância
+                    if abs(percentual) <= tolerancia_percentual:
+                        status = "OK"
+                    else:
+                        status = "DIVERGE"
+                        diverge_count += 1
+                
+                results.append(CheckupResult(
+                    code=code,
+                    ano=int(ano),
+                    soma_trimestral=soma_tri,
+                    valor_anual=anual_val,
+                    diferenca=diferenca,
+                    percentual_diff=percentual,
+                    status=status
+                ))
 
-                if not np.isfinite(a):
-                    sem_anual += 1
-                    continue
+        return results, diverge_count, incompleto_count, sem_anual_count
 
-                if not {"T1", "T2", "T3", "T4"}.issubset(have):
-                    incompleto += 1
-                    continue
+    def _generate_checkup_report(
+        self, 
+        results: List[CheckupResult],
+        fiscal_info: FiscalYearInfo
+    ) -> pd.DataFrame:
+        """Gera relatório de check-up em formato DataFrame."""
+        rows = []
+        for r in results:
+            rows.append({
+                "ano": r.ano,
+                "codigo": r.code,
+                "soma_trimestral": r.soma_trimestral,
+                "valor_anual": r.valor_anual,
+                "diferenca": r.diferenca,
+                "diff_%": r.percentual_diff,
+                "status": r.status
+            })
+        
+        df = pd.DataFrame(rows)
+        return df
 
-                s = float(qs["valor"].sum(skipna=True))
-                diff = float(s - a)
-                tol = max(1e-6, abs(a) * 1e-3)  # 0,1% do anual
-
-                if abs(diff) > tol:
-                    diverge += 1
-
-        return diverge, incompleto, sem_anual
-
-    def padronizar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
+    def padronizar_e_salvar_ticker(self, ticker: str, salvar_checkup: bool = True) -> Tuple[bool, str]:
+        """
+        Padroniza DRE de um ticker e salva resultado.
+        
+        Args:
+            ticker: Código do ticker
+            salvar_checkup: Se True, salva relatório de check-up
+            
+        Returns:
+            ok: True se não há divergências
+            msg: Mensagem de status
+        """
         ticker = ticker.upper().strip()
         pasta = self.pasta_balancos / ticker
 
+        # 1. Carregar dados
         df_tri, df_anu = self._load_inputs(ticker)
-        fiscal_end = _infer_fiscal_end_month(df_anu)
-
-        tri_f = self._add_fiscal_labels(df_tri, fiscal_end)
-        anu_f = self._add_fiscal_labels(df_anu, fiscal_end)
-
-        qtot = self._build_quarter_totals(tri_f)
-        anu = self._extract_annual_values(anu_f)
-
+        
+        # 2. DETECTAR PADRÃO FISCAL (CRÍTICO!)
+        fiscal_info = _detect_fiscal_year_pattern(df_tri, df_anu)
+        
+        # 3. Construir totais trimestrais baseado no padrão fiscal
+        if fiscal_info.is_standard:
+            qtot = self._build_quarter_totals_standard(df_tri)
+        else:
+            qtot = self._build_quarter_totals_irregular(df_tri)
+        
+        # 4. Extrair valores anuais
+        anu = self._extract_annual_values(df_anu)
+        
+        # 5. Detectar e converter dados acumulados (YTD)
         cumulative_years = self._detect_cumulative_years(qtot, anu)
-        qiso = self._to_isolated_quarters(qtot, cumulative_years)
-        qiso = self._add_t4_from_annual_when_missing(qiso, anu)
-
-        qiso = qiso.assign(qord=qiso["trimestre"].apply(_quarter_order)).sort_values(["fiscal_year", "qord", "code"])
+        qiso = self._to_isolated_quarters(qtot, cumulative_years, fiscal_info)
+        
+        # 6. Adicionar T4 quando faltante (APENAS para ano fiscal padrão)
+        qiso = self._add_t4_from_annual_when_missing(qiso, anu, fiscal_info)
+        
+        # 7. Ordenar
+        qiso = qiso.assign(qord=qiso["trimestre"].apply(_quarter_order)).sort_values(["ano", "qord", "code"])
         qiso = qiso.drop(columns=["qord"])
-
+        
+        # 8. Construir tabela horizontal
         df_out = self._build_horizontal(qiso)
-
-        # check-up interno (sem salvar nada)
-        diverge, incompleto, sem_anual = self._checkup_vs_anual(qiso, anu)
-
-        # salva SOMENTE o arquivo final
+        
+        # 9. CHECK-UP LINHA A LINHA (CRÍTICO!)
+        checkup_results, diverge, incompleto, sem_anual = self._checkup_linha_a_linha(qiso, anu, fiscal_info)
+        self.checkup_results = checkup_results
+        
+        # 10. Salvar arquivos
         pasta.mkdir(parents=True, exist_ok=True)
+        
+        # Arquivo principal
         out_path = pasta / "dre_padronizado.csv"
         df_out.to_csv(out_path, index=False, encoding="utf-8")
-
-        msg = f"salvo dre_padronizado.csv | check-up: DIVERGE={diverge} INCOMPLETO={incompleto} SEM_ANUAL={sem_anual}"
+        
+        # Relatório de check-up (se solicitado)
+        if salvar_checkup:
+            checkup_df = self._generate_checkup_report(checkup_results, fiscal_info)
+            checkup_path = pasta / "dre_checkup.csv"
+            checkup_df.to_csv(checkup_path, index=False, encoding="utf-8")
+        
+        # 11. Construir mensagem de retorno
+        fiscal_status = "PADRÃO" if fiscal_info.is_standard else "IRREGULAR"
+        msg_parts = [
+            f"fiscal={fiscal_status}",
+            f"DIVERGE={diverge}",
+            f"INCOMPLETO={incompleto}",
+            f"SEM_ANUAL={sem_anual}"
+        ]
+        
+        if not fiscal_info.is_standard:
+            msg_parts.append(f"trimestres={sorted(fiscal_info.quarters_pattern)}")
+        
+        msg = f"salvo dre_padronizado.csv | {' | '.join(msg_parts)}"
         ok = (diverge == 0)
+        
         return ok, msg
 
 
 # ======================================================================================
-# CLI - idêntico ao captura_simples.py (modo/quantidade/ticker/lista/faixa)
+# CLI
 # ======================================================================================
 
 def main():
@@ -414,6 +648,7 @@ def main():
     parser.add_argument("--ticker", default="")
     parser.add_argument("--lista", default="")
     parser.add_argument("--faixa", default="1-50")
+    parser.add_argument("--checkup", action="store_true", default=True, help="Salvar relatório de check-up")
     args = parser.parse_args()
 
     df = pd.read_csv("mapeamento_final_b3_completo_utf8.csv", sep=";", encoding="utf-8-sig")
@@ -439,13 +674,14 @@ def main():
 
     print(f"\n>>> JOB: PADRONIZAR DRE <<<")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
-    print("Saída: balancos/<TICKER>/dre_padronizado.csv (apenas)\n")
+    print("Saída: balancos/<TICKER>/dre_padronizado.csv + dre_checkup.csv\n")
 
     pad = PadronizadorDRE()
 
     ok_count = 0
     warn_count = 0
     err_count = 0
+    irregular_count = 0
 
     for _, row in df_sel.iterrows():
         ticker = str(row["ticker"]).upper().strip()
@@ -457,7 +693,12 @@ def main():
             continue
 
         try:
-            ok, msg = pad.padronizar_e_salvar_ticker(ticker)
+            ok, msg = pad.padronizar_e_salvar_ticker(ticker, salvar_checkup=args.checkup)
+            
+            # Verificar se é irregular para contagem
+            if "IRREGULAR" in msg:
+                irregular_count += 1
+            
             if ok:
                 ok_count += 1
                 print(f"✅ {ticker}: {msg}")
@@ -474,6 +715,7 @@ def main():
 
     print("\n============================================================")
     print(f"Finalizado: OK={ok_count} | WARN(DIVERGE)>0={warn_count} | ERRO={err_count}")
+    print(f"            Anos fiscais irregulares detectados: {irregular_count}")
     print("============================================================\n")
 
 
