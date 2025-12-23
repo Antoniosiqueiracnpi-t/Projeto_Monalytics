@@ -28,8 +28,64 @@ DRE_PADRAO: List[Tuple[str, str]] = [
     ("3.11", "Lucro/Prejuízo Consolidado do Período"),
 ]
 
+
+# ======================================================================================
+# CONTAS BANCOS (INSTITUIÇÕES FINANCEIRAS) - DRE
+# ======================================================================================
+
+DRE_BANCOS: List[Tuple[str, str]] = [
+    ("3.01", "Receitas de Intermediação Financeira"),
+    ("3.02", "Despesas de Intermediação Financeira"),
+    ("3.03", "Resultado Bruto de Intermediação Financeira"),
+    ("3.04", "Outras Despesas e Receitas Operacionais"),
+    ("3.05", "Resultado antes dos Tributos sobre o Lucro"),
+    ("3.06", "Imposto de Renda e Contribuição Social sobre o Lucro"),
+    ("3.07", "Lucro ou Prejuízo das Operações Continuadas"),
+    ("3.08", "Resultado Líquido das Operações Descontinuadas"),
+    ("3.09", "Lucro ou Prejuízo antes das Participações e Contribuições Estatutárias"),
+    ("3.10", "Participações nos Lucros e Contribuições Estatutárias"),
+    ("3.11", "Lucro ou Prejuízo Líquido Consolidado do Período"),
+]
+
+# Lista de tickers de bancos/instituições financeiras
+TICKERS_BANCOS: Set[str] = {
+    "RPAD3", "RPAD5", "RPAD6",
+    "ABCB4",
+    "BMGB4",
+    "BBDC3", "BBDC4",
+    "BPAC3", "BPAC5", "BPAC11",
+    "BSLI3", "BSLI4",
+    "BBAS3",
+    "BGIP3", "BGIP4",
+    "BPAR3",
+    "BRSR3", "BRSR5", "BRSR6",
+    "BNBR3",
+    "BMIN3", "BMIN4",
+    "BMEB3", "BMEB4",
+    "BPAN4",
+    "PINE3", "PINE4",
+    "SANB3", "SANB4", "SANB11",
+    "BEES3", "BEES4",
+    "ITUB3", "ITUB4",
+}
+
+
+# ======================================================================================
+# LUCRO POR AÇÃO (COMUM A TODOS)
+# ======================================================================================
+
 EPS_CODE = "3.99"
 EPS_LABEL = "Lucro por Ação (Reais/Ação)"
+
+
+def _is_banco(ticker: str) -> bool:
+    """Verifica se o ticker é de uma instituição financeira (banco)."""
+    return ticker.upper().strip() in TICKERS_BANCOS
+
+
+def _get_dre_schema(ticker: str) -> List[Tuple[str, str]]:
+    """Retorna o esquema DRE apropriado para o ticker (banco ou padrão)."""
+    return DRE_BANCOS if _is_banco(ticker) else DRE_PADRAO
 
 
 # ======================================================================================
@@ -233,6 +289,11 @@ class CheckupResult:
 class PadronizadorDRE:
     pasta_balancos: Path = Path("balancos")
     checkup_results: List[CheckupResult] = field(default_factory=list)
+    _current_ticker: str = field(default="", repr=False)  # Ticker sendo processado
+    
+    def _get_current_schema(self) -> List[Tuple[str, str]]:
+        """Retorna o esquema DRE para o ticker atual (banco ou padrão)."""
+        return _get_dre_schema(self._current_ticker)
 
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
         pasta = self.pasta_balancos / ticker.upper().strip()
@@ -262,8 +323,10 @@ class PadronizadorDRE:
         """
         Constrói totais trimestrais preservando trimestres originais.
         Usa ano calendário direto (sem transformação fiscal).
+        Seleciona esquema DRE correto (banco ou padrão) baseado no ticker.
         """
-        target_codes = [c for c, _ in DRE_PADRAO]
+        dre_schema = self._get_current_schema()
+        target_codes = [c for c, _ in dre_schema]
         wanted_prefixes = tuple([c + "." for c in target_codes] + [EPS_CODE + "."])
 
         mask = (
@@ -275,7 +338,7 @@ class PadronizadorDRE:
         
         rows = []
         for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
-            for code, _name in DRE_PADRAO:
+            for code, _name in dre_schema:
                 v = _pick_value_for_base_code(g, code)
                 rows.append((int(ano), str(trimestre), code, v))
             rows.append((int(ano), str(trimestre), EPS_CODE, _compute_eps_value(g)))
@@ -284,7 +347,8 @@ class PadronizadorDRE:
 
     def _extract_annual_values(self, df_anu: pd.DataFrame) -> pd.DataFrame:
         """Extrai valores anuais para comparação no check-up, incluindo EPS."""
-        target_codes = [c for c, _ in DRE_PADRAO]
+        dre_schema = self._get_current_schema()
+        target_codes = [c for c, _ in dre_schema]
         wanted_prefixes = tuple([c + "." for c in target_codes] + [EPS_CODE + "."])
 
         mask = (
@@ -296,7 +360,7 @@ class PadronizadorDRE:
 
         rows = []
         for ano, g in df.groupby("ano", sort=False):
-            for code, _name in DRE_PADRAO:
+            for code, _name in dre_schema:
                 v = _pick_value_for_base_code(g, code)
                 rows.append((int(ano), code, v))
             # Incluir EPS anual
@@ -389,16 +453,18 @@ class PadronizadorDRE:
         Para empresas com ano fiscal irregular, NÃO adiciona trimestres artificiais.
         
         IMPORTANTE: Calcula T4 para TODAS as contas, incluindo EPS (3.99).
+        Usa esquema DRE correto (banco ou padrão) baseado no ticker.
         """
         # Se ano fiscal irregular, NÃO criar trimestres artificiais
         if not fiscal_info.is_standard:
             return qiso
         
+        dre_schema = self._get_current_schema()
         anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
         out = qiso.copy()
 
-        # Lista completa de códigos: DRE_PADRAO + EPS
-        all_codes = [c for c, _ in DRE_PADRAO] + [EPS_CODE]
+        # Lista completa de códigos: DRE_SCHEMA + EPS
+        all_codes = [c for c, _ in dre_schema] + [EPS_CODE]
 
         for ano in sorted(out["ano"].unique()):
             g = out[out["ano"] == ano]
@@ -426,7 +492,10 @@ class PadronizadorDRE:
         """
         Constrói tabela horizontal (períodos como colunas).
         Aplica normalização de valores para evitar erros de ponto flutuante.
+        Usa esquema DRE correto (banco ou padrão) baseado no ticker.
         """
+        dre_schema = self._get_current_schema()
+        
         periods = (
             qiso[["ano", "trimestre"]]
             .drop_duplicates()
@@ -444,7 +513,7 @@ class PadronizadorDRE:
             aggfunc="first",
         ).reindex(columns=ordered_cols)
 
-        idx_codes = [c for c, _ in DRE_PADRAO] + [EPS_CODE]
+        idx_codes = [c for c, _ in dre_schema] + [EPS_CODE]
         pivot = pivot.reindex(idx_codes)
         pivot.columns = col_labels
 
@@ -457,7 +526,7 @@ class PadronizadorDRE:
                     decimals = 8 if idx == EPS_CODE else 3
                     pivot.at[idx, col] = _normalize_value(float(val), decimals)
 
-        names = {c: n for c, n in DRE_PADRAO}
+        names = {c: n for c, n in dre_schema}
         names[EPS_CODE] = EPS_LABEL
         
         # Inserir código e nome da conta como colunas separadas
@@ -487,6 +556,7 @@ class PadronizadorDRE:
             sem_anual_count: Número de anos sem dado anual
             irregular_skip_count: Número de verificações puladas por ano fiscal irregular
         """
+        dre_schema = self._get_current_schema()
         results: List[CheckupResult] = []
         
         diverge_count = 0
@@ -497,7 +567,7 @@ class PadronizadorDRE:
         # Para empresas com ano fiscal IRREGULAR: pular check-up
         if not fiscal_info.is_standard:
             for ano in sorted(qiso["ano"].unique()):
-                for code, _name in DRE_PADRAO:
+                for code, _name in dre_schema:
                     g_code = qiso[(qiso["ano"] == ano) & (qiso["code"] == code)]
                     soma_tri = float(g_code["valor"].sum(skipna=True))
                     
@@ -522,7 +592,7 @@ class PadronizadorDRE:
             g_ano = qiso[qiso["ano"] == ano]
             quarters_present = set(g_ano["trimestre"].unique())
             
-            for code, _name in DRE_PADRAO:
+            for code, _name in dre_schema:
                 anual_val = anual_map.get((int(ano), code), np.nan)
                 
                 # Soma trimestral
@@ -597,6 +667,7 @@ class PadronizadorDRE:
             msg: Mensagem de status
         """
         ticker = ticker.upper().strip()
+        self._current_ticker = ticker  # Define ticker atual para seleção do esquema DRE
         pasta = self.pasta_balancos / ticker
 
         # 1. Carregar dados
@@ -658,9 +729,11 @@ class PadronizadorDRE:
         
         # 11. Construir mensagem de retorno
         fiscal_status = "PADRÃO" if fiscal_info.is_standard else "IRREGULAR"
+        tipo_dre = "BANCO" if _is_banco(ticker) else "PADRÃO"
         
         if fiscal_info.is_standard:
             msg_parts = [
+                f"tipo={tipo_dre}",
                 f"fiscal={fiscal_status}",
                 f"DIVERGE={diverge}",
                 f"INCOMPLETO={incompleto}",
@@ -670,6 +743,7 @@ class PadronizadorDRE:
         else:
             # Para irregular: check-up foi pulado, considera OK se valores foram copiados
             msg_parts = [
+                f"tipo={tipo_dre}",
                 f"fiscal={fiscal_status}",
                 f"CHECK-UP=PULADO",
                 f"trimestres={sorted(fiscal_info.quarters_pattern)}"
