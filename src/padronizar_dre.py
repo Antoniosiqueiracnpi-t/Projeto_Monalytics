@@ -136,7 +136,7 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> F
     Critérios para ano fiscal PADRÃO (calendário):
     1. Dados anuais encerram em dezembro (mês 12)
     2. Dados trimestrais contêm T1, T2, T3, T4 para a maioria dos anos
-    3. Meses de encerramento trimestral são: março, junho, setembro, dezembro
+    3. Média de pelo menos 3.5 trimestres por ano
     
     Se qualquer critério falhar => empresa tem ano fiscal IRREGULAR.
     """
@@ -153,7 +153,6 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> F
 
     # 2. Verificar padrão de trimestres nos dados TRIMESTRAIS
     if df_tri is not None and not df_tri.empty:
-        # Pegar trimestres únicos por ano
         df_tri_copy = df_tri.copy()
         df_tri_copy["data_fim"] = _to_datetime(df_tri_copy, "data_fim")
         df_tri_copy = df_tri_copy.dropna(subset=["data_fim"])
@@ -163,12 +162,6 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> F
         else:
             all_quarters = set()
         
-        # Verificar meses de encerramento trimestral
-        tri_months = set(df_tri_copy["data_fim"].dt.month.unique())
-        
-        # Padrão esperado para ano calendário: {3, 6, 9, 12}
-        standard_months = {3, 6, 9, 12}
-        
         # Verificar por ano quantos trimestres existem
         df_tri_copy["ano"] = df_tri_copy["data_fim"].dt.year
         quarters_per_year = df_tri_copy.groupby("ano")["trimestre"].nunique()
@@ -176,13 +169,11 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> F
         
     else:
         all_quarters = set()
-        tri_months = set()
         avg_quarters = 0
 
     # 3. DECISÃO: ano fiscal padrão ou irregular?
     has_all_quarters = {"T1", "T2", "T3", "T4"}.issubset(all_quarters)
     is_december_fiscal = (most_common_anu_month == 12)
-    is_standard_months = tri_months.issubset({3, 6, 9, 12}) and len(tri_months) >= 3
     
     # Critério DEFINITIVO: só é padrão se TODOS os critérios forem atendidos
     is_standard = (
@@ -226,7 +217,7 @@ class CheckupResult:
     valor_anual: float
     diferenca: float
     percentual_diff: float
-    status: str  # "OK", "DIVERGE", "SEM_ANUAL", "INCOMPLETO"
+    status: str  # "OK", "DIVERGE", "SEM_ANUAL", "INCOMPLETO", "IRREGULAR_SKIP"
 
 
 @dataclass
@@ -258,34 +249,10 @@ class PadronizadorDRE:
 
         return df_tri, df_anu
 
-    def _build_quarter_totals_standard(self, df_tri: pd.DataFrame) -> pd.DataFrame:
+    def _build_quarter_totals(self, df_tri: pd.DataFrame) -> pd.DataFrame:
         """
-        Constrói totais trimestrais para empresas com ano fiscal PADRÃO.
-        Usa ano calendário direto.
-        """
-        target_codes = [c for c, _ in DRE_PADRAO]
-        wanted_prefixes = tuple([c + "." for c in target_codes] + [EPS_CODE + "."])
-
-        mask = (
-            df_tri["cd_conta"].isin(target_codes + [EPS_CODE])
-            | df_tri["cd_conta"].astype(str).str.startswith(wanted_prefixes)
-        )
-        df = df_tri[mask].copy()
-        df["ano"] = df["data_fim"].dt.year
-        
-        rows = []
-        for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
-            for code, _name in DRE_PADRAO:
-                v = _pick_value_for_base_code(g, code)
-                rows.append((int(ano), str(trimestre), code, v))
-            rows.append((int(ano), str(trimestre), EPS_CODE, _compute_eps_value(g)))
-
-        return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
-
-    def _build_quarter_totals_irregular(self, df_tri: pd.DataFrame) -> pd.DataFrame:
-        """
-        Constrói totais trimestrais para empresas com ano fiscal IRREGULAR.
-        Preserva os trimestres EXATAMENTE como estão nos dados originais.
+        Constrói totais trimestrais preservando trimestres originais.
+        Usa ano calendário direto (sem transformação fiscal).
         """
         target_codes = [c for c, _ in DRE_PADRAO]
         wanted_prefixes = tuple([c + "." for c in target_codes] + [EPS_CODE + "."])
@@ -330,13 +297,20 @@ class PadronizadorDRE:
         self,
         qtot: pd.DataFrame,
         anual: pd.DataFrame,
+        fiscal_info: FiscalYearInfo,
         base_code_for_detection: str = "3.01",
         ratio_threshold: float = 1.10,
     ) -> Dict[int, bool]:
         """
-        Detecta se o trimestral está acumulado (YTD) por ano usando 3.01:
-          soma(trimestres) > anual * 1.10  => provavelmente acumulado
+        Detecta se o trimestral está acumulado (YTD) por ano usando 3.01.
+        
+        IMPORTANTE: Só faz sentido para empresas com ano fiscal PADRÃO.
+        Para empresas irregulares, retorna dict vazio (não tenta converter).
         """
+        # Para ano fiscal irregular, não tenta detectar acumulado
+        if not fiscal_info.is_standard:
+            return {}
+        
         anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
         out: Dict[int, bool] = {}
 
@@ -355,7 +329,11 @@ class PadronizadorDRE:
         cumulative_years: Dict[int, bool],
         fiscal_info: FiscalYearInfo
     ) -> pd.DataFrame:
-        """Converte dados acumulados (YTD) para trimestres isolados quando necessário."""
+        """
+        Converte dados acumulados (YTD) para trimestres isolados quando necessário.
+        
+        Para empresas com ano fiscal IRREGULAR: preserva valores originais.
+        """
         out_rows = []
 
         for (ano, code), g in qtot.groupby(["ano", "code"], sort=False):
@@ -369,7 +347,7 @@ class PadronizadorDRE:
             # Só converte se:
             # 1. Ano detectado como acumulado
             # 2. Não é EPS (EPS nunca é acumulado)
-            # 3. Empresa tem ano fiscal padrão (para irregular, preserva como está)
+            # 3. Empresa tem ano fiscal padrão
             if (cumulative_years.get(int(ano), False) and 
                 code != EPS_CODE and 
                 fiscal_info.is_standard):
@@ -462,34 +440,50 @@ class PadronizadorDRE:
         anual: pd.DataFrame,
         fiscal_info: FiscalYearInfo,
         tolerancia_percentual: float = 0.1  # 0.1% de tolerância
-    ) -> Tuple[List[CheckupResult], int, int, int]:
+    ) -> Tuple[List[CheckupResult], int, int, int, int]:
         """
         Realiza check-up LINHA A LINHA comparando soma trimestral vs anual.
         
-        Para cada combinação (ano, código de conta):
-        1. Soma os valores trimestrais disponíveis
-        2. Compara com o valor anual correspondente
-        3. Registra divergências
+        IMPORTANTE: Para empresas com ano fiscal IRREGULAR, o check-up é PULADO
+        porque a comparação não faz sentido (trimestres calendário vs ano fiscal diferente).
         
         Returns:
             results: Lista de CheckupResult para cada verificação
             diverge_count: Número de divergências
             incompleto_count: Número de anos com trimestres incompletos
             sem_anual_count: Número de anos sem dado anual
+            irregular_skip_count: Número de verificações puladas por ano fiscal irregular
         """
-        anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
         results: List[CheckupResult] = []
         
         diverge_count = 0
         incompleto_count = 0
         sem_anual_count = 0
+        irregular_skip_count = 0
 
-        # Determinar trimestres esperados baseado no padrão fiscal
-        if fiscal_info.is_standard:
-            expected_quarters = {"T1", "T2", "T3", "T4"}
-        else:
-            # Para irregular, usar o padrão encontrado nos dados
-            expected_quarters = fiscal_info.quarters_pattern
+        # Para empresas com ano fiscal IRREGULAR: pular check-up
+        if not fiscal_info.is_standard:
+            for ano in sorted(qiso["ano"].unique()):
+                for code, _name in DRE_PADRAO:
+                    g_code = qiso[(qiso["ano"] == ano) & (qiso["code"] == code)]
+                    soma_tri = float(g_code["valor"].sum(skipna=True))
+                    
+                    results.append(CheckupResult(
+                        code=code,
+                        ano=int(ano),
+                        soma_trimestral=soma_tri,
+                        valor_anual=np.nan,
+                        diferenca=np.nan,
+                        percentual_diff=np.nan,
+                        status="IRREGULAR_SKIP"
+                    ))
+                    irregular_skip_count += 1
+            
+            return results, diverge_count, incompleto_count, sem_anual_count, irregular_skip_count
+
+        # Para empresas com ano fiscal PADRÃO: fazer check-up normal
+        anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
+        expected_quarters = {"T1", "T2", "T3", "T4"}
 
         for ano in sorted(qiso["ano"].unique()):
             g_ano = qiso[qiso["ano"] == ano]
@@ -509,7 +503,6 @@ class PadronizadorDRE:
                     diferenca = np.nan
                     percentual = np.nan
                 elif not expected_quarters.issubset(quarters_present):
-                    # Para empresas irregulares, verificar se tem todos os trimestres do padrão
                     status = "INCOMPLETO"
                     incompleto_count += 1
                     diferenca = soma_tri - anual_val
@@ -535,7 +528,7 @@ class PadronizadorDRE:
                     status=status
                 ))
 
-        return results, diverge_count, incompleto_count, sem_anual_count
+        return results, diverge_count, incompleto_count, sem_anual_count, irregular_skip_count
 
     def _generate_checkup_report(
         self, 
@@ -567,7 +560,7 @@ class PadronizadorDRE:
             salvar_checkup: Se True, salva relatório de check-up
             
         Returns:
-            ok: True se não há divergências
+            ok: True se não há divergências (ou se é irregular e foi pulado)
             msg: Mensagem de status
         """
         ticker = ticker.upper().strip()
@@ -579,17 +572,14 @@ class PadronizadorDRE:
         # 2. DETECTAR PADRÃO FISCAL (CRÍTICO!)
         fiscal_info = _detect_fiscal_year_pattern(df_tri, df_anu)
         
-        # 3. Construir totais trimestrais baseado no padrão fiscal
-        if fiscal_info.is_standard:
-            qtot = self._build_quarter_totals_standard(df_tri)
-        else:
-            qtot = self._build_quarter_totals_irregular(df_tri)
+        # 3. Construir totais trimestrais (preserva originais)
+        qtot = self._build_quarter_totals(df_tri)
         
         # 4. Extrair valores anuais
         anu = self._extract_annual_values(df_anu)
         
-        # 5. Detectar e converter dados acumulados (YTD)
-        cumulative_years = self._detect_cumulative_years(qtot, anu)
+        # 5. Detectar e converter dados acumulados (YTD) - só para padrão
+        cumulative_years = self._detect_cumulative_years(qtot, anu, fiscal_info)
         qiso = self._to_isolated_quarters(qtot, cumulative_years, fiscal_info)
         
         # 6. Adicionar T4 quando faltante (APENAS para ano fiscal padrão)
@@ -602,8 +592,10 @@ class PadronizadorDRE:
         # 8. Construir tabela horizontal
         df_out = self._build_horizontal(qiso)
         
-        # 9. CHECK-UP LINHA A LINHA (CRÍTICO!)
-        checkup_results, diverge, incompleto, sem_anual = self._checkup_linha_a_linha(qiso, anu, fiscal_info)
+        # 9. CHECK-UP LINHA A LINHA
+        checkup_results, diverge, incompleto, sem_anual, irregular_skip = self._checkup_linha_a_linha(
+            qiso, anu, fiscal_info
+        )
         self.checkup_results = checkup_results
         
         # 10. Salvar arquivos
@@ -613,26 +605,48 @@ class PadronizadorDRE:
         out_path = pasta / "dre_padronizado.csv"
         df_out.to_csv(out_path, index=False, encoding="utf-8")
         
-        # Relatório de check-up (se solicitado)
+        # Relatório de check-up (SEMPRE salva se solicitado)
+        checkup_saved = False
         if salvar_checkup:
-            checkup_df = self._generate_checkup_report(checkup_results, fiscal_info)
-            checkup_path = pasta / "dre_checkup.csv"
-            checkup_df.to_csv(checkup_path, index=False, encoding="utf-8")
+            try:
+                checkup_df = self._generate_checkup_report(checkup_results, fiscal_info)
+                checkup_path = pasta / "dre_checkup.csv"
+                
+                # Salvar com cabeçalho informativo
+                with open(checkup_path, 'w', encoding='utf-8') as f:
+                    f.write(f"# Padrão Fiscal: {fiscal_info.description}\n")
+                    f.write(f"# Trimestres encontrados: {sorted(fiscal_info.quarters_pattern)}\n")
+                    f.write(f"# Data geração: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                
+                checkup_df.to_csv(checkup_path, index=False, encoding="utf-8", mode='a')
+                checkup_saved = True
+            except Exception as e:
+                print(f"  ⚠️ Erro ao salvar check-up: {e}")
         
         # 11. Construir mensagem de retorno
         fiscal_status = "PADRÃO" if fiscal_info.is_standard else "IRREGULAR"
-        msg_parts = [
-            f"fiscal={fiscal_status}",
-            f"DIVERGE={diverge}",
-            f"INCOMPLETO={incompleto}",
-            f"SEM_ANUAL={sem_anual}"
-        ]
         
-        if not fiscal_info.is_standard:
-            msg_parts.append(f"trimestres={sorted(fiscal_info.quarters_pattern)}")
+        if fiscal_info.is_standard:
+            msg_parts = [
+                f"fiscal={fiscal_status}",
+                f"DIVERGE={diverge}",
+                f"INCOMPLETO={incompleto}",
+                f"SEM_ANUAL={sem_anual}"
+            ]
+            ok = (diverge == 0)
+        else:
+            # Para irregular: check-up foi pulado, considera OK se valores foram copiados
+            msg_parts = [
+                f"fiscal={fiscal_status}",
+                f"CHECK-UP=PULADO",
+                f"trimestres={sorted(fiscal_info.quarters_pattern)}"
+            ]
+            ok = True  # Valores foram copiados corretamente
         
-        msg = f"salvo dre_padronizado.csv | {' | '.join(msg_parts)}"
-        ok = (diverge == 0)
+        if checkup_saved:
+            msg_parts.append("checkup=SALVO")
+        
+        msg = f"dre_padronizado.csv | {' | '.join(msg_parts)}"
         
         return ok, msg
 
@@ -648,7 +662,7 @@ def main():
     parser.add_argument("--ticker", default="")
     parser.add_argument("--lista", default="")
     parser.add_argument("--faixa", default="1-50")
-    parser.add_argument("--checkup", action="store_true", default=True, help="Salvar relatório de check-up")
+    parser.add_argument("--no-checkup", action="store_true", help="Não salvar relatório de check-up")
     args = parser.parse_args()
 
     df = pd.read_csv("mapeamento_final_b3_completo_utf8.csv", sep=";", encoding="utf-8-sig")
@@ -683,6 +697,8 @@ def main():
     err_count = 0
     irregular_count = 0
 
+    salvar_checkup = not args.no_checkup
+
     for _, row in df_sel.iterrows():
         ticker = str(row["ticker"]).upper().strip()
 
@@ -693,7 +709,7 @@ def main():
             continue
 
         try:
-            ok, msg = pad.padronizar_e_salvar_ticker(ticker, salvar_checkup=args.checkup)
+            ok, msg = pad.padronizar_e_salvar_ticker(ticker, salvar_checkup=salvar_checkup)
             
             # Verificar se é irregular para contagem
             if "IRREGULAR" in msg:
@@ -711,12 +727,15 @@ def main():
             print(f"❌ {ticker}: arquivos ausentes ({e})")
         except Exception as e:
             err_count += 1
+            import traceback
             print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
+            traceback.print_exc()
 
-    print("\n============================================================")
+    print("\n" + "="*70)
     print(f"Finalizado: OK={ok_count} | WARN(DIVERGE)>0={warn_count} | ERRO={err_count}")
-    print(f"            Anos fiscais irregulares detectados: {irregular_count}")
-    print("============================================================\n")
+    if irregular_count > 0:
+        print(f"            Anos fiscais irregulares: {irregular_count} (check-up pulado)")
+    print("="*70 + "\n")
 
 
 if __name__ == "__main__":
