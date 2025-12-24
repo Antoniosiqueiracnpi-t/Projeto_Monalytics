@@ -51,7 +51,7 @@ jobs:
       - name: Download balancos artifact
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: capturar_balancos.yml
+          workflow: padronizar_bp.yml
           name: balancos
           path: balancos
         continue-on-error: true
