@@ -461,10 +461,10 @@ class PadronizadorDRE:
         Adiciona T4 calculado quando faltante, APENAS para empresas com ano fiscal padrão.
         Para empresas com ano fiscal irregular, NÃO adiciona trimestres artificiais.
         
-        IMPORTANTE: 
-        - Calcula T4 para contas DRE (que são acumulativas)
-        - NÃO calcula T4 para EPS (3.99) - EPS não é acumulativo, não faz sentido
-          calcular T4 = Anual - (T1+T2+T3)
+        REGRA: T4 = Anual - (T1 + T2 + T3) para TODAS as contas, incluindo EPS.
+        
+        Para EPS: se o valor calculado estiver muito fora da escala esperada
+        (ex: 2778.11 ao invés de 2.77), normaliza dividindo por 1000.
         
         Usa esquema DRE correto (banco ou padrão) baseado no ticker.
         """
@@ -476,9 +476,8 @@ class PadronizadorDRE:
         anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
         out = qiso.copy()
 
-        # Lista de códigos DRE (SEM EPS - EPS não é acumulativo)
-        # EPS = Lucro por Ação, é um valor por ação que NÃO se soma ao longo dos trimestres
-        all_codes = [c for c, _ in dre_schema]  # Removido EPS_CODE
+        # Lista completa de códigos: DRE + EPS
+        all_codes = [c for c, _ in dre_schema] + [EPS_CODE]
 
         for ano in sorted(out["ano"].unique()):
             g = out[out["ano"] == ano]
@@ -495,7 +494,16 @@ class PadronizadorDRE:
                 if not np.isfinite(a):
                     continue
                 s = g[(g["code"] == code) & (g["trimestre"].isin(["T1", "T2", "T3"]))]["valor"].sum(skipna=True)
-                new_rows.append((int(ano), "T4", code, float(a - s)))
+                t4_val = float(a - s)
+                
+                # Para EPS: normalizar valores com escala errada
+                if code == EPS_CODE and np.isfinite(t4_val):
+                    # EPS típico fica entre -100 e +100
+                    # Se o valor for muito maior, provavelmente está em escala errada (x1000)
+                    if abs(t4_val) > 100:
+                        t4_val = t4_val / 1000.0
+                
+                new_rows.append((int(ano), "T4", code, t4_val))
 
             if new_rows:
                 out = pd.concat([out, pd.DataFrame(new_rows, columns=out.columns)], ignore_index=True)
