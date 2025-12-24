@@ -1,0 +1,77 @@
+name: Padronizar BP (BPA + BPP)
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'Modo de seleção'
+        required: true
+        default: 'quantidade'
+        type: choice
+        options:
+          - quantidade
+          - ticker
+          - lista
+          - faixa
+      quantidade:
+        description: 'Quantidade de empresas (modo: quantidade)'
+        required: false
+        default: '10'
+      ticker:
+        description: 'Ticker específico (modo: ticker)'
+        required: false
+        default: ''
+      lista:
+        description: 'Lista de tickers separados por vírgula (modo: lista)'
+        required: false
+        default: ''
+      faixa:
+        description: 'Faixa de linhas inicio-fim (modo: faixa, ex: 1-50)'
+        required: false
+        default: ''
+
+jobs:
+  padronizar-bp:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy
+
+      - name: Download balancos artifact
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: capturar_balancos.yml
+          name: balancos
+          path: balancos
+        continue-on-error: true
+
+      - name: Run padronizar_bp.py
+        run: |
+          if [ "${{ github.event.inputs.modo }}" == "quantidade" ]; then
+            python src/padronizar_bp.py --modo quantidade --quantidade "${{ github.event.inputs.quantidade }}"
+          elif [ "${{ github.event.inputs.modo }}" == "ticker" ]; then
+            python src/padronizar_bp.py --modo ticker --ticker "${{ github.event.inputs.ticker }}"
+          elif [ "${{ github.event.inputs.modo }}" == "lista" ]; then
+            python src/padronizar_bp.py --modo lista --lista "${{ github.event.inputs.lista }}"
+          elif [ "${{ github.event.inputs.modo }}" == "faixa" ]; then
+            python src/padronizar_bp.py --modo faixa --faixa "${{ github.event.inputs.faixa }}"
+          fi
+
+      - name: Upload balancos artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: balancos
+          path: balancos/
+          retention-days: 90
+          overwrite: true
