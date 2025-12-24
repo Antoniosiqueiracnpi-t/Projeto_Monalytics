@@ -139,22 +139,26 @@ def _compute_eps_value(group: pd.DataFrame) -> float:
       - se valores iguais => NÃO somar (retorna um)
       - se ON != PN => soma ON + PN
       - se básico vs diluído divergente => NÃO soma, pega maior |valor| (por classe)
+      - se subcontas ON/PN existem mas estão zeradas, usa valor direto de 3.99
     """
     g = group.copy()
     g["cd_conta"] = g["cd_conta"].astype(str)
     g["ds_conta"] = g["ds_conta"].astype(str)
 
+    # Valor direto de 3.99 como fallback
+    direct = g[g["cd_conta"] == EPS_CODE]
+    direct_val = np.nan
+    if not direct.empty:
+        v = _ensure_numeric(direct["valor_mil"]).sum()
+        direct_val = float(v) if np.isfinite(v) else np.nan
+
     leaf = g[g["cd_conta"].str.startswith(EPS_CODE + ".")]
     if leaf.empty:
-        direct = g[g["cd_conta"] == EPS_CODE]
-        if direct.empty:
-            return np.nan
-        v = _ensure_numeric(direct["valor_mil"]).sum()
-        return float(v) if np.isfinite(v) else np.nan
+        return direct_val
 
     leaf = leaf[leaf["ds_conta"].str.upper().isin(["ON", "PN"])].copy()
     if leaf.empty:
-        return np.nan
+        return direct_val
 
     values_by_class: Dict[str, float] = {}
 
@@ -173,7 +177,12 @@ def _compute_eps_value(group: pd.DataFrame) -> float:
             values_by_class[cls] = float(uniq[np.argmax(np.abs(uniq))])
 
     if not values_by_class:
-        return np.nan
+        return direct_val
+
+    # Se todos os valores ON/PN são zero, usar o valor direto de 3.99
+    all_zero = all(v == 0.0 for v in values_by_class.values())
+    if all_zero and np.isfinite(direct_val) and direct_val != 0.0:
+        return direct_val
 
     if "ON" in values_by_class and "PN" in values_by_class:
         on = values_by_class["ON"]
@@ -452,7 +461,11 @@ class PadronizadorDRE:
         Adiciona T4 calculado quando faltante, APENAS para empresas com ano fiscal padrão.
         Para empresas com ano fiscal irregular, NÃO adiciona trimestres artificiais.
         
-        IMPORTANTE: Calcula T4 para TODAS as contas, incluindo EPS (3.99).
+        IMPORTANTE: 
+        - Calcula T4 para contas DRE (que são acumulativas)
+        - NÃO calcula T4 para EPS (3.99) - EPS não é acumulativo, não faz sentido
+          calcular T4 = Anual - (T1+T2+T3)
+        
         Usa esquema DRE correto (banco ou padrão) baseado no ticker.
         """
         # Se ano fiscal irregular, NÃO criar trimestres artificiais
@@ -463,8 +476,9 @@ class PadronizadorDRE:
         anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
         out = qiso.copy()
 
-        # Lista completa de códigos: DRE_SCHEMA + EPS
-        all_codes = [c for c, _ in dre_schema] + [EPS_CODE]
+        # Lista de códigos DRE (SEM EPS - EPS não é acumulativo)
+        # EPS = Lucro por Ação, é um valor por ação que NÃO se soma ao longo dos trimestres
+        all_codes = [c for c, _ in dre_schema]  # Removido EPS_CODE
 
         for ano in sorted(out["ano"].unique()):
             g = out[out["ano"] == ano]
