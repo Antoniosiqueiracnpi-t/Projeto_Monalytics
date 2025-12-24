@@ -11,7 +11,7 @@ import pandas as pd
 
 
 # ======================================================================================
-# CONTAS BPA - BALANÇO PATRIMONIAL ATIVO
+# CONTAS BPA - BALANÇO PATRIMONIAL ATIVO (EMPRESAS NÃO FINANCEIRAS)
 # ======================================================================================
 
 BPA_PADRAO: List[Tuple[str, str]] = [
@@ -33,7 +33,7 @@ BPA_PADRAO: List[Tuple[str, str]] = [
 ]
 
 # ======================================================================================
-# CONTAS BPP - BALANÇO PATRIMONIAL PASSIVO
+# CONTAS BPP - BALANÇO PATRIMONIAL PASSIVO (EMPRESAS NÃO FINANCEIRAS)
 # ======================================================================================
 
 BPP_PADRAO: List[Tuple[str, str]] = [
@@ -67,31 +67,119 @@ BPP_PADRAO: List[Tuple[str, str]] = [
 
 
 # ======================================================================================
-# CONTAS BPA - BANCOS (placeholder - usar mesmo esquema por enquanto)
+# CONTAS BPA - BANCOS (INSTITUIÇÕES FINANCEIRAS)
 # ======================================================================================
 
-BPA_BANCOS: List[Tuple[str, str]] = BPA_PADRAO  # TODO: Adicionar esquema específico
-
-
-# ======================================================================================
-# CONTAS BPP - BANCOS (placeholder - usar mesmo esquema por enquanto)
-# ======================================================================================
-
-BPP_BANCOS: List[Tuple[str, str]] = BPP_PADRAO  # TODO: Adicionar esquema específico
-
-
-# ======================================================================================
-# CONTAS BPA - SEGURADORAS (placeholder - usar mesmo esquema por enquanto)
-# ======================================================================================
-
-BPA_SEGURADORAS: List[Tuple[str, str]] = BPA_PADRAO  # TODO: Adicionar esquema específico
+BPA_BANCOS: List[Tuple[str, str]] = [
+    ("1", "Ativo Total"),
+    ("1.01", "Caixa e Equivalentes de Caixa"),
+    ("1.02", "Ativos Financeiros"),
+    ("1.03", "Tributos"),
+    ("1.04", "Outros Ativos"),
+    ("1.05", "Investimentos"),
+    ("1.06", "Imobilizado"),
+    ("1.07", "Intangível"),
+]
 
 
 # ======================================================================================
-# CONTAS BPP - SEGURADORAS (placeholder - usar mesmo esquema por enquanto)
+# CONTAS BPP - BANCOS (INSTITUIÇÕES FINANCEIRAS)
 # ======================================================================================
 
-BPP_SEGURADORAS: List[Tuple[str, str]] = BPP_PADRAO  # TODO: Adicionar esquema específico
+BPP_BANCOS: List[Tuple[str, str]] = [
+    ("2", "Passivo Total"),
+    ("2.01", "Passivos Financeiros Avaliados ao Valor Justo através do Resultado"),
+    ("2.02", "Passivos Financeiros ao Custo Amortizado"),
+    ("2.03", "Provisões"),
+    ("2.04", "Passivos Fiscais"),
+    ("2.05", "Outros Passivos"),
+    ("2.06", "Passivos sobre Ativos Não Correntes a Venda e Descontinuados"),
+    ("2.07", "Patrimônio Líquido Consolidado"),
+    ("2.07.01", "Patrimônio Líquido Atribuído ao Controlador"),
+    ("2.07.01.01", "Capital Social Realizado"),
+    ("2.07.01.02", "Reservas de Capital"),
+    ("2.07.02", "Patrimônio Líquido Atribuído aos Não Controladores"),
+]
+
+
+# ======================================================================================
+# CONTAS BPA - SEGURADORAS OPERACIONAIS (IRBR3, PSSA3)
+# Seguradoras que assumem risco: prêmios, sinistros, float de reservas técnicas
+# ======================================================================================
+
+BPA_SEGURADORAS: List[Tuple[str, str]] = [
+    ("1", "Ativo Total"),
+    ("1.01", "Ativo Circulante"),
+    ("1.01.01", "Caixa e Equivalentes de Caixa"),
+    ("1.01.02", "Aplicações Financeiras"),                    # Float de curto prazo
+    ("1.01.03", "Créditos das Operações de Seguros"),         # Prêmios a Receber
+    ("1.01.06", "Ativos de Resseguro"),                       # Recuperar de resseguradoras
+    ("1.01.08", "Custos de Aquisição Diferidos"),             # Comissões pagas antecipadamente
+    ("1.02", "Ativo Não Circulante"),
+    ("1.02.01", "Ativo Realizável a Longo Prazo"),
+    ("1.02.01.01", "Aplicações Financeiras"),                 # Float de longo prazo
+    ("1.02.01.02", "Créditos Tributários"),                   # Impostos a recuperar
+    ("1.02.02", "Investimentos"),
+    ("1.02.03", "Imobilizado"),                               # Prédios, Centros Automotivos
+    ("1.02.04", "Intangível"),                                # Softwares, Marcas, Patentes
+]
+
+
+# ======================================================================================
+# CONTAS BPP - SEGURADORAS OPERACIONAIS (IRBR3, PSSA3)
+# Onde mora o risco: provisões técnicas são a conta mais importante
+# ======================================================================================
+
+BPP_SEGURADORAS: List[Tuple[str, str]] = [
+    ("2", "Passivo Total"),
+    ("2.01", "Passivo Circulante"),
+    ("2.01.01", "Obrigações a Pagar"),                        # Fornecedores, Salários
+    ("2.01.04", "Provisões Técnicas de Seguros"),             # A conta mais importante
+    ("2.01.04.01", "Provisão de Prêmios Não Ganhos"),         # PPNG - dívida de serviço
+    ("2.01.04.02", "Provisão de Sinistros a Liquidar"),       # PSL - sinistros não pagos
+    ("2.01.05", "Débitos de Operações com Seguros"),          # Obrigações com Resseguro
+    ("2.02", "Passivo Não Circulante"),
+    ("2.03", "Patrimônio Líquido Consolidado"),
+    ("2.03.01", "Capital Social Realizado"),
+    ("2.03.02", "Reservas de Capital"),
+    ("2.03.04", "Reservas de Lucros"),                        # Lucro retido para solvência
+]
+
+
+# ======================================================================================
+# CONTAS BPA - HOLDINGS DE SEGUROS (BBSE3, CXSE3)
+# Holdings que lucram com corretagem + equivalência patrimonial
+# ======================================================================================
+
+BPA_HOLDINGS_SEGUROS: List[Tuple[str, str]] = [
+    ("1", "Ativo Total"),
+    ("1.01", "Ativo Circulante"),
+    ("1.01.01", "Caixa e Equivalentes de Caixa"),             # Caixa mínimo administrativo
+    ("1.01.02", "Aplicações Financeiras"),                    # Caixa excedente (não é Float)
+    ("1.01.03", "Contas a Receber"),                          # Dividendos e JCP a Receber
+    ("1.02", "Ativo Não Circulante"),
+    ("1.02.02", "Investimentos"),                             # Participações (ex: Brasilseg)
+    ("1.02.03", "Imobilizado"),
+    ("1.02.04", "Intangível"),
+]
+
+
+# ======================================================================================
+# CONTAS BPP - HOLDINGS DE SEGUROS (BBSE3, CXSE3)
+# Estrutura de distribuição - alto payout de dividendos
+# ======================================================================================
+
+BPP_HOLDINGS_SEGUROS: List[Tuple[str, str]] = [
+    ("2", "Passivo Total"),
+    ("2.01", "Passivo Circulante"),
+    ("2.01.01", "Obrigações Sociais e Trabalhistas"),         # Folha da holding
+    ("2.01.02", "Obrigações Fiscais"),                        # PIS/COFINS sobre corretagem
+    ("2.01.05", "Outras Obrigações"),                         # Dividendos e JCP a Pagar
+    ("2.02", "Passivo Não Circulante"),
+    ("2.03", "Patrimônio Líquido Consolidado"),
+    ("2.03.01", "Capital Social Realizado"),
+    ("2.03.04", "Reservas de Lucros"),                        # Geralmente zerado (distribuição)
+]
 
 
 # ======================================================================================
@@ -134,29 +222,56 @@ def _is_banco(ticker: str) -> bool:
     return ticker.upper().strip() in TICKERS_BANCOS
 
 
-def _is_seguradora(ticker: str) -> bool:
-    t = ticker.upper().strip()
-    return t in TICKERS_HOLDINGS_SEGUROS or t in TICKERS_SEGURADORAS
+def _is_holding_seguros(ticker: str) -> bool:
+    """Holdings de seguros: BBSE3, CXSE3"""
+    return ticker.upper().strip() in TICKERS_HOLDINGS_SEGUROS
+
+
+def _is_seguradora_operacional(ticker: str) -> bool:
+    """Seguradoras operacionais: IRBR3, PSSA3"""
+    return ticker.upper().strip() in TICKERS_SEGURADORAS
 
 
 def _get_bpa_schema(ticker: str) -> List[Tuple[str, str]]:
     """Retorna o esquema BPA apropriado para o ticker."""
-    if _is_banco(ticker):
-        return BPA_BANCOS
-    elif _is_seguradora(ticker):
+    ticker_upper = ticker.upper().strip()
+    
+    if _is_holding_seguros(ticker_upper):
+        return BPA_HOLDINGS_SEGUROS
+    elif _is_seguradora_operacional(ticker_upper):
         return BPA_SEGURADORAS
+    elif _is_banco(ticker_upper):
+        return BPA_BANCOS
     else:
         return BPA_PADRAO
 
 
 def _get_bpp_schema(ticker: str) -> List[Tuple[str, str]]:
     """Retorna o esquema BPP apropriado para o ticker."""
-    if _is_banco(ticker):
-        return BPP_BANCOS
-    elif _is_seguradora(ticker):
+    ticker_upper = ticker.upper().strip()
+    
+    if _is_holding_seguros(ticker_upper):
+        return BPP_HOLDINGS_SEGUROS
+    elif _is_seguradora_operacional(ticker_upper):
         return BPP_SEGURADORAS
+    elif _is_banco(ticker_upper):
+        return BPP_BANCOS
     else:
         return BPP_PADRAO
+
+
+def _get_tipo_empresa(ticker: str) -> str:
+    """Retorna o tipo da empresa para mensagens."""
+    ticker_upper = ticker.upper().strip()
+    
+    if _is_holding_seguros(ticker_upper):
+        return "HOLDING SEGUROS"
+    elif _is_seguradora_operacional(ticker_upper):
+        return "SEGURADORA"
+    elif _is_banco(ticker_upper):
+        return "BANCO"
+    else:
+        return "GERAL"
 
 
 # ======================================================================================
@@ -468,13 +583,7 @@ class PadronizadorBP:
         
         # 9. Mensagem de retorno
         fiscal_status = "PADRÃO" if fiscal_info.is_standard else "IRREGULAR"
-        
-        if _is_banco(ticker):
-            tipo = "BANCO"
-        elif _is_seguradora(ticker):
-            tipo = "SEGURADORA"
-        else:
-            tipo = "GERAL"
+        tipo = _get_tipo_empresa(ticker)
         
         n_periodos_bpa = len([c for c in bpa_out.columns if c not in ["cd_conta", "conta"]])
         n_periodos_bpp = len([c for c in bpp_out.columns if c not in ["cd_conta", "conta"]])
