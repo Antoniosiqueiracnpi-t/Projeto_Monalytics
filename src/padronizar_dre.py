@@ -71,6 +71,60 @@ TICKERS_BANCOS: Set[str] = {
 
 
 # ======================================================================================
+# CONTAS HOLDINGS DE SEGUROS (BBSE3, CXSE3) - DRE
+# ======================================================================================
+# Holdings que lucram com corretagem + equivalência patrimonial das seguradoras coligadas
+
+DRE_HOLDINGS_SEGUROS: List[Tuple[str, str]] = [
+    ("3.01", "Receita de Venda de Bens e/ou Serviços"),       # Faturamento Bruto de Corretagem
+    ("3.02", "Custo dos Bens e/ou Serviços Vendidos"),        # Custos de serviços/impostos diretos
+    ("3.03", "Resultado Bruto"),                               # Lucro da corretagem antes despesas
+    ("3.04", "Despesas/Receitas Operacionais"),               # Consolida despesas + Equivalência
+    ("3.04.01", "Despesas com Vendas"),                       # Marketing e campanhas comerciais
+    ("3.04.02", "Despesas Gerais e Administrativas"),         # Eficiência: salários, aluguel, TI
+    ("3.04.05", "Resultado de Equivalência Patrimonial"),     # CORAÇÃO DO LUCRO: lucro das coligadas
+    ("3.05", "Resultado Antes do Resultado Financeiro e dos Tributos"),  # Lucro operacional total
+    ("3.06", "Resultado Financeiro"),                          # Rendimento do caixa próprio
+    ("3.08", "Resultado Antes dos Tributos sobre o Lucro"),   # Base para IR/CSLL
+    ("3.09", "Imposto de Renda e Contribuição Social sobre o Lucro"),  # Impostos da holding
+    ("3.11", "Lucro/Prejuízo Consolidado do Período"),        # Bottom Line
+]
+
+# Lista de tickers de holdings de seguros
+TICKERS_HOLDINGS_SEGUROS: Set[str] = {
+    "BBSE3",  # BB Seguridade
+    "CXSE3",  # Caixa Seguridade
+}
+
+
+# ======================================================================================
+# CONTAS SEGURADORAS OPERACIONAIS (IRBR3, PSSA3) - DRE
+# ======================================================================================
+# Seguradoras que assumem risco: prêmios, sinistros, float de reservas técnicas
+
+DRE_SEGURADORAS: List[Tuple[str, str]] = [
+    ("3.01", "Prêmios Ganhos"),                    # Receita real (prêmio que já venceu)
+    ("3.01.01", "Prêmios Emitidos"),               # Vendas totais de apólices (bruto)
+    ("3.01.04", "Variação das Provisões Técnicas"),  # Ajuste de risco não decorrido
+    ("3.02", "Sinistros Retidos"),                 # O RISCO: indenizações pagas
+    ("3.03", "Custos de Aquisição"),               # Comissões pagas a corretores/cedentes
+    ("3.04", "Despesas Administrativas"),          # Custos de estrutura
+    ("3.05", "Despesas com Tributos"),             # PIS/COFINS sobre faturamento
+    ("3.06", "Resultado Financeiro"),              # FLOAT: rendimento das reservas investidas
+    ("3.07", "Resultado Operacional"),             # Operação de seguros + financeiro
+    ("3.08", "Resultado Antes dos Tributos sobre o Lucro"),  # + outras receitas/despesas
+    ("3.09", "Imposto de Renda e Contribuição Social"),      # Tributação (alta ~40-45%)
+    ("3.11", "Lucro Líquido do Período"),          # Resultado final
+]
+
+# Lista de tickers de seguradoras operacionais
+TICKERS_SEGURADORAS: Set[str] = {
+    "IRBR3",  # IRB Brasil Resseguros
+    "PSSA3",  # Porto Seguro
+}
+
+
+# ======================================================================================
 # LUCRO POR AÇÃO (COMUM A TODOS)
 # ======================================================================================
 
@@ -83,9 +137,31 @@ def _is_banco(ticker: str) -> bool:
     return ticker.upper().strip() in TICKERS_BANCOS
 
 
+def _is_holding_seguros(ticker: str) -> bool:
+    """Verifica se o ticker é de uma holding de seguros (BBSE3, CXSE3)."""
+    return ticker.upper().strip() in TICKERS_HOLDINGS_SEGUROS
+
+
+def _is_seguradora(ticker: str) -> bool:
+    """Verifica se o ticker é de uma seguradora operacional (IRBR3, PSSA3)."""
+    return ticker.upper().strip() in TICKERS_SEGURADORAS
+
+
 def _get_dre_schema(ticker: str) -> List[Tuple[str, str]]:
-    """Retorna o esquema DRE apropriado para o ticker (banco ou padrão)."""
-    return DRE_BANCOS if _is_banco(ticker) else DRE_PADRAO
+    """
+    Retorna o esquema DRE apropriado para o ticker.
+    Ordem de verificação: Holding Seguros → Seguradora → Banco → Padrão
+    """
+    ticker_upper = ticker.upper().strip()
+    
+    if _is_holding_seguros(ticker_upper):
+        return DRE_HOLDINGS_SEGUROS
+    elif _is_seguradora(ticker_upper):
+        return DRE_SEGURADORAS
+    elif _is_banco(ticker_upper):
+        return DRE_BANCOS
+    else:
+        return DRE_PADRAO
 
 
 # ======================================================================================
