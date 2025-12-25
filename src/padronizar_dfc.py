@@ -10,6 +10,11 @@ from typing import Dict, List, Set, Tuple
 import numpy as np
 import pandas as pd
 
+# ADICIONAR NO TOPO DO ARQUIVO (após outros imports):
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent))
+from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
 
 # ======================================================================================
 # CONTAS DFC - PADRÃO PARA TODAS AS EMPRESAS
@@ -229,27 +234,27 @@ class PadronizadorDFC:
 
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """Carrega arquivos DFC trimestral e anual."""
-        pasta = self.pasta_balancos / ticker.upper().strip()
+        pasta = get_pasta_balanco(ticker)
         tri_path = pasta / "dfc_mi_consolidado.csv"
         anu_path = pasta / "dfc_mi_anual.csv"
-
+    
         if not tri_path.exists():
             raise FileNotFoundError(f"Arquivo não encontrado: {tri_path}")
         if not anu_path.exists():
             raise FileNotFoundError(f"Arquivo não encontrado: {anu_path}")
-
+    
         df_tri = pd.read_csv(tri_path)
         df_anu = pd.read_csv(anu_path)
-
+    
         for df in (df_tri, df_anu):
             df["cd_conta"] = df["cd_conta"].astype(str).str.strip()
             df["ds_conta"] = df["ds_conta"].astype(str).str.strip()
             df["valor_mil"] = _ensure_numeric(df["valor_mil"])
             df["data_fim"] = _to_datetime(df, "data_fim")
-
+    
         df_tri = df_tri.dropna(subset=["data_fim"])
         df_anu = df_anu.dropna(subset=["data_fim"])
-
+    
         return df_tri, df_anu
 
     def _build_quarter_totals(self, df_tri: pd.DataFrame) -> pd.DataFrame:
@@ -482,40 +487,41 @@ class PadronizadorDFC:
     def padronizar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
         """
         Pipeline completo de padronização do DFC.
+        Agora usa get_pasta_balanco() para garantir pasta correta.
         """
         self._current_ticker = ticker.upper().strip()
-
+    
         df_tri, df_anu = self._load_inputs(ticker)
-
+    
         fiscal_info = _detect_fiscal_year_pattern(df_tri, df_anu)
-
+    
         qtot = self._build_quarter_totals(df_tri)
-
+    
         anual = self._extract_annual_values(df_anu)
-
+    
         cumulative_years = self._detect_cumulative_years(qtot, anual, fiscal_info)
-
+    
         qiso = self._to_isolated_quarters(qtot, cumulative_years, fiscal_info)
-
+    
         qiso = self._add_t4_from_annual_when_missing(qiso, anual, fiscal_info)
-
+    
         df_out = self._build_horizontal(qiso)
-
-        pasta = self.pasta_balancos / ticker.upper().strip()
+    
+        pasta = get_pasta_balanco(ticker)
         out_path = pasta / "dfc_padronizado.csv"
         df_out.to_csv(out_path, index=False, encoding="utf-8")
-
+    
         fiscal_status = "PADRÃO" if fiscal_info.is_standard else "IRREGULAR"
         tipo = "FINANCEIRA" if _is_financeira_ou_seguradora(ticker) else "GERAL"
-
+    
         n_periodos = len([c for c in df_out.columns if c not in ["cd_conta", "conta"]])
-
+    
         msg_parts = [
             f"Fiscal: {fiscal_status}",
             f"Tipo: {tipo}",
             f"Períodos: {n_periodos}",
         ]
-
+    
         if self._include_deprec_amort():
             has_deprec = not df_out[df_out["cd_conta"] == DEPREC_CODE].empty
             if has_deprec:
@@ -528,7 +534,7 @@ class PadronizadorDFC:
                 msg_parts.append(f"D&A: {non_null} períodos")
             else:
                 msg_parts.append("D&A: não encontrada")
-
+    
         msg = f"dfc_padronizado.csv | {' | '.join(msg_parts)}"
         return True, msg
 
@@ -553,7 +559,8 @@ def main():
     parser.add_argument("--faixa", default="", help="Faixa de linhas: inicio-fim (ex: 1-50)")
     args = parser.parse_args()
 
-    df = pd.read_csv("mapeamento_final_b3_completo_utf8.csv", sep=";", encoding="utf-8-sig")
+    # Tentar carregar mapeamento consolidado, fallback para original
+    df = load_mapeamento_consolidado()
     df = df[df["cnpj"].notna()].reset_index(drop=True)
 
     if args.modo == "quantidade":
@@ -561,11 +568,15 @@ def main():
         df_sel = df.head(limite)
 
     elif args.modo == "ticker":
-        df_sel = df[df["ticker"].str.upper() == args.ticker.upper()]
+        ticker_upper = args.ticker.upper()
+        df_sel = df[df["ticker"].str.upper().str.contains(ticker_upper, case=False, na=False, regex=False)]
 
     elif args.modo == "lista":
         tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
-        df_sel = df[df["ticker"].str.upper().isin(tickers)]
+        mask = df["ticker"].str.upper().apply(
+            lambda x: any(t in x for t in tickers) if pd.notna(x) else False
+        )
+        df_sel = df[mask]
 
     elif args.modo == "faixa":
         inicio, fim = map(int, args.faixa.split("-"))
@@ -585,12 +596,13 @@ def main():
     irregular_count = 0
 
     for _, row in df_sel.iterrows():
-        ticker = str(row["ticker"]).upper().strip()
+        ticker_str = str(row["ticker"]).upper().strip()
+        ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
 
-        pasta = Path("balancos") / ticker
+        pasta = get_pasta_balanco(ticker)
         if not pasta.exists():
             err_count += 1
-            print(f"❌ {ticker}: pasta balancos/{ticker} não existe")
+            print(f"❌ {ticker}: pasta {pasta} não existe")
             continue
 
         try:
