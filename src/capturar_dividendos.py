@@ -585,6 +585,9 @@ class CapturadorDividendos:
         ticker = ticker.upper().strip()
         pasta = self.pasta_balancos / ticker
         
+        # Garantir que pasta existe
+        pasta.mkdir(parents=True, exist_ok=True)
+        
         # 1. Buscar dividendos brutos (multi-fonte)
         df_raw = self._fetch_all_dividends(ticker)
         
@@ -610,13 +613,19 @@ class CapturadorDividendos:
         json_data = self._build_detalhado_json(df_processed, ticker)
         
         # 6. Salvar arquivo CSV (formato horizontal)
-        csv_path = pasta / "dividendos_trimestrais.csv"
-        df_out.to_csv(csv_path, index=False, encoding="utf-8")
+        try:
+            csv_path = pasta / "dividendos_trimestrais.csv"
+            df_out.to_csv(csv_path, index=False, encoding="utf-8")
+        except Exception as e:
+            return False, f"erro ao salvar CSV: {e}"
         
         # 7. Salvar arquivo JSON (datas detalhadas)
-        json_path = pasta / "dividendos_detalhado.json"
-        with open(json_path, 'w', encoding='utf-8') as f:
-            json.dump(json_data, f, ensure_ascii=False, indent=2)
+        try:
+            json_path = pasta / "dividendos_detalhado.json"
+            with open(json_path, 'w', encoding='utf-8') as f:
+                json.dump(json_data, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            return False, f"erro ao salvar JSON: {e}"
         
         # 8. Estatísticas
         n_periodos = len([c for c in df_out.columns if c != "Dividendos_Pagos"])
