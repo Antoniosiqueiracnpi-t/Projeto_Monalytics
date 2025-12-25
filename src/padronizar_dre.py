@@ -9,6 +9,11 @@ from typing import Dict, List, Optional, Set, Tuple
 import numpy as np
 import pandas as pd
 
+# ADICIONAR NO TOPO DO ARQUIVO (após outros imports):
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent))
+from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
 
 # ======================================================================================
 # CONTAS PADRÃO (NÃO FINANCEIRAS) - DRE
@@ -381,27 +386,27 @@ class PadronizadorDRE:
         return _get_dre_schema(self._current_ticker)
 
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        pasta = self.pasta_balancos / ticker.upper().strip()
+        pasta = get_pasta_balanco(ticker)
         tri_path = pasta / "dre_consolidado.csv"
         anu_path = pasta / "dre_anual.csv"
-
+    
         if not tri_path.exists():
             raise FileNotFoundError(f"Arquivo não encontrado: {tri_path}")
         if not anu_path.exists():
             raise FileNotFoundError(f"Arquivo não encontrado: {anu_path}")
-
+    
         df_tri = pd.read_csv(tri_path)
         df_anu = pd.read_csv(anu_path)
-
+    
         for df in (df_tri, df_anu):
             df["cd_conta"] = df["cd_conta"].astype(str).str.strip()
             df["ds_conta"] = df["ds_conta"].astype(str).str.strip()
             df["valor_mil"] = _ensure_numeric(df["valor_mil"])
             df["data_fim"] = _to_datetime(df, "data_fim")
-
+    
         df_tri = df_tri.dropna(subset=["data_fim"])
         df_anu = df_anu.dropna(subset=["data_fim"])
-
+    
         return df_tri, df_anu
 
     def _build_quarter_totals(self, df_tri: pd.DataFrame) -> pd.DataFrame:
@@ -755,19 +760,12 @@ class PadronizadorDRE:
     def padronizar_e_salvar_ticker(self, ticker: str, salvar_checkup: bool = True) -> Tuple[bool, str]:
         """
         Padroniza DRE de um ticker e salva resultado.
-        
-        Args:
-            ticker: Código do ticker
-            salvar_checkup: Se True, salva relatório de check-up
-            
-        Returns:
-            ok: True se não há divergências (ou se é irregular e foi pulado)
-            msg: Mensagem de status
+        Agora usa get_pasta_balanco() para garantir pasta correta.
         """
         ticker = ticker.upper().strip()
-        self._current_ticker = ticker  # Define ticker atual para seleção do esquema DRE
-        pasta = self.pasta_balancos / ticker
-
+        self._current_ticker = ticker
+        pasta = get_pasta_balanco(ticker)
+    
         # 1. Carregar dados
         df_tri, df_anu = self._load_inputs(ticker)
         
@@ -839,14 +837,13 @@ class PadronizadorDRE:
             ]
             ok = (diverge == 0)
         else:
-            # Para irregular: check-up foi pulado, considera OK se valores foram copiados
             msg_parts = [
                 f"tipo={tipo_dre}",
                 f"fiscal={fiscal_status}",
                 f"CHECK-UP=PULADO",
                 f"trimestres={sorted(fiscal_info.quarters_pattern)}"
             ]
-            ok = True  # Valores foram copiados corretamente
+            ok = True
         
         if checkup_saved:
             msg_parts.append("checkup=SALVO")
@@ -870,7 +867,8 @@ def main():
     parser.add_argument("--no-checkup", action="store_true", help="Não salvar relatório de check-up")
     args = parser.parse_args()
 
-    df = pd.read_csv("mapeamento_final_b3_completo_utf8.csv", sep=";", encoding="utf-8-sig")
+    # Tentar carregar mapeamento consolidado, fallback para original
+    df = load_mapeamento_consolidado()
     df = df[df["cnpj"].notna()].reset_index(drop=True)
 
     if args.modo == "quantidade":
@@ -878,11 +876,15 @@ def main():
         df_sel = df.head(limite)
 
     elif args.modo == "ticker":
-        df_sel = df[df["ticker"].str.upper() == args.ticker.upper()]
+        ticker_upper = args.ticker.upper()
+        df_sel = df[df["ticker"].str.upper().str.contains(ticker_upper, case=False, na=False, regex=False)]
 
     elif args.modo == "lista":
         tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
-        df_sel = df[df["ticker"].str.upper().isin(tickers)]
+        mask = df["ticker"].str.upper().apply(
+            lambda x: any(t in x for t in tickers) if pd.notna(x) else False
+        )
+        df_sel = df[mask]
 
     elif args.modo == "faixa":
         inicio, fim = map(int, args.faixa.split("-"))
@@ -905,18 +907,18 @@ def main():
     salvar_checkup = not args.no_checkup
 
     for _, row in df_sel.iterrows():
-        ticker = str(row["ticker"]).upper().strip()
+        ticker_str = str(row["ticker"]).upper().strip()
+        ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
 
-        pasta = Path("balancos") / ticker
+        pasta = get_pasta_balanco(ticker)
         if not pasta.exists():
             err_count += 1
-            print(f"❌ {ticker}: pasta balancos/{ticker} não existe (captura ausente)")
+            print(f"❌ {ticker}: pasta {pasta} não existe (captura ausente)")
             continue
 
         try:
             ok, msg = pad.padronizar_e_salvar_ticker(ticker, salvar_checkup=salvar_checkup)
             
-            # Verificar se é irregular para contagem
             if "IRREGULAR" in msg:
                 irregular_count += 1
             
