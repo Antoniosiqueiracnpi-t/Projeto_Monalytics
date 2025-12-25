@@ -2,9 +2,12 @@
 from __future__ import annotations
 
 import argparse
+import base64
+import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 import warnings
 
 import pandas as pd
@@ -19,6 +22,13 @@ try:
     HAS_YFINANCE = True
 except ImportError:
     HAS_YFINANCE = False
+
+# Suprimir warnings SSL para API B3
+try:
+    import urllib3
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+except:
+    pass
 
 
 def _quarter_order(q: str) -> int:
@@ -41,20 +51,219 @@ def _date_to_quarter(date: pd.Timestamp) -> str:
         return "T4"
 
 
+def _extract_trading_name(nome_empresa: str) -> str:
+    """
+    Extrai trading name do nome completo da empresa.
+    
+    Exemplos:
+    - "MUNDIAL S.A. – PRODUTOS DE CONSUMO" → "MUNDIAL"
+    - "TECHNOS S.A." → "TECHNOS"
+    - "SÃO MARTINHO S.A." → "SAO MARTINHO"
+    - "VIVARA PARTICIPAÇÕES S.A." → "VIVARA"
+    """
+    if not nome_empresa:
+        return ""
+    
+    # Remover sufixos comuns
+    nome = nome_empresa.upper()
+    
+    # Padrões a remover
+    patterns = [
+        r'\s+S\.?A\.?.*$',  # S.A. e tudo após
+        r'\s+SA\b.*$',       # SA e tudo após
+        r'\s+LTDA.*$',       # LTDA e tudo após
+        r'\s+–.*$',          # Hífen longo e tudo após
+        r'\s+-\s+.*$',       # Hífen e tudo após
+        r'\s+PARTICIPACOES.*$',
+        r'\s+PARTICIPAÇÕES.*$',
+    ]
+    
+    for pattern in patterns:
+        nome = re.sub(pattern, '', nome, flags=re.IGNORECASE)
+    
+    return nome.strip()
+
+
+def _parse_b3_value(value_str: str) -> float:
+    """
+    Converte valor da API B3 de formato brasileiro para float.
+    
+    Exemplos:
+    - "0,20092175" → 0.20092175
+    - "1,028980" → 1.028980
+    """
+    if not value_str:
+        return 0.0
+    
+    try:
+        # Substituir vírgula por ponto
+        value_str = str(value_str).replace(',', '.')
+        return float(value_str)
+    except:
+        return 0.0
+
+
 @dataclass
 class CapturadorDividendos:
     """
     Captura histórico de dividendos usando múltiplas fontes.
     
     Prioridade:
-    1. OkaneBox API (gratuita, simples, dados B3)
-    2. yfinance (fallback, dados Yahoo Finance)
+    1. API B3 Oficial (gratuita, dados primários B3)
+    2. OkaneBox API (gratuita, simples, dados B3)
+    3. yfinance (fallback, dados Yahoo Finance)
+    4. CSV Local (último fallback)
     
-    Agrupa dividendos por trimestre baseado na data de pagamento
+    Agrupa dividendos por trimestre baseado na data COM
     e gera formato horizontal padronizado.
+    
+    Salva 2 arquivos:
+    - dividendos_trimestrais.csv (formato horizontal)
+    - dividendos_detalhado.json (datas exatas para mapa de calor)
     """
     pasta_balancos: Path = Path("balancos")
     timeout: int = 30
+    csv_mapeamento: str = "mapeamento_final_b3_completo_utf8.csv"
+    _df_mapeamento: Optional[pd.DataFrame] = None
+    
+    def __post_init__(self):
+        """Carregar CSV de mapeamento na inicialização."""
+        self._load_mapeamento()
+    
+    def _load_mapeamento(self):
+        """Carrega CSV de mapeamento de empresas."""
+        try:
+            self._df_mapeamento = pd.read_csv(
+                self.csv_mapeamento, 
+                sep=";", 
+                encoding="utf-8-sig"
+            )
+        except Exception as e:
+            print(f"    ⚠️ Erro ao carregar mapeamento: {e}")
+            self._df_mapeamento = pd.DataFrame()
+    
+    def _get_empresa_info(self, ticker: str) -> Dict[str, str]:
+        """
+        Busca informações da empresa no CSV de mapeamento.
+        
+        Returns:
+            dict com 'empresa', 'cnpj', 'trading_name'
+        """
+        if self._df_mapeamento is None or self._df_mapeamento.empty:
+            return {}
+        
+        ticker_clean = ticker.upper().strip()
+        
+        mask = self._df_mapeamento['ticker'].str.upper() == ticker_clean
+        rows = self._df_mapeamento[mask]
+        
+        if rows.empty:
+            return {}
+        
+        row = rows.iloc[0]
+        
+        empresa = str(row.get('empresa', ''))
+        cnpj = str(row.get('cnpj', ''))
+        trading_name = _extract_trading_name(empresa)
+        
+        return {
+            'empresa': empresa,
+            'cnpj': cnpj,
+            'trading_name': trading_name
+        }
+    
+    def _fetch_b3_api(self, ticker: str) -> pd.DataFrame:
+        """
+        Busca dividendos da API B3 Oficial.
+        
+        Endpoint: sistemaswebb3-listados.b3.com.br
+        Usa trading name da empresa obtido do CSV de mapeamento.
+        Pagina automaticamente (120 registros por página).
+        """
+        # Buscar trading name no CSV
+        info = self._get_empresa_info(ticker)
+        trading_name = info.get('trading_name', '')
+        
+        if not trading_name:
+            print(f"    [B3 API] Trading name não encontrado no CSV")
+            return pd.DataFrame()
+        
+        print(f"    [B3 API] Trading name: {trading_name}")
+        
+        all_dividends = []
+        page = 1
+        max_pages = 50  # Limite de segurança
+        
+        while page <= max_pages:
+            try:
+                # Parâmetros da API
+                params = {
+                    "language": "pt-br",
+                    "pageNumber": page,
+                    "pageSize": 120,
+                    "tradingName": trading_name
+                }
+                
+                # Codificar em base64
+                params_json = json.dumps(params)
+                params_b64 = base64.b64encode(params_json.encode()).decode()
+                
+                # URL da API B3
+                url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{params_b64}"
+                
+                # Requisição (SSL verify=False necessário)
+                response = requests.get(url, verify=False, timeout=self.timeout)
+                response.raise_for_status()
+                
+                data = response.json()
+                
+                # Extrair resultados
+                results = data.get('results', [])
+                
+                if not results:
+                    break
+                
+                all_dividends.extend(results)
+                
+                # Verificar paginação
+                page_info = data.get('page', {})
+                current_page = page_info.get('pageNumber', 0)
+                total_pages = page_info.get('totalPages', 0)
+                
+                if current_page >= total_pages:
+                    break
+                
+                page += 1
+                
+            except Exception as e:
+                if page == 1:
+                    print(f"    [B3 API] Erro: {e}")
+                break
+        
+        if not all_dividends:
+            return pd.DataFrame()
+        
+        # Converter para DataFrame
+        df = pd.DataFrame(all_dividends)
+        
+        # Padronizar colunas
+        column_mapping = {
+            'lastDatePriorEx': 'data_com',
+            'corporateActionPrice': 'valor',
+            'corporateAction': 'tipo',
+            'dateApproval': 'data_aprovacao',
+            'lastDateTimePriorEx': 'data_com_full'
+        }
+        
+        df = df.rename(columns=column_mapping)
+        
+        # Converter valores de formato brasileiro
+        if 'valor' in df.columns:
+            df['valor'] = df['valor'].apply(
+                lambda x: _parse_b3_value(x) if pd.notna(x) else 0.0
+            )
+        
+        return df
     
     def _fetch_okanebox(self, ticker: str) -> pd.DataFrame:
         """
@@ -151,25 +360,33 @@ class CapturadorDividendos:
         """
         Busca dividendos tentando múltiplas fontes em ordem de prioridade.
         
-        1. OkaneBox API (gratuita, dados B3 oficiais)
-        2. yfinance (Yahoo Finance, dados internacionais)
-        3. CSV local (se arquivo dividendos_raw.csv existe)
+        1. B3 API Oficial (dados primários B3 via trading name)
+        2. OkaneBox API (gratuita, dados B3 oficiais)
+        3. yfinance (Yahoo Finance, dados internacionais)
+        4. CSV local (se arquivo dividendos_raw.csv existe)
         """
-        # 1. Tentar OkaneBox (fonte primária - dados B3)
+        # 1. Tentar B3 API Oficial (PRIORIDADE)
+        df = self._fetch_b3_api(ticker)
+        
+        if not df.empty:
+            print(f"    ✓ Fonte: B3 API Oficial ({len(df)} registros)")
+            return df
+        
+        # 2. Tentar OkaneBox (fallback 1)
         df = self._fetch_okanebox(ticker)
         
         if not df.empty:
             print(f"    ✓ Fonte: OkaneBox ({len(df)} registros)")
             return df
         
-        # 2. Tentar yfinance (fallback)
+        # 3. Tentar yfinance (fallback 2)
         df = self._fetch_yfinance(ticker)
         
         if not df.empty:
             print(f"    ✓ Fonte: yfinance ({len(df)} registros)")
             return df
         
-        # 3. Tentar CSV local (último fallback)
+        # 4. Tentar CSV local (último fallback)
         df = self._fetch_local_csv(ticker)
         
         if not df.empty:
@@ -285,9 +502,81 @@ class CapturadorDividendos:
         
         return pd.DataFrame([result])
     
+    def _build_detalhado_json(self, df_processed: pd.DataFrame, ticker: str) -> dict:
+        """
+        Constrói JSON detalhado com datas exatas para mapeamento de calor.
+        
+        Formato:
+        {
+            "ticker": "PETR4",
+            "total_dividendos": 56.09,
+            "periodo": "2020-2024",
+            "dividendos": [
+                {
+                    "data_com": "2022-02-23",
+                    "valor": 2.2336,
+                    "tipo": "Dividendo",
+                    "ano": 2022,
+                    "mes": 2,
+                    "trimestre": "T1"
+                },
+                ...
+            ]
+        }
+        """
+        if df_processed.empty:
+            return {}
+        
+        # Preparar lista de dividendos
+        dividendos_list = []
+        
+        for _, row in df_processed.iterrows():
+            data_com = row.get('data_com')
+            
+            if pd.isna(data_com):
+                continue
+            
+            dividendo = {
+                "data_com": data_com.strftime('%Y-%m-%d'),
+                "valor": float(row.get('valor', 0)),
+                "tipo": str(row.get('tipo', 'Dividendo')),
+                "ano": int(data_com.year),
+                "mes": int(data_com.month),
+                "dia": int(data_com.day),
+                "trimestre": _date_to_quarter(data_com)
+            }
+            
+            # Adicionar data de pagamento se disponível
+            if 'data_pagamento' in row and pd.notna(row['data_pagamento']):
+                dividendo['data_pagamento'] = row['data_pagamento'].strftime('%Y-%m-%d')
+            
+            dividendos_list.append(dividendo)
+        
+        # Ordenar por data
+        dividendos_list.sort(key=lambda x: x['data_com'])
+        
+        # Calcular estatísticas
+        total = sum(d['valor'] for d in dividendos_list)
+        periodo_inicio = dividendos_list[0]['ano'] if dividendos_list else None
+        periodo_fim = dividendos_list[-1]['ano'] if dividendos_list else None
+        
+        resultado = {
+            "ticker": ticker,
+            "total_dividendos": round(total, 4),
+            "periodo": f"{periodo_inicio}-{periodo_fim}" if periodo_inicio else "",
+            "quantidade_pagamentos": len(dividendos_list),
+            "dividendos": dividendos_list
+        }
+        
+        return resultado
+    
     def capturar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
         """
         Pipeline completo de captura de dividendos.
+        
+        Salva 2 arquivos:
+        1. dividendos_trimestrais.csv (formato horizontal)
+        2. dividendos_detalhado.json (datas exatas para mapa de calor)
         
         Returns:
             ok: True se capturou pelo menos um dividendo
@@ -317,13 +606,22 @@ class CapturadorDividendos:
         # 4. Construir formato horizontal
         df_out = self._build_horizontal(df_grouped)
         
-        # 5. Salvar
-        out_path = pasta / "dividendos_trimestrais.csv"
-        df_out.to_csv(out_path, index=False, encoding="utf-8")
+        # 5. Construir JSON detalhado
+        json_data = self._build_detalhado_json(df_processed, ticker)
         
-        # 6. Estatísticas
+        # 6. Salvar arquivo CSV (formato horizontal)
+        csv_path = pasta / "dividendos_trimestrais.csv"
+        df_out.to_csv(csv_path, index=False, encoding="utf-8")
+        
+        # 7. Salvar arquivo JSON (datas detalhadas)
+        json_path = pasta / "dividendos_detalhado.json"
+        with open(json_path, 'w', encoding='utf-8') as f:
+            json.dump(json_data, f, ensure_ascii=False, indent=2)
+        
+        # 8. Estatísticas
         n_periodos = len([c for c in df_out.columns if c != "Dividendos_Pagos"])
         total_dividendos = df_grouped['valor'].sum()
+        n_pagamentos = len(df_processed)
         
         if not df_processed.empty and 'data_com' in df_processed.columns:
             periodo_inicio = df_processed['data_com'].min().year
@@ -333,11 +631,12 @@ class CapturadorDividendos:
         
         msg_parts = [
             f"periodos={n_periodos}",
+            f"pagamentos={n_pagamentos}",
             f"total=R${total_dividendos:.2f}",
             f"range={periodo_inicio}-{periodo_fim}"
         ]
         
-        msg = f"dividendos_trimestrais.csv | {' | '.join(msg_parts)}"
+        msg = f"CSV+JSON | {' | '.join(msg_parts)}"
         
         return True, msg
 
@@ -381,8 +680,8 @@ def main():
 
     print(f"\n>>> JOB: CAPTURAR DIVIDENDOS TRIMESTRAIS <<<")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
-    print("Fontes: OkaneBox API (primária) + yfinance (fallback)")
-    print("Saída: balancos/<TICKER>/dividendos_trimestrais.csv\n")
+    print("Fontes: B3 API (primária) → OkaneBox → yfinance → CSV local")
+    print("Saída: balancos/<TICKER>/dividendos_trimestrais.csv + dividendos_detalhado.json\n")
 
     capturador = CapturadorDividendos()
 
