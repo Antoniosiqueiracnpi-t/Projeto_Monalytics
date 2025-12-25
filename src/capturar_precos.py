@@ -19,6 +19,11 @@ except ImportError:
     raise ImportError("Instale yfinance: pip install yfinance")
 
 
+def _quarter_order(q: str) -> int:
+    """Retorna ordem numérica do trimestre para ordenação."""
+    return {"T1": 1, "T2": 2, "T3": 3, "T4": 4}.get(q, 99)
+
+
 @dataclass
 class CapturadorPrecos:
     """
@@ -127,6 +132,47 @@ class CapturadorPrecos:
             print(f"    ⚠️ Erro ao buscar preço: {e}")
             return None
 
+    def _build_horizontal(self, prices_data: pd.DataFrame) -> pd.DataFrame:
+        """
+        Constrói tabela horizontal (períodos como colunas).
+        
+        Formato: Preço_Fechamento | 2022T1 | 2022T2 | ...
+        """
+        if prices_data.empty:
+            return pd.DataFrame(columns=["Preço_Fechamento"])
+        
+        # Adicionar coluna de ano
+        prices_data["ano"] = prices_data["data_fim"].dt.year
+        
+        # Criar período (ex: 2022T1)
+        prices_data["periodo"] = (
+            prices_data["ano"].astype(str) + prices_data["trimestre"]
+        )
+        
+        # Ordenar períodos cronologicamente
+        def sort_key(p):
+            try:
+                return (int(p[:4]), _quarter_order(p[4:]))
+            except:
+                return (9999, 99)
+        
+        prices_data = prices_data.sort_values(
+            by="periodo",
+            key=lambda x: x.map(sort_key)
+        )
+        
+        # Criar dict com período: preço
+        price_dict = dict(zip(
+            prices_data["periodo"],
+            prices_data["preco_fechamento_ajustado"]
+        ))
+        
+        # Construir linha horizontal
+        result = {"Preço_Fechamento": "Preço de Fechamento Ajustado"}
+        result.update(price_dict)
+        
+        return pd.DataFrame([result])
+
     def capturar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
         """
         Pipeline completo de captura de preços para um ticker.
@@ -160,22 +206,25 @@ class CapturadorPrecos:
             
             if price is not None:
                 results.append({
-                    "data_fim": target_date.strftime("%Y-%m-%d"),
+                    "data_fim": target_date,
                     "trimestre": trimestre,
                     "preco_fechamento_ajustado": round(price, 2)
                 })
                 precos_ok += 1
             else:
                 results.append({
-                    "data_fim": target_date.strftime("%Y-%m-%d"),
+                    "data_fim": target_date,
                     "trimestre": trimestre,
                     "preco_fechamento_ajustado": np.nan
                 })
                 precos_fail += 1
         
-        # 4. Salvar resultado
+        # 4. Construir tabela horizontal
         if results:
-            df_out = pd.DataFrame(results)
+            df_temp = pd.DataFrame(results)
+            df_out = self._build_horizontal(df_temp)
+            
+            # 5. Salvar resultado
             out_path = pasta / "precos_trimestrais.csv"
             df_out.to_csv(out_path, index=False, encoding="utf-8")
             
