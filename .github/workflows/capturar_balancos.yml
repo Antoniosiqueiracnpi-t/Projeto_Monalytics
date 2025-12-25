@@ -54,7 +54,7 @@ jobs:
     
     - name: 🚀 Executar captura
       run: |
-        python captura_simples.py \
+        python src/capturar_balancos.py \
           --modo "${{ github.event.inputs.modo }}" \
           --quantidade "${{ github.event.inputs.quantidade }}" \
           --ticker "${{ github.event.inputs.ticker }}" \
