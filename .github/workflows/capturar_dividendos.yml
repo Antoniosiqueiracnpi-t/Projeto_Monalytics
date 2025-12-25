@@ -67,26 +67,36 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-          FILES=$(find balancos -type f -name "dividendos_trimestrais.csv" 2>/dev/null || true)
+          # Buscar arquivos CSV e JSON
+          CSV_FILES=$(find balancos -type f -name "dividendos_trimestrais.csv" 2>/dev/null || true)
+          JSON_FILES=$(find balancos -type f -name "dividendos_detalhado.json" 2>/dev/null || true)
 
-          if [ -z "$FILES" ]; then
-            echo "Nenhum dividendos_trimestrais.csv foi gerado. Nada para commitar."
+          if [ -z "$CSV_FILES" ] && [ -z "$JSON_FILES" ]; then
+            echo "Nenhum arquivo de dividendos foi gerado. Nada para commitar."
             exit 0
           fi
 
-          echo "Arquivos encontrados:"
-          echo "$FILES"
+          echo "Arquivos CSV encontrados:"
+          echo "$CSV_FILES"
+          echo ""
+          echo "Arquivos JSON encontrados:"
+          echo "$JSON_FILES"
 
-          # adiciona somente os arquivos gerados
+          # Adicionar arquivos CSV
           while IFS= read -r f; do
             [ -n "$f" ] && git add "$f"
-          done <<< "$FILES"
+          done <<< "$CSV_FILES"
 
-          # commita apenas se houver mudanças staged
+          # Adicionar arquivos JSON
+          while IFS= read -r f; do
+            [ -n "$f" ] && git add "$f"
+          done <<< "$JSON_FILES"
+
+          # Commita apenas se houver mudanças staged
           git diff --staged --quiet && {
             echo "Sem alterações para commitar."
             exit 0
           }
 
-          git commit -m "Dividendos trimestrais capturados - $(date +'%Y-%m-%d')"
+          git commit -m "Dividendos trimestrais capturados (CSV + JSON) - $(date +'%Y-%m-%d')"
           git push
