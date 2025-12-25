@@ -9,6 +9,11 @@ from typing import Dict, List, Optional, Set, Tuple
 import numpy as np
 import pandas as pd
 
+# ADICIONAR NO TOPO DO ARQUIVO (após outros imports):
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent))
+from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
 
 # ======================================================================================
 # CONTAS BPA - BALANÇO PATRIMONIAL ATIVO (EMPRESAS NÃO FINANCEIRAS)
@@ -367,19 +372,15 @@ class PadronizadorBP:
 
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """
-        Carrega os 4 arquivos de entrada:
-        - bpa_consolidado.csv (trimestral)
-        - bpa_anual.csv
-        - bpp_consolidado.csv (trimestral)
-        - bpp_anual.csv
+        Carrega os 4 arquivos de entrada usando get_pasta_balanco().
         """
-        pasta = self.pasta_balancos / ticker.upper().strip()
+        pasta = get_pasta_balanco(ticker)
         
         bpa_tri_path = pasta / "bpa_consolidado.csv"
         bpa_anu_path = pasta / "bpa_anual.csv"
         bpp_tri_path = pasta / "bpp_consolidado.csv"
         bpp_anu_path = pasta / "bpp_anual.csv"
-
+    
         if not bpa_tri_path.exists():
             raise FileNotFoundError(f"Arquivo não encontrado: {bpa_tri_path}")
         if not bpa_anu_path.exists():
@@ -388,23 +389,23 @@ class PadronizadorBP:
             raise FileNotFoundError(f"Arquivo não encontrado: {bpp_tri_path}")
         if not bpp_anu_path.exists():
             raise FileNotFoundError(f"Arquivo não encontrado: {bpp_anu_path}")
-
+    
         bpa_tri = pd.read_csv(bpa_tri_path)
         bpa_anu = pd.read_csv(bpa_anu_path)
         bpp_tri = pd.read_csv(bpp_tri_path)
         bpp_anu = pd.read_csv(bpp_anu_path)
-
+    
         for df in (bpa_tri, bpa_anu, bpp_tri, bpp_anu):
             df["cd_conta"] = df["cd_conta"].astype(str).str.strip()
             df["ds_conta"] = df["ds_conta"].astype(str).str.strip()
             df["valor_mil"] = _ensure_numeric(df["valor_mil"])
             df["data_fim"] = _to_datetime(df, "data_fim")
-
+    
         bpa_tri = bpa_tri.dropna(subset=["data_fim"])
         bpa_anu = bpa_anu.dropna(subset=["data_fim"])
         bpp_tri = bpp_tri.dropna(subset=["data_fim"])
         bpp_anu = bpp_anu.dropna(subset=["data_fim"])
-
+    
         return bpa_tri, bpa_anu, bpp_tri, bpp_anu
 
     def _build_quarter_values(
@@ -529,10 +530,7 @@ class PadronizadorBP:
     def padronizar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
         """
         Pipeline completo de padronização do BP (BPA + BPP).
-        
-        Gera 2 arquivos:
-        - bpa_padronizado.csv
-        - bpp_padronizado.csv
+        Agora usa get_pasta_balanco() para garantir pasta correta.
         """
         self._current_ticker = ticker.upper().strip()
         
@@ -573,7 +571,7 @@ class PadronizadorBP:
         bpp_out = self._build_horizontal(bpp_qtot, bpp_schema)
         
         # 8. Salvar arquivos
-        pasta = self.pasta_balancos / ticker.upper().strip()
+        pasta = get_pasta_balanco(ticker)
         
         bpa_path = pasta / "bpa_padronizado.csv"
         bpp_path = pasta / "bpp_padronizado.csv"
@@ -620,7 +618,8 @@ def main():
     parser.add_argument("--faixa", default="", help="Faixa de linhas: inicio-fim (ex: 1-50)")
     args = parser.parse_args()
 
-    df = pd.read_csv("mapeamento_final_b3_completo_utf8.csv", sep=";", encoding="utf-8-sig")
+    # Tentar carregar mapeamento consolidado, fallback para original
+    df = load_mapeamento_consolidado()
     df = df[df["cnpj"].notna()].reset_index(drop=True)
 
     if args.modo == "quantidade":
@@ -628,11 +627,15 @@ def main():
         df_sel = df.head(limite)
 
     elif args.modo == "ticker":
-        df_sel = df[df["ticker"].str.upper() == args.ticker.upper()]
+        ticker_upper = args.ticker.upper()
+        df_sel = df[df["ticker"].str.upper().str.contains(ticker_upper, case=False, na=False, regex=False)]
 
     elif args.modo == "lista":
         tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
-        df_sel = df[df["ticker"].str.upper().isin(tickers)]
+        mask = df["ticker"].str.upper().apply(
+            lambda x: any(t in x for t in tickers) if pd.notna(x) else False
+        )
+        df_sel = df[mask]
 
     elif args.modo == "faixa":
         inicio, fim = map(int, args.faixa.split("-"))
@@ -652,12 +655,13 @@ def main():
     irregular_count = 0
 
     for _, row in df_sel.iterrows():
-        ticker = str(row["ticker"]).upper().strip()
+        ticker_str = str(row["ticker"]).upper().strip()
+        ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
 
-        pasta = Path("balancos") / ticker
+        pasta = get_pasta_balanco(ticker)
         if not pasta.exists():
             err_count += 1
-            print(f"❌ {ticker}: pasta balancos/{ticker} não existe")
+            print(f"❌ {ticker}: pasta {pasta} não existe")
             continue
 
         try:
