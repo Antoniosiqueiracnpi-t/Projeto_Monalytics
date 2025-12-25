@@ -4,6 +4,7 @@ CAPTURA DE BALANÇOS - VERSÃO GITHUB ACTIONS
 - ANUAL:     DFP (fechamento do exercício) -> *_anual.csv
 - DFC pelo método indireto: DFC_MI
 - Cache local de ZIP por ano
+- Integrado com sistema multi-ticker
 """
 
 import pandas as pd
@@ -12,12 +13,13 @@ from pathlib import Path
 from datetime import datetime
 import zipfile
 import re
-
-# ADICIONAR NO TOPO DO ARQUIVO (após outros imports):
+import argparse
 import sys
-from pathlib import Path
+
+# Importar utilitários multi-ticker
 sys.path.insert(0, str(Path(__file__).parent))
 from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
+
 
 class CapturaBalancos:
 
@@ -185,12 +187,13 @@ class CapturaBalancos:
     def processar_empresa(self, ticker: str, cnpj: str):
         print(f"\n{'='*50}")
         print(f"📊 {ticker} (CNPJ: {cnpj})")
-    
+
+        # Usar get_pasta_balanco para garantir pasta correta (multi-ticker)
         pasta = get_pasta_balanco(ticker)
         pasta.mkdir(exist_ok=True)
-    
+
         cnpj_digits = self._cnpj_digits(cnpj)
-    
+
         for demo in self.demos:
             # -------- TRIMESTRAL (ITR) --------
             dados_tri = []
@@ -198,19 +201,19 @@ class CapturaBalancos:
                 df = self.baixar_doc("ITR", ano, demo, consolidado=self.consolidado)
                 if df is None or df.empty:
                     continue
-    
+
                 df = self._filtrar_empresa_ultimo(df, cnpj_digits)
                 if df.empty:
                     continue
-    
+
                 df = self._add_trimestre_itr(df)
                 df = self._valor_em_mil(df)
                 out = self._padronizar(df, trimestral=True)
                 if out.empty:
                     continue
-    
+
                 dados_tri.append(out)
-    
+
             if dados_tri:
                 tri = self._consolidar(dados_tri)
                 arq_tri = pasta / f"{demo.lower()}_consolidado.csv"
@@ -218,25 +221,25 @@ class CapturaBalancos:
                 tri_info = f"✅ {len(tri)} linhas"
             else:
                 tri_info = "❌"
-    
+
             # -------- ANUAL (DFP) --------
             dados_anual = []
             for ano in range(self.ano_inicio, self.ano_atual + 1):
                 df = self.baixar_doc("DFP", ano, demo, consolidado=self.consolidado)
                 if df is None or df.empty:
                     continue
-    
+
                 df = self._filtrar_empresa_ultimo(df, cnpj_digits)
                 if df.empty:
                     continue
-    
+
                 df = self._valor_em_mil(df)
                 out = self._padronizar(df, trimestral=False)
                 if out.empty:
                     continue
-    
+
                 dados_anual.append(out)
-    
+
             if dados_anual:
                 anual = self._consolidar(dados_anual)
                 arq_anual = pasta / f"{demo.lower()}_anual.csv"
@@ -244,31 +247,145 @@ class CapturaBalancos:
                 anual_info = f"✅ {len(anual)} linhas"
             else:
                 anual_info = "❌"
-    
+
             print(f"  {demo}: trimestral(ITR) {tri_info} | anual(DFP) {anual_info}")
 
-    def processar_lote(self, limite=10):
-        # Tentar carregar mapeamento consolidado, fallback para original
-        df = load_mapeamento_consolidado()
-        df = df[df["cnpj"].notna()].head(limite)
-    
-        print(f"\n🚀 Processando {len(df)} empresas...\n")
-    
-        for _, row in df.iterrows():
+    def processar_lote(self, df_sel: pd.DataFrame):
+        """
+        Processa um lote de empresas selecionadas.
+        
+        Args:
+            df_sel: DataFrame com empresas selecionadas (colunas: ticker, cnpj)
+        """
+        print(f"\n🚀 Processando {len(df_sel)} empresas...\n")
+
+        ok_count = 0
+        err_count = 0
+
+        for _, row in df_sel.iterrows():
             try:
                 # Pegar primeiro ticker do grupo (principal)
                 ticker_str = str(row["ticker"]).upper().strip()
                 ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
                 
                 self.processar_empresa(ticker, row["cnpj"])
+                ok_count += 1
             except Exception as e:
-                print(f"❌ Erro: {e}")
-    
-        print(f"\n✅ Concluído! Dados em: balancos/")
+                err_count += 1
+                ticker_str = str(row.get("ticker", "UNKNOWN")).upper().strip()
+                ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
+                print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
+
+        print(f"\n{'='*70}")
+        print(f"Finalizado: OK={ok_count} | ERRO={err_count}")
+        print(f"{'='*70}\n")
+
+
+def main():
+    """
+    Função principal com suporte a argumentos CLI.
+    """
+    parser = argparse.ArgumentParser(
+        description="Captura balanços das empresas B3 (ITR e DFP)"
+    )
+    parser.add_argument(
+        "--modo",
+        choices=["quantidade", "ticker", "lista", "faixa"],
+        default="quantidade",
+        help="Modo de seleção: quantidade, ticker, lista, faixa",
+    )
+    parser.add_argument(
+        "--quantidade", 
+        default="10", 
+        help="Quantidade de empresas (modo quantidade)"
+    )
+    parser.add_argument(
+        "--ticker", 
+        default="", 
+        help="Ticker específico (modo ticker): ex: PETR4"
+    )
+    parser.add_argument(
+        "--lista", 
+        default="", 
+        help="Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4"
+    )
+    parser.add_argument(
+        "--faixa", 
+        default="1-50", 
+        help="Faixa de linhas (modo faixa): ex: 1-50, 51-150"
+    )
+    args = parser.parse_args()
+
+    # Carregar mapeamento (tenta consolidado, fallback para original)
+    df = load_mapeamento_consolidado()
+    df = df[df["cnpj"].notna()].reset_index(drop=True)
+
+    # Seleção baseada no modo
+    if args.modo == "quantidade":
+        limite = int(args.quantidade)
+        df_sel = df.head(limite)
+
+    elif args.modo == "ticker":
+        ticker_upper = args.ticker.upper()
+        # Buscar ticker em qualquer posição da string de tickers
+        df_sel = df[df["ticker"].str.upper().str.contains(
+            ticker_upper, 
+            case=False, 
+            na=False, 
+            regex=False
+        )]
+        
+        if df_sel.empty:
+            print(f"❌ Ticker '{args.ticker}' não encontrado no mapeamento.")
+            sys.exit(1)
+
+    elif args.modo == "lista":
+        tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
+        
+        if not tickers:
+            print("❌ Lista de tickers vazia.")
+            sys.exit(1)
+        
+        # Buscar cada ticker em qualquer posição
+        mask = df["ticker"].str.upper().apply(
+            lambda x: any(t in x for t in tickers) if pd.notna(x) else False
+        )
+        df_sel = df[mask]
+        
+        if df_sel.empty:
+            print(f"❌ Nenhum ticker da lista encontrado: {', '.join(tickers)}")
+            sys.exit(1)
+
+    elif args.modo == "faixa":
+        try:
+            inicio, fim = map(int, args.faixa.split("-"))
+            df_sel = df.iloc[inicio - 1: fim]
+            
+            if df_sel.empty:
+                print(f"❌ Faixa {args.faixa} está fora do range disponível (1-{len(df)}).")
+                sys.exit(1)
+        except ValueError:
+            print(f"❌ Formato de faixa inválido: '{args.faixa}'. Use formato: inicio-fim (ex: 1-50)")
+            sys.exit(1)
+
+    else:
+        df_sel = df.head(10)
+
+    # Exibir informações do job
+    print(f"\n{'='*70}")
+    print(f">>> JOB: CAPTURAR BALANÇOS (ITR + DFP) <<<")
+    print(f"{'='*70}")
+    print(f"Modo: {args.modo}")
+    print(f"Empresas selecionadas: {len(df_sel)}")
+    print(f"Demonstrações: DRE, BPA, BPP, DFC_MI")
+    print(f"Período: {datetime.now().year - 10} - {datetime.now().year}")
+    print(f"Saída: balancos/<TICKER>/*_consolidado.csv + *_anual.csv")
+    print(f"{'='*70}\n")
+
+    # Processar
+    captura = CapturaBalancos()
+    captura.processar_lote(df_sel)
 
 
 if __name__ == "__main__":
-    import sys
-    captura = CapturaBalancos()
-    limite = int(sys.argv[1]) if len(sys.argv) > 1 else 10
-    captura.processar_lote(limite=limite)
+    main()
