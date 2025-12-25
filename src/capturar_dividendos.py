@@ -14,6 +14,12 @@ import pandas as pd
 import numpy as np
 import requests
 
+
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent))
+from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
+
 # Suprimir warnings
 warnings.filterwarnings('ignore')
 
@@ -145,6 +151,7 @@ class CapturadorDividendos:
     def _get_empresa_info(self, ticker: str) -> Dict[str, str]:
         """
         Busca informações da empresa no CSV de mapeamento.
+        Agora usa ticker principal para garantir encontrar os dados.
         
         Returns:
             dict com 'empresa', 'cnpj', 'trading_name'
@@ -152,9 +159,17 @@ class CapturadorDividendos:
         if self._df_mapeamento is None or self._df_mapeamento.empty:
             return {}
         
-        ticker_clean = ticker.upper().strip()
+        # Resolver para ticker principal
+        ticker_principal = get_ticker_principal(ticker)
+        if not ticker_principal:
+            ticker_principal = ticker.upper().strip()
         
-        mask = self._df_mapeamento['ticker'].str.upper() == ticker_clean
+        mask = self._df_mapeamento['ticker'].str.upper().str.contains(
+            ticker_principal, 
+            case=False, 
+            na=False, 
+            regex=False
+        )
         rows = self._df_mapeamento[mask]
         
         if rows.empty:
@@ -573,17 +588,10 @@ class CapturadorDividendos:
     def capturar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
         """
         Pipeline completo de captura de dividendos.
-        
-        Salva 2 arquivos:
-        1. dividendos_trimestrais.csv (formato horizontal)
-        2. dividendos_detalhado.json (datas exatas para mapa de calor)
-        
-        Returns:
-            ok: True se capturou pelo menos um dividendo
-            msg: Mensagem de status
+        Agora usa get_pasta_balanco() para garantir pasta correta.
         """
         ticker = ticker.upper().strip()
-        pasta = self.pasta_balancos / ticker
+        pasta = get_pasta_balanco(ticker)
         
         # Garantir que pasta existe
         pasta.mkdir(parents=True, exist_ok=True)
@@ -666,7 +674,8 @@ def main():
     parser.add_argument("--faixa", default="", help="Faixa de linhas: inicio-fim (ex: 1-50)")
     args = parser.parse_args()
 
-    df = pd.read_csv("mapeamento_final_b3_completo_utf8.csv", sep=";", encoding="utf-8-sig")
+    # Tentar carregar mapeamento consolidado, fallback para original
+    df = load_mapeamento_consolidado()
     df = df[df["cnpj"].notna()].reset_index(drop=True)
 
     if args.modo == "quantidade":
@@ -674,11 +683,17 @@ def main():
         df_sel = df.head(limite)
 
     elif args.modo == "ticker":
-        df_sel = df[df["ticker"].str.upper() == args.ticker.upper()]
+        ticker_upper = args.ticker.upper()
+        # Buscar ticker em qualquer posição da string de tickers
+        df_sel = df[df["ticker"].str.upper().str.contains(ticker_upper, case=False, na=False, regex=False)]
 
     elif args.modo == "lista":
         tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
-        df_sel = df[df["ticker"].str.upper().isin(tickers)]
+        # Buscar cada ticker em qualquer posição
+        mask = df["ticker"].str.upper().apply(
+            lambda x: any(t in x for t in tickers) if pd.notna(x) else False
+        )
+        df_sel = df[mask]
 
     elif args.modo == "faixa":
         inicio, fim = map(int, args.faixa.split("-"))
@@ -698,12 +713,14 @@ def main():
     err_count = 0
 
     for _, row in df_sel.iterrows():
-        ticker = str(row["ticker"]).upper().strip()
+        # Pegar primeiro ticker do grupo (principal)
+        ticker_str = str(row["ticker"]).upper().strip()
+        ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
 
-        pasta = Path("balancos") / ticker
+        pasta = get_pasta_balanco(ticker)
         if not pasta.exists():
             err_count += 1
-            print(f"❌ {ticker}: pasta balancos/{ticker} não existe")
+            print(f"❌ {ticker}: pasta {pasta} não existe")
             continue
 
         try:
@@ -718,9 +735,7 @@ def main():
 
         except Exception as e:
             err_count += 1
-            import traceback
             print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
-            # traceback.print_exc()
 
     print("\n" + "=" * 70)
     print(f"Finalizado: OK={ok_count} | ERRO={err_count}")
