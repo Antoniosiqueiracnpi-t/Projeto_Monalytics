@@ -2,8 +2,6 @@
 from __future__ import annotations
 
 import argparse
-import base64
-import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Tuple
@@ -13,10 +11,14 @@ import pandas as pd
 import numpy as np
 import requests
 
-# Suprimir warnings SSL
+# Suprimir warnings
 warnings.filterwarnings('ignore')
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+try:
+    import yfinance as yf
+    HAS_YFINANCE = True
+except ImportError:
+    HAS_YFINANCE = False
 
 
 def _quarter_order(q: str) -> int:
@@ -42,165 +44,179 @@ def _date_to_quarter(date: pd.Timestamp) -> str:
 @dataclass
 class CapturadorDividendos:
     """
-    Captura histórico de dividendos direto da API B3 oficial.
+    Captura histórico de dividendos usando múltiplas fontes.
     
-    Agrupa dividendos por trimestre baseado na data COM (ex-dividendo)
+    Prioridade:
+    1. OkaneBox API (gratuita, simples, dados B3)
+    2. yfinance (fallback, dados Yahoo Finance)
+    
+    Agrupa dividendos por trimestre baseado na data de pagamento
     e gera formato horizontal padronizado.
     """
     pasta_balancos: Path = Path("balancos")
-    base_url: str = "https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall"
+    timeout: int = 30
     
-    def _get_trading_name(self, ticker: str) -> Optional[str]:
+    def _fetch_okanebox(self, ticker: str) -> pd.DataFrame:
         """
-        Busca o tradingName na B3 pelo ticker.
+        Busca dividendos da OkaneBox API.
         
-        O tradingName é necessário para consultar dividendos na API B3.
+        Endpoint: https://okanebox.com.br/api/acoes/proventos/{ticker}/
+        Retorna: JSON com histórico completo de proventos
         """
-        search_url = f"{self.base_url}/GetListedCompanies"
+        ticker_clean = ticker.upper().replace('.SA', '')
+        url = f"https://okanebox.com.br/api/acoes/proventos/{ticker_clean}/"
         
         try:
-            response = requests.get(search_url, verify=False, timeout=15)
+            response = requests.get(url, timeout=self.timeout)
             response.raise_for_status()
             data = response.json()
             
-            ticker_clean = ticker.upper().strip()
+            if not data:
+                return pd.DataFrame()
             
-            # Buscar empresa pelo código
-            for company in data.get('results', []):
-                codes = company.get('codes', [])
-                if ticker_clean in codes:
-                    trading_name = company.get('tradingName', '')
-                    if trading_name:
-                        return trading_name
+            # Converter para DataFrame
+            df = pd.DataFrame(data)
             
-            # Fallback: tentar usar o próprio ticker
-            print(f"    ⚠️ TradingName não encontrado, usando ticker como fallback")
-            return ticker_clean
+            # Padronizar colunas
+            # OkaneBox retorna: ticker, tipo, datacom, datapagamento, valor
+            if 'datacom' in df.columns:
+                df = df.rename(columns={
+                    'datacom': 'data_com',
+                    'datapagamento': 'data_pagamento'
+                })
+            
+            return df
             
         except Exception as e:
-            print(f"    ⚠️ Erro ao buscar tradingName: {e}")
-            return ticker.upper().strip()
+            print(f"    [OkaneBox] Erro: {e}")
+            return pd.DataFrame()
     
-    def _fetch_dividends_page(
-        self, 
-        trading_name: str, 
-        page: int = 1
-    ) -> dict:
+    def _fetch_yfinance(self, ticker: str) -> pd.DataFrame:
         """
-        Busca uma página de dividendos da B3.
+        Busca dividendos via yfinance (Yahoo Finance).
         
-        API retorna até 120 registros por página.
+        Fallback quando OkaneBox não funciona.
         """
-        params = {
-            "language": "pt-br",
-            "pageNumber": page,
-            "pageSize": 120,
-            "tradingName": trading_name
-        }
-        
-        # Codificar parâmetros em base64
-        params_json = json.dumps(params)
-        params_b64 = base64.b64encode(params_json.encode()).decode()
-        
-        url = f"{self.base_url}/GetListedCashDividends/{params_b64}"
+        if not HAS_YFINANCE:
+            return pd.DataFrame()
         
         try:
-            response = requests.get(url, verify=False, timeout=30)
-            response.raise_for_status()
-            return response.json()
+            # Garantir que ticker tenha .SA
+            ticker_yf = ticker.upper()
+            if not ticker_yf.endswith('.SA'):
+                ticker_yf = f"{ticker_yf}.SA"
+            
+            stock = yf.Ticker(ticker_yf)
+            divs = stock.dividends
+            
+            if divs.empty:
+                return pd.DataFrame()
+            
+            # Converter Series para DataFrame
+            df = divs.reset_index()
+            df.columns = ['data_pagamento', 'valor']
+            
+            # yfinance não diferencia tipo, considerar tudo como "Dividendo"
+            df['tipo'] = 'Dividendo'
+            df['data_com'] = df['data_pagamento']  # Aproximação
+            
+            return df
+            
         except Exception as e:
-            print(f"    ⚠️ Erro na página {page}: {e}")
-            return {}
+            print(f"    [yfinance] Erro: {e}")
+            return pd.DataFrame()
+    
+    def _fetch_local_csv(self, ticker: str) -> pd.DataFrame:
+        """
+        Busca dividendos de arquivo CSV local (se disponível).
+        
+        Formato esperado: balancos/{ticker}/dividendos_raw.csv
+        Colunas: data_com, data_pagamento, valor, tipo
+        
+        Terceiro fallback para ambientes sem acesso a APIs externas.
+        """
+        csv_path = self.pasta_balancos / ticker / "dividendos_raw.csv"
+        
+        if not csv_path.exists():
+            return pd.DataFrame()
+        
+        try:
+            df = pd.read_csv(csv_path)
+            return df
+        except Exception as e:
+            print(f"    [CSV Local] Erro: {e}")
+            return pd.DataFrame()
     
     def _fetch_all_dividends(self, ticker: str) -> pd.DataFrame:
         """
-        Busca todos os dividendos com paginação automática.
+        Busca dividendos tentando múltiplas fontes em ordem de prioridade.
+        
+        1. OkaneBox API (gratuita, dados B3 oficiais)
+        2. yfinance (Yahoo Finance, dados internacionais)
+        3. CSV local (se arquivo dividendos_raw.csv existe)
         """
-        trading_name = self._get_trading_name(ticker)
+        # 1. Tentar OkaneBox (fonte primária - dados B3)
+        df = self._fetch_okanebox(ticker)
         
-        if not trading_name:
-            return pd.DataFrame()
+        if not df.empty:
+            print(f"    ✓ Fonte: OkaneBox ({len(df)} registros)")
+            return df
         
-        all_dividends = []
-        page = 1
-        max_pages = 100  # Limite de segurança (100 páginas * 120 = 12.000 registros)
+        # 2. Tentar yfinance (fallback)
+        df = self._fetch_yfinance(ticker)
         
-        while page <= max_pages:
-            data = self._fetch_dividends_page(trading_name, page)
-            
-            cash_dividends = data.get('cashDividends', [])
-            
-            if not cash_dividends:
-                break
-            
-            all_dividends.extend(cash_dividends)
-            
-            # Verificar se há mais páginas
-            page_info = data.get('page', {})
-            current_page = page_info.get('pageNumber', 0)
-            total_pages = page_info.get('totalPages', 0)
-            
-            if current_page >= total_pages:
-                break
-            
-            page += 1
+        if not df.empty:
+            print(f"    ✓ Fonte: yfinance ({len(df)} registros)")
+            return df
         
-        if not all_dividends:
-            return pd.DataFrame()
+        # 3. Tentar CSV local (último fallback)
+        df = self._fetch_local_csv(ticker)
         
-        # Converter para DataFrame
-        df = pd.DataFrame(all_dividends)
+        if not df.empty:
+            print(f"    ✓ Fonte: CSV Local ({len(df)} registros)")
+            return df
         
-        return df
+        return pd.DataFrame()
     
     def _process_dividends(self, df: pd.DataFrame, ticker: str) -> pd.DataFrame:
         """
-        Processa dividendos brutos da API B3.
+        Processa dividendos brutos.
         
-        1. Extrai campos relevantes
+        1. Padroniza colunas
         2. Converte datas
         3. Padroniza valores
+        4. Remove dados inválidos
         """
         if df.empty:
             return df
         
-        # Mapear campos
-        column_mapping = {
-            'tradingName': 'ticker',
-            'corporateActionPrice': 'valor',
-            'approvedOn': 'data_aprovacao',
-            'lastDatePrior': 'data_com',
-            'paymentDate': 'data_pagamento',
-            'corporateActionType': 'tipo_provento',
-            'relatedTo': 'info'
-        }
-        
-        df = df.rename(columns=column_mapping)
-        
-        # Garantir que ticker está preenchido
-        if 'ticker' not in df.columns or df['ticker'].isna().all():
+        # Garantir colunas essenciais
+        if 'ticker' not in df.columns:
             df['ticker'] = ticker.upper()
         
-        # Selecionar colunas relevantes
-        required_cols = ['ticker', 'data_com', 'data_pagamento', 'tipo_provento', 'valor']
-        available_cols = [c for c in required_cols if c in df.columns]
-        
-        if 'info' in df.columns:
-            available_cols.append('info')
-        
-        df = df[available_cols].copy()
+        # Usar data_com se disponível, senão data_pagamento
+        if 'data_com' in df.columns:
+            date_ref = 'data_com'
+        elif 'data_pagamento' in df.columns:
+            date_ref = 'data_pagamento'
+            df['data_com'] = df['data_pagamento']
+        else:
+            return pd.DataFrame()
         
         # Converter datas
-        for date_col in ['data_com', 'data_pagamento', 'data_aprovacao']:
+        for date_col in ['data_com', 'data_pagamento']:
             if date_col in df.columns:
                 df[date_col] = pd.to_datetime(df[date_col], errors='coerce')
         
-        # Converter valores para numérico
+        # Converter valores
         if 'valor' in df.columns:
             df['valor'] = pd.to_numeric(df['valor'], errors='coerce')
         
-        # Remover linhas sem data COM ou valor
+        # Remover linhas sem data ou valor
         df = df.dropna(subset=['data_com', 'valor'])
+        
+        # Remover valores zero ou negativos
+        df = df[df['valor'] > 0]
         
         return df
     
@@ -208,7 +224,7 @@ class CapturadorDividendos:
         """
         Agrupa dividendos por trimestre.
         
-        Usa data COM (ex-dividendo) como referência.
+        Usa data_com (ex-dividendo) como referência.
         Soma todos os proventos do mesmo trimestre.
         """
         if df.empty:
@@ -227,7 +243,7 @@ class CapturadorDividendos:
         })
         
         # Arredondar valores
-        grouped['valor'] = grouped['valor'].round(2)
+        grouped['valor'] = grouped['valor'].round(4)
         
         return grouped
     
@@ -280,11 +296,11 @@ class CapturadorDividendos:
         ticker = ticker.upper().strip()
         pasta = self.pasta_balancos / ticker
         
-        # 1. Buscar dividendos brutos
+        # 1. Buscar dividendos brutos (multi-fonte)
         df_raw = self._fetch_all_dividends(ticker)
         
         if df_raw.empty:
-            return False, "nenhum dividendo encontrado (API B3 retornou vazio)"
+            return False, "nenhum dividendo encontrado (todas as fontes falharam)"
         
         # 2. Processar dados
         df_processed = self._process_dividends(df_raw, ticker)
@@ -328,7 +344,7 @@ class CapturadorDividendos:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Captura dividendos históricos da B3 agrupados por trimestre"
+        description="Captura dividendos históricos agrupados por trimestre"
     )
     parser.add_argument(
         "--modo",
@@ -365,7 +381,7 @@ def main():
 
     print(f"\n>>> JOB: CAPTURAR DIVIDENDOS TRIMESTRAIS <<<")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
-    print("Fonte: API B3 Oficial")
+    print("Fontes: OkaneBox API (primária) + yfinance (fallback)")
     print("Saída: balancos/<TICKER>/dividendos_trimestrais.csv\n")
 
     capturador = CapturadorDividendos()
@@ -396,7 +412,7 @@ def main():
             err_count += 1
             import traceback
             print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
-            traceback.print_exc()
+            # traceback.print_exc()
 
     print("\n" + "=" * 70)
     print(f"Finalizado: OK={ok_count} | ERRO={err_count}")
