@@ -51,7 +51,7 @@ jobs:
       - name: 📦 Instalar bibliotecas
         run: |
           pip install --upgrade pip
-          pip install pandas numpy requests urllib3
+          pip install pandas numpy requests yfinance
 
       - name: 🚀 Executar captura de dividendos
         run: |
