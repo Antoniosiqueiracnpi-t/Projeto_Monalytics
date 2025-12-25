@@ -13,6 +13,12 @@ from datetime import datetime
 import zipfile
 import re
 
+# ADICIONAR NO TOPO DO ARQUIVO (após outros imports):
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent))
+from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
+
 class CapturaBalancos:
 
     def __init__(self):
@@ -179,12 +185,12 @@ class CapturaBalancos:
     def processar_empresa(self, ticker: str, cnpj: str):
         print(f"\n{'='*50}")
         print(f"📊 {ticker} (CNPJ: {cnpj})")
-
-        pasta = self.pasta_balancos / ticker
+    
+        pasta = get_pasta_balanco(ticker)
         pasta.mkdir(exist_ok=True)
-
+    
         cnpj_digits = self._cnpj_digits(cnpj)
-
+    
         for demo in self.demos:
             # -------- TRIMESTRAL (ITR) --------
             dados_tri = []
@@ -192,19 +198,19 @@ class CapturaBalancos:
                 df = self.baixar_doc("ITR", ano, demo, consolidado=self.consolidado)
                 if df is None or df.empty:
                     continue
-
+    
                 df = self._filtrar_empresa_ultimo(df, cnpj_digits)
                 if df.empty:
                     continue
-
+    
                 df = self._add_trimestre_itr(df)
                 df = self._valor_em_mil(df)
                 out = self._padronizar(df, trimestral=True)
                 if out.empty:
                     continue
-
+    
                 dados_tri.append(out)
-
+    
             if dados_tri:
                 tri = self._consolidar(dados_tri)
                 arq_tri = pasta / f"{demo.lower()}_consolidado.csv"
@@ -212,25 +218,25 @@ class CapturaBalancos:
                 tri_info = f"✅ {len(tri)} linhas"
             else:
                 tri_info = "❌"
-
+    
             # -------- ANUAL (DFP) --------
             dados_anual = []
             for ano in range(self.ano_inicio, self.ano_atual + 1):
                 df = self.baixar_doc("DFP", ano, demo, consolidado=self.consolidado)
                 if df is None or df.empty:
                     continue
-
+    
                 df = self._filtrar_empresa_ultimo(df, cnpj_digits)
                 if df.empty:
                     continue
-
+    
                 df = self._valor_em_mil(df)
                 out = self._padronizar(df, trimestral=False)
                 if out.empty:
                     continue
-
+    
                 dados_anual.append(out)
-
+    
             if dados_anual:
                 anual = self._consolidar(dados_anual)
                 arq_anual = pasta / f"{demo.lower()}_anual.csv"
@@ -238,25 +244,26 @@ class CapturaBalancos:
                 anual_info = f"✅ {len(anual)} linhas"
             else:
                 anual_info = "❌"
-
+    
             print(f"  {demo}: trimestral(ITR) {tri_info} | anual(DFP) {anual_info}")
 
     def processar_lote(self, limite=10):
-        try:
-            df = pd.read_csv("mapeamento_final_b3_completo.csv", encoding="utf-8")
-        except UnicodeDecodeError:
-            df = pd.read_csv("mapeamento_final_b3_completo.csv", sep=";", encoding="ISO-8859-1")
-
+        # Tentar carregar mapeamento consolidado, fallback para original
+        df = load_mapeamento_consolidado()
         df = df[df["cnpj"].notna()].head(limite)
-
+    
         print(f"\n🚀 Processando {len(df)} empresas...\n")
-
+    
         for _, row in df.iterrows():
             try:
-                self.processar_empresa(row["ticker"], row["cnpj"])
+                # Pegar primeiro ticker do grupo (principal)
+                ticker_str = str(row["ticker"]).upper().strip()
+                ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
+                
+                self.processar_empresa(ticker, row["cnpj"])
             except Exception as e:
                 print(f"❌ Erro: {e}")
-
+    
         print(f"\n✅ Concluído! Dados em: balancos/")
 
 
