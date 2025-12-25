@@ -1,0 +1,92 @@
+name: Capturar Preços Trimestrais
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'Modo de seleção'
+        required: true
+        type: choice
+        options:
+          - 'quantidade'
+          - 'ticker'
+          - 'lista'
+          - 'faixa'
+        default: 'quantidade'
+
+      quantidade:
+        description: 'Quantidade (modo quantidade): 10, 50, 308=todas'
+        required: false
+        default: '10'
+
+      ticker:
+        description: 'Ticker único (modo ticker): ex: PETR4'
+        required: false
+        default: ''
+
+      lista:
+        description: 'Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4'
+        required: false
+        default: ''
+
+      faixa:
+        description: 'Faixa (modo faixa): ex: 1-50, 51-150, 151-308'
+        required: false
+        default: '1-50'
+
+jobs:
+  capturar_precos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: 📥 Baixar código
+        uses: actions/checkout@v3
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Instalar bibliotecas
+        run: |
+          pip install --upgrade pip
+          pip install pandas numpy yfinance
+
+      - name: 🚀 Executar captura de preços
+        run: |
+          python src/capturar_precos.py \
+            --modo "${{ github.event.inputs.modo }}" \
+            --quantidade "${{ github.event.inputs.quantidade }}" \
+            --ticker "${{ github.event.inputs.ticker }}" \
+            --lista "${{ github.event.inputs.lista }}" \
+            --faixa "${{ github.event.inputs.faixa }}"
+
+      - name: 💾 Salvar no GitHub
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          FILES=$(find balancos -type f -name "precos_trimestrais.csv" 2>/dev/null || true)
+
+          if [ -z "$FILES" ]; then
+            echo "Nenhum precos_trimestrais.csv foi gerado. Nada para commitar."
+            exit 0
+          fi
+
+          echo "Arquivos encontrados:"
+          echo "$FILES"
+
+          # adiciona somente os arquivos gerados
+          while IFS= read -r f; do
+            [ -n "$f" ] && git add "$f"
+          done <<< "$FILES"
+
+          # commita apenas se houver mudanças staged
+          git diff --staged --quiet && {
+            echo "Sem alterações para commitar."
+            exit 0
+          }
+
+          git commit -m "Preços trimestrais capturados - $(date +'%Y-%m-%d')"
+          git push
