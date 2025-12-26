@@ -4,7 +4,7 @@ CAPTURA DE BALANÇOS - VERSÃO GITHUB ACTIONS
 - ANUAL:     DFP (fechamento do exercício) -> *_anual.csv
 - DFC pelo método indireto: DFC_MI
 - Cache local de ZIP por ano
-- Integrado com sistema multi-ticker
+- Inteligência de seleção: prioriza ticker ON (3) > PN (4) > outros
 """
 
 import pandas as pd
@@ -16,9 +16,104 @@ import re
 import argparse
 import sys
 
-# Importar utilitários multi-ticker
-sys.path.insert(0, str(Path(__file__).parent))
-from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
+
+# ============================================================================
+# UTILITÁRIOS MULTI-TICKER (INLINE COM INTELIGÊNCIA)
+# ============================================================================
+
+def load_mapeamento_consolidado() -> pd.DataFrame:
+    """Carrega CSV de mapeamento (tenta consolidado, fallback para original)."""
+    csv_consolidado = "mapeamento_b3_consolidado.csv"
+    csv_original = "mapeamento_final_b3_completo_utf8.csv"
+    
+    # Tentar CSV consolidado primeiro
+    if Path(csv_consolidado).exists():
+        try:
+            return pd.read_csv(csv_consolidado, sep=";", encoding="utf-8-sig")
+        except Exception:
+            pass
+    
+    # Fallback para CSV original
+    if Path(csv_original).exists():
+        try:
+            return pd.read_csv(csv_original, sep=";", encoding="utf-8-sig")
+        except Exception:
+            pass
+    
+    # Último fallback
+    try:
+        return pd.read_csv(csv_original, sep=";")
+    except Exception as e:
+        raise FileNotFoundError(
+            f"Nenhum arquivo de mapeamento encontrado"
+        ) from e
+
+
+def extrair_ticker_inteligente(ticker_str: str) -> str:
+    """
+    Extrai o melhor ticker de uma string de múltiplos tickers.
+    
+    REGRA DE PRIORIDADE (para CVM):
+    1. Ticker terminado em 3 (ON - Ordinária) - PRIORIDADE MÁXIMA
+    2. Ticker terminado em 4 (PN - Preferencial)
+    3. Qualquer outro ticker disponível
+    
+    Exemplos:
+        "SAPR11;SAPR3;SAPR4" → SAPR3 (prioriza ON)
+        "ITUB3;ITUB4" → ITUB3 (prioriza ON)
+        "PETR3;PETR4" → PETR3 (prioriza ON)
+        "KLBN11;KLBN3;KLBN4" → KLBN3 (prioriza ON, mas KLBN11 tem dados)
+        "ABCB4" → ABCB4 (único disponível)
+    
+    Args:
+        ticker_str: String com um ou mais tickers separados por ";"
+    
+    Returns:
+        Melhor ticker para buscar dados na CVM
+    """
+    ticker_str = ticker_str.strip().upper()
+    
+    # Se não tem ponto-e-vírgula, retornar direto
+    if ';' not in ticker_str:
+        return ticker_str
+    
+    # Separar tickers
+    tickers = [t.strip() for t in ticker_str.split(';') if t.strip()]
+    
+    if not tickers:
+        return ticker_str
+    
+    # 1. PRIORIDADE MÁXIMA: Tickers terminados em "3" (ON)
+    tickers_3 = [t for t in tickers if t.endswith('3')]
+    if tickers_3:
+        return tickers_3[0]
+    
+    # 2. SEGUNDA PRIORIDADE: Tickers terminados em "4" (PN)
+    tickers_4 = [t for t in tickers if t.endswith('4')]
+    if tickers_4:
+        return tickers_4[0]
+    
+    # 3. FALLBACK: Retornar o primeiro disponível
+    return tickers[0]
+
+
+def get_pasta_balanco(ticker: str) -> Path:
+    """
+    Retorna Path da pasta de balanços usando ticker inteligente.
+    
+    Args:
+        ticker: Qualquer ticker
+    
+    Returns:
+        Path para pasta de balanços
+    """
+    ticker_clean = extrair_ticker_inteligente(ticker)
+    return Path("balancos") / ticker_clean
+
+
+# ============================================================================
+# FIM DOS UTILITÁRIOS
+# ============================================================================
 
 
 class CapturaBalancos:
@@ -188,7 +283,7 @@ class CapturaBalancos:
         print(f"\n{'='*50}")
         print(f"📊 {ticker} (CNPJ: {cnpj})")
 
-        # Usar get_pasta_balanco para garantir pasta correta (multi-ticker)
+        # Usar get_pasta_balanco para garantir pasta correta
         pasta = get_pasta_balanco(ticker)
         pasta.mkdir(exist_ok=True)
 
@@ -253,6 +348,7 @@ class CapturaBalancos:
     def processar_lote(self, df_sel: pd.DataFrame):
         """
         Processa um lote de empresas selecionadas.
+        INTELIGÊNCIA: Sempre usa ticker ON (3) ou PN (4) para buscar na CVM.
         
         Args:
             df_sel: DataFrame com empresas selecionadas (colunas: ticker, cnpj)
@@ -264,17 +360,17 @@ class CapturaBalancos:
 
         for _, row in df_sel.iterrows():
             try:
-                # Pegar primeiro ticker do grupo (principal)
-                ticker_str = str(row["ticker"]).upper().strip()
-                ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
+                # Aplicar inteligência de seleção de ticker
+                ticker_str = str(row["ticker"]).strip().upper()
+                ticker_cvm = extrair_ticker_inteligente(ticker_str)
                 
-                self.processar_empresa(ticker, row["cnpj"])
+                self.processar_empresa(ticker_cvm, row["cnpj"])
                 ok_count += 1
             except Exception as e:
                 err_count += 1
-                ticker_str = str(row.get("ticker", "UNKNOWN")).upper().strip()
-                ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
-                print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
+                ticker_str = str(row.get("ticker", "UNKNOWN")).strip().upper()
+                ticker_display = extrair_ticker_inteligente(ticker_str)
+                print(f"❌ {ticker_display}: erro ({type(e).__name__}: {e})")
 
         print(f"\n{'='*70}")
         print(f"Finalizado: OK={ok_count} | ERRO={err_count}")
@@ -380,6 +476,7 @@ def main():
     print(f"Demonstrações: DRE, BPA, BPP, DFC_MI")
     print(f"Período: {datetime.now().year - 10} - {datetime.now().year}")
     print(f"Saída: balancos/<TICKER>/*_consolidado.csv + *_anual.csv")
+    print(f"Inteligência: Prioriza ON (3) > PN (4) > outros")
     print(f"{'='*70}\n")
 
     # Processar
