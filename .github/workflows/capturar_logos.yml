@@ -1,0 +1,75 @@
+name: Capturar Logos 
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'Modo de seleção'
+        required: true
+        default: 'quantidade'
+        type: choice
+        options:
+          - quantidade
+          - ticker
+          - lista
+          - faixa
+      quantidade:
+        description: 'Quantidade de empresas (modo=quantidade)'
+        required: false
+        default: '10'
+      ticker:
+        description: 'Ticker para buscar (modo=ticker)'
+        required: false
+        default: ''
+      lista:
+        description: 'Lista de tickers separados por vírgula (modo=lista)'
+        required: false
+        default: ''
+      faixa:
+        description: 'Faixa de linhas no formato INICIO-FIM (modo=faixa)'
+        required: false
+        default: '1-50'
+
+jobs:
+  capturar-logos:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests beautifulsoup4 pillow lxml
+      
+      - name: Executar captura de logos
+        run: |
+          python src/capturar_logos.py \
+            --modo "${{ github.event.inputs.modo }}" \
+            --quantidade "${{ github.event.inputs.quantidade }}" \
+            --ticker "${{ github.event.inputs.ticker }}" \
+            --lista "${{ github.event.inputs.lista }}" \
+            --faixa "${{ github.event.inputs.faixa }}"
+      
+      - name: Commit e Push resultados
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Verificar se há arquivos para commit
+          if [ -n "$(find balancos -name 'logo.png' 2>/dev/null)" ]; then
+            git add balancos/*/logo.png
+            git diff --staged --quiet || git commit -m "🖼️ Atualizar logos - ${{ github.event.inputs.modo }}"
+            git push
+            echo "✅ Logos commitados com sucesso"
+          else
+            echo "⚠️ Nenhum logo foi gerado"
+            echo "Verifique os logs acima para identificar o problema"
+            exit 0
+          fi
