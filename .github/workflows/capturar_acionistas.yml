@@ -61,6 +61,15 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add balancos/*/acionistas.json
-          git diff --staged --quiet || git commit -m "📊 Atualizar acionistas (Top 10) - ${{ github.event.inputs.modo }}"
-          git push
+          
+          # Verificar se há arquivos para commit
+          if [ -n "$(find balancos -name 'acionistas.json' 2>/dev/null)" ]; then
+            git add balancos/*/acionistas.json
+            git diff --staged --quiet || git commit -m "📊 Atualizar acionistas (Top 10) - ${{ github.event.inputs.modo }}"
+            git push
+            echo "✅ Arquivos commitados com sucesso"
+          else
+            echo "⚠️ Nenhum arquivo acionistas.json foi gerado"
+            echo "Verifique os logs acima para identificar o problema"
+            exit 0
+          fi
