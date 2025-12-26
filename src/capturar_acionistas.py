@@ -269,28 +269,28 @@ class CapturadorAcionistas:
         if df_empresa.empty:
             return []
         
-        # Mapear colunas possíveis (a estrutura pode variar)
+        # Mapear colunas (baseado na estrutura REAL do arquivo FRE 2024)
         col_map = {
             # Nome do acionista
-            "nome": ["Nome_Acionista", "Acionista", "Nome"],
+            "nome": ["Acionista", "Nome_Acionista", "Nome"],
             # CPF/CNPJ
             "cpf_cnpj": ["CPF_CNPJ_Acionista", "CPF_CNPJ", "Documento"],
             # Tipo de pessoa
-            "tipo_pessoa": ["Tipo_Pessoa", "TipoPessoa", "Tipo"],
+            "tipo_pessoa": ["Tipo_Pessoa_Acionista", "Tipo_Pessoa", "TipoPessoa", "Tipo"],
             # Nacionalidade
             "nacionalidade": ["Nacionalidade", "Pais", "Nacional"],
-            # Quantidade total
-            "qtd_total": ["Quantidade_Acoes", "Quantidade_Total", "QtdAcoes"],
-            # Percentual total
-            "perc_total": ["Percentual_Total", "Perc_Total", "PercTotal"],
-            # Quantidade ON
-            "qtd_on": ["Quantidade_Acoes_Ordinarias", "QtdON", "ON"],
-            # Percentual ON
-            "perc_on": ["Percentual_Acoes_Ordinarias", "PercON", "Perc_Ordinarias"],
-            # Quantidade PN
-            "qtd_pn": ["Quantidade_Acoes_Preferenciais", "QtdPN", "PN"],
-            # Percentual PN
-            "perc_pn": ["Percentual_Acoes_Preferenciais", "PercPN", "Perc_Preferenciais"],
+            # Quantidade total (CIRCULACAO é o correto)
+            "qtd_total": ["Quantidade_Total_Acoes_Circulacao", "Quantidade_Acoes", "Quantidade_Total", "QtdAcoes"],
+            # Percentual total (CIRCULACAO é o correto)
+            "perc_total": ["Percentual_Total_Acoes_Circulacao", "Percentual_Total", "Perc_Total", "PercTotal"],
+            # Quantidade ON (CIRCULACAO é o correto)
+            "qtd_on": ["Quantidade_Acao_Ordinaria_Circulacao", "Quantidade_Acoes_Ordinarias", "QtdON", "ON"],
+            # Percentual ON (CIRCULACAO é o correto)
+            "perc_on": ["Percentual_Acao_Ordinaria_Circulacao", "Percentual_Acoes_Ordinarias", "PercON", "Perc_Ordinarias"],
+            # Quantidade PN (CIRCULACAO é o correto)
+            "qtd_pn": ["Quantidade_Acao_Preferencial_Circulacao", "Quantidade_Acoes_Preferenciais", "QtdPN", "PN"],
+            # Percentual PN (CIRCULACAO é o correto)
+            "perc_pn": ["Percentual_Acao_Preferencial_Circulacao", "Percentual_Acoes_Preferenciais", "PercPN", "Perc_Preferenciais"],
         }
         
         # Identificar colunas disponíveis
@@ -305,8 +305,22 @@ class CapturadorAcionistas:
         acionistas = []
         
         for _, row in df_empresa.iterrows():
+            # Pular registros especiais (não são acionistas reais)
+            nome_acionista = str(row.get(colunas_encontradas.get("nome", ""), "")).strip()
+            
+            # Filtrar categorias especiais
+            if not nome_acionista:
+                continue
+            if nome_acionista.lower() in ["ações tesouraria", "tesouraria", "outros", "ações em tesouraria"]:
+                continue
+            
+            # Pular se for acionista relacionado (linha secundária)
+            if "Acionista_Relacionado" in row.index and pd.notna(row["Acionista_Relacionado"]):
+                # Esta é uma linha de "Acionista Relacionado", pular
+                continue
+            
             acionista = {
-                "nome": str(row.get(colunas_encontradas.get("nome", ""), "")).strip(),
+                "nome": nome_acionista,
                 "cpf_cnpj": self._formatar_cpf_cnpj(row.get(colunas_encontradas.get("cpf_cnpj", ""), "")),
                 "tipo_pessoa": str(row.get(colunas_encontradas.get("tipo_pessoa", ""), "")).strip(),
                 "nacionalidade": str(row.get(colunas_encontradas.get("nacionalidade", ""), "")).strip(),
