@@ -1,8 +1,9 @@
 """
 CAPTURA DE HISTÓRICO DE AÇÕES - FORMULÁRIO DE REFERÊNCIA (FRE)
-- Usa arquivos fre_cia_capital_social_classe_acao_AAAA.csv
-- Fonte oficial: Formulário de Referência da CVM
-- Salva em formato horizontal: 2022T1, 2022T2, 2022T3, 2022T4
+- Usa arquivo: fre_cia_aberta_capital_social_AAAA.csv
+- Fonte: Formulário de Referência da CVM
+- Formato de saída: Horizontal (2010T4, 2011T4, 2012T4...)
+- Arquivo: balancos/<TICKER>/acoes_historico.csv
 """
 
 import pandas as pd
@@ -12,11 +13,10 @@ from datetime import datetime
 import zipfile
 import re
 import argparse
-import sys
 
 
 # ============================================================================
-# UTILITÁRIOS MULTI-TICKER (INLINE)
+# UTILITÁRIOS MULTI-TICKER
 # ============================================================================
 
 def load_mapeamento_consolidado() -> pd.DataFrame:
@@ -54,7 +54,6 @@ def extrair_ticker_inteligente(ticker_str: str) -> str:
     if not tickers:
         return ticker_str
     
-    # Prioridade: 3 > 4 > outros
     tickers_3 = [t for t in tickers if t.endswith('3')]
     if tickers_3:
         return tickers_3[0]
@@ -74,7 +73,7 @@ def get_pasta_balanco(ticker: str) -> Path:
 
 def _quarter_order(q: str) -> int:
     """Retorna ordem numérica do trimestre."""
-    return {"T1": 1, "T2": 2, "T3": 3, "T4": 4}.get(q, 99)
+    return {"T4": 4}.get(q, 99)
 
 
 # ============================================================================
@@ -112,16 +111,15 @@ class CapturadorAcoes:
             print(f"[AVISO] Falha ao baixar FRE {ano}: {e}")
             return None
     
-    def _ler_capital_social_classe_acao(self, zip_path: Path, ano: int) -> pd.DataFrame | None:
-        """Lê arquivo fre_cia_capital_social_classe_acao do ZIP."""
+    def _ler_capital_social(self, zip_path: Path, ano: int) -> pd.DataFrame | None:
+        """Lê arquivo fre_cia_aberta_capital_social do ZIP."""
         if zip_path is None or not zip_path.exists():
             return None
         
-        alvo = f"fre_cia_capital_social_classe_acao_{ano}.csv"
+        alvo = f"fre_cia_aberta_capital_social_{ano}.csv"
         
         try:
             with zipfile.ZipFile(zip_path) as z:
-                # Buscar arquivo no ZIP
                 name_map = {n.lower(): n for n in z.namelist()}
                 real_name = name_map.get(alvo.lower())
                 
@@ -133,7 +131,6 @@ class CapturadorAcoes:
                         f,
                         sep=";",
                         encoding="ISO-8859-1",
-                        decimal=",",
                         dtype=str,
                         low_memory=False
                     )
@@ -154,51 +151,49 @@ class CapturadorAcoes:
         
         Retorna DataFrame com:
         - ano
-        - trimestre
-        - especie
-        - quantidade
+        - trimestre (sempre T4 para FRE)
+        - ON (Ordinárias)
+        - PN (Preferenciais)
+        - TOTAL
         """
         if df is None or df.empty:
-            return pd.DataFrame(columns=["ano", "trimestre", "especie", "quantidade"])
+            return pd.DataFrame(columns=["ano", "trimestre", "ON", "PN", "TOTAL"])
         
         # Filtrar pela empresa
-        if "CNPJ_CIA" not in df.columns:
-            return pd.DataFrame(columns=["ano", "trimestre", "especie", "quantidade"])
+        if "CNPJ_Companhia" not in df.columns:
+            return pd.DataFrame(columns=["ano", "trimestre", "ON", "PN", "TOTAL"])
         
-        cnpj_col = df["CNPJ_CIA"].astype(str).str.replace(r"\D", "", regex=True)
+        cnpj_col = df["CNPJ_Companhia"].str.replace(r'\D', '', regex=True)
         df_empresa = df[cnpj_col == cnpj_digits].copy()
         
         if df_empresa.empty:
-            return pd.DataFrame(columns=["ano", "trimestre", "especie", "quantidade"])
+            return pd.DataFrame(columns=["ano", "trimestre", "ON", "PN", "TOTAL"])
         
-        # Extrair dados relevantes
-        # Colunas esperadas: CNPJ_CIA, DENOM_CIA, DATA_REF, VERSAO, ESPECIE_ACAO, QTDE_ACAO
-        if "ESPECIE_ACAO" not in df_empresa.columns or "QTDE_ACAO" not in df_empresa.columns:
-            return pd.DataFrame(columns=["ano", "trimestre", "especie", "quantidade"])
+        # Pegar linha com Tipo_Capital = "Capital Integralizado" ou primeiro registro
+        if "Tipo_Capital" in df_empresa.columns:
+            df_integralizado = df_empresa[df_empresa["Tipo_Capital"].str.contains("Integralizado", case=False, na=False)]
+            if not df_integralizado.empty:
+                df_empresa = df_integralizado
         
-        # Determinar trimestre (FRE é anual, então T4)
+        # Pegar primeira linha (último FRE do ano)
+        linha = df_empresa.iloc[0]
+        
+        # Extrair quantidades
+        on = pd.to_numeric(linha.get("Quantidade_Acoes_Ordinarias", 0), errors="coerce")
+        pn = pd.to_numeric(linha.get("Quantidade_Acoes_Preferenciais", 0), errors="coerce")
+        total = pd.to_numeric(linha.get("Quantidade_Total_Acoes", 0), errors="coerce")
+        
+        # Se total não existir, calcular
+        if pd.isna(total) or total == 0:
+            total = (on if not pd.isna(on) else 0) + (pn if not pd.isna(pn) else 0)
+        
         result = pd.DataFrame({
-            "ano": ano,
-            "trimestre": "T4",
-            "especie": df_empresa["ESPECIE_ACAO"].str.upper().str.strip(),
-            "quantidade": pd.to_numeric(df_empresa["QTDE_ACAO"], errors="coerce")
+            "ano": [ano],
+            "trimestre": ["T4"],
+            "ON": [int(on) if not pd.isna(on) else 0],
+            "PN": [int(pn) if not pd.isna(pn) else 0],
+            "TOTAL": [int(total) if not pd.isna(total) else 0]
         })
-        
-        # Agrupar por espécie (pode haver duplicatas)
-        result = result.groupby(["ano", "trimestre", "especie"], as_index=False)["quantidade"].sum()
-        
-        return result
-    
-    def _calcular_total(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Adiciona linha de TOTAL para cada período."""
-        if df.empty:
-            return df
-        
-        totals = df.groupby(["ano", "trimestre"], as_index=False)["quantidade"].sum()
-        totals["especie"] = "TOTAL"
-        
-        result = pd.concat([df, totals], ignore_index=True)
-        result = result.sort_values(["ano", "trimestre", "especie"])
         
         return result
     
@@ -207,16 +202,33 @@ class CapturadorAcoes:
         Constrói tabela horizontal (períodos como colunas).
         
         Formato:
-        | Espécie_Acao | 2022T4 | 2023T4 | 2024T4 | ...
+        | Espécie_Acao | 2010T4 | 2011T4 | 2012T4 | ...
+        | ON           | 1000   | 1000   | 1200   | ...
+        | PN           | 5000   | 5000   | 5500   | ...
+        | TOTAL        | 6000   | 6000   | 6700   | ...
         """
         if df.empty:
             return pd.DataFrame(columns=["Espécie_Acao"])
         
-        # Criar coluna de período
+        # Criar período (ano + trimestre)
         df["periodo"] = df["ano"].astype(str) + df["trimestre"]
         
+        # Reorganizar dados para formato longo
+        df_long = pd.DataFrame()
+        for _, row in df.iterrows():
+            periodo = row["periodo"]
+            for especie in ["ON", "PN", "TOTAL"]:
+                df_long = pd.concat([
+                    df_long,
+                    pd.DataFrame({
+                        "especie": [especie],
+                        "periodo": [periodo],
+                        "quantidade": [row[especie]]
+                    })
+                ], ignore_index=True)
+        
         # Pivotar
-        pivot = df.pivot_table(
+        pivot = df_long.pivot_table(
             index="especie",
             columns="periodo",
             values="quantidade",
@@ -235,13 +247,11 @@ class CapturadorAcoes:
         cols = sorted(pivot.columns, key=sort_key)
         pivot = pivot[cols]
         
-        # Ordenar linhas: ON, PN, PNA, ..., TOTAL
-        especies_ordem = ["ON", "PN", "PNA", "PNB", "PNC", "PND", "TOTAL"]
+        # Ordenar linhas: ON, PN, TOTAL
+        especies_ordem = ["ON", "PN", "TOTAL"]
         especies_presentes = [e for e in especies_ordem if e in pivot.index]
-        outras = [e for e in pivot.index if e not in especies_ordem]
         
-        ordem_final = especies_presentes + sorted(outras)
-        pivot = pivot.reindex(ordem_final)
+        pivot = pivot.reindex(especies_presentes)
         
         # Converter para inteiros
         pivot = pivot.fillna(0).astype(int)
@@ -275,7 +285,7 @@ class CapturadorAcoes:
             if zip_path is None:
                 continue
             
-            df = self._ler_capital_social_classe_acao(zip_path, ano)
+            df = self._ler_capital_social(zip_path, ano)
             if df is None or df.empty:
                 continue
             
@@ -289,9 +299,6 @@ class CapturadorAcoes:
         if dados_anos:
             consolidado = pd.concat(dados_anos, ignore_index=True)
             
-            # Adicionar total
-            consolidado = self._calcular_total(consolidado)
-            
             # Construir formato horizontal
             horizontal = self._build_horizontal(consolidado)
             
@@ -301,10 +308,9 @@ class CapturadorAcoes:
             
             # Estatísticas
             n_periodos = len([c for c in horizontal.columns if c != "Espécie_Acao"])
-            especies = [e for e in horizontal["Espécie_Acao"].values if e != "TOTAL"]
             
-            print(f"  ✅ Períodos: {n_periodos}")
-            print(f"  ✅ Espécies: {', '.join(especies)}")
+            print(f"  ✅ Períodos: {n_periodos} (anos)")
+            print(f"  ✅ Espécies: ON, PN, TOTAL")
             print(f"  ✅ Arquivo: acoes_historico.csv")
         else:
             print(f"  ❌ Nenhum dado de ações encontrado")
