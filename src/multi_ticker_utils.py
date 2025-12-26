@@ -48,27 +48,32 @@ def load_mapeamento_consolidado() -> pd.DataFrame:
         ) from e
 
 
+# ADICIONAR NO INÍCIO DO ARQUIVO (após imports)
+
+# Mapeamento de exceções: tickers que devem usar um ticker específico para CVM
+TICKER_EXCEPTIONS = {
+    'SAPR11': 'SAPR3',  # SAPR11 não tem dados, usar SAPR3
+    'SAPR4': 'SAPR3',   # Consolidar tudo em SAPR3
+    # Adicionar outras exceções conforme necessário
+}
+
+
 def get_ticker_principal(ticker: str) -> Optional[str]:
     """
     Resolve qualquer ticker para o ticker principal do grupo.
-    
-    Exemplos:
-        ITUB4 → ITUB3
-        PETR4 → PETR3
-        KLBN11 → KLBN11
-    
-    Args:
-        ticker: Código do ticker (ex: ITUB4, PETR3, KLBN11)
-    
-    Returns:
-        Ticker principal ou None se não encontrado
+    IMPORTANTE: Verifica exceções conhecidas primeiro.
     """
+    ticker_upper = ticker.upper().strip()
+    
+    # 1. VERIFICAR EXCEÇÕES PRIMEIRO
+    if ticker_upper in TICKER_EXCEPTIONS:
+        return TICKER_EXCEPTIONS[ticker_upper]
+    
+    # 2. Verificar se algum ticker do grupo está nas exceções
     try:
         df = load_mapeamento_consolidado()
     except FileNotFoundError:
         return None
-    
-    ticker_upper = ticker.upper().strip()
     
     # Buscar linha que contém o ticker
     mask = df['ticker'].str.upper().str.contains(
@@ -83,11 +88,23 @@ def get_ticker_principal(ticker: str) -> Optional[str]:
     if result.empty:
         return None
     
-    # Pegar primeiro ticker do grupo (principal)
+    # Pegar todos os tickers do grupo
     ticker_str = str(result.iloc[0]['ticker']).strip()
-    principal = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
     
-    return principal.upper()
+    if ';' in ticker_str:
+        all_tickers = [t.strip().upper() for t in ticker_str.split(';')]
+        
+        # Verificar se algum ticker do grupo está nas exceções
+        for t in all_tickers:
+            if t in TICKER_EXCEPTIONS:
+                return TICKER_EXCEPTIONS[t]
+        
+        # Se não há exceção, usar o primeiro
+        principal = all_tickers[0]
+    else:
+        principal = ticker_str.upper()
+    
+    return principal
 
 
 def get_all_tickers(ticker: str) -> List[str]:
