@@ -1,9 +1,32 @@
 """
 CAPTURA DE HISTÓRICO DE AÇÕES - FORMULÁRIO DE REFERÊNCIA (FRE)
-- Usa arquivo: fre_cia_aberta_capital_social_AAAA.csv
-- Fonte: Formulário de Referência da CVM
-- Formato de saída: Horizontal (2010T4, 2011T4, 2012T4...)
+
+FONTE DE DADOS:
+- Arquivo: fre_cia_aberta_capital_social_AAAA.csv
+- Origem: Portal de Dados Abertos da CVM
+- URL: https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/FRE/DADOS/
+
+IMPORTANTE - DADOS ANUAIS (T4):
+- O Formulário de Referência (FRE) é enviado ANUALMENTE pelas empresas
+- Portanto, contém apenas dados de final de ano (T4)
+- Não há dados trimestrais oficiais (T1, T2, T3) em anos anteriores a 2024
+- A partir de 2024, a CVM começou a exigir composição de capital no ITR
+- Mantemos apenas T4 para garantir DADOS OFICIAIS sem interpolações artificiais
+
+FORMATO DE SAÍDA:
+- Layout: Horizontal (períodos como colunas)
+- Exemplo: 2010T4, 2011T4, 2012T4, ..., 2024T4
 - Arquivo: balancos/<TICKER>/acoes_historico.csv
+- Espécies: ON (Ordinárias), PN (Preferenciais), TOTAL
+
+ESTRUTURA DO ARQUIVO DE SAÍDA:
+┌──────────────┬────────┬────────┬────────┬─────┐
+│ Espécie_Acao │ 2010T4 │ 2011T4 │ 2012T4 │ ... │
+├──────────────┼────────┼────────┼────────┼─────┤
+│ ON           │ 1000   │ 1000   │ 1200   │ ... │
+│ PN           │ 5000   │ 5000   │ 5500   │ ... │
+│ TOTAL        │ 6000   │ 6000   │ 6700   │ ... │
+└──────────────┴────────┴────────┴────────┴─────┘
 """
 
 import pandas as pd
@@ -66,9 +89,35 @@ def extrair_ticker_inteligente(ticker_str: str) -> str:
 
 
 def get_pasta_balanco(ticker: str) -> Path:
-    """Retorna Path da pasta de balanços."""
+    """
+    Retorna Path da pasta de balanços.
+    
+    Lógica:
+    1. Se já existe uma pasta com o ticker base (sem dígito final), usa ela
+    2. Senão, cria nova pasta usando priorização (ON > PN)
+    
+    Exemplo:
+    - get_pasta_balanco("ITUB4") com pasta ITUB4 existente → balancos/ITUB4
+    - get_pasta_balanco("ITUB4") com pasta ITUB3 existente → balancos/ITUB3
+    - get_pasta_balanco("ITUB4") sem pasta ITUB* → balancos/ITUB3 (prioriza ON)
+    """
     ticker_clean = extrair_ticker_inteligente(ticker)
-    return Path("balancos") / ticker_clean
+    base_dir = Path("balancos")
+    base_dir.mkdir(exist_ok=True)
+    
+    # Extrair ticker base (sem dígito final)
+    # ITUB3 -> ITUB, BBAS3 -> BBAS, VALE3 -> VALE
+    ticker_base = ticker_clean.rstrip("0123456789")
+    
+    # Verificar se já existe alguma pasta com esse ticker base
+    pastas_existentes = list(base_dir.glob(f"{ticker_base}*"))
+    
+    if pastas_existentes:
+        # Usar a primeira pasta encontrada (geralmente só tem uma)
+        return pastas_existentes[0]
+    
+    # Se não existe, criar nova pasta com ticker priorizado
+    return base_dir / ticker_clean
 
 
 def _quarter_order(q: str) -> int:
@@ -81,6 +130,37 @@ def _quarter_order(q: str) -> int:
 # ============================================================================
 
 class CapturadorAcoes:
+    """
+    Captura histórico de número de ações de empresas brasileiras.
+    
+    ESTRATÉGIA DE DADOS:
+    -------------------
+    ✓ Fonte: Formulário de Referência (FRE) - Dados anuais oficiais
+    ✓ Período: 2010 até ano atual
+    ✓ Frequência: ANUAL (apenas T4 - final de ano)
+    ✗ NÃO cria dados trimestrais artificiais (T1, T2, T3)
+    
+    JUSTIFICATIVA:
+    -------------
+    O FRE é enviado ANUALMENTE (geralmente em abril do ano seguinte).
+    Interpolar ou repetir valores para T1/T2/T3 criaria falsa impressão
+    de precisão trimestral. Mantemos apenas dados oficiais (T4).
+    
+    CASOS ESPECIAIS:
+    ---------------
+    - A partir de 2024: CVM passou a exigir composição de capital no ITR
+    - Futuro: Podemos adicionar captura de dados trimestrais ITR 2024+
+    - Atual: Mantemos apenas dados anuais confiáveis
+    
+    FORMATO DE SAÍDA:
+    ----------------
+    CSV horizontal com espécies de ações como linhas:
+    - ON: Ações Ordinárias
+    - PN: Ações Preferenciais  
+    - TOTAL: Soma de todas as ações
+    
+    Períodos como colunas: 2010T4, 2011T4, ..., 2024T4
+    """
     
     def __init__(self):
         self.pasta_balancos = Path("balancos")
@@ -199,64 +279,96 @@ class CapturadorAcoes:
     
     def _build_horizontal(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Constrói tabela horizontal (períodos como colunas).
+        Constrói tabela horizontal com dados ANUAIS OFICIAIS (apenas T4).
         
-        Formato:
-        | Espécie_Acao | 2010T4 | 2011T4 | 2012T4 | ...
-        | ON           | 1000   | 1000   | 1200   | ...
-        | PN           | 5000   | 5000   | 5500   | ...
-        | TOTAL        | 6000   | 6000   | 6700   | ...
+        IMPORTANTE: Mantém apenas dados T4 (Formulário de Referência).
+        Não cria períodos trimestrais artificiais para evitar falsa precisão.
+        
+        Formato de saída:
+        ┌──────────────┬────────┬────────┬────────┬─────┐
+        │ Espécie_Acao │ 2010T4 │ 2011T4 │ 2012T4 │ ... │
+        ├──────────────┼────────┼────────┼────────┼─────┤
+        │ ON           │ 1000   │ 1000   │ 1200   │ ... │
+        │ PN           │ 5000   │ 5000   │ 5500   │ ... │
+        │ TOTAL        │ 6000   │ 6000   │ 6700   │ ... │
+        └──────────────┴────────┴────────┴────────┴─────┘
+        
+        Args:
+            df: DataFrame com colunas [ano, trimestre, ON, PN, TOTAL]
+        
+        Returns:
+            DataFrame no formato horizontal (períodos como colunas)
         """
         if df.empty:
             return pd.DataFrame(columns=["Espécie_Acao"])
         
-        # Criar período (ano + trimestre)
-        df["periodo"] = df["ano"].astype(str) + df["trimestre"]
+        # ====================================================================
+        # ETAPA 1: Criar identificador de período (AAAATX)
+        # ====================================================================
+        df = df.copy()
+        df["periodo"] = df["ano"].astype(str) + df["trimestre"].astype(str)
         
-        # Reorganizar dados para formato longo
-        df_long = pd.DataFrame()
+        # ====================================================================
+        # ETAPA 2: Transformar para formato longo (unpivot)
+        # ====================================================================
+        # De:   ano | trimestre | ON | PN | TOTAL
+        # Para: especie | periodo | quantidade
+        
+        registros = []
         for _, row in df.iterrows():
             periodo = row["periodo"]
             for especie in ["ON", "PN", "TOTAL"]:
-                df_long = pd.concat([
-                    df_long,
-                    pd.DataFrame({
-                        "especie": [especie],
-                        "periodo": [periodo],
-                        "quantidade": [row[especie]]
-                    })
-                ], ignore_index=True)
+                registros.append({
+                    "especie": especie,
+                    "periodo": periodo,
+                    "quantidade": row[especie]
+                })
         
-        # Pivotar
+        df_long = pd.DataFrame(registros)
+        
+        # ====================================================================
+        # ETAPA 3: Pivotar para formato horizontal
+        # ====================================================================
+        # De:   especie | periodo | quantidade
+        # Para: especie como índice, períodos como colunas
+        
         pivot = df_long.pivot_table(
             index="especie",
             columns="periodo",
             values="quantidade",
-            aggfunc="first"
+            aggfunc="first"  # Apenas um valor por espécie/período
         )
         
-        # Ordenar colunas cronologicamente
-        def sort_key(p):
+        # ====================================================================
+        # ETAPA 4: Ordenar colunas cronologicamente
+        # ====================================================================
+        def extrair_ano_trimestre(periodo_str):
+            """Extrai (ano, trimestre_num) de string AAAATX"""
             try:
-                ano = int(p[:4])
-                trim = _quarter_order(p[4:])
-                return (ano, trim)
+                ano = int(periodo_str[:4])
+                trimestre_str = periodo_str[4:]  # "T4"
+                trimestre_num = _quarter_order(trimestre_str)
+                return (ano, trimestre_num)
             except:
-                return (9999, 99)
+                return (9999, 99)  # Erro → colocar no final
         
-        cols = sorted(pivot.columns, key=sort_key)
-        pivot = pivot[cols]
+        colunas_ordenadas = sorted(pivot.columns, key=extrair_ano_trimestre)
+        pivot = pivot[colunas_ordenadas]
         
-        # Ordenar linhas: ON, PN, TOTAL
+        # ====================================================================
+        # ETAPA 5: Ordenar linhas na sequência: ON → PN → TOTAL
+        # ====================================================================
         especies_ordem = ["ON", "PN", "TOTAL"]
         especies_presentes = [e for e in especies_ordem if e in pivot.index]
-        
         pivot = pivot.reindex(especies_presentes)
         
-        # Converter para inteiros
+        # ====================================================================
+        # ETAPA 6: Tratamento de valores e formatação final
+        # ====================================================================
+        # Substituir NaN por 0 e converter para inteiros
         pivot = pivot.fillna(0).astype(int)
         
-        # Resetar índice
+        # Adicionar coluna Espécie_Acao como primeira coluna
         pivot.insert(0, "Espécie_Acao", pivot.index)
         pivot = pivot.reset_index(drop=True)
         
@@ -274,6 +386,11 @@ class CapturadorAcoes:
         
         pasta = get_pasta_balanco(ticker)
         pasta.mkdir(exist_ok=True)
+        
+        # Mostrar pasta que será usada
+        ticker_display = extrair_ticker_inteligente(ticker)
+        if pasta.name != ticker_display:
+            print(f"  ℹ️  Usando pasta existente: {pasta.name}")
         
         cnpj_digits = self._cnpj_digits(cnpj)
         
@@ -308,10 +425,14 @@ class CapturadorAcoes:
             
             # Estatísticas
             n_periodos = len([c for c in horizontal.columns if c != "Espécie_Acao"])
+            anos_inicio = consolidado["ano"].min()
+            anos_fim = consolidado["ano"].max()
             
-            print(f"  ✅ Períodos: {n_periodos} (anos)")
+            print(f"  ✅ Dados anuais (T4): {anos_inicio} a {anos_fim}")
+            print(f"  ✅ Total de anos: {n_periodos}")
             print(f"  ✅ Espécies: ON, PN, TOTAL")
             print(f"  ✅ Arquivo: acoes_historico.csv")
+            print(f"  ℹ️  Apenas dados oficiais (FRE não contém dados trimestrais)")
         else:
             print(f"  ❌ Nenhum dado de ações encontrado")
     
@@ -385,14 +506,18 @@ def main():
     
     # Exibir info
     print(f"\n{'='*70}")
-    print(f">>> JOB: CAPTURAR HISTÓRICO DE AÇÕES (FRE) <<<")
+    print(f">>> CAPTURA DE HISTÓRICO DE AÇÕES (DADOS ANUAIS - FRE) <<<")
     print(f"{'='*70}")
     print(f"Modo: {args.modo}")
     print(f"Empresas: {len(df_sel)}")
     print(f"Período: 2010 - {datetime.now().year}")
     print(f"Fonte: Formulário de Referência (FRE)")
+    print(f"Frequência: ANUAL (apenas T4 - final de ano)")
     print(f"Formato: Horizontal (AAAAT4)")
     print(f"Saída: balancos/<TICKER>/acoes_historico.csv")
+    print(f"{'='*70}")
+    print(f"ℹ️  IMPORTANTE: FRE contém apenas dados anuais oficiais (T4).")
+    print(f"             Não há interpolação ou criação de dados trimestrais.")
     print(f"{'='*70}\n")
     
     # Processar
