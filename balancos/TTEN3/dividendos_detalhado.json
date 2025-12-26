@@ -1,0 +1,48 @@
+{
+  "ticker": "TTEN3",
+  "total_dividendos": 0.4388,
+  "periodo": "2022-2025",
+  "quantidade_pagamentos": 4,
+  "dividendos": [
+    {
+      "data_com": "2022-04-28",
+      "valor": 0.015304,
+      "tipo": "Dividendo",
+      "ano": 2022,
+      "mes": 4,
+      "dia": 28,
+      "trimestre": "T2",
+      "data_pagamento": "2022-04-28"
+    },
+    {
+      "data_com": "2023-02-15",
+      "valor": 0.115164,
+      "tipo": "Dividendo",
+      "ano": 2023,
+      "mes": 2,
+      "dia": 15,
+      "trimestre": "T1",
+      "data_pagamento": "2023-02-15"
+    },
+    {
+      "data_com": "2024-02-26",
+      "valor": 0.117656,
+      "tipo": "Dividendo",
+      "ano": 2024,
+      "mes": 2,
+      "dia": 26,
+      "trimestre": "T1",
+      "data_pagamento": "2024-02-26"
+    },
+    {
+      "data_com": "2025-02-28",
+      "valor": 0.190632,
+      "tipo": "Dividendo",
+      "ano": 2025,
+      "mes": 2,
+      "dia": 28,
+      "trimestre": "T1",
+      "data_pagamento": "2025-02-28"
+    }
+  ]
+}
