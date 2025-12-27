@@ -53,35 +53,60 @@ class CapturadorPrecos:
         Agora usa get_pasta_balanco() para garantir pasta correta.
         
         Prioridade: DRE > BP > DFC
+        Também captura dados anuais (T4) se disponíveis.
         """
         pasta = get_pasta_balanco(ticker)
+        dates_list = []
         
-        # Tentar DRE primeiro
+        # Função auxiliar para processar arquivo
+        def process_file(filepath):
+            if filepath.exists():
+                df = pd.read_csv(filepath)
+                if "data_fim" in df.columns and "trimestre" in df.columns:
+                    dates = df[["data_fim", "trimestre"]].drop_duplicates()
+                    dates["data_fim"] = pd.to_datetime(dates["data_fim"], errors="coerce")
+                    return dates.dropna()
+            return pd.DataFrame()
+        
+        # Tentar DRE primeiro (trimestrais e anuais)
         dre_tri = pasta / "dre_consolidado.csv"
-        if dre_tri.exists():
-            df = pd.read_csv(dre_tri)
-            if "data_fim" in df.columns and "trimestre" in df.columns:
-                dates = df[["data_fim", "trimestre"]].drop_duplicates()
-                dates["data_fim"] = pd.to_datetime(dates["data_fim"], errors="coerce")
-                return dates.dropna().sort_values("data_fim").reset_index(drop=True)
+        dre_anual = pasta / "dre_anual_consolidado.csv"
         
-        # Tentar BPA
-        bpa_tri = pasta / "bpa_consolidado.csv"
-        if bpa_tri.exists():
-            df = pd.read_csv(bpa_tri)
-            if "data_fim" in df.columns and "trimestre" in df.columns:
-                dates = df[["data_fim", "trimestre"]].drop_duplicates()
-                dates["data_fim"] = pd.to_datetime(dates["data_fim"], errors="coerce")
-                return dates.dropna().sort_values("data_fim").reset_index(drop=True)
+        df_tri = process_file(dre_tri)
+        df_anual = process_file(dre_anual)
         
-        # Tentar DFC
-        dfc_tri = pasta / "dfc_mi_consolidado.csv"
-        if dfc_tri.exists():
-            df = pd.read_csv(dfc_tri)
-            if "data_fim" in df.columns and "trimestre" in df.columns:
-                dates = df[["data_fim", "trimestre"]].drop_duplicates()
-                dates["data_fim"] = pd.to_datetime(dates["data_fim"], errors="coerce")
-                return dates.dropna().sort_values("data_fim").reset_index(drop=True)
+        if not df_tri.empty or not df_anual.empty:
+            dates_list = [df_tri, df_anual]
+        else:
+            # Tentar BPA
+            bpa_tri = pasta / "bpa_consolidado.csv"
+            bpa_anual = pasta / "bpa_anual_consolidado.csv"
+            
+            df_tri = process_file(bpa_tri)
+            df_anual = process_file(bpa_anual)
+            
+            if not df_tri.empty or not df_anual.empty:
+                dates_list = [df_tri, df_anual]
+            else:
+                # Tentar DFC
+                dfc_tri = pasta / "dfc_mi_consolidado.csv"
+                dfc_anual = pasta / "dfc_mi_anual_consolidado.csv"
+                
+                df_tri = process_file(dfc_tri)
+                df_anual = process_file(dfc_anual)
+                
+                if not df_tri.empty or not df_anual.empty:
+                    dates_list = [df_tri, df_anual]
+        
+        if dates_list:
+            # Concatenar trimestrais e anuais
+            all_dates = pd.concat([d for d in dates_list if not d.empty], ignore_index=True)
+            all_dates = all_dates.drop_duplicates(subset=["data_fim", "trimestre"])
+            
+            # Padronizar trimestre anual para T4
+            all_dates["trimestre"] = all_dates["trimestre"].replace({"Anual": "T4", "T0": "T4"})
+            
+            return all_dates.sort_values("data_fim").reset_index(drop=True)
         
         return pd.DataFrame(columns=["data_fim", "trimestre"])
 
@@ -142,7 +167,7 @@ class CapturadorPrecos:
         """
         Constrói tabela horizontal (períodos como colunas).
         
-        Formato: Preço_Fechamento | 2022T1 | 2022T2 | ...
+        Formato: Preço_Fechamento | 2022T1 | 2022T2 | ... | 2022T4
         """
         if prices_data.empty:
             return pd.DataFrame(columns=["Preço_Fechamento"])
@@ -150,7 +175,7 @@ class CapturadorPrecos:
         # Adicionar coluna de ano
         prices_data["ano"] = prices_data["data_fim"].dt.year
         
-        # Criar período (ex: 2022T1)
+        # Criar período (ex: 2022T1, 2022T4)
         prices_data["periodo"] = (
             prices_data["ano"].astype(str) + prices_data["trimestre"]
         )
@@ -191,7 +216,7 @@ class CapturadorPrecos:
         ticker = ticker.upper().strip()
         pasta = get_pasta_balanco(ticker)
         
-        # 1. Extrair datas dos trimestres
+        # 1. Extrair datas dos trimestres (incluindo T4/anual)
         dates_df = self._extract_quarter_dates(ticker)
         
         if dates_df.empty:
@@ -240,6 +265,11 @@ class CapturadorPrecos:
                 f"OK={precos_ok}",
                 f"FAIL={precos_fail}"
             ]
+            
+            # Informar se T4 foi capturado
+            trimestres = df_temp["trimestre"].unique()
+            if "T4" in trimestres:
+                msg_parts.append("T4=sim")
             
             msg = f"precos_trimestrais.csv | {' | '.join(msg_parts)}"
             ok = precos_ok > 0
