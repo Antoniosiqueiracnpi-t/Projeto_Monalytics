@@ -184,18 +184,23 @@ def _get_fiscal_year_mar_fev(data: pd.Timestamp) -> int:
     """
     Para empresas com ano fiscal mar-fev, retorna o ano fiscal.
     
-    Regra: mar/YYYY a fev/YYYY+1 = Ano Fiscal YYYY+1
-    Exemplo: mar/2024 a fev/2025 = Ano Fiscal 2025
+    Regra da Camil e mercado brasileiro:
+    - Ano Fiscal 2024 = mar/2024 a fev/2025
+    - Ano Fiscal 2025 = mar/2025 a fev/2026
     
-    - maio/2024 (T1) → Ano Fiscal 2025
-    - agosto/2024 (T2) → Ano Fiscal 2025  
-    - novembro/2024 (T3) → Ano Fiscal 2025
-    - fevereiro/2025 (Anual) → Ano Fiscal 2025
+    Então:
+    - maio/2024 → T1 → Ano Fiscal 2024
+    - agosto/2024 → T2 → Ano Fiscal 2024
+    - novembro/2024 → T3 → Ano Fiscal 2024
+    - fevereiro/2025 → T4 → Ano Fiscal 2024 (pertence ao ano fiscal anterior!)
+    
+    - maio/2025 → T1 → Ano Fiscal 2025
+    - agosto/2025 → T2 → Ano Fiscal 2025
     """
     if data.month >= 3:  # março a dezembro
-        return data.year + 1
+        return data.year  # O ano fiscal é o próprio ano calendário
     else:  # janeiro a fevereiro
-        return data.year
+        return data.year - 1  # Jan/Fev pertencem ao ano fiscal ANTERIOR
 
 def _infer_quarter_mar_fev(data: pd.Timestamp) -> str:
     """
