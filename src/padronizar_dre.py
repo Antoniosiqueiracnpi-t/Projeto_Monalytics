@@ -197,6 +197,26 @@ def _get_fiscal_year_mar_fev(data: pd.Timestamp) -> int:
     else:  # janeiro a fevereiro
         return data.year
 
+def _infer_quarter_mar_fev(data: pd.Timestamp) -> str:
+    """
+    Infere o trimestre para empresas com ano fiscal mar-fev baseado no mês.
+    
+    Mapeamento:
+    - Março, Abril, Maio (mês 3,4,5) → T1
+    - Junho, Julho, Agosto (mês 6,7,8) → T2
+    - Setembro, Outubro, Novembro (mês 9,10,11) → T3
+    - Dezembro, Janeiro, Fevereiro (mês 12,1,2) → T4
+    """
+    month = data.month
+    if month in (3, 4, 5):
+        return "T1"
+    elif month in (6, 7, 8):
+        return "T2"
+    elif month in (9, 10, 11):
+        return "T3"
+    else:  # 12, 1, 2
+        return "T4"
+
 # ======================================================================================
 # UTILITÁRIOS
 # ======================================================================================
@@ -424,28 +444,39 @@ class PadronizadorDRE:
         return _get_dre_schema(self._current_ticker)
 
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        pasta = get_pasta_balanco(ticker)
-        tri_path = pasta / "dre_consolidado.csv"
-        anu_path = pasta / "dre_anual.csv"
-    
-        if not tri_path.exists():
-            raise FileNotFoundError(f"Arquivo não encontrado: {tri_path}")
-        if not anu_path.exists():
-            raise FileNotFoundError(f"Arquivo não encontrado: {anu_path}")
-    
-        df_tri = pd.read_csv(tri_path)
-        df_anu = pd.read_csv(anu_path)
-    
-        for df in (df_tri, df_anu):
-            df["cd_conta"] = df["cd_conta"].astype(str).str.strip()
-            df["ds_conta"] = df["ds_conta"].astype(str).str.strip()
-            df["valor_mil"] = _ensure_numeric(df["valor_mil"])
-            df["data_fim"] = _to_datetime(df, "data_fim")
-    
-        df_tri = df_tri.dropna(subset=["data_fim"])
-        df_anu = df_anu.dropna(subset=["data_fim"])
-    
-        return df_tri, df_anu
+            pasta = get_pasta_balanco(ticker)
+            tri_path = pasta / "dre_consolidado.csv"
+            anu_path = pasta / "dre_anual.csv"
+        
+            if not tri_path.exists():
+                raise FileNotFoundError(f"Arquivo não encontrado: {tri_path}")
+            if not anu_path.exists():
+                raise FileNotFoundError(f"Arquivo não encontrado: {anu_path}")
+        
+            df_tri = pd.read_csv(tri_path)
+            df_anu = pd.read_csv(anu_path)
+        
+            for df in (df_tri, df_anu):
+                df["cd_conta"] = df["cd_conta"].astype(str).str.strip()
+                df["ds_conta"] = df["ds_conta"].astype(str).str.strip()
+                df["valor_mil"] = _ensure_numeric(df["valor_mil"])
+                df["data_fim"] = _to_datetime(df, "data_fim")
+        
+            df_tri = df_tri.dropna(subset=["data_fim"])
+            df_anu = df_anu.dropna(subset=["data_fim"])
+            
+            # ADAPTAÇÃO: Para empresas mar-fev com trimestre vazio, inferir do mês
+            if _is_ano_fiscal_mar_fev(ticker):
+                # Verificar se coluna trimestre está vazia ou ausente
+                if "trimestre" not in df_tri.columns:
+                    df_tri["trimestre"] = ""
+                
+                # Preencher trimestres vazios baseado no mês
+                mask_vazio = df_tri["trimestre"].isna() | (df_tri["trimestre"].astype(str).str.strip() == "")
+                if mask_vazio.any():
+                    df_tri.loc[mask_vazio, "trimestre"] = df_tri.loc[mask_vazio, "data_fim"].apply(_infer_quarter_mar_fev)
+        
+            return df_tri, df_anu
 
     def _build_quarter_totals(self, df_tri: pd.DataFrame) -> pd.DataFrame:
             """
@@ -886,7 +917,8 @@ class PadronizadorDRE:
             fiscal_status = "IRREGULAR"
         tipo_dre = "BANCO" if _is_banco(ticker) else "PADRÃO"
         
-        if fiscal_info.is_standard:
+        # Para ano fiscal padrão OU mar-fev: mostrar resultados do check-up
+        if fiscal_info.is_standard or is_mar_fev:
             msg_parts = [
                 f"tipo={tipo_dre}",
                 f"fiscal={fiscal_status}",
@@ -896,6 +928,7 @@ class PadronizadorDRE:
             ]
             ok = (diverge == 0)
         else:
+            # Outros irregulares: pular check-up
             msg_parts = [
                 f"tipo={tipo_dre}",
                 f"fiscal={fiscal_status}",
