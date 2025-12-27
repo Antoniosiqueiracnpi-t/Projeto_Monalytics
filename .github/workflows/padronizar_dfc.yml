@@ -35,7 +35,7 @@ on:
         default: '1-50'
 
 jobs:
-  padronizar_dre:
+  padronizar_dfc:
     runs-on: ubuntu-latest
     timeout-minutes: 120
 
