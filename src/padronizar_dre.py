@@ -16,6 +16,37 @@ sys.path.insert(0, str(Path(__file__).parent))
 from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
 
 # ======================================================================================
+# EMPRESAS COM ANO FISCAL ESPECIAL (MARÇO-FEVEREIRO)
+# ======================================================================================
+
+TICKERS_ANO_FISCAL_MAR_FEV: Set[str] = {
+    "CAML3",  # Camil Alimentos - ano fiscal Março-Fevereiro
+}
+
+
+def _is_ano_fiscal_mar_fev(ticker: str) -> bool:
+    """Verifica se empresa tem ano fiscal Março-Fevereiro."""
+    return ticker.upper().strip() in TICKERS_ANO_FISCAL_MAR_FEV
+
+
+def _map_fiscal_month_to_quarter(ticker: str, mes: int) -> Optional[str]:
+    """
+    Mapeia mês de encerramento para trimestre padrão.
+    
+    Para empresas com ano fiscal Março-Fevereiro (CAML3):
+    - Maio (5) → T1
+    - Agosto (8) → T2
+    - Novembro (11) → T3
+    - Fevereiro (2) → T4
+    """
+    if not _is_ano_fiscal_mar_fev(ticker):
+        return None
+    
+    mapping = {5: "T1", 8: "T2", 11: "T3", 2: "T4"}
+    return mapping.get(mes)
+
+
+# ======================================================================================
 # CONTAS PADRÃO (NÃO FINANCEIRAS) - DRE
 # ======================================================================================
 
@@ -289,7 +320,7 @@ class FiscalYearInfo:
     description: str  # Descrição para log
 
 
-def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> FiscalYearInfo:
+def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame, ticker: str) -> FiscalYearInfo:
     """
     Detecta o padrão de ano fiscal da empresa de forma CIRÚRGICA.
     
@@ -300,6 +331,18 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> F
     
     Se qualquer critério falhar => empresa tem ano fiscal IRREGULAR.
     """
+    quarters_found = set(df_tri["trimestre"].dropna().unique())
+    
+    # CASO ESPECIAL: Empresa com ano fiscal Março-Fevereiro
+    if _is_ano_fiscal_mar_fev(ticker):
+        return FiscalYearInfo(
+            is_standard=True,  # Tratamos como padrão (previsível)
+            fiscal_end_month=2,  # Encerra em Fevereiro
+            quarters_pattern=quarters_found,
+            has_all_quarters={"T1", "T2", "T3", "T4"}.issubset(quarters_found),
+            description="Ano fiscal Março-Fevereiro (CAML3)"
+        )
+    
     # 1. Verificar mês de encerramento dos dados ANUAIS
     if df_anu is not None and not df_anu.empty:
         dt_anu = _to_datetime(df_anu, "data_fim").dropna()
@@ -406,6 +449,14 @@ class PadronizadorDRE:
     
         df_tri = df_tri.dropna(subset=["data_fim"])
         df_anu = df_anu.dropna(subset=["data_fim"])
+    
+        # MAPEAMENTO DE TRIMESTRES PARA ANO FISCAL ESPECIAL
+        if _is_ano_fiscal_mar_fev(ticker):
+            df_tri["trimestre"] = df_tri.apply(
+                lambda row: _map_fiscal_month_to_quarter(ticker, row["data_fim"].month) 
+                if pd.notna(row["data_fim"]) else row.get("trimestre"),
+                axis=1
+            )
     
         return df_tri, df_anu
 
@@ -667,8 +718,13 @@ class PadronizadorDRE:
         sem_anual_count = 0
         irregular_skip_count = 0
 
-        # Para empresas com ano fiscal IRREGULAR: pular check-up
-        if not fiscal_info.is_standard:
+        # Para empresas com ano fiscal NÃO padrão (mas tratadas como regulares):
+        # Usar check-up normal para CAML3 (Março-Fevereiro)
+        if _is_ano_fiscal_mar_fev(self._current_ticker):
+            # CAML3: check-up normal pois trimestres estão mapeados corretamente
+            pass
+        elif not fiscal_info.is_standard:
+            # Outras irregulares: pular check-up
             for ano in sorted(qiso["ano"].unique()):
                 for code, _name in dre_schema:
                     g_code = qiso[(qiso["ano"] == ano) & (qiso["code"] == code)]
@@ -687,7 +743,7 @@ class PadronizadorDRE:
             
             return results, diverge_count, incompleto_count, sem_anual_count, irregular_skip_count
 
-        # Para empresas com ano fiscal PADRÃO: fazer check-up normal
+        # Para empresas com ano fiscal PADRÃO ou CAML3: fazer check-up normal
         anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
         expected_quarters = {"T1", "T2", "T3", "T4"}
 
@@ -770,7 +826,7 @@ class PadronizadorDRE:
         df_tri, df_anu = self._load_inputs(ticker)
         
         # 2. DETECTAR PADRÃO FISCAL (CRÍTICO!)
-        fiscal_info = _detect_fiscal_year_pattern(df_tri, df_anu)
+        fiscal_info = _detect_fiscal_year_pattern(df_tri, df_anu, ticker)
         
         # 3. Construir totais trimestrais (preserva originais)
         qtot = self._build_quarter_totals(df_tri)
@@ -844,6 +900,9 @@ class PadronizadorDRE:
                 f"trimestres={sorted(fiscal_info.quarters_pattern)}"
             ]
             ok = True
+        
+        if _is_ano_fiscal_mar_fev(ticker):
+            msg_parts.append("(Mar-Fev)")
         
         if checkup_saved:
             msg_parts.append("checkup=SALVO")
@@ -919,7 +978,7 @@ def main():
         try:
             ok, msg = pad.padronizar_e_salvar_ticker(ticker, salvar_checkup=salvar_checkup)
             
-            if "IRREGULAR" in msg:
+            if "IRREGULAR" in msg and "(Mar-Fev)" not in msg:
                 irregular_count += 1
             
             if ok:
