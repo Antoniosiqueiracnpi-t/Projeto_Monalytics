@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
@@ -16,19 +15,72 @@ sys.path.insert(0, str(Path(__file__).parent))
 from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
 
 # ======================================================================================
-# CONTAS BPA - BALANÇO PATRIMONIAL ATIVO (EMPRESAS NÃO FINANCEIRAS)
+# EMPRESAS COM ANO FISCAL ESPECIAL (MARÇO-FEVEREIRO)
+# ======================================================================================
+
+TICKERS_ANO_FISCAL_MAR_FEV: Set[str] = {
+    "CAML3",  # Camil Alimentos - ano fiscal Março-Fevereiro
+}
+
+
+def _is_ano_fiscal_mar_fev(ticker: str) -> bool:
+    """Verifica se empresa tem ano fiscal Março-Fevereiro."""
+    return ticker.upper().strip() in TICKERS_ANO_FISCAL_MAR_FEV
+
+
+def _map_fiscal_month_to_quarter(ticker: str, mes: int) -> Optional[str]:
+    """
+    Mapeia mês de encerramento para trimestre padrão.
+    
+    Para empresas com ano fiscal Março-Fevereiro (CAML3):
+    - Maio (5) → T1
+    - Agosto (8) → T2
+    - Novembro (11) → T3
+    - Fevereiro (2) → T4
+    """
+    if not _is_ano_fiscal_mar_fev(ticker):
+        return None
+    
+    mapping = {5: "T1", 8: "T2", 11: "T3", 2: "T4"}
+    return mapping.get(mes)
+
+
+def _adjust_fiscal_year(df: pd.DataFrame, ticker: str) -> pd.DataFrame:
+    """
+    Ajusta o ano para ano fiscal (não calendário) para empresas com ano fiscal Março-Fevereiro.
+    
+    Para CAML3:
+    - Meses Mar-Dez (3-12): ano_fiscal = ano_calendário + 1
+    - Meses Jan-Fev (1-2): ano_fiscal = ano_calendário
+    
+    Exemplo:
+    - Mai/2025 (mês 5) → ano fiscal 2026
+    - Nov/2025 (mês 11) → ano fiscal 2026
+    - Fev/2026 (mês 2) → ano fiscal 2026
+    - Mai/2026 (mês 5) → ano fiscal 2027
+    """
+    if not _is_ano_fiscal_mar_fev(ticker):
+        return df
+    
+    df = df.copy()
+    # Para meses >= 3 (Mar-Dez): adiciona 1 ao ano
+    mask = df["data_fim"].dt.month >= 3
+    df.loc[mask, "ano"] = df.loc[mask, "ano"] + 1
+    
+    return df
+
+
+# ======================================================================================
+# CONTAS BP ATIVO (NÃO FINANCEIRAS)
 # ======================================================================================
 
 BPA_PADRAO: List[Tuple[str, str]] = [
-    ("1", "Ativo Total"),
     ("1.01", "Ativo Circulante"),
     ("1.01.01", "Caixa e Equivalentes de Caixa"),
     ("1.01.02", "Aplicações Financeiras"),
     ("1.01.03", "Contas a Receber"),
     ("1.01.04", "Estoques"),
-    ("1.01.05", "Ativos Biológicos"),
     ("1.01.06", "Tributos a Recuperar"),
-    ("1.01.07", "Despesas Antecipadas"),
     ("1.01.08", "Outros Ativos Circulantes"),
     ("1.02", "Ativo Não Circulante"),
     ("1.02.01", "Ativo Realizável a Longo Prazo"),
@@ -38,189 +90,170 @@ BPA_PADRAO: List[Tuple[str, str]] = [
 ]
 
 # ======================================================================================
-# CONTAS BPP - BALANÇO PATRIMONIAL PASSIVO (EMPRESAS NÃO FINANCEIRAS)
+# CONTAS BP PASSIVO (NÃO FINANCEIRAS)
 # ======================================================================================
 
 BPP_PADRAO: List[Tuple[str, str]] = [
-    ("2", "Passivo Total"),
     ("2.01", "Passivo Circulante"),
     ("2.01.01", "Obrigações Sociais e Trabalhistas"),
     ("2.01.02", "Fornecedores"),
     ("2.01.03", "Obrigações Fiscais"),
     ("2.01.04", "Empréstimos e Financiamentos"),
     ("2.01.05", "Outras Obrigações"),
-    ("2.01.06", "Provisões"),
-    ("2.01.07", "Passivos sobre Ativos Não-Correntes a Venda e Descontinuados"),
     ("2.02", "Passivo Não Circulante"),
     ("2.02.01", "Empréstimos e Financiamentos"),
     ("2.02.02", "Outras Obrigações"),
-    ("2.02.03", "Tributos Diferidos"),
-    ("2.02.04", "Provisões"),
-    ("2.02.05", "Passivos sobre Ativos Não-Correntes a Venda e Descontinuados"),
-    ("2.02.06", "Lucros e Receitas a Apropriar"),
-    ("2.03", "Patrimônio Líquido Consolidado"),
+    ("2.03", "Patrimônio Líquido"),
     ("2.03.01", "Capital Social Realizado"),
     ("2.03.02", "Reservas de Capital"),
-    ("2.03.03", "Reservas de Reavaliação"),
     ("2.03.04", "Reservas de Lucros"),
-    ("2.03.05", "Lucros/Prejuízos Acumulados"),
-    ("2.03.06", "Ajustes de Avaliação Patrimonial"),
-    ("2.03.07", "Ajustes Acumulados de Conversão"),
-    ("2.03.08", "Outros Resultados Abrangentes"),
     ("2.03.09", "Participação dos Acionistas Não Controladores"),
 ]
 
-
 # ======================================================================================
-# CONTAS BPA - BANCOS (INSTITUIÇÕES FINANCEIRAS)
+# CONTAS BP ATIVO (BANCOS)
 # ======================================================================================
 
 BPA_BANCOS: List[Tuple[str, str]] = [
-    ("1", "Ativo Total"),
-    ("1.01", "Caixa e Equivalentes de Caixa"),
-    ("1.02", "Ativos Financeiros"),
-    ("1.03", "Tributos"),
-    ("1.04", "Outros Ativos"),
-    ("1.05", "Investimentos"),
-    ("1.06", "Imobilizado"),
-    ("1.07", "Intangível"),
-]
-
-
-# ======================================================================================
-# CONTAS BPP - BANCOS (INSTITUIÇÕES FINANCEIRAS)
-# ======================================================================================
-
-BPP_BANCOS: List[Tuple[str, str]] = [
-    ("2", "Passivo Total"),
-    ("2.01", "Passivos Financeiros Avaliados ao Valor Justo através do Resultado"),
-    ("2.02", "Passivos Financeiros ao Custo Amortizado"),
-    ("2.03", "Provisões"),
-    ("2.04", "Passivos Fiscais"),
-    ("2.05", "Outros Passivos"),
-    ("2.06", "Passivos sobre Ativos Não Correntes a Venda e Descontinuados"),
-    ("2.07", "Patrimônio Líquido Consolidado"),
-    ("2.07.01", "Patrimônio Líquido Atribuído ao Controlador"),
-    ("2.07.01.01", "Capital Social Realizado"),
-    ("2.07.01.02", "Reservas de Capital"),
-    ("2.07.02", "Patrimônio Líquido Atribuído aos Não Controladores"),
-]
-
-
-# ======================================================================================
-# CONTAS BPA - SEGURADORAS OPERACIONAIS (IRBR3, PSSA3)
-# Seguradoras que assumem risco: prêmios, sinistros, float de reservas técnicas
-# ======================================================================================
-
-BPA_SEGURADORAS: List[Tuple[str, str]] = [
-    ("1", "Ativo Total"),
     ("1.01", "Ativo Circulante"),
-    ("1.01.01", "Caixa e Equivalentes de Caixa"),
-    ("1.01.02", "Aplicações Financeiras"),                    # Float de curto prazo
-    ("1.01.03", "Créditos das Operações de Seguros"),         # Prêmios a Receber
-    ("1.01.06", "Ativos de Resseguro"),                       # Recuperar de resseguradoras
-    ("1.01.08", "Custos de Aquisição Diferidos"),             # Comissões pagas antecipadamente
+    ("1.01.01", "Disponibilidades"),
+    ("1.01.02", "Aplicações Interfinanceiras de Liquidez"),
+    ("1.01.03", "Títulos e Valores Mobiliários e Instrumentos Derivativos"),
+    ("1.01.04", "Relações Interfinanceiras e Interdependências"),
+    ("1.01.06", "Operações de Crédito, Arrendamento Mercantil e Outros Créditos"),
+    ("1.01.08", "Outros Ativos"),
     ("1.02", "Ativo Não Circulante"),
     ("1.02.01", "Ativo Realizável a Longo Prazo"),
-    ("1.02.01.01", "Aplicações Financeiras"),                 # Float de longo prazo
-    ("1.02.01.02", "Créditos Tributários"),                   # Impostos a recuperar
     ("1.02.02", "Investimentos"),
-    ("1.02.03", "Imobilizado"),                               # Prédios, Centros Automotivos
-    ("1.02.04", "Intangível"),                                # Softwares, Marcas, Patentes
-]
-
-
-# ======================================================================================
-# CONTAS BPP - SEGURADORAS OPERACIONAIS (IRBR3, PSSA3)
-# Onde mora o risco: provisões técnicas são a conta mais importante
-# ======================================================================================
-
-BPP_SEGURADORAS: List[Tuple[str, str]] = [
-    ("2", "Passivo Total"),
-    ("2.01", "Passivo Circulante"),
-    ("2.01.01", "Obrigações a Pagar"),                        # Fornecedores, Salários
-    ("2.01.04", "Provisões Técnicas de Seguros"),             # A conta mais importante
-    ("2.01.04.01", "Provisão de Prêmios Não Ganhos"),         # PPNG - dívida de serviço
-    ("2.01.04.02", "Provisão de Sinistros a Liquidar"),       # PSL - sinistros não pagos
-    ("2.01.05", "Débitos de Operações com Seguros"),          # Obrigações com Resseguro
-    ("2.02", "Passivo Não Circulante"),
-    ("2.03", "Patrimônio Líquido Consolidado"),
-    ("2.03.01", "Capital Social Realizado"),
-    ("2.03.02", "Reservas de Capital"),
-    ("2.03.04", "Reservas de Lucros"),                        # Lucro retido para solvência
-]
-
-
-# ======================================================================================
-# CONTAS BPA - HOLDINGS DE SEGUROS (BBSE3, CXSE3)
-# Holdings que lucram com corretagem + equivalência patrimonial
-# ======================================================================================
-
-BPA_HOLDINGS_SEGUROS: List[Tuple[str, str]] = [
-    ("1", "Ativo Total"),
-    ("1.01", "Ativo Circulante"),
-    ("1.01.01", "Caixa e Equivalentes de Caixa"),             # Caixa mínimo administrativo
-    ("1.01.02", "Aplicações Financeiras"),                    # Caixa excedente (não é Float)
-    ("1.01.03", "Contas a Receber"),                          # Dividendos e JCP a Receber
-    ("1.02", "Ativo Não Circulante"),
-    ("1.02.02", "Investimentos"),                             # Participações (ex: Brasilseg)
     ("1.02.03", "Imobilizado"),
     ("1.02.04", "Intangível"),
 ]
 
+# ======================================================================================
+# CONTAS BP PASSIVO (BANCOS)
+# ======================================================================================
+
+BPP_BANCOS: List[Tuple[str, str]] = [
+    ("2.01", "Passivo Circulante"),
+    ("2.01.01", "Depósitos"),
+    ("2.01.02", "Captação no Mercado Aberto"),
+    ("2.01.03", "Recursos de Aceites e Emissão de Títulos"),
+    ("2.01.04", "Relações Interfinanceiras e Interdependências"),
+    ("2.01.06", "Obrigações por Empréstimos e Repasses"),
+    ("2.01.07", "Instrumentos Financeiros Derivativos"),
+    ("2.01.09", "Outras Obrigações"),
+    ("2.02", "Passivo Não Circulante"),
+    ("2.02.01", "Depósitos"),
+    ("2.02.03", "Recursos de Aceites e Emissão de Títulos"),
+    ("2.02.05", "Relações Interfinanceiras e Interdependências"),
+    ("2.02.06", "Obrigações por Empréstimos e Repasses"),
+    ("2.02.07", "Instrumentos Financeiros Derivativos"),
+    ("2.02.09", "Outras Obrigações"),
+    ("2.03", "Patrimônio Líquido"),
+    ("2.03.01", "Capital Social Realizado"),
+    ("2.03.02", "Reservas de Capital, Opções Outorgadas e Ações em Tesouraria"),
+    ("2.03.04", "Reservas de Lucros"),
+    ("2.03.05", "Lucros ou Prejuízos Acumulados"),
+    ("2.03.08", "Outros Resultados Abrangentes"),
+    ("2.03.09", "Participação dos Acionistas Não Controladores"),
+]
 
 # ======================================================================================
-# CONTAS BPP - HOLDINGS DE SEGUROS (BBSE3, CXSE3)
-# Estrutura de distribuição - alto payout de dividendos
+# CONTAS BP ATIVO (HOLDINGS SEGUROS)
+# ======================================================================================
+
+BPA_HOLDINGS_SEGUROS: List[Tuple[str, str]] = [
+    ("1.01", "Ativo Circulante"),
+    ("1.01.01", "Caixa e Equivalentes de Caixa"),
+    ("1.01.02", "Aplicações Financeiras"),
+    ("1.01.03", "Contas a Receber"),
+    ("1.01.06", "Tributos Correntes e Diferidos a Recuperar"),
+    ("1.01.08", "Outros Ativos Circulantes"),
+    ("1.02", "Ativo Não Circulante"),
+    ("1.02.01", "Ativo Realizável a Longo Prazo"),
+    ("1.02.02", "Investimentos"),
+    ("1.02.03", "Imobilizado"),
+    ("1.02.04", "Intangível"),
+]
+
+# ======================================================================================
+# CONTAS BP PASSIVO (HOLDINGS SEGUROS)
 # ======================================================================================
 
 BPP_HOLDINGS_SEGUROS: List[Tuple[str, str]] = [
-    ("2", "Passivo Total"),
     ("2.01", "Passivo Circulante"),
-    ("2.01.01", "Obrigações Sociais e Trabalhistas"),         # Folha da holding
-    ("2.01.02", "Obrigações Fiscais"),                        # PIS/COFINS sobre corretagem
-    ("2.01.05", "Outras Obrigações"),                         # Dividendos e JCP a Pagar
+    ("2.01.01", "Contas a Pagar"),
+    ("2.01.02", "Obrigações Fiscais Correntes"),
+    ("2.01.03", "Empréstimos e Financiamentos"),
+    ("2.01.05", "Outras Obrigações"),
     ("2.02", "Passivo Não Circulante"),
+    ("2.02.01", "Empréstimos e Financiamentos"),
+    ("2.02.02", "Tributos Diferidos"),
+    ("2.02.04", "Provisões"),
+    ("2.02.05", "Outras Obrigações"),
     ("2.03", "Patrimônio Líquido Consolidado"),
     ("2.03.01", "Capital Social Realizado"),
-    ("2.03.04", "Reservas de Lucros"),                        # Geralmente zerado (distribuição)
+    ("2.03.02", "Reservas de Capital"),
+    ("2.03.04", "Reservas de Lucros"),
+    ("2.03.05", "Lucros/Prejuízos Acumulados"),
+    ("2.03.08", "Outros Resultados Abrangentes"),
+    ("2.03.09", "Participação dos Acionistas Não Controladores"),
 ]
 
+# ======================================================================================
+# CONTAS BP ATIVO (SEGURADORAS)
+# ======================================================================================
+
+BPA_SEGURADORAS: List[Tuple[str, str]] = [
+    ("1.01", "Ativo Circulante"),
+    ("1.01.01", "Disponível"),
+    ("1.01.02", "Aplicações"),
+    ("1.01.03", "Créditos das Operações com Seguros e Resseguros"),
+    ("1.01.04", "Ativos de Resseguro e Retrocessão - Provisões Técnicas"),
+    ("1.01.05", "Títulos e Créditos a Receber"),
+    ("1.01.08", "Outros Créditos Operacionais"),
+    ("1.01.09", "Despesas Antecipadas"),
+    ("1.02", "Ativo Não Circulante"),
+    ("1.02.01", "Ativo Realizável a Longo Prazo"),
+    ("1.02.02", "Investimentos"),
+    ("1.02.03", "Imobilizado"),
+    ("1.02.04", "Intangível"),
+]
 
 # ======================================================================================
-# TICKERS DE BANCOS E SEGURADORAS
+# CONTAS BP PASSIVO (SEGURADORAS)
 # ======================================================================================
 
+BPP_SEGURADORAS: List[Tuple[str, str]] = [
+    ("2.01", "Passivo Circulante"),
+    ("2.01.01", "Contas a Pagar"),
+    ("2.01.02", "Débitos de Operações com Seguros e Resseguros"),
+    ("2.01.03", "Depósitos de Terceiros"),
+    ("2.01.04", "Provisões Técnicas - Seguros e Resseguros"),
+    ("2.02", "Passivo Não Circulante"),
+    ("2.02.01", "Contas a Pagar"),
+    ("2.02.02", "Débitos de Operações com Seguros e Resseguros"),
+    ("2.02.03", "Depósitos de Terceiros"),
+    ("2.02.04", "Provisões Técnicas - Seguros e Resseguros"),
+    ("2.03", "Patrimônio Líquido"),
+    ("2.03.01", "Capital Social"),
+    ("2.03.02", "Reservas de Capital"),
+    ("2.03.04", "Reservas de Lucros"),
+    ("2.03.05", "Ajustes de Avaliação Patrimonial"),
+    ("2.03.09", "Participação de Acionistas Não Controladores"),
+]
+
+# Listas de tickers
 TICKERS_BANCOS: Set[str] = {
-    "RPAD3", "RPAD5", "RPAD6",
-    "ABCB4",
-    "BMGB4",
-    "BBDC3", "BBDC4",
-    "BPAC3", "BPAC5", "BPAC11",
-    "BSLI3", "BSLI4",
-    "BBAS3",
-    "BGIP3", "BGIP4",
-    "BPAR3",
-    "BRSR3", "BRSR5", "BRSR6",
-    "BNBR3",
-    "BMIN3", "BMIN4",
-    "BMEB3", "BMEB4",
-    "BPAN4",
-    "PINE3", "PINE4",
-    "SANB3", "SANB4", "SANB11",
-    "BEES3", "BEES4",
-    "ITUB3", "ITUB4",
+    "RPAD3", "RPAD5", "RPAD6", "ABCB4", "BMGB4", "BBDC3", "BBDC4",
+    "BPAC3", "BPAC5", "BPAC11", "BSLI3", "BSLI4", "BBAS3", "BGIP3",
+    "BGIP4", "BPAR3", "BRSR3", "BRSR5", "BRSR6", "BNBR3", "BMIN3",
+    "BMIN4", "BMEB3", "BMEB4", "BPAN4", "PINE3", "PINE4", "SANB3",
+    "SANB4", "SANB11", "BEES3", "BEES4", "ITUB3", "ITUB4",
 }
 
-TICKERS_HOLDINGS_SEGUROS: Set[str] = {
-    "BBSE3",
-    "CXSE3",
-}
-
-TICKERS_SEGURADORAS: Set[str] = {
-    "IRBR3",
-    "PSSA3",
-}
+TICKERS_HOLDINGS_SEGUROS: Set[str] = {"BBSE3", "CXSE3"}
+TICKERS_SEGURADORAS: Set[str] = {"IRBR3", "PSSA3"}
 
 
 def _is_banco(ticker: str) -> bool:
@@ -228,22 +261,18 @@ def _is_banco(ticker: str) -> bool:
 
 
 def _is_holding_seguros(ticker: str) -> bool:
-    """Holdings de seguros: BBSE3, CXSE3"""
     return ticker.upper().strip() in TICKERS_HOLDINGS_SEGUROS
 
 
-def _is_seguradora_operacional(ticker: str) -> bool:
-    """Seguradoras operacionais: IRBR3, PSSA3"""
+def _is_seguradora(ticker: str) -> bool:
     return ticker.upper().strip() in TICKERS_SEGURADORAS
 
 
 def _get_bpa_schema(ticker: str) -> List[Tuple[str, str]]:
-    """Retorna o esquema BPA apropriado para o ticker."""
     ticker_upper = ticker.upper().strip()
-    
     if _is_holding_seguros(ticker_upper):
         return BPA_HOLDINGS_SEGUROS
-    elif _is_seguradora_operacional(ticker_upper):
+    elif _is_seguradora(ticker_upper):
         return BPA_SEGURADORAS
     elif _is_banco(ticker_upper):
         return BPA_BANCOS
@@ -252,31 +281,15 @@ def _get_bpa_schema(ticker: str) -> List[Tuple[str, str]]:
 
 
 def _get_bpp_schema(ticker: str) -> List[Tuple[str, str]]:
-    """Retorna o esquema BPP apropriado para o ticker."""
     ticker_upper = ticker.upper().strip()
-    
     if _is_holding_seguros(ticker_upper):
         return BPP_HOLDINGS_SEGUROS
-    elif _is_seguradora_operacional(ticker_upper):
+    elif _is_seguradora(ticker_upper):
         return BPP_SEGURADORAS
     elif _is_banco(ticker_upper):
         return BPP_BANCOS
     else:
         return BPP_PADRAO
-
-
-def _get_tipo_empresa(ticker: str) -> str:
-    """Retorna o tipo da empresa para mensagens."""
-    ticker_upper = ticker.upper().strip()
-    
-    if _is_holding_seguros(ticker_upper):
-        return "HOLDING SEGUROS"
-    elif _is_seguradora_operacional(ticker_upper):
-        return "SEGURADORA"
-    elif _is_banco(ticker_upper):
-        return "BANCO"
-    else:
-        return "GERAL"
 
 
 # ======================================================================================
@@ -295,303 +308,207 @@ def _quarter_order(q: str) -> int:
     return {"T1": 1, "T2": 2, "T3": 3, "T4": 4}.get(q, 99)
 
 
-def _normalize_value(v: float, decimals: int = 3) -> float:
-    """Normaliza valor numérico para evitar erros de ponto flutuante."""
-    if not np.isfinite(v):
-        return np.nan
-    return round(float(v), decimals)
-
-
-def _pick_value_for_code(group: pd.DataFrame, code: str) -> float:
-    """Extrai valor para um código específico."""
-    exact = group[group["cd_conta"] == code]
+def _pick_value_for_base_code(group: pd.DataFrame, base_code: str) -> float:
+    exact = group[group["cd_conta"] == base_code]
     if not exact.empty:
-        v = _ensure_numeric(exact["valor_mil"]).iloc[0]
+        v = _ensure_numeric(exact["valor_mil"]).sum()
         return float(v) if np.isfinite(v) else np.nan
-    return np.nan
+
+    children = group[group["cd_conta"].astype(str).str.startswith(base_code + ".")]
+    if children.empty:
+        return np.nan
+    v = _ensure_numeric(children["valor_mil"]).sum()
+    return float(v) if np.isfinite(v) else np.nan
 
 
 # ======================================================================================
-# DETECTOR DE ANO FISCAL IRREGULAR
+# PADRONIZADOR BP
 # ======================================================================================
 
-@dataclass
-class FiscalYearInfo:
-    """Informações sobre o padrão de ano fiscal da empresa."""
-    is_standard: bool
-    fiscal_end_month: int
-    quarters_pattern: Set[str]
-    has_all_quarters: bool
-    description: str
-
-
-def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> FiscalYearInfo:
-    """Detecta o padrão de ano fiscal da empresa."""
-    quarters_found = set(df_tri["trimestre"].dropna().unique())
-    
-    if "data_fim" in df_anu.columns and not df_anu.empty:
-        end_months = df_anu["data_fim"].dropna().dt.month.unique()
-        
-        if len(end_months) == 1 and end_months[0] == 12:
-            fiscal_end = 12
-            is_standard = True
-        elif len(end_months) >= 1:
-            fiscal_end = int(df_anu["data_fim"].dt.month.mode().iloc[0]) if not df_anu["data_fim"].dt.month.mode().empty else 12
-            is_standard = (fiscal_end == 12)
-        else:
-            fiscal_end = 12
-            is_standard = True
-    else:
-        fiscal_end = 12
-        is_standard = True
-    
-    has_all = {"T1", "T2", "T3", "T4"}.issubset(quarters_found)
-    
-    if is_standard:
-        desc = "Ano fiscal padrão (jan-dez)"
-    else:
-        desc = f"Ano fiscal irregular (encerra em mês {fiscal_end})"
-    
-    return FiscalYearInfo(
-        is_standard=is_standard,
-        fiscal_end_month=fiscal_end,
-        quarters_pattern=quarters_found,
-        has_all_quarters=has_all,
-        description=desc
-    )
-
-
-# ======================================================================================
-# CLASSE PRINCIPAL - PADRONIZADOR BP (BPA + BPP)
-# ======================================================================================
-
-@dataclass
 class PadronizadorBP:
-    pasta_balancos: Path = Path("balancos")
-    _current_ticker: str = field(default="", repr=False)
+    def __init__(self, pasta_balancos: Path = Path("balancos")):
+        self.pasta_balancos = pasta_balancos
+        self._current_ticker: str = ""
 
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-        """
-        Carrega os 4 arquivos de entrada usando get_pasta_balanco().
-        """
         pasta = get_pasta_balanco(ticker)
         
-        bpa_tri_path = pasta / "bpa_consolidado.csv"
-        bpa_anu_path = pasta / "bpa_anual.csv"
-        bpp_tri_path = pasta / "bpp_consolidado.csv"
-        bpp_anu_path = pasta / "bpp_anual.csv"
-    
-        if not bpa_tri_path.exists():
-            raise FileNotFoundError(f"Arquivo não encontrado: {bpa_tri_path}")
-        if not bpa_anu_path.exists():
-            raise FileNotFoundError(f"Arquivo não encontrado: {bpa_anu_path}")
-        if not bpp_tri_path.exists():
-            raise FileNotFoundError(f"Arquivo não encontrado: {bpp_tri_path}")
-        if not bpp_anu_path.exists():
-            raise FileNotFoundError(f"Arquivo não encontrado: {bpp_anu_path}")
-    
-        bpa_tri = pd.read_csv(bpa_tri_path)
-        bpa_anu = pd.read_csv(bpa_anu_path)
-        bpp_tri = pd.read_csv(bpp_tri_path)
-        bpp_anu = pd.read_csv(bpp_anu_path)
-    
-        for df in (bpa_tri, bpa_anu, bpp_tri, bpp_anu):
+        tri_ativo = pasta / "bpa_consolidado.csv"
+        tri_passivo = pasta / "bpp_consolidado.csv"
+        anu_ativo = pasta / "bpa_anual.csv"
+        anu_passivo = pasta / "bpp_anual.csv"
+
+        for p in [tri_ativo, tri_passivo, anu_ativo, anu_passivo]:
+            if not p.exists():
+                raise FileNotFoundError(f"Arquivo não encontrado: {p}")
+
+        dfs = []
+        for p in [tri_ativo, tri_passivo, anu_ativo, anu_passivo]:
+            df = pd.read_csv(p)
             df["cd_conta"] = df["cd_conta"].astype(str).str.strip()
             df["ds_conta"] = df["ds_conta"].astype(str).str.strip()
             df["valor_mil"] = _ensure_numeric(df["valor_mil"])
             df["data_fim"] = _to_datetime(df, "data_fim")
-    
-        bpa_tri = bpa_tri.dropna(subset=["data_fim"])
-        bpa_anu = bpa_anu.dropna(subset=["data_fim"])
-        bpp_tri = bpp_tri.dropna(subset=["data_fim"])
-        bpp_anu = bpp_anu.dropna(subset=["data_fim"])
-    
-        return bpa_tri, bpa_anu, bpp_tri, bpp_anu
+            df = df.dropna(subset=["data_fim"])
+            dfs.append(df)
 
-    def _build_quarter_values(
-        self, 
-        df_tri: pd.DataFrame, 
-        schema: List[Tuple[str, str]]
-    ) -> pd.DataFrame:
-        """
-        Extrai valores trimestrais para as contas do esquema.
-        
-        IMPORTANTE: Balanço Patrimonial é POSIÇÃO, não fluxo.
-        Não soma trimestres - cada trimestre é uma fotografia independente.
-        """
+        # MAPEAMENTO DE TRIMESTRES PARA ANO FISCAL ESPECIAL
+        if _is_ano_fiscal_mar_fev(ticker):
+            for df in [dfs[0], dfs[1]]:  # apenas trimestrais
+                df["trimestre"] = df.apply(
+                    lambda row: _map_fiscal_month_to_quarter(ticker, row["data_fim"].month) 
+                    if pd.notna(row["data_fim"]) else row.get("trimestre"),
+                    axis=1
+                )
+
+        return dfs[0], dfs[1], dfs[2], dfs[3]
+
+    def _build_quarter_totals(self, df_tri: pd.DataFrame, schema: List[Tuple[str, str]]) -> pd.DataFrame:
         target_codes = [c for c, _ in schema]
+        wanted_prefixes = tuple([c + "." for c in target_codes])
+
+        mask = (
+            df_tri["cd_conta"].isin(target_codes)
+            | df_tri["cd_conta"].astype(str).str.startswith(wanted_prefixes)
+        )
+        df = df_tri[mask].copy()
         
-        df = df_tri[df_tri["cd_conta"].isin(target_codes)].copy()
+        # CRITICAL: Usar ano calendário primeiro, depois ajustar para fiscal se necessário
         df["ano"] = df["data_fim"].dt.year
         
+        # AJUSTE DE ANO FISCAL para empresas Março-Fevereiro
+        df = _adjust_fiscal_year(df, self._current_ticker)
+
         rows = []
         for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
             for code, _name in schema:
-                v = _pick_value_for_code(g, code)
+                v = _pick_value_for_base_code(g, code)
                 rows.append((int(ano), str(trimestre), code, v))
 
         return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
 
-    def _extract_annual_values(
-        self, 
-        df_anu: pd.DataFrame, 
-        schema: List[Tuple[str, str]]
-    ) -> pd.DataFrame:
-        """Extrai valores anuais para inclusão como T4."""
+    def _extract_annual_values(self, df_anu: pd.DataFrame, schema: List[Tuple[str, str]]) -> pd.DataFrame:
         target_codes = [c for c, _ in schema]
+        wanted_prefixes = tuple([c + "." for c in target_codes])
+
+        mask = (
+            df_anu["cd_conta"].isin(target_codes)
+            | df_anu["cd_conta"].astype(str).str.startswith(wanted_prefixes)
+        )
+        df = df_anu[mask].copy()
         
-        df = df_anu[df_anu["cd_conta"].isin(target_codes)].copy()
+        # CRITICAL: Usar ano calendário primeiro, depois ajustar para fiscal se necessário
         df["ano"] = df["data_fim"].dt.year
+        
+        # AJUSTE DE ANO FISCAL para empresas Março-Fevereiro
+        df = _adjust_fiscal_year(df, self._current_ticker)
 
         rows = []
         for ano, g in df.groupby("ano", sort=False):
             for code, _name in schema:
-                v = _pick_value_for_code(g, code)
+                v = _pick_value_for_base_code(g, code)
                 rows.append((int(ano), code, v))
 
         return pd.DataFrame(rows, columns=["ano", "code", "anual_val"])
 
-    def _add_t4_from_annual(
-        self, 
-        qtot: pd.DataFrame, 
-        anual: pd.DataFrame,
-        fiscal_info: FiscalYearInfo,
-        schema: List[Tuple[str, str]]
+    def _add_t4_from_annual_when_missing(
+        self, qiso: pd.DataFrame, anual: pd.DataFrame, schema: List[Tuple[str, str]]
     ) -> pd.DataFrame:
         """
-        Adiciona T4 usando valor anual diretamente (não subtrai).
-        
-        IMPORTANTE: Para Balanço Patrimonial, T4 = valor do anual (posição em 31/12).
-        Diferente do DRE/DFC onde T4 = Anual - (T1+T2+T3).
+        PARA BP: T4 = valor anual DIRETO (não subtrai trimestres).
+        BP é posição patrimonial, não fluxo acumulado.
         """
-        if not fiscal_info.is_standard:
-            return qtot
-        
         anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
-        out = qtot.copy()
-
-        all_codes = [c for c, _ in schema]
+        out = qiso.copy()
 
         for ano in sorted(out["ano"].unique()):
             g = out[out["ano"] == ano]
             quarters = set(g["trimestre"].unique())
 
-            # Se já tem T4, pular
             if "T4" in quarters:
+                continue
+            if not {"T1", "T2", "T3"}.issubset(quarters):
                 continue
 
             new_rows = []
-            for code in all_codes:
+            for code, _ in schema:
                 a = anual_map.get((int(ano), code), np.nan)
-                if np.isfinite(a):
-                    # T4 = valor anual diretamente (posição, não fluxo)
-                    new_rows.append((int(ano), "T4", code, float(a)))
+                if not np.isfinite(a):
+                    continue
+                # T4 = valor anual (posição, não fluxo)
+                new_rows.append((int(ano), "T4", code, float(a)))
 
             if new_rows:
                 out = pd.concat([out, pd.DataFrame(new_rows, columns=out.columns)], ignore_index=True)
 
         return out
 
-    def _build_horizontal(
-        self, 
-        qdata: pd.DataFrame, 
-        schema: List[Tuple[str, str]]
-    ) -> pd.DataFrame:
-        """Constrói tabela horizontal (períodos como colunas)."""
-        qdata = qdata.copy()
-        qdata["periodo"] = qdata["ano"].astype(str) + qdata["trimestre"]
-        qdata["valor"] = qdata["valor"].apply(lambda x: _normalize_value(x, 3))
-
-        piv = qdata.pivot_table(
-            index="code", columns="periodo", values="valor", aggfunc="first"
+    def _build_horizontal(self, qiso: pd.DataFrame, schema: List[Tuple[str, str]]) -> pd.DataFrame:
+        periods = (
+            qiso[["ano", "trimestre"]]
+            .drop_duplicates()
+            .assign(qord=lambda x: x["trimestre"].apply(_quarter_order))
+            .sort_values(["ano", "qord"])
         )
 
-        # Ordenar colunas cronologicamente
-        def sort_key(p):
-            try:
-                return (int(p[:4]), _quarter_order(p[4:]))
-            except:
-                return (9999, 99)
+        col_labels = [f"{int(r.ano)}{r.trimestre}" for r in periods.itertuples(index=False)]
+        ordered_cols = [(int(r.ano), r.trimestre) for r in periods.itertuples(index=False)]
 
-        cols = sorted(piv.columns, key=sort_key)
-        piv = piv[cols]
+        pivot = qiso.pivot_table(
+            index="code",
+            columns=["ano", "trimestre"],
+            values="valor",
+            aggfunc="first",
+        ).reindex(columns=ordered_cols)
 
-        # Ordenar linhas pelo esquema
-        code_order = {c: i for i, (c, _) in enumerate(schema)}
-        piv = piv.reindex(sorted(piv.index, key=lambda x: code_order.get(x, 999)))
+        idx_codes = [c for c, _ in schema]
+        pivot = pivot.reindex(idx_codes)
+        pivot.columns = col_labels
 
-        # Adicionar nomes das contas
-        code_to_name = {c: n for c, n in schema}
-        piv.insert(0, "conta", piv.index.map(lambda x: code_to_name.get(x, x)))
-        piv = piv.reset_index().rename(columns={"code": "cd_conta"})
+        names = {c: n for c, n in schema}
+        pivot.insert(0, "ds_conta", [names.get(c, '') for c in pivot.index])
+        pivot.insert(0, "cd_conta", [str(c) for c in pivot.index])
 
-        return piv
+        return pivot.reset_index(drop=True)
 
     def padronizar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
-        """
-        Pipeline completo de padronização do BP (BPA + BPP).
-        Agora usa get_pasta_balanco() para garantir pasta correta.
-        """
-        self._current_ticker = ticker.upper().strip()
-        
-        # 1. Carregar dados (4 arquivos)
-        bpa_tri, bpa_anu, bpp_tri, bpp_anu = self._load_inputs(ticker)
-        
-        # 2. Detectar padrão fiscal (usar BPA trimestral + anual como referência)
-        fiscal_info = _detect_fiscal_year_pattern(bpa_tri, bpa_anu)
-        
-        # 3. Obter esquemas
-        bpa_schema = _get_bpa_schema(ticker)
-        bpp_schema = _get_bpp_schema(ticker)
-        
-        # ========== PROCESSAR BPA ==========
-        # 4a. Extrair valores trimestrais
-        bpa_qtot = self._build_quarter_values(bpa_tri, bpa_schema)
-        
-        # 5a. Extrair valores anuais
-        bpa_anual = self._extract_annual_values(bpa_anu, bpa_schema)
-        
-        # 6a. Adicionar T4 do anual
-        bpa_qtot = self._add_t4_from_annual(bpa_qtot, bpa_anual, fiscal_info, bpa_schema)
-        
-        # 7a. Construir tabela horizontal
-        bpa_out = self._build_horizontal(bpa_qtot, bpa_schema)
-        
-        # ========== PROCESSAR BPP ==========
-        # 4b. Extrair valores trimestrais
-        bpp_qtot = self._build_quarter_values(bpp_tri, bpp_schema)
-        
-        # 5b. Extrair valores anuais
-        bpp_anual = self._extract_annual_values(bpp_anu, bpp_schema)
-        
-        # 6b. Adicionar T4 do anual
-        bpp_qtot = self._add_t4_from_annual(bpp_qtot, bpp_anual, fiscal_info, bpp_schema)
-        
-        # 7b. Construir tabela horizontal
-        bpp_out = self._build_horizontal(bpp_qtot, bpp_schema)
-        
-        # 8. Salvar arquivos
+        ticker = ticker.upper().strip()
+        self._current_ticker = ticker
         pasta = get_pasta_balanco(ticker)
+
+        tri_a, tri_p, anu_a, anu_p = self._load_inputs(ticker)
+
+        schema_ativo = _get_bpa_schema(ticker)
+        schema_passivo = _get_bpp_schema(ticker)
+
+        qtot_a = self._build_quarter_totals(tri_a, schema_ativo)
+        qtot_p = self._build_quarter_totals(tri_p, schema_passivo)
+
+        anu_a_vals = self._extract_annual_values(anu_a, schema_ativo)
+        anu_p_vals = self._extract_annual_values(anu_p, schema_passivo)
+
+        qiso_a = qtot_a.assign(qord=qtot_a["trimestre"].apply(_quarter_order)).sort_values(["ano", "qord", "code"]).drop(columns=["qord"])
+        qiso_p = qtot_p.assign(qord=qtot_p["trimestre"].apply(_quarter_order)).sort_values(["ano", "qord", "code"]).drop(columns=["qord"])
+
+        qiso_a = self._add_t4_from_annual_when_missing(qiso_a, anu_a_vals, schema_ativo)
+        qiso_p = self._add_t4_from_annual_when_missing(qiso_p, anu_p_vals, schema_passivo)
+
+        df_ativo = self._build_horizontal(qiso_a, schema_ativo)
+        df_passivo = self._build_horizontal(qiso_p, schema_passivo)
+
+        pasta.mkdir(parents=True, exist_ok=True)
+
+        out_ativo = pasta / "bpa_padronizado.csv"
+        out_passivo = pasta / "bpp_padronizado.csv"
+
+        df_ativo.to_csv(out_ativo, index=False, encoding="utf-8")
+        df_passivo.to_csv(out_passivo, index=False, encoding="utf-8")
+
+        tipo_bp = "BANCO" if _is_banco(ticker) else "HOLDING_SEG" if _is_holding_seguros(ticker) else "SEGURADORA" if _is_seguradora(ticker) else "PADRÃO"
         
-        bpa_path = pasta / "bpa_padronizado.csv"
-        bpp_path = pasta / "bpp_padronizado.csv"
-        
-        bpa_out.to_csv(bpa_path, index=False, encoding="utf-8")
-        bpp_out.to_csv(bpp_path, index=False, encoding="utf-8")
-        
-        # 9. Mensagem de retorno
-        fiscal_status = "PADRÃO" if fiscal_info.is_standard else "IRREGULAR"
-        tipo = _get_tipo_empresa(ticker)
-        
-        n_periodos_bpa = len([c for c in bpa_out.columns if c not in ["cd_conta", "conta"]])
-        n_periodos_bpp = len([c for c in bpp_out.columns if c not in ["cd_conta", "conta"]])
-        
-        msg_parts = [
-            f"Fiscal: {fiscal_status}",
-            f"Tipo: {tipo}",
-            f"BPA: {n_periodos_bpa} períodos",
-            f"BPP: {n_periodos_bpp} períodos",
-        ]
+        msg_parts = [f"tipo={tipo_bp}"]
+        if _is_ano_fiscal_mar_fev(ticker):
+            msg_parts.append("(Mar-Fev)")
         
         msg = f"bpa_padronizado.csv + bpp_padronizado.csv | {' | '.join(msg_parts)}"
         
@@ -599,52 +516,40 @@ class PadronizadorBP:
 
 
 # ======================================================================================
-# CLI - MAIN
+# CLI
 # ======================================================================================
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Padroniza BPA e BPP das empresas (inclui T4 do anual)"
-    )
-    parser.add_argument(
-        "--modo",
-        choices=["quantidade", "ticker", "lista", "faixa"],
-        default="quantidade",
-        help="Modo de seleção: quantidade, ticker, lista, faixa",
-    )
-    parser.add_argument("--quantidade", default="10", help="Quantidade de empresas")
-    parser.add_argument("--ticker", default="", help="Ticker específico")
-    parser.add_argument("--lista", default="", help="Lista de tickers separados por vírgula")
-    parser.add_argument("--faixa", default="", help="Faixa de linhas: inicio-fim (ex: 1-50)")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--modo", default="quantidade", choices=["quantidade", "ticker", "lista", "faixa"])
+    parser.add_argument("--quantidade", default="10")
+    parser.add_argument("--ticker", default="")
+    parser.add_argument("--lista", default="")
+    parser.add_argument("--faixa", default="1-50")
     args = parser.parse_args()
 
-    # Tentar carregar mapeamento consolidado, fallback para original
     df = load_mapeamento_consolidado()
     df = df[df["cnpj"].notna()].reset_index(drop=True)
 
     if args.modo == "quantidade":
         limite = int(args.quantidade)
         df_sel = df.head(limite)
-
     elif args.modo == "ticker":
         ticker_upper = args.ticker.upper()
         df_sel = df[df["ticker"].str.upper().str.contains(ticker_upper, case=False, na=False, regex=False)]
-
     elif args.modo == "lista":
         tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
         mask = df["ticker"].str.upper().apply(
             lambda x: any(t in x for t in tickers) if pd.notna(x) else False
         )
         df_sel = df[mask]
-
     elif args.modo == "faixa":
         inicio, fim = map(int, args.faixa.split("-"))
         df_sel = df.iloc[inicio - 1 : fim]
-
     else:
         df_sel = df.head(10)
 
-    print(f"\n>>> JOB: PADRONIZAR BP (BPA + BPP) <<<")
+    print(f"\n>>> JOB: PADRONIZAR BP <<<")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
     print("Saída: balancos/<TICKER>/bpa_padronizado.csv + bpp_padronizado.csv\n")
 
@@ -652,7 +557,6 @@ def main():
 
     ok_count = 0
     err_count = 0
-    irregular_count = 0
 
     for _, row in df_sel.iterrows():
         ticker_str = str(row["ticker"]).upper().strip()
@@ -661,22 +565,17 @@ def main():
         pasta = get_pasta_balanco(ticker)
         if not pasta.exists():
             err_count += 1
-            print(f"❌ {ticker}: pasta {pasta} não existe")
+            print(f"❌ {ticker}: pasta {pasta} não existe (captura ausente)")
             continue
 
         try:
             ok, msg = pad.padronizar_e_salvar_ticker(ticker)
-            
-            if "IRREGULAR" in msg:
-                irregular_count += 1
-            
             if ok:
                 ok_count += 1
                 print(f"✅ {ticker}: {msg}")
             else:
                 err_count += 1
                 print(f"⚠️ {ticker}: {msg}")
-
         except FileNotFoundError as e:
             err_count += 1
             print(f"❌ {ticker}: arquivos ausentes ({e})")
@@ -688,8 +587,6 @@ def main():
 
     print("\n" + "="*70)
     print(f"Finalizado: OK={ok_count} | ERRO={err_count}")
-    if irregular_count > 0:
-        print(f"            Anos fiscais irregulares: {irregular_count}")
     print("="*70 + "\n")
 
 
