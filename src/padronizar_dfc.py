@@ -2,10 +2,8 @@
 from __future__ import annotations
 
 import argparse
-import re
-from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 
 import numpy as np
 import pandas as pd
@@ -17,65 +15,157 @@ sys.path.insert(0, str(Path(__file__).parent))
 from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
 
 # ======================================================================================
-# CONTAS DFC - PADRÃO PARA TODAS AS EMPRESAS
+# EMPRESAS COM ANO FISCAL ESPECIAL (MARÇO-FEVEREIRO)
 # ======================================================================================
 
-DFC_CONTAS: List[Tuple[str, str]] = [
-    ("6.01", "Caixa Líquido das Atividades Operacionais"),
+TICKERS_ANO_FISCAL_MAR_FEV: Set[str] = {
+    "CAML3",  # Camil Alimentos - ano fiscal Março-Fevereiro
+}
+
+
+def _is_ano_fiscal_mar_fev(ticker: str) -> bool:
+    """Verifica se empresa tem ano fiscal Março-Fevereiro."""
+    return ticker.upper().strip() in TICKERS_ANO_FISCAL_MAR_FEV
+
+
+def _map_fiscal_month_to_quarter(ticker: str, mes: int) -> Optional[str]:
+    """
+    Mapeia mês de encerramento para trimestre padrão.
+    
+    Para empresas com ano fiscal Março-Fevereiro (CAML3):
+    - Maio (5) → T1
+    - Agosto (8) → T2
+    - Novembro (11) → T3
+    - Fevereiro (2) → T4
+    """
+    if not _is_ano_fiscal_mar_fev(ticker):
+        return None
+    
+    mapping = {5: "T1", 8: "T2", 11: "T3", 2: "T4"}
+    return mapping.get(mes)
+
+
+def _adjust_fiscal_year(df: pd.DataFrame, ticker: str) -> pd.DataFrame:
+    """
+    Ajusta o ano para ano fiscal (não calendário) para empresas com ano fiscal Março-Fevereiro.
+    
+    Para CAML3:
+    - Meses Mar-Dez (3-12): ano_fiscal = ano_calendário + 1
+    - Meses Jan-Fev (1-2): ano_fiscal = ano_calendário
+    
+    Exemplo:
+    - Mai/2025 (mês 5) → ano fiscal 2026
+    - Nov/2025 (mês 11) → ano fiscal 2026
+    - Fev/2026 (mês 2) → ano fiscal 2026
+    - Mai/2026 (mês 5) → ano fiscal 2027
+    """
+    if not _is_ano_fiscal_mar_fev(ticker):
+        return df
+    
+    df = df.copy()
+    # Para meses >= 3 (Mar-Dez): adiciona 1 ao ano
+    mask = df["data_fim"].dt.month >= 3
+    df.loc[mask, "ano"] = df.loc[mask, "ano"] + 1
+    
+    return df
+
+
+# ======================================================================================
+# CONTAS DFC PADRÃO (NÃO FINANCEIRAS)
+# ======================================================================================
+
+DFC_PADRAO: List[Tuple[str, str]] = [
+    ("6.01", "Caixa Líquido Atividades Operacionais"),
+    ("6.01.01", "Caixa Gerado nas Operações"),
+    ("6.01.02", "Variações nos Ativos e Passivos"),
     ("6.02", "Caixa Líquido Atividades de Investimento"),
     ("6.03", "Caixa Líquido Atividades de Financiamento"),
-    ("6.04", "Variação Cambial s/ Caixa e Equivalentes"),
-    ("6.05", "Aumento (Redução) de Caixa e Equivalentes"),
+    ("6.05", "Variação Cambial s/ Caixa e Equivalentes"),
+    ("6.05.01", "Aumento (Redução) de Caixa e Equivalentes"),
+    ("6.05.02", "Saldo Inicial de Caixa e Equivalentes"),
+    ("6.05.03", "Saldo Final de Caixa e Equivalentes"),
 ]
 
-# Código especial para Depreciação e Amortização (subconta de 6.01)
-DEPREC_CODE = "6.01.DA"
-DEPREC_LABEL = "Depreciação e Amortização"
-
-
 # ======================================================================================
-# TICKERS DE BANCOS E SEGURADORAS (NÃO incluem D&A)
+# CONTAS DFC BANCOS
 # ======================================================================================
 
+DFC_BANCOS: List[Tuple[str, str]] = [
+    ("6.01", "Atividades Operacionais"),
+    ("6.01.01", "Caixa Gerado nas Operações"),
+    ("6.01.02", "Variações nos Ativos e Passivos"),
+    ("6.02", "Atividades de Investimento"),
+    ("6.03", "Atividades de Financiamento"),
+    ("6.05", "Aumento (Redução) de Caixa e Equivalentes"),
+    ("6.05.01", "Saldo Inicial de Caixa e Equivalentes"),
+    ("6.05.02", "Saldo Final de Caixa e Equivalentes"),
+]
+
+# ======================================================================================
+# CONTAS DFC HOLDINGS SEGUROS
+# ======================================================================================
+
+DFC_HOLDINGS_SEGUROS: List[Tuple[str, str]] = [
+    ("6.01", "Caixa Líquido Atividades Operacionais"),
+    ("6.01.01", "Caixa Gerado nas Operações"),
+    ("6.01.02", "Variações nos Ativos e Passivos"),
+    ("6.02", "Caixa Líquido Atividades de Investimento"),
+    ("6.03", "Caixa Líquido Atividades de Financiamento"),
+    ("6.05", "Aumento (Redução) de Caixa e Equivalentes"),
+    ("6.05.01", "Saldo Inicial de Caixa e Equivalentes"),
+    ("6.05.02", "Saldo Final de Caixa e Equivalentes"),
+]
+
+# ======================================================================================
+# CONTAS DFC SEGURADORAS
+# ======================================================================================
+
+DFC_SEGURADORAS: List[Tuple[str, str]] = [
+    ("6.01", "Das Atividades Operacionais"),
+    ("6.01.01", "Lucro Líquido Ajustado"),
+    ("6.01.02", "Variações nos Ativos e Passivos"),
+    ("6.02", "Das Atividades de Investimento"),
+    ("6.03", "Das Atividades de Financiamento"),
+    ("6.05", "Aumento (Redução) de Caixa e Equivalentes de Caixa"),
+    ("6.05.01", "Saldo Inicial de Caixa e Equivalentes de Caixa"),
+    ("6.05.02", "Saldo Final de Caixa e Equivalentes de Caixa"),
+]
+
+# Listas de tickers
 TICKERS_BANCOS: Set[str] = {
-    "RPAD3", "RPAD5", "RPAD6",
-    "ABCB4",
-    "BMGB4",
-    "BBDC3", "BBDC4",
-    "BPAC3", "BPAC5", "BPAC11",
-    "BSLI3", "BSLI4",
-    "BBAS3",
-    "BGIP3", "BGIP4",
-    "BPAR3",
-    "BRSR3", "BRSR5", "BRSR6",
-    "BNBR3",
-    "BMIN3", "BMIN4",
-    "BMEB3", "BMEB4",
-    "BPAN4",
-    "PINE3", "PINE4",
-    "SANB3", "SANB4", "SANB11",
-    "BEES3", "BEES4",
-    "ITUB3", "ITUB4",
+    "RPAD3", "RPAD5", "RPAD6", "ABCB4", "BMGB4", "BBDC3", "BBDC4",
+    "BPAC3", "BPAC5", "BPAC11", "BSLI3", "BSLI4", "BBAS3", "BGIP3",
+    "BGIP4", "BPAR3", "BRSR3", "BRSR5", "BRSR6", "BNBR3", "BMIN3",
+    "BMIN4", "BMEB3", "BMEB4", "BPAN4", "PINE3", "PINE4", "SANB3",
+    "SANB4", "SANB11", "BEES3", "BEES4", "ITUB3", "ITUB4",
 }
 
-TICKERS_HOLDINGS_SEGUROS: Set[str] = {
-    "BBSE3",
-    "CXSE3",
-}
-
-TICKERS_SEGURADORAS: Set[str] = {
-    "IRBR3",
-    "PSSA3",
-}
+TICKERS_HOLDINGS_SEGUROS: Set[str] = {"BBSE3", "CXSE3"}
+TICKERS_SEGURADORAS: Set[str] = {"IRBR3", "PSSA3"}
 
 
-def _is_financeira_ou_seguradora(ticker: str) -> bool:
-    """
-    Verifica se o ticker é banco, holding de seguros ou seguradora.
-    Essas empresas NÃO incluem Depreciação e Amortização no DFC padronizado.
-    """
-    t = ticker.upper().strip()
-    return t in TICKERS_BANCOS or t in TICKERS_HOLDINGS_SEGUROS or t in TICKERS_SEGURADORAS
+def _is_banco(ticker: str) -> bool:
+    return ticker.upper().strip() in TICKERS_BANCOS
+
+
+def _is_holding_seguros(ticker: str) -> bool:
+    return ticker.upper().strip() in TICKERS_HOLDINGS_SEGUROS
+
+
+def _is_seguradora(ticker: str) -> bool:
+    return ticker.upper().strip() in TICKERS_SEGURADORAS
+
+
+def _get_dfc_schema(ticker: str) -> List[Tuple[str, str]]:
+    ticker_upper = ticker.upper().strip()
+    if _is_holding_seguros(ticker_upper):
+        return DFC_HOLDINGS_SEGUROS
+    elif _is_seguradora(ticker_upper):
+        return DFC_SEGURADORAS
+    elif _is_banco(ticker_upper):
+        return DFC_BANCOS
+    else:
+        return DFC_PADRAO
 
 
 # ======================================================================================
@@ -94,21 +184,13 @@ def _quarter_order(q: str) -> int:
     return {"T1": 1, "T2": 2, "T3": 3, "T4": 4}.get(q, 99)
 
 
-def _normalize_value(v: float, decimals: int = 3) -> float:
-    """Normaliza valor numérico para evitar erros de ponto flutuante."""
-    if not np.isfinite(v):
-        return np.nan
-    return round(float(v), decimals)
-
-
-def _pick_value_for_code(group: pd.DataFrame, code: str) -> float:
-    """Extrai valor para um código, buscando conta exata ou somando filhas."""
-    exact = group[group["cd_conta"] == code]
+def _pick_value_for_base_code(group: pd.DataFrame, base_code: str) -> float:
+    exact = group[group["cd_conta"] == base_code]
     if not exact.empty:
         v = _ensure_numeric(exact["valor_mil"]).sum()
         return float(v) if np.isfinite(v) else np.nan
 
-    children = group[group["cd_conta"].astype(str).str.startswith(code + ".")]
+    children = group[group["cd_conta"].astype(str).str.startswith(base_code + ".")]
     if children.empty:
         return np.nan
     v = _ensure_numeric(children["valor_mil"]).sum()
@@ -116,152 +198,121 @@ def _pick_value_for_code(group: pd.DataFrame, code: str) -> float:
 
 
 # ======================================================================================
-# EXTRAÇÃO DE DEPRECIAÇÃO E AMORTIZAÇÃO
+# DETECTOR DE YTD (DADOS ACUMULADOS)
 # ======================================================================================
 
-DEPREC_PATTERNS = [
-    r"deprecia[çc][aã]o\s*(e|ou)?\s*amortiza[çc][aã]o",
-    r"amortiza[çc][aã]o\s*(e|ou)?\s*deprecia[çc][aã]o",
-    r"^deprecia[çc][oõ]es?\s*$",
-    r"^amortiza[çc][oõ]es?\s*$",
-    r"^deprecia[çc][aã]o\s*$",
-    r"^amortiza[çc][aã]o\s*$",
-    r"deprec\.\s*(e|ou)?\s*amort\.",
-    r"d&a",
-    r"deprec\s*/\s*amort",
-]
-
-DEPREC_REGEX = [re.compile(p, re.IGNORECASE) for p in DEPREC_PATTERNS]
-
-
-def _is_deprec_amort_account(ds_conta: str) -> bool:
-    """Verifica se o nome da conta corresponde a Depreciação e/ou Amortização."""
-    ds_clean = ds_conta.strip()
-    for regex in DEPREC_REGEX:
-        if regex.search(ds_clean):
-            return True
-    return False
-
-
-def _compute_deprec_amort_value(group: pd.DataFrame) -> float:
+def _detect_ytd_years(
+    qtot: pd.DataFrame,
+    anual: pd.DataFrame,
+    base_code_for_detection: str = "6.01",
+    ratio_threshold: float = 1.10,
+) -> Dict[int, bool]:
     """
-    Calcula o valor de Depreciação e Amortização para um período.
+    Detecta se dados trimestrais estão em formato YTD (acumulado no ano).
+    
+    Compara soma dos trimestres vs valor anual:
+    - Se soma >> anual (>10%): dados estão acumulados (YTD)
+    - Se soma ≈ anual: dados estão isolados
+    
+    IMPORTANTE: Retorna dict vazio se não houver dados anuais.
     """
-    subcontas_601 = group[group["cd_conta"].astype(str).str.startswith("6.01.")]
-    if subcontas_601.empty:
-        return np.nan
+    anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
+    out: Dict[int, bool] = {}
 
-    mask = subcontas_601["ds_conta"].apply(_is_deprec_amort_account)
-    deprec_rows = subcontas_601[mask]
-    if deprec_rows.empty:
-        return np.nan
+    for ano, g in qtot[qtot["code"] == base_code_for_detection].groupby("ano"):
+        a = anual_map.get((int(ano), base_code_for_detection), np.nan)
+        if not np.isfinite(a) or a == 0:
+            continue
+        s = float(np.nansum(g["valor"].values))
+        
+        # Se soma é muito maior que anual: YTD
+        out[int(ano)] = bool(np.isfinite(s) and abs(s) > abs(a) * ratio_threshold)
 
-    total = _ensure_numeric(deprec_rows["valor_mil"]).sum()
-    return float(total) if np.isfinite(total) else np.nan
-
-
-# ======================================================================================
-# DETECTOR DE ANO FISCAL IRREGULAR
-# ======================================================================================
-
-@dataclass
-class FiscalYearInfo:
-    """Informações sobre o padrão de ano fiscal da empresa."""
-    is_standard: bool
-    fiscal_end_month: int
-    quarters_pattern: Set[str]
-    has_all_quarters: bool
-    description: str
+    return out
 
 
-def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> FiscalYearInfo:
+def _to_isolated_quarters(qtot: pd.DataFrame, ytd_years: Dict[int, bool]) -> pd.DataFrame:
     """
-    Detecta o padrão de ano fiscal da empresa.
+    Converte dados YTD (acumulados) para trimestres isolados quando necessário.
+    
+    Para cada ano detectado como YTD:
+    - T1 = T1_ytd
+    - T2 = T2_ytd - T1_ytd
+    - T3 = T3_ytd - T2_ytd
+    - T4 = T4_ytd - T3_ytd
     """
-    quarters_found = set(df_tri["trimestre"].dropna().unique())
+    out_rows = []
 
-    if "data_fim" in df_anu.columns and not df_anu.empty:
-        end_months = df_anu["data_fim"].dropna().dt.month.unique()
-        if len(end_months) == 1 and end_months[0] == 12:
-            fiscal_end = 12
-            is_standard = True
-        elif len(end_months) >= 1:
-            mode_month = df_anu["data_fim"].dt.month.mode()
-            fiscal_end = int(mode_month.iloc[0]) if not mode_month.empty else 12
-            is_standard = (fiscal_end == 12)
-        else:
-            fiscal_end = 12
-            is_standard = True
-    else:
-        fiscal_end = 12
-        is_standard = True
+    for (ano, code), g in qtot.groupby(["ano", "code"], sort=False):
+        g = g.copy()
+        g["qord"] = g["trimestre"].apply(_quarter_order)
+        g = g.sort_values("qord")
 
-    has_all = {"T1", "T2", "T3", "T4"}.issubset(quarters_found)
+        vals = g["valor"].values.astype(float)
+        qs = g["trimestre"].tolist()
 
-    if is_standard:
-        desc = "Ano fiscal padrão (jan-dez)"
-    else:
-        desc = f"Ano fiscal irregular (encerra em mês {fiscal_end})"
+        # Converter apenas se ano foi detectado como YTD
+        if ytd_years.get(int(ano), False):
+            qords = g["qord"].values
+            # Só converte se for sequência contínua
+            if len(qords) >= 2 and np.array_equal(qords, np.arange(1, len(qords) + 1)):
+                iso = []
+                prev = None
+                for v in vals:
+                    iso.append(v if prev is None else (v - prev))
+                    prev = v
+                vals = np.array(iso, dtype=float)
 
-    return FiscalYearInfo(
-        is_standard=is_standard,
-        fiscal_end_month=fiscal_end,
-        quarters_pattern=quarters_found,
-        has_all_quarters=has_all,
-        description=desc,
-    )
+        for tq, v in zip(qs, vals):
+            out_rows.append((int(ano), tq, code, float(v) if np.isfinite(v) else np.nan))
+
+    return pd.DataFrame(out_rows, columns=["ano", "trimestre", "code", "valor"])
 
 
 # ======================================================================================
-# CLASSE PRINCIPAL - PADRONIZADOR DFC
+# PADRONIZADOR DFC
 # ======================================================================================
 
-@dataclass
 class PadronizadorDFC:
-    pasta_balancos: Path = Path("balancos")
-    _current_ticker: str = field(default="", repr=False)
-
-    def _include_deprec_amort(self) -> bool:
-        """Retorna True se deve incluir D&A (empresas não-financeiras)."""
-        return not _is_financeira_ou_seguradora(self._current_ticker)
-
-    def _get_dfc_schema(self) -> List[Tuple[str, str]]:
-        """Retorna o esquema DFC para o ticker atual."""
-        schema = list(DFC_CONTAS)
-        if self._include_deprec_amort():
-            schema.insert(1, (DEPREC_CODE, DEPREC_LABEL))
-        return schema
+    def __init__(self, pasta_balancos: Path = Path("balancos")):
+        self.pasta_balancos = pasta_balancos
+        self._current_ticker: str = ""
 
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        """Carrega arquivos DFC trimestral e anual."""
         pasta = get_pasta_balanco(ticker)
-        tri_path = pasta / "dfc_mi_consolidado.csv"
-        anu_path = pasta / "dfc_mi_anual.csv"
-    
+        tri_path = pasta / "dfc_consolidado.csv"
+        anu_path = pasta / "dfc_anual.csv"
+
         if not tri_path.exists():
             raise FileNotFoundError(f"Arquivo não encontrado: {tri_path}")
         if not anu_path.exists():
             raise FileNotFoundError(f"Arquivo não encontrado: {anu_path}")
-    
+
         df_tri = pd.read_csv(tri_path)
         df_anu = pd.read_csv(anu_path)
-    
+
         for df in (df_tri, df_anu):
             df["cd_conta"] = df["cd_conta"].astype(str).str.strip()
             df["ds_conta"] = df["ds_conta"].astype(str).str.strip()
             df["valor_mil"] = _ensure_numeric(df["valor_mil"])
             df["data_fim"] = _to_datetime(df, "data_fim")
-    
+
         df_tri = df_tri.dropna(subset=["data_fim"])
         df_anu = df_anu.dropna(subset=["data_fim"])
-    
+
+        # MAPEAMENTO DE TRIMESTRES PARA ANO FISCAL ESPECIAL
+        if _is_ano_fiscal_mar_fev(ticker):
+            df_tri["trimestre"] = df_tri.apply(
+                lambda row: _map_fiscal_month_to_quarter(ticker, row["data_fim"].month) 
+                if pd.notna(row["data_fim"]) else row.get("trimestre"),
+                axis=1
+            )
+
         return df_tri, df_anu
 
     def _build_quarter_totals(self, df_tri: pd.DataFrame) -> pd.DataFrame:
-        """
-        Constrói totais trimestrais preservando trimestres originais.
-        """
-        target_codes = [c for c, _ in DFC_CONTAS]
+        dfc_schema = _get_dfc_schema(self._current_ticker)
+        target_codes = [c for c, _ in dfc_schema]
         wanted_prefixes = tuple([c + "." for c in target_codes])
 
         mask = (
@@ -269,23 +320,24 @@ class PadronizadorDFC:
             | df_tri["cd_conta"].astype(str).str.startswith(wanted_prefixes)
         )
         df = df_tri[mask].copy()
+        
+        # CRITICAL: Usar ano calendário primeiro, depois ajustar para fiscal se necessário
         df["ano"] = df["data_fim"].dt.year
+        
+        # AJUSTE DE ANO FISCAL para empresas Março-Fevereiro
+        df = _adjust_fiscal_year(df, self._current_ticker)
 
         rows = []
         for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
-            for code, _name in DFC_CONTAS:
-                v = _pick_value_for_code(g, code)
+            for code, _name in dfc_schema:
+                v = _pick_value_for_base_code(g, code)
                 rows.append((int(ano), str(trimestre), code, v))
-
-            if self._include_deprec_amort():
-                deprec_val = _compute_deprec_amort_value(g)
-                rows.append((int(ano), str(trimestre), DEPREC_CODE, deprec_val))
 
         return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
 
     def _extract_annual_values(self, df_anu: pd.DataFrame) -> pd.DataFrame:
-        """Extrai valores anuais para cálculo do T4."""
-        target_codes = [c for c, _ in DFC_CONTAS]
+        dfc_schema = _get_dfc_schema(self._current_ticker)
+        target_codes = [c for c, _ in dfc_schema]
         wanted_prefixes = tuple([c + "." for c in target_codes])
 
         mask = (
@@ -293,141 +345,29 @@ class PadronizadorDFC:
             | df_anu["cd_conta"].astype(str).str.startswith(wanted_prefixes)
         )
         df = df_anu[mask].copy()
+        
+        # CRITICAL: Usar ano calendário primeiro, depois ajustar para fiscal se necessário
         df["ano"] = df["data_fim"].dt.year
+        
+        # AJUSTE DE ANO FISCAL para empresas Março-Fevereiro
+        df = _adjust_fiscal_year(df, self._current_ticker)
 
         rows = []
         for ano, g in df.groupby("ano", sort=False):
-            for code, _name in DFC_CONTAS:
-                v = _pick_value_for_code(g, code)
+            for code, _name in dfc_schema:
+                v = _pick_value_for_base_code(g, code)
                 rows.append((int(ano), code, v))
-
-            if self._include_deprec_amort():
-                deprec_val = _compute_deprec_amort_value(g)
-                rows.append((int(ano), DEPREC_CODE, deprec_val))
 
         return pd.DataFrame(rows, columns=["ano", "code", "anual_val"])
 
-    # ==================================================================================
-    # CORREÇÃO CIRÚRGICA: DETECÇÃO DE ANOS ACUMULADOS (YTD)
-    # - Mantém fluxo/arquitetura intactos.
-    # - Ajusta apenas o critério para não "falhar" quando a soma simples cancela por sinais.
-    # ==================================================================================
-    def _detect_cumulative_years(
-        self,
-        qtot: pd.DataFrame,
-        anual: pd.DataFrame,
-        fiscal_info: FiscalYearInfo,
-        base_code_for_detection: str = "6.01",
-        ratio_threshold: float = 1.10,
-    ) -> Dict[int, bool]:
+    def _add_t4_from_annual_when_missing(self, qiso: pd.DataFrame, anual: pd.DataFrame) -> pd.DataFrame:
         """
-        Detecta se o trimestral está acumulado (YTD) por ano.
-
-        Correção (cirúrgica):
-        - Antes: usava apenas abs(sum(valores)) > abs(anual)*threshold
-          -> falha quando há cancelamento de sinais (muito comum em DFC).
-        - Agora: mantém a mesma regra, mas adiciona também uma verificação por
-          abs-sum (soma das magnitudes), que é robusta a cancelamentos:
-              sum(|valores|) > |anual|*threshold
-        - Mantém todo o restante idêntico.
+        PARA DFC: T4 = Anual - (T1 + T2 + T3)
+        DFC é fluxo de caixa, portanto acumulado.
         """
-        if not fiscal_info.is_standard:
-            return {}
-
-        anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
-        out: Dict[int, bool] = {}
-
-        # Fallback leve: se base_code não tiver anual para um ano, tenta 6.05 (mais estável em DFC)
-        fallback_codes = [base_code_for_detection]
-        if base_code_for_detection != "6.05":
-            fallback_codes.append("6.05")
-
-        for ano in sorted(qtot["ano"].unique()):
-            decided = False
-
-            for base_code in fallback_codes:
-                a = anual_map.get((int(ano), base_code), np.nan)
-                if (not np.isfinite(a)) or a == 0:
-                    continue
-
-                g = qtot[(qtot["ano"] == int(ano)) & (qtot["code"] == base_code)]
-                if g.empty:
-                    continue
-
-                vals = g["valor"].astype(float).values
-                s_raw = float(np.nansum(vals))
-                s_abs = float(np.nansum(np.abs(vals)))
-
-                # Regra original (mantida) + robustez contra cancelamento de sinal
-                is_cum = (
-                    (np.isfinite(s_raw) and (abs(s_raw) > abs(a) * ratio_threshold))
-                    or (np.isfinite(s_abs) and (s_abs > abs(a) * ratio_threshold))
-                )
-
-                out[int(ano)] = bool(is_cum)
-                decided = True
-                break
-
-            if not decided:
-                # Sem dados suficientes para decidir: não marca como acumulado
-                # (mantém comportamento de "não mexer" quando não há base)
-                continue
-
-        return out
-
-    def _to_isolated_quarters(
-        self,
-        qtot: pd.DataFrame,
-        cumulative_years: Dict[int, bool],
-        fiscal_info: FiscalYearInfo,
-    ) -> pd.DataFrame:
-        """
-        Converte dados acumulados (YTD) para trimestres isolados quando necessário.
-        """
-        out_rows = []
-
-        for (ano, code), g in qtot.groupby(["ano", "code"], sort=False):
-            g = g.copy()
-            g["qord"] = g["trimestre"].apply(_quarter_order)
-            g = g.sort_values("qord")
-
-            vals = g["valor"].values.astype(float)
-            qs = g["trimestre"].tolist()
-
-            if (cumulative_years.get(int(ano), False) and fiscal_info.is_standard):
-                qords = g["qord"].values
-                if len(qords) >= 2 and np.array_equal(qords, np.arange(1, len(qords) + 1)):
-                    iso = []
-                    prev = None
-                    for v in vals:
-                        iso.append(v if prev is None else (v - prev))
-                        prev = v
-                    vals = np.array(iso, dtype=float)
-
-            for tq, v in zip(qs, vals):
-                out_rows.append((int(ano), tq, code, float(v) if np.isfinite(v) else np.nan))
-
-        return pd.DataFrame(out_rows, columns=["ano", "trimestre", "code", "valor"])
-
-    def _add_t4_from_annual_when_missing(
-        self,
-        qiso: pd.DataFrame,
-        anual: pd.DataFrame,
-        fiscal_info: FiscalYearInfo,
-    ) -> pd.DataFrame:
-        """
-        Adiciona T4 calculado quando faltante.
-        T4 = Anual - (T1 + T2 + T3)
-        """
-        if not fiscal_info.is_standard:
-            return qiso
-
+        dfc_schema = _get_dfc_schema(self._current_ticker)
         anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
         out = qiso.copy()
-
-        all_codes = [c for c, _ in DFC_CONTAS]
-        if self._include_deprec_amort():
-            all_codes.append(DEPREC_CODE)
 
         for ano in sorted(out["ano"].unique()):
             g = out[out["ano"] == ano]
@@ -439,7 +379,7 @@ class PadronizadorDFC:
                 continue
 
             new_rows = []
-            for code in all_codes:
+            for code, _ in dfc_schema:
                 a = anual_map.get((int(ano), code), np.nan)
                 if not np.isfinite(a):
                     continue
@@ -453,135 +393,101 @@ class PadronizadorDFC:
         return out
 
     def _build_horizontal(self, qiso: pd.DataFrame) -> pd.DataFrame:
-        """
-        Constrói tabela horizontal (períodos como colunas).
-        """
-        dfc_schema = self._get_dfc_schema()
-
-        qiso = qiso.copy()
-        qiso["periodo"] = qiso["ano"].astype(str) + qiso["trimestre"]
-        qiso["valor"] = qiso["valor"].apply(lambda x: _normalize_value(x, 3))
-
-        piv = qiso.pivot_table(
-            index="code", columns="periodo", values="valor", aggfunc="first"
+        dfc_schema = _get_dfc_schema(self._current_ticker)
+        
+        periods = (
+            qiso[["ano", "trimestre"]]
+            .drop_duplicates()
+            .assign(qord=lambda x: x["trimestre"].apply(_quarter_order))
+            .sort_values(["ano", "qord"])
         )
 
-        def sort_key(p):
-            try:
-                return (int(p[:4]), _quarter_order(p[4:]))
-            except Exception:
-                return (9999, 99)
+        col_labels = [f"{int(r.ano)}{r.trimestre}" for r in periods.itertuples(index=False)]
+        ordered_cols = [(int(r.ano), r.trimestre) for r in periods.itertuples(index=False)]
 
-        cols = sorted(piv.columns, key=sort_key)
-        piv = piv[cols]
+        pivot = qiso.pivot_table(
+            index="code",
+            columns=["ano", "trimestre"],
+            values="valor",
+            aggfunc="first",
+        ).reindex(columns=ordered_cols)
 
-        code_order = {c: i for i, (c, _) in enumerate(dfc_schema)}
-        piv = piv.reindex(sorted(piv.index, key=lambda x: code_order.get(x, 999)))
+        idx_codes = [c for c, _ in dfc_schema]
+        pivot = pivot.reindex(idx_codes)
+        pivot.columns = col_labels
 
-        code_to_name = {c: n for c, n in dfc_schema}
-        piv.insert(0, "conta", piv.index.map(lambda x: code_to_name.get(x, x)))
-        piv = piv.reset_index().rename(columns={"code": "cd_conta"})
+        names = {c: n for c, n in dfc_schema}
+        pivot.insert(0, "ds_conta", [names.get(c, '') for c in pivot.index])
+        pivot.insert(0, "cd_conta", [str(c) for c in pivot.index])
 
-        return piv
+        return pivot.reset_index(drop=True)
 
     def padronizar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
-        """
-        Pipeline completo de padronização do DFC.
-        Agora usa get_pasta_balanco() para garantir pasta correta.
-        """
-        self._current_ticker = ticker.upper().strip()
-    
-        df_tri, df_anu = self._load_inputs(ticker)
-    
-        fiscal_info = _detect_fiscal_year_pattern(df_tri, df_anu)
-    
-        qtot = self._build_quarter_totals(df_tri)
-    
-        anual = self._extract_annual_values(df_anu)
-    
-        cumulative_years = self._detect_cumulative_years(qtot, anual, fiscal_info)
-    
-        qiso = self._to_isolated_quarters(qtot, cumulative_years, fiscal_info)
-    
-        qiso = self._add_t4_from_annual_when_missing(qiso, anual, fiscal_info)
-    
-        df_out = self._build_horizontal(qiso)
-    
+        ticker = ticker.upper().strip()
+        self._current_ticker = ticker
         pasta = get_pasta_balanco(ticker)
+
+        df_tri, df_anu = self._load_inputs(ticker)
+
+        qtot = self._build_quarter_totals(df_tri)
+        anu = self._extract_annual_values(df_anu)
+
+        ytd_years = _detect_ytd_years(qtot, anu)
+        qiso = _to_isolated_quarters(qtot, ytd_years)
+
+        qiso = self._add_t4_from_annual_when_missing(qiso, anu)
+
+        qiso = qiso.assign(qord=qiso["trimestre"].apply(_quarter_order)).sort_values(["ano", "qord", "code"])
+        qiso = qiso.drop(columns=["qord"])
+
+        df_out = self._build_horizontal(qiso)
+
+        pasta.mkdir(parents=True, exist_ok=True)
         out_path = pasta / "dfc_padronizado.csv"
         df_out.to_csv(out_path, index=False, encoding="utf-8")
-    
-        fiscal_status = "PADRÃO" if fiscal_info.is_standard else "IRREGULAR"
-        tipo = "FINANCEIRA" if _is_financeira_ou_seguradora(ticker) else "GERAL"
-    
-        n_periodos = len([c for c in df_out.columns if c not in ["cd_conta", "conta"]])
-    
-        msg_parts = [
-            f"Fiscal: {fiscal_status}",
-            f"Tipo: {tipo}",
-            f"Períodos: {n_periodos}",
-        ]
-    
-        if self._include_deprec_amort():
-            has_deprec = not df_out[df_out["cd_conta"] == DEPREC_CODE].empty
-            if has_deprec:
-                deprec_row = df_out[df_out["cd_conta"] == DEPREC_CODE].iloc[0]
-                non_null = sum(
-                    1
-                    for c in df_out.columns
-                    if c not in ["cd_conta", "conta"] and pd.notna(deprec_row[c])
-                )
-                msg_parts.append(f"D&A: {non_null} períodos")
-            else:
-                msg_parts.append("D&A: não encontrada")
-    
+
+        tipo_dfc = "BANCO" if _is_banco(ticker) else "HOLDING_SEG" if _is_holding_seguros(ticker) else "SEGURADORA" if _is_seguradora(ticker) else "PADRÃO"
+        
+        msg_parts = [f"tipo={tipo_dfc}"]
+        if _is_ano_fiscal_mar_fev(ticker):
+            msg_parts.append("(Mar-Fev)")
+        
         msg = f"dfc_padronizado.csv | {' | '.join(msg_parts)}"
+        
         return True, msg
 
 
 # ======================================================================================
-# CLI - MAIN
+# CLI
 # ======================================================================================
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Padroniza DFC das empresas (trimestres isolados + T4)"
-    )
-    parser.add_argument(
-        "--modo",
-        choices=["quantidade", "ticker", "lista", "faixa"],
-        default="quantidade",
-        help="Modo de seleção: quantidade, ticker, lista, faixa",
-    )
-    parser.add_argument("--quantidade", default="10", help="Quantidade de empresas")
-    parser.add_argument("--ticker", default="", help="Ticker específico")
-    parser.add_argument("--lista", default="", help="Lista de tickers separados por vírgula")
-    parser.add_argument("--faixa", default="", help="Faixa de linhas: inicio-fim (ex: 1-50)")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--modo", default="quantidade", choices=["quantidade", "ticker", "lista", "faixa"])
+    parser.add_argument("--quantidade", default="10")
+    parser.add_argument("--ticker", default="")
+    parser.add_argument("--lista", default="")
+    parser.add_argument("--faixa", default="1-50")
     args = parser.parse_args()
 
-    # Tentar carregar mapeamento consolidado, fallback para original
     df = load_mapeamento_consolidado()
     df = df[df["cnpj"].notna()].reset_index(drop=True)
 
     if args.modo == "quantidade":
         limite = int(args.quantidade)
         df_sel = df.head(limite)
-
     elif args.modo == "ticker":
         ticker_upper = args.ticker.upper()
         df_sel = df[df["ticker"].str.upper().str.contains(ticker_upper, case=False, na=False, regex=False)]
-
     elif args.modo == "lista":
         tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
         mask = df["ticker"].str.upper().apply(
             lambda x: any(t in x for t in tickers) if pd.notna(x) else False
         )
         df_sel = df[mask]
-
     elif args.modo == "faixa":
         inicio, fim = map(int, args.faixa.split("-"))
-        df_sel = df.iloc[inicio - 1: fim]
-
+        df_sel = df.iloc[inicio - 1 : fim]
     else:
         df_sel = df.head(10)
 
@@ -593,7 +499,6 @@ def main():
 
     ok_count = 0
     err_count = 0
-    irregular_count = 0
 
     for _, row in df_sel.iterrows():
         ticker_str = str(row["ticker"]).upper().strip()
@@ -602,22 +507,17 @@ def main():
         pasta = get_pasta_balanco(ticker)
         if not pasta.exists():
             err_count += 1
-            print(f"❌ {ticker}: pasta {pasta} não existe")
+            print(f"❌ {ticker}: pasta {pasta} não existe (captura ausente)")
             continue
 
         try:
             ok, msg = pad.padronizar_e_salvar_ticker(ticker)
-
-            if "IRREGULAR" in msg:
-                irregular_count += 1
-
             if ok:
                 ok_count += 1
                 print(f"✅ {ticker}: {msg}")
             else:
                 err_count += 1
                 print(f"⚠️ {ticker}: {msg}")
-
         except FileNotFoundError as e:
             err_count += 1
             print(f"❌ {ticker}: arquivos ausentes ({e})")
@@ -627,11 +527,9 @@ def main():
             print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
             traceback.print_exc()
 
-    print("\n" + "=" * 70)
+    print("\n" + "="*70)
     print(f"Finalizado: OK={ok_count} | ERRO={err_count}")
-    if irregular_count > 0:
-        print(f"            Anos fiscais irregulares: {irregular_count}")
-    print("=" * 70 + "\n")
+    print("="*70 + "\n")
 
 
 if __name__ == "__main__":
