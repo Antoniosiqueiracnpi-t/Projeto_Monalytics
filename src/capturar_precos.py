@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Tuple
 import warnings
+import re
 
 import pandas as pd
 import numpy as np
@@ -29,13 +30,31 @@ def _quarter_order(q: str) -> int:
     return {"T1": 1, "T2": 2, "T3": 3, "T4": 4}.get(q, 99)
 
 
+def _inferir_data_fim(ano: int, trimestre: str) -> pd.Timestamp:
+    """
+    Infere a data de fim do trimestre baseado no padrão brasileiro.
+    
+    T1 -> 31/03
+    T2 -> 30/06
+    T3 -> 30/09
+    T4 -> 31/12
+    """
+    mapa_datas = {
+        "T1": f"{ano}-03-31",
+        "T2": f"{ano}-06-30",
+        "T3": f"{ano}-09-30",
+        "T4": f"{ano}-12-31"
+    }
+    return pd.Timestamp(mapa_datas.get(trimestre, f"{ano}-12-31"))
+
+
 @dataclass
 class CapturadorPrecos:
     """
     Captura preços de fechamento ajustados para cada trimestre.
     
-    Usa as datas de fechamento dos trimestres já capturados (DRE, BP, DFC)
-    e busca o preço de fechamento ajustado mais próximo.
+    Usa os arquivos padronizados (dre_padronizado.csv, bpa_padronizado.csv, etc.)
+    para extrair os períodos e mapear para datas de fechamento.
     """
     pasta_balancos: Path = Path("balancos")
     max_days_lookback: int = 10  # Busca até 10 dias úteis antes se não houver dados
@@ -47,68 +66,84 @@ class CapturadorPrecos:
             ticker_clean = f"{ticker_clean}.SA"
         return ticker_clean
 
-    def _extract_quarter_dates(self, ticker: str) -> pd.DataFrame:
+    def _extract_quarter_dates_from_padronizado(self, ticker: str) -> pd.DataFrame:
         """
-        Extrai datas de fechamento de trimestre dos arquivos já capturados.
-        Agora usa get_pasta_balanco() para garantir pasta correta.
+        Extrai períodos dos arquivos padronizados e mapeia para datas de fechamento.
         
-        Prioridade: DRE > BP > DFC
-        Também captura dados anuais (T4) se disponíveis.
+        Prioridade: dre_padronizado > bpa_padronizado > bpp_padronizado > dfc_padronizado
         """
         pasta = get_pasta_balanco(ticker)
-        dates_list = []
         
-        # Função auxiliar para processar arquivo
+        # Arquivos padronizados em ordem de prioridade
+        arquivos_padronizados = [
+            "dre_padronizado.csv",
+            "bpa_padronizado.csv",
+            "bpp_padronizado.csv",
+            "dfc_padronizado.csv"
+        ]
+        
+        for arquivo in arquivos_padronizados:
+            arquivo_path = pasta / arquivo
+            if arquivo_path.exists():
+                try:
+                    df = pd.read_csv(arquivo_path)
+                    
+                    # Extrair colunas que são períodos (formato: 2015T1, 2015T2, etc.)
+                    pattern = re.compile(r'^(\d{4})(T[1-4])$')
+                    periodos = []
+                    
+                    for col in df.columns:
+                        match = pattern.match(str(col))
+                        if match:
+                            ano = int(match.group(1))
+                            trimestre = match.group(2)
+                            data_fim = _inferir_data_fim(ano, trimestre)
+                            periodos.append({
+                                'periodo': col,
+                                'ano': ano,
+                                'trimestre': trimestre,
+                                'data_fim': data_fim
+                            })
+                    
+                    if periodos:
+                        df_periodos = pd.DataFrame(periodos)
+                        # Ordenar por data
+                        df_periodos = df_periodos.sort_values('data_fim').reset_index(drop=True)
+                        return df_periodos
+                    
+                except Exception as e:
+                    continue
+        
+        # Se não encontrou nada nos padronizados, tentar consolidados (fallback)
+        return self._extract_quarter_dates_from_consolidado(ticker)
+
+    def _extract_quarter_dates_from_consolidado(self, ticker: str) -> pd.DataFrame:
+        """
+        Fallback: extrai datas dos arquivos consolidados (método antigo).
+        """
+        pasta = get_pasta_balanco(ticker)
+        
         def process_file(filepath):
             if filepath.exists():
                 df = pd.read_csv(filepath)
                 if "data_fim" in df.columns and "trimestre" in df.columns:
                     dates = df[["data_fim", "trimestre"]].drop_duplicates()
                     dates["data_fim"] = pd.to_datetime(dates["data_fim"], errors="coerce")
-                    return dates.dropna()
+                    dates = dates.dropna()
+                    if not dates.empty:
+                        # Extrair ano e criar período
+                        dates["ano"] = dates["data_fim"].dt.year
+                        dates["periodo"] = dates["ano"].astype(str) + dates["trimestre"]
+                        return dates[["periodo", "ano", "trimestre", "data_fim"]]
             return pd.DataFrame()
         
-        # Tentar DRE primeiro (trimestrais e anuais)
-        dre_tri = pasta / "dre_consolidado.csv"
-        dre_anual = pasta / "dre_anual_consolidado.csv"
+        # Tentar DRE, BPA, DFC consolidados
+        for arquivo in ["dre_consolidado.csv", "bpa_consolidado.csv", "dfc_mi_consolidado.csv"]:
+            df = process_file(pasta / arquivo)
+            if not df.empty:
+                return df.sort_values("data_fim").reset_index(drop=True)
         
-        df_tri = process_file(dre_tri)
-        df_anual = process_file(dre_anual)
-        
-        if not df_tri.empty or not df_anual.empty:
-            dates_list = [df_tri, df_anual]
-        else:
-            # Tentar BPA
-            bpa_tri = pasta / "bpa_consolidado.csv"
-            bpa_anual = pasta / "bpa_anual_consolidado.csv"
-            
-            df_tri = process_file(bpa_tri)
-            df_anual = process_file(bpa_anual)
-            
-            if not df_tri.empty or not df_anual.empty:
-                dates_list = [df_tri, df_anual]
-            else:
-                # Tentar DFC
-                dfc_tri = pasta / "dfc_mi_consolidado.csv"
-                dfc_anual = pasta / "dfc_mi_anual_consolidado.csv"
-                
-                df_tri = process_file(dfc_tri)
-                df_anual = process_file(dfc_anual)
-                
-                if not df_tri.empty or not df_anual.empty:
-                    dates_list = [df_tri, df_anual]
-        
-        if dates_list:
-            # Concatenar trimestrais e anuais
-            all_dates = pd.concat([d for d in dates_list if not d.empty], ignore_index=True)
-            all_dates = all_dates.drop_duplicates(subset=["data_fim", "trimestre"])
-            
-            # Padronizar trimestre anual para T4
-            all_dates["trimestre"] = all_dates["trimestre"].replace({"Anual": "T4", "T0": "T4"})
-            
-            return all_dates.sort_values("data_fim").reset_index(drop=True)
-        
-        return pd.DataFrame(columns=["data_fim", "trimestre"])
+        return pd.DataFrame(columns=["periodo", "ano", "trimestre", "data_fim"])
 
     def _fetch_price_for_date(
         self, 
@@ -167,30 +202,18 @@ class CapturadorPrecos:
         """
         Constrói tabela horizontal (períodos como colunas).
         
-        Formato: Preço_Fechamento | 2022T1 | 2022T2 | ... | 2022T4
+        Formato: Preço_Fechamento | 2015T1 | 2015T2 | ... | 2015T4 | 2016T1 | ...
         """
         if prices_data.empty:
             return pd.DataFrame(columns=["Preço_Fechamento"])
         
-        # Adicionar coluna de ano
-        prices_data["ano"] = prices_data["data_fim"].dt.year
+        # Ordenar períodos cronologicamente usando ano e trimestre
+        def sort_key(row):
+            return (row["ano"], _quarter_order(row["trimestre"]))
         
-        # Criar período (ex: 2022T1, 2022T4)
-        prices_data["periodo"] = (
-            prices_data["ano"].astype(str) + prices_data["trimestre"]
-        )
-        
-        # Ordenar períodos cronologicamente
-        def sort_key(p):
-            try:
-                return (int(p[:4]), _quarter_order(p[4:]))
-            except:
-                return (9999, 99)
-        
-        prices_data = prices_data.sort_values(
-            by="periodo",
-            key=lambda x: x.map(sort_key)
-        )
+        prices_data = prices_data.copy()
+        prices_data["sort_key"] = prices_data.apply(sort_key, axis=1)
+        prices_data = prices_data.sort_values("sort_key").drop("sort_key", axis=1)
         
         # Criar dict com período: preço
         price_dict = dict(zip(
@@ -207,7 +230,6 @@ class CapturadorPrecos:
     def capturar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
         """
         Pipeline completo de captura de preços para um ticker.
-        Agora usa get_pasta_balanco() para garantir pasta correta.
         
         Returns:
             ok: True se capturou pelo menos um preço
@@ -216,37 +238,47 @@ class CapturadorPrecos:
         ticker = ticker.upper().strip()
         pasta = get_pasta_balanco(ticker)
         
-        # 1. Extrair datas dos trimestres (incluindo T4/anual)
-        dates_df = self._extract_quarter_dates(ticker)
+        # 1. Extrair períodos e datas (prioriza padronizados)
+        dates_df = self._extract_quarter_dates_from_padronizado(ticker)
         
         if dates_df.empty:
-            return False, "nenhum trimestre encontrado (capture balanços primeiro)"
+            return False, "nenhum período encontrado (capture balanços primeiro)"
         
         # 2. Converter ticker para formato yfinance
         ticker_symbol = self._get_ticker_symbol(ticker)
         
-        # 3. Buscar preços para cada trimestre
+        # 3. Buscar preços para cada período
         results = []
         precos_ok = 0
         precos_fail = 0
+        tem_t4 = False
         
         for _, row in dates_df.iterrows():
             target_date = row["data_fim"]
             trimestre = row["trimestre"]
+            periodo = row["periodo"]
+            ano = row["ano"]
+            
+            if trimestre == "T4":
+                tem_t4 = True
             
             price = self._fetch_price_for_date(ticker_symbol, target_date)
             
             if price is not None:
                 results.append({
-                    "data_fim": target_date,
+                    "periodo": periodo,
+                    "ano": ano,
                     "trimestre": trimestre,
+                    "data_fim": target_date,
                     "preco_fechamento_ajustado": round(price, 2)
                 })
                 precos_ok += 1
             else:
                 results.append({
-                    "data_fim": target_date,
+                    "periodo": periodo,
+                    "ano": ano,
                     "trimestre": trimestre,
+                    "data_fim": target_date,
                     "preco_fechamento_ajustado": np.nan
                 })
                 precos_fail += 1
@@ -256,7 +288,7 @@ class CapturadorPrecos:
             df_temp = pd.DataFrame(results)
             df_out = self._build_horizontal(df_temp)
             
-            # 5. Salvar resultado
+            # 5. Salvar resultado (SOBRESCREVE o arquivo anterior)
             out_path = pasta / "precos_trimestrais.csv"
             df_out.to_csv(out_path, index=False, encoding="utf-8")
             
@@ -266,10 +298,8 @@ class CapturadorPrecos:
                 f"FAIL={precos_fail}"
             ]
             
-            # Informar se T4 foi capturado
-            trimestres = df_temp["trimestre"].unique()
-            if "T4" in trimestres:
-                msg_parts.append("T4=sim")
+            if tem_t4:
+                msg_parts.append("T4=✓")
             
             msg = f"precos_trimestrais.csv | {' | '.join(msg_parts)}"
             ok = precos_ok > 0
@@ -323,6 +353,7 @@ def main():
 
     print(f"\n>>> JOB: CAPTURAR PREÇOS TRIMESTRAIS <<<")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
+    print("Fonte: arquivos *_padronizado.csv (prioridade)")
     print("Saída: balancos/<TICKER>/precos_trimestrais.csv\n")
 
     capturador = CapturadorPrecos()
