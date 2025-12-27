@@ -280,8 +280,8 @@ class PadronizadorDFC:
 
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
         pasta = get_pasta_balanco(ticker)
-        tri_path = pasta / "dfc_consolidado.csv"
-        anu_path = pasta / "dfc_anual.csv"
+        tri_path = pasta / "dfc_mi_consolidado.csv"
+        anu_path = pasta / "dfc_mi_anual.csv"
 
         if not tri_path.exists():
             raise FileNotFoundError(f"Arquivo não encontrado: {tri_path}")
