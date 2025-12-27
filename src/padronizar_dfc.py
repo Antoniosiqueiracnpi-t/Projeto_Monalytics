@@ -343,10 +343,11 @@ class PadronizadorDFC:
         """
         Constrói totais trimestrais preservando trimestres originais.
         MODIFICADO: Usa ano fiscal correto para empresas mar-fev.
+        MODIFICADO: Converte D&A de YTD para isolado quando necessário.
         """
         target_codes = [c for c, _ in DFC_CONTAS]
         wanted_prefixes = tuple([c + "." for c in target_codes])
-
+    
         mask = (
             df_tri["cd_conta"].isin(target_codes)
             | df_tri["cd_conta"].astype(str).str.startswith(wanted_prefixes)
@@ -358,18 +359,96 @@ class PadronizadorDFC:
             df["ano"] = df["data_fim"].apply(_get_fiscal_year_mar_fev)
         else:
             df["ano"] = df["data_fim"].dt.year
-
+    
         rows = []
         for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
             for code, _name in DFC_CONTAS:
                 v = _pick_value_for_code(g, code)
                 rows.append((int(ano), str(trimestre), code, v))
-
+    
             if self._include_deprec_amort():
                 deprec_val = _compute_deprec_amort_value(g)
                 rows.append((int(ano), str(trimestre), DEPREC_CODE, deprec_val))
-
-        return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
+    
+        result = pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
+        
+        # ==================================================================================
+        # CORREÇÃO: Converter D&A de YTD para isolado em empresas mar-fev
+        # As subcontas 6.01.01.* (onde está D&A) são reportadas como YTD acumulado,
+        # diferente das contas principais (6.01, 6.02, etc.) que são isoladas.
+        # ==================================================================================
+        if fiscal_info.is_mar_fev and self._include_deprec_amort():
+            result = self._convert_deprec_ytd_to_isolated(result)
+        
+        return result
+    
+    
+    def _convert_deprec_ytd_to_isolated(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Converte valores de D&A de YTD (acumulado) para isolado.
+        
+        Para empresas mar-fev, as subcontas 6.01.01.* são reportadas como YTD:
+        - T1: valor isolado do T1
+        - T2: valor acumulado T1+T2
+        - T3: valor acumulado T1+T2+T3
+        
+        Esta função detecta o padrão YTD e converte para valores isolados.
+        """
+        quarter_order = {"T1": 1, "T2": 2, "T3": 3, "T4": 4}
+        
+        # Separar D&A das outras contas
+        mask_da = df["code"] == DEPREC_CODE
+        df_da = df[mask_da].copy()
+        df_other = df[~mask_da].copy()
+        
+        if df_da.empty:
+            return df
+        
+        converted_rows = []
+        
+        for ano in df_da["ano"].unique():
+            ano_data = df_da[df_da["ano"] == ano].copy()
+            ano_data = ano_data.sort_values("trimestre", key=lambda x: x.map(quarter_order))
+            
+            quarters = ano_data["trimestre"].tolist()
+            values = ano_data["valor"].tolist()
+            
+            # Detectar se está em YTD: valores crescentes (T2 > T1, T3 > T2)
+            is_ytd = False
+            if len(values) >= 2:
+                # Verificar se os valores são crescentes (típico de YTD para D&A positiva)
+                valid_values = [v for v in values if pd.notna(v) and np.isfinite(v)]
+                if len(valid_values) >= 2:
+                    # D&A é sempre positiva, então YTD significa valores crescentes
+                    is_ytd = all(valid_values[i] <= valid_values[i+1] for i in range(len(valid_values)-1))
+                    # Verificação adicional: T3 deve ser aproximadamente T1+T2+T3_isolado
+                    # Se T2 > T1 * 1.5 e T3 > T2 * 1.2, provavelmente é YTD
+                    if len(valid_values) >= 2 and valid_values[0] > 0:
+                        ratio = valid_values[1] / valid_values[0]
+                        is_ytd = is_ytd and ratio > 1.3  # T2 deve ser significativamente maior que T1
+            
+            if is_ytd:
+                # Converter YTD para isolado
+                isolated = []
+                prev = 0.0
+                for v in values:
+                    if pd.isna(v) or not np.isfinite(v):
+                        isolated.append(np.nan)
+                    else:
+                        isolated.append(v - prev)
+                        prev = v
+                
+                for q, v in zip(quarters, isolated):
+                    converted_rows.append((int(ano), q, DEPREC_CODE, v))
+            else:
+                # Manter valores originais
+                for q, v in zip(quarters, values):
+                    converted_rows.append((int(ano), q, DEPREC_CODE, v))
+        
+        # Reconstruir DataFrame
+        df_da_converted = pd.DataFrame(converted_rows, columns=["ano", "trimestre", "code", "valor"])
+        
+        return pd.concat([df_other, df_da_converted], ignore_index=True)
 
     def _extract_annual_values(self, df_anu: pd.DataFrame, fiscal_info: FiscalYearInfo) -> pd.DataFrame:
         """
