@@ -46,6 +46,31 @@ def _map_fiscal_month_to_quarter(ticker: str, mes: int) -> Optional[str]:
     return mapping.get(mes)
 
 
+def _adjust_fiscal_year(df: pd.DataFrame, ticker: str) -> pd.DataFrame:
+    """
+    Ajusta o ano para ano fiscal (não calendário) para empresas com ano fiscal Março-Fevereiro.
+    
+    Para CAML3:
+    - Meses Mar-Dez (3-12): ano_fiscal = ano_calendário + 1
+    - Meses Jan-Fev (1-2): ano_fiscal = ano_calendário
+    
+    Exemplo:
+    - Mai/2019 (mês 5) → ano fiscal 2020
+    - Nov/2019 (mês 11) → ano fiscal 2020
+    - Fev/2020 (mês 2) → ano fiscal 2020
+    - Mai/2020 (mês 5) → ano fiscal 2021
+    """
+    if not _is_ano_fiscal_mar_fev(ticker):
+        return df
+    
+    df = df.copy()
+    # Para meses >= 3 (Mar-Dez): adiciona 1 ao ano
+    mask = df["data_fim"].dt.month >= 3
+    df.loc[mask, "ano"] = df.loc[mask, "ano"] + 1
+    
+    return df
+
+
 # ======================================================================================
 # CONTAS PADRÃO (NÃO FINANCEIRAS) - DRE
 # ======================================================================================
@@ -463,7 +488,7 @@ class PadronizadorDRE:
     def _build_quarter_totals(self, df_tri: pd.DataFrame) -> pd.DataFrame:
         """
         Constrói totais trimestrais preservando trimestres originais.
-        Usa ano calendário direto (sem transformação fiscal).
+        Usa ano FISCAL para empresas com ano fiscal não-padrão.
         Seleciona esquema DRE correto (banco ou padrão) baseado no ticker.
         """
         dre_schema = self._get_current_schema()
@@ -475,7 +500,12 @@ class PadronizadorDRE:
             | df_tri["cd_conta"].astype(str).str.startswith(wanted_prefixes)
         )
         df = df_tri[mask].copy()
+        
+        # CRITICAL: Usar ano calendário primeiro, depois ajustar para fiscal se necessário
         df["ano"] = df["data_fim"].dt.year
+        
+        # AJUSTE DE ANO FISCAL para empresas Março-Fevereiro
+        df = _adjust_fiscal_year(df, self._current_ticker)
         
         rows = []
         for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
@@ -497,7 +527,12 @@ class PadronizadorDRE:
             | df_anu["cd_conta"].astype(str).str.startswith(wanted_prefixes)
         )
         df = df_anu[mask].copy()
+        
+        # CRITICAL: Usar ano calendário primeiro, depois ajustar para fiscal se necessário
         df["ano"] = df["data_fim"].dt.year
+        
+        # AJUSTE DE ANO FISCAL para empresas Março-Fevereiro
+        df = _adjust_fiscal_year(df, self._current_ticker)
 
         rows = []
         for ano, g in df.groupby("ano", sort=False):
