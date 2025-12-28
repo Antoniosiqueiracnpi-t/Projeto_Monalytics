@@ -1,0 +1,168 @@
+name: Calcular Múltiplos
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'Modo de seleção'
+        required: true
+        type: choice
+        options:
+          - 'quantidade'
+          - 'ticker'
+          - 'lista'
+          - 'faixa'
+        default: 'quantidade'
+
+      quantidade:
+        description: 'Quantidade (modo quantidade): 10, 50, 308=todas'
+        required: false
+        default: '10'
+
+      ticker:
+        description: 'Ticker único (modo ticker): ex: PETR4'
+        required: false
+        default: ''
+
+      lista:
+        description: 'Lista de tickers (modo lista): ex: KLBN11,SLCE3,AGRO3'
+        required: false
+        default: ''
+
+      faixa:
+        description: 'Faixa (modo faixa): ex: 1-50, 51-150, 151-308'
+        required: false
+        default: '1-50'
+
+  # Execução automática quando novos balanços são commitados
+  push:
+    paths:
+      - 'balancos/**/dre_padronizado.csv'
+      - 'balancos/**/bpa_padronizado.csv'
+      - 'balancos/**/bpp_padronizado.csv'
+
+  # Execução semanal para garantir dados atualizados
+  schedule:
+    - cron: '0 6 * * 1'  # Segunda-feira às 06:00 UTC
+
+jobs:
+  calcular_multiplos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: 📥 Baixar código
+        uses: actions/checkout@v3
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Instalar bibliotecas
+        run: |
+          pip install --upgrade pip
+          pip install pandas numpy
+
+      - name: 🔍 Detectar modo de execução
+        id: detect_mode
+        run: |
+          # Se foi trigger por push, processar apenas os tickers alterados
+          if [ "${{ github.event_name }}" == "push" ]; then
+            echo "mode=auto" >> $GITHUB_OUTPUT
+            
+            # Extrair tickers dos arquivos alterados
+            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+            TICKERS=""
+            
+            for file in $CHANGED_FILES; do
+              if [[ "$file" == balancos/*/*.csv ]]; then
+                TICKER=$(echo "$file" | cut -d'/' -f2)
+                if [ -n "$TICKER" ] && [[ ! "$TICKERS" == *"$TICKER"* ]]; then
+                  if [ -n "$TICKERS" ]; then
+                    TICKERS="$TICKERS,$TICKER"
+                  else
+                    TICKERS="$TICKER"
+                  fi
+                fi
+              fi
+            done
+            
+            echo "tickers=$TICKERS" >> $GITHUB_OUTPUT
+            echo "Tickers detectados: $TICKERS"
+          else
+            echo "mode=manual" >> $GITHUB_OUTPUT
+            echo "tickers=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🚀 Executar cálculo de múltiplos (Manual/Schedule)
+        if: steps.detect_mode.outputs.mode == 'manual' || github.event_name == 'schedule'
+        run: |
+          python src/calcular_multiplos.py \
+            --modo "${{ github.event.inputs.modo || 'quantidade' }}" \
+            --quantidade "${{ github.event.inputs.quantidade || '308' }}" \
+            --ticker "${{ github.event.inputs.ticker || '' }}" \
+            --lista "${{ github.event.inputs.lista || '' }}" \
+            --faixa "${{ github.event.inputs.faixa || '1-308' }}"
+
+      - name: 🚀 Executar cálculo de múltiplos (Auto - Push)
+        if: steps.detect_mode.outputs.mode == 'auto' && steps.detect_mode.outputs.tickers != ''
+        run: |
+          python src/calcular_multiplos.py \
+            --modo "lista" \
+            --lista "${{ steps.detect_mode.outputs.tickers }}"
+
+      - name: 📊 Validar saídas geradas
+        run: |
+          echo "=== Arquivos JSON gerados ==="
+          find balancos -type f -name "multiplos.json" | head -20
+          
+          echo ""
+          echo "=== Arquivos CSV gerados ==="
+          find balancos -type f -name "multiplos.csv" | head -20
+          
+          echo ""
+          echo "=== Contagem total ==="
+          JSON_COUNT=$(find balancos -type f -name "multiplos.json" | wc -l)
+          CSV_COUNT=$(find balancos -type f -name "multiplos.csv" | wc -l)
+          echo "JSON: $JSON_COUNT arquivos"
+          echo "CSV: $CSV_COUNT arquivos"
+
+      - name: 💾 Commit e Push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          # Adicionar arquivos de múltiplos
+          JSON_FILES=$(find balancos -type f -name "multiplos.json" 2>/dev/null || true)
+          CSV_FILES=$(find balancos -type f -name "multiplos.csv" 2>/dev/null || true)
+
+          if [ -z "$JSON_FILES" ] && [ -z "$CSV_FILES" ]; then
+            echo "Nenhum arquivo de múltiplos foi gerado. Nada para commitar."
+            exit 0
+          fi
+
+          # Adicionar arquivos
+          [ -n "$JSON_FILES" ] && echo "$JSON_FILES" | xargs -r git add
+          [ -n "$CSV_FILES" ] && echo "$CSV_FILES" | xargs -r git add
+
+          # Verificar se há mudanças
+          git diff --staged --quiet && {
+            echo "Sem alterações para commitar."
+            exit 0
+          }
+
+          # Commit com mensagem descritiva
+          TRIGGER="${{ github.event_name }}"
+          DATE=$(date +'%Y-%m-%d %H:%M')
+          
+          if [ "$TRIGGER" == "push" ]; then
+            MSG="Múltiplos atualizados (auto) - $DATE"
+          elif [ "$TRIGGER" == "schedule" ]; then
+            MSG="Múltiplos atualizados (schedule) - $DATE"
+          else
+            MSG="Múltiplos calculados - $DATE"
+          fi
+
+          git commit -m "$MSG"
+          git push
