@@ -482,8 +482,11 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     """
     Calcula dividendos LTM (últimos 12 meses).
     
+    IMPORTANTE: dividendos_trimestrais.csv tem valores em R$/AÇÃO.
+    Deve multiplicar por número de ações para obter valor total em R$ MIL.
+    
     Returns:
-        Soma de dividendos dos últimos 4 trimestres (ou 3 para semestral)
+        Soma de dividendos dos últimos 4 trimestres em R$ MIL
     """
     if dados.dividendos is None or dados.padrao_fiscal is None:
         return np.nan
@@ -499,19 +502,32 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     start_idx = max(0, idx_fim - n_periodos + 1)
     periodos_ltm = periodos[start_idx:idx_fim + 1]
     
-    # Verificar se dados.dividendos tem formato correto
-    if periodos_ltm[0] not in dados.dividendos.columns:
-        return np.nan
+    # Verificar formato do CSV
+    # Formato esperado: primeira coluna = "Dividendos_Pagos", outras = períodos
+    if 'Dividendos_Pagos' not in dados.dividendos.columns:
+        # Tentar formato alternativo
+        if periodos_ltm[0] not in dados.dividendos.columns:
+            return np.nan
     
     soma = 0.0
     count = 0
     
     for p in periodos_ltm:
         if p in dados.dividendos.columns:
+            # Dividendos por ação (R$/ação)
             vals = pd.to_numeric(dados.dividendos[p], errors='coerce').dropna()
             if len(vals) > 0:
-                soma += float(vals.iloc[0])
-                count += 1
+                div_por_acao = float(vals.iloc[0])
+                
+                # Obter número de ações no período
+                num_acoes = _obter_acoes(dados, p)
+                
+                if np.isfinite(div_por_acao) and np.isfinite(num_acoes) and div_por_acao > 0:
+                    # Dividendos Totais (R$ mil) = Div/Ação × Num_Ações / 1000
+                    # Div/Ação já está em R$, Num_Ações em unidades
+                    div_total_mil = (div_por_acao * num_acoes) / 1000.0
+                    soma += div_total_mil
+                    count += 1
     
     if count == 0:
         return np.nan
@@ -542,6 +558,42 @@ def _obter_preco(dados: DadosEmpresa, periodo: str) -> float:
                 if mask.any():
                     val = dados.precos.loc[mask, col_preco].values[0]
                     return float(val) if pd.notna(val) else np.nan
+    
+    return np.nan
+
+
+def _obter_preco_mais_recente(dados: DadosEmpresa, periodo_ref: str) -> float:
+    """
+    Obtém preço mais recente disponível até o período de referência.
+    
+    Se não encontrar preço no período exato, busca nos períodos anteriores
+    até encontrar um preço válido (para casos onde 2025T3 não tem preço
+    mas 2025T2 ou 2024T4 têm).
+    
+    Args:
+        dados: Dados da empresa
+        periodo_ref: Período de referência (ex: "2025T3")
+    
+    Returns:
+        Preço mais recente encontrado ou np.nan
+    """
+    # Tentar primeiro o período exato
+    preco = _obter_preco(dados, periodo_ref)
+    if np.isfinite(preco):
+        return preco
+    
+    # Se não encontrou, buscar em períodos anteriores
+    if periodo_ref not in dados.periodos:
+        return np.nan
+    
+    idx_ref = dados.periodos.index(periodo_ref)
+    
+    # Buscar do período atual até o passado
+    for i in range(idx_ref, -1, -1):
+        p = dados.periodos[i]
+        preco_alt = _obter_preco(dados, p)
+        if np.isfinite(preco_alt):
+            return preco_alt
     
     return np.nan
 
@@ -600,13 +652,17 @@ def _calcular_market_cap(dados: DadosEmpresa, periodo: str) -> float:
     Calcula Market Cap = Preço × Número de Ações
     
     CONVERSÃO DE UNIDADES:
-    - Preço: R$ (unitário)
+    - Preço: R$ (unitário) - usa o mais recente disponível
     - Ações: unidades
     - Balanços CVM: R$ MIL
     
     Market Cap (R$ mil) = Preço × Ações / 1000
+    
+    IMPORTANTE: Se não encontrar preço no período exato, busca o
+    preço mais recente disponível (ex: para 2025T3 sem preço, usa 2025T2).
     """
-    preco = _obter_preco(dados, periodo)
+    # Usar preço mais recente disponível (com fallback)
+    preco = _obter_preco_mais_recente(dados, periodo)
     acoes = _obter_acoes(dados, periodo)
     
     if np.isfinite(preco) and np.isfinite(acoes) and acoes > 0:
@@ -808,11 +864,15 @@ def _encontrar_periodo_valido_ltm(dados: DadosEmpresa) -> Optional[str]:
     """
     Encontra o período mais recente que tem dados completos para cálculo LTM.
     
-    Critérios:
-    1. Tem preço disponível
-    2. Tem número de ações disponível
-    3. Tem pelo menos N trimestres anteriores com dados de DRE
+    Critérios (em ordem de prioridade):
+    1. Período mais recente disponível (2025T3 > 2024T4)
+    2. Tem preço disponível (pode ser de período anterior)
+    3. Tem número de ações disponível (pode ser de período anterior)
+    4. Tem pelo menos N trimestres com dados de DRE para LTM
        (N=4 para padrão, N=3 para semestral)
+    
+    IMPORTANTE: Para cálculo de múltiplos de 2025+, sempre prioriza
+    o período mais recente, mesmo que preço/ações sejam anteriores.
     """
     if not dados.periodos or dados.padrao_fiscal is None:
         return None
@@ -822,13 +882,6 @@ def _encontrar_periodo_valido_ltm(dados: DadosEmpresa) -> Optional[str]:
     # Percorrer períodos do mais recente para o mais antigo
     for i in range(len(dados.periodos) - 1, -1, -1):
         periodo = dados.periodos[i]
-        
-        # Verificar se tem preço e ações
-        preco = _obter_preco(dados, periodo)
-        acoes = _obter_acoes(dados, periodo)
-        
-        if not (np.isfinite(preco) and np.isfinite(acoes)):
-            continue
         
         # Verificar se tem trimestres anteriores suficientes
         if i < n_periodos_necessarios - 1:
@@ -843,7 +896,31 @@ def _encontrar_periodo_valido_ltm(dados: DadosEmpresa) -> Optional[str]:
                 tem_dados_completos = False
                 break
         
-        if tem_dados_completos:
+        if not tem_dados_completos:
+            continue
+        
+        # Verificar preço (tenta período atual, depois busca anteriores)
+        preco = _obter_preco(dados, periodo)
+        if not np.isfinite(preco):
+            # Buscar preço mais recente disponível
+            for k in range(i, -1, -1):
+                preco_alt = _obter_preco(dados, dados.periodos[k])
+                if np.isfinite(preco_alt):
+                    preco = preco_alt
+                    break
+        
+        # Verificar ações (tenta período atual, depois busca anteriores)
+        acoes = _obter_acoes(dados, periodo)
+        if not np.isfinite(acoes):
+            # Buscar ações mais recentes disponíveis
+            for k in range(i, -1, -1):
+                acoes_alt = _obter_acoes(dados, dados.periodos[k])
+                if np.isfinite(acoes_alt):
+                    acoes = acoes_alt
+                    break
+        
+        # Se tem preço E ações (mesmo de períodos anteriores), aceitar
+        if np.isfinite(preco) and np.isfinite(acoes):
             return periodo
     
     return None
