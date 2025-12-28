@@ -478,6 +478,47 @@ def _calcular_ebitda_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     return soma
 
 
+def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
+    """
+    Calcula dividendos LTM (últimos 12 meses).
+    
+    Returns:
+        Soma de dividendos dos últimos 4 trimestres (ou 3 para semestral)
+    """
+    if dados.dividendos is None or dados.padrao_fiscal is None:
+        return np.nan
+    
+    periodos = dados.periodos
+    if periodo_fim not in periodos:
+        return np.nan
+    
+    idx_fim = periodos.index(periodo_fim)
+    padrao = dados.padrao_fiscal
+    
+    n_periodos = 3 if padrao.tipo == 'SEMESTRAL' else 4
+    start_idx = max(0, idx_fim - n_periodos + 1)
+    periodos_ltm = periodos[start_idx:idx_fim + 1]
+    
+    # Verificar se dados.dividendos tem formato correto
+    if periodos_ltm[0] not in dados.dividendos.columns:
+        return np.nan
+    
+    soma = 0.0
+    count = 0
+    
+    for p in periodos_ltm:
+        if p in dados.dividendos.columns:
+            vals = pd.to_numeric(dados.dividendos[p], errors='coerce').dropna()
+            if len(vals) > 0:
+                soma += float(vals.iloc[0])
+                count += 1
+    
+    if count == 0:
+        return np.nan
+    
+    return soma if soma > 0 else np.nan
+
+
 # ======================================================================================
 # CÁLCULO DE MARKET CAP E EV
 # ======================================================================================
@@ -506,12 +547,30 @@ def _obter_preco(dados: DadosEmpresa, periodo: str) -> float:
 
 
 def _obter_acoes(dados: DadosEmpresa, periodo: str) -> float:
-    """Obtém número de ações no período (unidades)."""
+    """
+    Obtém número de ações no período (unidades).
+    
+    UNITS (KLBN11, ITUB, etc): Usa apenas ações ON.
+    Outras empresas: Usa linha TOTAL.
+    """
     if dados.acoes is None:
         return np.nan
     
-    # PRIORIDADE 1: Buscar linha com Espécie_Acao == 'TOTAL'
+    ticker_upper = dados.ticker.upper()
+    
+    # UNITS CONHECIDAS: Usar apenas ON (não TOTAL)
+    TICKERS_UNITS = {'KLBN11', 'ITUB', 'SANB11', 'BPAC11'}
+    
     if 'Espécie_Acao' in dados.acoes.columns and periodo in dados.acoes.columns:
+        # Para UNITS: usar apenas ON
+        if ticker_upper in TICKERS_UNITS:
+            mask_on = dados.acoes['Espécie_Acao'] == 'ON'
+            if mask_on.any():
+                val = dados.acoes.loc[mask_on, periodo].values[0]
+                if pd.notna(val):
+                    return float(val)
+        
+        # Para outras empresas: usar TOTAL
         mask_total = dados.acoes['Espécie_Acao'] == 'TOTAL'
         if mask_total.any():
             val = dados.acoes.loc[mask_total, periodo].values[0]
@@ -609,8 +668,15 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str) -> Dict[str, O
     receita_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["receita"], periodo)
     resultado["EV_RECEITA"] = _normalizar_valor(_safe_divide(ev, receita_ltm))
     
-    # Dividend Yield - placeholder (precisa de dados de dividendos)
-    resultado["DY"] = None
+    # ==================== DIVIDENDOS ====================
+    
+    dividendos_ltm = _calcular_dividendos_ltm(dados, periodo)
+    
+    # Dividend Yield = (Dividendos LTM / Market Cap) × 100
+    resultado["DY"] = _normalizar_valor(_safe_divide(dividendos_ltm, market_cap) * 100)
+    
+    # Payout = (Dividendos LTM / Lucro Líquido LTM) × 100
+    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dividendos_ltm, ll_ltm) * 100)
     
     # ==================== RENTABILIDADE ====================
     
@@ -714,6 +780,7 @@ MULTIPLOS_METADATA = {
     "EV_EBIT": {"nome": "EV/EBIT", "categoria": "Valuation", "formula": "Enterprise Value / EBIT LTM", "unidade": "x", "usa_preco": True},
     "EV_RECEITA": {"nome": "EV/Receita", "categoria": "Valuation", "formula": "Enterprise Value / Receita LTM", "unidade": "x", "usa_preco": True},
     "DY": {"nome": "Dividend Yield", "categoria": "Valuation", "formula": "Dividendos LTM / Market Cap", "unidade": "%", "usa_preco": True},
+    "PAYOUT": {"nome": "Payout", "categoria": "Valuation", "formula": "Dividendos LTM / Lucro Líquido LTM", "unidade": "%", "usa_preco": False},
     "ROE": {"nome": "ROE", "categoria": "Rentabilidade", "formula": "Lucro Líquido LTM / PL Médio", "unidade": "%", "usa_preco": False},
     "ROA": {"nome": "ROA", "categoria": "Rentabilidade", "formula": "Lucro Líquido LTM / Ativo Total Médio", "unidade": "%", "usa_preco": False},
     "ROIC": {"nome": "ROIC", "categoria": "Rentabilidade", "formula": "NOPAT / Capital Investido", "unidade": "%", "usa_preco": False},
@@ -801,10 +868,21 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
     
     historico_anual: Dict[int, Dict[str, Any]] = {}
     
+    ano_atual = datetime.now().year
+    
     for ano in sorted(periodos_por_ano.keys()):
         periodos_ano = _ordenar_periodos(periodos_por_ano[ano])
         ultimo_periodo = periodos_ano[-1]
-        multiplos = calcular_multiplos_periodo(dados, ultimo_periodo)
+        
+        # CORREÇÃO 3: Para anos >= 2025 (incompletos), usar rolling LTM
+        if ano >= 2025:
+            # Usar último período disponível do ano como referência
+            # O cálculo LTM pegará automaticamente os últimos 4 trimestres
+            multiplos = calcular_multiplos_periodo(dados, ultimo_periodo)
+        else:
+            # Para anos completos (<2025), usar lógica normal
+            multiplos = calcular_multiplos_periodo(dados, ultimo_periodo)
+        
         historico_anual[ano] = {
             "periodo_referencia": ultimo_periodo,
             "multiplos": multiplos
