@@ -949,19 +949,26 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
     
     for ano in sorted(periodos_por_ano.keys()):
         periodos_ano = _ordenar_periodos(periodos_por_ano[ano])
-        ultimo_periodo = periodos_ano[-1]
         
-        # CORREÇÃO 3: Para anos >= 2025 (incompletos), usar rolling LTM
-        if ano >= 2025:
-            # Usar último período disponível do ano como referência
-            # O cálculo LTM pegará automaticamente os últimos 4 trimestres
-            multiplos = calcular_multiplos_periodo(dados, ultimo_periodo)
+        # CORREÇÃO #6: Determinar período de referência baseado no ano
+        if ano < 2025:
+            # Anos completos: usar sempre T4 (final do ano)
+            # Buscar período T4 deste ano
+            periodo_t4 = f"{ano}T4"
+            if periodo_t4 in periodos_ano:
+                periodo_referencia = periodo_t4
+            else:
+                # Fallback: último período disponível do ano
+                periodo_referencia = periodos_ano[-1]
         else:
-            # Para anos completos (<2025), usar lógica normal
-            multiplos = calcular_multiplos_periodo(dados, ultimo_periodo)
+            # Ano corrente (2025+): usar período mais recente disponível
+            periodo_referencia = periodos_ano[-1]
+        
+        # Calcular múltiplos usando o período de referência
+        multiplos = calcular_multiplos_periodo(dados, periodo_referencia)
         
         historico_anual[ano] = {
-            "periodo_referencia": ultimo_periodo,
+            "periodo_referencia": periodo_referencia,
             "multiplos": multiplos
         }
     
