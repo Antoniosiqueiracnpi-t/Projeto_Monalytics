@@ -1,4 +1,4 @@
-# src/padronizar_bp.py
+# padronizar_bp.py
 from __future__ import annotations
 
 import argparse
@@ -9,11 +9,90 @@ from typing import Dict, List, Optional, Set, Tuple
 import numpy as np
 import pandas as pd
 
-# ADICIONAR NO TOPO DO ARQUIVO (após outros imports):
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent))
-from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
+# ======================================================================================
+# FUNÇÕES AUXILIARES (substitui multi_ticker_utils se não disponível)
+# ======================================================================================
+
+try:
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent))
+    from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
+except ImportError:
+    # Fallback: implementação local básica
+    def get_ticker_principal(ticker: str) -> str:
+        """Retorna o ticker principal (primeiro se houver múltiplos)."""
+        return ticker.split(';')[0].strip().upper()
+    
+    def get_pasta_balanco(ticker: str) -> Path:
+        """Retorna o caminho da pasta de balanços do ticker."""
+        ticker_clean = get_ticker_principal(ticker)
+        return Path("balancos") / ticker_clean
+    
+    def load_mapeamento_consolidado() -> pd.DataFrame:
+        """Carrega mapeamento consolidado ou fallback para original."""
+        path_consolidado = Path("mapeamento_cnpj_consolidado.csv")
+        path_original = Path("mapeamento_cnpj_ticker.csv")
+        
+        if path_consolidado.exists():
+            return pd.read_csv(path_consolidado)
+        elif path_original.exists():
+            return pd.read_csv(path_original)
+        else:
+            raise FileNotFoundError("Nenhum arquivo de mapeamento encontrado")
+
+# ======================================================================================
+# EMPRESAS COM ANO FISCAL MARÇO-FEVEREIRO
+# ======================================================================================
+
+TICKERS_MAR_FEV: Set[str] = {
+    "CAML3",  # Camil - ano fiscal março a fevereiro
+}
+
+
+def _is_mar_fev_company(ticker: str) -> bool:
+    """Verifica se a empresa usa ano fiscal março-fevereiro."""
+    return ticker.upper().strip() in TICKERS_MAR_FEV
+
+
+def _get_fiscal_year_mar_fev(data: pd.Timestamp) -> int:
+    """
+    Calcula o ano fiscal para empresas com ciclo março-fevereiro.
+    
+    - Meses 3-12 (mar-dez): ano fiscal = ano corrente
+    - Meses 1-2 (jan-fev): ano fiscal = ano anterior
+    
+    Exemplo: fev/2025 -> FY2024, mai/2024 -> FY2024
+    """
+    if pd.isna(data):
+        return 0
+    if data.month >= 3:
+        return data.year
+    else:
+        return data.year - 1
+
+
+def _infer_quarter_mar_fev(data: pd.Timestamp) -> str:
+    """
+    Infere o trimestre para empresas com ano fiscal março-fevereiro.
+    
+    T1: mar-mai (termina em maio)
+    T2: jun-ago (termina em agosto)
+    T3: set-nov (termina em novembro)
+    T4: dez-fev (termina em fevereiro)
+    """
+    if pd.isna(data):
+        return ""
+    month = data.month
+    if month in (3, 4, 5):
+        return "T1"
+    elif month in (6, 7, 8):
+        return "T2"
+    elif month in (9, 10, 11):
+        return "T3"
+    else:  # 12, 1, 2
+        return "T4"
+
 
 # ======================================================================================
 # CONTAS BPA - BALANÇO PATRIMONIAL ATIVO (EMPRESAS NÃO FINANCEIRAS)
@@ -275,6 +354,8 @@ def _get_tipo_empresa(ticker: str) -> str:
         return "SEGURADORA"
     elif _is_banco(ticker_upper):
         return "BANCO"
+    elif _is_mar_fev_company(ticker_upper):
+        return "MAR-FEV"
     else:
         return "GERAL"
 
@@ -323,10 +404,17 @@ class FiscalYearInfo:
     quarters_pattern: Set[str]
     has_all_quarters: bool
     description: str
+    is_mar_fev: bool = False  # Flag para ano fiscal março-fevereiro
 
 
-def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> FiscalYearInfo:
-    """Detecta o padrão de ano fiscal da empresa."""
+def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame, ticker: str = "") -> FiscalYearInfo:
+    """
+    Detecta o padrão de ano fiscal da empresa.
+    MODIFICADO: Detecta empresas com ano fiscal março-fevereiro.
+    """
+    # Verificar se é empresa mar-fev conhecida
+    is_mar_fev = _is_mar_fev_company(ticker)
+    
     quarters_found = set(df_tri["trimestre"].dropna().unique())
     
     if "data_fim" in df_anu.columns and not df_anu.empty:
@@ -335,9 +423,17 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> F
         if len(end_months) == 1 and end_months[0] == 12:
             fiscal_end = 12
             is_standard = True
+        elif len(end_months) == 1 and end_months[0] == 2:
+            # Ano fiscal termina em fevereiro (CAML3)
+            fiscal_end = 2
+            is_standard = False
+            is_mar_fev = True
         elif len(end_months) >= 1:
-            fiscal_end = int(df_anu["data_fim"].dt.month.mode().iloc[0]) if not df_anu["data_fim"].dt.month.mode().empty else 12
+            mode_month = df_anu["data_fim"].dt.month.mode()
+            fiscal_end = int(mode_month.iloc[0]) if not mode_month.empty else 12
             is_standard = (fiscal_end == 12)
+            if fiscal_end == 2:
+                is_mar_fev = True
         else:
             fiscal_end = 12
             is_standard = True
@@ -347,7 +443,9 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> F
     
     has_all = {"T1", "T2", "T3", "T4"}.issubset(quarters_found)
     
-    if is_standard:
+    if is_mar_fev:
+        desc = "Ano fiscal março-fevereiro (MAR-FEV)"
+    elif is_standard:
         desc = "Ano fiscal padrão (jan-dez)"
     else:
         desc = f"Ano fiscal irregular (encerra em mês {fiscal_end})"
@@ -357,7 +455,8 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame) -> F
         fiscal_end_month=fiscal_end,
         quarters_pattern=quarters_found,
         has_all_quarters=has_all,
-        description=desc
+        description=desc,
+        is_mar_fev=is_mar_fev,
     )
 
 
@@ -373,8 +472,10 @@ class PadronizadorBP:
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """
         Carrega os 4 arquivos de entrada usando get_pasta_balanco().
+        MODIFICADO: Para empresas mar-fev, preenche trimestre se vazio.
         """
         pasta = get_pasta_balanco(ticker)
+        is_mar_fev = _is_mar_fev_company(ticker)
         
         bpa_tri_path = pasta / "bpa_consolidado.csv"
         bpa_anu_path = pasta / "bpa_anual.csv"
@@ -405,24 +506,41 @@ class PadronizadorBP:
         bpa_anu = bpa_anu.dropna(subset=["data_fim"])
         bpp_tri = bpp_tri.dropna(subset=["data_fim"])
         bpp_anu = bpp_anu.dropna(subset=["data_fim"])
+        
+        # Para empresas mar-fev, preencher trimestre se vazio
+        if is_mar_fev:
+            for df in (bpa_tri, bpp_tri):
+                if "trimestre" not in df.columns:
+                    df["trimestre"] = ""
+                mask_empty = df["trimestre"].isna() | (df["trimestre"].astype(str).str.strip() == "")
+                if mask_empty.any():
+                    df.loc[mask_empty, "trimestre"] = df.loc[mask_empty, "data_fim"].apply(_infer_quarter_mar_fev)
     
         return bpa_tri, bpa_anu, bpp_tri, bpp_anu
 
     def _build_quarter_values(
         self, 
         df_tri: pd.DataFrame, 
-        schema: List[Tuple[str, str]]
+        schema: List[Tuple[str, str]],
+        fiscal_info: FiscalYearInfo
     ) -> pd.DataFrame:
         """
         Extrai valores trimestrais para as contas do esquema.
         
         IMPORTANTE: Balanço Patrimonial é POSIÇÃO, não fluxo.
         Não soma trimestres - cada trimestre é uma fotografia independente.
+        
+        MODIFICADO: Usa ano fiscal correto para empresas mar-fev.
         """
         target_codes = [c for c, _ in schema]
         
         df = df_tri[df_tri["cd_conta"].isin(target_codes)].copy()
-        df["ano"] = df["data_fim"].dt.year
+        
+        # MODIFICADO: Calcular ano fiscal correto
+        if fiscal_info.is_mar_fev:
+            df["ano"] = df["data_fim"].apply(_get_fiscal_year_mar_fev)
+        else:
+            df["ano"] = df["data_fim"].dt.year
         
         rows = []
         for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
@@ -435,13 +553,22 @@ class PadronizadorBP:
     def _extract_annual_values(
         self, 
         df_anu: pd.DataFrame, 
-        schema: List[Tuple[str, str]]
+        schema: List[Tuple[str, str]],
+        fiscal_info: FiscalYearInfo
     ) -> pd.DataFrame:
-        """Extrai valores anuais para inclusão como T4."""
+        """
+        Extrai valores anuais para inclusão como T4.
+        MODIFICADO: Usa ano fiscal correto para empresas mar-fev.
+        """
         target_codes = [c for c, _ in schema]
         
         df = df_anu[df_anu["cd_conta"].isin(target_codes)].copy()
-        df["ano"] = df["data_fim"].dt.year
+        
+        # MODIFICADO: Calcular ano fiscal correto
+        if fiscal_info.is_mar_fev:
+            df["ano"] = df["data_fim"].apply(_get_fiscal_year_mar_fev)
+        else:
+            df["ano"] = df["data_fim"].dt.year
 
         rows = []
         for ano, g in df.groupby("ano", sort=False):
@@ -461,10 +588,13 @@ class PadronizadorBP:
         """
         Adiciona T4 usando valor anual diretamente (não subtrai).
         
-        IMPORTANTE: Para Balanço Patrimonial, T4 = valor do anual (posição em 31/12).
+        IMPORTANTE: Para Balanço Patrimonial, T4 = valor do anual (posição).
         Diferente do DRE/DFC onde T4 = Anual - (T1+T2+T3).
+        
+        MODIFICADO: Também funciona para empresas mar-fev.
         """
-        if not fiscal_info.is_standard:
+        # Para empresas com ano fiscal irregular (não mar-fev), pular
+        if not fiscal_info.is_standard and not fiscal_info.is_mar_fev:
             return qtot
         
         anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
@@ -531,6 +661,7 @@ class PadronizadorBP:
         """
         Pipeline completo de padronização do BP (BPA + BPP).
         Agora usa get_pasta_balanco() para garantir pasta correta.
+        MODIFICADO: Suporta empresas com ano fiscal mar-fev.
         """
         self._current_ticker = ticker.upper().strip()
         
@@ -538,7 +669,7 @@ class PadronizadorBP:
         bpa_tri, bpa_anu, bpp_tri, bpp_anu = self._load_inputs(ticker)
         
         # 2. Detectar padrão fiscal (usar BPA trimestral + anual como referência)
-        fiscal_info = _detect_fiscal_year_pattern(bpa_tri, bpa_anu)
+        fiscal_info = _detect_fiscal_year_pattern(bpa_tri, bpa_anu, ticker)
         
         # 3. Obter esquemas
         bpa_schema = _get_bpa_schema(ticker)
@@ -546,10 +677,10 @@ class PadronizadorBP:
         
         # ========== PROCESSAR BPA ==========
         # 4a. Extrair valores trimestrais
-        bpa_qtot = self._build_quarter_values(bpa_tri, bpa_schema)
+        bpa_qtot = self._build_quarter_values(bpa_tri, bpa_schema, fiscal_info)
         
         # 5a. Extrair valores anuais
-        bpa_anual = self._extract_annual_values(bpa_anu, bpa_schema)
+        bpa_anual = self._extract_annual_values(bpa_anu, bpa_schema, fiscal_info)
         
         # 6a. Adicionar T4 do anual
         bpa_qtot = self._add_t4_from_annual(bpa_qtot, bpa_anual, fiscal_info, bpa_schema)
@@ -559,10 +690,10 @@ class PadronizadorBP:
         
         # ========== PROCESSAR BPP ==========
         # 4b. Extrair valores trimestrais
-        bpp_qtot = self._build_quarter_values(bpp_tri, bpp_schema)
+        bpp_qtot = self._build_quarter_values(bpp_tri, bpp_schema, fiscal_info)
         
         # 5b. Extrair valores anuais
-        bpp_anual = self._extract_annual_values(bpp_anu, bpp_schema)
+        bpp_anual = self._extract_annual_values(bpp_anu, bpp_schema, fiscal_info)
         
         # 6b. Adicionar T4 do anual
         bpp_qtot = self._add_t4_from_annual(bpp_qtot, bpp_anual, fiscal_info, bpp_schema)
@@ -580,7 +711,13 @@ class PadronizadorBP:
         bpp_out.to_csv(bpp_path, index=False, encoding="utf-8")
         
         # 9. Mensagem de retorno
-        fiscal_status = "PADRÃO" if fiscal_info.is_standard else "IRREGULAR"
+        if fiscal_info.is_mar_fev:
+            fiscal_status = "MAR-FEV"
+        elif fiscal_info.is_standard:
+            fiscal_status = "PADRÃO"
+        else:
+            fiscal_status = "IRREGULAR"
+            
         tipo = _get_tipo_empresa(ticker)
         
         n_periodos_bpa = len([c for c in bpa_out.columns if c not in ["cd_conta", "conta"]])
@@ -667,7 +804,7 @@ def main():
         try:
             ok, msg = pad.padronizar_e_salvar_ticker(ticker)
             
-            if "IRREGULAR" in msg:
+            if "IRREGULAR" in msg or "MAR-FEV" in msg:
                 irregular_count += 1
             
             if ok:
@@ -689,7 +826,7 @@ def main():
     print("\n" + "="*70)
     print(f"Finalizado: OK={ok_count} | ERRO={err_count}")
     if irregular_count > 0:
-        print(f"            Anos fiscais irregulares: {irregular_count}")
+        print(f"            Anos fiscais especiais (MAR-FEV/irregular): {irregular_count}")
     print("="*70 + "\n")
 
 
