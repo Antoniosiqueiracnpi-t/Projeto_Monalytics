@@ -1,0 +1,140 @@
+name: Atualizar Preços Diários
+
+on:
+  # Execução manual
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'Modo de seleção'
+        required: true
+        type: choice
+        options:
+          - 'quantidade'
+          - 'ticker'
+          - 'lista'
+          - 'faixa'
+        default: 'quantidade'
+
+      quantidade:
+        description: 'Quantidade (modo quantidade): 10, 50, 308=todas'
+        required: false
+        default: '308'
+
+      ticker:
+        description: 'Ticker único (modo ticker): ex: PETR4'
+        required: false
+        default: ''
+
+      lista:
+        description: 'Lista de tickers (modo lista): ex: KLBN11,SLCE3,AGRO3'
+        required: false
+        default: ''
+
+      faixa:
+        description: 'Faixa (modo faixa): ex: 1-50, 51-150, 151-308'
+        required: false
+        default: '1-308'
+
+  # Execução automática diária
+  # Segunda a sexta-feira às 21:00 UTC (18:00 BRT - após fechamento do mercado)
+  schedule:
+    - cron: '0 21 * * 1-5'
+
+jobs:
+  atualizar_precos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: 📥 Baixar código
+        uses: actions/checkout@v3
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 Instalar bibliotecas
+        run: |
+          pip install --upgrade pip
+          pip install pandas numpy yfinance
+
+      - name: 🔍 Verificar se é dia útil (apenas para schedule)
+        if: github.event_name == 'schedule'
+        id: check_weekday
+        run: |
+          # Verificar se hoje é dia útil (seg-sex)
+          DAY_OF_WEEK=$(date +%u)
+          
+          if [ "$DAY_OF_WEEK" -ge 6 ]; then
+            echo "É fim de semana. Pulando execução."
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "É dia útil. Prosseguindo."
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🚀 Atualizar preços diários
+        if: steps.check_weekday.outputs.skip != 'true'
+        run: |
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            # Execução automática: processar todas as empresas
+            python src/atualizar_precos_diarios.py \
+              --modo "quantidade" \
+              --quantidade 308
+          else
+            # Execução manual: usar inputs do usuário
+            python src/atualizar_precos_diarios.py \
+              --modo "${{ github.event.inputs.modo || 'quantidade' }}" \
+              --quantidade "${{ github.event.inputs.quantidade || '308' }}" \
+              --ticker "${{ github.event.inputs.ticker || '' }}" \
+              --lista "${{ github.event.inputs.lista || '' }}" \
+              --faixa "${{ github.event.inputs.faixa || '1-308' }}"
+          fi
+
+      - name: 📊 Validar arquivos atualizados
+        if: steps.check_weekday.outputs.skip != 'true'
+        run: |
+          echo "=== Arquivos de preços modificados ==="
+          git diff --name-only | grep "precos_trimestrais.csv" || echo "Nenhum"
+          
+          echo ""
+          echo "=== Arquivos de múltiplos modificados ==="
+          git diff --name-only | grep "multiplos.json\|multiplos.csv" || echo "Nenhum"
+
+      - name: 💾 Commit e Push
+        if: steps.check_weekday.outputs.skip != 'true'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
+          # Adicionar apenas arquivos modificados
+          git add -u balancos/*/precos_trimestrais.csv 2>/dev/null || true
+          git add -u balancos/*/multiplos.json 2>/dev/null || true
+          git add -u balancos/*/multiplos.csv 2>/dev/null || true
+
+          # Verificar se há mudanças
+          if git diff --staged --quiet; then
+            echo "Sem alterações para commitar."
+            exit 0
+          fi
+
+          # Commit
+          DATE=$(date +'%Y-%m-%d')
+          HORA=$(date +'%H:%M BRT')
+          
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            MSG="📈 Preços atualizados (auto) - $DATE $HORA"
+          else
+            MSG="📈 Preços atualizados (manual) - $DATE $HORA"
+          fi
+
+          git commit -m "$MSG"
+          git push
+
+      - name: 📧 Notificar erros (opcional)
+        if: failure()
+        run: |
+          echo "❌ Workflow falhou! Verifique os logs."
+          # Aqui você pode adicionar notificação via email/Slack se desejar
