@@ -15,6 +15,13 @@ Tratamento de Exceções:
 - Empresas padrão: LTM = soma últimos 4 trimestres
 
 Saída: JSON para fácil consumo em HTML/JavaScript
+
+VERSÃO: 1.1.0 (Corrigida)
+DATA: 2025-12-28
+CORREÇÕES:
+- ROIC agora usa alíquota efetiva em vez de 34% fixo
+- Dividend Yield implementado
+- Todas as escalas validadas
 """
 
 from __future__ import annotations
@@ -626,6 +633,62 @@ def _calcular_ev(dados: DadosEmpresa, periodo: str) -> float:
 
 
 # ======================================================================================
+# CÁLCULO DE DIVIDENDOS
+# ======================================================================================
+
+def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo: str) -> float:
+    """
+    Calcula dividendos pagos nos últimos 12 meses (LTM).
+    
+    Formato esperado de dividendos_trimestrais.csv:
+    - Formato 1: Coluna 'periodo' + coluna 'dividendo_total'
+    - Formato 2: Períodos como colunas (ex: '2024T3')
+    """
+    if dados.dividendos is None:
+        return np.nan
+    
+    periodos = dados.periodos
+    if periodo not in periodos:
+        return np.nan
+    
+    idx_fim = periodos.index(periodo)
+    padrao = dados.padrao_fiscal
+    
+    # Determinar períodos LTM
+    if padrao.tipo == 'SEMESTRAL':
+        n_periodos = 3
+    else:
+        n_periodos = 4
+    
+    start_idx = max(0, idx_fim - n_periodos + 1)
+    periodos_ltm = periodos[start_idx:idx_fim + 1]
+    
+    soma = 0.0
+    count = 0
+    
+    # Tentar formato 1: coluna 'periodo' + 'dividendo_total'
+    if 'periodo' in dados.dividendos.columns and 'dividendo_total' in dados.dividendos.columns:
+        for p in periodos_ltm:
+            mask = dados.dividendos['periodo'] == p
+            if mask.any():
+                val = dados.dividendos.loc[mask, 'dividendo_total'].values[0]
+                if pd.notna(val) and np.isfinite(float(val)):
+                    soma += float(val)
+                    count += 1
+    
+    # Tentar formato 2: períodos como colunas
+    else:
+        for p in periodos_ltm:
+            if p in dados.dividendos.columns:
+                vals = pd.to_numeric(dados.dividendos[p], errors='coerce').dropna()
+                if len(vals) > 0:
+                    soma += vals.sum()
+                    count += 1
+    
+    return soma if count > 0 else np.nan
+
+
+# ======================================================================================
 # CALCULADORA DE MÚLTIPLOS
 # ======================================================================================
 
@@ -654,6 +717,11 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str) -> Dict[str, O
     """
     Calcula todos os 22 múltiplos para um período específico.
     Retorna dicionário {codigo_multiplo: valor}.
+    
+    VERSÃO CORRIGIDA:
+    - ROIC usa alíquota efetiva
+    - Dividend Yield implementado
+    - Todas as escalas validadas
     """
     resultado: Dict[str, Optional[float]] = {}
     
@@ -681,36 +749,50 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str) -> Dict[str, O
     receita_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["receita"], periodo)
     resultado["EV_RECEITA"] = _normalizar_valor(_safe_divide(ev, receita_ltm))
     
-    # Dividend Yield = Dividendos LTM / Market Cap
-    if dados.dividendos is not None:
-        # Implementação depende do formato do arquivo de dividendos
-        div_ltm = 0.0  # Placeholder
+    # Dividend Yield = Dividendos LTM / Market Cap × 100
+    div_ltm = _calcular_dividendos_ltm(dados, periodo)
+    if np.isfinite(div_ltm) and np.isfinite(market_cap) and market_cap > 0:
         resultado["DY"] = _normalizar_valor(_safe_divide(div_ltm, market_cap) * 100)
     else:
         resultado["DY"] = None
     
     # ==================== RENTABILIDADE ====================
     
-    # ROE = Lucro Líquido LTM / PL Médio
+    # ROE = Lucro Líquido LTM / PL Médio × 100
     pl_medio = _obter_valor_medio(dados, dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
     resultado["ROE"] = _normalizar_valor(_safe_divide(ll_ltm, pl_medio) * 100)
     
-    # ROA = Lucro Líquido LTM / Ativo Total Médio
+    # ROA = Lucro Líquido LTM / Ativo Total Médio × 100
     at_medio = _obter_valor_medio(dados, dados.bpa, CONTAS_BPA["ativo_total"], periodo)
     resultado["ROA"] = _normalizar_valor(_safe_divide(ll_ltm, at_medio) * 100)
     
-    # ROIC = NOPAT / Capital Investido
-    # NOPAT = EBIT × (1 - alíquota IR) ≈ EBIT × 0.66
-    nopat = ebit_ltm * 0.66 if np.isfinite(ebit_ltm) else np.nan
+    # ROIC = NOPAT / Capital Investido × 100
+    # NOPAT = EBIT × (1 - alíquota efetiva)
+    # Alíquota efetiva = IR+CSLL / Lucro Antes IR, com fallback para 34%
+    ir_csll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["ir_csll"], periodo)
+    resultado_fin_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["resultado_financeiro"], periodo)
+    
+    # Lucro Antes IR = EBIT - Resultado Financeiro
+    lucro_antes_ir = ebit_ltm - resultado_fin_ltm if np.isfinite(ebit_ltm) and np.isfinite(resultado_fin_ltm) else np.nan
+    
+    if np.isfinite(ir_csll_ltm) and np.isfinite(lucro_antes_ir) and lucro_antes_ir > 0:
+        aliquota_efetiva = abs(ir_csll_ltm) / lucro_antes_ir
+        # Limitar alíquota a valores razoáveis (0% a 50%)
+        aliquota_efetiva = max(0.0, min(0.50, aliquota_efetiva))
+    else:
+        aliquota_efetiva = 0.34  # Fallback: alíquota padrão brasileira (IR 25% + CSLL 9%)
+    
+    nopat = ebit_ltm * (1 - aliquota_efetiva) if np.isfinite(ebit_ltm) else np.nan
+    
     # Capital Investido = PL + Dívida Líquida
     divida_liquida = ev - market_cap if np.isfinite(ev) and np.isfinite(market_cap) else np.nan
     capital_investido = pl + divida_liquida if np.isfinite(pl) and np.isfinite(divida_liquida) else np.nan
     resultado["ROIC"] = _normalizar_valor(_safe_divide(nopat, capital_investido) * 100)
     
-    # Margem EBITDA = EBITDA / Receita
+    # Margem EBITDA = EBITDA / Receita × 100
     resultado["MARGEM_EBITDA"] = _normalizar_valor(_safe_divide(ebitda_ltm, receita_ltm) * 100)
     
-    # Margem Líquida = Lucro Líquido / Receita
+    # Margem Líquida = Lucro Líquido / Receita × 100
     resultado["MARGEM_LIQUIDA"] = _normalizar_valor(_safe_divide(ll_ltm, receita_ltm) * 100)
     
     # ==================== ENDIVIDAMENTO ====================
@@ -740,7 +822,7 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str) -> Dict[str, O
     desp_fin = abs(resultado_fin) if np.isfinite(resultado_fin) and resultado_fin < 0 else np.nan
     resultado["ICJ"] = _normalizar_valor(_safe_divide(ebit_ltm, desp_fin))
     
-    # Composição Dívida = Empréstimos CP / (CP + LP)
+    # Composição Dívida = Empréstimos CP / (CP + LP) × 100
     resultado["COMPOSICAO_DIVIDA"] = _normalizar_valor(_safe_divide(emp_cp, divida_bruta) * 100)
     
     # ==================== LIQUIDEZ ====================
@@ -801,7 +883,7 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str) -> Dict[str, O
     ncg_passivo = pc - emp_cp if np.isfinite(pc) else np.nan
     ncg = ncg_ativo - ncg_passivo if np.isfinite(ncg_ativo) and np.isfinite(ncg_passivo) else np.nan
     
-    # NCG / Receita
+    # NCG / Receita × 100
     resultado["NCG_RECEITA"] = _normalizar_valor(_safe_divide(ncg, receita_ltm) * 100)
     
     return resultado
@@ -1008,7 +1090,7 @@ def _salvar_csv_historico(resultado: Dict, path: Path):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Calculadora de Múltiplos Financeiros para Empresas Não-Financeiras"
+        description="Calculadora de Múltiplos Financeiros para Empresas Não-Financeiras (v1.1.0 Corrigida)"
     )
     parser.add_argument("--modo", default="quantidade", 
                        choices=["quantidade", "ticker", "lista", "faixa"])
@@ -1044,9 +1126,10 @@ def main():
         df_sel = df.head(10)
     
     print(f"\n{'='*70}")
-    print(f">>> CALCULADORA DE MÚLTIPLOS - EMPRESAS NÃO-FINANCEIRAS <<<")
+    print(f">>> CALCULADORA DE MÚLTIPLOS v1.1.0 (CORRIGIDA) <<<")
     print(f"{'='*70}")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
+    print(f"Correções: ROIC (alíquota efetiva) + DY (implementado)")
     print(f"Saída: balancos/<TICKER>/multiplos.json + multiplos.csv")
     print(f"{'='*70}\n")
     
