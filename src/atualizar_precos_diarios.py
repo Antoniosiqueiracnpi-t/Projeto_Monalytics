@@ -2,6 +2,8 @@
 """
 Atualização Diária de Preços e Múltiplos de Valuation
 =====================================================
+VERSÃO CORRIGIDA - Dezembro 2024
+
 Este script:
 1. Baixa preços de fechamento do dia anterior para todas as empresas
 2. Atualiza os arquivos precos_trimestrais.csv
@@ -11,6 +13,11 @@ Este script:
 
 Fonte de dados: yfinance (Yahoo Finance)
 Periodicidade: Execução diária (após fechamento do mercado)
+
+CORREÇÕES APLICADAS:
+1. Atualização correta do CSV de preços
+2. Recálculo usando preço mais recente
+3. Atualização do período de ações se necessário
 """
 
 from __future__ import annotations
@@ -53,7 +60,6 @@ TICKERS_FINANCEIROS = {
 }
 
 # Mapeamento de códigos B3 para Yahoo Finance
-# Exemplos: PETR4 → PETR4.SA, VALE3 → VALE3.SA
 SUFIXO_YAHOO = ".SA"
 
 
@@ -91,7 +97,6 @@ def baixar_preco_ultimo_dia(ticker: str, max_dias_atras: int = 10) -> Optional[D
     ticker_yahoo = _ticker_para_yahoo(ticker)
     
     try:
-        # Baixar últimos N dias
         end_date = datetime.now()
         start_date = end_date - timedelta(days=max_dias_atras)
         
@@ -101,14 +106,13 @@ def baixar_preco_ultimo_dia(ticker: str, max_dias_atras: int = 10) -> Optional[D
         if hist.empty:
             return None
         
-        # Pegar último dia disponível
         last_row = hist.iloc[-1]
         last_date = hist.index[-1]
         
         return {
             'data': last_date.strftime('%Y-%m-%d'),
             'preco_fechamento': float(last_row['Close']),
-            'preco_ajustado': float(last_row['Close']),  # yfinance já retorna ajustado
+            'preco_ajustado': float(last_row['Close']),
             'volume': float(last_row['Volume']) if 'Volume' in last_row else 0.0
         }
         
@@ -147,170 +151,134 @@ def baixar_precos_lote(tickers: List[str], max_workers: int = 10) -> Dict[str, O
 
 
 # ======================================================================================
-# ATUALIZAÇÃO DE ARQUIVOS PRECOS_TRIMESTRAIS.CSV
+# ATUALIZAÇÃO DE ARQUIVOS PRECOS_TRIMESTRAIS.CSV - CORRIGIDA
 # ======================================================================================
 
-def atualizar_arquivo_precos(ticker: str, preco_novo: Dict[str, float]) -> bool:
+def _determinar_trimestre(data: datetime) -> str:
+    """Determina o trimestre de uma data."""
+    ano = data.year
+    mes = data.month
+    trimestre = (mes - 1) // 3 + 1
+    return f"{ano}T{trimestre}"
+
+
+def atualizar_arquivo_precos(ticker: str, preco_novo: Dict[str, float]) -> Tuple[bool, str]:
     """
     Atualiza o arquivo precos_trimestrais.csv com novo preço.
     
-    Estratégia:
-    - Se já existe coluna para o trimestre atual, atualiza
-    - Se não existe, cria nova coluna
+    FORMATO DO CSV:
+    Preço_Fechamento,2015T1,2015T2,...,2025T3
+    Preço de Fechamento Ajustado,2.11,2.12,...,15.56
+    
+    Returns:
+        (sucesso, mensagem)
     """
     pasta = get_pasta_balanco(ticker)
     arquivo_precos = pasta / "precos_trimestrais.csv"
     
     if not arquivo_precos.exists():
-        print(f"⚠️  {ticker}: arquivo precos_trimestrais.csv não existe")
-        return False
+        return False, "arquivo precos_trimestrais.csv não existe"
     
     try:
         df = pd.read_csv(arquivo_precos)
         
         # Determinar trimestre atual
         data_preco = datetime.strptime(preco_novo['data'], '%Y-%m-%d')
-        ano = data_preco.year
-        mes = data_preco.month
+        periodo = _determinar_trimestre(data_preco)
         
-        # Calcular trimestre: T1=jan-mar, T2=abr-jun, T3=jul-set, T4=out-dez
-        trimestre = (mes - 1) // 3 + 1
-        periodo = f"{ano}T{trimestre}"
+        preco_valor = round(preco_novo['preco_ajustado'], 2)
         
         # Verificar se coluna já existe
         if periodo in df.columns:
-            # Atualizar valor existente
-            if 'preco_fechamento' in df.columns or len(df) > 0:
-                df.loc[0, periodo] = preco_novo['preco_ajustado']
-            else:
-                df[periodo] = [preco_novo['preco_ajustado']]
+            # Atualizar valor existente na primeira linha de dados
+            df.iloc[0, df.columns.get_loc(periodo)] = preco_valor
+            acao = "atualizado"
         else:
             # Adicionar nova coluna
-            df[periodo] = [preco_novo['preco_ajustado']]
+            df[periodo] = [preco_valor]
+            acao = "adicionado"
         
         # Salvar
         df.to_csv(arquivo_precos, index=False)
-        return True
+        return True, f"{acao} {periodo}=R${preco_valor}"
         
     except Exception as e:
-        print(f"❌ Erro ao atualizar {ticker}: {e}")
-        return False
+        return False, f"erro: {e}"
 
 
-# ======================================================================================
-# RECÁLCULO DE MÚLTIPLOS DE VALUATION
-# ======================================================================================
-
-def recalcular_multiplos_valuation(ticker: str) -> bool:
+def atualizar_arquivo_acoes(ticker: str, periodo: str) -> Tuple[bool, str]:
     """
-    Recalcula APENAS os múltiplos de valuation que dependem de preço:
-    - P/L, P/VPA, EV/EBITDA, EV/EBIT, EV/Receita, DY
+    Atualiza o arquivo acoes_historico.csv para incluir novo período.
     
-    Estratégia:
-    1. Carregar multiplos.json existente
-    2. Recalcular Market Cap com novo preço
-    3. Recalcular EV
-    4. Recalcular múltiplos de valuation
-    5. Manter todos os outros múltiplos intactos
-    6. Salvar multiplos.json atualizado
+    Se o período não existe, copia os valores do último período disponível.
+    Isso é necessário porque o número de ações só muda em eventos corporativos.
+    
+    Returns:
+        (sucesso, mensagem)
     """
     pasta = get_pasta_balanco(ticker)
-    arquivo_multiplos = pasta / "multiplos.json"
+    arquivo_acoes = pasta / "acoes_historico.csv"
     
-    if not arquivo_multiplos.exists():
-        print(f"⚠️  {ticker}: arquivo multiplos.json não existe")
-        return False
+    if not arquivo_acoes.exists():
+        return False, "arquivo acoes_historico.csv não existe"
     
     try:
-        # Carregar JSON existente
-        with open(arquivo_multiplos, 'r', encoding='utf-8') as f:
-            dados_multiplos = json.load(f)
+        df = pd.read_csv(arquivo_acoes)
         
-        # Importar função de cálculo do script original
-        from calcular_multiplos import (
-            carregar_dados_empresa,
-            _calcular_market_cap,
-            _calcular_ev,
-            _calcular_ltm,
-            _obter_valor_pontual,
-            _safe_divide,
-            _normalizar_valor,
-            CONTAS_DRE,
-            CONTAS_BPP
-        )
+        if periodo in df.columns:
+            return True, f"período {periodo} já existe"
         
-        # Carregar dados da empresa
-        dados = carregar_dados_empresa(ticker)
+        # Encontrar último período disponível
+        colunas_periodos = [c for c in df.columns if c not in ['Espécie_Acao']]
+        if not colunas_periodos:
+            return False, "nenhum período encontrado"
         
-        if not dados.periodos:
-            print(f"⚠️  {ticker}: sem períodos disponíveis")
-            return False
+        # Ordenar para pegar o mais recente
+        ultimo_periodo = sorted(colunas_periodos)[-1]
         
-        # Determinar período atual (último trimestre com balanço)
-        ultimo_periodo = dados.periodos[-1]
+        # Copiar valores do último período
+        df[periodo] = df[ultimo_periodo]
         
-        # Recalcular Market Cap e EV
-        market_cap = _calcular_market_cap(dados, ultimo_periodo)
-        ev = _calcular_ev(dados, ultimo_periodo)
-        
-        if not np.isfinite(market_cap):
-            print(f"⚠️  {ticker}: Market Cap inválido (falta preço/ações)")
-            return False
-        
-        # Obter componentes para cálculo
-        ll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["lucro_liquido"], ultimo_periodo)
-        pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], ultimo_periodo)
-        
-        from calcular_multiplos import _calcular_ebitda_ltm
-        ebitda_ltm = _calcular_ebitda_ltm(dados, ultimo_periodo)
-        ebit_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["ebit"], ultimo_periodo)
-        receita_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["receita"], ultimo_periodo)
-        
-        # Atualizar múltiplos de valuation no LTM
-        ltm_multiplos = dados_multiplos.get("ltm", {}).get("multiplos", {})
-        
-        ltm_multiplos["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
-        ltm_multiplos["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
-        ltm_multiplos["EV_EBITDA"] = _normalizar_valor(_safe_divide(ev, ebitda_ltm))
-        ltm_multiplos["EV_EBIT"] = _normalizar_valor(_safe_divide(ev, ebit_ltm))
-        ltm_multiplos["EV_RECEITA"] = _normalizar_valor(_safe_divide(ev, receita_ltm))
-        
-        # Atualizar data de cálculo
-        dados_multiplos["ltm"]["data_calculo"] = datetime.now().isoformat()
-        dados_multiplos["ltm"]["multiplos"] = ltm_multiplos
-        
-        # Atualizar último ano do histórico anual se for o mesmo período
-        historico_anual = dados_multiplos.get("historico_anual", {})
-        
-        ano_atual = int(ultimo_periodo[:4])
-        if str(ano_atual) in historico_anual:
-            periodo_ref_ano = historico_anual[str(ano_atual)].get("periodo_referencia", "")
-            
-            if periodo_ref_ano == ultimo_periodo:
-                historico_anual[str(ano_atual)]["multiplos"].update({
-                    "P_L": ltm_multiplos["P_L"],
-                    "P_VPA": ltm_multiplos["P_VPA"],
-                    "EV_EBITDA": ltm_multiplos["EV_EBITDA"],
-                    "EV_EBIT": ltm_multiplos["EV_EBIT"],
-                    "EV_RECEITA": ltm_multiplos["EV_RECEITA"],
-                })
-        
-        # Salvar JSON atualizado
-        with open(arquivo_multiplos, 'w', encoding='utf-8') as f:
-            json.dump(dados_multiplos, f, ensure_ascii=False, indent=2, default=str)
-        
-        # Atualizar CSV também
-        from calcular_multiplos import _salvar_csv_historico
-        csv_path = pasta / "multiplos.csv"
-        _salvar_csv_historico(dados_multiplos, csv_path)
-        
-        return True
+        # Salvar
+        df.to_csv(arquivo_acoes, index=False)
+        return True, f"copiado de {ultimo_periodo}"
         
     except Exception as e:
-        print(f"❌ Erro ao recalcular {ticker}: {e}")
+        return False, f"erro: {e}"
+
+
+# ======================================================================================
+# RECÁLCULO DE MÚLTIPLOS DE VALUATION - CORRIGIDO
+# ======================================================================================
+
+def recalcular_multiplos_completo(ticker: str) -> Tuple[bool, str]:
+    """
+    Recalcula todos os múltiplos usando o script principal.
+    
+    Esta é a forma mais robusta pois garante consistência total.
+    
+    Returns:
+        (sucesso, mensagem)
+    """
+    try:
+        from calcular_multiplos import processar_ticker
+        
+        sucesso, msg, resultado = processar_ticker(ticker, salvar=True)
+        
+        if sucesso and resultado:
+            ltm = resultado.get("ltm", {})
+            preco = ltm.get("preco_utilizado", "?")
+            p_l = ltm.get("multiplos", {}).get("P_L", "?")
+            ev_ebitda = ltm.get("multiplos", {}).get("EV_EBITDA", "?")
+            
+            return True, f"P/L={p_l} | EV/EBITDA={ev_ebitda} | Preço=R${preco}"
+        
+        return False, msg
+        
+    except Exception as e:
         import traceback
         traceback.print_exc()
-        return False
+        return False, f"erro: {e}"
 
 
 # ======================================================================================
@@ -393,17 +361,29 @@ def processar_atualizacao_diaria(
             continue
         
         try:
-            # 1. Atualizar arquivo de preços
-            if not atualizar_arquivo_precos(ticker_clean, preco_dados):
-                err_count += 1
-                continue
+            # 1. Determinar período do preço
+            data_preco = datetime.strptime(preco_dados['data'], '%Y-%m-%d')
+            periodo = _determinar_trimestre(data_preco)
             
-            # 2. Recalcular múltiplos de valuation
-            if recalcular_multiplos_valuation(ticker_clean):
+            # 2. Atualizar arquivo de preços
+            ok_preco, msg_preco = atualizar_arquivo_precos(ticker_clean, preco_dados)
+            if not ok_preco:
+                print(f"⚠️  {ticker_clean}: preços - {msg_preco}")
+            
+            # 3. Atualizar arquivo de ações (se necessário)
+            ok_acoes, msg_acoes = atualizar_arquivo_acoes(ticker_clean, periodo)
+            if not ok_acoes:
+                print(f"⚠️  {ticker_clean}: ações - {msg_acoes}")
+            
+            # 4. Recalcular múltiplos
+            ok_mult, msg_mult = recalcular_multiplos_completo(ticker_clean)
+            
+            if ok_mult:
                 ok_count += 1
-                print(f"✅ {ticker_clean}: preço={preco_dados['preco_ajustado']:.2f} | data={preco_dados['data']}")
+                print(f"✅ {ticker_clean}: {msg_mult}")
             else:
                 err_count += 1
+                print(f"❌ {ticker_clean}: {msg_mult}")
                 
         except Exception as e:
             err_count += 1
