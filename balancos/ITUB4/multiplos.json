@@ -172,9 +172,9 @@
     "2015": {
       "periodo_referencia": "2015T4",
       "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
+        "P_L": 1.5259,
+        "P_VPA": 0.3499,
+        "DY": 34.3726,
         "PAYOUT": 52.4508,
         "ROE": 22.932,
         "ROA": 1.0271,
@@ -189,9 +189,9 @@
     "2016": {
       "periodo_referencia": "2016T4",
       "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
+        "P_L": 2.6684,
+        "P_VPA": 0.4668,
+        "DY": 29.7777,
         "PAYOUT": 79.4596,
         "ROE": 18.951,
         "ROA": 0.8991,
@@ -206,9 +206,9 @@
     "2017": {
       "periodo_referencia": "2017T4",
       "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
+        "P_L": 3.3747,
+        "P_VPA": 0.5533,
+        "DY": 23.977,
         "PAYOUT": 80.9152,
         "ROE": 17.1614,
         "ROA": 0.8729,
@@ -223,9 +223,9 @@
     "2018": {
       "periodo_referencia": "2018T4",
       "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
+        "P_L": 6.1756,
+        "P_VPA": 1.0523,
+        "DY": 18.8144,
         "PAYOUT": 116.1908,
         "ROE": 17.1802,
         "ROA": 0.8594,
@@ -240,9 +240,9 @@
     "2019": {
       "periodo_referencia": "2019T4",
       "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
+        "P_L": 6.6341,
+        "P_VPA": 1.2345,
+        "DY": 25.4578,
         "PAYOUT": 168.8893,
         "ROE": 18.5463,
         "ROA": 0.8718,
@@ -257,9 +257,9 @@
     "2020": {
       "periodo_referencia": "2020T4",
       "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
+        "P_L": 11.1813,
+        "P_VPA": 1.09,
+        "DY": 23.2153,
         "PAYOUT": 259.5766,
         "ROE": 9.9109,
         "ROA": 0.412,
@@ -274,9 +274,9 @@
     "2021": {
       "periodo_referencia": "2021T4",
       "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
+        "P_L": 4.214,
+        "P_VPA": 0.7272,
+        "DY": 17.5892,
         "PAYOUT": 74.121,
         "ROE": 17.7956,
         "ROA": 0.6942,
@@ -291,9 +291,9 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
+        "P_L": 4.6761,
+        "P_VPA": 0.8105,
+        "DY": 12.7475,
         "PAYOUT": 59.6085,
         "ROE": 17.9844,
         "ROA": 0.6997,
@@ -308,9 +308,9 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
+        "P_L": 5.8981,
+        "P_VPA": 1.0038,
+        "DY": 10.837,
         "PAYOUT": 63.9172,
         "ROE": 18.0009,
         "ROA": 0.6961,
@@ -325,9 +325,9 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
+        "P_L": 5.2786,
+        "P_VPA": 1.0049,
+        "DY": 15.709,
         "PAYOUT": 82.9218,
         "ROE": 20.045,
         "ROA": 0.7805,
@@ -342,9 +342,9 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "P_L": 8.6198,
-        "P_VPA": 1.7196,
-        "DY": 12.1549,
+        "P_L": 7.6022,
+        "P_VPA": 1.5166,
+        "DY": 13.782,
         "PAYOUT": 104.7733,
         "ROE": 20.5777,
         "ROA": 0.7792,
@@ -359,15 +359,15 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2025-12-29T17:24:09.774067",
-    "preco_utilizado": 35.83,
+    "data_calculo": "2025-12-29T17:32:41.384975",
+    "preco_utilizado": 31.6,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 10784548883,
     "periodo_acoes": "2024T4",
     "multiplos": {
-      "P_L": 8.6198,
-      "P_VPA": 1.7196,
-      "DY": 12.1549,
+      "P_L": 7.6022,
+      "P_VPA": 1.5166,
+      "DY": 13.782,
       "PAYOUT": 104.7733,
       "ROE": 20.5777,
       "ROA": 0.7792,
