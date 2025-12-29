@@ -21,26 +21,15 @@ def get_ticker_principal(ticker: str) -> str:
 
 def load_mapeamento_consolidado() -> pd.DataFrame:
     """Carrega mapeamento consolidado ou fallback para original."""
-    # Tentar importar do multi_ticker_utils primeiro
-    try:
-        from multi_ticker_utils import load_mapeamento_consolidado as load_map
-        return load_map()
-    except ImportError:
-        pass
+    path_consolidado = Path("mapeamento_cnpj_consolidado.csv")
+    path_original = Path("mapeamento_cnpj_ticker.csv")
     
-    # Fallback: buscar arquivo
-    paths = [
-        Path("mapeamento_cnpj_consolidado.csv"),
-        Path("mapeamento_cnpj_ticker.csv"),
-        Path("src/mapeamento_cnpj_consolidado.csv"),
-        Path("src/mapeamento_cnpj_ticker.csv"),
-    ]
-    
-    for p in paths:
-        if p.exists():
-            return pd.read_csv(p)
-    
-    raise FileNotFoundError("Nenhum arquivo de mapeamento encontrado")
+    if path_consolidado.exists():
+        return pd.read_csv(path_consolidado)
+    elif path_original.exists():
+        return pd.read_csv(path_original)
+    else:
+        raise FileNotFoundError("Nenhum arquivo de mapeamento encontrado")
 
 
 # ======================================================================================
@@ -173,9 +162,14 @@ BPA_BANCOS: List[Tuple[str, str]] = [
     ("1", "Ativo Total"),
     ("1.01", "Caixa e Equivalentes de Caixa"),
     ("1.02", "Ativos Financeiros"),
+    ("1.02.03", "Empréstimos e Recebíveis"),
+    ("1.02.03.04", "Operações de Crédito"),
+    ("1.02.03.06", "(-) Provisão para Perda Esperada"),
     ("1.03", "Tributos"),
     ("1.04", "Outros Ativos"),
     ("1.05", "Investimentos"),
+    ("1.05.03", "Outros Investimentos"),
+    ("1.05.03.02", "Operações de Crédito"),  # Formato alternativo
     ("1.06", "Imobilizado"),
     ("1.07", "Intangível"),
 ]
@@ -229,6 +223,7 @@ def _build_bpp_schema_for_bank(df_bpp: pd.DataFrame) -> List[Tuple[str, str]]:
     pl_code = _detect_pl_code_from_data(df_bpp)
     
     # Esquema base - contas antes do PL
+    # Nota: Depósitos podem estar em 2.02.01 (alguns bancos) ou 2.03.01 (ITUB4, outros)
     schema = [
         ("2", "Passivo Total"),
         ("2.01", "Passivos Financeiros ao Valor Justo através do Resultado"),
@@ -238,6 +233,7 @@ def _build_bpp_schema_for_bank(df_bpp: pd.DataFrame) -> List[Tuple[str, str]]:
         ("2.02.03", "Recursos de Mercados Interbancários"),
         ("2.02.04", "Outras Captações"),
         ("2.03", "Provisões"),
+        ("2.03.01", "Depósitos"),  # Formato alternativo (ITUB4)
         ("2.04", "Passivos Fiscais"),
         ("2.05", "Outros Passivos"),
         ("2.06", "Passivos sobre Ativos Não Correntes a Venda"),
