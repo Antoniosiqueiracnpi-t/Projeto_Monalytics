@@ -56,7 +56,6 @@ on:
         default: "0"
         type: string
 
-
 permissions:
   contents: write
 
@@ -78,9 +77,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas numpy requests yfinance openpyxl
+          pip install pandas numpy requests yfinance openpyxl pillow
 
       - name: Selecionar tickers por setor (mapeamento_b3_consolidado.csv)
+        id: selecionar
         env:
           SETOR: ${{ inputs.setor }}
           LIMITE: ${{ inputs.limite }}
@@ -93,15 +93,13 @@ jobs:
           setor = (os.environ.get("SETOR") or "").strip()
           limite = int((os.environ.get("LIMITE") or "0").strip() or "0")
 
-          # Localiza o arquivo de mapeamento
           candidates = [
               Path("mapeamento_b3_consolidado.csv"),
               Path("src/mapeamento_b3_consolidado.csv"),
           ]
-
           path = next((p for p in candidates if p.exists()), None)
+
           if path is None:
-              # fallback: procurar em até 3 níveis
               found = None
               for p in Path(".").rglob("mapeamento_b3_consolidado.csv"):
                   found = p
@@ -126,7 +124,6 @@ jobs:
               key = df["setor"].fillna("").astype(str).str.strip().str.casefold()
               df_sel = df[key == alvo]
 
-              # conveniência: se não achou por igualdade, tenta 'contains'
               if df_sel.empty:
                   df_sel = df[key.str.contains(alvo, na=False)]
 
@@ -147,55 +144,102 @@ jobs:
               sys.exit(1)
 
           print(f"✅ Setor: {setor} | Tickers: {len(tickers)} | CSV: {path}")
-
           tickers_csv = ",".join(tickers)
+
           env_file = os.environ["GITHUB_ENV"]
           with open(env_file, "a", encoding="utf-8") as f:
               f.write(f"TICKERS={tickers_csv}\n")
               f.write(f"TICKERS_COUNT={len(tickers)}\n")
           PY
 
+      # ---------------- CAPTURAS ----------------
       - name: Capturar Balanços
+        id: balancos
+        continue-on-error: true
         run: |
           python src/capturar_balancos.py --modo lista --lista "${TICKERS}"
 
       - name: Capturar Preços Trimestrais
+        id: precos
+        continue-on-error: true
         run: |
           python src/capturar_precos.py --modo lista --lista "${TICKERS}"
 
       - name: Capturar Dividendos Trimestrais
+        id: dividendos
+        continue-on-error: true
         run: |
           python src/capturar_dividendos.py --modo lista --lista "${TICKERS}"
 
       - name: Capturar Histórico de Ações
+        id: acoes
+        continue-on-error: true
         run: |
           python src/capturar_acoes.py --modo lista --lista "${TICKERS}"
 
       - name: Capturar Acionistas (Top 10)
+        id: acionistas
+        continue-on-error: true
         run: |
           python src/capturar_acionistas.py --modo lista --lista "${TICKERS}"
 
       - name: Capturar Logos
+        id: logos
+        continue-on-error: true
         run: |
           python src/capturar_logos.py --modo lista --lista "${TICKERS}"
 
+      # ---------------- PADRONIZAÇÕES ----------------
       - name: Padronizar DRE
+        id: dre
+        continue-on-error: true
         run: |
           python src/padronizar_dre.py --modo lista --lista "${TICKERS}"
 
       - name: Padronizar DFC
+        id: dfc
+        continue-on-error: true
         run: |
           python src/padronizar_dfc.py --modo lista --lista "${TICKERS}"
 
       - name: Padronizar BP (BPA + BPP)
+        id: bp
+        continue-on-error: true
         run: |
           python src/padronizar_bp.py --modo lista --lista "${TICKERS}"
 
+      # ---------------- MÚLTIPLOS ----------------
       - name: Calcular Múltiplos
+        id: multiplos
+        continue-on-error: true
         run: |
           python src/calcular_multiplos.py --modo lista --lista "${TICKERS}"
 
+      # ---------------- RESUMO ----------------
+      - name: Resumo de execução (o que falhou)
+        if: always()
+        run: |
+          echo "=============================="
+          echo "RESUMO DO PIPELINE"
+          echo "Setor: ${{ inputs.setor }}"
+          echo "Tickers: ${TICKERS_COUNT}"
+          echo "=============================="
+          echo ""
+          echo "Outcome por etapa (success/failure/skipped):"
+          echo "- Capturar Balanços:         ${{ steps.balancos.outcome }}"
+          echo "- Capturar Preços:           ${{ steps.precos.outcome }}"
+          echo "- Capturar Dividendos:       ${{ steps.dividendos.outcome }}"
+          echo "- Capturar Ações:            ${{ steps.acoes.outcome }}"
+          echo "- Capturar Acionistas:       ${{ steps.acionistas.outcome }}"
+          echo "- Capturar Logos:            ${{ steps.logos.outcome }}"
+          echo "- Padronizar DRE:            ${{ steps.dre.outcome }}"
+          echo "- Padronizar DFC:            ${{ steps.dfc.outcome }}"
+          echo "- Padronizar BP:             ${{ steps.bp.outcome }}"
+          echo "- Calcular Múltiplos:        ${{ steps.multiplos.outcome }}"
+          echo ""
+
       - name: Commit e push dos resultados
+        if: always()
         run: |
           git config user.name "actions-user"
           git config user.email "actions-user@users.noreply.github.com"
