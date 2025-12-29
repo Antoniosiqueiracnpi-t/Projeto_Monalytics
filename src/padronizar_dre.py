@@ -683,6 +683,54 @@ class PadronizadorDRE:
     
             return out
 
+    def _fill_lucro_liquido_banco(self, qiso: pd.DataFrame) -> pd.DataFrame:
+        """
+        Para bancos: preenche 3.11 (Lucro Líquido) com valor de 3.09 quando vazio.
+        
+        PROBLEMA: DRE de bancos tem Lucro Líquido em 3.09, mas o esquema padrão
+        espera em 3.11 para cálculo de múltiplos.
+        
+        SOLUÇÃO: Copiar 3.09 → 3.11 quando 3.11 estiver vazio/NaN.
+        """
+        if not _is_banco(self._current_ticker):
+            return qiso
+        
+        out = qiso.copy()
+        
+        # Verificar se 3.11 existe no DataFrame
+        has_311 = '3.11' in out['code'].values
+        has_309 = '3.09' in out['code'].values
+        
+        if not has_309:
+            return out
+        
+        # Para cada combinação (ano, trimestre), verificar e copiar
+        new_rows = []
+        
+        for (ano, trimestre), g in out.groupby(['ano', 'trimestre'], sort=False):
+            val_309 = g.loc[g['code'] == '3.09', 'valor'].values
+            val_311 = g.loc[g['code'] == '3.11', 'valor'].values
+            
+            # Se 3.09 tem valor
+            if len(val_309) > 0 and pd.notna(val_309[0]) and val_309[0] != 0:
+                # Se 3.11 não existe ou está vazio
+                if len(val_311) == 0 or pd.isna(val_311[0]) or val_311[0] == 0:
+                    new_rows.append({
+                        'ano': ano,
+                        'trimestre': trimestre,
+                        'code': '3.11',
+                        'valor': float(val_309[0])
+                    })
+        
+        if new_rows:
+            # Remover linhas 3.11 vazias existentes
+            out = out[~((out['code'] == '3.11') & (out['valor'].isna() | (out['valor'] == 0)))]
+            # Adicionar novas linhas com valores de 3.09
+            out = pd.concat([out, pd.DataFrame(new_rows)], ignore_index=True)
+        
+        return out    
+    
+
     def _build_horizontal(self, qiso: pd.DataFrame) -> pd.DataFrame:
         """
         Constrói tabela horizontal (períodos como colunas).
@@ -870,9 +918,12 @@ class PadronizadorDRE:
         # 5. Detectar e converter dados acumulados (YTD) - só para padrão
         cumulative_years = self._detect_cumulative_years(qtot, anu, fiscal_info)
         qiso = self._to_isolated_quarters(qtot, cumulative_years, fiscal_info)
-        
+
         # 6. Adicionar T4 quando faltante (APENAS para ano fiscal padrão)
         qiso = self._add_t4_from_annual_when_missing(qiso, anu, fiscal_info)
+        
+        # 6.1 BANCOS: Copiar 3.09 → 3.11 (Lucro Líquido)
+        qiso = self._fill_lucro_liquido_banco(qiso)
         
         # 7. Ordenar
         qiso = qiso.assign(qord=qiso["trimestre"].apply(_quarter_order)).sort_values(["ano", "qord", "code"])
