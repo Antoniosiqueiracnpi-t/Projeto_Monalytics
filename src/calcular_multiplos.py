@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -55,7 +56,6 @@ TICKERS_ANO_FISCAL_MAR_FEV: Set[str] = {"CAML3"}
 # Empresas com dados semestrais (sem T2)
 TICKERS_DADOS_SEMESTRAIS: Set[str] = {"AGRO3"}
 
-# Empresas financeiras (excluídas deste cálculo)
 # Bancos (cálculo específico de múltiplos bancários)
 TICKERS_BANCOS: Set[str] = {
     "RPAD3", "RPAD5", "RPAD6", "ABCB4", "BMGB4", "BBDC3", "BBDC4",
@@ -122,7 +122,9 @@ CONTAS_BPA_BANCOS = {
     "ativo_total": "1",
     "caixa": "1.01",
     "ativos_financeiros": "1.02",
-    "operacoes_credito": "1.02.01",       # Carteira de Crédito
+    "operacoes_credito": "1.02.03.04",    # Operações de Crédito (novo formato)
+    "operacoes_credito_alt": "1.05.03.02", # Operações de Crédito (formato antigo)
+    "provisao_pdd": "1.02.03.06",         # (-) Provisão para Perda Esperada
     "titulos_valores": "1.02.02",         # TVM
 }
 
@@ -130,8 +132,7 @@ CONTAS_BPP_BANCOS = {
     "passivo_total": "2",
     "passivos_financeiros_vj": "2.01",
     "passivos_custo_amort": "2.02",       # ou 2.03 dependendo do banco
-    "depositos": "2.02.01",               # ou 2.03.01
-    "captacao_mercado": "2.02.02",
+    "depositos": "2.03.01",               # Depósitos
     # PL é detectado dinamicamente (2.07 ou 2.08)
 }
 
@@ -148,8 +149,7 @@ def _is_banco(ticker: str) -> bool:
     ticker_upper = ticker.upper().strip()
     if ticker_upper in TICKERS_BANCOS:
         return True
-    # Verificar por base do ticker
-    import re
+    # Verificar por base do ticker (ex: BBDC3 → BBDC)
     match = re.match(r'^([A-Z]{4})\d+$', ticker_upper)
     if match:
         base = match.group(1)
@@ -157,6 +157,7 @@ def _is_banco(ticker: str) -> bool:
             if t.startswith(base):
                 return True
     return False
+
 
 def _is_seguradora(ticker: str) -> bool:
     """Verifica se ticker é de seguradora (excluída do cálculo)."""
@@ -546,36 +547,6 @@ def _calcular_market_cap_atual(dados: DadosEmpresa) -> float:
         return (preco * acoes) / 1000.0
     
     return np.nan
-
-# ======================================================================================
-# METADADOS DOS MÚLTIPLOS - BANCOS
-# ======================================================================================
-
-MULTIPLOS_BANCOS_METADATA = {
-    # Valuation
-    "P_L": {"nome": "P/L", "categoria": "Valuation", "formula": "Market Cap / Lucro Líquido LTM", "unidade": "x"},
-    "P_VPA": {"nome": "P/VPA", "categoria": "Valuation", "formula": "Market Cap / Patrimônio Líquido", "unidade": "x"},
-    "DY": {"nome": "Dividend Yield", "categoria": "Valuation", "formula": "Dividendos LTM / Market Cap", "unidade": "%"},
-    "PAYOUT": {"nome": "Payout", "categoria": "Valuation", "formula": "Dividendos LTM / Lucro Líquido LTM", "unidade": "%"},
-    
-    # Rentabilidade
-    "ROE": {"nome": "ROE", "categoria": "Rentabilidade", "formula": "Lucro Líquido LTM / PL Médio", "unidade": "%"},
-    "ROA": {"nome": "ROA", "categoria": "Rentabilidade", "formula": "Lucro Líquido LTM / Ativo Total Médio", "unidade": "%"},
-    "MARGEM_LIQUIDA": {"nome": "Margem Líquida", "categoria": "Rentabilidade", "formula": "LL / Receita Intermediação", "unidade": "%"},
-    "NIM": {"nome": "NIM", "categoria": "Rentabilidade", "formula": "Resultado Bruto Interm. / Ativos Rentáveis Médios", "unidade": "%"},
-    
-    # Qualidade de Ativos
-    "INDICE_COBERTURA": {"nome": "Índice de Cobertura", "categoria": "Qualidade Ativos", "formula": "PDD / Carteira de Crédito", "unidade": "%"},
-    
-    # Eficiência
-    "INDICE_EFICIENCIA": {"nome": "Índice de Eficiência", "categoria": "Eficiência", "formula": "Despesas Adm / Receitas Operacionais", "unidade": "%"},
-    
-    # Estrutura
-    "LOAN_DEPOSIT": {"nome": "Loan-to-Deposit", "categoria": "Estrutura", "formula": "Carteira Crédito / Depósitos", "unidade": "%"},
-    "PL_ATIVOS": {"nome": "PL/Ativos", "categoria": "Estrutura", "formula": "Patrimônio Líquido / Ativo Total", "unidade": "%"},
-}
-
-
 
 
 def _calcular_ev(dados: DadosEmpresa, periodo: str, market_cap: Optional[float] = None) -> float:
@@ -1036,12 +1007,41 @@ MULTIPLOS_METADATA = {
 }
 
 # ======================================================================================
+# METADADOS DOS MÚLTIPLOS - BANCOS
+# ======================================================================================
+
+MULTIPLOS_BANCOS_METADATA = {
+    # Valuation
+    "P_L": {"nome": "P/L", "categoria": "Valuation", "formula": "Market Cap / Lucro Líquido LTM", "unidade": "x", "usa_preco": True},
+    "P_VPA": {"nome": "P/VPA", "categoria": "Valuation", "formula": "Market Cap / Patrimônio Líquido", "unidade": "x", "usa_preco": True},
+    "DY": {"nome": "Dividend Yield", "categoria": "Valuation", "formula": "Dividendos LTM / Market Cap", "unidade": "%", "usa_preco": True},
+    "PAYOUT": {"nome": "Payout", "categoria": "Valuation", "formula": "Dividendos LTM / Lucro Líquido LTM", "unidade": "%", "usa_preco": False},
+    
+    # Rentabilidade
+    "ROE": {"nome": "ROE", "categoria": "Rentabilidade", "formula": "Lucro Líquido LTM / PL Médio", "unidade": "%", "usa_preco": False},
+    "ROA": {"nome": "ROA", "categoria": "Rentabilidade", "formula": "Lucro Líquido LTM / Ativo Total Médio", "unidade": "%", "usa_preco": False},
+    "MARGEM_LIQUIDA": {"nome": "Margem Líquida", "categoria": "Rentabilidade", "formula": "LL / Receita Intermediação", "unidade": "%", "usa_preco": False},
+    "NIM": {"nome": "NIM", "categoria": "Rentabilidade", "formula": "Resultado Bruto Interm. / Ativos Rentáveis Médios", "unidade": "%", "usa_preco": False},
+    
+    # Qualidade de Ativos
+    "INDICE_COBERTURA": {"nome": "Índice de Cobertura", "categoria": "Qualidade Ativos", "formula": "Provisão PDD / Carteira de Crédito", "unidade": "%", "usa_preco": False},
+    
+    # Eficiência
+    "INDICE_EFICIENCIA": {"nome": "Índice de Eficiência", "categoria": "Eficiência", "formula": "Despesas Adm / Receitas Operacionais", "unidade": "%", "usa_preco": False},
+    
+    # Estrutura
+    "LOAN_DEPOSIT": {"nome": "Loan-to-Deposit", "categoria": "Estrutura", "formula": "Carteira Crédito / Depósitos", "unidade": "%", "usa_preco": False},
+    "PL_ATIVOS": {"nome": "PL/Ativos", "categoria": "Estrutura", "formula": "Patrimônio Líquido / Ativo Total", "unidade": "%", "usa_preco": False},
+}
+
+
+# ======================================================================================
 # CALCULADORA DE MÚLTIPLOS - BANCOS
 # ======================================================================================
 
 def _detectar_codigo_pl_banco(dados: DadosEmpresa) -> str:
     """Detecta o código do Patrimônio Líquido no BPP do banco (2.07 ou 2.08)."""
-    if dados.bpp is None:
+    if dados.bpp is None or dados.bpp.empty:
         return "2.07"
     
     for idx, row in dados.bpp.iterrows():
@@ -1101,36 +1101,43 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     
     # Dividendos
     dividendos_ltm = _calcular_dividendos_ltm(dados, periodo)
-    resultado["DY"] = _normalizar_valor(_safe_divide(dividendos_ltm, market_cap) * 100)
-    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dividendos_ltm, ll_ltm) * 100)
+    resultado["DY"] = _normalizar_valor(_safe_divide(dividendos_ltm, market_cap) * 100 if market_cap else None)
+    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dividendos_ltm, ll_ltm) * 100 if ll_ltm else None)
     
     # ==================== RENTABILIDADE ====================
     
-    resultado["ROE"] = _normalizar_valor(_safe_divide(ll_ltm, pl_medio) * 100)
-    resultado["ROA"] = _normalizar_valor(_safe_divide(ll_ltm, at_medio) * 100)
-    resultado["MARGEM_LIQUIDA"] = _normalizar_valor(_safe_divide(ll_ltm, receita_interm) * 100)
+    resultado["ROE"] = _normalizar_valor(_safe_divide(ll_ltm, pl_medio) * 100 if pl_medio else None)
+    resultado["ROA"] = _normalizar_valor(_safe_divide(ll_ltm, at_medio) * 100 if at_medio else None)
+    resultado["MARGEM_LIQUIDA"] = _normalizar_valor(_safe_divide(ll_ltm, receita_interm) * 100 if receita_interm else None)
     
-    # NIM = Resultado Bruto Intermediação / Ativos Rentáveis Médios
-    # Aproximação: usar Ativos Financeiros como proxy
+    # NIM = Resultado Bruto Intermediação / Ativos Financeiros Médios
     ativos_fin = _obter_valor_pontual(dados.bpa, CONTAS_BPA_BANCOS["ativos_financeiros"], periodo)
     ativos_fin_medio = _obter_valor_medio(dados, dados.bpa, CONTAS_BPA_BANCOS["ativos_financeiros"], periodo)
-    resultado["NIM"] = _normalizar_valor(_safe_divide(resultado_bruto, ativos_fin_medio) * 100)
+    resultado["NIM"] = _normalizar_valor(_safe_divide(resultado_bruto, ativos_fin_medio) * 100 if ativos_fin_medio else None)
     
     # ==================== QUALIDADE DE ATIVOS ====================
     
-    # Índice de Cobertura = PDD / Carteira de Crédito
-    pdd_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_BANCOS["pdd"], periodo)
-    carteira_credito = _obter_valor_pontual(dados.bpa, CONTAS_BPA_BANCOS["operacoes_credito"], periodo, 
-                                            ["1.02.01", "1.02.01.01"])
-    resultado["INDICE_COBERTURA"] = _normalizar_valor(_safe_divide(abs(pdd_ltm) if pdd_ltm else np.nan, 
-                                                                   carteira_credito) * 100)
+    # Índice de Cobertura = Provisão PDD / Carteira de Crédito
+    # Tentar buscar provisão no BPA (conta de provisão)
+    provisao_pdd = _obter_valor_pontual(dados.bpa, CONTAS_BPA_BANCOS["provisao_pdd"], periodo)
+    if provisao_pdd is None or not np.isfinite(provisao_pdd):
+        provisao_pdd = _obter_valor_pontual(dados.bpa, "1.02.03.06", periodo)
+    
+    # Carteira de crédito - tentar código principal e alternativo
+    carteira_credito = _obter_valor_pontual(dados.bpa, CONTAS_BPA_BANCOS["operacoes_credito"], periodo)
+    if carteira_credito is None or not np.isfinite(carteira_credito) or carteira_credito == 0:
+        carteira_credito = _obter_valor_pontual(dados.bpa, CONTAS_BPA_BANCOS["operacoes_credito_alt"], periodo)
+    
+    if provisao_pdd and carteira_credito and np.isfinite(provisao_pdd) and np.isfinite(carteira_credito) and carteira_credito != 0:
+        resultado["INDICE_COBERTURA"] = _normalizar_valor(abs(provisao_pdd) / carteira_credito * 100)
+    else:
+        resultado["INDICE_COBERTURA"] = None
     
     # ==================== EFICIÊNCIA ====================
     
     # Índice de Eficiência = Despesas Operacionais / Receitas Operacionais
-    # Aproximação: usar Outras Receitas/Despesas como proxy
     outras_desp = _calcular_ltm(dados, dados.dre, CONTAS_DRE_BANCOS["outras_receitas_desp"], periodo)
-    if np.isfinite(outras_desp) and np.isfinite(resultado_bruto) and resultado_bruto > 0:
+    if outras_desp is not None and resultado_bruto is not None and np.isfinite(outras_desp) and np.isfinite(resultado_bruto) and resultado_bruto > 0:
         resultado["INDICE_EFICIENCIA"] = _normalizar_valor(abs(outras_desp) / resultado_bruto * 100)
     else:
         resultado["INDICE_EFICIENCIA"] = None
@@ -1138,14 +1145,17 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     # ==================== ESTRUTURA ====================
     
     # Loan-to-Deposit = Carteira de Crédito / Depósitos
-    # Depósitos podem estar em 2.02.01 ou 2.03.01
-    depositos = _obter_valor_pontual(dados.bpp, "2.02.01", periodo, ["2.03.01", "2.02.01.01", "2.03.01.01"])
-    resultado["LOAN_DEPOSIT"] = _normalizar_valor(_safe_divide(carteira_credito, depositos) * 100)
+    depositos = _obter_valor_pontual(dados.bpp, CONTAS_BPP_BANCOS["depositos"], periodo)
+    if carteira_credito and depositos and np.isfinite(carteira_credito) and np.isfinite(depositos) and depositos != 0:
+        resultado["LOAN_DEPOSIT"] = _normalizar_valor(carteira_credito / depositos * 100)
+    else:
+        resultado["LOAN_DEPOSIT"] = None
     
     # PL/Ativos (capitalização)
-    resultado["PL_ATIVOS"] = _normalizar_valor(_safe_divide(pl, at) * 100)
+    resultado["PL_ATIVOS"] = _normalizar_valor(_safe_divide(pl, at) * 100 if at else None)
     
     return resultado
+
 
 # ======================================================================================
 # GERADOR DE HISTÓRICO ANUALIZADO
@@ -1184,6 +1194,7 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
             else:
                 multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=False)
         else:
+            # Ano corrente: usar período mais recente disponível com preço atual
             periodo_referencia = periodos_ano[-1]
             if _is_banco(dados.ticker):
                 multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=True)
@@ -1201,8 +1212,7 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
         multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True)
     else:
         multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True)
-
-  
+    
     # Informações de preço e ações utilizados
     preco_atual, periodo_preco = _obter_preco_atual(dados)
     acoes_atual, periodo_acoes = _obter_acoes_atual(dados)
@@ -1214,7 +1224,7 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
             "descricao": dados.padrao_fiscal.descricao,
             "trimestres_ltm": dados.padrao_fiscal.trimestres_ltm
         },
-        "metadata": MULTIPLOS_METADATA,
+        "metadata": MULTIPLOS_BANCOS_METADATA if _is_banco(dados.ticker) else MULTIPLOS_METADATA,
         "historico_anual": historico_anual,
         "ltm": {
             "periodo_referencia": ultimo_periodo,
@@ -1278,19 +1288,18 @@ def _salvar_csv_historico(resultado: Dict, path: Path):
     historico = resultado.get("historico_anual", {})
     ltm_data = resultado.get("ltm", {})
     metadata = resultado.get("metadata", {})
+    ticker = resultado.get("ticker", "")
     
     if not historico:
         return
     
     anos = sorted(historico.keys())
-    # Detectar se é banco pelo ticker no resultado
-    ticker = resultado.get("ticker", "")
+    
+    # Usar metadata correto baseado no tipo de empresa
     if _is_banco(ticker):
         multiplos_codigos = list(MULTIPLOS_BANCOS_METADATA.keys())
-        metadata = MULTIPLOS_BANCOS_METADATA
     else:
         multiplos_codigos = list(MULTIPLOS_METADATA.keys())
-    
     
     rows = []
     for codigo in multiplos_codigos:
