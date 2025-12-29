@@ -20,35 +20,27 @@ def get_ticker_principal(ticker: str) -> str:
 
 
 def load_mapeamento_consolidado() -> pd.DataFrame:
-    """Carrega mapeamento consolidado ou fallback para original.
+    """Carrega mapeamento consolidado ou fallback para original."""
+    # Tentar importar do multi_ticker_utils primeiro
+    try:
+        from multi_ticker_utils import load_mapeamento_consolidado as load_map
+        return load_map()
+    except ImportError:
+        pass
     
-    Busca em múltiplos locais:
-    1. Diretório atual
-    2. Diretório do script (src/)
-    3. Diretório pai do script (raiz do projeto)
-    """
-    script_dir = Path(__file__).parent
-    project_root = script_dir.parent
-    
-    # Lista de possíveis localizações
-    search_paths = [
-        Path("."),           # Diretório atual
-        script_dir,          # src/
-        project_root,        # raiz do projeto
+    # Fallback: buscar arquivo
+    paths = [
+        Path("mapeamento_cnpj_consolidado.csv"),
+        Path("mapeamento_cnpj_ticker.csv"),
+        Path("src/mapeamento_cnpj_consolidado.csv"),
+        Path("src/mapeamento_cnpj_ticker.csv"),
     ]
     
-    filenames = ["mapeamento_cnpj_consolidado.csv", "mapeamento_cnpj_ticker.csv"]
+    for p in paths:
+        if p.exists():
+            return pd.read_csv(p)
     
-    for base_path in search_paths:
-        for filename in filenames:
-            path = base_path / filename
-            if path.exists():
-                return pd.read_csv(path)
-    
-    raise FileNotFoundError(
-        f"Nenhum arquivo de mapeamento encontrado. "
-        f"Procurado em: {[str(p) for p in search_paths]}"
-    )
+    raise FileNotFoundError("Nenhum arquivo de mapeamento encontrado")
 
 
 # ======================================================================================
