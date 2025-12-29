@@ -1,11 +1,11 @@
 codigo,nome,categoria,unidade,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,LTM
-P_L,P/L,Valuation,x,,,,,,,,,,,,
+P_L,P/L,Valuation,x,,,,,,,,,,,8.6198,8.6198
 P_VPA,P/VPA,Valuation,x,,,,,,,,,,,1.7196,1.7196
 DY,Dividend Yield,Valuation,%,,,,,,,,,,,12.1549,12.1549
-PAYOUT,Payout,Valuation,%,,,,,,,,,,,,
-ROE,ROE,Rentabilidade,%,,,,,,,,,,,,
-ROA,ROA,Rentabilidade,%,,,,,,,,,,,,
-MARGEM_LIQUIDA,Margem Líquida,Rentabilidade,%,,,,,,,,,,,,
+PAYOUT,Payout,Valuation,%,52.4508,79.4596,80.9152,116.1908,168.8893,259.5766,74.121,59.6085,63.9172,82.9218,104.7733,104.7733
+ROE,ROE,Rentabilidade,%,22.932,18.951,17.1614,17.1802,18.5463,9.9109,17.7956,17.9844,18.0009,20.045,20.5777,20.5777
+ROA,ROA,Rentabilidade,%,1.0271,0.8991,0.8729,0.8594,0.8718,0.412,0.6942,0.6997,0.6961,0.7805,0.7792,0.7792
+MARGEM_LIQUIDA,Margem Líquida,Rentabilidade,%,20.1861,13.5281,16.4401,19.5245,14.4081,8.6696,14.5054,10.8469,10.8157,12.5632,11.5276,11.5276
 NIM,NIM,Rentabilidade,%,8.4555,11.7087,9.2922,5.4982,8.0017,5.977,6.7097,5.6537,5.4648,5.3674,5.0225,5.0225
 INDICE_COBERTURA,Índice de Cobertura,Qualidade Ativos,%,,,,,,,,,,,,
 INDICE_EFICIENCIA,Índice de Eficiência,Eficiência,%,66.4924,51.7735,53.5128,49.5791,73.3146,94.7804,66.5825,67.5236,68.1191,64.9651,63.5497,63.5497

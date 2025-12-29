@@ -1,5 +1,5 @@
 {
-  "ticker": "ITUB3",
+  "ticker": "BBAS3",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -169,140 +169,21 @@
     }
   },
   "historico_anual": {
-    "2015": {
-      "periodo_referencia": "2015T4",
-      "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
-        "PAYOUT": 52.4508,
-        "ROE": 22.932,
-        "ROA": 1.0271,
-        "MARGEM_LIQUIDA": 20.1861,
-        "NIM": 8.4555,
-        "INDICE_COBERTURA": null,
-        "INDICE_EFICIENCIA": 66.4924,
-        "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 4.479
-      }
-    },
-    "2016": {
-      "periodo_referencia": "2016T4",
-      "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
-        "PAYOUT": 79.4596,
-        "ROE": 18.951,
-        "ROA": 0.8991,
-        "MARGEM_LIQUIDA": 13.5281,
-        "NIM": 11.7087,
-        "INDICE_COBERTURA": null,
-        "INDICE_EFICIENCIA": 51.7735,
-        "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 4.9948
-      }
-    },
-    "2017": {
-      "periodo_referencia": "2017T4",
-      "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
-        "PAYOUT": 80.9152,
-        "ROE": 17.1614,
-        "ROA": 0.8729,
-        "MARGEM_LIQUIDA": 16.4401,
-        "NIM": 9.2922,
-        "INDICE_COBERTURA": null,
-        "INDICE_EFICIENCIA": 53.5128,
-        "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 5.1727
-      }
-    },
-    "2018": {
-      "periodo_referencia": "2018T4",
-      "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
-        "PAYOUT": 116.1908,
-        "ROE": 17.1802,
-        "ROA": 0.8594,
-        "MARGEM_LIQUIDA": 19.5245,
-        "NIM": 5.4982,
-        "INDICE_COBERTURA": null,
-        "INDICE_EFICIENCIA": 49.5791,
-        "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 4.845
-      }
-    },
-    "2019": {
-      "periodo_referencia": "2019T4",
-      "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
-        "PAYOUT": 168.8893,
-        "ROE": 18.5463,
-        "ROA": 0.8718,
-        "MARGEM_LIQUIDA": 14.4081,
-        "NIM": 8.0017,
-        "INDICE_COBERTURA": null,
-        "INDICE_EFICIENCIA": 73.3146,
-        "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 4.5639
-      }
-    },
-    "2020": {
-      "periodo_referencia": "2020T4",
-      "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
-        "PAYOUT": 259.5766,
-        "ROE": 9.9109,
-        "ROA": 0.412,
-        "MARGEM_LIQUIDA": 8.6696,
-        "NIM": 5.977,
-        "INDICE_COBERTURA": null,
-        "INDICE_EFICIENCIA": 94.7804,
-        "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 3.8263
-      }
-    },
-    "2021": {
-      "periodo_referencia": "2021T4",
-      "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "DY": null,
-        "PAYOUT": 74.121,
-        "ROE": 17.7956,
-        "ROA": 0.6942,
-        "MARGEM_LIQUIDA": 14.5054,
-        "NIM": 6.7097,
-        "INDICE_COBERTURA": null,
-        "INDICE_EFICIENCIA": 66.5825,
-        "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 3.9744
-      }
-    },
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
         "P_L": null,
         "P_VPA": null,
         "DY": null,
-        "PAYOUT": 59.6085,
-        "ROE": 17.9844,
-        "ROA": 0.6997,
-        "MARGEM_LIQUIDA": 10.8469,
-        "NIM": 5.6537,
+        "PAYOUT": 61.7907,
+        "ROE": 18.3038,
+        "ROA": 0.7434,
+        "MARGEM_LIQUIDA": 12.6187,
+        "NIM": 4.1783,
         "INDICE_COBERTURA": null,
-        "INDICE_EFICIENCIA": 67.5236,
+        "INDICE_EFICIENCIA": 48.4822,
         "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 3.8164
+        "PL_ATIVOS": 4.0612
       }
     },
     "2023": {
@@ -311,15 +192,15 @@
         "P_L": null,
         "P_VPA": null,
         "DY": null,
-        "PAYOUT": 63.9172,
-        "ROE": 18.0009,
-        "ROA": 0.6961,
-        "MARGEM_LIQUIDA": 10.8157,
-        "NIM": 5.4648,
+        "PAYOUT": 68.755,
+        "ROE": 19.7035,
+        "ROA": 0.7969,
+        "MARGEM_LIQUIDA": 12.4946,
+        "NIM": 4.7755,
         "INDICE_COBERTURA": null,
-        "INDICE_EFICIENCIA": 68.1191,
+        "INDICE_EFICIENCIA": 53.6363,
         "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 3.9135
+        "PL_ATIVOS": 4.0293
       }
     },
     "2024": {
@@ -328,86 +209,58 @@
         "P_L": null,
         "P_VPA": null,
         "DY": null,
-        "PAYOUT": 82.9218,
-        "ROE": 20.045,
-        "ROA": 0.7805,
-        "MARGEM_LIQUIDA": 12.5632,
-        "NIM": 5.3674,
+        "PAYOUT": 80.192,
+        "ROE": 16.3058,
+        "ROA": 0.6408,
+        "MARGEM_LIQUIDA": 10.6658,
+        "NIM": 5.1401,
         "INDICE_COBERTURA": null,
-        "INDICE_EFICIENCIA": 64.9651,
+        "INDICE_EFICIENCIA": 73.4864,
         "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 3.8761
+        "PL_ATIVOS": 3.8403
       }
     },
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "P_L": 8.6198,
-        "P_VPA": 1.7196,
-        "DY": 12.1549,
-        "PAYOUT": 104.7733,
-        "ROE": 20.5777,
-        "ROA": 0.7792,
-        "MARGEM_LIQUIDA": 11.5276,
-        "NIM": 5.0225,
+        "P_L": 7.9151,
+        "P_VPA": 0.6728,
+        "DY": 14.8084,
+        "PAYOUT": 117.2098,
+        "ROE": 8.5293,
+        "ROA": 0.3196,
+        "MARGEM_LIQUIDA": 5.2031,
+        "NIM": 4.5106,
         "INDICE_COBERTURA": null,
-        "INDICE_EFICIENCIA": 63.5497,
+        "INDICE_EFICIENCIA": 94.3106,
         "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 3.7838
+        "PL_ATIVOS": 3.6829
       }
     }
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2025-12-29T17:24:09.774067",
-    "preco_utilizado": 35.83,
+    "data_calculo": "2025-12-29T17:24:09.598892",
+    "preco_utilizado": 21.97,
     "periodo_preco": "2025T3",
-    "acoes_utilizadas": 10784548883,
+    "acoes_utilizadas": 5730834040,
     "periodo_acoes": "2024T4",
     "multiplos": {
-      "P_L": 8.6198,
-      "P_VPA": 1.7196,
-      "DY": 12.1549,
-      "PAYOUT": 104.7733,
-      "ROE": 20.5777,
-      "ROA": 0.7792,
-      "MARGEM_LIQUIDA": 11.5276,
-      "NIM": 5.0225,
+      "P_L": 7.9151,
+      "P_VPA": 0.6728,
+      "DY": 14.8084,
+      "PAYOUT": 117.2098,
+      "ROE": 8.5293,
+      "ROA": 0.3196,
+      "MARGEM_LIQUIDA": 5.2031,
+      "NIM": 4.5106,
       "INDICE_COBERTURA": null,
-      "INDICE_EFICIENCIA": 63.5497,
+      "INDICE_EFICIENCIA": 94.3106,
       "LOAN_DEPOSIT": null,
-      "PL_ATIVOS": 3.7838
+      "PL_ATIVOS": 3.6829
     }
   },
   "periodos_disponiveis": [
-    "2015T1",
-    "2015T2",
-    "2015T3",
-    "2015T4",
-    "2016T1",
-    "2016T2",
-    "2016T3",
-    "2016T4",
-    "2017T1",
-    "2017T2",
-    "2017T3",
-    "2017T4",
-    "2018T1",
-    "2018T2",
-    "2018T3",
-    "2018T4",
-    "2019T1",
-    "2019T2",
-    "2019T3",
-    "2019T4",
-    "2020T1",
-    "2020T2",
-    "2020T3",
-    "2020T4",
-    "2021T1",
-    "2021T2",
-    "2021T3",
-    "2021T4",
     "2022T1",
     "2022T2",
     "2022T3",
