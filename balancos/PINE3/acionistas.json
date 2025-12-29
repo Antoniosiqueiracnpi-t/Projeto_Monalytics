@@ -1,0 +1,51 @@
+{
+  "empresa": {
+    "cnpj": "62.144.175/0001-20",
+    "nome": "",
+    "ticker": "PINE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 3,
+  "acionistas": [
+    {
+      "nome": "NOBERTO NOGUEIRA PINHEIRO",
+      "cpf_cnpj": "026.336.983-87",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 153835054,
+      "percentual_total": 67.847,
+      "acoes_ordinarias": 113433026,
+      "percentual_ordinarias": 97.75,
+      "acoes_preferenciais": 40402028,
+      "percentual_preferenciais": 36.498,
+      "posicao": 1
+    },
+    {
+      "nome": "Clube de Investimento Horizonte",
+      "cpf_cnpj": "00.194.297/0001-73",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 9339821,
+      "percentual_total": 4.119,
+      "acoes_ordinarias": 760171,
+      "percentual_ordinarias": 0.655,
+      "acoes_preferenciais": 8579650,
+      "percentual_preferenciais": 7.751,
+      "posicao": 2
+    },
+    {
+      "nome": "FRANCISCO ASCLEPIO BARROSO AGUIAR",
+      "cpf_cnpj": "170.810.253-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 7342237,
+      "percentual_total": 3.238,
+      "acoes_ordinarias": 583362,
+      "percentual_ordinarias": 0.503,
+      "acoes_preferenciais": 6758875,
+      "percentual_preferenciais": 6.106,
+      "posicao": 3
+    }
+  ]
+}

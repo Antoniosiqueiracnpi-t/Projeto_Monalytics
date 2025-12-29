@@ -1,0 +1,35 @@
+{
+  "ticker": "BMGB4",
+  "total_dividendos": 7.8983,
+  "periodo": "2024-2025",
+  "quantidade_pagamentos": 3,
+  "dividendos": [
+    {
+      "data_com": "2024-04-12",
+      "valor": 2.892157,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2024,
+      "mes": 4,
+      "dia": 12,
+      "trimestre": "T2"
+    },
+    {
+      "data_com": "2025-02-04",
+      "valor": 2.590674,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2025,
+      "mes": 2,
+      "dia": 4,
+      "trimestre": "T1"
+    },
+    {
+      "data_com": "2025-11-11",
+      "valor": 2.415459,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2025,
+      "mes": 11,
+      "dia": 11,
+      "trimestre": "T4"
+    }
+  ]
+}

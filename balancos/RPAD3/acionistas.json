@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "17.167.396/0001-69",
+    "nome": "",
+    "ticker": "RPAD3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "BANCO SAFRA S.A",
+      "cpf_cnpj": "58.160.789/0001-28",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 68575361,
+      "percentual_total": 80.98,
+      "acoes_ordinarias": 43337367,
+      "percentual_ordinarias": 94.188,
+      "acoes_preferenciais": 25237994,
+      "percentual_preferenciais": 65.264,
+      "posicao": 1
+    },
+    {
+      "nome": "MARIO SLERCA JUNIOR",
+      "cpf_cnpj": "007.592.017-49",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 9951485,
+      "percentual_total": 11.752,
+      "acoes_ordinarias": 966736,
+      "percentual_ordinarias": 2.101,
+      "acoes_preferenciais": 8984749,
+      "percentual_preferenciais": 23.234,
+      "posicao": 2
+    }
+  ]
+}

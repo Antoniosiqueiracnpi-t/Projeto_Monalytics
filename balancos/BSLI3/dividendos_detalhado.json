@@ -1,0 +1,598 @@
+{
+  "ticker": "BSLI3",
+  "total_dividendos": 4.4563,
+  "periodo": "2009-2025",
+  "quantidade_pagamentos": 59,
+  "dividendos": [
+    {
+      "data_com": "2009-08-03",
+      "valor": 0.048751,
+      "tipo": "Dividendo",
+      "ano": 2009,
+      "mes": 8,
+      "dia": 3,
+      "trimestre": "T3",
+      "data_pagamento": "2009-08-03"
+    },
+    {
+      "data_com": "2010-02-02",
+      "valor": 0.080186,
+      "tipo": "Dividendo",
+      "ano": 2010,
+      "mes": 2,
+      "dia": 2,
+      "trimestre": "T1",
+      "data_pagamento": "2010-02-02"
+    },
+    {
+      "data_com": "2010-04-26",
+      "valor": 0.000161,
+      "tipo": "Dividendo",
+      "ano": 2010,
+      "mes": 4,
+      "dia": 26,
+      "trimestre": "T2",
+      "data_pagamento": "2010-04-26"
+    },
+    {
+      "data_com": "2011-02-01",
+      "valor": 0.042683,
+      "tipo": "Dividendo",
+      "ano": 2011,
+      "mes": 2,
+      "dia": 1,
+      "trimestre": "T1",
+      "data_pagamento": "2011-02-01"
+    },
+    {
+      "data_com": "2011-03-01",
+      "valor": 0.008472,
+      "tipo": "Dividendo",
+      "ano": 2011,
+      "mes": 3,
+      "dia": 1,
+      "trimestre": "T1",
+      "data_pagamento": "2011-03-01"
+    },
+    {
+      "data_com": "2011-08-04",
+      "valor": 0.063717,
+      "tipo": "Dividendo",
+      "ano": 2011,
+      "mes": 8,
+      "dia": 4,
+      "trimestre": "T3",
+      "data_pagamento": "2011-08-04"
+    },
+    {
+      "data_com": "2012-08-02",
+      "valor": 0.067667,
+      "tipo": "Dividendo",
+      "ano": 2012,
+      "mes": 8,
+      "dia": 2,
+      "trimestre": "T3",
+      "data_pagamento": "2012-08-02"
+    },
+    {
+      "data_com": "2012-08-20",
+      "valor": 0.011732,
+      "tipo": "Dividendo",
+      "ano": 2012,
+      "mes": 8,
+      "dia": 20,
+      "trimestre": "T3",
+      "data_pagamento": "2012-08-20"
+    },
+    {
+      "data_com": "2013-01-29",
+      "valor": 0.062025,
+      "tipo": "Dividendo",
+      "ano": 2013,
+      "mes": 1,
+      "dia": 29,
+      "trimestre": "T1",
+      "data_pagamento": "2013-01-29"
+    },
+    {
+      "data_com": "2013-03-04",
+      "valor": 0.007485,
+      "tipo": "Dividendo",
+      "ano": 2013,
+      "mes": 3,
+      "dia": 4,
+      "trimestre": "T1",
+      "data_pagamento": "2013-03-04"
+    },
+    {
+      "data_com": "2013-07-29",
+      "valor": 0.068289,
+      "tipo": "Dividendo",
+      "ano": 2013,
+      "mes": 7,
+      "dia": 29,
+      "trimestre": "T3",
+      "data_pagamento": "2013-07-29"
+    },
+    {
+      "data_com": "2013-08-16",
+      "valor": 0.009903,
+      "tipo": "Dividendo",
+      "ano": 2013,
+      "mes": 8,
+      "dia": 16,
+      "trimestre": "T3",
+      "data_pagamento": "2013-08-16"
+    },
+    {
+      "data_com": "2014-01-31",
+      "valor": 0.034864,
+      "tipo": "Dividendo",
+      "ano": 2014,
+      "mes": 1,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2014-01-31"
+    },
+    {
+      "data_com": "2014-02-28",
+      "valor": 0.003862,
+      "tipo": "Dividendo",
+      "ano": 2014,
+      "mes": 2,
+      "dia": 28,
+      "trimestre": "T1",
+      "data_pagamento": "2014-02-28"
+    },
+    {
+      "data_com": "2014-07-01",
+      "valor": 0.058106,
+      "tipo": "Dividendo",
+      "ano": 2014,
+      "mes": 7,
+      "dia": 1,
+      "trimestre": "T3",
+      "data_pagamento": "2014-07-01"
+    },
+    {
+      "data_com": "2014-08-28",
+      "valor": 0.00019,
+      "tipo": "Dividendo",
+      "ano": 2014,
+      "mes": 8,
+      "dia": 28,
+      "trimestre": "T3",
+      "data_pagamento": "2014-08-28"
+    },
+    {
+      "data_com": "2014-09-03",
+      "valor": 0.031958,
+      "tipo": "Dividendo",
+      "ano": 2014,
+      "mes": 9,
+      "dia": 3,
+      "trimestre": "T3",
+      "data_pagamento": "2014-09-03"
+    },
+    {
+      "data_com": "2015-01-07",
+      "valor": 0.010169,
+      "tipo": "Dividendo",
+      "ano": 2015,
+      "mes": 1,
+      "dia": 7,
+      "trimestre": "T1",
+      "data_pagamento": "2015-01-07"
+    },
+    {
+      "data_com": "2015-06-29",
+      "valor": 0.020337,
+      "tipo": "Dividendo",
+      "ano": 2015,
+      "mes": 6,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2015-06-29"
+    },
+    {
+      "data_com": "2015-08-25",
+      "valor": 0.001518,
+      "tipo": "Dividendo",
+      "ano": 2015,
+      "mes": 8,
+      "dia": 25,
+      "trimestre": "T3",
+      "data_pagamento": "2015-08-25"
+    },
+    {
+      "data_com": "2015-12-09",
+      "valor": 0.058106,
+      "tipo": "Dividendo",
+      "ano": 2015,
+      "mes": 12,
+      "dia": 9,
+      "trimestre": "T4",
+      "data_pagamento": "2015-12-09"
+    },
+    {
+      "data_com": "2016-04-15",
+      "valor": 0.04939,
+      "tipo": "Dividendo",
+      "ano": 2016,
+      "mes": 4,
+      "dia": 15,
+      "trimestre": "T2",
+      "data_pagamento": "2016-04-15"
+    },
+    {
+      "data_com": "2016-10-19",
+      "valor": 0.072633,
+      "tipo": "Dividendo",
+      "ano": 2016,
+      "mes": 10,
+      "dia": 19,
+      "trimestre": "T4",
+      "data_pagamento": "2016-10-19"
+    },
+    {
+      "data_com": "2017-04-04",
+      "valor": 0.016731,
+      "tipo": "Dividendo",
+      "ano": 2017,
+      "mes": 4,
+      "dia": 4,
+      "trimestre": "T2",
+      "data_pagamento": "2017-04-04"
+    },
+    {
+      "data_com": "2017-04-26",
+      "valor": 0.063917,
+      "tipo": "Dividendo",
+      "ano": 2017,
+      "mes": 4,
+      "dia": 26,
+      "trimestre": "T2",
+      "data_pagamento": "2017-04-26"
+    },
+    {
+      "data_com": "2017-05-10",
+      "valor": 0.138369,
+      "tipo": "Dividendo",
+      "ano": 2017,
+      "mes": 5,
+      "dia": 10,
+      "trimestre": "T2",
+      "data_pagamento": "2017-05-10"
+    },
+    {
+      "data_com": "2017-08-18",
+      "valor": 0.036174,
+      "tipo": "Dividendo",
+      "ano": 2017,
+      "mes": 8,
+      "dia": 18,
+      "trimestre": "T3",
+      "data_pagamento": "2017-08-18"
+    },
+    {
+      "data_com": "2017-10-16",
+      "valor": 0.081348,
+      "tipo": "Dividendo",
+      "ano": 2017,
+      "mes": 10,
+      "dia": 16,
+      "trimestre": "T4",
+      "data_pagamento": "2017-10-16"
+    },
+    {
+      "data_com": "2017-11-29",
+      "valor": 0.061011,
+      "tipo": "Dividendo",
+      "ano": 2017,
+      "mes": 11,
+      "dia": 29,
+      "trimestre": "T4",
+      "data_pagamento": "2017-11-29"
+    },
+    {
+      "data_com": "2018-03-09",
+      "valor": 0.045163,
+      "tipo": "Dividendo",
+      "ano": 2018,
+      "mes": 3,
+      "dia": 9,
+      "trimestre": "T1",
+      "data_pagamento": "2018-03-09"
+    },
+    {
+      "data_com": "2018-04-16",
+      "valor": 0.029053,
+      "tipo": "Dividendo",
+      "ano": 2018,
+      "mes": 4,
+      "dia": 16,
+      "trimestre": "T2",
+      "data_pagamento": "2018-04-16"
+    },
+    {
+      "data_com": "2018-06-01",
+      "valor": 0.124438,
+      "tipo": "Dividendo",
+      "ano": 2018,
+      "mes": 6,
+      "dia": 1,
+      "trimestre": "T2",
+      "data_pagamento": "2018-06-01"
+    },
+    {
+      "data_com": "2018-08-16",
+      "valor": 0.031958,
+      "tipo": "Dividendo",
+      "ano": 2018,
+      "mes": 8,
+      "dia": 16,
+      "trimestre": "T3",
+      "data_pagamento": "2018-08-16"
+    },
+    {
+      "data_com": "2018-09-06",
+      "valor": 0.053002,
+      "tipo": "Dividendo",
+      "ano": 2018,
+      "mes": 9,
+      "dia": 6,
+      "trimestre": "T3",
+      "data_pagamento": "2018-09-06"
+    },
+    {
+      "data_com": "2018-11-09",
+      "valor": 0.02269,
+      "tipo": "Dividendo",
+      "ano": 2018,
+      "mes": 11,
+      "dia": 9,
+      "trimestre": "T4",
+      "data_pagamento": "2018-11-09"
+    },
+    {
+      "data_com": "2018-12-10",
+      "valor": 0.075803,
+      "tipo": "Dividendo",
+      "ano": 2018,
+      "mes": 12,
+      "dia": 10,
+      "trimestre": "T4",
+      "data_pagamento": "2018-12-10"
+    },
+    {
+      "data_com": "2019-09-03",
+      "valor": 0.203701,
+      "tipo": "Dividendo",
+      "ano": 2019,
+      "mes": 9,
+      "dia": 3,
+      "trimestre": "T3",
+      "data_pagamento": "2019-09-03"
+    },
+    {
+      "data_com": "2019-10-02",
+      "valor": 0.087159,
+      "tipo": "Dividendo",
+      "ano": 2019,
+      "mes": 10,
+      "dia": 2,
+      "trimestre": "T4",
+      "data_pagamento": "2019-10-02"
+    },
+    {
+      "data_com": "2019-12-04",
+      "valor": 0.028181,
+      "tipo": "Dividendo",
+      "ano": 2019,
+      "mes": 12,
+      "dia": 4,
+      "trimestre": "T4",
+      "data_pagamento": "2019-12-04"
+    },
+    {
+      "data_com": "2020-03-03",
+      "valor": 0.169422,
+      "tipo": "Dividendo",
+      "ano": 2020,
+      "mes": 3,
+      "dia": 3,
+      "trimestre": "T1",
+      "data_pagamento": "2020-03-03"
+    },
+    {
+      "data_com": "2020-06-02",
+      "valor": 0.074227,
+      "tipo": "Dividendo",
+      "ano": 2020,
+      "mes": 6,
+      "dia": 2,
+      "trimestre": "T2",
+      "data_pagamento": "2020-06-02"
+    },
+    {
+      "data_com": "2020-09-02",
+      "valor": 0.064036,
+      "tipo": "Dividendo",
+      "ano": 2020,
+      "mes": 9,
+      "dia": 2,
+      "trimestre": "T3",
+      "data_pagamento": "2020-09-02"
+    },
+    {
+      "data_com": "2020-12-02",
+      "valor": 0.08808,
+      "tipo": "Dividendo",
+      "ano": 2020,
+      "mes": 12,
+      "dia": 2,
+      "trimestre": "T4",
+      "data_pagamento": "2020-12-02"
+    },
+    {
+      "data_com": "2020-12-16",
+      "valor": 0.035206,
+      "tipo": "Dividendo",
+      "ano": 2020,
+      "mes": 12,
+      "dia": 16,
+      "trimestre": "T4",
+      "data_pagamento": "2020-12-16"
+    },
+    {
+      "data_com": "2021-03-02",
+      "valor": 0.044356,
+      "tipo": "Dividendo",
+      "ano": 2021,
+      "mes": 3,
+      "dia": 2,
+      "trimestre": "T1",
+      "data_pagamento": "2021-03-02"
+    },
+    {
+      "data_com": "2021-06-02",
+      "valor": 0.116492,
+      "tipo": "Dividendo",
+      "ano": 2021,
+      "mes": 6,
+      "dia": 2,
+      "trimestre": "T2",
+      "data_pagamento": "2021-06-02"
+    },
+    {
+      "data_com": "2021-09-02",
+      "valor": 0.123723,
+      "tipo": "Dividendo",
+      "ano": 2021,
+      "mes": 9,
+      "dia": 2,
+      "trimestre": "T3",
+      "data_pagamento": "2021-09-02"
+    },
+    {
+      "data_com": "2021-12-02",
+      "valor": 0.190329,
+      "tipo": "Dividendo",
+      "ano": 2021,
+      "mes": 12,
+      "dia": 2,
+      "trimestre": "T4",
+      "data_pagamento": "2021-12-02"
+    },
+    {
+      "data_com": "2022-02-04",
+      "valor": 0.653692,
+      "tipo": "Dividendo",
+      "ano": 2022,
+      "mes": 2,
+      "dia": 4,
+      "trimestre": "T1",
+      "data_pagamento": "2022-02-04"
+    },
+    {
+      "data_com": "2022-03-10",
+      "valor": 0.173285,
+      "tipo": "Dividendo",
+      "ano": 2022,
+      "mes": 3,
+      "dia": 10,
+      "trimestre": "T1",
+      "data_pagamento": "2022-03-10"
+    },
+    {
+      "data_com": "2022-06-02",
+      "valor": 0.070215,
+      "tipo": "Dividendo",
+      "ano": 2022,
+      "mes": 6,
+      "dia": 2,
+      "trimestre": "T2",
+      "data_pagamento": "2022-06-02"
+    },
+    {
+      "data_com": "2022-09-12",
+      "valor": 0.119093,
+      "tipo": "Dividendo",
+      "ano": 2022,
+      "mes": 9,
+      "dia": 12,
+      "trimestre": "T3",
+      "data_pagamento": "2022-09-12"
+    },
+    {
+      "data_com": "2023-03-16",
+      "valor": 0.000898,
+      "tipo": "Dividendo",
+      "ano": 2023,
+      "mes": 3,
+      "dia": 16,
+      "trimestre": "T1",
+      "data_pagamento": "2023-03-16"
+    },
+    {
+      "data_com": "2023-06-02",
+      "valor": 0.043463,
+      "tipo": "Dividendo",
+      "ano": 2023,
+      "mes": 6,
+      "dia": 2,
+      "trimestre": "T2",
+      "data_pagamento": "2023-06-02"
+    },
+    {
+      "data_com": "2023-09-22",
+      "valor": 0.092505,
+      "tipo": "Dividendo",
+      "ano": 2023,
+      "mes": 9,
+      "dia": 22,
+      "trimestre": "T3",
+      "data_pagamento": "2023-09-22"
+    },
+    {
+      "data_com": "2024-05-24",
+      "valor": 0.073452,
+      "tipo": "Dividendo",
+      "ano": 2024,
+      "mes": 5,
+      "dia": 24,
+      "trimestre": "T2",
+      "data_pagamento": "2024-05-24"
+    },
+    {
+      "data_com": "2024-12-18",
+      "valor": 0.004482,
+      "tipo": "Dividendo",
+      "ano": 2024,
+      "mes": 12,
+      "dia": 18,
+      "trimestre": "T4",
+      "data_pagamento": "2024-12-18"
+    },
+    {
+      "data_com": "2025-04-15",
+      "valor": 0.117317,
+      "tipo": "Dividendo",
+      "ano": 2025,
+      "mes": 4,
+      "dia": 15,
+      "trimestre": "T2",
+      "data_pagamento": "2025-04-15"
+    },
+    {
+      "data_com": "2025-09-04",
+      "valor": 0.291147,
+      "tipo": "Dividendo",
+      "ano": 2025,
+      "mes": 9,
+      "dia": 4,
+      "trimestre": "T3",
+      "data_pagamento": "2025-09-04"
+    }
+  ]
+}
