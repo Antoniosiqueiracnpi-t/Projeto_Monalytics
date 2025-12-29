@@ -1,0 +1,168 @@
+name: Pipeline por Setor (Capturas → Padronizações → Múltiplos)
+
+on:
+  workflow_dispatch:
+    inputs:
+      setor:
+        description: "Setor exatamente como está na coluna 'setor' do mapeamento_b3_consolidado.csv (ex: Energia Elétrica). Use 'TODOS' para tudo."
+        required: true
+        default: "TODOS"
+        type: string
+
+      limite:
+        description: "Opcional: limita a quantidade de tickers do setor (0 = todos). Útil para testes rápidos."
+        required: true
+        default: "0"
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONUTF8: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy requests yfinance openpyxl
+
+      - name: Selecionar tickers por setor (mapeamento_b3_consolidado.csv)
+        env:
+          SETOR: ${{ inputs.setor }}
+          LIMITE: ${{ inputs.limite }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os, sys
+          import pandas as pd
+
+          setor = (os.environ.get("SETOR") or "").strip()
+          limite = int((os.environ.get("LIMITE") or "0").strip() or "0")
+
+          # Localiza o arquivo de mapeamento
+          candidates = [
+              Path("mapeamento_b3_consolidado.csv"),
+              Path("src/mapeamento_b3_consolidado.csv"),
+          ]
+
+          path = next((p for p in candidates if p.exists()), None)
+          if path is None:
+              # fallback: procurar em até 3 níveis
+              found = None
+              for p in Path(".").rglob("mapeamento_b3_consolidado.csv"):
+                  found = p
+                  break
+              path = found
+
+          if path is None or not path.exists():
+              print("❌ mapeamento_b3_consolidado.csv não encontrado no repo.")
+              sys.exit(1)
+
+          df = pd.read_csv(path, sep=";", encoding="utf-8-sig")
+
+          if "ticker" not in df.columns or "setor" not in df.columns:
+              print("❌ CSV inválido: precisa ter colunas 'ticker' e 'setor'.")
+              print("Colunas encontradas:", list(df.columns))
+              sys.exit(1)
+
+          if setor.upper() == "TODOS":
+              df_sel = df
+          else:
+              alvo = setor.casefold()
+              key = df["setor"].fillna("").astype(str).str.strip().str.casefold()
+              df_sel = df[key == alvo]
+
+              # conveniência: se não achou por igualdade, tenta 'contains'
+              if df_sel.empty:
+                  df_sel = df[key.str.contains(alvo, na=False)]
+
+              if df_sel.empty:
+                  print(f"❌ Setor '{setor}' não encontrado.")
+                  print("\nSetores disponíveis (no CSV):")
+                  for s in sorted(df["setor"].dropna().astype(str).unique()):
+                      print("-", s)
+                  sys.exit(1)
+
+          tickers = sorted({str(t).strip().upper() for t in df_sel["ticker"].dropna().tolist() if str(t).strip()})
+
+          if limite > 0:
+              tickers = tickers[:limite]
+
+          if not tickers:
+              print(f"❌ Nenhum ticker encontrado para o setor '{setor}'.")
+              sys.exit(1)
+
+          print(f"✅ Setor: {setor} | Tickers: {len(tickers)} | CSV: {path}")
+
+          tickers_csv = ",".join(tickers)
+          env_file = os.environ["GITHUB_ENV"]
+          with open(env_file, "a", encoding="utf-8") as f:
+              f.write(f"TICKERS={tickers_csv}\n")
+              f.write(f"TICKERS_COUNT={len(tickers)}\n")
+          PY
+
+      - name: Capturar Balanços
+        run: |
+          python src/capturar_balancos.py --modo lista --lista "${TICKERS}"
+
+      - name: Capturar Preços Trimestrais
+        run: |
+          python src/capturar_precos.py --modo lista --lista "${TICKERS}"
+
+      - name: Capturar Dividendos Trimestrais
+        run: |
+          python src/capturar_dividendos.py --modo lista --lista "${TICKERS}"
+
+      - name: Capturar Histórico de Ações
+        run: |
+          python src/capturar_acoes.py --modo lista --lista "${TICKERS}"
+
+      - name: Capturar Acionistas (Top 10)
+        run: |
+          python src/capturar_acionistas.py --modo lista --lista "${TICKERS}"
+
+      - name: Capturar Logos
+        run: |
+          python src/capturar_logos.py --modo lista --lista "${TICKERS}"
+
+      - name: Padronizar DRE
+        run: |
+          python src/padronizar_dre.py --modo lista --lista "${TICKERS}"
+
+      - name: Padronizar DFC
+        run: |
+          python src/padronizar_dfc.py --modo lista --lista "${TICKERS}"
+
+      - name: Padronizar BP (BPA + BPP)
+        run: |
+          python src/padronizar_bp.py --modo lista --lista "${TICKERS}"
+
+      - name: Calcular Múltiplos
+        run: |
+          python src/calcular_multiplos.py --modo lista --lista "${TICKERS}"
+
+      - name: Commit e push dos resultados
+        run: |
+          git config user.name "actions-user"
+          git config user.email "actions-user@users.noreply.github.com"
+
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Nenhuma alteração para commitar."
+            exit 0
+          fi
+
+          git add -A
+          git commit -m "Pipeline por setor: ${{ inputs.setor }} (tickers=${TICKERS_COUNT})"
+          git push
