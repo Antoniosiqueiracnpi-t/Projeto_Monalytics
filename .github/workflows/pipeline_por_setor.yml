@@ -1,4 +1,4 @@
-name: Pipeline por Setor (Capturas → Padronizações → Múltiplos)
+name: Pipeline por Setor (Capturas → Padronizações → Preços → Múltiplos)
 
 on:
   workflow_dispatch:
@@ -152,18 +152,12 @@ jobs:
               f.write(f"TICKERS_COUNT={len(tickers)}\n")
           PY
 
-      # ---------------- CAPTURAS ----------------
+      # ---------------- CAPTURAS (SEM PREÇOS) ----------------
       - name: Capturar Balanços
         id: balancos
         continue-on-error: true
         run: |
           python src/capturar_balancos.py --modo lista --lista "${TICKERS}"
-
-      - name: Capturar Preços Trimestrais
-        id: precos
-        continue-on-error: true
-        run: |
-          python src/capturar_precos.py --modo lista --lista "${TICKERS}"
 
       - name: Capturar Dividendos Trimestrais
         id: dividendos
@@ -208,6 +202,13 @@ jobs:
         run: |
           python src/padronizar_bp.py --modo lista --lista "${TICKERS}"
 
+      # ---------------- CAPTURA DE PREÇOS (APÓS PADRONIZAÇÃO) ----------------
+      - name: Capturar Preços Trimestrais
+        id: precos
+        continue-on-error: true
+        run: |
+          python src/capturar_precos.py --modo lista --lista "${TICKERS}"
+
       # ---------------- MÚLTIPLOS ----------------
       - name: Calcular Múltiplos
         id: multiplos
@@ -227,7 +228,6 @@ jobs:
           echo ""
           echo "Outcome por etapa (success/failure/skipped):"
           echo "- Capturar Balanços:         ${{ steps.balancos.outcome }}"
-          echo "- Capturar Preços:           ${{ steps.precos.outcome }}"
           echo "- Capturar Dividendos:       ${{ steps.dividendos.outcome }}"
           echo "- Capturar Ações:            ${{ steps.acoes.outcome }}"
           echo "- Capturar Acionistas:       ${{ steps.acionistas.outcome }}"
@@ -235,6 +235,7 @@ jobs:
           echo "- Padronizar DRE:            ${{ steps.dre.outcome }}"
           echo "- Padronizar DFC:            ${{ steps.dfc.outcome }}"
           echo "- Padronizar BP:             ${{ steps.bp.outcome }}"
+          echo "- Capturar Preços:           ${{ steps.precos.outcome }}"
           echo "- Calcular Múltiplos:        ${{ steps.multiplos.outcome }}"
           echo ""
 
