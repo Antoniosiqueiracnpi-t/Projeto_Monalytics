@@ -100,13 +100,13 @@
         "DY": 45.8135,
         "PAYOUT": 61.7907,
         "ROE": 18.3038,
-        "ROA": 0.7434,
+        "ROA": 1.4867,
         "MARGEM_LIQUIDA": 12.6187,
         "NIM": 4.1783,
         "INDICE_COBERTURA": null,
         "INDICE_EFICIENCIA": 48.4822,
         "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 4.0612
+        "PL_ATIVOS": 8.1225
       }
     },
     "2023": {
@@ -117,13 +117,13 @@
         "DY": 16.3208,
         "PAYOUT": 68.755,
         "ROE": 19.7035,
-        "ROA": 0.7969,
+        "ROA": 1.5939,
         "MARGEM_LIQUIDA": 12.4946,
         "NIM": 4.7755,
         "INDICE_COBERTURA": null,
         "INDICE_EFICIENCIA": 53.6363,
         "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 4.0293
+        "PL_ATIVOS": 8.0585
       }
     },
     "2024": {
@@ -134,13 +134,13 @@
         "DY": 17.7016,
         "PAYOUT": 80.192,
         "ROE": 16.3058,
-        "ROA": 0.6408,
+        "ROA": 1.2815,
         "MARGEM_LIQUIDA": 10.6658,
         "NIM": 5.1401,
         "INDICE_COBERTURA": null,
         "INDICE_EFICIENCIA": 73.4864,
         "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 3.8403
+        "PL_ATIVOS": 7.6806
       }
     },
     "2025": {
@@ -151,19 +151,19 @@
         "DY": 14.8084,
         "PAYOUT": 117.2098,
         "ROE": 8.5293,
-        "ROA": 0.3196,
+        "ROA": 0.6392,
         "MARGEM_LIQUIDA": 5.2031,
         "NIM": 4.5106,
         "INDICE_COBERTURA": null,
         "INDICE_EFICIENCIA": 94.3106,
         "LOAN_DEPOSIT": null,
-        "PL_ATIVOS": 3.6829
+        "PL_ATIVOS": 7.3659
       }
     }
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2025-12-29T17:55:10.311699",
+    "data_calculo": "2025-12-29T18:51:19.042635",
     "preco_utilizado": 21.97,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 5730834040,
@@ -174,13 +174,13 @@
       "DY": 14.8084,
       "PAYOUT": 117.2098,
       "ROE": 8.5293,
-      "ROA": 0.3196,
+      "ROA": 0.6392,
       "MARGEM_LIQUIDA": 5.2031,
       "NIM": 4.5106,
       "INDICE_COBERTURA": null,
       "INDICE_EFICIENCIA": 94.3106,
       "LOAN_DEPOSIT": null,
-      "PL_ATIVOS": 3.6829
+      "PL_ATIVOS": 7.3659
     }
   },
   "periodos_disponiveis": [
