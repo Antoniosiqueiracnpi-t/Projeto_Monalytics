@@ -1,0 +1,62 @@
+{
+  "ticker": "BPAN4",
+  "total_dividendos": 1.7212,
+  "periodo": "2012-2022",
+  "quantidade_pagamentos": 6,
+  "dividendos": [
+    {
+      "data_com": "2012-10-02",
+      "valor": 1.010006,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2012,
+      "mes": 10,
+      "dia": 2,
+      "trimestre": "T4"
+    },
+    {
+      "data_com": "2015-09-02",
+      "valor": 0.108312,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2015,
+      "mes": 9,
+      "dia": 2,
+      "trimestre": "T3"
+    },
+    {
+      "data_com": "2016-01-02",
+      "valor": 0.187432,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2016,
+      "mes": 1,
+      "dia": 2,
+      "trimestre": "T1"
+    },
+    {
+      "data_com": "2020-06-05",
+      "valor": 0.055581,
+      "tipo": "DIVIDENDO",
+      "ano": 2020,
+      "mes": 6,
+      "dia": 5,
+      "trimestre": "T2"
+    },
+    {
+      "data_com": "2021-04-05",
+      "valor": 0.039579,
+      "tipo": "DIVIDENDO",
+      "ano": 2021,
+      "mes": 4,
+      "dia": 5,
+      "trimestre": "T2"
+    },
+    {
+      "data_com": "2022-11-05",
+      "valor": 0.320312,
+      "tipo": "DIVIDENDO",
+      "ano": 2022,
+      "mes": 11,
+      "dia": 5,
+      "trimestre": "T4"
+    }
+  ]
+}
