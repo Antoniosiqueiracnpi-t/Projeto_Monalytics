@@ -20,27 +20,6 @@
       "unidade": "x",
       "usa_preco": true
     },
-    "EV_EBITDA": {
-      "nome": "EV/EBITDA",
-      "categoria": "Valuation",
-      "formula": "Enterprise Value / EBITDA LTM",
-      "unidade": "x",
-      "usa_preco": true
-    },
-    "EV_EBIT": {
-      "nome": "EV/EBIT",
-      "categoria": "Valuation",
-      "formula": "Enterprise Value / EBIT LTM",
-      "unidade": "x",
-      "usa_preco": true
-    },
-    "EV_RECEITA": {
-      "nome": "EV/Receita",
-      "categoria": "Valuation",
-      "formula": "Enterprise Value / Receita LTM",
-      "unidade": "x",
-      "usa_preco": true
-    },
     "DY": {
       "nome": "Dividend Yield",
       "categoria": "Valuation",
@@ -69,101 +48,45 @@
       "unidade": "%",
       "usa_preco": false
     },
-    "ROIC": {
-      "nome": "ROIC",
-      "categoria": "Rentabilidade",
-      "formula": "NOPAT / Capital Investido",
-      "unidade": "%",
-      "usa_preco": false
-    },
-    "MARGEM_EBITDA": {
-      "nome": "Margem EBITDA",
-      "categoria": "Rentabilidade",
-      "formula": "EBITDA / Receita",
-      "unidade": "%",
-      "usa_preco": false
-    },
     "MARGEM_LIQUIDA": {
       "nome": "Margem Líquida",
       "categoria": "Rentabilidade",
-      "formula": "Lucro Líquido / Receita",
+      "formula": "LL / Receita Intermediação",
       "unidade": "%",
       "usa_preco": false
     },
-    "DIV_LIQ_EBITDA": {
-      "nome": "Dív.Líq/EBITDA",
-      "categoria": "Endividamento",
-      "formula": "(Emp CP + LP - Caixa) / EBITDA",
-      "unidade": "x",
-      "usa_preco": false
-    },
-    "DIV_LIQ_PL": {
-      "nome": "Dív.Líq/PL",
-      "categoria": "Endividamento",
-      "formula": "Dívida Líquida / Patrimônio Líquido",
-      "unidade": "x",
-      "usa_preco": false
-    },
-    "ICJ": {
-      "nome": "ICJ",
-      "categoria": "Endividamento",
-      "formula": "EBIT / Despesas Financeiras",
-      "unidade": "x",
-      "usa_preco": false
-    },
-    "COMPOSICAO_DIVIDA": {
-      "nome": "Composição Dívida",
-      "categoria": "Endividamento",
-      "formula": "Emp CP / (Emp CP + LP)",
+    "NIM": {
+      "nome": "NIM",
+      "categoria": "Rentabilidade",
+      "formula": "Resultado Bruto Interm. / Ativos Rentáveis Médios",
       "unidade": "%",
       "usa_preco": false
     },
-    "LIQ_CORRENTE": {
-      "nome": "Liquidez Corrente",
-      "categoria": "Liquidez",
-      "formula": "Ativo Circulante / Passivo Circulante",
-      "unidade": "x",
+    "INDICE_COBERTURA": {
+      "nome": "Índice de Cobertura",
+      "categoria": "Qualidade Ativos",
+      "formula": "Provisão PDD / Carteira de Crédito",
+      "unidade": "%",
       "usa_preco": false
     },
-    "LIQ_SECA": {
-      "nome": "Liquidez Seca",
-      "categoria": "Liquidez",
-      "formula": "(AC - Estoques) / PC",
-      "unidade": "x",
-      "usa_preco": false
-    },
-    "LIQ_GERAL": {
-      "nome": "Liquidez Geral",
-      "categoria": "Liquidez",
-      "formula": "(AC + RLP) / (PC + PNC)",
-      "unidade": "x",
-      "usa_preco": false
-    },
-    "GIRO_ATIVO": {
-      "nome": "Giro do Ativo",
+    "INDICE_EFICIENCIA": {
+      "nome": "Índice de Eficiência",
       "categoria": "Eficiência",
-      "formula": "Receita LTM / Ativo Total",
-      "unidade": "x",
+      "formula": "Despesas Adm / Receitas Operacionais",
+      "unidade": "%",
       "usa_preco": false
     },
-    "CICLO_CAIXA": {
-      "nome": "Ciclo de Caixa",
-      "categoria": "Eficiência",
-      "formula": "PMR + PME - PMP",
-      "unidade": "dias",
+    "LOAN_DEPOSIT": {
+      "nome": "Loan-to-Deposit",
+      "categoria": "Estrutura",
+      "formula": "Carteira Crédito / Depósitos",
+      "unidade": "%",
       "usa_preco": false
     },
-    "PME": {
-      "nome": "PME",
-      "categoria": "Eficiência",
-      "formula": "(Estoques + AtBio) × 360 / CPV",
-      "unidade": "dias",
-      "usa_preco": false
-    },
-    "NCG_RECEITA": {
-      "nome": "NCG/Receita",
-      "categoria": "Eficiência",
-      "formula": "NCG / Receita LTM",
+    "PL_ATIVOS": {
+      "nome": "PL/Ativos",
+      "categoria": "Estrutura",
+      "formula": "Patrimônio Líquido / Ativo Total",
       "unidade": "%",
       "usa_preco": false
     }
@@ -240,7 +163,7 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2025-12-29T17:32:41.181090",
+    "data_calculo": "2025-12-29T17:55:10.311699",
     "preco_utilizado": 21.97,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 5730834040,
