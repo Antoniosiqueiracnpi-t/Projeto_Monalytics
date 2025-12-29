@@ -103,9 +103,9 @@
         "ROA": 1.179,
         "MARGEM_LIQUIDA": 10.3039,
         "NIM": 4.8758,
-        "INDICE_COBERTURA": null,
+        "INDICE_COBERTURA": 8.3145,
         "INDICE_EFICIENCIA": 67.5479,
-        "LOAN_DEPOSIT": null,
+        "LOAN_DEPOSIT": 111.1735,
         "PL_ATIVOS": 8.8208
       }
     },
@@ -120,9 +120,9 @@
         "ROA": 0.7782,
         "MARGEM_LIQUIDA": 6.4612,
         "NIM": 4.3761,
-        "INDICE_COBERTURA": null,
+        "INDICE_COBERTURA": 8.0184,
         "INDICE_EFICIENCIA": 85.0057,
-        "LOAN_DEPOSIT": null,
+        "LOAN_DEPOSIT": 99.92,
         "PL_ATIVOS": 8.6647
       }
     },
@@ -137,9 +137,9 @@
         "ROA": 0.8778,
         "MARGEM_LIQUIDA": 8.2273,
         "NIM": 4.2229,
-        "INDICE_COBERTURA": null,
+        "INDICE_COBERTURA": 6.6921,
         "INDICE_EFICIENCIA": 75.4854,
-        "LOAN_DEPOSIT": null,
+        "LOAN_DEPOSIT": 110.0556,
         "PL_ATIVOS": 8.1634
       }
     },
@@ -154,16 +154,16 @@
         "ROA": 1.0232,
         "MARGEM_LIQUIDA": 8.5587,
         "NIM": 4.486,
-        "INDICE_COBERTURA": null,
+        "INDICE_COBERTURA": 6.3207,
         "INDICE_EFICIENCIA": 75.8011,
-        "LOAN_DEPOSIT": null,
+        "LOAN_DEPOSIT": 112.0915,
         "PL_ATIVOS": 7.9965
       }
     }
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2025-12-29T21:50:13.717888",
+    "data_calculo": "2025-12-29T22:00:11.926661",
     "preco_utilizado": null,
     "periodo_preco": "",
     "acoes_utilizadas": null,
@@ -177,9 +177,9 @@
       "ROA": 1.0232,
       "MARGEM_LIQUIDA": 8.5587,
       "NIM": 4.486,
-      "INDICE_COBERTURA": null,
+      "INDICE_COBERTURA": 6.3207,
       "INDICE_EFICIENCIA": 75.8011,
-      "LOAN_DEPOSIT": null,
+      "LOAN_DEPOSIT": 112.0915,
       "PL_ATIVOS": 7.9965
     }
   },
