@@ -153,28 +153,38 @@ def get_all_tickers(ticker: str) -> List[str]:
     return sorted(tickers)
 
 
-def get_pasta_balanco(ticker: str) -> Path:
+def get_pasta_balanco(ticker: str, pasta_base: Path = Path("balancos")) -> Path:
     """
-    Retorna Path da pasta de balanços usando SEMPRE o ticker principal.
+    Retorna o caminho da pasta de balanços do ticker.
     
-    Exemplos:
-        get_pasta_balanco("ITUB4") → balancos/ITUB3
-        get_pasta_balanco("PETR3") → balancos/PETR3
-        get_pasta_balanco("KLBN3") → balancos/KLBN11
-    
-    Args:
-        ticker: Qualquer ticker do grupo
-    
-    Returns:
-        Path para pasta de balanços (usa ticker principal)
+    CORREÇÃO: Busca variantes do ticker (3, 4, 5, 6, 11) se pasta exata não existir.
+    Exemplo: Se buscar ITUB3 e não existir, procura ITUB4, ITUB5, etc.
     """
-    principal = get_ticker_principal(ticker)
+    import re
     
-    if principal is None:
-        # Fallback: usar o ticker fornecido
-        principal = ticker.upper().strip()
+    ticker_clean = get_ticker_principal(ticker).upper().strip()
     
-    return PASTA_BALANCOS / principal
+    # Tentar pasta exata primeiro
+    pasta_exata = pasta_base / ticker_clean
+    if pasta_exata.exists():
+        return pasta_exata
+    
+    # Extrair base do ticker (sem número final)
+    match = re.match(r'^([A-Z]{4})(\d+)?$', ticker_clean)
+    if not match:
+        return pasta_exata
+    
+    base = match.group(1)  # Ex: "ITUB" de "ITUB3"
+    
+    # Variantes comuns na B3
+    variantes = ['3', '4', '5', '6', '11', '33', '34']
+    
+    for var in variantes:
+        pasta_variante = pasta_base / f"{base}{var}"
+        if pasta_variante.exists():
+            return pasta_variante
+    
+    return pasta_exata
 
 
 def resolve_ticker(ticker: str) -> Optional[Dict[str, any]]:
