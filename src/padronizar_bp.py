@@ -5,10 +5,144 @@ import argparse
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple, Any
 
 import numpy as np
 import pandas as pd
+
+# ======================================================================================
+# DETECÇÃO INTELIGENTE DE CONTAS BANCÁRIAS
+# ======================================================================================
+
+# Padrões de busca por descrição (regex) - ordem de prioridade
+PATTERNS_OPERACOES_CREDITO = [
+    r"Opera[çc][õo]es\s+de\s+Cr[ée]dito",  # "Operações de Crédito"
+    r"Carteira\s+de\s+Cr[ée]dito",          # "Carteira de Crédito"
+    r"Empr[ée]stimos\s+e\s+Receb[ií]veis",  # "Empréstimos e Recebíveis"
+]
+
+PATTERNS_PROVISAO_PDD = [
+    r"Provis[ãa]o\s+para\s+Perda[s]?\s+Esperada[s]?",           # "Provisão para Perdas Esperadas"
+    r"\(-?\)\s*Provis[ãa]o\s+para\s+Perda",                      # "(-) Provisão para Perda"
+    r"Provis[ãa]o\s+para\s+Perda[s]?\s+Esperada[s]?\s+Associada", # Completo
+    r"PCLD",                                                      # Sigla antiga
+    r"Provis[ãa]o\s+para\s+Cr[ée]ditos?\s+de\s+Liquida[çc][ãa]o", # "Provisão para Créditos..."
+]
+
+PATTERNS_DEPOSITOS = [
+    r"^Dep[óo]sitos$",           # "Depósitos" (exato)
+    r"^Dep[óo]sitos\s*$",        # "Depósitos " (com espaço)
+]
+
+# Códigos conhecidos por banco (fallback)
+CODIGOS_OPERACOES_CREDITO = [
+    "1.02.04.04",  # BBAS3, BBDC4
+    "1.02.03.04",  # ITUB4
+    "1.05.03.02",  # Formato antigo (pré-IFRS9)
+    "1.02.01",     # Alguns bancos menores
+]
+
+CODIGOS_PROVISAO_PDD = [
+    "1.02.04.05",  # BBAS3, BBDC4
+    "1.02.03.06",  # ITUB4
+    "1.05.03.03",  # Formato antigo
+    "1.02.02",     # Alguns bancos menores
+]
+
+CODIGOS_DEPOSITOS = [
+    "2.02.01",  # BBAS3, BBDC4
+    "2.03.01",  # ITUB4
+]
+
+
+def _detect_account_by_patterns(
+    df: pd.DataFrame, 
+    patterns: List[str], 
+    fallback_codes: List[str],
+    prefer_nonzero: bool = True,
+    level_filter: Optional[str] = None
+) -> Optional[str]:
+    """
+    Detecta código de conta por padrões de descrição, com fallback para códigos conhecidos.
+    
+    Args:
+        df: DataFrame com colunas 'cd_conta', 'ds_conta', 'valor_mil'
+        patterns: Lista de regex para buscar na descrição
+        fallback_codes: Lista de códigos conhecidos como fallback
+        prefer_nonzero: Se True, prefere contas com valor != 0
+        level_filter: Se definido, filtra códigos que começam com este prefixo (ex: "1.02")
+    
+    Returns:
+        Código da conta encontrada ou None
+    """
+    if df.empty:
+        return fallback_codes[0] if fallback_codes else None
+    
+    # Garantir que temos as colunas necessárias
+    if "ds_conta" not in df.columns or "cd_conta" not in df.columns:
+        return fallback_codes[0] if fallback_codes else None
+    
+    # 1. Buscar por padrão de descrição
+    for pattern in patterns:
+        mask = df["ds_conta"].str.contains(pattern, case=False, regex=True, na=False)
+        matches = df[mask]
+        
+        if level_filter:
+            matches = matches[matches["cd_conta"].str.startswith(level_filter)]
+        
+        if not matches.empty:
+            if prefer_nonzero and "valor_mil" in df.columns:
+                # Preferir conta com valor diferente de zero
+                nonzero = matches[matches["valor_mil"].abs() > 0]
+                if not nonzero.empty:
+                    return str(nonzero["cd_conta"].iloc[0])
+            return str(matches["cd_conta"].iloc[0])
+    
+    # 2. Fallback: buscar códigos conhecidos que existam no DataFrame
+    for code in fallback_codes:
+        if code in df["cd_conta"].values:
+            if prefer_nonzero and "valor_mil" in df.columns:
+                row = df[df["cd_conta"] == code]
+                if not row.empty and row["valor_mil"].abs().iloc[0] > 0:
+                    return code
+            else:
+                return code
+    
+    # 3. Último fallback: primeiro código conhecido
+    return fallback_codes[0] if fallback_codes else None
+
+
+def _detect_operacoes_credito(df_bpa: pd.DataFrame) -> str:
+    """Detecta código de Operações de Crédito no BPA."""
+    return _detect_account_by_patterns(
+        df_bpa, 
+        PATTERNS_OPERACOES_CREDITO, 
+        CODIGOS_OPERACOES_CREDITO,
+        prefer_nonzero=True,
+        level_filter="1.02"
+    ) or "1.02.04.04"
+
+
+def _detect_provisao_pdd(df_bpa: pd.DataFrame) -> str:
+    """Detecta código de Provisão PDD no BPA."""
+    return _detect_account_by_patterns(
+        df_bpa, 
+        PATTERNS_PROVISAO_PDD, 
+        CODIGOS_PROVISAO_PDD,
+        prefer_nonzero=True,  # Importante: alguns bancos têm a conta mas valor=0
+        level_filter="1.02"
+    ) or "1.02.04.05"
+
+
+def _detect_depositos(df_bpp: pd.DataFrame) -> str:
+    """Detecta código de Depósitos no BPP."""
+    return _detect_account_by_patterns(
+        df_bpp, 
+        PATTERNS_DEPOSITOS, 
+        CODIGOS_DEPOSITOS,
+        prefer_nonzero=True,
+        level_filter="2.0"
+    ) or "2.02.01"
 
 # ======================================================================================
 # FUNÇÕES AUXILIARES
@@ -236,21 +370,25 @@ BPP_PADRAO: List[Tuple[str, str]] = [
 # CONTAS BPA - BANCOS (INSTITUIÇÕES FINANCEIRAS)
 # ======================================================================================
 
-BPA_BANCOS: List[Tuple[str, str]] = [
+# Esquema BASE para bancos - será expandido dinamicamente com contas detectadas
+BPA_BANCOS_BASE: List[Tuple[str, str]] = [
     ("1", "Ativo Total"),
     ("1.01", "Caixa e Equivalentes de Caixa"),
     ("1.02", "Ativos Financeiros"),
-    ("1.02.03", "Empréstimos e Recebíveis"),
-    ("1.02.03.04", "Operações de Crédito"),
-    ("1.02.03.06", "(-) Provisão para Perda Esperada"),
+    ("1.02.01", "Depósito Compulsório Banco Central"),
+    ("1.02.02", "Ativos Financeiros ao Valor Justo através do Resultado"),
+    ("1.02.03", "Ativos Financeiros ao Valor Justo através de ORA"),
+    ("1.02.04", "Ativos Financeiros ao Custo Amortizado"),
+    # Contas de crédito serão adicionadas dinamicamente
     ("1.03", "Tributos"),
     ("1.04", "Outros Ativos"),
     ("1.05", "Investimentos"),
-    ("1.05.03", "Outros Investimentos"),
-    ("1.05.03.02", "Operações de Crédito"),  # Formato alternativo
     ("1.06", "Imobilizado"),
     ("1.07", "Intangível"),
 ]
+
+# Manter compatibilidade com código existente
+BPA_BANCOS = BPA_BANCOS_BASE
 
 
 # ======================================================================================
@@ -336,6 +474,113 @@ def _build_bpp_schema_for_bank(df_bpp: pd.DataFrame) -> List[Tuple[str, str]]:
     
     return schema
 
+def _build_bpa_schema_for_bank(df_bpa: pd.DataFrame) -> List[Tuple[str, str]]:
+    """
+    Constrói esquema BPA dinâmico para bancos baseado nos dados reais.
+    
+    CORREÇÃO: Detecta automaticamente os códigos de:
+    - Operações de Crédito (varia: 1.02.03.04, 1.02.04.04)
+    - Provisão PDD (varia: 1.02.03.06, 1.02.04.05)
+    """
+    # Detectar códigos reais
+    cod_credito = _detect_operacoes_credito(df_bpa)
+    cod_provisao = _detect_provisao_pdd(df_bpa)
+    
+    # Extrair prefixo comum (ex: "1.02.04" de "1.02.04.04")
+    prefix_credito = ".".join(cod_credito.split(".")[:-1]) if "." in cod_credito else "1.02.04"
+    
+    schema = [
+        ("1", "Ativo Total"),
+        ("1.01", "Caixa e Equivalentes de Caixa"),
+        ("1.02", "Ativos Financeiros"),
+        ("1.02.01", "Depósito Compulsório Banco Central"),
+        ("1.02.02", "Ativos Financeiros ao Valor Justo através do Resultado"),
+        ("1.02.03", "Ativos Financeiros ao Valor Justo através de ORA"),
+        ("1.02.04", "Ativos Financeiros ao Custo Amortizado"),
+    ]
+    
+    # Adicionar conta pai se diferente (ex: 1.02.03 para ITUB4)
+    if prefix_credito not in ["1.02.03", "1.02.04"]:
+        schema.append((prefix_credito, "Empréstimos e Recebíveis"))
+    
+    # Adicionar contas de crédito detectadas
+    schema.append((cod_credito, "Operações de Crédito"))
+    schema.append((cod_provisao, "Provisão para Perdas Esperadas"))
+    
+    # Contas finais
+    schema.extend([
+        ("1.03", "Tributos"),
+        ("1.04", "Outros Ativos"),
+        ("1.05", "Investimentos"),
+        ("1.06", "Imobilizado"),
+        ("1.07", "Intangível"),
+    ])
+    
+    return schema
+
+def _build_bpp_schema_for_bank_v2(df_bpp: pd.DataFrame) -> List[Tuple[str, str]]:
+    """
+    Constrói esquema BPP dinâmico para bancos baseado nos dados reais.
+    
+    CORREÇÃO v2: Detecta automaticamente:
+    - Código do Patrimônio Líquido (2.07 ou 2.08)
+    - Código dos Depósitos (2.02.01 ou 2.03.01)
+    """
+    pl_code = _detect_pl_code_from_data(df_bpp)
+    cod_depositos = _detect_depositos(df_bpp)
+    
+    # Determinar se depósitos estão em 2.02 ou 2.03
+    depositos_prefix = cod_depositos.split(".")[1] if "." in cod_depositos else "02"
+    
+    schema = [
+        ("2", "Passivo Total"),
+        ("2.01", "Passivos Financeiros ao Valor Justo através do Resultado"),
+        ("2.02", "Passivos Financeiros ao Custo Amortizado"),
+    ]
+    
+    # Adicionar Depósitos no local correto
+    if depositos_prefix == "02":
+        schema.append(("2.02.01", "Depósitos"))
+        schema.extend([
+            ("2.02.02", "Captações no Mercado Aberto"),
+            ("2.02.03", "Recursos Mercado Interfinanceiro"),
+            ("2.02.04", "Outras Captações"),
+            ("2.03", "Provisões"),
+        ])
+    else:
+        schema.extend([
+            ("2.02.01", "Depósitos"),  # Pode não existir
+            ("2.02.02", "Captações no Mercado Aberto"),
+            ("2.02.03", "Recursos Mercado Interfinanceiro"),
+            ("2.02.04", "Outras Captações"),
+            ("2.03", "Provisões"),
+            ("2.03.01", "Depósitos"),  # ITUB4
+        ])
+    
+    schema.extend([
+        ("2.04", "Passivos Fiscais"),
+        ("2.05", "Outros Passivos"),
+        ("2.06", "Passivos sobre Ativos Não Correntes a Venda"),
+    ])
+    
+    # Adicionar conta 2.07 intermediária se PL estiver em 2.08
+    pl_num = int(pl_code.split('.')[1]) if '.' in pl_code else 7
+    if pl_num > 7:
+        schema.append(("2.07", "Passivos sobre Ativos Descontinuados"))
+    
+    # Adicionar PL e subcontas
+    schema.extend([
+        (pl_code, "Patrimônio Líquido Consolidado"),
+        (f"{pl_code}.01", "Patrimônio Líquido Atribuído ao Controlador"),
+        (f"{pl_code}.01.01", "Capital Social Realizado"),
+        (f"{pl_code}.01.02", "Reservas de Capital"),
+        (f"{pl_code}.01.04", "Reservas de Lucros"),
+        (f"{pl_code}.01.05", "Lucros/Prejuízos Acumulados"),
+        (f"{pl_code}.01.08", "Outros Resultados Abrangentes"),
+        (f"{pl_code}.02", "Patrimônio Líquido Atribuído aos Não Controladores"),
+    ])
+    
+    return schema
 
 # ======================================================================================
 # CONTAS BPA/BPP - SEGURADORAS E HOLDINGS
@@ -435,14 +680,18 @@ def _is_seguradora_operacional(ticker: str) -> bool:
     return ticker.upper().strip() in TICKERS_SEGURADORAS
 
 
-def _get_bpa_schema(ticker: str) -> List[Tuple[str, str]]:
+def _get_bpa_schema(ticker: str, df_bpa: Optional[pd.DataFrame] = None) -> List[Tuple[str, str]]:
+    """Retorna o esquema BPA apropriado. Para bancos, usa detecção dinâmica."""
     ticker_upper = ticker.upper().strip()
+    
     if _is_holding_seguros(ticker_upper):
         return BPA_HOLDINGS_SEGUROS
     elif _is_seguradora_operacional(ticker_upper):
         return BPA_SEGURADORAS
     elif _is_banco(ticker_upper):
-        return BPA_BANCOS
+        if df_bpa is not None and not df_bpa.empty:
+            return _build_bpa_schema_for_bank(df_bpa)
+        return BPA_BANCOS_BASE
     return BPA_PADRAO
 
 
@@ -456,12 +705,13 @@ def _get_bpp_schema(ticker: str, df_bpp: Optional[pd.DataFrame] = None) -> List[
         return BPP_SEGURADORAS
     elif _is_banco(ticker_upper):
         if df_bpp is not None and not df_bpp.empty:
-            return _build_bpp_schema_for_bank(df_bpp)
+            return _build_bpp_schema_for_bank_v2(df_bpp)
         # Fallback genérico
         return [
             ("2", "Passivo Total"),
             ("2.01", "Passivos Financeiros ao Valor Justo"),
             ("2.02", "Passivos Financeiros ao Custo Amortizado"),
+            ("2.02.01", "Depósitos"),
             ("2.03", "Provisões"),
             ("2.04", "Passivos Fiscais"),
             ("2.05", "Outros Passivos"),
@@ -728,7 +978,7 @@ class PadronizadorBP:
         fiscal_info = _detect_fiscal_year_pattern(bpa_tri, bpa_anu, ticker)
         
         # 3. Obter esquemas - CORREÇÃO: passa df_bpp para detecção dinâmica do PL
-        bpa_schema = _get_bpa_schema(ticker)
+        bpa_schema = _get_bpa_schema(ticker, bpa_tri)
         bpp_schema = _get_bpp_schema(ticker, bpp_tri)
         
         # ========== PROCESSAR BPA ==========
