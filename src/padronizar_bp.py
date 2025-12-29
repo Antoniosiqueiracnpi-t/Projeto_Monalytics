@@ -21,15 +21,26 @@ def get_ticker_principal(ticker: str) -> str:
 
 def load_mapeamento_consolidado() -> pd.DataFrame:
     """Carrega mapeamento consolidado ou fallback para original."""
-    path_consolidado = Path("mapeamento_cnpj_consolidado.csv")
-    path_original = Path("mapeamento_cnpj_ticker.csv")
+    # Tentar importar do multi_ticker_utils primeiro
+    try:
+        from multi_ticker_utils import load_mapeamento_consolidado as load_map
+        return load_map()
+    except ImportError:
+        pass
     
-    if path_consolidado.exists():
-        return pd.read_csv(path_consolidado)
-    elif path_original.exists():
-        return pd.read_csv(path_original)
-    else:
-        raise FileNotFoundError("Nenhum arquivo de mapeamento encontrado")
+    # Fallback: buscar arquivo
+    paths = [
+        Path("mapeamento_cnpj_consolidado.csv"),
+        Path("mapeamento_cnpj_ticker.csv"),
+        Path("src/mapeamento_cnpj_consolidado.csv"),
+        Path("src/mapeamento_cnpj_ticker.csv"),
+    ]
+    
+    for p in paths:
+        if p.exists():
+            return pd.read_csv(p)
+    
+    raise FileNotFoundError("Nenhum arquivo de mapeamento encontrado")
 
 
 # ======================================================================================
