@@ -122,17 +122,19 @@ CONTAS_BPA_BANCOS = {
     "ativo_total": "1",
     "caixa": "1.01",
     "ativos_financeiros": "1.02",
-    "operacoes_credito": "1.02.03.04",    # Operações de Crédito (novo formato)
-    "operacoes_credito_alt": "1.05.03.02", # Operações de Crédito (formato antigo)
-    "provisao_pdd": "1.02.03.06",         # (-) Provisão para Perda Esperada
-    "titulos_valores": "1.02.02",         # TVM
+    # Operações de Crédito - códigos variam por banco
+    "operacoes_credito": ["1.02.04.04", "1.02.03.04", "1.05.03.02"],  # BBAS3/BBDC4, ITUB4, antigo
+    # Provisão PDD - códigos variam por banco  
+    "provisao_pdd": ["1.02.04.05", "1.02.03.06", "1.05.03.03"],  # BBAS3/BBDC4, ITUB4, antigo
+    "titulos_valores": "1.02.02",
 }
 
 CONTAS_BPP_BANCOS = {
     "passivo_total": "2",
     "passivos_financeiros_vj": "2.01",
-    "passivos_custo_amort": "2.02",       # ou 2.03 dependendo do banco
-    "depositos": "2.03.01",               # Depósitos
+    "passivos_custo_amort": "2.02",
+    # Depósitos - códigos variam por banco
+    "depositos": ["2.02.01", "2.03.01"],  # BBAS3/BBDC4, ITUB4
     # PL é detectado dinamicamente (2.07 ou 2.08)
 }
 
@@ -341,6 +343,50 @@ def _buscar_conta_flexivel(df: pd.DataFrame, codigos: List[str], periodo: str) -
         val = _extrair_valor_conta(df, cod, periodo)
         if np.isfinite(val):
             return val
+    return np.nan
+
+def _buscar_conta_banco(
+    df: pd.DataFrame, 
+    codigos: Any,  # str ou List[str]
+    periodo: str,
+    prefer_nonzero: bool = True
+) -> float:
+    """
+    Busca valor de conta bancária tentando múltiplos códigos.
+    
+    CORREÇÃO: Suporta lista de códigos e prefere valores não-zero.
+    
+    Args:
+        df: DataFrame padronizado (bpa/bpp)
+        codigos: Código único (str) ou lista de códigos para tentar
+        periodo: Período (ex: "2024T4")
+        prefer_nonzero: Se True, ignora valores zero e tenta próximo código
+    
+    Returns:
+        Valor encontrado ou np.nan
+    """
+    if df is None or periodo not in df.columns:
+        return np.nan
+    
+    # Normalizar para lista
+    if isinstance(codigos, str):
+        codigos_lista = [codigos]
+    else:
+        codigos_lista = list(codigos)
+    
+    for codigo in codigos_lista:
+        val = _extrair_valor_conta(df, codigo, periodo)
+        if np.isfinite(val):
+            if prefer_nonzero and val == 0:
+                continue  # Tentar próximo código
+            return val
+    
+    # Se prefer_nonzero=True e todos eram zero, retornar o primeiro válido (mesmo se zero)
+    for codigo in codigos_lista:
+        val = _extrair_valor_conta(df, codigo, periodo)
+        if np.isfinite(val):
+            return val
+    
     return np.nan
 
 
@@ -1057,6 +1103,8 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     """
     Calcula múltiplos específicos para bancos.
     
+    VERSÃO CORRIGIDA - Detecção inteligente de contas.
+    
     Múltiplos calculados:
     - Valuation: P/L, P/VPA, DY, Payout
     - Rentabilidade: ROE, ROA, Margem Líquida, NIM
@@ -1117,40 +1165,56 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     
     # ==================== QUALIDADE DE ATIVOS ====================
     
-    # Índice de Cobertura = Provisão PDD / Carteira de Crédito
-    # Tentar buscar provisão no BPA (conta de provisão)
-    provisao_pdd = _obter_valor_pontual(dados.bpa, CONTAS_BPA_BANCOS["provisao_pdd"], periodo)
-    if provisao_pdd is None or not np.isfinite(provisao_pdd):
-        provisao_pdd = _obter_valor_pontual(dados.bpa, "1.02.03.06", periodo)
+    # CORREÇÃO: Usar busca inteligente com múltiplos códigos
     
-    # Carteira de crédito - tentar código principal e alternativo
-    carteira_credito = _obter_valor_pontual(dados.bpa, CONTAS_BPA_BANCOS["operacoes_credito"], periodo)
-    if carteira_credito is None or not np.isfinite(carteira_credito) or carteira_credito == 0:
-        carteira_credito = _obter_valor_pontual(dados.bpa, CONTAS_BPA_BANCOS["operacoes_credito_alt"], periodo)
+    # Carteira de Crédito - tentar todos os códigos conhecidos
+    carteira_credito = _buscar_conta_banco(
+        dados.bpa, 
+        CONTAS_BPA_BANCOS["operacoes_credito"],  # Lista de códigos
+        periodo,
+        prefer_nonzero=True
+    )
     
-    if provisao_pdd and carteira_credito and np.isfinite(provisao_pdd) and np.isfinite(carteira_credito) and carteira_credito != 0:
+    # Provisão PDD - tentar todos os códigos conhecidos
+    # NOTA: Para BBAS3, provisão = 0 (já está líquida dentro de Op. Crédito)
+    provisao_pdd = _buscar_conta_banco(
+        dados.bpa,
+        CONTAS_BPA_BANCOS["provisao_pdd"],  # Lista de códigos
+        periodo,
+        prefer_nonzero=False  # Aceitar zero (BBAS3)
+    )
+    
+    # Índice de Cobertura = |Provisão PDD| / Carteira de Crédito × 100
+    if (np.isfinite(provisao_pdd) and np.isfinite(carteira_credito) 
+        and carteira_credito > 0 and provisao_pdd != 0):
         resultado["INDICE_COBERTURA"] = _normalizar_valor(abs(provisao_pdd) / carteira_credito * 100)
     else:
+        # Se provisão = 0 (BBAS3), não é possível calcular
         resultado["INDICE_COBERTURA"] = None
     
     # ==================== EFICIÊNCIA ====================
     
-    # Índice de Eficiência = Despesas Operacionais / Receitas Operacionais
+    # Índice de Eficiência = |Despesas Operacionais| / Resultado Bruto × 100
     outras_desp = _calcular_ltm(dados, dados.dre, CONTAS_DRE_BANCOS["outras_receitas_desp"], periodo)
-    if outras_desp is not None and resultado_bruto is not None and np.isfinite(outras_desp) and np.isfinite(resultado_bruto) and resultado_bruto > 0:
+    if (outras_desp is not None and resultado_bruto is not None 
+        and np.isfinite(outras_desp) and np.isfinite(resultado_bruto) and resultado_bruto > 0):
         resultado["INDICE_EFICIENCIA"] = _normalizar_valor(abs(outras_desp) / resultado_bruto * 100)
     else:
         resultado["INDICE_EFICIENCIA"] = None
     
     # ==================== ESTRUTURA ====================
     
-    # Loan-to-Deposit = Carteira de Crédito / Depósitos
-    # Tentar código principal (2.03.01) e alternativo (2.02.01)
-    depositos = _obter_valor_pontual(dados.bpp, CONTAS_BPP_BANCOS["depositos"], periodo)
-    if depositos is None or not np.isfinite(depositos) or depositos == 0:
-        depositos = _obter_valor_pontual(dados.bpp, "2.02.01", periodo)
+    # CORREÇÃO: Usar busca inteligente para Depósitos
+    depositos = _buscar_conta_banco(
+        dados.bpp,
+        CONTAS_BPP_BANCOS["depositos"],  # Lista de códigos
+        periodo,
+        prefer_nonzero=True
+    )
     
-    if carteira_credito and depositos and np.isfinite(carteira_credito) and np.isfinite(depositos) and depositos != 0:
+    # Loan-to-Deposit = Carteira de Crédito / Depósitos × 100
+    if (np.isfinite(carteira_credito) and np.isfinite(depositos) 
+        and depositos > 0 and carteira_credito > 0):
         resultado["LOAN_DEPOSIT"] = _normalizar_valor(carteira_credito / depositos * 100)
     else:
         resultado["LOAN_DEPOSIT"] = None
