@@ -20,27 +20,72 @@ def get_ticker_principal(ticker: str) -> str:
 
 
 def load_mapeamento_consolidado() -> pd.DataFrame:
-    """Carrega mapeamento consolidado ou fallback para original."""
-    # Tentar importar do multi_ticker_utils primeiro
+    """Carrega mapeamento consolidado (preferencial) ou fallback robusto."""
+    # 1) Preferir multi_ticker_utils (mas NÃO quebrar se o CSV não estiver no cwd)
     try:
         from multi_ticker_utils import load_mapeamento_consolidado as load_map
-        return load_map()
+        try:
+            return load_map()
+        except FileNotFoundError:
+            # cai no fallback abaixo
+            pass
     except ImportError:
         pass
-    
-    # Fallback: buscar arquivo
-    paths = [
-        Path("mapeamento_cnpj_consolidado.csv"),
-        Path("mapeamento_cnpj_ticker.csv"),
-        Path("src/mapeamento_cnpj_consolidado.csv"),
-        Path("src/mapeamento_cnpj_ticker.csv"),
+
+    # 2) Fallback: buscar arquivo em múltiplos locais e com múltiplos nomes
+    base_dirs = []
+    try:
+        base_dirs.append(Path.cwd())
+    except Exception:
+        pass
+
+    # repo root provável: .../src/padronizar_bp.py -> parents[1] = raiz do repo
+    try:
+        base_dirs.append(Path(__file__).resolve().parents[1])
+        base_dirs.append(Path(__file__).resolve().parent)  # /src
+    except Exception:
+        pass
+
+    # remover duplicados preservando ordem
+    seen = set()
+    base_dirs = [p for p in base_dirs if not (str(p) in seen or seen.add(str(p)))]
+
+    filenames = [
+        # nomes usados no Projeto_Monalytics
+        "mapeamento_b3_consolidado.csv",
+        "mapeamento_final_b3_completo_utf8.csv",
+        # legados (caso existam em algum ambiente)
+        "mapeamento_cnpj_consolidado.csv",
+        "mapeamento_cnpj_ticker.csv",
+        # às vezes ficam dentro de src/
+        "src/mapeamento_b3_consolidado.csv",
+        "src/mapeamento_final_b3_completo_utf8.csv",
+        "src/mapeamento_cnpj_consolidado.csv",
+        "src/mapeamento_cnpj_ticker.csv",
     ]
-    
-    for p in paths:
-        if p.exists():
-            return pd.read_csv(p)
-    
-    raise FileNotFoundError("Nenhum arquivo de mapeamento encontrado")
+
+    tried = []
+    for d in base_dirs:
+        for fname in filenames:
+            p = (d / fname).resolve()
+            tried.append(str(p))
+            if p.exists():
+                # tentar com separador ; e encodings comuns
+                for enc in ("utf-8-sig", "utf-8", "latin1"):
+                    try:
+                        return pd.read_csv(p, sep=";", encoding=enc)
+                    except Exception:
+                        pass
+                # fallback final sem encoding explícito
+                try:
+                    return pd.read_csv(p, sep=";")
+                except Exception:
+                    return pd.read_csv(p)
+
+    raise FileNotFoundError(
+        "Nenhum arquivo de mapeamento encontrado. Procurado em:\n- " + "\n- ".join(tried)
+    )
+
 
 
 # ======================================================================================
