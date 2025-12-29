@@ -20,29 +20,70 @@ def get_ticker_principal(ticker: str) -> str:
 
 
 def load_mapeamento_consolidado() -> pd.DataFrame:
-    """Carrega mapeamento consolidado ou fallback para original."""
-    path_consolidado = Path("mapeamento_cnpj_consolidado.csv")
-    path_original = Path("mapeamento_cnpj_ticker.csv")
+    """Carrega mapeamento consolidado ou fallback para original.
     
-    if path_consolidado.exists():
-        return pd.read_csv(path_consolidado)
-    elif path_original.exists():
-        return pd.read_csv(path_original)
-    else:
-        raise FileNotFoundError("Nenhum arquivo de mapeamento encontrado")
+    Busca em múltiplos locais:
+    1. Diretório atual
+    2. Diretório do script (src/)
+    3. Diretório pai do script (raiz do projeto)
+    """
+    script_dir = Path(__file__).parent
+    project_root = script_dir.parent
+    
+    # Lista de possíveis localizações
+    search_paths = [
+        Path("."),           # Diretório atual
+        script_dir,          # src/
+        project_root,        # raiz do projeto
+    ]
+    
+    filenames = ["mapeamento_cnpj_consolidado.csv", "mapeamento_cnpj_ticker.csv"]
+    
+    for base_path in search_paths:
+        for filename in filenames:
+            path = base_path / filename
+            if path.exists():
+                return pd.read_csv(path)
+    
+    raise FileNotFoundError(
+        f"Nenhum arquivo de mapeamento encontrado. "
+        f"Procurado em: {[str(p) for p in search_paths]}"
+    )
 
 
 # ======================================================================================
 # CORREÇÃO 1: BUSCA INTELIGENTE DE PASTA POR VARIANTES DE TICKER
 # ======================================================================================
 
-def get_pasta_balanco(ticker: str, pasta_base: Path = Path("balancos")) -> Path:
+def _find_balancos_dir() -> Path:
+    """Encontra o diretório 'balancos' em múltiplos locais possíveis."""
+    script_dir = Path(__file__).parent
+    project_root = script_dir.parent
+    
+    search_paths = [
+        Path("balancos"),              # Diretório atual
+        script_dir / "balancos",       # src/balancos
+        project_root / "balancos",     # raiz/balancos
+    ]
+    
+    for path in search_paths:
+        if path.exists() and path.is_dir():
+            return path
+    
+    # Fallback para o caminho padrão (será criado se necessário)
+    return project_root / "balancos"
+
+
+def get_pasta_balanco(ticker: str, pasta_base: Optional[Path] = None) -> Path:
     """
     Retorna o caminho da pasta de balanços do ticker.
     
     CORREÇÃO: Busca variantes do ticker (3, 4, 5, 6, 11) se pasta exata não existir.
     Exemplo: Se buscar BBDC3 e não existir, procura BBDC4, BBDC5, etc.
     """
+    if pasta_base is None:
+        pasta_base = _find_balancos_dir()
+    
     ticker_clean = get_ticker_principal(ticker).upper().strip()
     
     # Tentar pasta exata primeiro
