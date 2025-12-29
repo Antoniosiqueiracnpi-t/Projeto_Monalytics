@@ -4,16 +4,58 @@ on:
   workflow_dispatch:
     inputs:
       setor:
-        description: "Setor exatamente como está na coluna 'setor' do mapeamento_b3_consolidado.csv (ex: Energia Elétrica). Use 'TODOS' para tudo."
+        description: "Selecione o setor (coluna 'setor' do mapeamento_b3_consolidado.csv)."
         required: true
+        type: choice
         default: "TODOS"
-        type: string
+        options:
+          - "TODOS"
+          - "Agropecuária"
+          - "Alimentos Processados"
+          - "Automóveis e Motocicletas"
+          - "Bebidas"
+          - "Computadores e Equipamentos"
+          - "Comércio Varejista"
+          - "Comércio e Distribuição"
+          - "Construção Civil"
+          - "Construção e Engenharia"
+          - "Diversos"
+          - "Embalagens"
+          - "Energia Elétrica"
+          - "Equipamentos"
+          - "Exploração de Imóveis"
+          - "Gás"
+          - "Holdings Diversificadas"
+          - "Hoteis e Restaurantes"
+          - "Intermediários Financeiros"
+          - "Madeira e Papel"
+          - "Materiais Diversos"
+          - "Material de Transporte"
+          - "Medicamentos e Outros Produtos"
+          - "Mineração"
+          - "Máquinas e Equipamentos"
+          - "Outros"
+          - "Petróleo, Gás e Biocombustíveis"
+          - "Previdência e Seguros"
+          - "Produtos de Cuidado Pessoal e de Limpeza"
+          - "Programas e Serviços"
+          - "Químicos"
+          - "Serv.Méd.Hospit.,Análises e Diagnósticos"
+          - "Serviços"
+          - "Siderurgia e Metalurgia"
+          - "Tecidos, Vestuário e Calçados"
+          - "Telecomunicações"
+          - "Transporte"
+          - "Utilidades Domésticas"
+          - "Viagens e Lazer"
+          - "Água e Saneamento"
 
       limite:
         description: "Opcional: limita a quantidade de tickers do setor (0 = todos). Útil para testes rápidos."
         required: true
         default: "0"
         type: string
+
 
 permissions:
   contents: write
