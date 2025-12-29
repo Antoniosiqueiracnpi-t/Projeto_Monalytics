@@ -1145,7 +1145,11 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     # ==================== ESTRUTURA ====================
     
     # Loan-to-Deposit = Carteira de Crédito / Depósitos
+    # Tentar código principal (2.03.01) e alternativo (2.02.01)
     depositos = _obter_valor_pontual(dados.bpp, CONTAS_BPP_BANCOS["depositos"], periodo)
+    if depositos is None or not np.isfinite(depositos) or depositos == 0:
+        depositos = _obter_valor_pontual(dados.bpp, "2.02.01", periodo)
+    
     if carteira_credito and depositos and np.isfinite(carteira_credito) and np.isfinite(depositos) and depositos != 0:
         resultado["LOAN_DEPOSIT"] = _normalizar_valor(carteira_credito / depositos * 100)
     else:
