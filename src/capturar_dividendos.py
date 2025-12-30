@@ -287,12 +287,6 @@ class CapturadorDividendos:
             return df
         except:
             return pd.DataFrame()
-            
-        except ImportError:
-            print(f"    [finbr] Biblioteca não instalada")
-            return pd.DataFrame()
-        except:
-            return pd.DataFrame()    
     
     def _fetch_okanebox(self, ticker: str) -> pd.DataFrame:
         """
