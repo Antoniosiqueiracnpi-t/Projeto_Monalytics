@@ -263,34 +263,30 @@ class CapturadorDividendos:
 
     def _fetch_finbr(self, ticker: str) -> pd.DataFrame:
         """
-        Busca dividendos usando biblioteca finbr (fundamentus).
-        
-        Retorna DataFrame com colunas padronizadas.
-        Biblioteca faz scraping do site fundamentus.com.br
+        Busca dividendos usando finbr (fundamentus scraping).
+        Retorna: lista[dict] -> DataFrame padronizado
         """
         try:
             from finbr import fundamentus
             
             ticker_clean = ticker.upper().replace('.SA', '')
-            
             proventos = fundamentus.proventos(ticker_clean)
             
             if not proventos:
                 return pd.DataFrame()
             
             df = pd.DataFrame(proventos)
-            
-            # Converter para formato padronizado
             df['Data_Com'] = pd.to_datetime(df['data'])
             df['Data_Pagamento'] = pd.to_datetime(df['data_pagamento'])
             df['Valor'] = df['valor']
             df['Tipo'] = df['tipo']
             
-            df_final = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com'])
-            df_final = df_final.sort_values('Data_Com', ascending=False).reset_index(drop=True)
+            df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com']).sort_values('Data_Com', ascending=False).reset_index(drop=True)
             
-            print(f"    [finbr] ✓ {len(df_final)} proventos encontrados")
-            return df_final
+            print(f"    [finbr] ✓ {len(df)} proventos")
+            return df
+        except:
+            return pd.DataFrame()
             
         except ImportError:
             print(f"    [finbr] Biblioteca não instalada")
@@ -398,34 +394,31 @@ class CapturadorDividendos:
         3. yfinance (Yahoo Finance, dados internacionais)
         4. CSV local (se arquivo dividendos_raw.csv existe)
         """
-        # 1. Tentar API B3 oficial
+        
+        # Bloco atual de tentativas (localizar e substituir)
         df = self._fetch_b3_api(ticker)
         if not df.empty:
             print(f"  ✓ Capturado via B3 API: {len(df)} proventos\n")
             return df
         
-        # 2. Tentar finbr (fundamentus)
         print(f"  → Tentando finbr...")
         df = self._fetch_finbr(ticker)
         if not df.empty:
             print(f"  ✓ Capturado via finbr: {len(df)} proventos\n")
             return df
         
-        # 3. Tentar OkaneBox
         print(f"  → Tentando OkaneBox...")
         df = self._fetch_okanebox(ticker)
         if not df.empty:
             print(f"  ✓ Capturado via OkaneBox: {len(df)} proventos\n")
             return df
         
-        # 4. Tentar yfinance
         print(f"  → Tentando yfinance...")
         df = self._fetch_yfinance(ticker)
         if not df.empty:
             print(f"  ✓ Capturado via yfinance: {len(df)} proventos\n")
             return df
         
-        # 5. Tentar CSV local
         print(f"  → Tentando CSV local...")
         df = self._fetch_csv_local(ticker)
         if not df.empty:
