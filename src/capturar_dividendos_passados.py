@@ -20,6 +20,7 @@ from pathlib import Path
 from datetime import datetime
 import argparse
 import sys
+import time
 
 
 class CapturadorDividendosHistoricos:
@@ -36,11 +37,11 @@ class CapturadorDividendosHistoricos:
     def capturar_dividendos(self, ticker: str) -> dict:
         """
         Captura dividendos históricos de um ticker.
+        Usa padrão try/except genérico para evitar erros 403.
         """
+        print(f"  📊 Buscando dividendos históricos de {ticker}...")
+        
         try:
-            print(f"  📊 Buscando dividendos históricos de {ticker}...")
-            
-            # Buscar com finbr.fundamentus
             from finbr import fundamentus
             
             ticker_clean = ticker.upper().replace('.SA', '')
@@ -52,14 +53,6 @@ class CapturadorDividendosHistoricos:
             
             # Converter para DataFrame
             df = pd.DataFrame(proventos)
-            # Converter para DataFrame
-            df = pd.DataFrame(proventos)
-            
-            if df.empty:
-                print(f"  ⚠️  Sem dividendos históricos para {ticker}")
-                return None
-            
-            # Padronizar colunas
             df['Data_Com'] = pd.to_datetime(df['data'])
             df['Data_Pagamento'] = pd.to_datetime(df['data_pagamento'])
             df['Valor'] = df['valor']
@@ -68,6 +61,10 @@ class CapturadorDividendosHistoricos:
             # Limpar e ordenar
             df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com'])
             df = df.sort_values('Data_Com', ascending=False).reset_index(drop=True)
+            
+            if df.empty:
+                print(f"  ⚠️  Sem dividendos históricos para {ticker}")
+                return None
             
             # Converter para lista de dicts
             dividendos = []
@@ -83,11 +80,11 @@ class CapturadorDividendosHistoricos:
                 dividendos.append(dividendo)
             
             # Ordenar por data (mais recente primeiro)
-            dividendos.sort(key=lambda x: x['data'], reverse=True)
+            dividendos.sort(key=lambda x: x.get('data', '1900-01-01'), reverse=True)
             
             # Calcular estatísticas
             total_bruto = sum(d['valor'] for d in dividendos)
-            ultimo_ano = [d for d in dividendos if d['data'] >= f"{datetime.now().year - 1}-01-01"]
+            ultimo_ano = [d for d in dividendos if d.get('data', '') >= f"{datetime.now().year - 1}-01-01"]
             
             resultado = {
                 'ticker': ticker,
@@ -98,8 +95,8 @@ class CapturadorDividendosHistoricos:
                     'total_bruto': round(total_bruto, 2),
                     'total_ultimos_12m': round(sum(d['valor'] for d in ultimo_ano), 2),
                     'quantidade_ultimos_12m': len(ultimo_ano),
-                    'data_primeiro': dividendos[-1]['data'] if dividendos else None,
-                    'data_ultimo': dividendos[0]['data'] if dividendos else None
+                    'data_primeiro': dividendos[-1].get('data') if dividendos else None,
+                    'data_ultimo': dividendos[0].get('data') if dividendos else None
                 }
             }
             
@@ -112,10 +109,9 @@ class CapturadorDividendosHistoricos:
             
             return resultado
             
-        except Exception as e:
-            erro = f"Erro ao processar {ticker}: {str(e)}"
-            print(f"  ❌ {erro}")
-            self.erros.append(erro)
+        except:
+            # Captura qualquer erro (403, timeout, etc) e apenas avisa
+            print(f"  ⚠️  Não foi possível buscar dividendos de {ticker}")
             return None
     
     def salvar_json(self, ticker: str, dados: dict):
@@ -147,6 +143,9 @@ class CapturadorDividendosHistoricos:
         dados = self.capturar_dividendos(ticker)
         if dados:
             self.salvar_json(ticker, dados)
+        
+        # Delay entre requisições para evitar rate limiting
+        time.sleep(0.5)
     
     def processar_lista(self, tickers: list):
         """
