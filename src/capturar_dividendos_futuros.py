@@ -158,6 +158,7 @@ class ScraperB3API:
     def buscar_proventos(self, ticker: str) -> List[Dict]:
         """
         Busca proventos futuros na API da B3.
+        Retorna lista vazia se API não disponível (não interrompe execução).
         """
         try:
             ticker_b3 = self.ticker_para_b3(ticker)
@@ -179,7 +180,10 @@ class ScraperB3API:
             
             # Fazer requisição
             response = requests.get(url, headers=self.headers, timeout=15)
-            response.raise_for_status()
+            
+            # Se não for 200, retornar vazio (API pode estar indisponível)
+            if response.status_code != 200:
+                return []
             
             data = response.json()
             
@@ -203,8 +207,8 @@ class ScraperB3API:
             
             return proventos
             
-        except Exception as e:
-            print(f"  ⚠️  Erro ao buscar B3 API para {ticker}: {e}")
+        except Exception:
+            # API B3 opcional - se não funcionar, apenas retorna vazio
             return []
     
     @staticmethod
@@ -302,7 +306,7 @@ class CapturadorDividendosFuturos:
             dividendos.extend(dividendos_noticias)
             print(f"  ✅ {len(dividendos_noticias)} dividendos extraídos das notícias")
         
-        # FONTE 2: B3 API (backup/complemento)
+        # FONTE 2: B3 API (backup/complemento - opcional)
         dividendos_b3 = self.scraper.buscar_proventos(ticker)
         if dividendos_b3:
             print(f"  🌐 {len(dividendos_b3)} dividendos da B3 API")
