@@ -1,8 +1,8 @@
 {
   "ticker": "BBDC3",
-  "total_dividendos": 11.1741,
+  "total_dividendos": 11.5253,
   "periodo": "2008-2025",
-  "quantidade_pagamentos": 256,
+  "quantidade_pagamentos": 257,
   "dividendos": [
     {
       "data_com": "2008-01-03",
@@ -2563,6 +2563,16 @@
       "dia": 2,
       "trimestre": "T4",
       "data_pagamento": "2025-12-02"
+    },
+    {
+      "data_com": "2025-12-30",
+      "valor": 0.351191,
+      "tipo": "Dividendo",
+      "ano": 2025,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2025-12-30"
     }
   ]
 }
