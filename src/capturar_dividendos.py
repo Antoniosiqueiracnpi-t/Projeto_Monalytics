@@ -189,99 +189,76 @@ class CapturadorDividendos:
     
     def _fetch_b3_api(self, ticker: str) -> pd.DataFrame:
         """
-        Busca dividendos da API B3 Oficial usando processo de 2 etapas.
+        Busca dividendos da API B3 usando processo de 2 etapas.
         
-        1ª etapa: GetInitialCompanies - obtém trading name correto
-        2ª etapa: GetListedCashDividends - busca dividendos
+        Etapa 1: GetInitialCompanies - obtém tradingName usando ticker
+        Etapa 2: GetListedCashDividends - busca dividendos
         """
         try:
-            # ETAPA 1: Obter trading name correto usando o ticker
-            params_step1 = {
+            ticker_clean = ticker.upper().replace('.SA', '')
+            
+            # ETAPA 1: Buscar tradingName
+            params = {
                 "language": "pt-br",
                 "pageNumber": 1,
                 "pageSize": 20,
-                "company": ticker.upper().replace('.SA', '')
+                "company": ticker_clean
             }
             
-            params_json = json.dumps(params_step1)
-            params_b64 = base64.b64encode(params_json.encode()).decode()
+            params_b64 = base64.b64encode(json.dumps(params).encode()).decode()
+            url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetInitialCompanies/{params_b64}"
             
-            url_step1 = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetInitialCompanies/{params_b64}"
-            
-            response = requests.get(url_step1, timeout=10, verify=False)
+            response = requests.get(url, timeout=10, verify=False)
             response.raise_for_status()
-            data = response.json()
             
-            # Buscar o trading name correto
             trading_name = None
-            ticker_clean = ticker.upper().replace('.SA', '')
-            
-            for company in data.get('results', []):
+            for company in response.json().get('results', []):
                 if company.get('issuingCompany', '').upper() == ticker_clean:
-                    # CRÍTICO: Remover pontos e barras do trading name
                     trading_name = company.get('tradingName', '').replace('/', '').replace('.', '')
                     break
             
             if not trading_name:
-                print(f"    [B3 API] Trading name não encontrado para {ticker}")
                 return pd.DataFrame()
             
-            print(f"    [B3 API] Trading name: {trading_name}")
-            
-            # ETAPA 2: Buscar dividendos com o trading name correto
+            # ETAPA 2: Buscar dividendos
             all_dividends = []
             page = 1
-            max_pages = 50
             
-            while page <= max_pages:
-                params_step2 = {
+            while page <= 50:
+                params = {
                     "language": "pt-br",
                     "pageNumber": page,
                     "pageSize": 120,
                     "tradingName": trading_name
                 }
                 
-                params_json = json.dumps(params_step2)
-                params_b64 = base64.b64encode(params_json.encode()).decode()
+                params_b64 = base64.b64encode(json.dumps(params).encode()).decode()
+                url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{params_b64}"
                 
-                url_step2 = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{params_b64}"
-                
-                response = requests.get(url_step2, timeout=10, verify=False)
+                response = requests.get(url, timeout=10, verify=False)
                 response.raise_for_status()
-                data = response.json()
                 
-                dividends = data.get('results', [])
-                
+                dividends = response.json().get('results', [])
                 if not dividends:
                     break
                 
                 all_dividends.extend(dividends)
-                
                 if len(dividends) < 120:
                     break
-                
                 page += 1
             
             if not all_dividends:
-                print(f"    [B3 API] Nenhum dividendo encontrado")
                 return pd.DataFrame()
             
-            # Processar dados
             df = pd.DataFrame(all_dividends)
-            
             df['Data_Com'] = pd.to_datetime(df['lastDatePrior'], errors='coerce')
             df['Data_Pagamento'] = pd.to_datetime(df['paymentDate'], errors='coerce')
             df['Valor'] = pd.to_numeric(df['rate'], errors='coerce')
             df['Tipo'] = df['corporateActionLabel']
             
-            df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com'])
-            df = df.sort_values('Data_Com', ascending=False).reset_index(drop=True)
+            return df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com']).sort_values('Data_Com', ascending=False).reset_index(drop=True)
             
-            print(f"    [B3 API] ✓ {len(df)} proventos encontrados")
-            return df
-            
-        except Exception as e:
-            print(f"    [B3 API] Erro: {str(e)}")
+        except:
             return pd.DataFrame()
     
     def _fetch_okanebox(self, ticker: str) -> pd.DataFrame:
