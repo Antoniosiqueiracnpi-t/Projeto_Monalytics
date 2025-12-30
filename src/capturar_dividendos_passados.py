@@ -14,7 +14,6 @@ python src/capturar_dividendos_passados.py --modo lista --lista "VALE3,PETR4,ITU
 python src/capturar_dividendos_passados.py --modo completo
 """
 
-import finbr
 import json
 import pandas as pd
 from pathlib import Path
@@ -25,7 +24,7 @@ import sys
 
 class CapturadorDividendosHistoricos:
     """
-    Captura dividendos históricos usando finbr.
+    Captura dividendos históricos usando finbr.fundamentus.
     """
     
     def __init__(self, pasta_output: str = "balancos"):
@@ -41,20 +40,43 @@ class CapturadorDividendosHistoricos:
         try:
             print(f"  📊 Buscando dividendos históricos de {ticker}...")
             
-            # Buscar com finbr
-            df = finbr.dividendos(ticker)
+            # Buscar com finbr.fundamentus
+            from finbr import fundamentus
             
-            if df is None or df.empty:
+            ticker_clean = ticker.upper().replace('.SA', '')
+            proventos = fundamentus.proventos(ticker_clean)
+            
+            if not proventos:
                 print(f"  ⚠️  Sem dividendos históricos para {ticker}")
                 return None
+            
+            # Converter para DataFrame
+            df = pd.DataFrame(proventos)
+            # Converter para DataFrame
+            df = pd.DataFrame(proventos)
+            
+            if df.empty:
+                print(f"  ⚠️  Sem dividendos históricos para {ticker}")
+                return None
+            
+            # Padronizar colunas
+            df['Data_Com'] = pd.to_datetime(df['data'])
+            df['Data_Pagamento'] = pd.to_datetime(df['data_pagamento'])
+            df['Valor'] = df['valor']
+            df['Tipo'] = df['tipo']
+            
+            # Limpar e ordenar
+            df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com'])
+            df = df.sort_values('Data_Com', ascending=False).reset_index(drop=True)
             
             # Converter para lista de dicts
             dividendos = []
             for _, row in df.iterrows():
                 dividendo = {
-                    'data': row['data'].strftime('%Y-%m-%d') if isinstance(row['data'], pd.Timestamp) else str(row['data']),
-                    'tipo': row['tipo'],
-                    'valor': float(row['valor']),
+                    'data': row['Data_Com'].strftime('%Y-%m-%d') if pd.notna(row['Data_Com']) else None,
+                    'data_pagamento': row['Data_Pagamento'].strftime('%Y-%m-%d') if pd.notna(row['Data_Pagamento']) else None,
+                    'tipo': str(row['Tipo']),
+                    'valor': float(row['Valor']),
                     'status': 'pago',
                     'fonte': 'finbr'
                 }
