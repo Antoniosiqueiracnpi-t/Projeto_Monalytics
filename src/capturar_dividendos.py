@@ -189,96 +189,100 @@ class CapturadorDividendos:
     
     def _fetch_b3_api(self, ticker: str) -> pd.DataFrame:
         """
-        Busca dividendos da API B3 Oficial.
+        Busca dividendos da API B3 Oficial usando processo de 2 etapas.
         
-        Endpoint: sistemaswebb3-listados.b3.com.br
-        Usa trading name da empresa obtido do CSV de mapeamento.
-        Pagina automaticamente (120 registros por página).
+        1ª etapa: GetInitialCompanies - obtém trading name correto
+        2ª etapa: GetListedCashDividends - busca dividendos
         """
-        # Buscar trading name no CSV
-        info = self._get_empresa_info(ticker)
-        trading_name = info.get('trading_name', '')
-        
-        if not trading_name:
-            print(f"    [B3 API] Trading name não encontrado no CSV")
-            return pd.DataFrame()
-        
-        print(f"    [B3 API] Trading name: {trading_name}")
-        
-        all_dividends = []
-        page = 1
-        max_pages = 50  # Limite de segurança
-        
-        while page <= max_pages:
-            try:
-                # Parâmetros da API
-                params = {
+        try:
+            # ETAPA 1: Obter trading name correto usando o ticker
+            params_step1 = {
+                "language": "pt-br",
+                "pageNumber": 1,
+                "pageSize": 20,
+                "company": ticker.upper().replace('.SA', '')
+            }
+            
+            params_json = json.dumps(params_step1)
+            params_b64 = base64.b64encode(params_json.encode()).decode()
+            
+            url_step1 = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetInitialCompanies/{params_b64}"
+            
+            response = requests.get(url_step1, timeout=10, verify=False)
+            response.raise_for_status()
+            data = response.json()
+            
+            # Buscar o trading name correto
+            trading_name = None
+            ticker_clean = ticker.upper().replace('.SA', '')
+            
+            for company in data.get('results', []):
+                if company.get('issuingCompany', '').upper() == ticker_clean:
+                    # CRÍTICO: Remover pontos e barras do trading name
+                    trading_name = company.get('tradingName', '').replace('/', '').replace('.', '')
+                    break
+            
+            if not trading_name:
+                print(f"    [B3 API] Trading name não encontrado para {ticker}")
+                return pd.DataFrame()
+            
+            print(f"    [B3 API] Trading name: {trading_name}")
+            
+            # ETAPA 2: Buscar dividendos com o trading name correto
+            all_dividends = []
+            page = 1
+            max_pages = 50
+            
+            while page <= max_pages:
+                params_step2 = {
                     "language": "pt-br",
                     "pageNumber": page,
                     "pageSize": 120,
                     "tradingName": trading_name
                 }
                 
-                # Codificar em base64
-                params_json = json.dumps(params)
+                params_json = json.dumps(params_step2)
                 params_b64 = base64.b64encode(params_json.encode()).decode()
                 
-                # URL da API B3
-                url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{params_b64}"
+                url_step2 = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{params_b64}"
                 
-                # Requisição (SSL verify=False necessário)
-                response = requests.get(url, verify=False, timeout=self.timeout)
+                response = requests.get(url_step2, timeout=10, verify=False)
                 response.raise_for_status()
-                
                 data = response.json()
                 
-                # Extrair resultados
-                results = data.get('results', [])
+                dividends = data.get('results', [])
                 
-                if not results:
+                if not dividends:
                     break
                 
-                all_dividends.extend(results)
+                all_dividends.extend(dividends)
                 
-                # Verificar paginação
-                page_info = data.get('page', {})
-                current_page = page_info.get('pageNumber', 0)
-                total_pages = page_info.get('totalPages', 0)
-                
-                if current_page >= total_pages:
+                if len(dividends) < 120:
                     break
                 
                 page += 1
-                
-            except Exception as e:
-                if page == 1:
-                    print(f"    [B3 API] Erro: {e}")
-                break
-        
-        if not all_dividends:
+            
+            if not all_dividends:
+                print(f"    [B3 API] Nenhum dividendo encontrado")
+                return pd.DataFrame()
+            
+            # Processar dados
+            df = pd.DataFrame(all_dividends)
+            
+            df['Data_Com'] = pd.to_datetime(df['lastDatePrior'], errors='coerce')
+            df['Data_Pagamento'] = pd.to_datetime(df['paymentDate'], errors='coerce')
+            df['Valor'] = pd.to_numeric(df['rate'], errors='coerce')
+            df['Tipo'] = df['corporateActionLabel']
+            
+            df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com'])
+            df = df.sort_values('Data_Com', ascending=False).reset_index(drop=True)
+            
+            print(f"    [B3 API] ✓ {len(df)} proventos encontrados")
+            return df
+            
+        except Exception as e:
+            print(f"    [B3 API] Erro: {str(e)}")
             return pd.DataFrame()
-        
-        # Converter para DataFrame
-        df = pd.DataFrame(all_dividends)
-        
-        # Padronizar colunas
-        column_mapping = {
-            'lastDatePriorEx': 'data_com',
-            'corporateActionPrice': 'valor',
-            'corporateAction': 'tipo',
-            'dateApproval': 'data_aprovacao',
-            'lastDateTimePriorEx': 'data_com_full'
-        }
-        
-        df = df.rename(columns=column_mapping)
-        
-        # Converter valores de formato brasileiro
-        if 'valor' in df.columns:
-            df['valor'] = df['valor'].apply(
-                lambda x: _parse_b3_value(x) if pd.notna(x) else 0.0
-            )
-        
-        return df
     
     def _fetch_okanebox(self, ticker: str) -> pd.DataFrame:
         """
