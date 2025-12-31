@@ -20,6 +20,42 @@ import argparse
 import sys
 
 
+def extrair_ticker_principal(ticker_raw: str) -> str:
+    """
+    Extrai o ticker principal de uma string que pode conter múltiplos tickers.
+    
+    Formatos suportados:
+    - Simples: "PETR4" → "PETR4"
+    - Com sufixo: "PETR4.SA" → "PETR4"
+    - Compostos: "TAEE11;TAEE3;TAEE4" → "TAEE11"
+    - Com aspas: '"SAPR11;SAPR3;SAPR4"' → "SAPR11"
+    - Espaços: " VALE3 " → "VALE3"
+    
+    Returns:
+        str: Ticker limpo e normalizado (primeiro da lista se houver múltiplos)
+    """
+    if not ticker_raw:
+        return ""
+    
+    # Converter para string se necessário
+    ticker = str(ticker_raw)
+    
+    # Remover aspas duplas (início e fim)
+    ticker = ticker.strip().strip('"').strip("'")
+    
+    # Remover sufixo .SA
+    ticker = ticker.replace('.SA', '').replace('.sa', '')
+    
+    # Se tiver múltiplos tickers separados por ;, pegar o primeiro
+    if ';' in ticker:
+        ticker = ticker.split(';')[0]
+    
+    # Limpar espaços finais
+    ticker = ticker.strip().upper()
+    
+    return ticker
+
+
 class CapturadorDividendosHistoricos:
     """
     Captura dividendos históricos usando finbr (fundamentus + statusinvest).
@@ -33,15 +69,21 @@ class CapturadorDividendosHistoricos:
     def _fetch_fundamentus(self, ticker: str) -> pd.DataFrame:
         """
         Busca dividendos usando finbr fundamentus.
-        EXATAMENTE como a função do usuário que funcionou.
         """
         try:
             from finbr import fundamentus
             
-            ticker_clean = ticker.upper().replace('.SA', '')
+            # Extrair ticker principal (limpo)
+            ticker_clean = extrair_ticker_principal(ticker)
+            
+            if not ticker_clean:
+                print(f"    [fundamentus] ⚠️ Ticker vazio após limpeza")
+                return pd.DataFrame()
+            
             proventos = fundamentus.proventos(ticker_clean)
             
             if not proventos:
+                print(f"    [fundamentus] ⚠️ Nenhum provento retornado para {ticker_clean}")
                 return pd.DataFrame()
             
             df = pd.DataFrame(proventos)
@@ -55,7 +97,9 @@ class CapturadorDividendosHistoricos:
             
             print(f"    [fundamentus] ✓ {len(df)} proventos")
             return df
-        except:
+            
+        except Exception as e:
+            print(f"    [fundamentus] ✗ Erro: {type(e).__name__}: {e}")
             return pd.DataFrame()
     
     def _fetch_statusinvest(self, ticker: str) -> pd.DataFrame:
@@ -65,10 +109,17 @@ class CapturadorDividendosHistoricos:
         try:
             from finbr.statusinvest import acao
             
-            ticker_clean = ticker.upper().replace('.SA', '')
+            # Extrair ticker principal (limpo)
+            ticker_clean = extrair_ticker_principal(ticker)
+            
+            if not ticker_clean:
+                print(f"    [statusinvest] ⚠️ Ticker vazio após limpeza")
+                return pd.DataFrame()
+            
             dividendos = acao.dividendos(ticker_clean)
             
             if dividendos is None or dividendos.empty:
+                print(f"    [statusinvest] ⚠️ Nenhum dividendo retornado para {ticker_clean}")
                 return pd.DataFrame()
             
             # Padronizar colunas
@@ -90,14 +141,18 @@ class CapturadorDividendosHistoricos:
             
             print(f"    [statusinvest] ✓ {len(df)} proventos")
             return df
-        except:
+            
+        except Exception as e:
+            print(f"    [statusinvest] ✗ Erro: {type(e).__name__}: {e}")
             return pd.DataFrame()
     
     def capturar_dividendos(self, ticker: str) -> dict:
         """
         Captura dividendos de um ticker usando múltiplas fontes.
         """
-        print(f"  📊 Buscando dividendos históricos de {ticker}...")
+        # Extrair ticker limpo para exibição
+        ticker_clean = extrair_ticker_principal(ticker)
+        print(f"  📊 Buscando dividendos históricos de {ticker_clean}...")
         
         # Tentar fundamentus primeiro
         df = self._fetch_fundamentus(ticker)
@@ -108,7 +163,7 @@ class CapturadorDividendosHistoricos:
             df = self._fetch_statusinvest(ticker)
         
         if df.empty:
-            print(f"  ⚠️  Sem dividendos históricos para {ticker}")
+            print(f"  ⚠️  Sem dividendos históricos para {ticker_clean}")
             return None
         
         # Converter para lista de dicts
@@ -129,7 +184,7 @@ class CapturadorDividendosHistoricos:
         ultimo_ano = [d for d in dividendos if d.get('data', '') >= f"{datetime.now().year - 1}-01-01"]
         
         resultado = {
-            'ticker': ticker,
+            'ticker': ticker_clean,  # Usar ticker limpo
             'ultima_atualizacao': datetime.now().isoformat() + 'Z',
             'total_dividendos': len(dividendos),
             'dividendos': dividendos,
@@ -142,7 +197,7 @@ class CapturadorDividendosHistoricos:
             }
         }
         
-        print(f"  ✅ {ticker}: {len(dividendos)} dividendos encontrados")
+        print(f"  ✅ {ticker_clean}: {len(dividendos)} dividendos encontrados")
         print(f"     Total histórico: R$ {total_bruto:.2f}")
         print(f"     Últimos 12M: R$ {resultado['estatisticas']['total_ultimos_12m']:.2f}")
         
@@ -154,11 +209,14 @@ class CapturadorDividendosHistoricos:
     def salvar_json(self, ticker: str, dados: dict):
         """
         Salva JSON de dividendos históricos.
+        Usa ticker limpo para nome da pasta.
         """
         if dados is None:
             return
         
-        pasta_ticker = self.pasta_output / ticker
+        # Usar ticker limpo para a pasta
+        ticker_clean = extrair_ticker_principal(ticker)
+        pasta_ticker = self.pasta_output / ticker_clean
         pasta_ticker.mkdir(parents=True, exist_ok=True)
         
         arquivo = pasta_ticker / "dividendos_historico.json"
@@ -171,8 +229,9 @@ class CapturadorDividendosHistoricos:
         """
         Processa um único ticker.
         """
+        ticker_clean = extrair_ticker_principal(ticker)
         print(f"\n{'='*70}")
-        print(f"📈 {ticker}")
+        print(f"📈 {ticker_clean}")
         print(f"{'='*70}")
         
         dados = self.capturar_dividendos(ticker)
@@ -205,11 +264,23 @@ class CapturadorDividendosHistoricos:
 
 
 def carregar_mapeamento(arquivo: str = "mapeamento_b3_consolidado.csv") -> list:
-    """Carrega lista de tickers do CSV."""
+    """
+    Carrega lista de tickers do CSV.
+    Extrai apenas o ticker principal de cada linha.
+    """
     try:
-        df = pd.read_csv(arquivo, sep=';')
-        return df['ticker'].unique().tolist()
-    except:
+        df = pd.read_csv(arquivo, sep=';', encoding='utf-8-sig')
+        
+        # Extrair ticker principal de cada linha
+        tickers = []
+        for ticker_raw in df['ticker'].unique():
+            ticker_clean = extrair_ticker_principal(ticker_raw)
+            if ticker_clean:
+                tickers.append(ticker_clean)
+        
+        return tickers
+    except Exception as e:
+        print(f"⚠️ Erro ao carregar mapeamento: {e}")
         return []
 
 
@@ -235,7 +306,9 @@ def main():
         if not args.lista:
             print("❌ Erro: --lista é obrigatório no modo 'lista'")
             sys.exit(1)
-        tickers = [t.strip() for t in args.lista.split(',')]
+        # Extrair ticker principal de cada item da lista
+        tickers = [extrair_ticker_principal(t) for t in args.lista.split(',')]
+        tickers = [t for t in tickers if t]  # Remover vazios
         capturador.processar_lista(tickers)
     
     elif args.modo == 'quantidade':
