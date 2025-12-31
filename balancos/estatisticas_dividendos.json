@@ -1,16 +1,48 @@
 {
   "meta": {
-    "ultima_atualizacao": "2025-12-31T12:16:44.271765Z",
-    "total_empresas": 6
+    "ultima_atualizacao": "2025-12-31T12:33:38.543719Z",
+    "total_empresas": 11
   },
   "proximos_dividendos": [],
   "por_empresa": [
+    {
+      "ticker": "ITUB4",
+      "historicos": 936,
+      "futuros": 0,
+      "total_valor": 345.61,
+      "ultimo_pagamento": "2025-12-09",
+      "proximo_pagamento": null
+    },
+    {
+      "ticker": "PETR4",
+      "historicos": 325,
+      "futuros": 0,
+      "total_valor": 193.97,
+      "ultimo_pagamento": "2025-12-11",
+      "proximo_pagamento": null
+    },
     {
       "ticker": "VALE3",
       "historicos": 150,
       "futuros": 0,
       "total_valor": 136.78,
       "ultimo_pagamento": "2025-11-27",
+      "proximo_pagamento": null
+    },
+    {
+      "ticker": "BBDC3",
+      "historicos": 882,
+      "futuros": 0,
+      "total_valor": 80.13,
+      "ultimo_pagamento": "2025-12-18",
+      "proximo_pagamento": null
+    },
+    {
+      "ticker": "GGBR4",
+      "historicos": 184,
+      "futuros": 0,
+      "total_valor": 54.71,
+      "ultimo_pagamento": "2025-10-30",
       "proximo_pagamento": null
     },
     {
@@ -38,6 +70,14 @@
       "proximo_pagamento": null
     },
     {
+      "ticker": "KLBN11",
+      "historicos": 219,
+      "futuros": 0,
+      "total_valor": 19.75,
+      "ultimo_pagamento": "2025-12-08",
+      "proximo_pagamento": null
+    },
+    {
       "ticker": "SLCE3",
       "historicos": 25,
       "futuros": 0,
@@ -55,7 +95,7 @@
     }
   ],
   "resumo": {
-    "total_empresas_com_historico": 6,
+    "total_empresas_com_historico": 11,
     "total_empresas_com_futuros": 0,
     "total_dividendos_futuros": 0,
     "valor_total_provisionado": 0
