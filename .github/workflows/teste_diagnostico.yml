@@ -1,4 +1,4 @@
-name: Diagnóstico API B3
+name: Diagnóstico API B3 v2
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ jobs:
   diagnostico:
     runs-on: ubuntu-latest
     steps:
-      - name: Diagnóstico API B3
+      - name: Diagnóstico API B3 v2
         run: |
           python3 << 'EOF'
           import requests
@@ -19,7 +19,7 @@ jobs:
           def testar_b3(ticker):
               codigo = ''.join([c for c in ticker.upper() if not c.isdigit()])
               
-              params = {"language": "pt-br", "pageNumber": 1, "pageSize": 20, "company": codigo}
+              params = {"language": "pt-br", "pageNumber": 1, "pageSize": 100, "company": codigo}
               params_b64 = base64.b64encode(json.dumps(params).encode()).decode()
               url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetInitialCompanies/{params_b64}"
               
@@ -27,32 +27,45 @@ jobs:
               print(f"\n{'='*60}")
               print(f"TICKER: {ticker} (código: {codigo})")
               print(f"{'='*60}")
-              print(f"Etapa 1 - Status: {r1.status_code}")
               
               if r1.status_code != 200:
-                  print(f"Resposta: {r1.text[:500]}")
+                  print(f"Erro: {r1.status_code}")
                   return
               
               data1 = r1.json()
               results = data1.get('results', [])
               print(f"Empresas encontradas: {len(results)}")
               
-              if not results:
+              # Mostrar todas as empresas e seus issuingCompany
+              print(f"\nLista de empresas:")
+              for emp in results[:10]:
+                  ic = emp.get('issuingCompany', '?')
+                  tn = emp.get('tradingName', '?')
+                  print(f"  issuingCompany={ic:6} | tradingName={tn}")
+              
+              # Buscar empresa correta pelo issuingCompany
+              empresa_correta = None
+              for emp in results:
+                  if emp.get('issuingCompany', '').upper() == codigo.upper():
+                      empresa_correta = emp
+                      break
+              
+              if not empresa_correta:
+                  print(f"\n❌ Não encontrou issuingCompany={codigo}")
                   return
               
-              empresa = results[0]
-              trading_name = empresa.get('tradingName', '').replace('/', '').replace('.', '')
-              print(f"Trading Name: {trading_name}")
+              trading_name = empresa_correta.get('tradingName', '').replace('/', '').replace('.', '')
+              print(f"\n✓ Empresa correta: {trading_name}")
               
+              # Buscar dividendos
               params = {"language": "pt-br", "pageNumber": 1, "pageSize": 5, "tradingName": trading_name}
               params_b64 = base64.b64encode(json.dumps(params).encode()).decode()
               url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{params_b64}"
               
               r2 = requests.get(url, timeout=15, verify=False)
-              print(f"\nEtapa 2 - Status: {r2.status_code}")
               
               if r2.status_code != 200:
-                  print(f"Resposta: {r2.text[:500]}")
+                  print(f"Erro dividendos: {r2.status_code}")
                   return
               
               data2 = r2.json()
@@ -60,9 +73,9 @@ jobs:
               print(f"Dividendos encontrados: {len(divs)}")
               
               if divs:
-                  print(f"\nESTRUTURA DO DIVIDENDO:")
+                  print(f"\nESTRUTURA:")
                   print(json.dumps(divs[0], indent=2, ensure_ascii=False))
 
-          for ticker in ['VALE3', 'PETR4', 'ITUB4']:
+          for ticker in ['VALE3', 'PETR4', 'ITUB4', 'BBAS3', 'TAEE11']:
               testar_b3(ticker)
           EOF
