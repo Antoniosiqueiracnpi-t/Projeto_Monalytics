@@ -1,0 +1,60 @@
+name: Gerar Mapeamento Trading Names B3
+
+on:
+  workflow_dispatch:
+
+jobs:
+  gerar-mapeamento:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Instalar dependências
+        run: pip install pandas requests
+      
+      - name: Gerar mapeamento
+        run: python gerar_mapeamento_b3_tradingname.py
+      
+      - name: Verificar arquivo gerado
+        run: |
+          if [ -f "mapeamento_tradingname_b3.csv" ]; then
+            echo "✅ Arquivo gerado com sucesso"
+            echo ""
+            echo "📊 Primeiras 20 linhas:"
+            head -20 mapeamento_tradingname_b3.csv
+            echo ""
+            echo "📊 Estatísticas:"
+            echo "Total de linhas: $(wc -l < mapeamento_tradingname_b3.csv)"
+            echo "Sucesso (ok): $(grep -c ';ok$' mapeamento_tradingname_b3.csv || echo 0)"
+            echo "Erros: $(grep -cv ';ok$' mapeamento_tradingname_b3.csv || echo 0)"
+          else
+            echo "❌ Arquivo não foi gerado"
+            exit 1
+          fi
+      
+      - name: Commit e Push
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          git add mapeamento_tradingname_b3.csv
+          
+          if git diff --staged --quiet; then
+            echo "⚠️ Nenhuma mudança para commit"
+            exit 0
+          fi
+          
+          git commit -m "🗺️ Atualizar mapeamento trading names B3 - $(date +'%Y-%m-%d %H:%M')"
+          git push
+          
+          echo "✅ Mapeamento salvo no repositório!"
