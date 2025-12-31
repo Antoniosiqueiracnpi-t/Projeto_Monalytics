@@ -43,20 +43,33 @@ def extrair_ticker_principal(ticker_raw: str) -> str:
 
 def carregar_mapeamento_tradingname(arquivo: str = "mapeamento_tradingname_b3.csv") -> dict:
     """
-    Carrega mapeamento ticker → trading_name.
+    Carrega mapeamento código → trading_name.
+    
+    Usa o CÓDIGO (sem número) como chave para funcionar com qualquer classe:
+    PETR3, PETR4 → código PETR → trading_name PETROBRAS
     
     Returns:
-        dict: {ticker: trading_name}
+        dict: {codigo: trading_name}
     """
     try:
         df = pd.read_csv(arquivo, sep=';', encoding='utf-8-sig')
         # Filtrar apenas os que têm status 'ok'
         df_ok = df[df['status'] == 'ok']
-        mapeamento = dict(zip(df_ok['ticker'].str.upper(), df_ok['trading_name']))
+        # Usar código (sem número) como chave
+        mapeamento = dict(zip(df_ok['codigo'].str.upper(), df_ok['trading_name']))
         return mapeamento
     except Exception as e:
         print(f"⚠️ Erro ao carregar mapeamento: {e}")
         return {}
+
+
+def extrair_codigo(ticker: str) -> str:
+    """
+    Extrai código de negociação (sem número).
+    PETR4 → PETR, VALE3 → VALE, TAEE11 → TAEE, KLBN11 → KLBN
+    """
+    ticker_clean = extrair_ticker_principal(ticker)
+    return ''.join([c for c in ticker_clean if not c.isdigit()])
 
 
 class CapturadorDividendosHistoricos:
@@ -74,9 +87,9 @@ class CapturadorDividendosHistoricos:
         # Carregar mapeamento
         self.mapeamento = carregar_mapeamento_tradingname()
         if self.mapeamento:
-            print(f"✓ Mapeamento carregado: {len(self.mapeamento)} tickers")
+            print(f"✓ Mapeamento carregado: {len(self.mapeamento)} códigos de negociação")
         else:
-            print("⚠️ Mapeamento não encontrado - tentando busca direta")
+            print("⚠️ Mapeamento não encontrado")
     
     def _request_with_retry(self, url: str) -> requests.Response:
         """Faz request com retry para erros 5xx."""
@@ -111,15 +124,17 @@ class CapturadorDividendosHistoricos:
     def _fetch_b3_api(self, ticker: str) -> pd.DataFrame:
         """
         Busca dividendos da API B3 usando trading_name do mapeamento.
+        Usa o código (sem número) para funcionar com qualquer classe de ação.
         """
         try:
             ticker_clean = extrair_ticker_principal(ticker)
+            codigo = extrair_codigo(ticker)
             
-            # Buscar trading_name no mapeamento
-            trading_name = self.mapeamento.get(ticker_clean)
+            # Buscar trading_name pelo código (não pelo ticker completo)
+            trading_name = self.mapeamento.get(codigo)
             
             if not trading_name:
-                print(f"    [B3 API] ⚠️ Ticker {ticker_clean} não está no mapeamento")
+                print(f"    [B3 API] ⚠️ Código {codigo} (de {ticker_clean}) não está no mapeamento")
                 return pd.DataFrame()
             
             # Buscar dividendos (paginado)
