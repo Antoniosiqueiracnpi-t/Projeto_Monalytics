@@ -1,12 +1,61 @@
 {
   "meta": {
-    "ultima_atualizacao": "2025-12-31T11:45:45.938681Z",
-    "total_empresas": 0
+    "ultima_atualizacao": "2025-12-31T12:16:44.271765Z",
+    "total_empresas": 6
   },
   "proximos_dividendos": [],
-  "por_empresa": [],
+  "por_empresa": [
+    {
+      "ticker": "VALE3",
+      "historicos": 150,
+      "futuros": 0,
+      "total_valor": 136.78,
+      "ultimo_pagamento": "2025-11-27",
+      "proximo_pagamento": null
+    },
+    {
+      "ticker": "BBAS3",
+      "historicos": 268,
+      "futuros": 0,
+      "total_valor": 50.88,
+      "ultimo_pagamento": "2025-11-10",
+      "proximo_pagamento": null
+    },
+    {
+      "ticker": "PSSA3",
+      "historicos": 68,
+      "futuros": 0,
+      "total_valor": 35.42,
+      "ultimo_pagamento": "2025-12-19",
+      "proximo_pagamento": null
+    },
+    {
+      "ticker": "BBSE3",
+      "historicos": 46,
+      "futuros": 0,
+      "total_valor": 28.8,
+      "ultimo_pagamento": "2025-06-27",
+      "proximo_pagamento": null
+    },
+    {
+      "ticker": "SLCE3",
+      "historicos": 25,
+      "futuros": 0,
+      "total_valor": 18.48,
+      "ultimo_pagamento": "2025-12-04",
+      "proximo_pagamento": null
+    },
+    {
+      "ticker": "AGRO3",
+      "historicos": 15,
+      "futuros": 0,
+      "total_valor": 18.14,
+      "ultimo_pagamento": "2025-10-22",
+      "proximo_pagamento": null
+    }
+  ],
   "resumo": {
-    "total_empresas_com_historico": 0,
+    "total_empresas_com_historico": 6,
     "total_empresas_com_futuros": 0,
     "total_dividendos_futuros": 0,
     "valor_total_provisionado": 0

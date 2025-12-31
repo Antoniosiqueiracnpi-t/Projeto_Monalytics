@@ -1,8 +1,5246 @@
 {
   "meta": {
-    "ultima_atualizacao": "2025-12-31T11:45:45.938669Z",
-    "total_meses": 0,
-    "meses_disponiveis": []
+    "ultima_atualizacao": "2025-12-31T12:16:44.271449Z",
+    "total_meses": 220,
+    "meses_disponiveis": [
+      "2025-12",
+      "2025-11",
+      "2025-10",
+      "2025-09",
+      "2025-07",
+      "2025-06",
+      "2025-05",
+      "2025-04",
+      "2025-03",
+      "2025-02",
+      "2024-12",
+      "2024-11",
+      "2024-10",
+      "2024-09",
+      "2024-08",
+      "2024-07",
+      "2024-06",
+      "2024-05",
+      "2024-04",
+      "2024-03",
+      "2024-02",
+      "2023-12",
+      "2023-11",
+      "2023-10",
+      "2023-09",
+      "2023-08",
+      "2023-07",
+      "2023-06",
+      "2023-05",
+      "2023-04",
+      "2023-02",
+      "2022-12",
+      "2022-11",
+      "2022-10",
+      "2022-08",
+      "2022-07",
+      "2022-06",
+      "2022-05",
+      "2022-04",
+      "2022-03",
+      "2022-02",
+      "2021-12",
+      "2021-11",
+      "2021-10",
+      "2021-09",
+      "2021-08",
+      "2021-07",
+      "2021-06",
+      "2021-05",
+      "2021-04",
+      "2021-03",
+      "2021-02",
+      "2020-12",
+      "2020-11",
+      "2020-10",
+      "2020-09",
+      "2020-08",
+      "2020-07",
+      "2020-06",
+      "2020-04",
+      "2020-03",
+      "2020-02",
+      "2019-12",
+      "2019-11",
+      "2019-10",
+      "2019-08",
+      "2019-06",
+      "2019-05",
+      "2019-04",
+      "2019-03",
+      "2019-02",
+      "2018-12",
+      "2018-11",
+      "2018-10",
+      "2018-08",
+      "2018-07",
+      "2018-06",
+      "2018-05",
+      "2018-04",
+      "2018-03",
+      "2018-02",
+      "2017-12",
+      "2017-11",
+      "2017-10",
+      "2017-09",
+      "2017-08",
+      "2017-06",
+      "2017-05",
+      "2017-04",
+      "2017-02",
+      "2016-12",
+      "2016-11",
+      "2016-10",
+      "2016-08",
+      "2016-05",
+      "2016-04",
+      "2016-03",
+      "2016-02",
+      "2015-12",
+      "2015-11",
+      "2015-10",
+      "2015-08",
+      "2015-05",
+      "2015-04",
+      "2015-03",
+      "2015-02",
+      "2014-12",
+      "2014-11",
+      "2014-10",
+      "2014-08",
+      "2014-05",
+      "2014-04",
+      "2014-03",
+      "2014-02",
+      "2013-12",
+      "2013-11",
+      "2013-10",
+      "2013-08",
+      "2013-05",
+      "2013-04",
+      "2013-03",
+      "2013-02",
+      "2012-12",
+      "2012-11",
+      "2012-10",
+      "2012-08",
+      "2012-06",
+      "2012-05",
+      "2012-04",
+      "2012-03",
+      "2012-02",
+      "2011-12",
+      "2011-11",
+      "2011-10",
+      "2011-09",
+      "2011-08",
+      "2011-06",
+      "2011-05",
+      "2011-04",
+      "2011-03",
+      "2011-02",
+      "2011-01",
+      "2010-12",
+      "2010-11",
+      "2010-10",
+      "2010-09",
+      "2010-08",
+      "2010-05",
+      "2010-04",
+      "2010-03",
+      "2010-02",
+      "2009-12",
+      "2009-11",
+      "2009-10",
+      "2009-09",
+      "2009-07",
+      "2009-06",
+      "2009-05",
+      "2009-04",
+      "2009-03",
+      "2009-02",
+      "2008-12",
+      "2008-10",
+      "2008-09",
+      "2008-07",
+      "2008-06",
+      "2008-05",
+      "2008-04",
+      "2008-03",
+      "2008-02",
+      "2007-12",
+      "2007-10",
+      "2007-09",
+      "2007-08",
+      "2007-06",
+      "2007-05",
+      "2007-04",
+      "2007-03",
+      "2007-02",
+      "2006-12",
+      "2006-10",
+      "2006-08",
+      "2006-04",
+      "2006-02",
+      "2005-12",
+      "2005-10",
+      "2005-08",
+      "2005-04",
+      "2005-02",
+      "2004-12",
+      "2004-10",
+      "2004-08",
+      "2004-04",
+      "2004-02",
+      "2003-10",
+      "2003-08",
+      "2003-04",
+      "2003-02",
+      "2002-11",
+      "2002-08",
+      "2002-02",
+      "2001-11",
+      "2001-08",
+      "2001-02",
+      "2000-12",
+      "2000-08",
+      "2000-03",
+      "1999-12",
+      "1999-08",
+      "1999-07",
+      "1999-02",
+      "1998-12",
+      "1998-10",
+      "1998-08",
+      "1998-04",
+      "1997-09",
+      "1997-07",
+      "1997-04",
+      "1996-08",
+      "1996-04"
+    ]
   },
-  "por_mes": {}
+  "por_mes": {
+    "2025-12": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.86052,
+        "data_com": null,
+        "data_pagamento": "2025-12-04",
+        "status": "pago"
+      },
+      {
+        "ticker": "SLCE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.045291,
+        "data_com": null,
+        "data_pagamento": "2025-12-04",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.537604,
+        "data_com": null,
+        "data_pagamento": "2025-12-19",
+        "status": "pago"
+      }
+    ],
+    "2025-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.045833,
+        "data_com": null,
+        "data_pagamento": "2025-11-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.071927,
+        "data_com": null,
+        "data_pagamento": "2025-11-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.244102,
+        "data_com": null,
+        "data_pagamento": "2025-11-27",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.768134,
+        "data_com": null,
+        "data_pagamento": "2025-11-27",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.569535,
+        "data_com": null,
+        "data_pagamento": "2025-11-27",
+        "status": "pago"
+      }
+    ],
+    "2025-10": [
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.752895,
+        "data_com": null,
+        "data_pagamento": "2025-10-22",
+        "status": "pago"
+      }
+    ],
+    "2025-09": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.533804,
+        "data_com": null,
+        "data_pagamento": "2025-09-22",
+        "status": "pago"
+      }
+    ],
+    "2025-07": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.895387,
+        "data_com": null,
+        "data_pagamento": "2025-07-31",
+        "status": "pago"
+      }
+    ],
+    "2025-06": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.483208,
+        "data_com": null,
+        "data_pagamento": "2025-06-23",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.942095,
+        "data_com": null,
+        "data_pagamento": "2025-06-27",
+        "status": "pago"
+      }
+    ],
+    "2025-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.334258,
+        "data_com": null,
+        "data_pagamento": "2025-05-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.090447,
+        "data_com": null,
+        "data_pagamento": "2025-05-19",
+        "status": "pago"
+      }
+    ],
+    "2025-04": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.546327,
+        "data_com": null,
+        "data_pagamento": "2025-04-29",
+        "status": "pago"
+      }
+    ],
+    "2025-03": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.432737,
+        "data_com": null,
+        "data_pagamento": "2025-03-25",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.126911,
+        "data_com": null,
+        "data_pagamento": "2025-03-28",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.478894,
+        "data_com": null,
+        "data_pagamento": "2025-03-28",
+        "status": "pago"
+      }
+    ],
+    "2025-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.136002,
+        "data_com": null,
+        "data_pagamento": "2025-02-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.342592,
+        "data_com": null,
+        "data_pagamento": "2025-02-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.003545,
+        "data_com": null,
+        "data_pagamento": "2025-02-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.008931,
+        "data_com": null,
+        "data_pagamento": "2025-02-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.149351,
+        "data_com": null,
+        "data_pagamento": "2025-02-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 2.141847,
+        "data_com": null,
+        "data_pagamento": "2025-02-19",
+        "status": "pago"
+      }
+    ],
+    "2024-12": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 2.272329,
+        "data_com": null,
+        "data_pagamento": "2024-12-20",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.047832,
+        "data_com": null,
+        "data_pagamento": "2024-12-20",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.421051,
+        "data_com": null,
+        "data_pagamento": "2024-12-24",
+        "status": "pago"
+      }
+    ],
+    "2024-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.483304,
+        "data_com": null,
+        "data_pagamento": "2024-11-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.176491,
+        "data_com": null,
+        "data_pagamento": "2024-11-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.520531,
+        "data_com": null,
+        "data_pagamento": "2024-11-28",
+        "status": "pago"
+      }
+    ],
+    "2024-10": [
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.555983,
+        "data_com": null,
+        "data_pagamento": "2024-10-22",
+        "status": "pago"
+      }
+    ],
+    "2024-09": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.409823,
+        "data_com": null,
+        "data_pagamento": "2024-09-24",
+        "status": "pago"
+      }
+    ],
+    "2024-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.151861,
+        "data_com": null,
+        "data_pagamento": "2024-08-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.314481,
+        "data_com": null,
+        "data_pagamento": "2024-08-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.002707,
+        "data_com": null,
+        "data_pagamento": "2024-08-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.005606,
+        "data_com": null,
+        "data_pagamento": "2024-08-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.186602,
+        "data_com": null,
+        "data_pagamento": "2024-08-15",
+        "status": "pago"
+      }
+    ],
+    "2024-07": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 2.093798,
+        "data_com": null,
+        "data_pagamento": "2024-07-25",
+        "status": "pago"
+      }
+    ],
+    "2024-06": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.390909,
+        "data_com": null,
+        "data_pagamento": "2024-06-21",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.31918,
+        "data_com": null,
+        "data_pagamento": "2024-06-25",
+        "status": "pago"
+      }
+    ],
+    "2024-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.293161,
+        "data_com": null,
+        "data_pagamento": "2024-05-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.164786,
+        "data_com": null,
+        "data_pagamento": "2024-05-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.20424,
+        "data_com": null,
+        "data_pagamento": "2024-05-17",
+        "status": "pago"
+      }
+    ],
+    "2024-04": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.829965,
+        "data_com": null,
+        "data_pagamento": "2024-04-29",
+        "status": "pago"
+      }
+    ],
+    "2024-03": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.299356,
+        "data_com": null,
+        "data_pagamento": "2024-03-25",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.093598,
+        "data_com": null,
+        "data_pagamento": "2024-03-28",
+        "status": "pago"
+      }
+    ],
+    "2024-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.220819,
+        "data_com": null,
+        "data_pagamento": "2024-02-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.613636,
+        "data_com": null,
+        "data_pagamento": "2024-02-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.003923,
+        "data_com": null,
+        "data_pagamento": "2024-02-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.010901,
+        "data_com": null,
+        "data_pagamento": "2024-02-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.410037,
+        "data_com": null,
+        "data_pagamento": "2024-02-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 2.738548,
+        "data_com": null,
+        "data_pagamento": "2024-02-22",
+        "status": "pago"
+      }
+    ],
+    "2023-12": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.241876,
+        "data_com": null,
+        "data_pagamento": "2023-12-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.019413,
+        "data_com": null,
+        "data_pagamento": "2023-12-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "SLCE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.054527,
+        "data_com": null,
+        "data_pagamento": "2023-12-20",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.530221,
+        "data_com": null,
+        "data_pagamento": "2023-12-21",
+        "status": "pago"
+      }
+    ],
+    "2023-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.101989,
+        "data_com": null,
+        "data_pagamento": "2023-11-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.686222,
+        "data_com": null,
+        "data_pagamento": "2023-11-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.342306,
+        "data_com": null,
+        "data_pagamento": "2023-11-13",
+        "status": "pago"
+      }
+    ],
+    "2023-10": [
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 3.212353,
+        "data_com": null,
+        "data_pagamento": "2023-10-24",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.565891,
+        "data_com": null,
+        "data_pagamento": "2023-10-26",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.765771,
+        "data_com": null,
+        "data_pagamento": "2023-10-26",
+        "status": "pago"
+      }
+    ],
+    "2023-09": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.29169,
+        "data_com": null,
+        "data_pagamento": "2023-09-25",
+        "status": "pago"
+      }
+    ],
+    "2023-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.143722,
+        "data_com": null,
+        "data_pagamento": "2023-08-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.654655,
+        "data_com": null,
+        "data_pagamento": "2023-08-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.003124,
+        "data_com": null,
+        "data_pagamento": "2023-08-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.014228,
+        "data_com": null,
+        "data_pagamento": "2023-08-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.334197,
+        "data_com": null,
+        "data_pagamento": "2023-08-18",
+        "status": "pago"
+      }
+    ],
+    "2023-07": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.918472,
+        "data_com": null,
+        "data_pagamento": "2023-07-27",
+        "status": "pago"
+      }
+    ],
+    "2023-06": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.589409,
+        "data_com": null,
+        "data_pagamento": "2023-06-26",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.607637,
+        "data_com": null,
+        "data_pagamento": "2023-06-30",
+        "status": "pago"
+      }
+    ],
+    "2023-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.65442,
+        "data_com": null,
+        "data_pagamento": "2023-05-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.123008,
+        "data_com": null,
+        "data_pagamento": "2023-05-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.338631,
+        "data_com": null,
+        "data_pagamento": "2023-05-22",
+        "status": "pago"
+      }
+    ],
+    "2023-04": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 2.596177,
+        "data_com": null,
+        "data_pagamento": "2023-04-27",
+        "status": "pago"
+      }
+    ],
+    "2023-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.235491,
+        "data_com": null,
+        "data_pagamento": "2023-02-09",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.573532,
+        "data_com": null,
+        "data_pagamento": "2023-02-09",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.005198,
+        "data_com": null,
+        "data_pagamento": "2023-02-09",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.01266,
+        "data_com": null,
+        "data_pagamento": "2023-02-09",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.827646,
+        "data_com": null,
+        "data_pagamento": "2023-02-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.352037,
+        "data_com": null,
+        "data_pagamento": "2023-02-17",
+        "status": "pago"
+      }
+    ],
+    "2022-12": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.292013,
+        "data_com": null,
+        "data_pagamento": "2022-12-01",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.839874,
+        "data_com": null,
+        "data_pagamento": "2022-12-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.038704,
+        "data_com": null,
+        "data_pagamento": "2022-12-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "SLCE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.347757,
+        "data_com": null,
+        "data_pagamento": "2022-12-20",
+        "status": "pago"
+      }
+    ],
+    "2022-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.170206,
+        "data_com": null,
+        "data_pagamento": "2022-11-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.634478,
+        "data_com": null,
+        "data_pagamento": "2022-11-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.345525,
+        "data_com": null,
+        "data_pagamento": "2022-11-21",
+        "status": "pago"
+      }
+    ],
+    "2022-10": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.087771,
+        "data_com": null,
+        "data_pagamento": "2022-10-26",
+        "status": "pago"
+      },
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 3.238673,
+        "data_com": null,
+        "data_pagamento": "2022-10-27",
+        "status": "pago"
+      }
+    ],
+    "2022-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.200189,
+        "data_com": null,
+        "data_pagamento": "2022-08-08",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.570678,
+        "data_com": null,
+        "data_pagamento": "2022-08-08",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.004433,
+        "data_com": null,
+        "data_pagamento": "2022-08-08",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.012638,
+        "data_com": null,
+        "data_pagamento": "2022-08-08",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.273736,
+        "data_com": null,
+        "data_pagamento": "2022-08-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.623304,
+        "data_com": null,
+        "data_pagamento": "2022-08-24",
+        "status": "pago"
+      }
+    ],
+    "2022-07": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.539376,
+        "data_com": null,
+        "data_pagamento": "2022-07-28",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 2.03268,
+        "data_com": null,
+        "data_pagamento": "2022-07-28",
+        "status": "pago"
+      }
+    ],
+    "2022-06": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.036045,
+        "data_com": null,
+        "data_pagamento": "2022-06-27",
+        "status": "pago"
+      }
+    ],
+    "2022-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.155347,
+        "data_com": null,
+        "data_pagamento": "2022-05-09",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.517724,
+        "data_com": null,
+        "data_pagamento": "2022-05-09",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.250285,
+        "data_com": null,
+        "data_pagamento": "2022-05-17",
+        "status": "pago"
+      }
+    ],
+    "2022-04": [
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 2.016293,
+        "data_com": null,
+        "data_pagamento": "2022-04-04",
+        "status": "pago"
+      },
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 2.426148,
+        "data_com": null,
+        "data_pagamento": "2022-04-29",
+        "status": "pago"
+      }
+    ],
+    "2022-03": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.41033,
+        "data_com": null,
+        "data_pagamento": "2022-03-31",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.03717,
+        "data_com": null,
+        "data_pagamento": "2022-03-31",
+        "status": "pago"
+      }
+    ],
+    "2022-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.355823,
+        "data_com": null,
+        "data_pagamento": "2022-02-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.454206,
+        "data_com": null,
+        "data_pagamento": "2022-02-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.006454,
+        "data_com": null,
+        "data_pagamento": "2022-02-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.008239,
+        "data_com": null,
+        "data_pagamento": "2022-02-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.210629,
+        "data_com": null,
+        "data_pagamento": "2022-02-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 3.719257,
+        "data_com": null,
+        "data_pagamento": "2022-02-24",
+        "status": "pago"
+      }
+    ],
+    "2021-12": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.012894,
+        "data_com": null,
+        "data_pagamento": "2021-12-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.917154,
+        "data_com": null,
+        "data_pagamento": "2021-12-17",
+        "status": "pago"
+      }
+    ],
+    "2021-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.393703,
+        "data_com": null,
+        "data_pagamento": "2021-11-04",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.174991,
+        "data_com": null,
+        "data_pagamento": "2021-11-22",
+        "status": "pago"
+      }
+    ],
+    "2021-10": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.277302,
+        "data_com": null,
+        "data_pagamento": "2021-10-26",
+        "status": "pago"
+      },
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 2.621181,
+        "data_com": null,
+        "data_pagamento": "2021-10-27",
+        "status": "pago"
+      }
+    ],
+    "2021-09": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 8.197239,
+        "data_com": null,
+        "data_pagamento": "2021-09-16",
+        "status": "pago"
+      }
+    ],
+    "2021-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.345589,
+        "data_com": null,
+        "data_pagamento": "2021-08-03",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.0027,
+        "data_com": null,
+        "data_pagamento": "2021-08-03",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.18474,
+        "data_com": null,
+        "data_pagamento": "2021-08-18",
+        "status": "pago"
+      }
+    ],
+    "2021-07": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.691511,
+        "data_com": null,
+        "data_pagamento": "2021-07-26",
+        "status": "pago"
+      }
+    ],
+    "2021-06": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.720405,
+        "data_com": null,
+        "data_pagamento": "2021-06-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.469265,
+        "data_com": null,
+        "data_pagamento": "2021-06-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.520875,
+        "data_com": null,
+        "data_pagamento": "2021-06-18",
+        "status": "pago"
+      }
+    ],
+    "2021-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.074335,
+        "data_com": null,
+        "data_pagamento": "2021-05-04",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.340111,
+        "data_com": null,
+        "data_pagamento": "2021-05-04",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.168519,
+        "data_com": null,
+        "data_pagamento": "2021-05-14",
+        "status": "pago"
+      }
+    ],
+    "2021-04": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.062714,
+        "data_com": null,
+        "data_pagamento": "2021-04-29",
+        "status": "pago"
+      }
+    ],
+    "2021-03": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.257609,
+        "data_com": null,
+        "data_pagamento": "2021-03-31",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.462186,
+        "data_com": null,
+        "data_pagamento": "2021-03-31",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.923449,
+        "data_com": null,
+        "data_pagamento": "2021-03-31",
+        "status": "pago"
+      }
+    ],
+    "2021-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.434531,
+        "data_com": null,
+        "data_pagamento": "2021-02-08",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.001333,
+        "data_com": null,
+        "data_pagamento": "2021-02-08",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.145714,
+        "data_com": null,
+        "data_pagamento": "2021-02-24",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 3.42591,
+        "data_com": null,
+        "data_pagamento": "2021-02-25",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.835737,
+        "data_com": null,
+        "data_pagamento": "2021-02-25",
+        "status": "pago"
+      }
+    ],
+    "2020-12": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.474808,
+        "data_com": null,
+        "data_pagamento": "2020-12-30",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.001314,
+        "data_com": null,
+        "data_pagamento": "2020-12-30",
+        "status": "pago"
+      }
+    ],
+    "2020-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.194774,
+        "data_com": null,
+        "data_pagamento": "2020-11-03",
+        "status": "pago"
+      },
+      {
+        "ticker": "SLCE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.197969,
+        "data_com": null,
+        "data_pagamento": "2020-11-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.116985,
+        "data_com": null,
+        "data_pagamento": "2020-11-25",
+        "status": "pago"
+      }
+    ],
+    "2020-10": [
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.709664,
+        "data_com": null,
+        "data_pagamento": "2020-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.55962,
+        "data_com": null,
+        "data_pagamento": "2020-10-27",
+        "status": "pago"
+      }
+    ],
+    "2020-09": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.410166,
+        "data_com": null,
+        "data_pagamento": "2020-09-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.997345,
+        "data_com": null,
+        "data_pagamento": "2020-09-10",
+        "status": "pago"
+      }
+    ],
+    "2020-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.44062,
+        "data_com": null,
+        "data_pagamento": "2020-08-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.001567,
+        "data_com": null,
+        "data_pagamento": "2020-08-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.102863,
+        "data_com": null,
+        "data_pagamento": "2020-08-24",
+        "status": "pago"
+      }
+    ],
+    "2020-07": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.393773,
+        "data_com": null,
+        "data_pagamento": "2020-07-30",
+        "status": "pago"
+      }
+    ],
+    "2020-06": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.596798,
+        "data_com": null,
+        "data_pagamento": "2020-06-24",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.875255,
+        "data_com": null,
+        "data_pagamento": "2020-06-25",
+        "status": "pago"
+      }
+    ],
+    "2020-04": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.393986,
+        "data_com": null,
+        "data_pagamento": "2020-04-09",
+        "status": "pago"
+      }
+    ],
+    "2020-03": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.984913,
+        "data_com": null,
+        "data_pagamento": "2020-03-31",
+        "status": "pago"
+      }
+    ],
+    "2020-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.43567,
+        "data_com": null,
+        "data_pagamento": "2020-02-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.003213,
+        "data_com": null,
+        "data_pagamento": "2020-02-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.181421,
+        "data_com": null,
+        "data_pagamento": "2020-02-17",
+        "status": "pago"
+      }
+    ],
+    "2019-12": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.012457,
+        "data_com": null,
+        "data_pagamento": "2019-12-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.898384,
+        "data_com": null,
+        "data_pagamento": "2019-12-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.414364,
+        "data_com": null,
+        "data_pagamento": "2019-12-19",
+        "status": "pago"
+      }
+    ],
+    "2019-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.365042,
+        "data_com": null,
+        "data_pagamento": "2019-11-04",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.176174,
+        "data_com": null,
+        "data_pagamento": "2019-11-25",
+        "status": "pago"
+      }
+    ],
+    "2019-10": [
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.929331,
+        "data_com": null,
+        "data_pagamento": "2019-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.637085,
+        "data_com": null,
+        "data_pagamento": "2019-10-24",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "REST CAP DIN",
+        "valor": 1.352298,
+        "data_com": null,
+        "data_pagamento": "2019-10-30",
+        "status": "pago"
+      }
+    ],
+    "2019-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.441413,
+        "data_com": null,
+        "data_pagamento": "2019-08-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.004742,
+        "data_com": null,
+        "data_pagamento": "2019-08-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.232956,
+        "data_com": null,
+        "data_pagamento": "2019-08-27",
+        "status": "pago"
+      }
+    ],
+    "2019-06": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.714568,
+        "data_com": null,
+        "data_pagamento": "2019-06-19",
+        "status": "pago"
+      }
+    ],
+    "2019-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.414839,
+        "data_com": null,
+        "data_pagamento": "2019-05-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.171054,
+        "data_com": null,
+        "data_pagamento": "2019-05-27",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.890683,
+        "data_com": null,
+        "data_pagamento": "2019-05-29",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.008136,
+        "data_com": null,
+        "data_pagamento": "2019-05-29",
+        "status": "pago"
+      }
+    ],
+    "2019-04": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.894109,
+        "data_com": null,
+        "data_pagamento": "2019-04-30",
+        "status": "pago"
+      }
+    ],
+    "2019-03": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.769687,
+        "data_com": null,
+        "data_pagamento": "2019-03-29",
+        "status": "pago"
+      }
+    ],
+    "2019-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.006521,
+        "data_com": null,
+        "data_pagamento": "2019-02-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.585368,
+        "data_com": null,
+        "data_pagamento": "2019-02-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.156125,
+        "data_com": null,
+        "data_pagamento": "2019-02-18",
+        "status": "pago"
+      }
+    ],
+    "2018-12": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.352301,
+        "data_com": null,
+        "data_pagamento": "2018-12-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.677191,
+        "data_com": null,
+        "data_pagamento": "2018-12-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.006701,
+        "data_com": null,
+        "data_pagamento": "2018-12-19",
+        "status": "pago"
+      }
+    ],
+    "2018-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.416894,
+        "data_com": null,
+        "data_pagamento": "2018-11-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.927951,
+        "data_com": null,
+        "data_pagamento": "2018-11-21",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.125671,
+        "data_com": null,
+        "data_pagamento": "2018-11-26",
+        "status": "pago"
+      }
+    ],
+    "2018-10": [
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.762051,
+        "data_com": null,
+        "data_pagamento": "2018-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.770122,
+        "data_com": null,
+        "data_pagamento": "2018-10-31",
+        "status": "pago"
+      }
+    ],
+    "2018-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.266691,
+        "data_com": null,
+        "data_pagamento": "2018-08-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.002971,
+        "data_com": null,
+        "data_pagamento": "2018-08-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.085492,
+        "data_com": null,
+        "data_pagamento": "2018-08-27",
+        "status": "pago"
+      }
+    ],
+    "2018-07": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.171747,
+        "data_com": null,
+        "data_pagamento": "2018-07-25",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.308614,
+        "data_com": null,
+        "data_pagamento": "2018-07-25",
+        "status": "pago"
+      }
+    ],
+    "2018-06": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.707494,
+        "data_com": null,
+        "data_pagamento": "2018-06-20",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.780899,
+        "data_com": null,
+        "data_pagamento": "2018-06-27",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.007145,
+        "data_com": null,
+        "data_pagamento": "2018-06-27",
+        "status": "pago"
+      }
+    ],
+    "2018-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.213955,
+        "data_com": null,
+        "data_pagamento": "2018-05-02",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.077203,
+        "data_com": null,
+        "data_pagamento": "2018-05-22",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.546585,
+        "data_com": null,
+        "data_pagamento": "2018-05-23",
+        "status": "pago"
+      }
+    ],
+    "2018-04": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 2.133952,
+        "data_com": null,
+        "data_pagamento": "2018-04-25",
+        "status": "pago"
+      }
+    ],
+    "2018-03": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.085141,
+        "data_com": null,
+        "data_pagamento": "2018-03-29",
+        "status": "pago"
+      }
+    ],
+    "2018-02": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.946684,
+        "data_com": null,
+        "data_pagamento": "2018-02-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.010951,
+        "data_com": null,
+        "data_pagamento": "2018-02-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.08171,
+        "data_com": null,
+        "data_pagamento": "2018-02-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.242613,
+        "data_com": null,
+        "data_pagamento": "2018-02-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.003057,
+        "data_com": null,
+        "data_pagamento": "2018-02-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.488512,
+        "data_com": null,
+        "data_pagamento": "2018-02-27",
+        "status": "pago"
+      }
+    ],
+    "2017-12": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.419912,
+        "data_com": null,
+        "data_pagamento": "2017-12-14",
+        "status": "pago"
+      }
+    ],
+    "2017-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.082597,
+        "data_com": null,
+        "data_pagamento": "2017-11-20",
+        "status": "pago"
+      }
+    ],
+    "2017-10": [
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.241108,
+        "data_com": null,
+        "data_pagamento": "2017-10-02",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.749104,
+        "data_com": null,
+        "data_pagamento": "2017-10-25",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.223237,
+        "data_com": null,
+        "data_pagamento": "2017-10-31",
+        "status": "pago"
+      }
+    ],
+    "2017-09": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 2.069843,
+        "data_com": null,
+        "data_pagamento": "2017-09-15",
+        "status": "pago"
+      }
+    ],
+    "2017-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.201066,
+        "data_com": null,
+        "data_pagamento": "2017-08-01",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.003238,
+        "data_com": null,
+        "data_pagamento": "2017-08-01",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.076292,
+        "data_com": null,
+        "data_pagamento": "2017-08-22",
+        "status": "pago"
+      }
+    ],
+    "2017-06": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.753526,
+        "data_com": null,
+        "data_pagamento": "2017-06-27",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.780989,
+        "data_com": null,
+        "data_pagamento": "2017-06-29",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.010649,
+        "data_com": null,
+        "data_pagamento": "2017-06-29",
+        "status": "pago"
+      }
+    ],
+    "2017-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.182939,
+        "data_com": null,
+        "data_pagamento": "2017-05-09",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.078573,
+        "data_com": null,
+        "data_pagamento": "2017-05-23",
+        "status": "pago"
+      }
+    ],
+    "2017-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.905572,
+        "data_com": null,
+        "data_pagamento": "2017-04-20",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.905572,
+        "data_com": null,
+        "data_pagamento": "2017-04-20",
+        "status": "pago"
+      },
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.146472,
+        "data_com": null,
+        "data_pagamento": "2017-04-26",
+        "status": "pago"
+      }
+    ],
+    "2017-02": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.835756,
+        "data_com": null,
+        "data_pagamento": "2017-02-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.017274,
+        "data_com": null,
+        "data_pagamento": "2017-02-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.025315,
+        "data_com": null,
+        "data_pagamento": "2017-02-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.000592,
+        "data_com": null,
+        "data_pagamento": "2017-02-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.072115,
+        "data_com": null,
+        "data_pagamento": "2017-02-21",
+        "status": "pago"
+      }
+    ],
+    "2016-12": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.100064,
+        "data_com": null,
+        "data_pagamento": "2016-12-15",
+        "status": "pago"
+      }
+    ],
+    "2016-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.109871,
+        "data_com": null,
+        "data_pagamento": "2016-11-01",
+        "status": "pago"
+      },
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.401082,
+        "data_com": null,
+        "data_pagamento": "2016-11-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.076932,
+        "data_com": null,
+        "data_pagamento": "2016-11-22",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.166294,
+        "data_com": null,
+        "data_pagamento": "2016-11-28",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.166294,
+        "data_com": null,
+        "data_pagamento": "2016-11-28",
+        "status": "pago"
+      }
+    ],
+    "2016-10": [
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.182998,
+        "data_com": null,
+        "data_pagamento": "2016-10-21",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.086445,
+        "data_com": null,
+        "data_pagamento": "2016-10-27",
+        "status": "pago"
+      }
+    ],
+    "2016-08": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.819149,
+        "data_com": null,
+        "data_pagamento": "2016-08-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.016951,
+        "data_com": null,
+        "data_pagamento": "2016-08-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.136768,
+        "data_com": null,
+        "data_pagamento": "2016-08-09",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.003197,
+        "data_com": null,
+        "data_pagamento": "2016-08-09",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.126652,
+        "data_com": null,
+        "data_pagamento": "2016-08-30",
+        "status": "pago"
+      }
+    ],
+    "2016-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.133683,
+        "data_com": null,
+        "data_pagamento": "2016-05-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.137755,
+        "data_com": null,
+        "data_pagamento": "2016-05-24",
+        "status": "pago"
+      }
+    ],
+    "2016-04": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.59951,
+        "data_com": null,
+        "data_pagamento": "2016-04-29",
+        "status": "pago"
+      }
+    ],
+    "2016-03": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.098285,
+        "data_com": null,
+        "data_pagamento": "2016-03-01",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.141555,
+        "data_com": null,
+        "data_pagamento": "2016-03-29",
+        "status": "pago"
+      }
+    ],
+    "2016-02": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.019137,
+        "data_com": null,
+        "data_pagamento": "2016-02-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.818638,
+        "data_com": null,
+        "data_pagamento": "2016-02-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.088313,
+        "data_com": null,
+        "data_pagamento": "2016-02-22",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.002255,
+        "data_com": null,
+        "data_pagamento": "2016-02-22",
+        "status": "pago"
+      }
+    ],
+    "2015-12": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.317235,
+        "data_com": null,
+        "data_pagamento": "2015-12-11",
+        "status": "pago"
+      }
+    ],
+    "2015-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.170805,
+        "data_com": null,
+        "data_pagamento": "2015-11-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.274491,
+        "data_com": null,
+        "data_pagamento": "2015-11-24",
+        "status": "pago"
+      }
+    ],
+    "2015-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.37361,
+        "data_com": null,
+        "data_pagamento": "2015-10-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.37361,
+        "data_com": null,
+        "data_pagamento": "2015-10-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.3977,
+        "data_com": null,
+        "data_pagamento": "2015-10-28",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.790212,
+        "data_com": null,
+        "data_pagamento": "2015-10-28",
+        "status": "pago"
+      }
+    ],
+    "2015-08": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.865729,
+        "data_com": null,
+        "data_pagamento": "2015-08-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.01804,
+        "data_com": null,
+        "data_pagamento": "2015-08-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.124329,
+        "data_com": null,
+        "data_pagamento": "2015-08-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.002924,
+        "data_com": null,
+        "data_pagamento": "2015-08-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.013976,
+        "data_com": null,
+        "data_pagamento": "2015-08-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.000329,
+        "data_com": null,
+        "data_pagamento": "2015-08-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.266078,
+        "data_com": null,
+        "data_pagamento": "2015-08-25",
+        "status": "pago"
+      }
+    ],
+    "2015-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.451138,
+        "data_com": null,
+        "data_pagamento": "2015-05-12",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.289893,
+        "data_com": null,
+        "data_pagamento": "2015-05-26",
+        "status": "pago"
+      }
+    ],
+    "2015-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.601761,
+        "data_com": null,
+        "data_pagamento": "2015-04-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.601761,
+        "data_com": null,
+        "data_pagamento": "2015-04-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.279744,
+        "data_com": null,
+        "data_pagamento": "2015-04-29",
+        "status": "pago"
+      }
+    ],
+    "2015-03": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.376992,
+        "data_com": null,
+        "data_pagamento": "2015-03-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.636233,
+        "data_com": null,
+        "data_pagamento": "2015-03-27",
+        "status": "pago"
+      }
+    ],
+    "2015-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.089865,
+        "data_com": null,
+        "data_pagamento": "2015-02-03",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.001585,
+        "data_com": null,
+        "data_pagamento": "2015-02-03",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.785018,
+        "data_com": null,
+        "data_pagamento": "2015-02-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.013479,
+        "data_com": null,
+        "data_pagamento": "2015-02-06",
+        "status": "pago"
+      }
+    ],
+    "2014-12": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.210336,
+        "data_com": null,
+        "data_pagamento": "2014-12-11",
+        "status": "pago"
+      }
+    ],
+    "2014-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.055718,
+        "data_com": null,
+        "data_pagamento": "2014-11-04",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.339948,
+        "data_com": null,
+        "data_pagamento": "2014-11-25",
+        "status": "pago"
+      }
+    ],
+    "2014-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.650836,
+        "data_com": null,
+        "data_pagamento": "2014-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.650836,
+        "data_com": null,
+        "data_pagamento": "2014-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.340041,
+        "data_com": null,
+        "data_pagamento": "2014-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.340041,
+        "data_com": null,
+        "data_pagamento": "2014-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.619871,
+        "data_com": null,
+        "data_pagamento": "2014-10-29",
+        "status": "pago"
+      }
+    ],
+    "2014-08": [
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.597661,
+        "data_com": null,
+        "data_pagamento": "2014-08-08",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.010896,
+        "data_com": null,
+        "data_pagamento": "2014-08-08",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.07737,
+        "data_com": null,
+        "data_pagamento": "2014-08-12",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.00141,
+        "data_com": null,
+        "data_pagamento": "2014-08-12",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.336522,
+        "data_com": null,
+        "data_pagamento": "2014-08-26",
+        "status": "pago"
+      }
+    ],
+    "2014-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.081217,
+        "data_com": null,
+        "data_pagamento": "2014-05-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.321041,
+        "data_com": null,
+        "data_pagamento": "2014-05-27",
+        "status": "pago"
+      }
+    ],
+    "2014-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.898904,
+        "data_com": null,
+        "data_pagamento": "2014-04-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.898904,
+        "data_com": null,
+        "data_pagamento": "2014-04-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.38818,
+        "data_com": null,
+        "data_pagamento": "2014-04-16",
+        "status": "pago"
+      }
+    ],
+    "2014-03": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.399637,
+        "data_com": null,
+        "data_pagamento": "2014-03-28",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.573975,
+        "data_com": null,
+        "data_pagamento": "2014-03-28",
+        "status": "pago"
+      }
+    ],
+    "2014-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.130223,
+        "data_com": null,
+        "data_pagamento": "2014-02-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.001931,
+        "data_com": null,
+        "data_pagamento": "2014-02-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.580577,
+        "data_com": null,
+        "data_pagamento": "2014-02-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.009073,
+        "data_com": null,
+        "data_pagamento": "2014-02-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.314676,
+        "data_com": null,
+        "data_pagamento": "2014-02-25",
+        "status": "pago"
+      }
+    ],
+    "2013-12": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.189611,
+        "data_com": null,
+        "data_pagamento": "2013-12-13",
+        "status": "pago"
+      }
+    ],
+    "2013-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.066615,
+        "data_com": null,
+        "data_pagamento": "2013-11-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.309658,
+        "data_com": null,
+        "data_pagamento": "2013-11-26",
+        "status": "pago"
+      }
+    ],
+    "2013-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.823732,
+        "data_com": null,
+        "data_pagamento": "2013-10-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.823732,
+        "data_com": null,
+        "data_pagamento": "2013-10-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.120605,
+        "data_com": null,
+        "data_pagamento": "2013-10-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.120605,
+        "data_com": null,
+        "data_pagamento": "2013-10-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.551512,
+        "data_com": null,
+        "data_pagamento": "2013-10-28",
+        "status": "pago"
+      },
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.100704,
+        "data_com": null,
+        "data_pagamento": "2013-10-29",
+        "status": "pago"
+      }
+    ],
+    "2013-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.769833,
+        "data_com": null,
+        "data_pagamento": "2013-08-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.011039,
+        "data_com": null,
+        "data_pagamento": "2013-08-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.408924,
+        "data_com": null,
+        "data_pagamento": "2013-08-09",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBSE3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.005864,
+        "data_com": null,
+        "data_pagamento": "2013-08-09",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.313771,
+        "data_com": null,
+        "data_pagamento": "2013-08-27",
+        "status": "pago"
+      }
+    ],
+    "2013-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.09821,
+        "data_com": null,
+        "data_pagamento": "2013-05-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.281982,
+        "data_com": null,
+        "data_pagamento": "2013-05-28",
+        "status": "pago"
+      }
+    ],
+    "2013-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.153608,
+        "data_com": null,
+        "data_pagamento": "2013-04-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.710437,
+        "data_com": null,
+        "data_pagamento": "2013-04-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.710437,
+        "data_com": null,
+        "data_pagamento": "2013-04-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.153608,
+        "data_com": null,
+        "data_pagamento": "2013-04-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.154921,
+        "data_com": null,
+        "data_pagamento": "2013-04-17",
+        "status": "pago"
+      }
+    ],
+    "2013-03": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.368669,
+        "data_com": null,
+        "data_pagamento": "2013-03-28",
+        "status": "pago"
+      }
+    ],
+    "2013-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.258057,
+        "data_com": null,
+        "data_pagamento": "2013-02-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.002902,
+        "data_com": null,
+        "data_pagamento": "2013-02-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.264928,
+        "data_com": null,
+        "data_pagamento": "2013-02-26",
+        "status": "pago"
+      }
+    ],
+    "2012-12": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.196107,
+        "data_com": null,
+        "data_pagamento": "2012-12-14",
+        "status": "pago"
+      }
+    ],
+    "2012-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.106932,
+        "data_com": null,
+        "data_pagamento": "2012-11-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.297177,
+        "data_com": null,
+        "data_pagamento": "2012-11-27",
+        "status": "pago"
+      }
+    ],
+    "2012-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.660654,
+        "data_com": null,
+        "data_pagamento": "2012-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.525869,
+        "data_com": null,
+        "data_pagamento": "2012-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.525869,
+        "data_com": null,
+        "data_pagamento": "2012-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.660654,
+        "data_com": null,
+        "data_pagamento": "2012-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.600693,
+        "data_com": null,
+        "data_pagamento": "2012-10-30",
+        "status": "pago"
+      }
+    ],
+    "2012-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.122374,
+        "data_com": null,
+        "data_pagamento": "2012-08-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.001393,
+        "data_com": null,
+        "data_pagamento": "2012-08-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.285821,
+        "data_com": null,
+        "data_pagamento": "2012-08-28",
+        "status": "pago"
+      }
+    ],
+    "2012-06": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.296755,
+        "data_com": null,
+        "data_pagamento": "2012-06-12",
+        "status": "pago"
+      }
+    ],
+    "2012-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.06331,
+        "data_com": null,
+        "data_pagamento": "2012-05-02",
+        "status": "pago"
+      }
+    ],
+    "2012-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.432995,
+        "data_com": null,
+        "data_pagamento": "2012-04-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.642282,
+        "data_com": null,
+        "data_pagamento": "2012-04-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.642282,
+        "data_com": null,
+        "data_pagamento": "2012-04-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.432995,
+        "data_com": null,
+        "data_pagamento": "2012-04-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.63439,
+        "data_com": null,
+        "data_pagamento": "2012-04-30",
+        "status": "pago"
+      }
+    ],
+    "2012-03": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.293279,
+        "data_com": null,
+        "data_pagamento": "2012-03-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.182721,
+        "data_com": null,
+        "data_pagamento": "2012-03-29",
+        "status": "pago"
+      }
+    ],
+    "2012-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.15445,
+        "data_com": null,
+        "data_pagamento": "2012-02-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.002176,
+        "data_com": null,
+        "data_pagamento": "2012-02-07",
+        "status": "pago"
+      }
+    ],
+    "2011-12": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.277414,
+        "data_com": null,
+        "data_pagamento": "2011-12-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.200204,
+        "data_com": null,
+        "data_pagamento": "2011-12-26",
+        "status": "pago"
+      }
+    ],
+    "2011-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.125885,
+        "data_com": null,
+        "data_pagamento": "2011-11-01",
+        "status": "pago"
+      }
+    ],
+    "2011-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.634329,
+        "data_com": null,
+        "data_pagamento": "2011-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.634329,
+        "data_com": null,
+        "data_pagamento": "2011-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.389335,
+        "data_com": null,
+        "data_pagamento": "2011-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.389335,
+        "data_com": null,
+        "data_pagamento": "2011-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.584975,
+        "data_com": null,
+        "data_pagamento": "2011-10-28",
+        "status": "pago"
+      }
+    ],
+    "2011-09": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.278181,
+        "data_com": null,
+        "data_pagamento": "2011-09-13",
+        "status": "pago"
+      }
+    ],
+    "2011-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.208101,
+        "data_com": null,
+        "data_pagamento": "2011-08-03",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.003383,
+        "data_com": null,
+        "data_pagamento": "2011-08-03",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.933403,
+        "data_com": null,
+        "data_pagamento": "2011-08-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.933403,
+        "data_com": null,
+        "data_pagamento": "2011-08-11",
+        "status": "pago"
+      }
+    ],
+    "2011-06": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.257515,
+        "data_com": null,
+        "data_pagamento": "2011-06-07",
+        "status": "pago"
+      }
+    ],
+    "2011-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.156962,
+        "data_com": null,
+        "data_pagamento": "2011-05-03",
+        "status": "pago"
+      }
+    ],
+    "2011-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.608246,
+        "data_com": null,
+        "data_pagamento": "2011-04-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.608246,
+        "data_com": null,
+        "data_pagamento": "2011-04-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.158965,
+        "data_com": null,
+        "data_pagamento": "2011-04-27",
+        "status": "pago"
+      }
+    ],
+    "2011-03": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.253055,
+        "data_com": null,
+        "data_pagamento": "2011-03-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.265835,
+        "data_com": null,
+        "data_pagamento": "2011-03-30",
+        "status": "pago"
+      }
+    ],
+    "2011-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.320691,
+        "data_com": null,
+        "data_pagamento": "2011-02-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.004805,
+        "data_com": null,
+        "data_pagamento": "2011-02-15",
+        "status": "pago"
+      }
+    ],
+    "2011-01": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.320048,
+        "data_com": null,
+        "data_pagamento": "2011-01-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.320048,
+        "data_com": null,
+        "data_pagamento": "2011-01-14",
+        "status": "pago"
+      }
+    ],
+    "2010-12": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.239725,
+        "data_com": null,
+        "data_pagamento": "2010-12-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.194725,
+        "data_com": null,
+        "data_pagamento": "2010-12-14",
+        "status": "pago"
+      }
+    ],
+    "2010-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.131424,
+        "data_com": null,
+        "data_pagamento": "2010-11-09",
+        "status": "pago"
+      }
+    ],
+    "2010-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.555154,
+        "data_com": null,
+        "data_pagamento": "2010-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.555154,
+        "data_com": null,
+        "data_pagamento": "2010-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.345499,
+        "data_com": null,
+        "data_pagamento": "2010-10-28",
+        "status": "pago"
+      }
+    ],
+    "2010-09": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.235582,
+        "data_com": null,
+        "data_pagamento": "2010-09-15",
+        "status": "pago"
+      }
+    ],
+    "2010-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.00274,
+        "data_com": null,
+        "data_pagamento": "2010-08-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.197427,
+        "data_com": null,
+        "data_pagamento": "2010-08-16",
+        "status": "pago"
+      }
+    ],
+    "2010-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.204527,
+        "data_com": null,
+        "data_pagamento": "2010-05-11",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.172912,
+        "data_com": null,
+        "data_pagamento": "2010-05-11",
+        "status": "pago"
+      }
+    ],
+    "2010-04": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.0726,
+        "data_com": null,
+        "data_pagamento": "2010-04-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.421661,
+        "data_com": null,
+        "data_pagamento": "2010-04-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.421661,
+        "data_com": null,
+        "data_pagamento": "2010-04-14",
+        "status": "pago"
+      }
+    ],
+    "2010-03": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.201718,
+        "data_com": null,
+        "data_pagamento": "2010-03-11",
+        "status": "pago"
+      }
+    ],
+    "2010-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.461161,
+        "data_com": null,
+        "data_pagamento": "2010-02-23",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.005652,
+        "data_com": null,
+        "data_pagamento": "2010-02-23",
+        "status": "pago"
+      }
+    ],
+    "2009-12": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.186202,
+        "data_com": null,
+        "data_pagamento": "2009-12-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.069663,
+        "data_com": null,
+        "data_pagamento": "2009-12-21",
+        "status": "pago"
+      }
+    ],
+    "2009-11": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.122897,
+        "data_com": null,
+        "data_pagamento": "2009-11-03",
+        "status": "pago"
+      }
+    ],
+    "2009-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.492036,
+        "data_com": null,
+        "data_pagamento": "2009-10-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.492036,
+        "data_com": null,
+        "data_pagamento": "2009-10-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.405607,
+        "data_com": null,
+        "data_pagamento": "2009-10-16",
+        "status": "pago"
+      }
+    ],
+    "2009-09": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.185397,
+        "data_com": null,
+        "data_pagamento": "2009-09-15",
+        "status": "pago"
+      }
+    ],
+    "2009-07": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.188192,
+        "data_com": null,
+        "data_pagamento": "2009-07-28",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.002053,
+        "data_com": null,
+        "data_pagamento": "2009-07-28",
+        "status": "pago"
+      }
+    ],
+    "2009-06": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.17769,
+        "data_com": null,
+        "data_pagamento": "2009-06-16",
+        "status": "pago"
+      }
+    ],
+    "2009-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.085108,
+        "data_com": null,
+        "data_pagamento": "2009-05-14",
+        "status": "pago"
+      }
+    ],
+    "2009-04": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.108572,
+        "data_com": null,
+        "data_pagamento": "2009-04-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.524586,
+        "data_com": null,
+        "data_pagamento": "2009-04-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.524586,
+        "data_com": null,
+        "data_pagamento": "2009-04-15",
+        "status": "pago"
+      }
+    ],
+    "2009-03": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.17441,
+        "data_com": null,
+        "data_pagamento": "2009-03-18",
+        "status": "pago"
+      }
+    ],
+    "2009-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.005297,
+        "data_com": null,
+        "data_pagamento": "2009-02-03",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.299134,
+        "data_com": null,
+        "data_pagamento": "2009-02-03",
+        "status": "pago"
+      }
+    ],
+    "2008-12": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.159962,
+        "data_com": null,
+        "data_pagamento": "2008-12-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.447522,
+        "data_com": null,
+        "data_pagamento": "2008-12-19",
+        "status": "pago"
+      }
+    ],
+    "2008-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.514741,
+        "data_com": null,
+        "data_pagamento": "2008-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.13852,
+        "data_com": null,
+        "data_pagamento": "2008-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.514741,
+        "data_com": null,
+        "data_pagamento": "2008-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.13852,
+        "data_com": null,
+        "data_pagamento": "2008-10-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.134066,
+        "data_com": null,
+        "data_pagamento": "2008-10-28",
+        "status": "pago"
+      },
+      {
+        "ticker": "AGRO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.019349,
+        "data_com": null,
+        "data_pagamento": "2008-10-29",
+        "status": "pago"
+      }
+    ],
+    "2008-09": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.159678,
+        "data_com": null,
+        "data_pagamento": "2008-09-16",
+        "status": "pago"
+      }
+    ],
+    "2008-07": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.115924,
+        "data_com": null,
+        "data_pagamento": "2008-07-29",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.001917,
+        "data_com": null,
+        "data_pagamento": "2008-07-29",
+        "status": "pago"
+      }
+    ],
+    "2008-06": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.142769,
+        "data_com": null,
+        "data_pagamento": "2008-06-17",
+        "status": "pago"
+      }
+    ],
+    "2008-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.224217,
+        "data_com": null,
+        "data_pagamento": "2008-05-06",
+        "status": "pago"
+      }
+    ],
+    "2008-04": [
+      {
+        "ticker": "SLCE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.083846,
+        "data_com": null,
+        "data_pagamento": "2008-04-03",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.198505,
+        "data_com": null,
+        "data_pagamento": "2008-04-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.23808,
+        "data_com": null,
+        "data_pagamento": "2008-04-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.198505,
+        "data_com": null,
+        "data_pagamento": "2008-04-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.23808,
+        "data_com": null,
+        "data_pagamento": "2008-04-10",
+        "status": "pago"
+      }
+    ],
+    "2008-03": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.145146,
+        "data_com": null,
+        "data_pagamento": "2008-03-20",
+        "status": "pago"
+      }
+    ],
+    "2008-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.053167,
+        "data_com": null,
+        "data_pagamento": "2008-02-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.000856,
+        "data_com": null,
+        "data_pagamento": "2008-02-07",
+        "status": "pago"
+      }
+    ],
+    "2007-12": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.145792,
+        "data_com": null,
+        "data_pagamento": "2007-12-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.7,
+        "data_com": null,
+        "data_pagamento": "2007-12-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.139987,
+        "data_com": null,
+        "data_pagamento": "2007-12-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.0,
+        "data_com": null,
+        "data_pagamento": "2007-12-19",
+        "status": "pago"
+      }
+    ],
+    "2007-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.012238,
+        "data_com": null,
+        "data_pagamento": "2007-10-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.309657,
+        "data_com": null,
+        "data_pagamento": "2007-10-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.012238,
+        "data_com": null,
+        "data_pagamento": "2007-10-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.072214,
+        "data_com": null,
+        "data_pagamento": "2007-10-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.309657,
+        "data_com": null,
+        "data_pagamento": "2007-10-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.072214,
+        "data_com": null,
+        "data_pagamento": "2007-10-18",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.085722,
+        "data_com": null,
+        "data_pagamento": "2007-10-30",
+        "status": "pago"
+      }
+    ],
+    "2007-09": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.134644,
+        "data_com": null,
+        "data_pagamento": "2007-09-19",
+        "status": "pago"
+      }
+    ],
+    "2007-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.000549,
+        "data_com": null,
+        "data_pagamento": "2007-08-02",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.038984,
+        "data_com": null,
+        "data_pagamento": "2007-08-02",
+        "status": "pago"
+      }
+    ],
+    "2007-06": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.133617,
+        "data_com": null,
+        "data_pagamento": "2007-06-19",
+        "status": "pago"
+      }
+    ],
+    "2007-05": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.293761,
+        "data_com": null,
+        "data_pagamento": "2007-05-15",
+        "status": "pago"
+      }
+    ],
+    "2007-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.257285,
+        "data_com": null,
+        "data_pagamento": "2007-04-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.433495,
+        "data_com": null,
+        "data_pagamento": "2007-04-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.433495,
+        "data_com": null,
+        "data_pagamento": "2007-04-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.257285,
+        "data_com": null,
+        "data_pagamento": "2007-04-17",
+        "status": "pago"
+      }
+    ],
+    "2007-03": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.389026,
+        "data_com": null,
+        "data_pagamento": "2007-03-20",
+        "status": "pago"
+      }
+    ],
+    "2007-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.219138,
+        "data_com": null,
+        "data_pagamento": "2007-02-26",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.0042,
+        "data_com": null,
+        "data_pagamento": "2007-02-26",
+        "status": "pago"
+      }
+    ],
+    "2006-12": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.825595,
+        "data_com": null,
+        "data_pagamento": "2006-12-21",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.0,
+        "data_com": null,
+        "data_pagamento": "2006-12-21",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.249737,
+        "data_com": null,
+        "data_pagamento": "2006-12-21",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.9,
+        "data_com": null,
+        "data_pagamento": "2006-12-21",
+        "status": "pago"
+      }
+    ],
+    "2006-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.015328,
+        "data_com": null,
+        "data_pagamento": "2006-10-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.55873,
+        "data_com": null,
+        "data_pagamento": "2006-10-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.55873,
+        "data_com": null,
+        "data_pagamento": "2006-10-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.015328,
+        "data_com": null,
+        "data_pagamento": "2006-10-19",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.850276,
+        "data_com": null,
+        "data_pagamento": "2006-10-27",
+        "status": "pago"
+      }
+    ],
+    "2006-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 1.056568,
+        "data_com": null,
+        "data_pagamento": "2006-08-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.0182,
+        "data_com": null,
+        "data_pagamento": "2006-08-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.849233,
+        "data_com": null,
+        "data_pagamento": "2006-08-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.014629,
+        "data_com": null,
+        "data_pagamento": "2006-08-10",
+        "status": "pago"
+      }
+    ],
+    "2006-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.479159,
+        "data_com": null,
+        "data_pagamento": "2006-04-12",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.479159,
+        "data_com": null,
+        "data_pagamento": "2006-04-12",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.666134,
+        "data_com": null,
+        "data_pagamento": "2006-04-12",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.666134,
+        "data_com": null,
+        "data_pagamento": "2006-04-12",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.941231,
+        "data_com": null,
+        "data_pagamento": "2006-04-19",
+        "status": "pago"
+      }
+    ],
+    "2006-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.162737,
+        "data_com": null,
+        "data_pagamento": "2006-02-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.003798,
+        "data_com": null,
+        "data_pagamento": "2006-02-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.925517,
+        "data_com": null,
+        "data_pagamento": "2006-02-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.021602,
+        "data_com": null,
+        "data_pagamento": "2006-02-16",
+        "status": "pago"
+      }
+    ],
+    "2005-12": [
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.2017,
+        "data_com": null,
+        "data_pagamento": "2005-12-26",
+        "status": "pago"
+      }
+    ],
+    "2005-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.58949,
+        "data_com": null,
+        "data_pagamento": "2005-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.679102,
+        "data_com": null,
+        "data_pagamento": "2005-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.303382,
+        "data_com": null,
+        "data_pagamento": "2005-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.679102,
+        "data_com": null,
+        "data_pagamento": "2005-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.303382,
+        "data_com": null,
+        "data_pagamento": "2005-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.58949,
+        "data_com": null,
+        "data_pagamento": "2005-10-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.9597,
+        "data_com": null,
+        "data_pagamento": "2005-10-21",
+        "status": "pago"
+      }
+    ],
+    "2005-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.01818,
+        "data_com": null,
+        "data_pagamento": "2005-08-12",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.78583,
+        "data_com": null,
+        "data_pagamento": "2005-08-12",
+        "status": "pago"
+      }
+    ],
+    "2005-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.11,
+        "data_com": null,
+        "data_pagamento": "2005-04-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.11,
+        "data_com": null,
+        "data_pagamento": "2005-04-14",
+        "status": "pago"
+      }
+    ],
+    "2005-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.00616,
+        "data_com": null,
+        "data_pagamento": "2005-02-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.28193,
+        "data_com": null,
+        "data_pagamento": "2005-02-17",
+        "status": "pago"
+      }
+    ],
+    "2004-12": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.34896,
+        "data_com": null,
+        "data_pagamento": "2004-12-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "PSSA3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.81,
+        "data_com": null,
+        "data_pagamento": "2004-12-23",
+        "status": "pago"
+      }
+    ],
+    "2004-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.03,
+        "data_com": null,
+        "data_pagamento": "2004-10-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.03,
+        "data_com": null,
+        "data_pagamento": "2004-10-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.24,
+        "data_com": null,
+        "data_pagamento": "2004-10-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.24,
+        "data_com": null,
+        "data_pagamento": "2004-10-13",
+        "status": "pago"
+      }
+    ],
+    "2004-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.61468,
+        "data_com": null,
+        "data_pagamento": "2004-08-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.01229,
+        "data_com": null,
+        "data_pagamento": "2004-08-16",
+        "status": "pago"
+      }
+    ],
+    "2004-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 2.06,
+        "data_com": null,
+        "data_pagamento": "2004-04-14",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 2.06,
+        "data_com": null,
+        "data_pagamento": "2004-04-14",
+        "status": "pago"
+      }
+    ],
+    "2004-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.57894,
+        "data_com": null,
+        "data_pagamento": "2004-02-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.011562,
+        "data_com": null,
+        "data_pagamento": "2004-02-16",
+        "status": "pago"
+      }
+    ],
+    "2003-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.48,
+        "data_com": null,
+        "data_pagamento": "2003-10-15",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.48,
+        "data_com": null,
+        "data_pagamento": "2003-10-15",
+        "status": "pago"
+      }
+    ],
+    "2003-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.01308,
+        "data_com": null,
+        "data_pagamento": "2003-08-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.43977,
+        "data_com": null,
+        "data_pagamento": "2003-08-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.94,
+        "data_com": null,
+        "data_pagamento": "2003-08-27",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.94,
+        "data_com": null,
+        "data_pagamento": "2003-08-27",
+        "status": "pago"
+      }
+    ],
+    "2003-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.62,
+        "data_com": null,
+        "data_pagamento": "2003-04-16",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.62,
+        "data_com": null,
+        "data_pagamento": "2003-04-16",
+        "status": "pago"
+      }
+    ],
+    "2003-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.37167,
+        "data_com": null,
+        "data_pagamento": "2003-02-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.00971,
+        "data_com": null,
+        "data_pagamento": "2003-02-10",
+        "status": "pago"
+      }
+    ],
+    "2002-11": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 2.68,
+        "data_com": null,
+        "data_pagamento": "2002-11-13",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 2.68,
+        "data_com": null,
+        "data_pagamento": "2002-11-13",
+        "status": "pago"
+      }
+    ],
+    "2002-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.011304,
+        "data_com": null,
+        "data_pagamento": "2002-08-26",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.454981,
+        "data_com": null,
+        "data_pagamento": "2002-08-26",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.413619,
+        "data_com": null,
+        "data_pagamento": "2002-08-26",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.012435,
+        "data_com": null,
+        "data_pagamento": "2002-08-26",
+        "status": "pago"
+      }
+    ],
+    "2002-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.007625,
+        "data_com": null,
+        "data_pagamento": "2002-02-25",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.27875,
+        "data_com": null,
+        "data_pagamento": "2002-02-25",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.006931,
+        "data_com": null,
+        "data_pagamento": "2002-02-25",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.2534,
+        "data_com": null,
+        "data_pagamento": "2002-02-25",
+        "status": "pago"
+      }
+    ],
+    "2001-11": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 2.305,
+        "data_com": null,
+        "data_pagamento": "2001-11-22",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 2.305,
+        "data_com": null,
+        "data_pagamento": "2001-11-22",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 2.305,
+        "data_com": null,
+        "data_pagamento": "2001-11-22",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 2.305,
+        "data_com": null,
+        "data_pagamento": "2001-11-22",
+        "status": "pago"
+      }
+    ],
+    "2001-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.003073,
+        "data_com": null,
+        "data_pagamento": "2001-08-24",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.114011,
+        "data_com": null,
+        "data_pagamento": "2001-08-24",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.103647,
+        "data_com": null,
+        "data_pagamento": "2001-08-24",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.002794,
+        "data_com": null,
+        "data_pagamento": "2001-08-24",
+        "status": "pago"
+      }
+    ],
+    "2001-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.19916,
+        "data_com": null,
+        "data_pagamento": "2001-02-12",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.00377,
+        "data_com": null,
+        "data_pagamento": "2001-02-12",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.21907,
+        "data_com": null,
+        "data_pagamento": "2001-02-12",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.00342,
+        "data_com": null,
+        "data_pagamento": "2001-02-12",
+        "status": "pago"
+      }
+    ],
+    "2000-12": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 3.33,
+        "data_com": null,
+        "data_pagamento": "2000-12-28",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 3.33,
+        "data_com": null,
+        "data_pagamento": "2000-12-28",
+        "status": "pago"
+      }
+    ],
+    "2000-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.16266,
+        "data_com": null,
+        "data_pagamento": "2000-08-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.00264,
+        "data_com": null,
+        "data_pagamento": "2000-08-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.14788,
+        "data_com": null,
+        "data_pagamento": "2000-08-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.00242,
+        "data_com": null,
+        "data_pagamento": "2000-08-07",
+        "status": "pago"
+      }
+    ],
+    "2000-03": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.00375,
+        "data_com": null,
+        "data_pagamento": "2000-03-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.00412,
+        "data_com": null,
+        "data_pagamento": "2000-03-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.11116,
+        "data_com": null,
+        "data_pagamento": "2000-03-17",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.10106,
+        "data_com": null,
+        "data_pagamento": "2000-03-17",
+        "status": "pago"
+      }
+    ],
+    "1999-12": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.17,
+        "data_com": null,
+        "data_pagamento": "1999-12-28",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.17,
+        "data_com": null,
+        "data_pagamento": "1999-12-28",
+        "status": "pago"
+      }
+    ],
+    "1999-08": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.11,
+        "data_com": null,
+        "data_pagamento": "1999-08-04",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.11,
+        "data_com": null,
+        "data_pagamento": "1999-08-04",
+        "status": "pago"
+      }
+    ],
+    "1999-07": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.21587,
+        "data_com": null,
+        "data_pagamento": "1999-07-26",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.00311,
+        "data_com": null,
+        "data_pagamento": "1999-07-26",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.23746,
+        "data_com": null,
+        "data_pagamento": "1999-07-26",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "RENDIMENTO",
+        "valor": 0.003418,
+        "data_com": null,
+        "data_pagamento": "1999-07-26",
+        "status": "pago"
+      }
+    ],
+    "1999-02": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.17627,
+        "data_com": null,
+        "data_pagamento": "1999-02-08",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.1939,
+        "data_com": null,
+        "data_pagamento": "1999-02-08",
+        "status": "pago"
+      }
+    ],
+    "1998-12": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.5,
+        "data_com": null,
+        "data_pagamento": "1998-12-30",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.5,
+        "data_com": null,
+        "data_pagamento": "1998-12-30",
+        "status": "pago"
+      }
+    ],
+    "1998-10": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.65,
+        "data_com": null,
+        "data_pagamento": "1998-10-28",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.65,
+        "data_com": null,
+        "data_pagamento": "1998-10-28",
+        "status": "pago"
+      }
+    ],
+    "1998-08": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.17348,
+        "data_com": null,
+        "data_pagamento": "1998-08-03",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.15771,
+        "data_com": null,
+        "data_pagamento": "1998-08-03",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.75,
+        "data_com": null,
+        "data_pagamento": "1998-08-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.75,
+        "data_com": null,
+        "data_pagamento": "1998-08-05",
+        "status": "pago"
+      }
+    ],
+    "1998-04": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.12428,
+        "data_com": null,
+        "data_pagamento": "1998-04-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.11298,
+        "data_com": null,
+        "data_pagamento": "1998-04-06",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.005421,
+        "data_com": null,
+        "data_pagamento": "1998-04-23",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 1.005421,
+        "data_com": null,
+        "data_pagamento": "1998-04-23",
+        "status": "pago"
+      }
+    ],
+    "1997-09": [
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.1125,
+        "data_com": null,
+        "data_pagamento": "1997-09-29",
+        "status": "pago"
+      },
+      {
+        "ticker": "BBAS3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.1237,
+        "data_com": null,
+        "data_pagamento": "1997-09-29",
+        "status": "pago"
+      }
+    ],
+    "1997-07": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.32457,
+        "data_com": null,
+        "data_pagamento": "1997-07-23",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.32457,
+        "data_com": null,
+        "data_pagamento": "1997-07-23",
+        "status": "pago"
+      }
+    ],
+    "1997-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.50816,
+        "data_com": null,
+        "data_pagamento": "1997-04-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "JRS CAP PROPRIO",
+        "valor": 0.50816,
+        "data_com": null,
+        "data_pagamento": "1997-04-10",
+        "status": "pago"
+      }
+    ],
+    "1996-08": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.173546,
+        "data_com": null,
+        "data_pagamento": "1996-08-30",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.173546,
+        "data_com": null,
+        "data_pagamento": "1996-08-30",
+        "status": "pago"
+      }
+    ],
+    "1996-04": [
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.00161,
+        "data_com": null,
+        "data_pagamento": "1996-04-10",
+        "status": "pago"
+      },
+      {
+        "ticker": "VALE3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.00161,
+        "data_com": null,
+        "data_pagamento": "1996-04-10",
+        "status": "pago"
+      }
+    ]
+  }
 }
