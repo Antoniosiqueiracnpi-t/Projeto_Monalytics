@@ -5,10 +5,11 @@ import argparse
 import base64
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional, Tuple, Dict
 import warnings
+import time
 
 import pandas as pd
 import numpy as np
@@ -57,29 +58,64 @@ def _date_to_quarter(date: pd.Timestamp) -> str:
         return "T4"
 
 
+def extrair_ticker_principal(ticker_raw: str) -> str:
+    """
+    Extrai ticker limpo de string que pode conter múltiplos.
+    "TAEE11;TAEE3;TAEE4" → "TAEE11"
+    """
+    if not ticker_raw:
+        return ""
+    ticker = str(ticker_raw).strip().strip('"').strip("'")
+    ticker = ticker.replace('.SA', '').replace('.sa', '')
+    if ';' in ticker:
+        ticker = ticker.split(';')[0]
+    return ticker.strip().upper()
+
+
+def extrair_codigo(ticker: str) -> str:
+    """
+    Extrai código de negociação (sem número).
+    PETR4 → PETR, VALE3 → VALE, TAEE11 → TAEE, KLBN11 → KLBN
+    """
+    ticker_clean = extrair_ticker_principal(ticker)
+    return ''.join([c for c in ticker_clean if not c.isdigit()])
+
+
+def carregar_mapeamento_tradingname(arquivo: str = "mapeamento_tradingname_b3.csv") -> dict:
+    """
+    Carrega mapeamento código → trading_name.
+    
+    Usa o CÓDIGO (sem número) como chave para funcionar com qualquer classe:
+    PETR3, PETR4 → código PETR → trading_name PETROBRAS
+    
+    Returns:
+        dict: {codigo: trading_name}
+    """
+    try:
+        df = pd.read_csv(arquivo, sep=';', encoding='utf-8-sig')
+        df_ok = df[df['status'] == 'ok']
+        mapeamento = dict(zip(df_ok['codigo'].str.upper(), df_ok['trading_name']))
+        return mapeamento
+    except Exception as e:
+        print(f"    ⚠️ Erro ao carregar mapeamento trading names: {e}")
+        return {}
+
+
 def _extract_trading_name(nome_empresa: str) -> str:
     """
     Extrai trading name do nome completo da empresa.
-    
-    Exemplos:
-    - "MUNDIAL S.A. – PRODUTOS DE CONSUMO" → "MUNDIAL"
-    - "TECHNOS S.A." → "TECHNOS"
-    - "SÃO MARTINHO S.A." → "SAO MARTINHO"
-    - "VIVARA PARTICIPAÇÕES S.A." → "VIVARA"
     """
     if not nome_empresa:
         return ""
     
-    # Remover sufixos comuns
     nome = nome_empresa.upper()
     
-    # Padrões a remover
     patterns = [
-        r'\s+S\.?A\.?.*$',  # S.A. e tudo após
-        r'\s+SA\b.*$',       # SA e tudo após
-        r'\s+LTDA.*$',       # LTDA e tudo após
-        r'\s+–.*$',          # Hífen longo e tudo após
-        r'\s+-\s+.*$',       # Hífen e tudo após
+        r'\s+S\.?A\.?.*$',
+        r'\s+SA\b.*$',
+        r'\s+LTDA.*$',
+        r'\s+–.*$',
+        r'\s+-\s+.*$',
         r'\s+PARTICIPACOES.*$',
         r'\s+PARTICIPAÇÕES.*$',
     ]
@@ -93,16 +129,12 @@ def _extract_trading_name(nome_empresa: str) -> str:
 def _parse_b3_value(value_str: str) -> float:
     """
     Converte valor da API B3 de formato brasileiro para float.
-    
-    Exemplos:
-    - "0,20092175" → 0.20092175
-    - "1,028980" → 1.028980
+    "0,20092175" → 0.20092175
     """
     if not value_str:
         return 0.0
     
     try:
-        # Substituir vírgula por ponto
         value_str = str(value_str).replace(',', '.')
         return float(value_str)
     except:
@@ -115,26 +147,23 @@ class CapturadorDividendos:
     Captura histórico de dividendos usando múltiplas fontes.
     
     Prioridade:
-    1. API B3 Oficial (gratuita, dados primários B3)
-    2. OkaneBox API (gratuita, simples, dados B3)
-    3. yfinance (fallback, dados Yahoo Finance)
+    1. API B3 Oficial (usando mapeamento de trading names)
+    2. finbr/fundamentus (fallback)
+    3. yfinance (fallback)
     4. CSV Local (último fallback)
-    
-    Agrupa dividendos por trimestre baseado na data COM
-    e gera formato horizontal padronizado.
-    
-    Salva 2 arquivos:
-    - dividendos_trimestrais.csv (formato horizontal)
-    - dividendos_detalhado.json (datas exatas para mapa de calor)
     """
     pasta_balancos: Path = Path("balancos")
     timeout: int = 30
+    max_retries: int = 3
     csv_mapeamento: str = "mapeamento_final_b3_completo_utf8.csv"
+    csv_tradingname: str = "mapeamento_tradingname_b3.csv"
     _df_mapeamento: Optional[pd.DataFrame] = None
+    _mapeamento_tradingname: Dict[str, str] = field(default_factory=dict)
     
     def __post_init__(self):
-        """Carregar CSV de mapeamento na inicialização."""
+        """Carregar mapeamentos na inicialização."""
         self._load_mapeamento()
+        self._load_mapeamento_tradingname()
     
     def _load_mapeamento(self):
         """Carrega CSV de mapeamento de empresas."""
@@ -145,21 +174,20 @@ class CapturadorDividendos:
                 encoding="utf-8-sig"
             )
         except Exception as e:
-            print(f"    ⚠️ Erro ao carregar mapeamento: {e}")
+            print(f"    ⚠️ Erro ao carregar mapeamento empresas: {e}")
             self._df_mapeamento = pd.DataFrame()
     
+    def _load_mapeamento_tradingname(self):
+        """Carrega mapeamento código → trading_name."""
+        self._mapeamento_tradingname = carregar_mapeamento_tradingname(self.csv_tradingname)
+        if self._mapeamento_tradingname:
+            print(f"    ✓ Mapeamento trading names: {len(self._mapeamento_tradingname)} códigos")
+    
     def _get_empresa_info(self, ticker: str) -> Dict[str, str]:
-        """
-        Busca informações da empresa no CSV de mapeamento.
-        Agora usa ticker principal para garantir encontrar os dados.
-        
-        Returns:
-            dict com 'empresa', 'cnpj', 'trading_name'
-        """
+        """Busca informações da empresa no CSV de mapeamento."""
         if self._df_mapeamento is None or self._df_mapeamento.empty:
             return {}
         
-        # Resolver para ticker principal
         ticker_principal = get_ticker_principal(ticker)
         if not ticker_principal:
             ticker_principal = ticker.upper().strip()
@@ -187,40 +215,53 @@ class CapturadorDividendos:
             'trading_name': trading_name
         }
     
+    def _request_with_retry(self, url: str) -> requests.Response:
+        """Faz request com retry para erros 5xx."""
+        last_error = None
+        
+        for attempt in range(self.max_retries):
+            try:
+                response = requests.get(url, timeout=self.timeout, verify=False)
+                
+                if response.status_code >= 500:
+                    if attempt < self.max_retries - 1:
+                        wait_time = 2 ** attempt
+                        print(f"      ⏳ Erro {response.status_code}, aguardando {wait_time}s...")
+                        time.sleep(wait_time)
+                        continue
+                
+                return response
+                
+            except requests.exceptions.Timeout as e:
+                last_error = e
+                if attempt < self.max_retries - 1:
+                    wait_time = 2 ** attempt
+                    print(f"      ⏳ Timeout, aguardando {wait_time}s...")
+                    time.sleep(wait_time)
+                    continue
+            except Exception as e:
+                last_error = e
+                break
+        
+        raise last_error if last_error else Exception("Request failed")
+    
     def _fetch_b3_api(self, ticker: str) -> pd.DataFrame:
         """
-        Busca dividendos da API B3 usando processo de 2 etapas.
-        
-        Etapa 1: GetInitialCompanies - obtém tradingName usando ticker
-        Etapa 2: GetListedCashDividends - busca dividendos
+        Busca dividendos da API B3 usando mapeamento de trading names.
+        Usa código (sem número) para funcionar com qualquer classe de ação.
         """
         try:
-            ticker_clean = ticker.upper().replace('.SA', '')
+            ticker_clean = extrair_ticker_principal(ticker)
+            codigo = extrair_codigo(ticker)
             
-            # ETAPA 1: Buscar tradingName
-            params = {
-                "language": "pt-br",
-                "pageNumber": 1,
-                "pageSize": 20,
-                "company": ticker_clean
-            }
-            
-            params_b64 = base64.b64encode(json.dumps(params).encode()).decode()
-            url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetInitialCompanies/{params_b64}"
-            
-            response = requests.get(url, timeout=10, verify=False)
-            response.raise_for_status()
-            
-            trading_name = None
-            for company in response.json().get('results', []):
-                if company.get('issuingCompany', '').upper() == ticker_clean:
-                    trading_name = company.get('tradingName', '').replace('/', '').replace('.', '')
-                    break
+            # Buscar trading_name pelo código
+            trading_name = self._mapeamento_tradingname.get(codigo)
             
             if not trading_name:
+                print(f"    [B3 API] ⚠️ Código {codigo} não está no mapeamento")
                 return pd.DataFrame()
             
-            # ETAPA 2: Buscar dividendos
+            # Buscar dividendos (com paginação)
             all_dividends = []
             page = 1
             
@@ -235,41 +276,74 @@ class CapturadorDividendos:
                 params_b64 = base64.b64encode(json.dumps(params).encode()).decode()
                 url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{params_b64}"
                 
-                response = requests.get(url, timeout=10, verify=False)
+                response = self._request_with_retry(url)
                 response.raise_for_status()
                 
-                dividends = response.json().get('results', [])
+                data = response.json()
+                dividends = data.get('results', [])
+                
                 if not dividends:
                     break
                 
                 all_dividends.extend(dividends)
+                
                 if len(dividends) < 120:
                     break
+                
                 page += 1
             
             if not all_dividends:
+                print(f"    [B3 API] ⚠️ Nenhum dividendo para {trading_name}")
                 return pd.DataFrame()
             
+            # Converter para DataFrame
             df = pd.DataFrame(all_dividends)
-            df['Data_Com'] = pd.to_datetime(df['lastDatePrior'], errors='coerce')
-            df['Data_Pagamento'] = pd.to_datetime(df['paymentDate'], errors='coerce')
-            df['Valor'] = pd.to_numeric(df['rate'], errors='coerce')
-            df['Tipo'] = df['corporateActionLabel']
             
-            return df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com']).sort_values('Data_Com', ascending=False).reset_index(drop=True)
+            # Data ex-dividendo
+            if 'lastDatePriorEx' in df.columns:
+                df['Data_Com'] = pd.to_datetime(df['lastDatePriorEx'], format='%d/%m/%Y', errors='coerce')
+            elif 'lastDateTimePriorEx' in df.columns:
+                df['Data_Com'] = pd.to_datetime(df['lastDateTimePriorEx'], errors='coerce')
+            else:
+                return pd.DataFrame()
             
-        except:
+            # Data de aprovação como aproximação de pagamento
+            if 'dateApproval' in df.columns:
+                df['Data_Pagamento'] = pd.to_datetime(df['dateApproval'], format='%d/%m/%Y', errors='coerce')
+            else:
+                df['Data_Pagamento'] = df['Data_Com']
+            
+            # Valor - converter de formato brasileiro
+            if 'valueCash' in df.columns:
+                df['Valor'] = df['valueCash'].apply(
+                    lambda x: float(str(x).replace(',', '.')) if pd.notna(x) else 0
+                )
+            else:
+                return pd.DataFrame()
+            
+            # Tipo
+            df['Tipo'] = df.get('corporateAction', 'DIVIDENDO')
+            
+            df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com'])
+            df = df[df['Valor'] > 0]
+            df = df.sort_values('Data_Com', ascending=False).reset_index(drop=True)
+            
+            print(f"    [B3 API] ✓ {len(df)} proventos ({trading_name})")
+            return df
+            
+        except requests.exceptions.HTTPError as e:
+            print(f"    [B3 API] ✗ HTTP Error: {e}")
+            return pd.DataFrame()
+        except Exception as e:
+            print(f"    [B3 API] ✗ Erro: {type(e).__name__}: {e}")
             return pd.DataFrame()
 
     def _fetch_finbr(self, ticker: str) -> pd.DataFrame:
-        """
-        Busca dividendos usando finbr (fundamentus scraping).
-        Retorna: lista[dict] -> DataFrame padronizado
-        """
+        """Busca dividendos usando finbr (fundamentus scraping)."""
         try:
             from finbr import fundamentus
             
-            ticker_clean = ticker.upper().replace('.SA', '')
+            ticker_clean = extrair_ticker_principal(ticker)
             proventos = fundamentus.proventos(ticker_clean)
             
             if not proventos:
@@ -281,60 +355,22 @@ class CapturadorDividendos:
             df['Valor'] = df['valor']
             df['Tipo'] = df['tipo']
             
-            df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com']).sort_values('Data_Com', ascending=False).reset_index(drop=True)
+            df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com'])
+            df = df.sort_values('Data_Com', ascending=False).reset_index(drop=True)
             
             print(f"    [finbr] ✓ {len(df)} proventos")
             return df
-        except:
-            return pd.DataFrame()
-    
-    def _fetch_okanebox(self, ticker: str) -> pd.DataFrame:
-        """
-        Busca dividendos da OkaneBox API.
-        
-        Endpoint: https://okanebox.com.br/api/acoes/proventos/{ticker}/
-        Retorna: JSON com histórico completo de proventos
-        """
-        ticker_clean = ticker.upper().replace('.SA', '')
-        url = f"https://okanebox.com.br/api/acoes/proventos/{ticker_clean}/"
-        
-        try:
-            response = requests.get(url, timeout=self.timeout)
-            response.raise_for_status()
-            data = response.json()
-            
-            if not data:
-                return pd.DataFrame()
-            
-            # Converter para DataFrame
-            df = pd.DataFrame(data)
-            
-            # Padronizar colunas
-            # OkaneBox retorna: ticker, tipo, datacom, datapagamento, valor
-            if 'datacom' in df.columns:
-                df = df.rename(columns={
-                    'datacom': 'data_com',
-                    'datapagamento': 'data_pagamento'
-                })
-            
-            return df
-            
         except Exception as e:
-            print(f"    [OkaneBox] Erro: {e}")
+            print(f"    [finbr] ✗ Erro: {type(e).__name__}: {e}")
             return pd.DataFrame()
     
     def _fetch_yfinance(self, ticker: str) -> pd.DataFrame:
-        """
-        Busca dividendos via yfinance (Yahoo Finance).
-        
-        Fallback quando OkaneBox não funciona.
-        """
+        """Busca dividendos via yfinance (Yahoo Finance)."""
         if not HAS_YFINANCE:
             return pd.DataFrame()
         
         try:
-            # Garantir que ticker tenha .SA
-            ticker_yf = ticker.upper()
+            ticker_yf = extrair_ticker_principal(ticker)
             if not ticker_yf.endswith('.SA'):
                 ticker_yf = f"{ticker_yf}.SA"
             
@@ -344,171 +380,131 @@ class CapturadorDividendos:
             if divs.empty:
                 return pd.DataFrame()
             
-            # Converter Series para DataFrame
             df = divs.reset_index()
-            df.columns = ['data_pagamento', 'valor']
+            df.columns = ['Data_Pagamento', 'Valor']
+            df['Tipo'] = 'Dividendo'
+            df['Data_Com'] = df['Data_Pagamento']
             
-            # yfinance não diferencia tipo, considerar tudo como "Dividendo"
-            df['tipo'] = 'Dividendo'
-            df['data_com'] = df['data_pagamento']  # Aproximação
-            
+            df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']]
+            print(f"    [yfinance] ✓ {len(df)} proventos")
             return df
             
         except Exception as e:
-            print(f"    [yfinance] Erro: {e}")
+            print(f"    [yfinance] ✗ Erro: {e}")
             return pd.DataFrame()
     
     def _fetch_local_csv(self, ticker: str) -> pd.DataFrame:
-        """
-        Busca dividendos de arquivo CSV local (se disponível).
-        
-        Formato esperado: balancos/{ticker}/dividendos_raw.csv
-        Colunas: data_com, data_pagamento, valor, tipo
-        
-        Terceiro fallback para ambientes sem acesso a APIs externas.
-        """
-        csv_path = self.pasta_balancos / ticker / "dividendos_raw.csv"
+        """Busca dividendos de arquivo CSV local."""
+        ticker_clean = extrair_ticker_principal(ticker)
+        csv_path = self.pasta_balancos / ticker_clean / "dividendos_raw.csv"
         
         if not csv_path.exists():
             return pd.DataFrame()
         
         try:
             df = pd.read_csv(csv_path)
+            print(f"    [CSV Local] ✓ {len(df)} proventos")
             return df
         except Exception as e:
-            print(f"    [CSV Local] Erro: {e}")
+            print(f"    [CSV Local] ✗ Erro: {e}")
             return pd.DataFrame()
     
     def _fetch_all_dividends(self, ticker: str) -> pd.DataFrame:
         """
         Busca dividendos tentando múltiplas fontes em ordem de prioridade.
-        
-        1. B3 API Oficial (dados primários B3 via trading name)
-        2. OkaneBox API (gratuita, dados B3 oficiais)
-        3. yfinance (Yahoo Finance, dados internacionais)
-        4. CSV local (se arquivo dividendos_raw.csv existe)
         """
+        ticker_clean = extrair_ticker_principal(ticker)
         
-        # Bloco atual de tentativas (localizar e substituir)
+        # 1. API B3 (com mapeamento)
         df = self._fetch_b3_api(ticker)
         if not df.empty:
             print(f"  ✓ Capturado via B3 API: {len(df)} proventos\n")
             return df
         
+        # 2. finbr/fundamentus
         print(f"  → Tentando finbr...")
         df = self._fetch_finbr(ticker)
         if not df.empty:
             print(f"  ✓ Capturado via finbr: {len(df)} proventos\n")
             return df
         
-        print(f"  → Tentando OkaneBox...")
-        df = self._fetch_okanebox(ticker)
-        if not df.empty:
-            print(f"  ✓ Capturado via OkaneBox: {len(df)} proventos\n")
-            return df
-        
+        # 3. yfinance
         print(f"  → Tentando yfinance...")
         df = self._fetch_yfinance(ticker)
         if not df.empty:
             print(f"  ✓ Capturado via yfinance: {len(df)} proventos\n")
             return df
         
+        # 4. CSV local
         print(f"  → Tentando CSV local...")
-        df = self._fetch_csv_local(ticker)
+        df = self._fetch_local_csv(ticker)
         if not df.empty:
             print(f"  ✓ Capturado via CSV local: {len(df)} proventos\n")
-            return df
-        
-        if not df.empty:
-            print(f"    ✓ Fonte: CSV Local ({len(df)} registros)")
             return df
         
         return pd.DataFrame()
     
     def _process_dividends(self, df: pd.DataFrame, ticker: str) -> pd.DataFrame:
-        """
-        Processa dividendos brutos.
-        
-        1. Padroniza colunas
-        2. Converte datas
-        3. Padroniza valores
-        4. Remove dados inválidos
-        """
+        """Processa dividendos brutos."""
         if df.empty:
             return df
         
-        # Garantir colunas essenciais
         if 'ticker' not in df.columns:
-            df['ticker'] = ticker.upper()
+            df['ticker'] = extrair_ticker_principal(ticker)
         
-        # Usar data_com se disponível, senão data_pagamento
-        if 'data_com' in df.columns:
-            date_ref = 'data_com'
-        elif 'data_pagamento' in df.columns:
-            date_ref = 'data_pagamento'
-            df['data_com'] = df['data_pagamento']
-        else:
-            return pd.DataFrame()
+        # Padronizar nomes de colunas
+        col_mapping = {
+            'data_com': 'Data_Com',
+            'data_pagamento': 'Data_Pagamento',
+            'valor': 'Valor',
+            'tipo': 'Tipo'
+        }
+        
+        for old, new in col_mapping.items():
+            if old in df.columns and new not in df.columns:
+                df[new] = df[old]
         
         # Converter datas
-        for date_col in ['data_com', 'data_pagamento']:
+        for date_col in ['Data_Com', 'Data_Pagamento']:
             if date_col in df.columns:
                 df[date_col] = pd.to_datetime(df[date_col], errors='coerce')
         
         # Converter valores
-        if 'valor' in df.columns:
-            df['valor'] = pd.to_numeric(df['valor'], errors='coerce')
+        if 'Valor' in df.columns:
+            df['Valor'] = pd.to_numeric(df['Valor'], errors='coerce')
         
         # Remover linhas sem data ou valor
-        df = df.dropna(subset=['data_com', 'valor'])
-        
-        # Remover valores zero ou negativos
-        df = df[df['valor'] > 0]
+        df = df.dropna(subset=['Data_Com', 'Valor'])
+        df = df[df['Valor'] > 0]
         
         return df
     
     def _group_by_quarter(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Agrupa dividendos por trimestre.
-        
-        Usa data_com (ex-dividendo) como referência.
-        Soma todos os proventos do mesmo trimestre.
-        """
+        """Agrupa dividendos por trimestre."""
         if df.empty:
             return df
         
-        # Extrair ano e trimestre
-        df['ano'] = df['data_com'].dt.year
-        df['trimestre'] = df['data_com'].apply(_date_to_quarter)
-        
-        # Remover registros sem trimestre
+        df['ano'] = df['Data_Com'].dt.year
+        df['trimestre'] = df['Data_Com'].apply(_date_to_quarter)
         df = df.dropna(subset=['trimestre'])
         
-        # Agrupar e somar por ano/trimestre
         grouped = df.groupby(['ano', 'trimestre'], as_index=False).agg({
-            'valor': 'sum'
+            'Valor': 'sum'
         })
         
-        # Arredondar valores
-        grouped['valor'] = grouped['valor'].round(4)
+        grouped['Valor'] = grouped['Valor'].round(4)
         
         return grouped
     
     def _build_horizontal(self, df_grouped: pd.DataFrame) -> pd.DataFrame:
-        """
-        Constrói tabela horizontal (períodos como colunas).
-        
-        Formato: Dividendos_Pagos | 2022T1 | 2022T2 | ...
-        """
+        """Constrói tabela horizontal (períodos como colunas)."""
         if df_grouped.empty:
             return pd.DataFrame(columns=["Dividendos_Pagos"])
         
-        # Criar período (ex: 2022T1)
         df_grouped['periodo'] = (
             df_grouped['ano'].astype(str) + df_grouped['trimestre']
         )
         
-        # Ordenar períodos cronologicamente
         def sort_key(p):
             try:
                 return (int(p[:4]), _quarter_order(p[4:]))
@@ -520,78 +516,52 @@ class CapturadorDividendos:
             key=lambda x: x.map(sort_key)
         )
         
-        # Criar dict com período: valor
         value_dict = dict(zip(
             df_grouped['periodo'],
-            df_grouped['valor']
+            df_grouped['Valor']
         ))
         
-        # Construir linha horizontal
         result = {"Dividendos_Pagos": "Dividendos + JCP Pagos no Trimestre"}
         result.update(value_dict)
         
         return pd.DataFrame([result])
     
     def _build_detalhado_json(self, df_processed: pd.DataFrame, ticker: str) -> dict:
-        """
-        Constrói JSON detalhado com datas exatas para mapeamento de calor.
-        
-        Formato:
-        {
-            "ticker": "PETR4",
-            "total_dividendos": 56.09,
-            "periodo": "2020-2024",
-            "dividendos": [
-                {
-                    "data_com": "2022-02-23",
-                    "valor": 2.2336,
-                    "tipo": "Dividendo",
-                    "ano": 2022,
-                    "mes": 2,
-                    "trimestre": "T1"
-                },
-                ...
-            ]
-        }
-        """
+        """Constrói JSON detalhado com datas exatas."""
         if df_processed.empty:
             return {}
         
-        # Preparar lista de dividendos
         dividendos_list = []
         
         for _, row in df_processed.iterrows():
-            data_com = row.get('data_com')
+            data_com = row.get('Data_Com')
             
             if pd.isna(data_com):
                 continue
             
             dividendo = {
                 "data_com": data_com.strftime('%Y-%m-%d'),
-                "valor": float(row.get('valor', 0)),
-                "tipo": str(row.get('tipo', 'Dividendo')),
+                "valor": round(float(row.get('Valor', 0)), 6),
+                "tipo": str(row.get('Tipo', 'Dividendo')),
                 "ano": int(data_com.year),
                 "mes": int(data_com.month),
                 "dia": int(data_com.day),
                 "trimestre": _date_to_quarter(data_com)
             }
             
-            # Adicionar data de pagamento se disponível
-            if 'data_pagamento' in row and pd.notna(row['data_pagamento']):
-                dividendo['data_pagamento'] = row['data_pagamento'].strftime('%Y-%m-%d')
+            if 'Data_Pagamento' in row and pd.notna(row['Data_Pagamento']):
+                dividendo['data_pagamento'] = row['Data_Pagamento'].strftime('%Y-%m-%d')
             
             dividendos_list.append(dividendo)
         
-        # Ordenar por data
         dividendos_list.sort(key=lambda x: x['data_com'])
         
-        # Calcular estatísticas
         total = sum(d['valor'] for d in dividendos_list)
         periodo_inicio = dividendos_list[0]['ano'] if dividendos_list else None
         periodo_fim = dividendos_list[-1]['ano'] if dividendos_list else None
         
         resultado = {
-            "ticker": ticker,
+            "ticker": extrair_ticker_principal(ticker),
             "total_dividendos": round(total, 4),
             "periodo": f"{periodo_inicio}-{periodo_fim}" if periodo_inicio else "",
             "quantidade_pagamentos": len(dividendos_list),
@@ -601,48 +571,36 @@ class CapturadorDividendos:
         return resultado
     
     def capturar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
-        """
-        Pipeline completo de captura de dividendos.
-        Agora usa get_pasta_balanco() para garantir pasta correta.
-        """
-        ticker = ticker.upper().strip()
+        """Pipeline completo de captura de dividendos."""
+        ticker = extrair_ticker_principal(ticker)
         pasta = get_pasta_balanco(ticker)
         
-        # Garantir que pasta existe
         pasta.mkdir(parents=True, exist_ok=True)
         
-        # 1. Buscar dividendos brutos (multi-fonte)
         df_raw = self._fetch_all_dividends(ticker)
         
         if df_raw.empty:
             return False, "nenhum dividendo encontrado (todas as fontes falharam)"
         
-        # 2. Processar dados
         df_processed = self._process_dividends(df_raw, ticker)
         
         if df_processed.empty:
             return False, "nenhum dividendo válido após processamento"
         
-        # 3. Agrupar por trimestre
         df_grouped = self._group_by_quarter(df_processed)
         
         if df_grouped.empty:
             return False, "nenhum dividendo após agrupamento trimestral"
         
-        # 4. Construir formato horizontal
         df_out = self._build_horizontal(df_grouped)
-        
-        # 5. Construir JSON detalhado
         json_data = self._build_detalhado_json(df_processed, ticker)
         
-        # 6. Salvar arquivo CSV (formato horizontal)
         try:
             csv_path = pasta / "dividendos_trimestrais.csv"
             df_out.to_csv(csv_path, index=False, encoding="utf-8")
         except Exception as e:
             return False, f"erro ao salvar CSV: {e}"
         
-        # 7. Salvar arquivo JSON (datas detalhadas)
         try:
             json_path = pasta / "dividendos_detalhado.json"
             with open(json_path, 'w', encoding='utf-8') as f:
@@ -650,14 +608,13 @@ class CapturadorDividendos:
         except Exception as e:
             return False, f"erro ao salvar JSON: {e}"
         
-        # 8. Estatísticas
         n_periodos = len([c for c in df_out.columns if c != "Dividendos_Pagos"])
-        total_dividendos = df_grouped['valor'].sum()
+        total_dividendos = df_grouped['Valor'].sum()
         n_pagamentos = len(df_processed)
         
-        if not df_processed.empty and 'data_com' in df_processed.columns:
-            periodo_inicio = df_processed['data_com'].min().year
-            periodo_fim = df_processed['data_com'].max().year
+        if not df_processed.empty and 'Data_Com' in df_processed.columns:
+            periodo_inicio = df_processed['Data_Com'].min().year
+            periodo_fim = df_processed['Data_Com'].max().year
         else:
             periodo_inicio = periodo_fim = "?"
         
@@ -689,7 +646,6 @@ def main():
     parser.add_argument("--faixa", default="", help="Faixa de linhas: inicio-fim (ex: 1-50)")
     args = parser.parse_args()
 
-    # Tentar carregar mapeamento consolidado, fallback para original
     df = load_mapeamento_consolidado()
     df = df[df["cnpj"].notna()].reset_index(drop=True)
 
@@ -699,12 +655,10 @@ def main():
 
     elif args.modo == "ticker":
         ticker_upper = args.ticker.upper()
-        # Buscar ticker em qualquer posição da string de tickers
         df_sel = df[df["ticker"].str.upper().str.contains(ticker_upper, case=False, na=False, regex=False)]
 
     elif args.modo == "lista":
         tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
-        # Buscar cada ticker em qualquer posição
         mask = df["ticker"].str.upper().apply(
             lambda x: any(t in x for t in tickers) if pd.notna(x) else False
         )
@@ -719,7 +673,7 @@ def main():
 
     print(f"\n>>> JOB: CAPTURAR DIVIDENDOS TRIMESTRAIS <<<")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
-    print("Fontes: B3 API (primária) → OkaneBox → yfinance → CSV local")
+    print("Fontes: API B3 (mapeado) → finbr → yfinance → CSV local")
     print("Saída: balancos/<TICKER>/dividendos_trimestrais.csv + dividendos_detalhado.json\n")
 
     capturador = CapturadorDividendos()
@@ -728,7 +682,6 @@ def main():
     err_count = 0
 
     for _, row in df_sel.iterrows():
-        # Pegar primeiro ticker do grupo (principal)
         ticker_str = str(row["ticker"]).upper().strip()
         ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
 
