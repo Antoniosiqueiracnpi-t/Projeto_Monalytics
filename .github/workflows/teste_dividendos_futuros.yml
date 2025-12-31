@@ -1,4 +1,4 @@
-name: Diagnóstico Dividendos Futuros
+name: Diagnóstico Dividendos Futuros v2
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ jobs:
   diagnostico:
     runs-on: ubuntu-latest
     steps:
-      - name: Testar fontes de dividendos futuros
+      - name: Testar API B3 detalhado
         run: |
           pip install requests pandas
           python3 << 'EOF'
@@ -15,24 +15,31 @@ jobs:
           import base64
           import json
           import warnings
-          from datetime import datetime
+          from datetime import datetime, timedelta
           warnings.filterwarnings('ignore')
 
-          HOJE = datetime.now().strftime('%Y-%m-%d')
-          print(f"Data de hoje: {HOJE}")
+          HOJE = datetime.now()
+          HOJE_STR = HOJE.strftime('%Y-%m-%d')
+          print(f"Data de hoje: {HOJE_STR}")
+          print(f"Datetime: {HOJE}")
           print("="*70)
 
+          def parse_data_b3(data_str):
+              """Converte DD/MM/YYYY para YYYY-MM-DD"""
+              try:
+                  dia, mes, ano = data_str.split('/')
+                  return f"{ano}-{mes}-{dia}"
+              except:
+                  return None
+
           # ============================================================
-          # TESTE 1: API B3 - GetListedCashDividends (já funciona)
-          # Verificar se retorna dividendos com data futura
+          # TESTE 1: Verificar TODOS os dividendos recentes
           # ============================================================
-          print("\n[TESTE 1] API B3 - GetListedCashDividends")
+          print("\n[TESTE 1] API B3 - Analisar datas dos dividendos")
           print("-"*50)
 
-          tickers_teste = ['VALE', 'PETR', 'ITUB', 'BBAS', 'TAEE']
-
-          for trading_name in ['VALE', 'PETROBRAS', 'ITAUUNIBANCO', 'BRASIL', 'TAESA']:
-              params = {"language": "pt-br", "pageNumber": 1, "pageSize": 10, "tradingName": trading_name}
+          for trading_name in ['ITAUUNIBANCO', 'PETROBRAS', 'TAESA', 'BBSEGURIDADE']:
+              params = {"language": "pt-br", "pageNumber": 1, "pageSize": 20, "tradingName": trading_name}
               params_b64 = base64.b64encode(json.dumps(params).encode()).decode()
               url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{params_b64}"
               
@@ -42,109 +49,140 @@ jobs:
                       data = r.json()
                       divs = data.get('results', [])
                       
-                      # Verificar datas
-                      futuros = 0
-                      for d in divs[:5]:
-                          data_ex = d.get('lastDatePriorEx', '')
-                          # Converter de DD/MM/YYYY para YYYY-MM-DD
-                          try:
-                              dia, mes, ano = data_ex.split('/')
-                              data_iso = f"{ano}-{mes}-{dia}"
-                              if data_iso >= HOJE:
-                                  futuros += 1
-                                  print(f"  {trading_name}: FUTURO - {data_ex} - R${d.get('valueCash')} ({d.get('corporateAction')})")
-                          except:
-                              pass
+                      print(f"\n{trading_name}: {len(divs)} dividendos")
                       
-                      if futuros == 0:
-                          print(f"  {trading_name}: Nenhum dividendo futuro nos últimos 5")
-                  else:
-                      print(f"  {trading_name}: Erro {r.status_code}")
+                      futuros = []
+                      passados = []
+                      
+                      for d in divs:
+                          data_ex = d.get('lastDatePriorEx', '')
+                          data_iso = parse_data_b3(data_ex)
+                          valor = d.get('valueCash', '0')
+                          tipo = d.get('corporateAction', '')
+                          
+                          if data_iso:
+                              registro = {
+                                  'data_ex': data_ex,
+                                  'data_iso': data_iso,
+                                  'valor': valor,
+                                  'tipo': tipo
+                              }
+                              
+                              if data_iso >= HOJE_STR:
+                                  futuros.append(registro)
+                              else:
+                                  passados.append(registro)
+                      
+                      print(f"  Futuros (data >= {HOJE_STR}): {len(futuros)}")
+                      for f in futuros[:3]:
+                          print(f"    ✓ {f['data_ex']} | R${f['valor']} | {f['tipo']}")
+                      
+                      print(f"  Passados: {len(passados)}")
+                      for p in passados[:3]:
+                          print(f"    - {p['data_ex']} | R${p['valor']} | {p['tipo']}")
+                          
               except Exception as e:
                   print(f"  {trading_name}: Erro - {e}")
 
           # ============================================================
-          # TESTE 2: API B3 - Eventos Corporativos (endpoint alternativo)
+          # TESTE 2: API B3 - Endpoint de Eventos Corporativos
           # ============================================================
-          print("\n[TESTE 2] API B3 - GetListedSupplementCompany")
+          print("\n\n[TESTE 2] API B3 - GetListedCorporateEvents")
           print("-"*50)
 
-          # Testar endpoint de eventos corporativos
-          for trading_name in ['VALE', 'PETROBRAS']:
-              params = {"language": "pt-br", "tradingName": trading_name}
-              params_b64 = base64.b64encode(json.dumps(params).encode()).decode()
-              url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedSupplementCompany/{params_b64}"
-              
-              try:
-                  r = requests.get(url, timeout=15, verify=False)
-                  print(f"  {trading_name}: Status {r.status_code}")
-                  if r.status_code == 200:
-                      data = r.json()
-                      print(f"    Keys: {list(data.keys())[:10]}")
-              except Exception as e:
-                  print(f"  {trading_name}: Erro - {e}")
+          # Tentar endpoint de eventos corporativos
+          endpoints = [
+              "GetListedCorporateEvents",
+              "GetListedSubscriptionDividends", 
+              "GetListedBonusDividends",
+              "GetListedStockDividends"
+          ]
+
+          for endpoint in endpoints:
+              for trading_name in ['PETROBRAS']:
+                  params = {"language": "pt-br", "pageNumber": 1, "pageSize": 10, "tradingName": trading_name}
+                  params_b64 = base64.b64encode(json.dumps(params).encode()).decode()
+                  url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/{endpoint}/{params_b64}"
+                  
+                  try:
+                      r = requests.get(url, timeout=10, verify=False)
+                      print(f"  {endpoint}: Status {r.status_code}")
+                      if r.status_code == 200 and r.text:
+                          try:
+                              data = r.json()
+                              results = data.get('results', [])
+                              print(f"    Resultados: {len(results)}")
+                              if results:
+                                  print(f"    Primeiro: {json.dumps(results[0], indent=2)[:300]}")
+                          except:
+                              print(f"    Resposta não é JSON: {r.text[:100]}")
+                  except Exception as e:
+                      print(f"  {endpoint}: Erro - {e}")
 
           # ============================================================
-          # TESTE 3: MeusDividendos API (gratuita)
+          # TESTE 3: B3 - Calendário de Eventos (web)
           # ============================================================
-          print("\n[TESTE 3] MeusDividendos API")
+          print("\n\n[TESTE 3] B3 - Calendario API")
           print("-"*50)
 
-          for ticker in ['VALE3', 'PETR4', 'ITUB4']:
-              url = f"https://meusdividendos.com/api/dividendos/{ticker}"
-              try:
-                  r = requests.get(url, timeout=10)
-                  print(f"  {ticker}: Status {r.status_code}")
-                  if r.status_code == 200:
-                      data = r.json()
-                      print(f"    Tipo: {type(data)}, Exemplo: {str(data)[:200]}")
-              except Exception as e:
-                  print(f"  {ticker}: Erro - {e}")
-
-          # ============================================================
-          # TESTE 4: Investidor10 API
-          # ============================================================
-          print("\n[TESTE 4] Investidor10")
-          print("-"*50)
-
-          for ticker in ['VALE3', 'PETR4']:
-              url = f"https://investidor10.com.br/api/dividendos/{ticker.lower()}/"
-              try:
-                  r = requests.get(url, timeout=10, headers={'User-Agent': 'Mozilla/5.0'})
-                  print(f"  {ticker}: Status {r.status_code}")
-                  if r.status_code == 200:
-                      data = r.json()
-                      print(f"    Tipo: {type(data)}, Exemplo: {str(data)[:200]}")
-              except Exception as e:
-                  print(f"  {ticker}: Erro - {e}")
-
-          # ============================================================
-          # TESTE 5: API CVM - Eventos Relevantes
-          # ============================================================
-          print("\n[TESTE 5] CVM - Eventos Relevantes")
-          print("-"*50)
-
-          url = "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/IPE/DADOS/"
+          # Tentar API de calendário
+          url = "https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedEventsCalendar"
           try:
-              r = requests.get(url, timeout=10)
+              r = requests.get(url, timeout=10, verify=False)
               print(f"  Status: {r.status_code}")
               if r.status_code == 200:
-                  # Listar arquivos disponíveis
-                  print(f"  Conteúdo: {r.text[:500]}")
+                  print(f"  Resposta: {r.text[:500]}")
           except Exception as e:
               print(f"  Erro: {e}")
 
           # ============================================================
-          # TESTE 6: Fundamentus (direto, sem finbr)
+          # TESTE 4: StatusInvest direto com headers
           # ============================================================
-          print("\n[TESTE 6] Fundamentus (direto)")
+          print("\n\n[TESTE 4] StatusInvest com headers customizados")
           print("-"*50)
 
-          for ticker in ['VALE3', 'PETR4']:
-              url = f"https://fundamentus.com.br/proventos.php?papel={ticker}"
+          headers = {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+              'Accept': 'application/json',
+              'Referer': 'https://statusinvest.com.br/'
+          }
+
+          for ticker in ['PETR4', 'VALE3', 'ITUB4']:
+              url = f"https://statusinvest.com.br/acao/companytickerprovents?ticker={ticker}&chartProventsType=2"
+              try:
+                  r = requests.get(url, timeout=10, headers=headers)
+                  print(f"  {ticker}: Status {r.status_code}")
+                  if r.status_code == 200:
+                      try:
+                          data = r.json()
+                          print(f"    Tipo: {type(data)}")
+                          if isinstance(data, list) and data:
+                              print(f"    Primeiro: {data[0]}")
+                      except:
+                          print(f"    Não é JSON")
+              except Exception as e:
+                  print(f"  {ticker}: Erro - {e}")
+
+          # ============================================================
+          # TESTE 5: Yahoo Finance API (dividendos)
+          # ============================================================
+          print("\n\n[TESTE 5] Yahoo Finance API")
+          print("-"*50)
+
+          for ticker in ['PETR4.SA', 'VALE3.SA']:
+              url = f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?events=div"
               try:
                   r = requests.get(url, timeout=10, headers={'User-Agent': 'Mozilla/5.0'})
                   print(f"  {ticker}: Status {r.status_code}")
+                  if r.status_code == 200:
+                      data = r.json()
+                      events = data.get('chart', {}).get('result', [{}])[0].get('events', {})
+                      divs = events.get('dividends', {})
+                      print(f"    Dividendos: {len(divs)}")
+                      # Mostrar últimos 3
+                      for ts, div in list(divs.items())[-3:]:
+                          dt = datetime.fromtimestamp(int(ts))
+                          print(f"    {dt.strftime('%Y-%m-%d')}: {div.get('amount')}")
               except Exception as e:
                   print(f"  {ticker}: Erro - {e}")
 
