@@ -1,4 +1,4 @@
-name: Testar Dividendos Futuros
+name: Testar Dividendos Futuros v2
 
 on:
   workflow_dispatch:
@@ -20,17 +20,42 @@ jobs:
       
       - name: Testar dividendos futuros
         run: |
-          python src/capturar_dividendos_futuros.py --modo lista --lista "PETR4,VALE3,ITUB4,BBAS3,TAEE11,BBSE3,EGIE3,CPLE6"
+          python src/capturar_dividendos_futuros.py --modo lista --lista "PETR4,VALE3,ITUB4,BBAS3,TAEE11,BBSE3,BBDC4,EGIE3"
       
-      - name: Mostrar arquivos gerados
+      - name: Mostrar agenda consolidada
         run: |
-          echo "=== Arquivos gerados ==="
-          find balancos -name "dividendos_futuros.json" -exec echo "---" \; -exec cat {} \;
+          echo "=========================================="
+          echo "AGENDA CONSOLIDADA"
+          echo "=========================================="
           
-          echo ""
-          echo "=== Agenda consolidada ==="
           if [ -f "balancos/agenda_dividendos.json" ]; then
-            cat balancos/agenda_dividendos.json
+            # Mostrar apenas meta e próximos eventos
+            python3 << 'EOF'
+          import json
+          with open('balancos/agenda_dividendos.json', 'r') as f:
+              data = json.load(f)
+          
+          print("\n📊 META:")
+          for k, v in data.get('meta', {}).items():
+              print(f"  {k}: {v}")
+          
+          print("\n📅 PRÓXIMOS 7 DIAS COM EVENTOS:")
+          for dia in data.get('calendario_30_dias', [])[:7]:
+              if dia.get('tem_evento'):
+                  print(f"  {dia['data_br']} ({dia['dia_semana']}): {dia['quantidade']} eventos - {dia['tickers']}")
+          
+          print("\n🔮 PRÓXIMOS EVENTOS:")
+          for evento in data.get('proximos_eventos', [])[:10]:
+              print(f"  {evento.get('data_ex')} | {evento.get('ticker'):8} | R$ {evento.get('valor', 0):.4f} | {evento.get('tipo', '')}")
+          EOF
           else
-            echo "Nenhuma agenda gerada (sem dividendos futuros)"
+            echo "⚠️ Agenda não gerada"
           fi
+      
+      - name: Listar arquivos gerados
+        run: |
+          echo ""
+          echo "=========================================="
+          echo "ARQUIVOS GERADOS"
+          echo "=========================================="
+          find balancos -name "*.json" -o -name "*.csv" | head -20
