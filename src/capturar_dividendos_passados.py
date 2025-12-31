@@ -1,10 +1,10 @@
 """
 CAPTURADOR DE DIVIDENDOS HISTÓRICOS - Projeto Monalytics
 
-Fontes de dados (em ordem de prioridade):
-1. API B3 Oficial (com retry para erros 5xx)
-2. finbr/fundamentus (fallback - funciona no Colab)
-3. finbr/statusinvest (fallback - funciona no Colab)
+Usa o mapeamento pré-gerado (mapeamento_tradingname_b3.csv) para buscar
+dividendos diretamente na API B3 sem erros de nome.
+
+IMPORTANTE: Rode primeiro o gerar_mapeamento_b3_tradingname.py para criar o mapeamento.
 
 USO:
 python src/capturar_dividendos_passados.py --modo lista --lista "BBAS3,ITUB4,VALE3"
@@ -22,7 +22,6 @@ import sys
 import warnings
 import time
 
-# Suprimir warnings SSL
 warnings.filterwarnings('ignore')
 try:
     import urllib3
@@ -32,75 +31,37 @@ except:
 
 
 def extrair_ticker_principal(ticker_raw: str) -> str:
-    """
-    Extrai o ticker principal de uma string que pode conter múltiplos tickers.
-    """
+    """Extrai ticker limpo."""
     if not ticker_raw:
         return ""
-    
-    ticker = str(ticker_raw)
-    ticker = ticker.strip().strip('"').strip("'")
+    ticker = str(ticker_raw).strip().strip('"').strip("'")
     ticker = ticker.replace('.SA', '').replace('.sa', '')
-    
     if ';' in ticker:
         ticker = ticker.split(';')[0]
+    return ticker.strip().upper()
+
+
+def carregar_mapeamento_tradingname(arquivo: str = "mapeamento_tradingname_b3.csv") -> dict:
+    """
+    Carrega mapeamento ticker → trading_name.
     
-    ticker = ticker.strip().upper()
-    return ticker
-
-
-def extrair_codigo_negociacao(ticker: str) -> str:
+    Returns:
+        dict: {ticker: trading_name}
     """
-    Extrai código de negociação (sem número) do ticker.
-    PETR4 → PETR, VALE3 → VALE, TAEE11 → TAEE
-    """
-    ticker_clean = extrair_ticker_principal(ticker)
-    codigo = ''.join([c for c in ticker_clean if not c.isdigit()])
-    return codigo
-
-
-def request_with_retry(url: str, timeout: int = 15, max_retries: int = 3) -> requests.Response:
-    """
-    Faz request HTTP com retry automático para erros 5xx.
-    Usa backoff exponencial: 1s, 2s, 4s
-    """
-    last_exception = None
-    
-    for attempt in range(max_retries):
-        try:
-            response = requests.get(url, timeout=timeout, verify=False)
-            
-            # Se for erro 5xx, fazer retry
-            if response.status_code >= 500:
-                if attempt < max_retries - 1:
-                    wait_time = 2 ** attempt  # 1, 2, 4 segundos
-                    print(f"      ⏳ Erro {response.status_code}, aguardando {wait_time}s...")
-                    time.sleep(wait_time)
-                    continue
-            
-            return response
-            
-        except requests.exceptions.Timeout as e:
-            last_exception = e
-            if attempt < max_retries - 1:
-                wait_time = 2 ** attempt
-                print(f"      ⏳ Timeout, aguardando {wait_time}s...")
-                time.sleep(wait_time)
-                continue
-        except requests.exceptions.RequestException as e:
-            last_exception = e
-            break
-    
-    # Se chegou aqui, todas as tentativas falharam
-    if last_exception:
-        raise last_exception
-    return response
+    try:
+        df = pd.read_csv(arquivo, sep=';', encoding='utf-8-sig')
+        # Filtrar apenas os que têm status 'ok'
+        df_ok = df[df['status'] == 'ok']
+        mapeamento = dict(zip(df_ok['ticker'].str.upper(), df_ok['trading_name']))
+        return mapeamento
+    except Exception as e:
+        print(f"⚠️ Erro ao carregar mapeamento: {e}")
+        return {}
 
 
 class CapturadorDividendosHistoricos:
     """
-    Captura dividendos históricos usando múltiplas fontes.
-    Prioridade: API B3 (com retry) → finbr/fundamentus → finbr/statusinvest
+    Captura dividendos históricos usando API B3 com mapeamento pré-gerado.
     """
     
     def __init__(self, pasta_output: str = "balancos"):
@@ -109,56 +70,59 @@ class CapturadorDividendosHistoricos:
         self.dividendos_totais = 0
         self.timeout = 15
         self.max_retries = 3
+        
+        # Carregar mapeamento
+        self.mapeamento = carregar_mapeamento_tradingname()
+        if self.mapeamento:
+            print(f"✓ Mapeamento carregado: {len(self.mapeamento)} tickers")
+        else:
+            print("⚠️ Mapeamento não encontrado - tentando busca direta")
+    
+    def _request_with_retry(self, url: str) -> requests.Response:
+        """Faz request com retry para erros 5xx."""
+        last_error = None
+        
+        for attempt in range(self.max_retries):
+            try:
+                response = requests.get(url, timeout=self.timeout, verify=False)
+                
+                if response.status_code >= 500:
+                    if attempt < self.max_retries - 1:
+                        wait_time = 2 ** attempt
+                        print(f"      ⏳ Erro {response.status_code}, aguardando {wait_time}s...")
+                        time.sleep(wait_time)
+                        continue
+                
+                return response
+                
+            except requests.exceptions.Timeout as e:
+                last_error = e
+                if attempt < self.max_retries - 1:
+                    wait_time = 2 ** attempt
+                    print(f"      ⏳ Timeout, aguardando {wait_time}s...")
+                    time.sleep(wait_time)
+                    continue
+            except Exception as e:
+                last_error = e
+                break
+        
+        raise last_error if last_error else Exception("Request failed")
     
     def _fetch_b3_api(self, ticker: str) -> pd.DataFrame:
         """
-        Busca dividendos da API B3 Oficial com retry automático.
+        Busca dividendos da API B3 usando trading_name do mapeamento.
         """
         try:
             ticker_clean = extrair_ticker_principal(ticker)
-            codigo = extrair_codigo_negociacao(ticker)
             
-            if not codigo:
-                print(f"    [B3 API] ⚠️ Código de negociação vazio")
-                return pd.DataFrame()
-            
-            # ETAPA 1: Buscar tradingName
-            params = {
-                "language": "pt-br",
-                "pageNumber": 1,
-                "pageSize": 20,
-                "company": codigo
-            }
-            
-            params_b64 = base64.b64encode(json.dumps(params).encode()).decode()
-            url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetInitialCompanies/{params_b64}"
-            
-            response = request_with_retry(url, self.timeout, self.max_retries)
-            response.raise_for_status()
-            
-            data = response.json()
-            results = data.get('results', [])
-            
-            if not results:
-                print(f"    [B3 API] ⚠️ Empresa não encontrada para {codigo}")
-                return pd.DataFrame()
-            
-            # Encontrar a empresa correta
-            trading_name = None
-            for company in results:
-                if company.get('issuingCompany', '').upper() == codigo.upper():
-                    trading_name = company.get('tradingName', '')
-                    trading_name = trading_name.replace('/', '').replace('.', '')
-                    break
+            # Buscar trading_name no mapeamento
+            trading_name = self.mapeamento.get(ticker_clean)
             
             if not trading_name:
-                trading_name = results[0].get('tradingName', '').replace('/', '').replace('.', '')
-            
-            if not trading_name:
-                print(f"    [B3 API] ⚠️ Trading name não encontrado para {codigo}")
+                print(f"    [B3 API] ⚠️ Ticker {ticker_clean} não está no mapeamento")
                 return pd.DataFrame()
             
-            # ETAPA 2: Buscar dividendos (com paginação)
+            # Buscar dividendos (paginado)
             all_dividends = []
             page = 1
             
@@ -173,7 +137,7 @@ class CapturadorDividendosHistoricos:
                 params_b64 = base64.b64encode(json.dumps(params).encode()).decode()
                 url = f"https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{params_b64}"
                 
-                response = request_with_retry(url, self.timeout, self.max_retries)
+                response = self._request_with_retry(url)
                 response.raise_for_status()
                 
                 data = response.json()
@@ -190,20 +154,50 @@ class CapturadorDividendosHistoricos:
                 page += 1
             
             if not all_dividends:
-                print(f"    [B3 API] ⚠️ Nenhum dividendo encontrado para {trading_name}")
+                print(f"    [B3 API] ⚠️ Nenhum dividendo para {trading_name}")
                 return pd.DataFrame()
             
             # Converter para DataFrame
+            # Campos da API B3:
+            # - lastDatePriorEx: data ex-dividendo
+            # - valueCash: valor por ação (formato brasileiro: "0,123")
+            # - corporateAction: tipo (DIVIDENDO, JRS CAP PROPRIO, etc)
+            # - dateApproval: data de aprovação
+            
             df = pd.DataFrame(all_dividends)
-            df['Data_Com'] = pd.to_datetime(df['lastDatePrior'], errors='coerce')
-            df['Data_Pagamento'] = pd.to_datetime(df['paymentDate'], errors='coerce')
-            df['Valor'] = pd.to_numeric(df['rate'], errors='coerce')
-            df['Tipo'] = df['corporateActionLabel']
+            
+            # Data ex-dividendo
+            if 'lastDatePriorEx' in df.columns:
+                df['Data_Com'] = pd.to_datetime(df['lastDatePriorEx'], format='%d/%m/%Y', errors='coerce')
+            elif 'lastDateTimePriorEx' in df.columns:
+                df['Data_Com'] = pd.to_datetime(df['lastDateTimePriorEx'], errors='coerce')
+            else:
+                print(f"    [B3 API] ⚠️ Coluna de data não encontrada")
+                return pd.DataFrame()
+            
+            # Data de aprovação como data de pagamento (aproximação)
+            if 'dateApproval' in df.columns:
+                df['Data_Pagamento'] = pd.to_datetime(df['dateApproval'], format='%d/%m/%Y', errors='coerce')
+            else:
+                df['Data_Pagamento'] = df['Data_Com']
+            
+            # Valor - converter de formato brasileiro
+            if 'valueCash' in df.columns:
+                df['Valor'] = df['valueCash'].apply(
+                    lambda x: float(str(x).replace(',', '.')) if pd.notna(x) else 0
+                )
+            else:
+                print(f"    [B3 API] ⚠️ Coluna de valor não encontrada")
+                return pd.DataFrame()
+            
+            # Tipo
+            df['Tipo'] = df.get('corporateAction', 'DIVIDENDO')
             
             df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com'])
+            df = df[df['Valor'] > 0]  # Remover valores zero
             df = df.sort_values('Data_Com', ascending=False).reset_index(drop=True)
             
-            print(f"    [B3 API] ✓ {len(df)} proventos")
+            print(f"    [B3 API] ✓ {len(df)} proventos ({trading_name})")
             return df
             
         except requests.exceptions.HTTPError as e:
@@ -213,102 +207,14 @@ class CapturadorDividendosHistoricos:
             print(f"    [B3 API] ✗ Erro: {type(e).__name__}: {e}")
             return pd.DataFrame()
     
-    def _fetch_fundamentus(self, ticker: str) -> pd.DataFrame:
-        """
-        Busca dividendos usando finbr fundamentus.
-        FALLBACK: Funciona no Colab, bloqueado no GitHub Actions (403).
-        """
-        try:
-            from finbr import fundamentus
-            
-            ticker_clean = extrair_ticker_principal(ticker)
-            
-            if not ticker_clean:
-                return pd.DataFrame()
-            
-            proventos = fundamentus.proventos(ticker_clean)
-            
-            if not proventos:
-                print(f"    [fundamentus] ⚠️ Nenhum provento retornado")
-                return pd.DataFrame()
-            
-            df = pd.DataFrame(proventos)
-            df['Data_Com'] = pd.to_datetime(df['data'])
-            df['Data_Pagamento'] = pd.to_datetime(df['data_pagamento'])
-            df['Valor'] = df['valor']
-            df['Tipo'] = df['tipo']
-            
-            df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com'])
-            df = df.sort_values('Data_Com', ascending=False).reset_index(drop=True)
-            
-            print(f"    [fundamentus] ✓ {len(df)} proventos")
-            return df
-            
-        except Exception as e:
-            print(f"    [fundamentus] ✗ Erro: {type(e).__name__}: {e}")
-            return pd.DataFrame()
-    
-    def _fetch_statusinvest(self, ticker: str) -> pd.DataFrame:
-        """
-        Busca dividendos usando Status Invest (backup).
-        FALLBACK: Funciona no Colab, bloqueado no GitHub Actions (403).
-        """
-        try:
-            from finbr.statusinvest import acao
-            
-            ticker_clean = extrair_ticker_principal(ticker)
-            
-            if not ticker_clean:
-                return pd.DataFrame()
-            
-            dividendos = acao.dividendos(ticker_clean)
-            
-            if dividendos is None or dividendos.empty:
-                print(f"    [statusinvest] ⚠️ Nenhum dividendo retornado")
-                return pd.DataFrame()
-            
-            df = dividendos.copy()
-            
-            if 'data' in df.columns:
-                df['Data_Com'] = pd.to_datetime(df['data'])
-            if 'datapagamento' in df.columns or 'data_pagamento' in df.columns:
-                col_pag = 'datapagamento' if 'datapagamento' in df.columns else 'data_pagamento'
-                df['Data_Pagamento'] = pd.to_datetime(df[col_pag])
-            if 'valor' in df.columns:
-                df['Valor'] = df['valor']
-            if 'tipo' in df.columns:
-                df['Tipo'] = df['tipo']
-            
-            df = df[['Data_Com', 'Data_Pagamento', 'Valor', 'Tipo']].dropna(subset=['Data_Com'])
-            df = df.sort_values('Data_Com', ascending=False).reset_index(drop=True)
-            
-            print(f"    [statusinvest] ✓ {len(df)} proventos")
-            return df
-            
-        except Exception as e:
-            print(f"    [statusinvest] ✗ Erro: {type(e).__name__}: {e}")
-            return pd.DataFrame()
-    
     def capturar_dividendos(self, ticker: str) -> dict:
         """
-        Captura dividendos de um ticker usando múltiplas fontes.
-        Ordem: API B3 → fundamentus → statusinvest
+        Captura dividendos de um ticker.
         """
         ticker_clean = extrair_ticker_principal(ticker)
         print(f"  📊 Buscando dividendos históricos de {ticker_clean}...")
         
-        # 1. Tentar API B3 primeiro (funciona no GitHub Actions)
         df = self._fetch_b3_api(ticker)
-        
-        # 2. Se falhou, tentar fundamentus
-        if df.empty:
-            print(f"    Tentando fonte alternativa (fundamentus)...")
-            df = self._fetch_fundamentus(ticker)
-        
-        # 3. Se ainda falhou, tentar statusinvest
-        if df.empty:
-            print(f"    Tentando fonte alternativa (statusinvest)...")
-            df = self._fetch_statusinvest(ticker)
         
         if df.empty:
             print(f"  ⚠️  Sem dividendos históricos para {ticker_clean}")
@@ -321,7 +227,7 @@ class CapturadorDividendosHistoricos:
                 'data': row['Data_Com'].strftime('%Y-%m-%d') if pd.notna(row['Data_Com']) else None,
                 'data_pagamento': row['Data_Pagamento'].strftime('%Y-%m-%d') if pd.notna(row['Data_Pagamento']) else None,
                 'tipo': str(row['Tipo']),
-                'valor': float(row['Valor']),
+                'valor': round(float(row['Valor']), 6),
                 'status': 'pago',
                 'fonte': 'b3_api'
             }
@@ -329,7 +235,8 @@ class CapturadorDividendosHistoricos:
         
         # Calcular estatísticas
         total_bruto = sum(d['valor'] for d in dividendos)
-        ultimo_ano = [d for d in dividendos if d.get('data', '') >= f"{datetime.now().year - 1}-01-01"]
+        data_limite = f"{datetime.now().year - 1}-01-01"
+        ultimo_ano = [d for d in dividendos if d.get('data', '') >= data_limite]
         
         resultado = {
             'ticker': ticker_clean,
@@ -355,9 +262,7 @@ class CapturadorDividendosHistoricos:
         return resultado
     
     def salvar_json(self, ticker: str, dados: dict):
-        """
-        Salva JSON de dividendos históricos.
-        """
+        """Salva JSON de dividendos históricos."""
         if dados is None:
             return
         
@@ -372,9 +277,7 @@ class CapturadorDividendosHistoricos:
         print(f"  💾 Salvo: {arquivo}")
     
     def processar_ticker(self, ticker: str):
-        """
-        Processa um único ticker.
-        """
+        """Processa um único ticker."""
         ticker_clean = extrair_ticker_principal(ticker)
         print(f"\n{'='*70}")
         print(f"📈 {ticker_clean}")
@@ -385,13 +288,10 @@ class CapturadorDividendosHistoricos:
             self.salvar_json(ticker, dados)
     
     def processar_lista(self, tickers: list):
-        """
-        Processa lista de tickers.
-        """
+        """Processa lista de tickers."""
         print(f"\n{'='*70}")
-        print(f"📊 CAPTURANDO DIVIDENDOS HISTÓRICOS")
+        print(f"📊 CAPTURANDO DIVIDENDOS HISTÓRICOS (API B3)")
         print(f"{'='*70}")
-        print(f"Fontes: API B3 (primária, com retry) → fundamentus → statusinvest")
         print(f"Total de tickers: {len(tickers)}")
         
         for ticker in tickers:
@@ -400,9 +300,7 @@ class CapturadorDividendosHistoricos:
         self.imprimir_resumo()
     
     def imprimir_resumo(self):
-        """
-        Imprime resumo final.
-        """
+        """Imprime resumo final."""
         print(f"\n{'='*70}")
         print(f"📊 RESUMO FINAL")
         print(f"{'='*70}")
@@ -410,19 +308,15 @@ class CapturadorDividendosHistoricos:
         print(f"✅ Total de dividendos: {self.dividendos_totais}")
 
 
-def carregar_mapeamento(arquivo: str = "mapeamento_b3_consolidado.csv") -> list:
-    """
-    Carrega lista de tickers do CSV.
-    """
+def carregar_mapeamento_empresas(arquivo: str = "mapeamento_b3_consolidado.csv") -> list:
+    """Carrega lista de tickers do CSV de empresas."""
     try:
         df = pd.read_csv(arquivo, sep=';', encoding='utf-8-sig')
-        
         tickers = []
         for ticker_raw in df['ticker'].unique():
             ticker_clean = extrair_ticker_principal(ticker_raw)
             if ticker_clean:
                 tickers.append(ticker_clean)
-        
         return tickers
     except Exception as e:
         print(f"⚠️ Erro ao carregar mapeamento: {e}")
@@ -456,14 +350,14 @@ def main():
         capturador.processar_lista(tickers)
     
     elif args.modo == 'quantidade':
-        tickers = carregar_mapeamento()
+        tickers = carregar_mapeamento_empresas()
         if not tickers:
             print("❌ Erro: Não foi possível carregar lista de tickers")
             sys.exit(1)
         capturador.processar_lista(tickers[:args.quantidade])
     
     elif args.modo == 'completo':
-        tickers = carregar_mapeamento()
+        tickers = carregar_mapeamento_empresas()
         if not tickers:
             print("❌ Erro: Não foi possível carregar lista de tickers")
             sys.exit(1)
