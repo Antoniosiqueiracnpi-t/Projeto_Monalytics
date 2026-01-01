@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "17.344.597/0001-94",
+    "nome": "",
+    "ticker": "BBSE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "BANCO DO BRASIL S/A",
+      "cpf_cnpj": "00.000.000/0001-91",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1325000000,
+      "percentual_total": 66.25,
+      "acoes_ordinarias": 1325000000,
+      "percentual_ordinarias": 66.25,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    }
+  ]
+}

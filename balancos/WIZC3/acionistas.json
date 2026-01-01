@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "42.278.473/0001-03",
+    "nome": "",
+    "ticker": "WIZC3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "Integra Participações S.A.",
+      "cpf_cnpj": "17.429.901/0001-04",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 84552713,
+      "percentual_total": 52.876,
+      "acoes_ordinarias": 84552713,
+      "percentual_ordinarias": 52.876,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    }
+  ]
+}

@@ -1,0 +1,313 @@
+{
+  "ticker": "BBSE3",
+  "padrao_fiscal": {
+    "tipo": "PADRAO",
+    "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
+    "trimestres_ltm": 4
+  },
+  "metadata": {
+    "P_L": {
+      "nome": "P/L",
+      "categoria": "Valuation",
+      "formula": "Market Cap / Lucro Líquido LTM",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "P_VPA": {
+      "nome": "P/VPA",
+      "categoria": "Valuation",
+      "formula": "Market Cap / Patrimônio Líquido",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "DY": {
+      "nome": "Dividend Yield",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Market Cap × 100",
+      "unidade": "%",
+      "usa_preco": true
+    },
+    "PAYOUT": {
+      "nome": "Payout",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Lucro Líquido LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "EV_RECEITA": {
+      "nome": "EV/Receita",
+      "categoria": "Valuation",
+      "formula": "Enterprise Value / Receita Corretagem LTM",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "ROE": {
+      "nome": "ROE",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / PL Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "ROA": {
+      "nome": "ROA",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / Ativo Total Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "MARGEM_LIQUIDA": {
+      "nome": "Margem Líquida",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / Receita Corretagem LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "MARGEM_OPERACIONAL": {
+      "nome": "Margem Operacional",
+      "categoria": "Rentabilidade",
+      "formula": "EBIT / Receita Corretagem LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "INDICE_EFICIENCIA": {
+      "nome": "Índice Eficiência",
+      "categoria": "Eficiência",
+      "formula": "(Desp. Vendas + Desp. Admin.) / Receita × 100",
+      "unidade": "%",
+      "usa_preco": false
+    }
+  },
+  "historico_anual": {
+    "2015": {
+      "periodo_referencia": "2015T4",
+      "multiplos": {
+        "P_L": 5.1243,
+        "P_VPA": 2.844,
+        "DY": 15.6058,
+        "PAYOUT": 79.968,
+        "EV_RECEITA": null,
+        "ROE": 55.5014,
+        "ROA": 36.6001,
+        "MARGEM_LIQUIDA": null,
+        "MARGEM_OPERACIONAL": null,
+        "INDICE_EFICIENCIA": null
+      }
+    },
+    "2016": {
+      "periodo_referencia": "2016T4",
+      "multiplos": {
+        "P_L": 6.642,
+        "P_VPA": 3.2163,
+        "DY": 12.5574,
+        "PAYOUT": 83.4062,
+        "EV_RECEITA": null,
+        "ROE": 50.5847,
+        "ROA": 33.3959,
+        "MARGEM_LIQUIDA": null,
+        "MARGEM_OPERACIONAL": null,
+        "INDICE_EFICIENCIA": null
+      }
+    },
+    "2017": {
+      "periodo_referencia": "2017T4",
+      "multiplos": {
+        "P_L": 7.0383,
+        "P_VPA": 3.2028,
+        "DY": 11.5411,
+        "PAYOUT": 81.23,
+        "EV_RECEITA": null,
+        "ROE": 47.1184,
+        "ROA": 31.2964,
+        "MARGEM_LIQUIDA": null,
+        "MARGEM_OPERACIONAL": null,
+        "INDICE_EFICIENCIA": null
+      }
+    },
+    "2018": {
+      "periodo_referencia": "2018T4",
+      "multiplos": {
+        "P_L": 8.7356,
+        "P_VPA": 4.5268,
+        "DY": 20.0382,
+        "PAYOUT": 175.0447,
+        "EV_RECEITA": null,
+        "ROE": 45.0071,
+        "ROA": 26.2048,
+        "MARGEM_LIQUIDA": null,
+        "MARGEM_OPERACIONAL": null,
+        "INDICE_EFICIENCIA": null
+      }
+    },
+    "2019": {
+      "periodo_referencia": "2019T4",
+      "multiplos": {
+        "P_L": 6.6679,
+        "P_VPA": 8.4592,
+        "DY": 7.1293,
+        "PAYOUT": 47.5372,
+        "EV_RECEITA": null,
+        "ROE": 110.2526,
+        "ROA": 46.554,
+        "MARGEM_LIQUIDA": null,
+        "MARGEM_OPERACIONAL": null,
+        "INDICE_EFICIENCIA": null
+      }
+    },
+    "2020": {
+      "periodo_referencia": "2020T4",
+      "multiplos": {
+        "P_L": 10.2109,
+        "P_VPA": 6.1537,
+        "DY": 21.0498,
+        "PAYOUT": 214.9388,
+        "EV_RECEITA": null,
+        "ROE": 66.1738,
+        "ROA": 29.8199,
+        "MARGEM_LIQUIDA": null,
+        "MARGEM_OPERACIONAL": null,
+        "INDICE_EFICIENCIA": null
+      }
+    },
+    "2021": {
+      "periodo_referencia": "2021T4",
+      "multiplos": {
+        "P_L": 7.2968,
+        "P_VPA": 3.9415,
+        "DY": 6.9477,
+        "PAYOUT": 50.6964,
+        "EV_RECEITA": null,
+        "ROE": 57.5409,
+        "ROA": 32.4864,
+        "MARGEM_LIQUIDA": null,
+        "MARGEM_OPERACIONAL": null,
+        "INDICE_EFICIENCIA": null
+      }
+    },
+    "2022": {
+      "periodo_referencia": "2022T4",
+      "multiplos": {
+        "P_L": 8.3017,
+        "P_VPA": 6.606,
+        "DY": 7.8358,
+        "PAYOUT": 65.0501,
+        "EV_RECEITA": null,
+        "ROE": 81.2578,
+        "ROA": 41.058,
+        "MARGEM_LIQUIDA": null,
+        "MARGEM_OPERACIONAL": null,
+        "INDICE_EFICIENCIA": null
+      }
+    },
+    "2023": {
+      "periodo_referencia": "2023T4",
+      "multiplos": {
+        "P_L": 6.9911,
+        "P_VPA": 5.6599,
+        "DY": 12.5493,
+        "PAYOUT": 87.734,
+        "EV_RECEITA": null,
+        "ROE": 91.2811,
+        "ROA": 46.2014,
+        "MARGEM_LIQUIDA": null,
+        "MARGEM_OPERACIONAL": null,
+        "INDICE_EFICIENCIA": null
+      }
+    },
+    "2024": {
+      "periodo_referencia": "2024T4",
+      "multiplos": {
+        "P_L": 7.3994,
+        "P_VPA": 6.6423,
+        "DY": 8.2366,
+        "PAYOUT": 60.9466,
+        "EV_RECEITA": null,
+        "ROE": 89.2107,
+        "ROA": 43.6387,
+        "MARGEM_LIQUIDA": null,
+        "MARGEM_OPERACIONAL": null,
+        "INDICE_EFICIENCIA": null
+      }
+    },
+    "2025": {
+      "periodo_referencia": "2025T3",
+      "multiplos": {
+        "P_L": 7.3914,
+        "P_VPA": 5.1687,
+        "DY": 12.8151,
+        "PAYOUT": 94.721,
+        "EV_RECEITA": null,
+        "ROE": 71.6486,
+        "ROA": 45.3894,
+        "MARGEM_LIQUIDA": null,
+        "MARGEM_OPERACIONAL": null,
+        "INDICE_EFICIENCIA": null
+      }
+    }
+  },
+  "ltm": {
+    "periodo_referencia": "2025T3",
+    "data_calculo": "2026-01-01T17:26:48.366993",
+    "preco_utilizado": 33.26,
+    "periodo_preco": "2025T3",
+    "acoes_utilizadas": 2000000000,
+    "periodo_acoes": "2025T3",
+    "multiplos": {
+      "P_L": 7.3914,
+      "P_VPA": 5.1687,
+      "DY": 12.8151,
+      "PAYOUT": 94.721,
+      "EV_RECEITA": null,
+      "ROE": 71.6486,
+      "ROA": 45.3894,
+      "MARGEM_LIQUIDA": null,
+      "MARGEM_OPERACIONAL": null,
+      "INDICE_EFICIENCIA": null
+    }
+  },
+  "periodos_disponiveis": [
+    "2015T1",
+    "2015T2",
+    "2015T3",
+    "2015T4",
+    "2016T1",
+    "2016T2",
+    "2016T3",
+    "2016T4",
+    "2017T1",
+    "2017T2",
+    "2017T3",
+    "2017T4",
+    "2018T1",
+    "2018T2",
+    "2018T3",
+    "2018T4",
+    "2019T1",
+    "2019T2",
+    "2019T3",
+    "2019T4",
+    "2020T1",
+    "2020T2",
+    "2020T3",
+    "2020T4",
+    "2021T1",
+    "2021T2",
+    "2021T3",
+    "2021T4",
+    "2022T1",
+    "2022T2",
+    "2022T3",
+    "2022T4",
+    "2023T1",
+    "2023T2",
+    "2023T3",
+    "2023T4",
+    "2024T1",
+    "2024T2",
+    "2024T3",
+    "2024T4",
+    "2025T1",
+    "2025T2",
+    "2025T3"
+  ],
+  "erros": []
+}
