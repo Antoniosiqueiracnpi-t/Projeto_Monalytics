@@ -452,12 +452,12 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "P_L": null,
-        "P_VPA": null,
-        "EV_EBITDA": null,
-        "EV_EBIT": null,
-        "EV_RECEITA": null,
-        "DY": null,
+        "P_L": 10.9581,
+        "P_VPA": 1.9479,
+        "EV_EBITDA": 6.8396,
+        "EV_EBIT": 6.8396,
+        "EV_RECEITA": 1.8092,
+        "DY": 9.1754,
         "PAYOUT": 100.5451,
         "ROE": 17.2051,
         "ROA": 11.4452,
@@ -480,11 +480,11 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-01T16:52:26.558457",
+    "data_calculo": "2026-01-01T17:15:50.151843",
     "preco_utilizado": 11.46,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 15761638756,
-    "periodo_acoes": "2024T4",
+    "periodo_acoes": "2025T3",
     "multiplos": {
       "P_L": 10.9581,
       "P_VPA": 1.9479,
