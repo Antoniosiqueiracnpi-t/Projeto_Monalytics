@@ -688,7 +688,7 @@ TICKERS_BANCOS: Set[str] = {
 TICKERS_HOLDINGS_SEGUROS: Set[str] = {"BBSE3", "CXSE3"}
 TICKERS_SEGURADORAS: Set[str] = {"IRBR3", "PSSA3"}
 # Empresa de tecnologia/marketplace (será tratada como empresa geral)
-TICKERS_TECH_MARKETPLACE: Set[str] = {"WIZS3"}
+TICKERS_TECH_MARKETPLACE: Set[str] = {"WIZC3"}
 
 def _is_banco(ticker: str) -> bool:
     """Verifica se é banco - também por variantes."""
