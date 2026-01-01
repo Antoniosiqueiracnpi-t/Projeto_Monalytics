@@ -23,70 +23,42 @@
     "DY": {
       "nome": "Dividend Yield",
       "categoria": "Valuation",
-      "formula": "Dividendos LTM / Market Cap",
+      "formula": "Dividendos LTM / Market Cap × 100",
       "unidade": "%",
       "usa_preco": true
     },
     "PAYOUT": {
       "nome": "Payout",
       "categoria": "Valuation",
-      "formula": "Dividendos LTM / Lucro Líquido LTM",
+      "formula": "Dividendos LTM / Lucro Líquido LTM × 100",
       "unidade": "%",
       "usa_preco": false
     },
     "ROE": {
       "nome": "ROE",
       "categoria": "Rentabilidade",
-      "formula": "Lucro Líquido LTM / PL Médio",
+      "formula": "Lucro Líquido LTM / PL Médio × 100",
       "unidade": "%",
       "usa_preco": false
     },
     "ROA": {
       "nome": "ROA",
       "categoria": "Rentabilidade",
-      "formula": "Lucro Líquido LTM / Ativo Total Médio",
+      "formula": "Lucro Líquido LTM / Ativo Total Médio × 100",
       "unidade": "%",
       "usa_preco": false
     },
     "MARGEM_LIQUIDA": {
       "nome": "Margem Líquida",
       "categoria": "Rentabilidade",
-      "formula": "LL / Receita Intermediação",
-      "unidade": "%",
-      "usa_preco": false
-    },
-    "NIM": {
-      "nome": "NIM",
-      "categoria": "Rentabilidade",
-      "formula": "Resultado Bruto Interm. / Ativos Rentáveis Médios",
-      "unidade": "%",
-      "usa_preco": false
-    },
-    "INDICE_COBERTURA": {
-      "nome": "Índice de Cobertura",
-      "categoria": "Qualidade Ativos",
-      "formula": "Provisão PDD / Carteira de Crédito",
-      "unidade": "%",
-      "usa_preco": false
-    },
-    "INDICE_EFICIENCIA": {
-      "nome": "Índice de Eficiência",
-      "categoria": "Eficiência",
-      "formula": "Despesas Adm / Receitas Operacionais",
-      "unidade": "%",
-      "usa_preco": false
-    },
-    "LOAN_DEPOSIT": {
-      "nome": "Loan-to-Deposit",
-      "categoria": "Estrutura",
-      "formula": "Carteira Crédito / Depósitos",
+      "formula": "Lucro Líquido LTM / Receita Intermediação LTM × 100",
       "unidade": "%",
       "usa_preco": false
     },
     "PL_ATIVOS": {
       "nome": "PL/Ativos",
       "categoria": "Estrutura",
-      "formula": "Patrimônio Líquido / Ativo Total",
+      "formula": "Patrimônio Líquido / Ativo Total × 100",
       "unidade": "%",
       "usa_preco": false
     }
@@ -102,10 +74,6 @@
         "ROE": 13.3659,
         "ROA": 1.179,
         "MARGEM_LIQUIDA": 10.3039,
-        "NIM": 4.8758,
-        "INDICE_COBERTURA": 8.3145,
-        "INDICE_EFICIENCIA": 67.5479,
-        "LOAN_DEPOSIT": 111.1735,
         "PL_ATIVOS": 8.8208
       }
     },
@@ -119,10 +87,6 @@
         "ROE": 8.9041,
         "ROA": 0.7782,
         "MARGEM_LIQUIDA": 6.4612,
-        "NIM": 4.3761,
-        "INDICE_COBERTURA": 8.0184,
-        "INDICE_EFICIENCIA": 85.0057,
-        "LOAN_DEPOSIT": 99.92,
         "PL_ATIVOS": 8.6647
       }
     },
@@ -136,10 +100,6 @@
         "ROE": 10.4431,
         "ROA": 0.8778,
         "MARGEM_LIQUIDA": 8.2273,
-        "NIM": 4.2229,
-        "INDICE_COBERTURA": 6.6921,
-        "INDICE_EFICIENCIA": 75.4854,
-        "LOAN_DEPOSIT": 110.0556,
         "PL_ATIVOS": 8.1634
       }
     },
@@ -153,17 +113,13 @@
         "ROE": 12.5608,
         "ROA": 1.0232,
         "MARGEM_LIQUIDA": 8.5587,
-        "NIM": 4.486,
-        "INDICE_COBERTURA": 6.3207,
-        "INDICE_EFICIENCIA": 75.8011,
-        "LOAN_DEPOSIT": 112.0915,
         "PL_ATIVOS": 7.9965
       }
     }
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2025-12-29T22:22:11.615226",
+    "data_calculo": "2026-01-01T13:46:33.467204",
     "preco_utilizado": 15.18,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": null,
@@ -176,10 +132,6 @@
       "ROE": 12.5608,
       "ROA": 1.0232,
       "MARGEM_LIQUIDA": 8.5587,
-      "NIM": 4.486,
-      "INDICE_COBERTURA": 6.3207,
-      "INDICE_EFICIENCIA": 75.8011,
-      "LOAN_DEPOSIT": 112.0915,
       "PL_ATIVOS": 7.9965
     }
   },
