@@ -205,8 +205,9 @@ def _is_banco(ticker: str) -> bool:
     return False
 
 def _is_holding_seguros(ticker: str) -> bool:
-    """Verifica se ticker é de holding de seguros."""
-    return ticker.upper().strip() in TICKERS_HOLDINGS_SEGUROS
+    """Verifica se ticker é de holding de seguros (BBSE3 ou CXSE3)."""
+    ticker_upper = ticker.upper().strip()
+    return ticker_upper in {"BBSE3", "CXSE3"}
 
 def _is_seguradora_operacional(ticker: str) -> bool:
     """Verifica se ticker é de seguradora operacional."""
@@ -890,6 +891,132 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
 
 
 # ======================================================================================
+# FUNÇÕES PARA OBTER RECEITA CORRETA POR TIPO DE EMPRESA
+# ======================================================================================
+
+def _obter_receita_holding_bbse3(dados: DadosEmpresa, periodo: str) -> float:
+    """
+    Obtém receita total da BBSE3: Comissões (3.05.01) + Equivalência (3.06.01).
+    
+    BBSE3 é holding que lucra com:
+    - Corretagem de seguros (3.05.01)
+    - Lucro das seguradoras investidas (3.06.01)
+    """
+    comissoes = _extrair_valor_conta(dados.dre, "3.05.01", periodo)
+    equivalencia = _extrair_valor_conta(dados.dre, "3.06.01", periodo)
+    
+    comissoes = comissoes if np.isfinite(comissoes) else 0
+    equivalencia = equivalencia if np.isfinite(equivalencia) else 0
+    
+    return comissoes + equivalencia
+
+
+def _obter_receita_holding_cxse3(dados: DadosEmpresa, periodo: str) -> float:
+    """
+    Obtém receita total da CXSE3: Prestação Serviços (3.04.04.02) + Equivalência (3.04.06).
+    
+    CXSE3 usa estrutura tradicional:
+    - Receitas de prestação de serviços (3.04.04.02)
+    - Resultado de Equivalência Patrimonial (3.04.06)
+    """
+    servicos = _extrair_valor_conta(dados.dre, "3.04.04.02", periodo)
+    equivalencia = _extrair_valor_conta(dados.dre, "3.04.06", periodo)
+    
+    servicos = servicos if np.isfinite(servicos) else 0
+    equivalencia = equivalencia if np.isfinite(equivalencia) else 0
+    
+    return servicos + equivalencia
+
+
+def _obter_receita_irbr3(dados: DadosEmpresa, periodo: str) -> float:
+    """
+    Obtém receita da IRBR3: Receitas com Resseguros (3.01.02).
+    
+    IRBR3 é resseguradora - receita está em subconta específica.
+    """
+    receita = _extrair_valor_conta(dados.dre, "3.01.02", periodo)
+    return receita if np.isfinite(receita) else np.nan
+
+
+def _obter_receita_pssa3(dados: DadosEmpresa, periodo: str) -> float:
+    """
+    Obtém receita da PSSA3 considerando quebra IFRS 17 em 2023.
+    
+    ANTES (2015-2022): 3.01.01 (Prêmios Emitidos)
+    DEPOIS (2023+): 3.01.07 (Receita de Contrato de Seguro)
+    """
+    ano, _ = _parse_periodo(periodo)
+    
+    if ano >= 2023:
+        # IFRS 17: usa receita agregada
+        receita = _extrair_valor_conta(dados.dre, "3.01.07", periodo)
+    else:
+        # Estrutura antiga: usa prêmios emitidos
+        receita = _extrair_valor_conta(dados.dre, "3.01.01", periodo)
+    
+    return receita if np.isfinite(receita) else np.nan
+
+
+def _calcular_receita_ltm_holding_bbse3(dados: DadosEmpresa, periodo_fim: str) -> float:
+    """Calcula receita LTM para BBSE3 (Comissões + Equivalência)."""
+    if dados.padrao_fiscal is None:
+        return np.nan
+    
+    periodos = dados.periodos
+    if periodo_fim not in periodos:
+        return np.nan
+    
+    idx_fim = periodos.index(periodo_fim)
+    n_trimestres = 3 if dados.padrao_fiscal.tipo == 'SEMESTRAL' else 4
+    start_idx = max(0, idx_fim - n_trimestres + 1)
+    periodos_ltm = periodos[start_idx:idx_fim + 1]
+    
+    soma = 0.0
+    count = 0
+    
+    for p in periodos_ltm:
+        val = _obter_receita_holding_bbse3(dados, p)
+        if np.isfinite(val):
+            soma += val
+            count += 1
+    
+    min_periodos = 3 if dados.padrao_fiscal.tipo == 'SEMESTRAL' else 4
+    if count < min_periodos:
+        return np.nan
+    
+    return soma
+
+
+def _calcular_receita_ltm_holding_cxse3(dados: DadosEmpresa, periodo_fim: str) -> float:
+    """Calcula receita LTM para CXSE3 (Serviços + Equivalência)."""
+    if dados.padrao_fiscal is None:
+        return np.nan
+    
+    periodos = dados.periodos
+    if periodo_fim not in periodos:
+        return np.nan
+    
+    idx_fim = periodos.index(periodo_fim)
+    n_trimestres = 3 if dados.padrao_fiscal.tipo == 'SEMESTRAL' else 4
+    start_idx = max(0, idx_fim - n_trimestres + 1)
+    periodos_ltm = periodos[start_idx:idx_fim + 1]
+    
+    soma = 0.0
+    count = 0
+    
+    for p in periodos_ltm:
+        val = _obter_receita_holding_cxse3(dados, p)
+        if np.isfinite(val):
+            soma += val
+            count += 1
+    
+    min_periodos = 3 if dados.padrao_fiscal.tipo == 'SEMESTRAL' else 4
+    if count < min_periodos:
+        return np.nan
+    
+    return soma
+
+# ======================================================================================
 # CALCULADORA DE MÚLTIPLOS - EMPRESAS NÃO-FINANCEIRAS (22 MÚLTIPLOS)
 # ======================================================================================
 
@@ -1429,30 +1556,21 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
 # ======================================================================================
 # CALCULADORA DE MÚLTIPLOS - HOLDINGS DE SEGUROS (10 MÚLTIPLOS)
 # ======================================================================================
-
 def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True) -> Dict[str, Optional[float]]:
     """
     Calcula 10 múltiplos essenciais para holdings de seguros (BBSE3, CXSE3).
     
-    MODELO DE NEGÓCIO:
-    - Corretagem de seguros (receita de serviços)
-    - Equivalência Patrimonial = lucro das seguradoras coligadas (conta 3.04.05)
-    - Resultado financeiro do caixa próprio
+    CORREÇÃO CRÍTICA: BBSE3 e CXSE3 têm estruturas DRE DIFERENTES!
+    - BBSE3: Receita em 3.05.01 (Comissões) + 3.06.01 (Equivalência)
+    - CXSE3: Receita em 3.04.04.02 (Serviços) + 3.04.06 (Equivalência)
     
     Múltiplos calculados:
     ✅ Valuation (5): P/L, P/VPA, DY, Payout, EV/Receita
     ✅ Rentabilidade (4): ROE, ROA, Margem Líquida, Margem Operacional
     ✅ Eficiência (1): Índice de Eficiência
-    
-    Args:
-        dados: Dados completos da empresa
-        periodo: Período de referência (ex: "2024T4")
-        usar_preco_atual: Se True, usa preço mais recente para valuation
-    
-    Returns:
-        Dicionário com 10 múltiplos essenciais
     """
     resultado: Dict[str, Optional[float]] = {}
+    ticker_upper = dados.ticker.upper().strip()
     
     # ==================== MARKET CAP E EV ====================
     
@@ -1463,10 +1581,15 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     
     ev = _calcular_ev(dados, periodo, market_cap)
     
-    # ==================== VALORES BASE ====================
+    # ==================== VALORES BASE - ESPECÍFICOS POR TICKER ====================
     
-    # Lucro Líquido LTM - Conta 3.11
-    ll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_HOLDINGS_SEGUROS["lucro_liquido"], periodo)
+    # Lucro Líquido LTM - conta varia por ticker
+    if ticker_upper == "BBSE3":
+        ll_ltm = _calcular_ltm(dados, dados.dre, "3.13", periodo)  # BBSE3 usa 3.13
+        ll_ltm_controladora = _calcular_ltm(dados, dados.dre, "3.13.01", periodo)
+    else:  # CXSE3
+        ll_ltm = _calcular_ltm(dados, dados.dre, "3.11", periodo)  # CXSE3 usa 3.11
+        ll_ltm_controladora = _calcular_ltm(dados, dados.dre, "3.11.01", periodo)
     
     # Patrimônio Líquido
     pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
@@ -1476,15 +1599,26 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     at = _obter_valor_pontual(dados.bpa, CONTAS_BPA["ativo_total"], periodo)
     at_medio = _obter_valor_medio(dados, dados.bpa, CONTAS_BPA["ativo_total"], periodo)
     
-    # Receita de Corretagem LTM - Conta 3.01
-    receita_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_HOLDINGS_SEGUROS["receita"], periodo)
+    # Receita LTM - CORRIGIDO: usa função específica por ticker
+    if ticker_upper == "BBSE3":
+        receita_ltm = _calcular_receita_ltm_holding_bbse3(dados, periodo)
+    else:  # CXSE3
+        receita_ltm = _calcular_receita_ltm_holding_cxse3(dados, periodo)
     
-    # EBIT LTM - Conta 3.05
-    ebit_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_HOLDINGS_SEGUROS["ebit"], periodo)
+    # EBIT LTM - conta varia por ticker
+    if ticker_upper == "BBSE3":
+        ebit_ltm = _calcular_ltm(dados, dados.dre, "3.07", periodo)  # BBSE3 usa 3.07
+    else:  # CXSE3
+        ebit_ltm = _calcular_ltm(dados, dados.dre, "3.05", periodo)  # CXSE3 usa 3.05
     
     # Despesas Operacionais LTM
-    desp_vendas_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_HOLDINGS_SEGUROS["despesas_vendas"], periodo)
-    desp_admin_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_HOLDINGS_SEGUROS["despesas_admin"], periodo)
+    if ticker_upper == "BBSE3":
+        desp_admin_ltm = _calcular_ltm(dados, dados.dre, "3.04", periodo)
+        desp_vendas_ltm = 0.0  # BBSE3 não tem despesas com vendas separadas
+    else:  # CXSE3
+        desp_admin_ltm = _calcular_ltm(dados, dados.dre, "3.04.02", periodo)
+        desp_vendas_ltm = _calcular_ltm(dados, dados.dre, "3.04.01", periodo)
+        desp_vendas_ltm = desp_vendas_ltm if np.isfinite(desp_vendas_ltm) else 0.0
     
     # Dividendos LTM
     dividendos_ltm = _calcular_dividendos_ltm(dados, periodo)
@@ -1507,7 +1641,7 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
         _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
     )
     
-    # EV/Receita = Enterprise Value / Receita Corretagem LTM
+    # EV/Receita = Enterprise Value / Receita LTM (CORRIGIDO!)
     resultado["EV_RECEITA"] = _normalizar_valor(_safe_divide(ev, receita_ltm))
     
     # ==================== RENTABILIDADE (4 MÚLTIPLOS) ====================
@@ -1522,22 +1656,22 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
         _safe_divide(ll_ltm, at_medio) * 100 if np.isfinite(at_medio) and at_medio > 0 else np.nan
     )
     
-    # Margem Líquida = (Lucro Líquido LTM / Receita Corretagem LTM) × 100
+    # Margem Líquida = (Lucro Líquido LTM / Receita LTM) × 100 (CORRIGIDO!)
     resultado["MARGEM_LIQUIDA"] = _normalizar_valor(
         _safe_divide(ll_ltm, receita_ltm) * 100 if np.isfinite(receita_ltm) and receita_ltm > 0 else np.nan
     )
     
-    # Margem Operacional = (EBIT / Receita Corretagem LTM) × 100
+    # Margem Operacional = (EBIT / Receita LTM) × 100 (CORRIGIDO!)
     resultado["MARGEM_OPERACIONAL"] = _normalizar_valor(
         _safe_divide(ebit_ltm, receita_ltm) * 100 if np.isfinite(receita_ltm) and receita_ltm > 0 else np.nan
     )
     
     # ==================== EFICIÊNCIA (1 MÚLTIPLO) ====================
     
-    # Índice de Eficiência = (Desp. Vendas + Desp. Admin.) / Receita × 100
-    desp_vendas_val = abs(desp_vendas_ltm) if np.isfinite(desp_vendas_ltm) else 0
+    # Índice de Eficiência = (Desp. Vendas + Desp. Admin.) / Receita × 100 (CORRIGIDO!)
     desp_admin_val = abs(desp_admin_ltm) if np.isfinite(desp_admin_ltm) else 0
-    total_despesas = desp_vendas_val + desp_admin_val
+    desp_vendas_val = abs(desp_vendas_ltm) if np.isfinite(desp_vendas_ltm) else 0
+    total_despesas = desp_admin_val + desp_vendas_val
     
     resultado["INDICE_EFICIENCIA"] = _normalizar_valor(
         _safe_divide(total_despesas, receita_ltm) * 100 if np.isfinite(receita_ltm) and receita_ltm > 0 else np.nan
