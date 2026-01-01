@@ -1,0 +1,210 @@
+{
+  "meta": {
+    "ultima_atualizacao": "2026-01-01T12:46:30.423530Z",
+    "data_atualizacao": "2026-01-01",
+    "hora_atualizacao": "12:46:30",
+    "total_empresas": 1,
+    "total_noticias": 11,
+    "periodo": {
+      "inicio": "2025-12-05",
+      "fim": "2025-12-30"
+    }
+  },
+  "estatisticas": {
+    "por_categoria": {
+      "Governança": 6,
+      "Outros": 4,
+      "Aviso": 1
+    },
+    "por_ticker": {
+      "BBAS": 11
+    },
+    "top_categorias": [
+      {
+        "categoria": "Governança",
+        "total": 6
+      },
+      {
+        "categoria": "Outros",
+        "total": 4
+      },
+      {
+        "categoria": "Aviso",
+        "total": 1
+      }
+    ],
+    "top_empresas": [
+      {
+        "ticker": "BBAS",
+        "total": 11
+      }
+    ]
+  },
+  "feed": [
+    {
+      "data": "2025-12-30",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBAS",
+        "nome": "BANCO DO BRASIL S.A.",
+        "cnpj": "00.000.000/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Transacao entre Partes Relacionadas  26/12/25",
+        "headline": "BRASIL (BBAS-NM) - Transacao entre Partes Relacionadas - 26/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3188993&agencia=18&dataNoticia=2025-12-30%2018:05:49"
+      }
+    },
+    {
+      "data": "2025-12-26",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBAS",
+        "nome": "BANCO DO BRASIL S.A.",
+        "cnpj": "00.000.000/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata de Reuniao do Conselho Consultivo  05/11/25",
+        "headline": "BRASIL (BBAS-NM) - Ata de Reuniao do Conselho Consultivo - 05/11/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3183709&agencia=18&dataNoticia=2025-12-26%2008:00:30"
+      }
+    },
+    {
+      "data": "2025-12-26",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBAS",
+        "nome": "BANCO DO BRASIL S.A.",
+        "cnpj": "00.000.000/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata de Reuniao do Conselho Consultivo  03/11/25",
+        "headline": "BRASIL (BBAS-NM) - Ata de Reuniao do Conselho Consultivo - 03/11/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3183711&agencia=18&dataNoticia=2025-12-26%2008:00:30"
+      }
+    },
+    {
+      "data": "2025-12-22",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBAS",
+        "nome": "BANCO DO BRASIL S.A.",
+        "cnpj": "00.000.000/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  11/12/25",
+        "headline": "BRASIL (BBAS-NM) - Ata Reuniao do Conselho de Administracao - 11/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3181573&agencia=18&dataNoticia=2025-12-22%2018:23:45"
+      }
+    },
+    {
+      "data": "2025-12-22",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBAS",
+        "nome": "BANCO DO BRASIL S.A.",
+        "cnpj": "00.000.000/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  11/12/25",
+        "headline": "BRASIL (BBAS-NM) - Ata Reuniao do Conselho de Administracao - 11/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3181516&agencia=18&dataNoticia=2025-12-22%2018:15:50"
+      }
+    },
+    {
+      "data": "2025-12-19",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBAS",
+        "nome": "BANCO DO BRASIL S.A.",
+        "cnpj": "00.000.000/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Transacao entre Partes Relacionadas  11/12/25",
+        "headline": "BRASIL (BBAS-NM) - Transacao entre Partes Relacionadas - 11/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3178676&agencia=18&dataNoticia=2025-12-19%2018:05:56"
+      }
+    },
+    {
+      "data": "2025-12-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBAS",
+        "nome": "BANCO DO BRASIL S.A.",
+        "cnpj": "00.000.000/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata de Reuniao do Conselho Consultivo  07/10/25",
+        "headline": "BRASIL (BBAS-NM) - Ata de Reuniao do Conselho Consultivo - 07/10/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3168466&agencia=18&dataNoticia=2025-12-12%2015:08:55"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBAS",
+        "nome": "BANCO DO BRASIL S.A.",
+        "cnpj": "00.000.000/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Calendario de Eventos Corporativos  ate 31/12/26",
+        "headline": "BRASIL (BBAS-NM) - Calendario de Eventos Corporativos - ate 31/12/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3166041&agencia=18&dataNoticia=2025-12-10%2019:05:44"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBAS",
+        "nome": "BANCO DO BRASIL S.A.",
+        "cnpj": "00.000.000/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "BRASIL (BBAS-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3165943&agencia=18&dataNoticia=2025-12-10%2018:58:49"
+      }
+    },
+    {
+      "data": "2025-12-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBAS",
+        "nome": "BANCO DO BRASIL S.A.",
+        "cnpj": "00.000.000/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  05/12/25",
+        "headline": "BRASIL (BBAS-NM) - Outros Comunicados ao Mercado - 05/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3160865&agencia=18&dataNoticia=2025-12-05%2018:09:38"
+      }
+    },
+    {
+      "data": "2025-12-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBAS",
+        "nome": "BANCO DO BRASIL S.A.",
+        "cnpj": "00.000.000/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Apresentacao a analistas/agentes mercado  05/12/25",
+        "headline": "BRASIL (BBAS-NM) - Apresentacao a analistas/agentes mercado - 05/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3160156&agencia=18&dataNoticia=2025-12-05%2013:24:19"
+      }
+    }
+  ]
+}
