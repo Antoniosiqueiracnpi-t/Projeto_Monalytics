@@ -1,40 +1,60 @@
 {
   "meta": {
-    "ultima_atualizacao": "2026-01-01T13:06:52.732332Z",
+    "ultima_atualizacao": "2026-01-01T13:10:00.240081Z",
     "data_atualizacao": "2026-01-01",
-    "hora_atualizacao": "13:06:52",
-    "total_empresas": 2,
-    "total_noticias": 16,
+    "hora_atualizacao": "13:10:00",
+    "total_empresas": 5,
+    "total_noticias": 58,
     "periodo": {
-      "inicio": "2025-12-05",
+      "inicio": "2025-12-03",
       "fim": "2025-12-30"
     }
   },
   "estatisticas": {
     "por_categoria": {
-      "Governança": 7,
-      "Outros": 6,
-      "Aviso": 3
+      "Governança": 18,
+      "Outros": 16,
+      "Aviso": 15,
+      "Fato Relevante": 9
     },
     "por_ticker": {
+      "KLBN": 16,
+      "ITUB": 14,
+      "BBDC": 12,
       "BBAS": 11,
       "CAML": 5
     },
     "top_categorias": [
       {
         "categoria": "Governança",
-        "total": 7
+        "total": 18
       },
       {
         "categoria": "Outros",
-        "total": 6
+        "total": 16
       },
       {
         "categoria": "Aviso",
-        "total": 3
+        "total": 15
+      },
+      {
+        "categoria": "Fato Relevante",
+        "total": 9
       }
     ],
     "top_empresas": [
+      {
+        "ticker": "KLBN",
+        "total": 16
+      },
+      {
+        "ticker": "ITUB",
+        "total": 14
+      },
+      {
+        "ticker": "BBDC",
+        "total": 12
+      },
       {
         "ticker": "BBAS",
         "total": 11
@@ -65,6 +85,21 @@
       "data": "2025-12-30",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  Ata Reuniao do Conselho de Administracao  18/12/25",
+        "headline": "BRADESCO (BBDC-N1) - Ata Reuniao do Conselho de Administracao - 18/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3188664&agencia=18&dataNoticia=2025-12-30%2017:22:28"
+      }
+    },
+    {
+      "data": "2025-12-30",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "BBAS",
         "nome": "BANCO DO BRASIL S.A.",
         "cnpj": "00.000.000/0001-91"
@@ -74,6 +109,51 @@
         "headline": "BRASIL (BBAS-NM) - Transacao entre Partes Relacionadas - 26/12/25",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3188993&agencia=18&dataNoticia=2025-12-30%2018:05:49"
+      }
+    },
+    {
+      "data": "2025-12-26",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Politica de Gerenciamento de Riscos  27/11/25",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Politica de Gerenciamento de Riscos - 27/11/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3183720&agencia=18&dataNoticia=2025-12-26%2008:00:31"
+      }
+    },
+    {
+      "data": "2025-12-26",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Politica de Remuneracao  27/11/25",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Politica de Remuneracao - 27/11/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3183721&agencia=18&dataNoticia=2025-12-26%2008:00:31"
+      }
+    },
+    {
+      "data": "2025-12-26",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  Aviso aos Acionistas  18/12/25 (N)",
+        "headline": "BRADESCO (BBDC-N1) - Aviso aos Acionistas - 18/12/25 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3184976&agencia=18&dataNoticia=2025-12-26%2015:31:13"
       }
     },
     {
@@ -104,6 +184,66 @@
         "headline": "BRASIL (BBAS-NM) - Ata de Reuniao do Conselho Consultivo - 03/11/25",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3183711&agencia=18&dataNoticia=2025-12-26%2008:00:30"
+      }
+    },
+    {
+      "data": "2025-12-23",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Politica de Negociacao das Acoes da Cia  27/03/25 (R)",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Politica de Negociacao das Acoes da Cia - 27/03/25 (R)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3183500&agencia=18&dataNoticia=2025-12-23%2018:29:11"
+      }
+    },
+    {
+      "data": "2025-12-23",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Polit. Negociacao de Valores Mobiliarios  27/03/25 (R)",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Polit. Negociacao de Valores Mobiliarios - 27/03/25 (R)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3183495&agencia=18&dataNoticia=2025-12-23%2018:28:04"
+      }
+    },
+    {
+      "data": "2025-12-22",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Fato Relevante  18/12/25 (N)",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Fato Relevante - 18/12/25 (N)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3180310&agencia=18&dataNoticia=2025-12-22%2014:08:32"
+      }
+    },
+    {
+      "data": "2025-12-22",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  Fato Relevante  18/12/25 (N)",
+        "headline": "BRADESCO (BBDC-N1) - Fato Relevante - 18/12/25 (N)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3181239&agencia=18&dataNoticia=2025-12-22%2017:37:49"
       }
     },
     {
@@ -152,6 +292,96 @@
       }
     },
     {
+      "data": "2025-12-18",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Fato Relevante  18/12/25",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Fato Relevante - 18/12/25",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3177050&agencia=18&dataNoticia=2025-12-18%2018:39:12"
+      }
+    },
+    {
+      "data": "2025-12-18",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Ata Reuniao do Conselho de Administracao  18/12/25",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Ata Reuniao do Conselho de Administracao - 18/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3177048&agencia=18&dataNoticia=2025-12-18%2018:39:08"
+      }
+    },
+    {
+      "data": "2025-12-18",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Ata da Reuniao do Conselho Fiscal  18/12/25",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Ata da Reuniao do Conselho Fiscal - 18/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3177046&agencia=18&dataNoticia=2025-12-18%2018:39:03"
+      }
+    },
+    {
+      "data": "2025-12-18",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  Aviso aos Acionistas  18/12/25",
+        "headline": "BRADESCO (BBDC-N1) - Aviso aos Acionistas - 18/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3177067&agencia=18&dataNoticia=2025-12-18%2018:47:50"
+      }
+    },
+    {
+      "data": "2025-12-18",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  Fato Relevante  18/12/25",
+        "headline": "BRADESCO (BBDC-N1) - Fato Relevante - 18/12/25",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3177064&agencia=18&dataNoticia=2025-12-18%2018:45:32"
+      }
+    },
+    {
+      "data": "2025-12-16",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Outros Comunicados ao Mercado  16/12/25",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Outros Comunicados ao Mercado - 16/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3173233&agencia=18&dataNoticia=2025-12-16%2018:28:57"
+      }
+    },
+    {
       "data": "2025-12-16",
       "hora": "00:00:00",
       "empresa": {
@@ -182,6 +412,81 @@
       }
     },
     {
+      "data": "2025-12-16",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  Ata Reuniao do Conselho de Administracao  28/08/25 (R)",
+        "headline": "BRADESCO (BBDC-N1) - Ata Reuniao do Conselho de Administracao - 28/08/25 (R)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3171961&agencia=18&dataNoticia=2025-12-16%2010:14:31"
+      }
+    },
+    {
+      "data": "2025-12-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Fato Relevante  08/12/25 (N)",
+        "headline": "KLABIN S/A (KLBN-N2) - Fato Relevante - 08/12/25 (N)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3171171&agencia=18&dataNoticia=2025-12-15%2018:56:57"
+      }
+    },
+    {
+      "data": "2025-12-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Outros Comunicados ao Mercado  15/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Outros Comunicados ao Mercado - 15/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3171097&agencia=18&dataNoticia=2025-12-15%2018:34:58"
+      }
+    },
+    {
+      "data": "2025-12-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Outros Comunicados ao Mercado  15/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Outros Comunicados ao Mercado - 15/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3171085&agencia=18&dataNoticia=2025-12-15%2018:31:45"
+      }
+    },
+    {
+      "data": "2025-12-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Ata Reuniao do Conselho de Administracao  03/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Ata Reuniao do Conselho de Administracao - 03/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3168747&agencia=18&dataNoticia=2025-12-12%2018:00:58"
+      }
+    },
+    {
       "data": "2025-12-12",
       "hora": "00:00:00",
       "empresa": {
@@ -194,6 +499,126 @@
         "headline": "BRASIL (BBAS-NM) - Ata de Reuniao do Conselho Consultivo - 07/10/25",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3168466&agencia=18&dataNoticia=2025-12-12%2015:08:55"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Fato Relevante  08/12/25 (N)",
+        "headline": "KLABIN S/A (KLBN-N2) - Fato Relevante - 08/12/25 (N)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3166052&agencia=18&dataNoticia=2025-12-10%2019:15:48"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Fato Relevante  08/12/25 (N)",
+        "headline": "KLABIN S/A (KLBN-N2) - Fato Relevante - 08/12/25 (N)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3165933&agencia=18&dataNoticia=2025-12-10%2018:51:48"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Calendario de Eventos Corporativos  ate 31/12/26",
+        "headline": "KLABIN S/A (KLBN-N2) - Calendario de Eventos Corporativos - ate 31/12/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3165748&agencia=18&dataNoticia=2025-12-10%2018:10:21"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "KLABIN S/A (KLBN-N2) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3165735&agencia=18&dataNoticia=2025-12-10%2018:09:05"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Aviso aos Acionistas  08/12/25 (N)",
+        "headline": "KLABIN S/A (KLBN-N2) - Aviso aos Acionistas - 08/12/25 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3165089&agencia=18&dataNoticia=2025-12-10%2013:46:48"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164635&agencia=18&dataNoticia=2025-12-10%2008:53:07"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  Calendario de Eventos Corporativos  ate 31/12/26",
+        "headline": "BRADESCO (BBDC-N1) - Calendario de Eventos Corporativos - ate 31/12/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3165995&agencia=18&dataNoticia=2025-12-10%2019:03:48"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "BRADESCO (BBDC-N1) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164978&agencia=18&dataNoticia=2025-12-10%2011:43:56"
       }
     },
     {
@@ -224,6 +649,126 @@
         "headline": "BRASIL (BBAS-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3165943&agencia=18&dataNoticia=2025-12-10%2018:58:49"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Apresentacao a analistas/agentes mercado  09/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Apresentacao a analistas/agentes mercado - 09/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3163094&agencia=18&dataNoticia=2025-12-09%2008:59:07"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Fato Relevante  09/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Fato Relevante - 09/12/25",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3163091&agencia=18&dataNoticia=2025-12-09%2008:56:31"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Aviso aos Acionistas  09/12/25 (N)",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Aviso aos Acionistas - 09/12/25 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3163787&agencia=18&dataNoticia=2025-12-09%2014:42:44"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Aviso aos Acionistas  09/12/25",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Aviso aos Acionistas - 09/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3163078&agencia=18&dataNoticia=2025-12-09%2008:31:33"
+      }
+    },
+    {
+      "data": "2025-12-08",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Aviso aos Acionistas  08/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Aviso aos Acionistas - 08/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3162604&agencia=18&dataNoticia=2025-12-08%2018:11:41"
+      }
+    },
+    {
+      "data": "2025-12-08",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Fato Relevante  08/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Fato Relevante - 08/12/25",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3162576&agencia=18&dataNoticia=2025-12-08%2018:09:26"
+      }
+    },
+    {
+      "data": "2025-12-08",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Ata Reuniao do Conselho de Administracao  08/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Ata Reuniao do Conselho de Administracao - 08/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3162541&agencia=18&dataNoticia=2025-12-08%2018:07:14"
+      }
+    },
+    {
+      "data": "2025-12-08",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Outros Comunicados ao Mercado  08/12/25",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Outros Comunicados ao Mercado - 08/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3161380&agencia=18&dataNoticia=2025-12-08%2008:30:44"
       }
     },
     {
@@ -260,6 +805,66 @@
       "data": "2025-12-05",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  Ata da Reuniao da Diretoria  28/11/25",
+        "headline": "BRADESCO (BBDC-N1) - Ata da Reuniao da Diretoria - 28/11/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3161091&agencia=18&dataNoticia=2025-12-05%2019:05:54"
+      }
+    },
+    {
+      "data": "2025-12-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  Ata Reuniao do Conselho de Administracao  27/11/25",
+        "headline": "BRADESCO (BBDC-N1) - Ata Reuniao do Conselho de Administracao - 27/11/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3160998&agencia=18&dataNoticia=2025-12-05%2019:01:38"
+      }
+    },
+    {
+      "data": "2025-12-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  Ata Reuniao do Conselho de Administracao  27/11/25",
+        "headline": "BRADESCO (BBDC-N1) - Ata Reuniao do Conselho de Administracao - 27/11/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3160991&agencia=18&dataNoticia=2025-12-05%2018:59:08"
+      }
+    },
+    {
+      "data": "2025-12-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBDC",
+        "nome": "BANCO BRADESCO S.A.",
+        "cnpj": "60.746.948/0001-12"
+      },
+      "noticia": {
+        "titulo": "N1)  Ata Reuniao do Conselho de Administracao  27/11/25",
+        "headline": "BRADESCO (BBDC-N1) - Ata Reuniao do Conselho de Administracao - 27/11/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3160985&agencia=18&dataNoticia=2025-12-05%2018:56:29"
+      }
+    },
+    {
+      "data": "2025-12-05",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "BBAS",
         "nome": "BANCO DO BRASIL S.A.",
         "cnpj": "00.000.000/0001-91"
@@ -284,6 +889,51 @@
         "headline": "BRASIL (BBAS-NM) - Apresentacao a analistas/agentes mercado - 05/12/25",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3160156&agencia=18&dataNoticia=2025-12-05%2013:24:19"
+      }
+    },
+    {
+      "data": "2025-12-03",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Outros Comunicados ao Mercado  03/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Outros Comunicados ao Mercado - 03/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3157931&agencia=18&dataNoticia=2025-12-03%2018:25:30"
+      }
+    },
+    {
+      "data": "2025-12-03",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Outros Comunicados ao Mercado  03/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Outros Comunicados ao Mercado - 03/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3157914&agencia=18&dataNoticia=2025-12-03%2018:16:10"
+      }
+    },
+    {
+      "data": "2025-12-03",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ITUB",
+        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
+        "cnpj": "60.872.504/0001-23"
+      },
+      "noticia": {
+        "titulo": "N1)  Ato Homologatorio do Banco Central  27/11/25",
+        "headline": "ITAUUNIBANCO (ITUB-N1) - Ato Homologatorio do Banco Central - 27/11/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3156990&agencia=18&dataNoticia=2025-12-03%2009:39:06"
       }
     }
   ]
