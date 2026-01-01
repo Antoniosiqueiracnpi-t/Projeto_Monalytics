@@ -1635,7 +1635,7 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
     """Gera histórico de múltiplos anualizado."""
     if not dados.periodos or dados.padrao_fiscal is None:
         return {"erro": "Dados insuficientes", "ticker": dados.ticker}
-    
+
     periodos_por_ano: Dict[int, List[str]] = {}
     for p in dados.periodos:
         ano, tri = _parse_periodo(p)
@@ -1643,49 +1643,46 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
             if ano not in periodos_por_ano:
                 periodos_por_ano[ano] = []
             periodos_por_ano[ano].append(p)
-    
+
     historico_anual: Dict[int, Dict[str, Any]] = {}
-    
+
+    # Mantém ano_atual (pode ser útil para debug/metadata), mas o histórico anual NÃO deve usar preço atual
     ano_atual = datetime.now().year
-    
+
     for ano in sorted(periodos_por_ano.keys()):
         periodos_ano = _ordenar_periodos(periodos_por_ano[ano])
-        
-        if ano < ano_atual:
-            # Anos completos: usar sempre T4 (final do ano)
-            periodo_t4 = f"{ano}T4"
-            if periodo_t4 in periodos_ano:
-                periodo_referencia = periodo_t4
-            else:
-                periodo_referencia = periodos_ano[-1]
-            # Para anos históricos, usar preço do período (não atual)
-            if _is_banco(dados.ticker):
-                multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=False)
-            else:
-                multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=False)
+
+        # Regra do período de referência do ANO:
+        # - Se existir T4 do ano, usa T4 (ano fechado)
+        # - Caso contrário (ano não fechado), usa o último trimestre reportado (ex.: 2025T3)
+        periodo_t4 = f"{ano}T4"
+        if periodo_t4 in periodos_ano:
+            periodo_referencia = periodo_t4
         else:
-            # Ano corrente: usar período mais recente disponível com preço atual
             periodo_referencia = periodos_ano[-1]
-            
-            # Determinar qual função de cálculo usar
-            if _is_banco(dados.ticker):
-                multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=True)
-            elif _is_holding_seguros(dados.ticker):
-                multiplos = calcular_multiplos_holding_seguros(dados, periodo_referencia, usar_preco_atual=True)
-            elif _is_seguradora_operacional(dados.ticker):
-                multiplos = calcular_multiplos_seguradora(dados, periodo_referencia, usar_preco_atual=True)
-            else:
-                multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=True)
-        
+
+        # ✅ CORREÇÃO: histórico anual sempre usa preço do período de referência (não "preço atual")
+        # Isso garante que, ao anualizar (T1–T3 ano + T4 ano anterior), o preço usado é do último trimestre reportado.
+        usar_preco_atual_hist = False
+
+        # Determinar qual função de cálculo usar (mantém a lógica existente)
+        if _is_banco(dados.ticker):
+            multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+        elif _is_holding_seguros(dados.ticker):
+            multiplos = calcular_multiplos_holding_seguros(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+        elif _is_seguradora_operacional(dados.ticker):
+            multiplos = calcular_multiplos_seguradora(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+        else:
+            multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+
         historico_anual[ano] = {
             "periodo_referencia": periodo_referencia,
             "multiplos": multiplos
         }
-    
-    # LTM: Sempre usar último período disponível com preço atual
+
+    # LTM: Sempre usar último período disponível com preço atual (mantém comportamento atual)
     ultimo_periodo = dados.periodos[-1]
-    
-    # Determinar qual função de cálculo usar
+
     if _is_banco(dados.ticker):
         multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True)
     elif _is_holding_seguros(dados.ticker):
@@ -1694,11 +1691,11 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
         multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=True)
     else:
         multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True)
-    
-    # Informações de preço e ações utilizados
+
+    # Informações de preço e ações utilizados (LTM)
     preco_atual, periodo_preco = _obter_preco_atual(dados)
     acoes_atual, periodo_acoes = _obter_acoes_atual(dados)
-    
+
     return {
         "ticker": dados.ticker,
         "padrao_fiscal": {
@@ -1711,7 +1708,7 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
             else MULTIPLOS_HOLDINGS_SEGUROS_METADATA if _is_holding_seguros(dados.ticker)
             else MULTIPLOS_SEGURADORAS_METADATA if _is_seguradora_operacional(dados.ticker)
             else MULTIPLOS_METADATA
-        ),        
+        ),
         "historico_anual": historico_anual,
         "ltm": {
             "periodo_referencia": ultimo_periodo,
@@ -1723,8 +1720,9 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
             "multiplos": multiplos_ltm
         },
         "periodos_disponiveis": dados.periodos,
-        "erros_carregamento": dados.erros
+        "erros": dados.erros
     }
+
 
 
 # ======================================================================================
