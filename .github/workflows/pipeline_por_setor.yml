@@ -152,7 +152,10 @@ jobs:
               f.write(f"TICKERS_COUNT={len(tickers)}\n")
           PY
 
-      # ---------------- CAPTURAS (SEM PREÇOS) ----------------
+      # ========================================================================
+      # CAPTURAS (SEM PREÇOS)
+      # ========================================================================
+      
       - name: Capturar Balanços
         id: balancos
         continue-on-error: true
@@ -183,7 +186,10 @@ jobs:
         run: |
           python src/capturar_logos.py --modo lista --lista "${TICKERS}"
 
-      # ---------------- PADRONIZAÇÕES ----------------
+      # ========================================================================
+      # PADRONIZAÇÕES
+      # ========================================================================
+      
       - name: Padronizar DRE
         id: dre
         continue-on-error: true
@@ -202,43 +208,112 @@ jobs:
         run: |
           python src/padronizar_bp.py --modo lista --lista "${TICKERS}"
 
-      # ---------------- CAPTURA DE PREÇOS (APÓS PADRONIZAÇÃO) ----------------
-      - name: Capturar Preços Trimestrais
-        id: precos
+      # ========================================================================
+      # PREÇOS - ETAPA 1: CAPTURA HISTÓRICA COMPLETA
+      # ========================================================================
+      
+      - name: Capturar Preços Trimestrais (Histórico Completo)
+        id: precos_historico
         continue-on-error: true
         run: |
           python src/capturar_precos.py --modo lista --lista "${TICKERS}"
 
-      # ---------------- MÚLTIPLOS ----------------
+      # ========================================================================
+      # PREÇOS - ETAPA 2: ATUALIZAÇÃO DIÁRIA E SINCRONIZAÇÃO
+      # ========================================================================
+      
+      - name: Atualizar Preços Diários e Sincronizar Ações
+        id: atualizar_precos
+        continue-on-error: true
+        run: |
+          echo "=========================================="
+          echo "ATUALIZAÇÃO DE PREÇOS DIÁRIOS"
+          echo "=========================================="
+          echo "Esta etapa:"
+          echo "1. Baixa preço atual do Yahoo Finance"
+          echo "2. Atualiza precos_trimestrais.csv"
+          echo "3. Sincroniza acoes_historico.csv (copia último período)"
+          echo "4. Garante que múltiplos de valuation serão calculados"
+          echo ""
+          python src/atualizar_precos_diarios.py --modo lista --lista "${TICKERS}"
+
+      # ========================================================================
+      # MÚLTIPLOS (COM PREÇOS E AÇÕES SINCRONIZADOS)
+      # ========================================================================
+      
       - name: Calcular Múltiplos
         id: multiplos
         continue-on-error: true
         run: |
           python src/calcular_multiplos.py --modo lista --lista "${TICKERS}"
 
-      # ---------------- RESUMO ----------------
-      - name: Resumo de execução (o que falhou)
+      # ========================================================================
+      # RESUMO DE EXECUÇÃO
+      # ========================================================================
+      
+      - name: Resumo de execução
         if: always()
         run: |
-          echo "=============================="
-          echo "RESUMO DO PIPELINE"
-          echo "Setor: ${{ inputs.setor }}"
-          echo "Tickers: ${TICKERS_COUNT}"
-          echo "=============================="
+          echo "======================================================================"
+          echo "                    RESUMO DO PIPELINE"
+          echo "======================================================================"
+          echo "Setor selecionado: ${{ inputs.setor }}"
+          echo "Total de tickers:  ${TICKERS_COUNT}"
+          echo "Limite aplicado:   ${{ inputs.limite }} (0 = todos)"
+          echo "======================================================================"
           echo ""
-          echo "Outcome por etapa (success/failure/skipped):"
-          echo "- Capturar Balanços:         ${{ steps.balancos.outcome }}"
-          echo "- Capturar Dividendos:       ${{ steps.dividendos.outcome }}"
-          echo "- Capturar Ações:            ${{ steps.acoes.outcome }}"
-          echo "- Capturar Acionistas:       ${{ steps.acionistas.outcome }}"
-          echo "- Capturar Logos:            ${{ steps.logos.outcome }}"
-          echo "- Padronizar DRE:            ${{ steps.dre.outcome }}"
-          echo "- Padronizar DFC:            ${{ steps.dfc.outcome }}"
-          echo "- Padronizar BP:             ${{ steps.bp.outcome }}"
-          echo "- Capturar Preços:           ${{ steps.precos.outcome }}"
-          echo "- Calcular Múltiplos:        ${{ steps.multiplos.outcome }}"
+          echo "Status por etapa (success/failure/skipped):"
           echo ""
+          echo "📊 CAPTURAS:"
+          echo "  - Balanços:              ${{ steps.balancos.outcome }}"
+          echo "  - Dividendos:            ${{ steps.dividendos.outcome }}"
+          echo "  - Ações:                 ${{ steps.acoes.outcome }}"
+          echo "  - Acionistas:            ${{ steps.acionistas.outcome }}"
+          echo "  - Logos:                 ${{ steps.logos.outcome }}"
+          echo ""
+          echo "🔄 PADRONIZAÇÕES:"
+          echo "  - DRE:                   ${{ steps.dre.outcome }}"
+          echo "  - DFC:                   ${{ steps.dfc.outcome }}"
+          echo "  - BP (BPA + BPP):        ${{ steps.bp.outcome }}"
+          echo ""
+          echo "💰 PREÇOS:"
+          echo "  - Histórico Completo:    ${{ steps.precos_historico.outcome }}"
+          echo "  - Atualização Diária:    ${{ steps.atualizar_precos.outcome }}"
+          echo ""
+          echo "📈 MÚLTIPLOS:"
+          echo "  - Cálculo Final:         ${{ steps.multiplos.outcome }}"
+          echo ""
+          echo "======================================================================"
+          
+          # Verificar se alguma etapa crítica falhou
+          critical_failed=0
+          
+          if [ "${{ steps.balancos.outcome }}" = "failure" ]; then
+            echo "⚠️  ATENÇÃO: Captura de balanços falhou (etapa crítica)"
+            critical_failed=1
+          fi
+          
+          if [ "${{ steps.dre.outcome }}" = "failure" ]; then
+            echo "⚠️  ATENÇÃO: Padronização DRE falhou (etapa crítica)"
+            critical_failed=1
+          fi
+          
+          if [ "${{ steps.multiplos.outcome }}" = "failure" ]; then
+            echo "⚠️  ATENÇÃO: Cálculo de múltiplos falhou (etapa crítica)"
+            critical_failed=1
+          fi
+          
+          if [ $critical_failed -eq 0 ]; then
+            echo "✅ Pipeline executado com sucesso!"
+          else
+            echo "⚠️  Pipeline concluído com avisos (verifique etapas críticas acima)"
+          fi
+          echo "======================================================================"
 
+      # ========================================================================
+      # COMMIT E PUSH
+      # ========================================================================
+      
       - name: Commit e push dos resultados
         if: always()
         run: |
@@ -246,10 +321,26 @@ jobs:
           git config user.email "actions-user@users.noreply.github.com"
 
           if [ -z "$(git status --porcelain)" ]; then
-            echo "Nenhuma alteração para commitar."
+            echo "✅ Nenhuma alteração para commitar."
             exit 0
           fi
 
+          # Mostrar resumo das mudanças
+          echo "======================================================================"
+          echo "Arquivos modificados:"
+          git status --short
+          echo "======================================================================"
+
           git add -A
-          git commit -m "Pipeline por setor: ${{ inputs.setor }} (tickers=${TICKERS_COUNT})"
+          
+          # Mensagem de commit mais descritiva
+          commit_msg="Pipeline: ${{ inputs.setor }} | Tickers: ${TICKERS_COUNT}"
+          
+          if [ "${{ inputs.limite }}" != "0" ]; then
+            commit_msg="${commit_msg} | Limite: ${{ inputs.limite }}"
+          fi
+          
+          git commit -m "${commit_msg}"
           git push
+          
+          echo "✅ Alterações commitadas e enviadas ao repositório"
