@@ -19,18 +19,27 @@ from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_map
 # CONTAS PADRÃO (NÃO FINANCEIRAS) - DRE
 # ======================================================================================
 
+
 DRE_PADRAO: List[Tuple[str, str]] = [
     ("3.01", "Receita de Venda de Bens e/ou Serviços"),
     ("3.02", "Custo dos Bens e/ou Serviços Vendidos"),
     ("3.03", "Resultado Bruto"),
     ("3.04", "Despesas/Receitas Operacionais"),
+    ("3.04.02", "Despesas Gerais e Administrativas"),        # ✅ ADICIONAR
+    ("3.04.05", "Outras Despesas Operacionais"),             # ✅ ADICIONAR
+    ("3.04.05.02", "Depreciação e amortização"),             # ✅ CRÍTICO WIZS3
+    ("3.04.06", "Resultado de Equivalência Patrimonial"),    # ✅ CRÍTICO WIZS3
     ("3.05", "Resultado Antes do Resultado Financeiro e dos Tributos"),
     ("3.06", "Resultado Financeiro"),
+    ("3.06.01", "Receitas Financeiras"),                     # ✅ ADICIONAR
+    ("3.06.02", "Despesas Financeiras"),                     # ✅ ADICIONAR
     ("3.07", "Resultado Antes dos Tributos sobre o Lucro"),
     ("3.08", "Imposto de Renda e Contribuição Social sobre o Lucro"),
     ("3.09", "Resultado Líquido das Operações Continuadas"),
     ("3.10", "Resultado Líquido de Operações Descontinuadas"),
     ("3.11", "Lucro/Prejuízo Consolidado do Período"),
+    ("3.11.01", "Atribuído a Sócios da Empresa Controladora"), # ✅ ADICIONAR
+    ("3.11.02", "Atribuído a Sócios Não Controladores"),       # ✅ CRÍTICO WIZS3
 ]
 
 
@@ -74,32 +83,80 @@ TICKERS_BANCOS: Set[str] = {
     "ITUB3", "ITUB4",
 }
 
-
 # ======================================================================================
-# CONTAS HOLDINGS DE SEGUROS (BBSE3, CXSE3) - DRE
+# CONTAS BBSE3 (BB SEGURIDADE) - ESTRUTURA ESPECÍFICA DE SEGUROS
 # ======================================================================================
-# Holdings que lucram com corretagem + equivalência patrimonial das seguradoras coligadas
+# Holding que lucra com corretagem (3.05) + equivalência patrimonial (3.06)
 
-DRE_HOLDINGS_SEGUROS: List[Tuple[str, str]] = [
-    ("3.01", "Receita de Venda de Bens e/ou Serviços"),       # Faturamento Bruto de Corretagem
-    ("3.02", "Custo dos Bens e/ou Serviços Vendidos"),        # Custos de serviços/impostos diretos
-    ("3.03", "Resultado Bruto"),                               # Lucro da corretagem antes despesas
-    ("3.04", "Despesas/Receitas Operacionais"),               # Consolida despesas + Equivalência
-    ("3.04.01", "Despesas com Vendas"),                       # Marketing e campanhas comerciais
-    ("3.04.02", "Despesas Gerais e Administrativas"),         # Eficiência: salários, aluguel, TI
-    ("3.04.05", "Resultado de Equivalência Patrimonial"),     # CORAÇÃO DO LUCRO: lucro das coligadas
-    ("3.05", "Resultado Antes do Resultado Financeiro e dos Tributos"),  # Lucro operacional total
-    ("3.06", "Resultado Financeiro"),                          # Rendimento do caixa próprio
-    ("3.08", "Resultado Antes dos Tributos sobre o Lucro"),   # Base para IR/CSLL
-    ("3.09", "Imposto de Renda e Contribuição Social sobre o Lucro"),  # Impostos da holding
-    ("3.11", "Lucro/Prejuízo Consolidado do Período"),        # Bottom Line
+DRE_BBSE3: List[Tuple[str, str]] = [
+    ("3.01", "Receitas das Atividades Seguradoras"),           # Sempre zero (holding não opera)
+    ("3.02", "Despesas da Atividade Seguradora"),              # Sempre zero
+    ("3.03", "Resultado Bruto"),                                # Sempre zero
+    ("3.04", "Despesas Administrativas"),                       # Despesas operacionais da holding
+    ("3.04.01", "Despesas com Pessoal Próprio"),
+    ("3.04.02", "Despesas com Serviços de Terceiros"),
+    ("3.04.03", "Despesas com Localização e Funcionamento"),
+    ("3.04.04", "Despesas com Publicidade e Propaganda"),
+    ("3.04.05", "Despesas com Tributos"),                       # NÃO é equivalência!
+    ("3.04.06", "Despesas com Publicações"),
+    ("3.05", "Outras Receitas e Despesas Operacionais"),       # ★ RECEITAS PRINCIPAIS ★
+    ("3.05.01", "Receitas de Comissões (Líquidas)"),           # ✅ CORRETAGEM
+    ("3.05.02", "Custo dos serviços prestados"),
+    ("3.05.03", "Despesas com Pessoal"),
+    ("3.05.04", "Despesas Administrativas e com Vendas"),
+    ("3.05.05", "Despesas Tributárias"),
+    ("3.05.06", "Outras receitas operacionais"),
+    ("3.05.07", "Outras despesas operacionais"),
+    ("3.06", "Resultado de Equivalência Patrimonial"),         # ★ CORAÇÃO DO LUCRO ★
+    ("3.06.01", "Receitas de Equivalência Patrimonial"),       # ✅ LUCRO DAS INVESTIDAS
+    ("3.06.02", "Despesas de Equivalência Patrimonial"),
+    ("3.07", "EBIT"),
+    ("3.08", "Resultado Financeiro"),
+    ("3.08.01", "Receitas Financeiras"),
+    ("3.08.02", "Despesas Financeiras"),
+    ("3.09", "LAIR"),
+    ("3.10", "IR/CSLL"),
+    ("3.13", "Lucro Líquido"),
+    ("3.13.01", "Atribuído a Sócios da Controladora"),
 ]
 
-# Lista de tickers de holdings de seguros
-TICKERS_HOLDINGS_SEGUROS: Set[str] = {
-    "BBSE3",  # BB Seguridade
-    "CXSE3",  # Caixa Seguridade
-}
+# ======================================================================================
+# CONTAS CXSE3 (CAIXA SEGURIDADE) - ESTRUTURA TRADICIONAL
+# ======================================================================================
+# Holding que usa estrutura de empresa de serviços padrão
+
+DRE_CXSE3: List[Tuple[str, str]] = [
+    ("3.01", "Receita de Venda de Bens e/ou Serviços"),        # Sempre zero
+    ("3.02", "Custo dos Bens e/ou Serviços Vendidos"),         # Sempre zero
+    ("3.03", "Resultado Bruto"),                                # Sempre zero
+    ("3.04", "Despesas/Receitas Operacionais"),                # ★ TUDO ESTÁ AQUI ★
+    ("3.04.01", "Despesas com Vendas"),
+    ("3.04.02", "Despesas Gerais e Administrativas"),
+    ("3.04.03", "Perdas pela Não Recuperabilidade de Ativos"),
+    ("3.04.04", "Outras Receitas Operacionais"),               # ✅ RECEITAS PRINCIPAIS
+    ("3.04.04.01", "Receitas de Acesso à Rede e Uso da Marca"),
+    ("3.04.04.02", "Receitas de prestação de serviços"),       # ✅ CORRETAGEM
+    ("3.04.04.03", "Custo dos Serviços Prestados"),
+    ("3.04.04.04", "Outras"),
+    ("3.04.05", "Outras Despesas Operacionais"),
+    ("3.04.05.01", "Despesas Tributárias"),
+    ("3.04.05.02", "Outras receitas/despesas operacionais"),
+    ("3.04.05.03", "Participações nos Resultados"),
+    ("3.04.06", "Resultado de Equivalência Patrimonial"),      # ✅ LUCRO INVESTIDAS
+    ("3.05", "EBIT"),
+    ("3.06", "Resultado Financeiro"),
+    ("3.06.01", "Receitas Financeiras"),
+    ("3.06.02", "Despesas Financeiras"),
+    ("3.07", "LAIR"),
+    ("3.08", "IR/CSLL"),
+    ("3.11", "Lucro Líquido"),
+    ("3.11.01", "Atribuído a Controladora"),
+]
+
+# Listas de tickers separadas
+TICKERS_BBSE3: Set[str] = {"BBSE3"}
+TICKERS_CXSE3: Set[str] = {"CXSE3"}
+
 
 # ======================================================================================
 # EMPRESAS COM ANO FISCAL MARÇO-FEVEREIRO (CAML3, etc.)
@@ -110,30 +167,85 @@ TICKERS_ANO_FISCAL_MAR_FEV: Set[str] = {
 }
 
 # ======================================================================================
-# CONTAS SEGURADORAS OPERACIONAIS (IRBR3, PSSA3) - DRE
+# CONTAS IRBR3 (IRB BRASIL RESSEGUROS)
 # ======================================================================================
-# Seguradoras que assumem risco: prêmios, sinistros, float de reservas técnicas
+# Resseguradora: assume risco de seguradoras, lucra com prêmios - sinistros + float
 
-DRE_SEGURADORAS: List[Tuple[str, str]] = [
-    ("3.01", "Prêmios Ganhos"),                    # Receita real (prêmio que já venceu)
-    ("3.01.01", "Prêmios Emitidos"),               # Vendas totais de apólices (bruto)
-    ("3.01.04", "Variação das Provisões Técnicas"),  # Ajuste de risco não decorrido
-    ("3.02", "Sinistros Retidos"),                 # O RISCO: indenizações pagas
-    ("3.03", "Custos de Aquisição"),               # Comissões pagas a corretores/cedentes
-    ("3.04", "Despesas Administrativas"),          # Custos de estrutura
-    ("3.05", "Despesas com Tributos"),             # PIS/COFINS sobre faturamento
-    ("3.06", "Resultado Financeiro"),              # FLOAT: rendimento das reservas investidas
-    ("3.07", "Resultado Operacional"),             # Operação de seguros + financeiro
-    ("3.08", "Resultado Antes dos Tributos sobre o Lucro"),  # + outras receitas/despesas
-    ("3.09", "Imposto de Renda e Contribuição Social"),      # Tributação (alta ~40-45%)
-    ("3.11", "Lucro Líquido do Período"),          # Resultado final
+DRE_IRBR3: List[Tuple[str, str]] = [
+    ("3.01", "Receitas das Operações"),
+    ("3.01.01", "Operações de Seguros"),                       # Geralmente zero (é resseguradora)
+    ("3.01.02", "Operações de Resseguros"),                    # ✅ RECEITA PRINCIPAL
+    ("3.01.02.01", "Prêmios de Resseguros Ganhos"),           # ✅ Receita real
+    ("3.01.02.02", "Outras Receitas de Resseguros"),
+    ("3.02", "Sinistros e Despesas das Operações"),
+    ("3.02.01", "Operações de Seguros"),                       # Geralmente zero
+    ("3.02.02", "Operações de Resseguros"),                    # ✅ CUSTOS PRINCIPAIS
+    ("3.02.02.01", "Sinistros Retidos de Resseguros"),        # ✅ O RISCO
+    ("3.02.02.02", "Despesas de Comercialização"),            # ✅ Comissões
+    ("3.02.02.03", "Outras Despesas de Resseguros"),
+    ("3.03", "Resultado Bruto"),                               # ✅ Margem de subscrição
+    ("3.04", "Despesas Administrativas"),
+    ("3.05", "Outras Receitas e Despesas Operacionais"),
+    ("3.06", "Resultado de Equivalência Patrimonial"),
+    ("3.07", "EBIT"),
+    ("3.08", "Resultado Financeiro"),                          # ★ FLOAT: 30-50% do lucro ★
+    ("3.08.01", "Receitas Financeiras"),
+    ("3.08.02", "Despesas Financeiras"),
+    ("3.09", "LAIR"),
+    ("3.10", "IR/CSLL"),
+    ("3.13", "Lucro/Prejuízo Consolidado do Período"),
+    ("3.13.01", "Atribuído aos Controladores"),
 ]
 
-# Lista de tickers de seguradoras operacionais
-TICKERS_SEGURADORAS: Set[str] = {
-    "IRBR3",  # IRB Brasil Resseguros
-    "PSSA3",  # Porto Seguro
-}
+TICKERS_IRBR3: Set[str] = {"IRBR3"}
+
+# ======================================================================================
+# CONTAS PSSA3 (PORTO SEGURO) - COM QUEBRA IFRS 17 EM 2023
+# ======================================================================================
+# Seguradora operacional multi-linhas com mudança estrutural em 2023
+
+DRE_PSSA3: List[Tuple[str, str]] = [
+    # CONTAS USADAS EM AMBOS OS PERÍODOS
+    ("3.01", "Receita de Venda de Bens e/ou Serviços"),
+    ("3.03", "Resultado Bruto"),
+    ("3.04", "Despesas/Receitas Operacionais"),
+    ("3.04.02", "Despesas Gerais e Administrativas"),
+    ("3.04.02.01", "Despesas administrativas"),
+    ("3.04.02.02", "Despesas com tributos"),
+    ("3.04.04", "Outras Receitas Operacionais"),
+    ("3.04.05", "Outras Despesas Operacionais"),
+    ("3.05", "EBIT"),
+    ("3.06", "Resultado Financeiro"),
+    ("3.06.01", "Receitas Financeiras"),
+    ("3.06.02", "Despesas Financeiras"),
+    ("3.11", "Lucro Líquido"),
+    ("3.11.01", "Atribuído aos Controladores"),
+    
+    # CONTAS ANTIGAS (2015-2022) - Mantidas para compatibilidade
+    ("3.01.01", "Prêmios de seguros emitidos"),               # ✅ Até 2022
+    ("3.01.02", "(-) Prêmios de resseguro cedido"),
+    ("3.01.03", "Receitas de operações de crédito"),
+    ("3.01.04", "Receitas de prestações de serviços"),
+    ("3.01.05", "Contribuições de planos de previdência"),
+    ("3.01.06", "Receita com títulos de capitalização"),
+    ("3.04.05.01", "Variação das provisões técnicas - seguros"),
+    ("3.04.05.02", "Variação das provisões técnicas - previdência"),
+    ("3.04.05.03", "Sinistros retidos - bruto"),              # ✅ Até 2022
+    ("3.04.05.04", "Benefícios de planos de previdência"),
+    ("3.04.05.05", "Recuperação de resseguradores"),
+    ("3.04.05.06", "Recuperação de salvados e ressarcimentos"),
+    ("3.04.05.07", "Custos de aquisição - seguros"),          # ✅ Até 2022
+    ("3.04.05.08", "Custos de aquisição - outros"),           # ✅ Mantido após 2023
+    ("3.04.05.09", "Custos dos serviços prestados"),
+    ("3.04.05.10", "Outras despesas operacionais"),
+    
+    # CONTAS NOVAS (2023+) - IFRS 17
+    ("3.01.07", "Receita de seguro/contrato de seguro"),      # ★ NOVA RECEITA (2023+) ★
+    ("3.04.05.11", "Despesas de seguro/contrato de seguro"),  # ★ TUDO AGREGADO (2023+) ★
+    ("3.04.05.12", "Despesas líquidas com resseguros/retrocessões"),
+]
+
+TICKERS_PSSA3: Set[str] = {"PSSA3"}
 
 
 # ======================================================================================
@@ -149,29 +261,47 @@ def _is_banco(ticker: str) -> bool:
     return ticker.upper().strip() in TICKERS_BANCOS
 
 
-def _is_holding_seguros(ticker: str) -> bool:
-    """Verifica se o ticker é de uma holding de seguros (BBSE3, CXSE3)."""
-    return ticker.upper().strip() in TICKERS_HOLDINGS_SEGUROS
+def _is_bbse3(ticker: str) -> bool:
+    """BB Seguridade - estrutura específica de seguros."""
+    return ticker.upper().strip() in TICKERS_BBSE3
 
+def _is_cxse3(ticker: str) -> bool:
+    """Caixa Seguridade - estrutura tradicional."""
+    return ticker.upper().strip() in TICKERS_CXSE3
 
-def _is_seguradora(ticker: str) -> bool:
-    """Verifica se o ticker é de uma seguradora operacional (IRBR3, PSSA3)."""
-    return ticker.upper().strip() in TICKERS_SEGURADORAS
+def _is_irbr3(ticker: str) -> bool:
+    """IRB Brasil Resseguros - estrutura de resseguros."""
+    return ticker.upper().strip() in TICKERS_IRBR3
+
+def _is_pssa3(ticker: str) -> bool:
+    """Porto Seguro - com quebra IFRS 17 em 2023."""
+    return ticker.upper().strip() in TICKERS_PSSA3
 
 
 def _get_dre_schema(ticker: str) -> List[Tuple[str, str]]:
     """
     Retorna o esquema DRE apropriado para o ticker.
-    Ordem de verificação: Holding Seguros → Seguradora → Banco → Padrão
+    CRÍTICO: BBSE3, CXSE3, IRBR3, PSSA3 têm estruturas únicas.
     """
     ticker_upper = ticker.upper().strip()
     
-    if _is_holding_seguros(ticker_upper):
-        return DRE_HOLDINGS_SEGUROS
-    elif _is_seguradora(ticker_upper):
-        return DRE_SEGURADORAS
+    # Holdings de seguros - estruturas DIFERENTES
+    if ticker_upper in TICKERS_BBSE3:
+        return DRE_BBSE3
+    elif ticker_upper in TICKERS_CXSE3:
+        return DRE_CXSE3
+    
+    # Seguradoras operacionais
+    elif ticker_upper in TICKERS_IRBR3:
+        return DRE_IRBR3
+    elif ticker_upper in TICKERS_PSSA3:
+        return DRE_PSSA3
+    
+    # Bancos
     elif _is_banco(ticker_upper):
         return DRE_BANCOS
+    
+    # Padrão (inclui WIZC3)
     else:
         return DRE_PADRAO
 
