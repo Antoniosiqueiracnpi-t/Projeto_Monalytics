@@ -354,7 +354,8 @@ def main():
     print(f"\n>>> JOB: CAPTURAR PREÇOS TRIMESTRAIS <<<")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
     print("Fonte: arquivos *_padronizado.csv (prioridade)")
-    print("Saída: balancos/<TICKER>/precos_trimestrais.csv\n")
+    print("Saída: balancos/<TICKER>/precos_trimestrais.csv")
+    print("ATENÇÃO: Processa TODAS as classes de ações (ON, PN, UNIT)\n")
 
     capturador = CapturadorPrecos()
 
@@ -363,29 +364,33 @@ def main():
 
     for _, row in df_sel.iterrows():
         ticker_str = str(row["ticker"]).upper().strip()
-        ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
-
-        pasta = get_pasta_balanco(ticker)
-        if not pasta.exists():
-            err_count += 1
-            print(f"❌ {ticker}: pasta {pasta} não existe")
-            continue
-
-        try:
-            ok, msg = capturador.capturar_e_salvar_ticker(ticker)
-
-            if ok:
-                ok_count += 1
-                print(f"✅ {ticker}: {msg}")
-            else:
+        
+        # CORREÇÃO: Processar TODAS as classes de ações (ON, PN, UNIT)
+        # Exemplo: "ITUB3;ITUB4" → processa ITUB3 E ITUB4 separadamente
+        tickers = [t.strip() for t in ticker_str.split(';') if t.strip()]
+        
+        for ticker in tickers:
+            pasta = get_pasta_balanco(ticker)
+            if not pasta.exists():
                 err_count += 1
-                print(f"⚠️ {ticker}: {msg}")
+                print(f"❌ {ticker}: pasta {pasta} não existe")
+                continue
 
-        except Exception as e:
-            err_count += 1
-            import traceback
-            print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
-            traceback.print_exc()
+            try:
+                ok, msg = capturador.capturar_e_salvar_ticker(ticker)
+
+                if ok:
+                    ok_count += 1
+                    print(f"✅ {ticker}: {msg}")
+                else:
+                    err_count += 1
+                    print(f"⚠️ {ticker}: {msg}")
+
+            except Exception as e:
+                err_count += 1
+                import traceback
+                print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
+                traceback.print_exc()
 
     print("\n" + "=" * 70)
     print(f"Finalizado: OK={ok_count} | ERRO={err_count}")
