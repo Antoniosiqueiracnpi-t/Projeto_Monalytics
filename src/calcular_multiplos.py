@@ -768,6 +768,19 @@ def _calcular_ebitda_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
 def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     """
     Calcula dividendos LTM (últimos 12 meses).
+    
+    CORREÇÃO APLICADA: Remove lógica duplicada que somava trimestres extras.
+    
+    Exemplo: Se periodo_fim = "2025T3"
+    - LTM correto = 2024T4 + 2025T1 + 2025T2 + 2025T3 (4 trimestres)
+    
+    Lógica:
+    - Ano atual: T1 até T_fim
+    - Ano anterior: T(tri_fim + 1) até T4
+    - Total: SEMPRE 4 trimestres
+    
+    Returns:
+        Dividendos totais em R$ MIL (dividendos por ação × número de ações / 1000)
     """
     if dados.dividendos is None:
         return np.nan
@@ -790,21 +803,31 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     
     periodos_12m = []
     
-    # Ano atual: T1 até T_fim
+    # ========== LÓGICA CORRIGIDA ==========
+    
+    # Passo 1: Ano atual - T1 até T_fim
+    # Ex: Se tri_fim=3 (2025T3) → adiciona 2025T1, 2025T2, 2025T3
     for t in range(1, tri_num + 1):
         periodos_12m.append(f"{ano_fim}T{t}")
     
-    # Ano anterior: a partir de T(tri_fim + 1) até T4
+    # Passo 2: Ano anterior - T(tri_fim + 1) até T4
+    # Ex: Se tri_fim=3 (2025T3) → adiciona 2024T4
     for t in range(tri_num + 1, 5):
         periodos_12m.append(f"{ano_fim - 1}T{t}")
     
-    # Adicionar também trimestres do ano anterior que podem ter dividendos
-    for t in range(1, tri_num + 1):
-        p = f"{ano_fim - 1}T{t}"
-        if p not in periodos_12m:
-            periodos_12m.append(p)
+    # ✅ CORREÇÃO: REMOVIDO loop duplicado que adicionava trimestres extras
+    # ANTES (BUG):
+    # for t in range(1, tri_num + 1):
+    #     p = f"{ano_fim - 1}T{t}"
+    #     if p not in periodos_12m:
+    #         periodos_12m.append(p)
+    # ↑ Isso adicionava 2024T1, 2024T2, 2024T3 → total = 7 trimestres (errado!)
     
-    # Buscar dividendos em todos esses períodos
+    # AGORA: Total sempre = 4 trimestres ✅
+    
+    # ========================================
+    
+    # Buscar dividendos em todos esses períodos (4 trimestres)
     soma = 0.0
     
     for p in periodos_12m:
@@ -813,6 +836,7 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
             if len(vals) > 0:
                 div_por_acao = float(vals.iloc[0])
                 if np.isfinite(div_por_acao) and div_por_acao > 0:
+                    # Converter dividendos por ação em dividendos totais (R$ MIL)
                     div_total_mil = (div_por_acao * num_acoes) / 1000.0
                     soma += div_total_mil
     
