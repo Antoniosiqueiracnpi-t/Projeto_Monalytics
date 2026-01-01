@@ -1,7 +1,5 @@
 """
-CAPTURADOR DE NOTÍCIAS B3 - Execução Diária
-
-Captura notícias diárias de empresas B3 com suporte a múltiplos modos de seleção.
+CAPTURADOR DE NOTÍCIAS B3 - Execução Diária com busca de pasta existente
 """
 
 import pandas as pd
@@ -11,7 +9,7 @@ from datetime import datetime, timedelta
 import json
 import argparse
 from finbr.b3 import plantao_noticias
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 class CapturadorNoticiasB3:
@@ -27,6 +25,36 @@ class CapturadorNoticiasB3:
         if not ticker:
             return ""
         return re.sub(r'\d+$', '', ticker.strip())
+    
+    def _encontrar_pasta_empresa(self, ticker_base: str) -> Path:
+        """
+        Busca pasta existente para a empresa (com ou sem número de classe).
+        Prioriza pasta com número. Se não existir, retorna pasta com ticker base.
+        
+        Exemplos:
+        - Se existe BBAS3/ -> retorna BBAS3/
+        - Se existe BBAS/ -> retorna BBAS/
+        - Se não existe nenhuma -> retorna BBAS/
+        """
+        # Lista todas as pastas que começam com o ticker base
+        pastas_encontradas = []
+        
+        if self.pasta_saida.exists():
+            for pasta in self.pasta_saida.iterdir():
+                if pasta.is_dir():
+                    # Verifica se o nome da pasta (sem número) corresponde ao ticker base
+                    pasta_base = self._extrair_ticker_base(pasta.name)
+                    if pasta_base == ticker_base:
+                        pastas_encontradas.append(pasta)
+        
+        if pastas_encontradas:
+            # Prioriza pasta com número (ex: BBAS3 ao invés de BBAS)
+            # Ordena por comprimento decrescente para pegar primeiro as com número
+            pastas_encontradas.sort(key=lambda p: len(p.name), reverse=True)
+            return pastas_encontradas[0]
+        
+        # Se não encontrou nenhuma, retorna pasta com ticker base (sem número)
+        return self.pasta_saida / ticker_base
     
     def _carregar_empresas(self) -> pd.DataFrame:
         """Carrega lista de empresas do CSV."""
@@ -81,11 +109,16 @@ class CapturadorNoticiasB3:
     
     def _buscar_noticias_empresa(self, ticker_base: str, data_inicio: str, data_fim: str) -> pd.DataFrame:
         """Busca notícias filtrando por ticker base e menções no texto."""
-        print(f"  🔍 Buscando notícias para {ticker_base}...")
+        print(f"  🔍 Buscando notícias para {ticker_base}...", end=" ")
         
-        noticias_raw = plantao_noticias.get(inicio=data_inicio, fim=data_fim)
+        try:
+            noticias_raw = plantao_noticias.get(inicio=data_inicio, fim=data_fim)
+        except Exception as e:
+            print(f"❌ Erro na busca: {e}")
+            return pd.DataFrame()
         
         if not noticias_raw:
+            print("⚠️ Nenhuma notícia no período")
             return pd.DataFrame()
         
         df = pd.DataFrame([{
@@ -113,8 +146,10 @@ class CapturadorNoticiasB3:
         
         df_filtrado = df[mask_ticker | mask_texto].copy()
         
-        if not df_filtrado.empty:
-            print(f"  ✅ {len(df_filtrado)} notícia(s) encontrada(s)")
+        if df_filtrado.empty:
+            print("⚠️ Nenhuma correspondência encontrada")
+        else:
+            print(f"✅ {len(df_filtrado)} notícia(s)")
         
         return df_filtrado
     
@@ -129,8 +164,11 @@ class CapturadorNoticiasB3:
         """Processa e acumula notícias de uma empresa."""
         ticker_base = row['ticker_base']
         
-        pasta_empresa = self.pasta_saida / ticker_base
+        # BUSCA PASTA EXISTENTE (com ou sem número de classe)
+        pasta_empresa = self._encontrar_pasta_empresa(ticker_base)
         pasta_empresa.mkdir(exist_ok=True)
+        
+        print(f"  📁 Pasta: {pasta_empresa.name}")
         
         df_noticias = self._buscar_noticias_empresa(ticker_base, data_inicio, data_fim)
         
@@ -168,6 +206,7 @@ class CapturadorNoticiasB3:
                 ids_existentes.add(noticia_id)
         
         if not noticias_novas:
+            print("  ℹ️ Nenhuma notícia nova (todas já existem)")
             return False
         
         todas_noticias = noticias_novas + dados_existentes.get('noticias', [])
@@ -211,19 +250,23 @@ class CapturadorNoticiasB3:
             print("⚠️ Nenhuma empresa selecionada!")
             return
         
+        empresas_processadas = 0
         empresas_com_noticias = 0
         
         for idx, (_, row) in enumerate(df_selecionadas.iterrows(), 1):
-            print(f"[{idx}/{len(df_selecionadas)}] {row['ticker_base']} - {row.get('empresa', '')[:50]}...")
+            print(f"\n[{idx}/{len(df_selecionadas)}] {row['ticker_base']} - {row.get('empresa', '')[:50]}...")
             
             try:
                 if self._processar_empresa(row, data_inicio.strftime('%Y-%m-%d'), data_fim.strftime('%Y-%m-%d')):
                     empresas_com_noticias += 1
+                empresas_processadas += 1
             except Exception as e:
                 print(f"  ❌ Erro: {e}")
+                import traceback
+                traceback.print_exc()
         
         print(f"\n{'='*70}")
-        print(f"✅ Processadas: {len(df_selecionadas)} | Com notícias: {empresas_com_noticias}")
+        print(f"✅ Processadas: {empresas_processadas}/{len(df_selecionadas)} | Com notícias novas: {empresas_com_noticias}")
         print(f"💾 Salvos em: {self.pasta_saida}/")
         print("="*70)
 
