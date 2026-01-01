@@ -2,7 +2,7 @@
 """
 Atualização Diária de Preços e Múltiplos de Valuation
 =====================================================
-VERSÃO CORRIGIDA - Dezembro 2024
+VERSÃO CORRIGIDA - Janeiro 2025
 
 Este script:
 1. Baixa preços de fechamento do dia anterior para todas as empresas
@@ -18,6 +18,7 @@ CORREÇÕES APLICADAS:
 1. Atualização correta do CSV de preços
 2. Recálculo usando preço mais recente
 3. Atualização do período de ações se necessário
+4. Processamento de TODAS as classes de ações (ON, PN, UNIT)
 """
 
 from __future__ import annotations
@@ -48,16 +49,6 @@ except ImportError:
 # ======================================================================================
 # CONFIGURAÇÕES
 # ======================================================================================
-
-# Empresas financeiras (excluídas)
-TICKERS_FINANCEIROS = {
-    "RPAD3", "RPAD5", "RPAD6", "ABCB4", "BMGB4", "BBDC3", "BBDC4",
-    "BPAC3", "BPAC5", "BPAC11", "BSLI3", "BSLI4", "BBAS3", "BGIP3",
-    "BGIP4", "BPAR3", "BRSR3", "BRSR5", "BRSR6", "BNBR3", "BMIN3",
-    "BMIN4", "BMEB3", "BMEB4", "BPAN4", "PINE3", "PINE4", "SANB3",
-    "SANB4", "SANB11", "BEES3", "BEES4", "ITUB3", "ITUB4",
-    "BBSE3", "CXSE3", "IRBR3", "PSSA3",
-}
 
 # Mapeamento de códigos B3 para Yahoo Finance
 SUFIXO_YAHOO = ".SA"
@@ -268,10 +259,19 @@ def recalcular_multiplos_completo(ticker: str) -> Tuple[bool, str]:
         if sucesso and resultado:
             ltm = resultado.get("ltm", {})
             preco = ltm.get("preco_utilizado", "?")
-            p_l = ltm.get("multiplos", {}).get("P_L", "?")
-            ev_ebitda = ltm.get("multiplos", {}).get("EV_EBITDA", "?")
+            multiplos = ltm.get("multiplos", {})
+            p_l = multiplos.get("P_L", "?")
             
-            return True, f"P/L={p_l} | EV/EBITDA={ev_ebitda} | Preço=R${preco}"
+            # Para empresas não-financeiras, mostrar EV/EBITDA
+            # Para bancos/seguradoras, mostrar ROE
+            if "EV_EBITDA" in multiplos:
+                ev_ebitda = multiplos.get("EV_EBITDA", "?")
+                return True, f"P/L={p_l} | EV/EBITDA={ev_ebitda} | Preço=R${preco}"
+            elif "ROE" in multiplos:
+                roe = multiplos.get("ROE", "?")
+                return True, f"P/L={p_l} | ROE={roe}% | Preço=R${preco}"
+            else:
+                return True, f"P/L={p_l} | Preço=R${preco}"
         
         return False, msg
         
@@ -330,18 +330,18 @@ def processar_atualizacao_diaria(
     print(f"{'='*70}")
     print(f"Data: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"Modo: {modo} | Selecionadas: {len(df_sel)}")
+    print(f"ATENÇÃO: Processa TODAS as classes de ações (ON, PN, UNIT)")
     print(f"{'='*70}\n")
     
-    # Filtrar tickers não-financeiros
+    # CORREÇÃO: Extrair TODOS os tickers individuais (processar cada classe)
     tickers_processar = []
     for _, row in df_sel.iterrows():
         ticker_str = str(row["ticker"]).upper().strip()
-        ticker_clean = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
-        
-        if ticker_clean not in TICKERS_FINANCEIROS:
-            tickers_processar.append(ticker_clean)
+        # Exemplo: "ITUB3;ITUB4" → ['ITUB3', 'ITUB4']
+        tickers = [t.strip() for t in ticker_str.split(';') if t.strip()]
+        tickers_processar.extend(tickers)
     
-    print(f"Tickers não-financeiros: {len(tickers_processar)}")
+    print(f"Total de tickers (incluindo todas as classes): {len(tickers_processar)}")
     print(f"Baixando preços...\n")
     
     # Baixar preços em lote
