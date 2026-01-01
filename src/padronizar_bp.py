@@ -590,13 +590,20 @@ BPA_SEGURADORAS: List[Tuple[str, str]] = [
     ("1", "Ativo Total"),
     ("1.01", "Ativo Circulante"),
     ("1.01.01", "Caixa e Equivalentes de Caixa"),
-    ("1.01.02", "Aplicações Financeiras"),
-    ("1.01.03", "Créditos das Operações de Seguros"),
-    ("1.01.06", "Ativos de Resseguro"),
-    ("1.01.08", "Custos de Aquisição Diferidos"),
+    ("1.01.02", "Aplicações Financeiras"),  # Float investido - Ativo Principal
+    ("1.01.03", "Contas a Receber"),
+    ("1.01.03.01", "Créditos das Operações"),  # Prêmios a receber
+    ("1.01.03.01.01", "Prêmios a Receber de Segurados"),
+    ("1.01.06", "Tributos a Recuperar"),
+    ("1.01.08", "Outros Ativos Circulantes"),
+    ("1.01.08.03.02", "Ativos de Resseguro"),  # CRÍTICO: Recuperação de sinistros
+    ("1.01.08.03.03", "Custos de Aquisição Diferidos"),  # CRÍTICO: Comissões diferidas
     ("1.02", "Ativo Não Circulante"),
     ("1.02.01", "Ativo Realizável a Longo Prazo"),
+    ("1.02.01.01", "Aplicações Financeiras LP"),
+    ("1.02.01.06", "Tributos Diferidos"),
     ("1.02.02", "Investimentos"),
+    ("1.02.02.02", "Propriedades para Investimento"),
     ("1.02.03", "Imobilizado"),
     ("1.02.04", "Intangível"),
 ]
@@ -604,14 +611,27 @@ BPA_SEGURADORAS: List[Tuple[str, str]] = [
 BPP_SEGURADORAS: List[Tuple[str, str]] = [
     ("2", "Passivo Total"),
     ("2.01", "Passivo Circulante"),
-    ("2.01.01", "Obrigações a Pagar"),
-    ("2.01.04", "Provisões Técnicas de Seguros"),
-    ("2.01.05", "Débitos de Operações com Seguros"),
+    ("2.01.01", "Obrigações Sociais e Trabalhistas"),
+    ("2.01.02", "Fornecedores"),
+    ("2.01.03", "Obrigações Fiscais"),
+    ("2.01.04", "Empréstimos e Financiamentos"),  # Alguns têm (PSSA3)
+    ("2.01.05", "Outras Obrigações"),
+    ("2.01.05.02.01", "Dividendos e JCP a Pagar"),
+    ("2.01.05.02.04", "Passivos de Contratos de Seguros"),  # CRÍTICO: Provisões Técnicas CP
+    ("2.01.05.02.05", "Débitos de Operações com Seguros"),
+    ("2.01.05.02.06", "Passivos Financeiros"),  # PSSA3 tem debêntures
     ("2.02", "Passivo Não Circulante"),
+    ("2.02.01", "Empréstimos e Financiamentos"),
+    ("2.02.02", "Outras Obrigações"),
+    ("2.02.02.02.03", "Passivos de Contratos de Seguros LP"),  # CRÍTICO: Provisões Técnicas LP
+    ("2.02.03", "Tributos Diferidos"),
+    ("2.02.04", "Provisões"),
     ("2.03", "Patrimônio Líquido Consolidado"),
     ("2.03.01", "Capital Social Realizado"),
     ("2.03.02", "Reservas de Capital"),
+    ("2.03.02.05", "Ações em Tesouraria"),
     ("2.03.04", "Reservas de Lucros"),
+    ("2.03.09", "Participação dos Acionistas Não Controladores"),
 ]
 
 BPA_HOLDINGS_SEGUROS: List[Tuple[str, str]] = [
@@ -620,8 +640,11 @@ BPA_HOLDINGS_SEGUROS: List[Tuple[str, str]] = [
     ("1.01.01", "Caixa e Equivalentes de Caixa"),
     ("1.01.02", "Aplicações Financeiras"),
     ("1.01.03", "Contas a Receber"),
+    ("1.01.06", "Tributos a Recuperar"),
+    ("1.01.08", "Outros Ativos Circulantes"),
     ("1.02", "Ativo Não Circulante"),
-    ("1.02.02", "Investimentos"),
+    ("1.02.01", "Ativo Realizável a Longo Prazo"),
+    ("1.02.02", "Investimentos"),  # CRÍTICO: Participações nas seguradoras coligadas
     ("1.02.03", "Imobilizado"),
     ("1.02.04", "Intangível"),
 ]
@@ -630,12 +653,21 @@ BPP_HOLDINGS_SEGUROS: List[Tuple[str, str]] = [
     ("2", "Passivo Total"),
     ("2.01", "Passivo Circulante"),
     ("2.01.01", "Obrigações Sociais e Trabalhistas"),
-    ("2.01.02", "Obrigações Fiscais"),
+    ("2.01.02", "Fornecedores"),
+    ("2.01.03", "Obrigações Fiscais"),
+    ("2.01.04", "Empréstimos e Financiamentos"),
     ("2.01.05", "Outras Obrigações"),
+    ("2.01.05.02.01", "Dividendos e JCP a Pagar"),
+    ("2.01.05.02.03", "Comissões a Apropriar"),  # CRÍTICO: BBSE3 específico
     ("2.02", "Passivo Não Circulante"),
+    ("2.02.01", "Empréstimos e Financiamentos"),
+    ("2.02.01.04.01", "Comissões a Apropriar LP"),  # CRÍTICO: BBSE3 LP
+    ("2.02.02", "Outras Obrigações"),
     ("2.03", "Patrimônio Líquido Consolidado"),
     ("2.03.01", "Capital Social Realizado"),
+    ("2.03.02", "Reservas de Capital"),
     ("2.03.04", "Reservas de Lucros"),
+    ("2.03.09", "Participação dos Acionistas Não Controladores"),
 ]
 
 
@@ -655,7 +687,8 @@ TICKERS_BANCOS: Set[str] = {
 
 TICKERS_HOLDINGS_SEGUROS: Set[str] = {"BBSE3", "CXSE3"}
 TICKERS_SEGURADORAS: Set[str] = {"IRBR3", "PSSA3"}
-
+# Empresa de tecnologia/marketplace (será tratada como empresa geral)
+TICKERS_TECH_MARKETPLACE: Set[str] = {"WIZS3"}
 
 def _is_banco(ticker: str) -> bool:
     """Verifica se é banco - também por variantes."""
