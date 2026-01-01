@@ -71,8 +71,17 @@ TICKERS_BANCOS: Set[str] = {
     "SANB4", "SANB11", "BEES3", "BEES4", "ITUB3", "ITUB4",
 }
 
-# Seguradoras e holdings (excluídas - estrutura muito diferente)
-TICKERS_SEGURADORAS: Set[str] = {"BBSE3", "CXSE3", "IRBR3", "PSSA3"}
+# Holdings de seguros (BBSE3, CXSE3)
+TICKERS_HOLDINGS_SEGUROS: Set[str] = {
+    "BBSE3",  # BB Seguridade
+    "CXSE3",  # Caixa Seguridade
+}
+
+# Seguradoras operacionais (IRBR3, PSSA3)
+TICKERS_SEGURADORAS: Set[str] = {
+    "IRBR3",  # IRB Brasil Resseguros
+    "PSSA3",  # Porto Seguro
+}
 
 # Mapeamento de contas DRE padronizado
 CONTAS_DRE = {
@@ -135,6 +144,44 @@ CONTAS_BPP_BANCOS = {
     "passivos_custo_amort": "2.02",       # Agregado - inclui depósitos
 }
 
+# ======================================================================================
+# MAPEAMENTO DE CONTAS - HOLDINGS DE SEGUROS
+# ======================================================================================
+
+CONTAS_DRE_HOLDINGS_SEGUROS = {
+    "receita": "3.01",                    # Receita de Corretagem
+    "cpv": "3.02",                        # Custo dos Serviços
+    "lucro_bruto": "3.03",                # Resultado Bruto
+    "despesas_vendas": "3.04.01",         # Despesas com Vendas
+    "despesas_admin": "3.04.02",          # Despesas Gerais e Administrativas
+    "equivalencia": "3.04.05",            # Equivalência Patrimonial (coração do lucro)
+    "ebit": "3.05",                       # EBIT
+    "resultado_financeiro": "3.06",       # Resultado Financeiro
+    "lair": "3.08",                       # LAIR
+    "ir_csll": "3.09",                    # IR e CSLL
+    "lucro_liquido": "3.11",              # Lucro Líquido
+}
+
+
+# ======================================================================================
+# MAPEAMENTO DE CONTAS - SEGURADORAS OPERACIONAIS
+# ======================================================================================
+
+CONTAS_DRE_SEGURADORAS = {
+    "premios_ganhos": "3.01",             # Prêmios Ganhos
+    "premios_emitidos": "3.01.01",        # Prêmios Emitidos (bruto)
+    "var_provisoes": "3.01.04",           # Variação Provisões Técnicas
+    "sinistros": "3.02",                  # Sinistros Retidos
+    "custos_aquisicao": "3.03",           # Custos de Aquisição
+    "despesas_admin": "3.04",             # Despesas Administrativas
+    "despesas_tributos": "3.05",          # Despesas com Tributos
+    "resultado_financeiro": "3.06",       # Resultado Financeiro (Float)
+    "resultado_operacional": "3.07",      # Resultado Operacional
+    "lair": "3.08",                       # LAIR
+    "ir_csll": "3.09",                    # IR e CSLL
+    "lucro_liquido": "3.11",              # Lucro Líquido
+}
+
 # Taxa de IR para NOPAT (alíquota efetiva média)
 TAXA_IR_NOPAT = 0.34  # 34% (25% IR + 9% CSLL)
 
@@ -157,11 +204,17 @@ def _is_banco(ticker: str) -> bool:
                 return True
     return False
 
+def _is_holding_seguros(ticker: str) -> bool:
+    """Verifica se ticker é de holding de seguros."""
+    return ticker.upper().strip() in TICKERS_HOLDINGS_SEGUROS
+
+def _is_seguradora_operacional(ticker: str) -> bool:
+    """Verifica se ticker é de seguradora operacional."""
+    return ticker.upper().strip() in TICKERS_SEGURADORAS
 
 def _is_seguradora(ticker: str) -> bool:
     """Verifica se ticker é de seguradora (excluída do cálculo)."""
     return ticker.upper().strip() in TICKERS_SEGURADORAS
-
 
 def _is_ano_fiscal_mar_fev(ticker: str) -> bool:
     """Verifica se empresa tem ano fiscal março-fevereiro."""
@@ -1013,6 +1066,174 @@ MULTIPLOS_BANCOS_METADATA = {
 
 
 # ======================================================================================
+# METADADOS DOS MÚLTIPLOS - HOLDINGS DE SEGUROS (10 MÚLTIPLOS)
+# ======================================================================================
+
+MULTIPLOS_HOLDINGS_SEGUROS_METADATA = {
+    # Valuation (5 múltiplos)
+    "P_L": {
+        "nome": "P/L",
+        "categoria": "Valuation",
+        "formula": "Market Cap / Lucro Líquido LTM",
+        "unidade": "x",
+        "usa_preco": True
+    },
+    "P_VPA": {
+        "nome": "P/VPA",
+        "categoria": "Valuation",
+        "formula": "Market Cap / Patrimônio Líquido",
+        "unidade": "x",
+        "usa_preco": True
+    },
+    "DY": {
+        "nome": "Dividend Yield",
+        "categoria": "Valuation",
+        "formula": "Dividendos LTM / Market Cap × 100",
+        "unidade": "%",
+        "usa_preco": True
+    },
+    "PAYOUT": {
+        "nome": "Payout",
+        "categoria": "Valuation",
+        "formula": "Dividendos LTM / Lucro Líquido LTM × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    "EV_RECEITA": {
+        "nome": "EV/Receita",
+        "categoria": "Valuation",
+        "formula": "Enterprise Value / Receita Corretagem LTM",
+        "unidade": "x",
+        "usa_preco": True
+    },
+    
+    # Rentabilidade (4 múltiplos)
+    "ROE": {
+        "nome": "ROE",
+        "categoria": "Rentabilidade",
+        "formula": "Lucro Líquido LTM / PL Médio × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    "ROA": {
+        "nome": "ROA",
+        "categoria": "Rentabilidade",
+        "formula": "Lucro Líquido LTM / Ativo Total Médio × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    "MARGEM_LIQUIDA": {
+        "nome": "Margem Líquida",
+        "categoria": "Rentabilidade",
+        "formula": "Lucro Líquido LTM / Receita Corretagem LTM × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    "MARGEM_OPERACIONAL": {
+        "nome": "Margem Operacional",
+        "categoria": "Rentabilidade",
+        "formula": "EBIT / Receita Corretagem LTM × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    
+    # Eficiência (1 múltiplo)
+    "INDICE_EFICIENCIA": {
+        "nome": "Índice Eficiência",
+        "categoria": "Eficiência",
+        "formula": "(Desp. Vendas + Desp. Admin.) / Receita × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+}
+
+
+# ======================================================================================
+# METADADOS DOS MÚLTIPLOS - SEGURADORAS OPERACIONAIS (10 MÚLTIPLOS)
+# ======================================================================================
+
+MULTIPLOS_SEGURADORAS_METADATA = {
+    # Valuation (4 múltiplos)
+    "P_L": {
+        "nome": "P/L",
+        "categoria": "Valuation",
+        "formula": "Market Cap / Lucro Líquido LTM",
+        "unidade": "x",
+        "usa_preco": True
+    },
+    "P_VPA": {
+        "nome": "P/VPA",
+        "categoria": "Valuation",
+        "formula": "Market Cap / Patrimônio Líquido",
+        "unidade": "x",
+        "usa_preco": True
+    },
+    "DY": {
+        "nome": "Dividend Yield",
+        "categoria": "Valuation",
+        "formula": "Dividendos LTM / Market Cap × 100",
+        "unidade": "%",
+        "usa_preco": True
+    },
+    "PAYOUT": {
+        "nome": "Payout",
+        "categoria": "Valuation",
+        "formula": "Dividendos LTM / Lucro Líquido LTM × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    
+    # Rentabilidade (2 múltiplos)
+    "ROE": {
+        "nome": "ROE",
+        "categoria": "Rentabilidade",
+        "formula": "Lucro Líquido LTM / PL Médio × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    "ROA": {
+        "nome": "ROA",
+        "categoria": "Rentabilidade",
+        "formula": "Lucro Líquido LTM / Ativo Total Médio × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    
+    # Estrutura (1 múltiplo)
+    "PL_ATIVOS": {
+        "nome": "PL/Ativos",
+        "categoria": "Estrutura",
+        "formula": "Patrimônio Líquido / Ativo Total × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    
+    # Operacional (3 múltiplos - específicos de seguros)
+    "COMBINED_RATIO": {
+        "nome": "Combined Ratio",
+        "categoria": "Operacional",
+        "formula": "(Sinistros + Custos Aq. + Desp. Admin.) / Prêmios Ganhos × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    "SINISTRALIDADE": {
+        "nome": "Sinistralidade",
+        "categoria": "Operacional",
+        "formula": "Sinistros Retidos / Prêmios Ganhos × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    "MARGEM_SUBSCRICAO": {
+        "nome": "Margem Subscrição",
+        "categoria": "Operacional",
+        "formula": "(Prêmios - Sinistros - Custos Aq.) / Prêmios × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+}
+
+
+# ======================================================================================
 # DETECTOR DE CÓDIGO DO PL PARA BANCOS
 # ======================================================================================
 
@@ -1135,6 +1356,252 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     
     return resultado
 
+# ======================================================================================
+# CALCULADORA DE MÚLTIPLOS - HOLDINGS DE SEGUROS (10 MÚLTIPLOS)
+# ======================================================================================
+
+def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True) -> Dict[str, Optional[float]]:
+    """
+    Calcula 10 múltiplos essenciais para holdings de seguros (BBSE3, CXSE3).
+    
+    MODELO DE NEGÓCIO:
+    - Corretagem de seguros (receita de serviços)
+    - Equivalência Patrimonial = lucro das seguradoras coligadas (conta 3.04.05)
+    - Resultado financeiro do caixa próprio
+    
+    Múltiplos calculados:
+    ✅ Valuation (5): P/L, P/VPA, DY, Payout, EV/Receita
+    ✅ Rentabilidade (4): ROE, ROA, Margem Líquida, Margem Operacional
+    ✅ Eficiência (1): Índice de Eficiência
+    
+    Args:
+        dados: Dados completos da empresa
+        periodo: Período de referência (ex: "2024T4")
+        usar_preco_atual: Se True, usa preço mais recente para valuation
+    
+    Returns:
+        Dicionário com 10 múltiplos essenciais
+    """
+    resultado: Dict[str, Optional[float]] = {}
+    
+    # ==================== MARKET CAP E EV ====================
+    
+    if usar_preco_atual:
+        market_cap = _calcular_market_cap_atual(dados)
+    else:
+        market_cap = _calcular_market_cap(dados, periodo)
+    
+    ev = _calcular_ev(dados, periodo, market_cap)
+    
+    # ==================== VALORES BASE ====================
+    
+    # Lucro Líquido LTM - Conta 3.11
+    ll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_HOLDINGS_SEGUROS["lucro_liquido"], periodo)
+    
+    # Patrimônio Líquido
+    pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
+    pl_medio = _obter_valor_medio(dados, dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
+    
+    # Ativo Total
+    at = _obter_valor_pontual(dados.bpa, CONTAS_BPA["ativo_total"], periodo)
+    at_medio = _obter_valor_medio(dados, dados.bpa, CONTAS_BPA["ativo_total"], periodo)
+    
+    # Receita de Corretagem LTM - Conta 3.01
+    receita_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_HOLDINGS_SEGUROS["receita"], periodo)
+    
+    # EBIT LTM - Conta 3.05
+    ebit_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_HOLDINGS_SEGUROS["ebit"], periodo)
+    
+    # Despesas Operacionais LTM
+    desp_vendas_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_HOLDINGS_SEGUROS["despesas_vendas"], periodo)
+    desp_admin_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_HOLDINGS_SEGUROS["despesas_admin"], periodo)
+    
+    # Dividendos LTM
+    dividendos_ltm = _calcular_dividendos_ltm(dados, periodo)
+    
+    # ==================== VALUATION (5 MÚLTIPLOS) ====================
+    
+    # P/L = Market Cap / Lucro Líquido LTM
+    resultado["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
+    
+    # P/VPA = Market Cap / Patrimônio Líquido
+    resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
+    
+    # Dividend Yield = (Dividendos LTM / Market Cap) × 100
+    resultado["DY"] = _normalizar_valor(
+        _safe_divide(dividendos_ltm, market_cap) * 100 if np.isfinite(market_cap) and market_cap > 0 else np.nan
+    )
+    
+    # Payout = (Dividendos LTM / Lucro Líquido LTM) × 100
+    resultado["PAYOUT"] = _normalizar_valor(
+        _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
+    )
+    
+    # EV/Receita = Enterprise Value / Receita Corretagem LTM
+    resultado["EV_RECEITA"] = _normalizar_valor(_safe_divide(ev, receita_ltm))
+    
+    # ==================== RENTABILIDADE (4 MÚLTIPLOS) ====================
+    
+    # ROE = (Lucro Líquido LTM / PL Médio) × 100
+    resultado["ROE"] = _normalizar_valor(
+        _safe_divide(ll_ltm, pl_medio) * 100 if np.isfinite(pl_medio) and pl_medio > 0 else np.nan
+    )
+    
+    # ROA = (Lucro Líquido LTM / Ativo Total Médio) × 100
+    resultado["ROA"] = _normalizar_valor(
+        _safe_divide(ll_ltm, at_medio) * 100 if np.isfinite(at_medio) and at_medio > 0 else np.nan
+    )
+    
+    # Margem Líquida = (Lucro Líquido LTM / Receita Corretagem LTM) × 100
+    resultado["MARGEM_LIQUIDA"] = _normalizar_valor(
+        _safe_divide(ll_ltm, receita_ltm) * 100 if np.isfinite(receita_ltm) and receita_ltm > 0 else np.nan
+    )
+    
+    # Margem Operacional = (EBIT / Receita Corretagem LTM) × 100
+    resultado["MARGEM_OPERACIONAL"] = _normalizar_valor(
+        _safe_divide(ebit_ltm, receita_ltm) * 100 if np.isfinite(receita_ltm) and receita_ltm > 0 else np.nan
+    )
+    
+    # ==================== EFICIÊNCIA (1 MÚLTIPLO) ====================
+    
+    # Índice de Eficiência = (Desp. Vendas + Desp. Admin.) / Receita × 100
+    desp_vendas_val = abs(desp_vendas_ltm) if np.isfinite(desp_vendas_ltm) else 0
+    desp_admin_val = abs(desp_admin_ltm) if np.isfinite(desp_admin_ltm) else 0
+    total_despesas = desp_vendas_val + desp_admin_val
+    
+    resultado["INDICE_EFICIENCIA"] = _normalizar_valor(
+        _safe_divide(total_despesas, receita_ltm) * 100 if np.isfinite(receita_ltm) and receita_ltm > 0 else np.nan
+    )
+    
+    return resultado
+
+
+# ======================================================================================
+# CALCULADORA DE MÚLTIPLOS - SEGURADORAS OPERACIONAIS (10 MÚLTIPLOS)
+# ======================================================================================
+
+def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True) -> Dict[str, Optional[float]]:
+    """
+    Calcula 10 múltiplos essenciais para seguradoras operacionais (IRBR3, PSSA3).
+    
+    MODELO DE NEGÓCIO:
+    - Assumem risco direto (prêmios vs sinistros)
+    - Float = reservas técnicas investidas gerando receita financeira
+    - Combined Ratio < 100% = operação rentável
+    
+    Múltiplos calculados:
+    ✅ Valuation (4): P/L, P/VPA, DY, Payout
+    ✅ Rentabilidade (2): ROE, ROA
+    ✅ Estrutura (1): PL/Ativos
+    ✅ Operacional (3): Combined Ratio, Sinistralidade, Margem Subscrição
+    
+    Args:
+        dados: Dados completos da empresa
+        periodo: Período de referência (ex: "2024T4")
+        usar_preco_atual: Se True, usa preço mais recente para valuation
+    
+    Returns:
+        Dicionário com 10 múltiplos essenciais
+    """
+    resultado: Dict[str, Optional[float]] = {}
+    
+    # ==================== MARKET CAP ====================
+    
+    if usar_preco_atual:
+        market_cap = _calcular_market_cap_atual(dados)
+    else:
+        market_cap = _calcular_market_cap(dados, periodo)
+    
+    # ==================== VALORES BASE ====================
+    
+    # Lucro Líquido LTM - Conta 3.11
+    ll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_SEGURADORAS["lucro_liquido"], periodo)
+    
+    # Patrimônio Líquido
+    pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
+    pl_medio = _obter_valor_medio(dados, dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
+    
+    # Ativo Total
+    at = _obter_valor_pontual(dados.bpa, CONTAS_BPA["ativo_total"], periodo)
+    at_medio = _obter_valor_medio(dados, dados.bpa, CONTAS_BPA["ativo_total"], periodo)
+    
+    # Prêmios Ganhos LTM - Conta 3.01
+    premios_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_SEGURADORAS["premios_ganhos"], periodo)
+    
+    # Sinistros Retidos LTM - Conta 3.02
+    sinistros_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_SEGURADORAS["sinistros"], periodo)
+    sinistros_ltm = abs(sinistros_ltm) if np.isfinite(sinistros_ltm) else np.nan
+    
+    # Custos de Aquisição LTM - Conta 3.03
+    custos_aq_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_SEGURADORAS["custos_aquisicao"], periodo)
+    custos_aq_ltm = abs(custos_aq_ltm) if np.isfinite(custos_aq_ltm) else np.nan
+    
+    # Despesas Administrativas LTM - Conta 3.04
+    desp_admin_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_SEGURADORAS["despesas_admin"], periodo)
+    desp_admin_ltm = abs(desp_admin_ltm) if np.isfinite(desp_admin_ltm) else np.nan
+    
+    # Dividendos LTM
+    dividendos_ltm = _calcular_dividendos_ltm(dados, periodo)
+    
+    # ==================== VALUATION (4 MÚLTIPLOS) ====================
+    
+    # P/L = Market Cap / Lucro Líquido LTM
+    resultado["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
+    
+    # P/VPA = Market Cap / Patrimônio Líquido (MAIS IMPORTANTE para seguradoras)
+    resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
+    
+    # Dividend Yield = (Dividendos LTM / Market Cap) × 100
+    resultado["DY"] = _normalizar_valor(
+        _safe_divide(dividendos_ltm, market_cap) * 100 if np.isfinite(market_cap) and market_cap > 0 else np.nan
+    )
+    
+    # Payout = (Dividendos LTM / Lucro Líquido LTM) × 100
+    resultado["PAYOUT"] = _normalizar_valor(
+        _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
+    )
+    
+    # ==================== RENTABILIDADE (2 MÚLTIPLOS) ====================
+    
+    # ROE = (Lucro Líquido LTM / PL Médio) × 100 (MÉTRICA CHAVE)
+    resultado["ROE"] = _normalizar_valor(
+        _safe_divide(ll_ltm, pl_medio) * 100 if np.isfinite(pl_medio) and pl_medio > 0 else np.nan
+    )
+    
+    # ROA = (Lucro Líquido LTM / Ativo Total Médio) × 100
+    resultado["ROA"] = _normalizar_valor(
+        _safe_divide(ll_ltm, at_medio) * 100 if np.isfinite(at_medio) and at_medio > 0 else np.nan
+    )
+    
+    # ==================== ESTRUTURA (1 MÚLTIPLO) ====================
+    
+    # PL/Ativos = (Patrimônio Líquido / Ativo Total) × 100 (Capitalização/Solvência)
+    resultado["PL_ATIVOS"] = _normalizar_valor(
+        _safe_divide(pl, at) * 100 if np.isfinite(at) and at > 0 else np.nan
+    )
+    
+    # ==================== OPERACIONAL (3 MÚLTIPLOS - ESPECÍFICOS DE SEGUROS) ====================
+    
+    # Combined Ratio = (Sinistros + Custos Aq. + Desp. Admin.) / Prêmios × 100
+    # < 100% = operação lucrativa ANTES do float
+    numerador_combined = sinistros_ltm + custos_aq_ltm + desp_admin_ltm
+    resultado["COMBINED_RATIO"] = _normalizar_valor(
+        _safe_divide(numerador_combined, premios_ltm) * 100 if np.isfinite(premios_ltm) and premios_ltm > 0 else np.nan
+    )
+    
+    # Sinistralidade = Sinistros Retidos / Prêmios Ganhos × 100
+    # Ideal: 60-75%
+    resultado["SINISTRALIDADE"] = _normalizar_valor(
+        _safe_divide(sinistros_ltm, premios_ltm) * 100 if np.isfinite(premios_ltm) and premios_ltm > 0 else np.nan
+    )
+    
+    # Margem de Subscrição = (Prêmios - Sinistros - Custos Aq.) / Prêmios × 100
+    margem_subscricao_num = premios_ltm - sinistros_ltm - custos_aq_ltm if np.isfinite(premios_ltm) else np.nan
+    resultado["MARGEM_SUBSCRICAO"] = _normalizar_valor(
+        _safe_divide(margem_subscricao_num, premios_ltm) * 100 if np.isfinite(premios_ltm) and premios_ltm > 0 else np.nan
+    )
+    
+    return resultado
 
 # ======================================================================================
 # GERADOR DE HISTÓRICO ANUALIZADO
@@ -1175,8 +1642,14 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
         else:
             # Ano corrente: usar período mais recente disponível com preço atual
             periodo_referencia = periodos_ano[-1]
+            
+            # Determinar qual função de cálculo usar
             if _is_banco(dados.ticker):
                 multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=True)
+            elif _is_holding_seguros(dados.ticker):
+                multiplos = calcular_multiplos_holding_seguros(dados, periodo_referencia, usar_preco_atual=True)
+            elif _is_seguradora_operacional(dados.ticker):
+                multiplos = calcular_multiplos_seguradora(dados, periodo_referencia, usar_preco_atual=True)
             else:
                 multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=True)
         
@@ -1187,8 +1660,14 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
     
     # LTM: Sempre usar último período disponível com preço atual
     ultimo_periodo = dados.periodos[-1]
+    
+    # Determinar qual função de cálculo usar
     if _is_banco(dados.ticker):
         multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True)
+    elif _is_holding_seguros(dados.ticker):
+        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=True)
+    elif _is_seguradora_operacional(dados.ticker):
+        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=True)
     else:
         multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True)
     
@@ -1203,7 +1682,12 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
             "descricao": dados.padrao_fiscal.descricao,
             "trimestres_ltm": dados.padrao_fiscal.trimestres_ltm
         },
-        "metadata": MULTIPLOS_BANCOS_METADATA if _is_banco(dados.ticker) else MULTIPLOS_METADATA,
+        "metadata": (
+            MULTIPLOS_BANCOS_METADATA if _is_banco(dados.ticker)
+            else MULTIPLOS_HOLDINGS_SEGUROS_METADATA if _is_holding_seguros(dados.ticker)
+            else MULTIPLOS_SEGURADORAS_METADATA if _is_seguradora_operacional(dados.ticker)
+            else MULTIPLOS_METADATA
+        ),        
         "historico_anual": historico_anual,
         "ltm": {
             "periodo_referencia": ultimo_periodo,
@@ -1227,8 +1711,7 @@ def processar_ticker(ticker: str, salvar: bool = True) -> Tuple[bool, str, Optio
     """Processa um ticker e calcula todos os múltiplos."""
     ticker_upper = ticker.upper().strip()
     
-    if _is_seguradora(ticker_upper):
-        return False, "Seguradora/Holding - estrutura não suportada", None
+    # >>>>>> SEM EXCLUSÃO - AGORA SUPORTAMOS SEGURADORAS <<<<
     
     dados = carregar_dados_empresa(ticker_upper)
     
@@ -1280,6 +1763,10 @@ def _salvar_csv_historico(resultado: Dict, path: Path):
     # Usar metadata correto baseado no tipo de empresa
     if _is_banco(ticker):
         multiplos_codigos = list(MULTIPLOS_BANCOS_METADATA.keys())
+    elif _is_holding_seguros(ticker):
+        multiplos_codigos = list(MULTIPLOS_HOLDINGS_SEGUROS_METADATA.keys())
+    elif _is_seguradora_operacional(ticker):
+        multiplos_codigos = list(MULTIPLOS_SEGURADORAS_METADATA.keys())
     else:
         multiplos_codigos = list(MULTIPLOS_METADATA.keys())
     
@@ -1349,7 +1836,7 @@ def main():
     print(f">>> CALCULADORA DE MÚLTIPLOS FINANCEIROS <<<")
     print(f"{'='*70}")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
-    print(f"Empresas: 22 múltiplos | Bancos: 8 múltiplos essenciais")
+    print(f"Empresas: 22 múltiplos | Bancos: 8 | Holdings Seguros: 10 | Seguradoras: 10")
     print(f"Saída: balancos/<TICKER>/multiplos.json + multiplos.csv")
     print(f"{'='*70}\n")
     
