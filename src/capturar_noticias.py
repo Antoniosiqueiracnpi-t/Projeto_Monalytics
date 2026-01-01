@@ -1,20 +1,7 @@
 """
 CAPTURADOR DE NOTÍCIAS B3 - Execução Diária
 
-Captura notícias diárias de todas as empresas listadas no mapeamento B3.
-Acumula notícias em arquivos JSON individuais por empresa.
-
-ESTRUTURA DO JSON:
-{
-  "empresa": {
-    "ticker": "ITUB",
-    "nome": "ITAU UNIBANCO HOLDING S.A.",
-    "cnpj": "60.872.504/0001-23"
-  },
-  "ultima_atualizacao": "2025-01-01T10:00:00",
-  "total_noticias": 150,
-  "noticias": [...]
-}
+Captura notícias diárias de empresas B3 com suporte a múltiplos modos de seleção.
 """
 
 import pandas as pd
@@ -22,8 +9,9 @@ import re
 from pathlib import Path
 from datetime import datetime, timedelta
 import json
+import argparse
 from finbr.b3 import plantao_noticias
-from typing import Dict
+from typing import Dict, List
 
 
 class CapturadorNoticiasB3:
@@ -45,6 +33,32 @@ class CapturadorNoticiasB3:
         df = pd.read_csv(self.arquivo_mapeamento, sep=';', encoding='utf-8-sig')
         df['ticker_base'] = df['ticker'].apply(self._extrair_ticker_base)
         return df.drop_duplicates(subset=['ticker_base'], keep='first')
+    
+    def _selecionar_empresas(self, df: pd.DataFrame, modo: str, **kwargs) -> pd.DataFrame:
+        """Seleciona empresas baseado no modo especificado."""
+        
+        if modo == 'quantidade':
+            qtd = int(kwargs.get('quantidade', 10))
+            return df.head(qtd)
+        
+        elif modo == 'ticker':
+            ticker = kwargs.get('ticker', '').strip().upper()
+            ticker_base = self._extrair_ticker_base(ticker)
+            return df[df['ticker_base'] == ticker_base]
+        
+        elif modo == 'lista':
+            lista = kwargs.get('lista', '')
+            tickers = [self._extrair_ticker_base(t.strip().upper()) for t in lista.split(',') if t.strip()]
+            return df[df['ticker_base'].isin(tickers)]
+        
+        elif modo == 'faixa':
+            faixa = kwargs.get('faixa', '1-50')
+            inicio, fim = map(int, faixa.split('-'))
+            return df.iloc[inicio-1:fim]
+        
+        else:
+            print(f"⚠️ Modo '{modo}' não reconhecido. Usando primeiras 10 empresas.")
+            return df.head(10)
     
     def _classificar_noticia(self, titulo: str, headline: str) -> str:
         """Classifica notícia por palavras-chave."""
@@ -176,8 +190,8 @@ class CapturadorNoticiasB3:
         print(f"  💾 {len(noticias_novas)} nova(s) | Total: {len(todas_noticias)}")
         return True
     
-    def executar(self, dias_retroativos: int = 1):
-        """Executa captura para todas as empresas."""
+    def executar(self, modo: str = 'quantidade', dias_retroativos: int = 1, **kwargs):
+        """Executa captura para empresas selecionadas."""
         print("="*70)
         print("📰 CAPTURADOR DE NOTÍCIAS B3")
         print("="*70)
@@ -188,12 +202,19 @@ class CapturadorNoticiasB3:
         print(f"\n📅 Período: {data_inicio.strftime('%Y-%m-%d')} a {data_fim.strftime('%Y-%m-%d')}")
         
         df_empresas = self._carregar_empresas()
-        print(f"✅ {len(df_empresas)} empresas únicas\n")
+        df_selecionadas = self._selecionar_empresas(df_empresas, modo, **kwargs)
+        
+        print(f"🎯 Modo: {modo}")
+        print(f"✅ {len(df_selecionadas)} empresa(s) selecionada(s)\n")
+        
+        if df_selecionadas.empty:
+            print("⚠️ Nenhuma empresa selecionada!")
+            return
         
         empresas_com_noticias = 0
         
-        for idx, (_, row) in enumerate(df_empresas.iterrows(), 1):
-            print(f"[{idx}/{len(df_empresas)}] {row['ticker_base']} - {row.get('empresa', '')[:50]}...")
+        for idx, (_, row) in enumerate(df_selecionadas.iterrows(), 1):
+            print(f"[{idx}/{len(df_selecionadas)}] {row['ticker_base']} - {row.get('empresa', '')[:50]}...")
             
             try:
                 if self._processar_empresa(row, data_inicio.strftime('%Y-%m-%d'), data_fim.strftime('%Y-%m-%d')):
@@ -202,14 +223,38 @@ class CapturadorNoticiasB3:
                 print(f"  ❌ Erro: {e}")
         
         print(f"\n{'='*70}")
-        print(f"✅ Processadas: {len(df_empresas)} | Com notícias: {empresas_com_noticias}")
+        print(f"✅ Processadas: {len(df_selecionadas)} | Com notícias: {empresas_com_noticias}")
         print(f"💾 Salvos em: {self.pasta_saida}/")
         print("="*70)
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Capturador de Notícias B3')
+    parser.add_argument('--modo', default='quantidade', 
+                       choices=['quantidade', 'ticker', 'lista', 'faixa'],
+                       help='Modo de seleção de empresas')
+    parser.add_argument('--quantidade', type=int, default=10,
+                       help='Quantidade de empresas (modo=quantidade)')
+    parser.add_argument('--ticker', default='',
+                       help='Ticker para buscar (modo=ticker)')
+    parser.add_argument('--lista', default='',
+                       help='Lista de tickers separados por vírgula (modo=lista)')
+    parser.add_argument('--faixa', default='1-50',
+                       help='Faixa de linhas no formato INICIO-FIM (modo=faixa)')
+    parser.add_argument('--dias', type=int, default=30,
+                       help='Período de busca em dias')
+    
+    args = parser.parse_args()
+    
     capturador = CapturadorNoticiasB3()
-    capturador.executar(dias_retroativos=1)
+    capturador.executar(
+        modo=args.modo,
+        dias_retroativos=args.dias,
+        quantidade=args.quantidade,
+        ticker=args.ticker,
+        lista=args.lista,
+        faixa=args.faixa
+    )
 
 
 if __name__ == "__main__":
