@@ -2,14 +2,19 @@
 """
 Calculadora de Múltiplos Financeiros para Empresas Não-Financeiras
 ==================================================================
-VERSÃO CORRIGIDA - Dezembro 2024
+VERSÃO CORRIGIDA - Janeiro 2025
 
-Calcula 22 múltiplos organizados em 5 categorias:
+Calcula 22 múltiplos organizados em 5 categorias (empresas não-financeiras):
 - Valuation (7): P/L, P/VPA, EV/EBITDA, EV/EBIT, EV/Receita, DY, Payout
 - Rentabilidade (5): ROE, ROA, ROIC, Margem EBITDA, Margem Líquida
 - Endividamento (4): Dív.Líq/EBITDA, Dív.Líq/PL, ICJ, Composição Dívida
 - Liquidez (3): Corrente, Seca, Geral
 - Eficiência (4): Giro Ativo, Ciclo Caixa, PME, NCG/Receita
+
+Calcula 8 múltiplos essenciais para bancos:
+- Valuation (4): P/L, P/VPA, DY, Payout
+- Rentabilidade (3): ROE, ROA, Margem Líquida
+- Estrutura (1): PL/Ativos
 
 CORREÇÕES APLICADAS:
 1. Busca robusta de preços (período atual ou mais recente disponível)
@@ -17,6 +22,7 @@ CORREÇÕES APLICADAS:
 3. Cálculo de EBITDA revisado
 4. Cálculo de ROIC com taxa de IR correta
 5. Dividend Yield calculado corretamente
+6. Múltiplos bancários simplificados para máxima confiabilidade
 
 UNIDADES:
 - Balanços CVM: valores em R$ MIL
@@ -115,27 +121,18 @@ CONTAS_DRE_BANCOS = {
     "outras_receitas_desp": "3.04",       # Outras Receitas/Despesas Operacionais
     "resultado_operacional": "3.05",      # Resultado Operacional (antes IR)
     "lucro_liquido": "3.11",              # Lucro Líquido
-    "pdd": "3.02.02",                     # Provisão para Devedores Duvidosos
 }
 
 CONTAS_BPA_BANCOS = {
     "ativo_total": "1",
     "caixa": "1.01",
-    "ativos_financeiros": "1.02",
-    # Operações de Crédito - códigos variam por banco
-    "operacoes_credito": ["1.02.04.04", "1.02.03.04", "1.05.03.02"],  # BBAS3/BBDC4, ITUB4, antigo
-    # Provisão PDD - códigos variam por banco  
-    "provisao_pdd": ["1.02.04.05", "1.02.03.06", "1.05.03.03"],  # BBAS3/BBDC4, ITUB4, antigo
-    "titulos_valores": "1.02.02",
+    "ativos_financeiros": "1.02",         # Agregado - sempre existe
 }
 
 CONTAS_BPP_BANCOS = {
     "passivo_total": "2",
     "passivos_financeiros_vj": "2.01",
-    "passivos_custo_amort": "2.02",
-    # Depósitos - códigos variam por banco
-    "depositos": ["2.02.01", "2.03.01"],  # BBAS3/BBDC4, ITUB4
-    # PL é detectado dinamicamente (2.07 ou 2.08)
+    "passivos_custo_amort": "2.02",       # Agregado - inclui depósitos
 }
 
 # Taxa de IR para NOPAT (alíquota efetiva média)
@@ -345,50 +342,6 @@ def _buscar_conta_flexivel(df: pd.DataFrame, codigos: List[str], periodo: str) -
             return val
     return np.nan
 
-def _buscar_conta_banco(
-    df: pd.DataFrame, 
-    codigos: Any,  # str ou List[str]
-    periodo: str,
-    prefer_nonzero: bool = True
-) -> float:
-    """
-    Busca valor de conta bancária tentando múltiplos códigos.
-    
-    CORREÇÃO: Suporta lista de códigos e prefere valores não-zero.
-    
-    Args:
-        df: DataFrame padronizado (bpa/bpp)
-        codigos: Código único (str) ou lista de códigos para tentar
-        periodo: Período (ex: "2024T4")
-        prefer_nonzero: Se True, ignora valores zero e tenta próximo código
-    
-    Returns:
-        Valor encontrado ou np.nan
-    """
-    if df is None or periodo not in df.columns:
-        return np.nan
-    
-    # Normalizar para lista
-    if isinstance(codigos, str):
-        codigos_lista = [codigos]
-    else:
-        codigos_lista = list(codigos)
-    
-    for codigo in codigos_lista:
-        val = _extrair_valor_conta(df, codigo, periodo)
-        if np.isfinite(val):
-            if prefer_nonzero and val == 0:
-                continue  # Tentar próximo código
-            return val
-    
-    # Se prefer_nonzero=True e todos eram zero, retornar o primeiro válido (mesmo se zero)
-    for codigo in codigos_lista:
-        val = _extrair_valor_conta(df, codigo, periodo)
-        if np.isfinite(val):
-            return val
-    
-    return np.nan
-
 
 def carregar_dados_empresa(ticker: str) -> DadosEmpresa:
     """Carrega todos os dados padronizados de uma empresa."""
@@ -431,13 +384,6 @@ def _obter_preco(dados: DadosEmpresa, periodo: str) -> float:
     FORMATO ESPERADO DO CSV:
     Preço_Fechamento,2015T1,2015T2,...,2025T3
     Preço de Fechamento Ajustado,2.11,2.12,...,15.56
-    
-    Args:
-        dados: Dados da empresa
-        periodo: Período específico (ex: "2025T3")
-    
-    Returns:
-        Preço ou np.nan se não encontrado
     """
     if dados.precos is None:
         return np.nan
@@ -463,9 +409,6 @@ def _obter_preco_atual(dados: DadosEmpresa) -> Tuple[float, str]:
     """
     Obtém o preço mais recente disponível.
     
-    IMPORTANTE: Esta função busca o preço mais atual independente do período.
-    Usada para múltiplos de valuation que devem usar preço corrente.
-    
     Returns:
         (preço, período) - preço mais recente e o período correspondente
     """
@@ -490,16 +433,6 @@ def _obter_acoes(dados: DadosEmpresa, periodo: str) -> float:
     ON,98897500,...,443329716,443329716,...
     PN,0,...,0,0,...
     TOTAL,98897500,...,443329716,443329716,...
-    
-    UNITS (KLBN11, ITUB, etc): Usa apenas ações ON.
-    Outras empresas: Usa linha TOTAL.
-    
-    Args:
-        dados: Dados da empresa
-        periodo: Período específico
-    
-    Returns:
-        Número de ações ou np.nan
     """
     if dados.acoes is None:
         return np.nan
@@ -535,9 +468,6 @@ def _obter_acoes_atual(dados: DadosEmpresa) -> Tuple[float, str]:
     """
     Obtém o número de ações mais recente disponível.
     
-    IMPORTANTE: O número de ações geralmente só muda em eventos corporativos
-    (splits, bonificações, emissões). Esta função busca o dado mais atual.
-    
     Returns:
         (ações, período) - número de ações e período correspondente
     """
@@ -560,14 +490,6 @@ def _obter_acoes_atual(dados: DadosEmpresa) -> Tuple[float, str]:
 def _calcular_market_cap(dados: DadosEmpresa, periodo: str) -> float:
     """
     Calcula Market Cap = Preço × Número de Ações
-    
-    IMPORTANTE: Usa preço e ações do período solicitado.
-    Para múltiplos LTM, o preço deve ser o mais recente.
-    
-    CONVERSÃO DE UNIDADES:
-    - Preço: R$ (unitário)
-    - Ações: unidades
-    - Balanços CVM: R$ MIL
     
     Market Cap (R$ mil) = Preço × Ações / 1000
     """
@@ -598,11 +520,6 @@ def _calcular_market_cap_atual(dados: DadosEmpresa) -> float:
 def _calcular_ev(dados: DadosEmpresa, periodo: str, market_cap: Optional[float] = None) -> float:
     """
     Calcula Enterprise Value = Market Cap + Dívida Líquida
-    
-    Args:
-        dados: Dados da empresa
-        periodo: Período para dados de balanço
-        market_cap: Market Cap já calculado (opcional)
     
     Returns:
         EV em R$ MIL
@@ -732,8 +649,6 @@ def _obter_valor_medio(
 def _calcular_da_periodo(dados: DadosEmpresa, periodo: str) -> float:
     """
     Calcula D&A (Depreciação e Amortização) de um período.
-    
-    CORREÇÃO: Busca em múltiplos códigos do DFC e garante valor positivo.
     """
     if dados.dfc is None:
         return np.nan
@@ -743,7 +658,7 @@ def _calcular_da_periodo(dados: DadosEmpresa, periodo: str) -> float:
     for cod in codigos_da:
         val = _extrair_valor_conta(dados.dfc, cod, periodo)
         if np.isfinite(val):
-            return abs(val)  # D&A sempre positivo para soma ao EBIT
+            return abs(val)
     
     return np.nan
 
@@ -751,8 +666,6 @@ def _calcular_da_periodo(dados: DadosEmpresa, periodo: str) -> float:
 def _calcular_ebitda_periodo(dados: DadosEmpresa, periodo: str) -> float:
     """
     Calcula EBITDA de um período: EBIT + |D&A|
-    
-    CORREÇÃO: Se D&A não disponível, retorna apenas EBIT (não np.nan).
     """
     ebit = _extrair_valor_conta(dados.dre, CONTAS_DRE["ebit"], periodo)
     
@@ -802,17 +715,6 @@ def _calcular_ebitda_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
 def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     """
     Calcula dividendos LTM (últimos 12 meses).
-    
-    METODOLOGIA CORRIGIDA:
-    - Considera dividendos dos últimos 12 meses baseado na DATA real
-    - Para periodo_fim = 2025T3 (Set/2025), considera Out/2024 a Set/2025
-    - Isso inclui 2024T4, 2025T1, 2025T2, 2025T3 E também 2024T2 e 2024T3
-    
-    Na prática: soma dividendos do ano anterior (T3 e T4) + ano atual (T1 a T_fim)
-    
-    IMPORTANTE: 
-    - dividendos_trimestrais.csv tem valores em R$/AÇÃO
-    - Resultado multiplicado por número de ações para obter R$ MIL
     """
     if dados.dividendos is None:
         return np.nan
@@ -833,10 +735,6 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     # Obter todas as colunas de dividendos disponíveis
     colunas_div = [c for c in dados.dividendos.columns if _parse_periodo(c)[0] > 0]
     
-    # Gerar lista de períodos dos últimos 12 meses (baseado em trimestres)
-    # Para 2025T3: considera desde 2024T4 até 2025T3 (mas também 2024T2, 2024T3 se dentro de 12 meses)
-    # Método: pegar todos os trimestres desde (ano_fim - 1, tri_fim + 1) até (ano_fim, tri_fim)
-    
     periodos_12m = []
     
     # Ano atual: T1 até T_fim
@@ -844,17 +742,10 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
         periodos_12m.append(f"{ano_fim}T{t}")
     
     # Ano anterior: a partir de T(tri_fim + 1) até T4
-    # Isso garante exatamente 12 meses
-    # Ex: 2025T3 → considera 2024T4 (4 trimestres atrás = 12 meses)
     for t in range(tri_num + 1, 5):
         periodos_12m.append(f"{ano_fim - 1}T{t}")
     
     # Adicionar também trimestres do ano anterior que podem ter dividendos
-    # dentro da janela de 12 meses (ex: 2024T2 para ref 2025T3 = ~15 meses atrás, mas
-    # a data de pagamento pode estar dentro de 12 meses)
-    # 
-    # Solução pragmática: incluir TODOS os trimestres do ano anterior
-    # para não perder dividendos pagos em T2 do ano anterior
     for t in range(1, tri_num + 1):
         p = f"{ano_fim - 1}T{t}"
         if p not in periodos_12m:
@@ -876,12 +767,12 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
 
 
 # ======================================================================================
-# CALCULADORA DE MÚLTIPLOS - VERSÃO CORRIGIDA
+# CALCULADORA DE MÚLTIPLOS - EMPRESAS NÃO-FINANCEIRAS (22 MÚLTIPLOS)
 # ======================================================================================
 
 def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True) -> Dict[str, Optional[float]]:
     """
-    Calcula todos os 22 múltiplos para um período específico.
+    Calcula todos os 22 múltiplos para um período específico (empresas não-financeiras).
     
     Args:
         dados: Dados da empresa
@@ -938,7 +829,6 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     resultado["ROA"] = _normalizar_valor(_safe_divide(ll_ltm, at_medio) * 100)
     
     # ROIC = NOPAT / Capital Investido
-    # NOPAT = EBIT × (1 - Taxa IR)
     nopat = ebit_ltm * (1 - TAXA_IR_NOPAT) if np.isfinite(ebit_ltm) else np.nan
     
     emp_cp = _obter_valor_pontual(dados.bpp, CONTAS_BPP["emprestimos_cp"], periodo, ["2.01.04"])
@@ -1023,7 +913,7 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
 
 
 # ======================================================================================
-# METADADOS DOS MÚLTIPLOS
+# METADADOS DOS MÚLTIPLOS - EMPRESAS NÃO-FINANCEIRAS
 # ======================================================================================
 
 MULTIPLOS_METADATA = {
@@ -1052,45 +942,90 @@ MULTIPLOS_METADATA = {
     "NCG_RECEITA": {"nome": "NCG/Receita", "categoria": "Eficiência", "formula": "NCG / Receita LTM", "unidade": "%", "usa_preco": False},
 }
 
+
 # ======================================================================================
-# METADADOS DOS MÚLTIPLOS - BANCOS
+# METADADOS DOS MÚLTIPLOS - BANCOS (8 ESSENCIAIS)
 # ======================================================================================
 
 MULTIPLOS_BANCOS_METADATA = {
-    # Valuation
-    "P_L": {"nome": "P/L", "categoria": "Valuation", "formula": "Market Cap / Lucro Líquido LTM", "unidade": "x", "usa_preco": True},
-    "P_VPA": {"nome": "P/VPA", "categoria": "Valuation", "formula": "Market Cap / Patrimônio Líquido", "unidade": "x", "usa_preco": True},
-    "DY": {"nome": "Dividend Yield", "categoria": "Valuation", "formula": "Dividendos LTM / Market Cap", "unidade": "%", "usa_preco": True},
-    "PAYOUT": {"nome": "Payout", "categoria": "Valuation", "formula": "Dividendos LTM / Lucro Líquido LTM", "unidade": "%", "usa_preco": False},
+    # Valuation (4 múltiplos)
+    "P_L": {
+        "nome": "P/L",
+        "categoria": "Valuation",
+        "formula": "Market Cap / Lucro Líquido LTM",
+        "unidade": "x",
+        "usa_preco": True
+    },
+    "P_VPA": {
+        "nome": "P/VPA",
+        "categoria": "Valuation",
+        "formula": "Market Cap / Patrimônio Líquido",
+        "unidade": "x",
+        "usa_preco": True
+    },
+    "DY": {
+        "nome": "Dividend Yield",
+        "categoria": "Valuation",
+        "formula": "Dividendos LTM / Market Cap × 100",
+        "unidade": "%",
+        "usa_preco": True
+    },
+    "PAYOUT": {
+        "nome": "Payout",
+        "categoria": "Valuation",
+        "formula": "Dividendos LTM / Lucro Líquido LTM × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
     
-    # Rentabilidade
-    "ROE": {"nome": "ROE", "categoria": "Rentabilidade", "formula": "Lucro Líquido LTM / PL Médio", "unidade": "%", "usa_preco": False},
-    "ROA": {"nome": "ROA", "categoria": "Rentabilidade", "formula": "Lucro Líquido LTM / Ativo Total Médio", "unidade": "%", "usa_preco": False},
-    "MARGEM_LIQUIDA": {"nome": "Margem Líquida", "categoria": "Rentabilidade", "formula": "LL / Receita Intermediação", "unidade": "%", "usa_preco": False},
-    "NIM": {"nome": "NIM", "categoria": "Rentabilidade", "formula": "Resultado Bruto Interm. / Ativos Rentáveis Médios", "unidade": "%", "usa_preco": False},
+    # Rentabilidade (3 múltiplos)
+    "ROE": {
+        "nome": "ROE",
+        "categoria": "Rentabilidade",
+        "formula": "Lucro Líquido LTM / PL Médio × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    "ROA": {
+        "nome": "ROA",
+        "categoria": "Rentabilidade",
+        "formula": "Lucro Líquido LTM / Ativo Total Médio × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
+    "MARGEM_LIQUIDA": {
+        "nome": "Margem Líquida",
+        "categoria": "Rentabilidade",
+        "formula": "Lucro Líquido LTM / Receita Intermediação LTM × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
     
-    # Qualidade de Ativos
-    "INDICE_COBERTURA": {"nome": "Índice de Cobertura", "categoria": "Qualidade Ativos", "formula": "Provisão PDD / Carteira de Crédito", "unidade": "%", "usa_preco": False},
-    
-    # Eficiência
-    "INDICE_EFICIENCIA": {"nome": "Índice de Eficiência", "categoria": "Eficiência", "formula": "Despesas Adm / Receitas Operacionais", "unidade": "%", "usa_preco": False},
-    
-    # Estrutura
-    "LOAN_DEPOSIT": {"nome": "Loan-to-Deposit", "categoria": "Estrutura", "formula": "Carteira Crédito / Depósitos", "unidade": "%", "usa_preco": False},
-    "PL_ATIVOS": {"nome": "PL/Ativos", "categoria": "Estrutura", "formula": "Patrimônio Líquido / Ativo Total", "unidade": "%", "usa_preco": False},
+    # Estrutura (1 múltiplo)
+    "PL_ATIVOS": {
+        "nome": "PL/Ativos",
+        "categoria": "Estrutura",
+        "formula": "Patrimônio Líquido / Ativo Total × 100",
+        "unidade": "%",
+        "usa_preco": False
+    },
 }
 
 
 # ======================================================================================
-# CALCULADORA DE MÚLTIPLOS - BANCOS
+# DETECTOR DE CÓDIGO DO PL PARA BANCOS
 # ======================================================================================
 
-def _detectar_codigo_pl_banco(dados: DadosEmpresa) -> str:
-    """Detecta o código do Patrimônio Líquido no BPP do banco (2.07 ou 2.08)."""
-    if dados.bpp is None or dados.bpp.empty:
+def _detectar_codigo_pl_banco(df_bpp: pd.DataFrame) -> str:
+    """
+    Detecta dinamicamente o código do Patrimônio Líquido no BPP do banco.
+    
+    O PL pode estar em 2.07 (BBAS3, BBDC4) ou 2.08 (ITUB4).
+    """
+    if df_bpp is None or df_bpp.empty:
         return "2.07"
     
-    for idx, row in dados.bpp.iterrows():
+    for idx, row in df_bpp.iterrows():
         cd = str(row.get('cd_conta', ''))
         conta = str(row.get('conta', '')).lower()
         if 'patrimônio líquido' in conta or 'patrimonio liquido' in conta:
@@ -1099,128 +1034,104 @@ def _detectar_codigo_pl_banco(dados: DadosEmpresa) -> str:
     return "2.07"
 
 
+# ======================================================================================
+# CALCULADORA DE MÚLTIPLOS - BANCOS (8 ESSENCIAIS)
+# ======================================================================================
+
 def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True) -> Dict[str, Optional[float]]:
     """
-    Calcula múltiplos específicos para bancos.
+    Calcula 8 múltiplos essenciais para bancos usando apenas contas agregadas robustas.
     
-    VERSÃO CORRIGIDA - Detecção inteligente de contas.
+    FILOSOFIA: Prioriza CONFIABILIDADE sobre abrangência.
+    - Usa apenas contas de nível superior que sempre existem
+    - Evita dependência de subcontas que variam entre bancos
+    - Detecção automática do código do PL (2.07 ou 2.08)
     
     Múltiplos calculados:
-    - Valuation: P/L, P/VPA, DY, Payout
-    - Rentabilidade: ROE, ROA, Margem Líquida, NIM
-    - Qualidade: Índice de Cobertura
-    - Eficiência: Índice de Eficiência
-    - Estrutura: Loan-to-Deposit, PL/Ativos
+    ✅ Valuation (4): P/L, P/VPA, DY, Payout
+    ✅ Rentabilidade (3): ROE, ROA, Margem Líquida
+    ✅ Estrutura (1): PL/Ativos
+    
+    Args:
+        dados: Dados completos da empresa
+        periodo: Período de referência (ex: "2024T4")
+        usar_preco_atual: Se True, usa preço mais recente para valuation
+    
+    Returns:
+        Dicionário com 8 múltiplos essenciais
     """
     resultado: Dict[str, Optional[float]] = {}
     
-    # Detectar código do PL dinamicamente
-    pl_code = _detectar_codigo_pl_banco(dados)
+    # Detectar código do PL dinamicamente (2.07 ou 2.08)
+    pl_code = _detectar_codigo_pl_banco(dados.bpp)
     
     # ==================== MARKET CAP ====================
+    
     if usar_preco_atual:
         market_cap = _calcular_market_cap_atual(dados)
     else:
         market_cap = _calcular_market_cap(dados, periodo)
     
-    # ==================== VALORES BASE ====================
+    # ==================== VALORES BASE (CONTAS AGREGADAS) ====================
     
-    # Lucro Líquido LTM
+    # Lucro Líquido LTM - Conta 3.11 (sempre existe)
     ll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_BANCOS["lucro_liquido"], periodo)
     
-    # Patrimônio Líquido (código detectado dinamicamente)
+    # Patrimônio Líquido - Código detectado automaticamente (2.07 ou 2.08)
     pl = _obter_valor_pontual(dados.bpp, pl_code, periodo)
     pl_medio = _obter_valor_medio(dados, dados.bpp, pl_code, periodo)
     
-    # Ativo Total
+    # Ativo Total - Conta 1 (sempre existe)
     at = _obter_valor_pontual(dados.bpa, CONTAS_BPA_BANCOS["ativo_total"], periodo)
     at_medio = _obter_valor_medio(dados, dados.bpa, CONTAS_BPA_BANCOS["ativo_total"], periodo)
     
-    # Receita de Intermediação LTM
+    # Receita de Intermediação LTM - Conta 3.01 (sempre existe)
     receita_interm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_BANCOS["receita_intermediacao"], periodo)
     
-    # Resultado Bruto Intermediação LTM
-    resultado_bruto = _calcular_ltm(dados, dados.dre, CONTAS_DRE_BANCOS["resultado_bruto"], periodo)
+    # Dividendos LTM
+    dividendos_ltm = _calcular_dividendos_ltm(dados, periodo)
     
-    # ==================== VALUATION ====================
+    # ==================== VALUATION (4 MÚLTIPLOS) ====================
     
+    # P/L = Market Cap / Lucro Líquido LTM
     resultado["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
+    
+    # P/VPA = Market Cap / Patrimônio Líquido
     resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
     
-    # Dividendos
-    dividendos_ltm = _calcular_dividendos_ltm(dados, periodo)
-    resultado["DY"] = _normalizar_valor(_safe_divide(dividendos_ltm, market_cap) * 100 if market_cap else None)
-    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dividendos_ltm, ll_ltm) * 100 if ll_ltm else None)
-    
-    # ==================== RENTABILIDADE ====================
-    
-    resultado["ROE"] = _normalizar_valor(_safe_divide(ll_ltm, pl_medio) * 100 if pl_medio else None)
-    resultado["ROA"] = _normalizar_valor(_safe_divide(ll_ltm, at_medio) * 100 if at_medio else None)
-    resultado["MARGEM_LIQUIDA"] = _normalizar_valor(_safe_divide(ll_ltm, receita_interm) * 100 if receita_interm else None)
-    
-    # NIM = Resultado Bruto Intermediação / Ativos Financeiros Médios
-    ativos_fin = _obter_valor_pontual(dados.bpa, CONTAS_BPA_BANCOS["ativos_financeiros"], periodo)
-    ativos_fin_medio = _obter_valor_medio(dados, dados.bpa, CONTAS_BPA_BANCOS["ativos_financeiros"], periodo)
-    resultado["NIM"] = _normalizar_valor(_safe_divide(resultado_bruto, ativos_fin_medio) * 100 if ativos_fin_medio else None)
-    
-    # ==================== QUALIDADE DE ATIVOS ====================
-    
-    # CORREÇÃO: Usar busca inteligente com múltiplos códigos
-    
-    # Carteira de Crédito - tentar todos os códigos conhecidos
-    carteira_credito = _buscar_conta_banco(
-        dados.bpa, 
-        CONTAS_BPA_BANCOS["operacoes_credito"],  # Lista de códigos
-        periodo,
-        prefer_nonzero=True
+    # Dividend Yield = (Dividendos LTM / Market Cap) × 100
+    resultado["DY"] = _normalizar_valor(
+        _safe_divide(dividendos_ltm, market_cap) * 100 if np.isfinite(market_cap) and market_cap > 0 else np.nan
     )
     
-    # Provisão PDD - tentar todos os códigos conhecidos
-    # NOTA: Para BBAS3, provisão = 0 (já está líquida dentro de Op. Crédito)
-    provisao_pdd = _buscar_conta_banco(
-        dados.bpa,
-        CONTAS_BPA_BANCOS["provisao_pdd"],  # Lista de códigos
-        periodo,
-        prefer_nonzero=False  # Aceitar zero (BBAS3)
+    # Payout = (Dividendos LTM / Lucro Líquido LTM) × 100
+    resultado["PAYOUT"] = _normalizar_valor(
+        _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
     )
     
-    # Índice de Cobertura = |Provisão PDD| / Carteira de Crédito × 100
-    if (np.isfinite(provisao_pdd) and np.isfinite(carteira_credito) 
-        and carteira_credito > 0 and provisao_pdd != 0):
-        resultado["INDICE_COBERTURA"] = _normalizar_valor(abs(provisao_pdd) / carteira_credito * 100)
-    else:
-        # Se provisão = 0 (BBAS3), não é possível calcular
-        resultado["INDICE_COBERTURA"] = None
+    # ==================== RENTABILIDADE (3 MÚLTIPLOS) ====================
     
-    # ==================== EFICIÊNCIA ====================
-    
-    # Índice de Eficiência = |Despesas Operacionais| / Resultado Bruto × 100
-    outras_desp = _calcular_ltm(dados, dados.dre, CONTAS_DRE_BANCOS["outras_receitas_desp"], periodo)
-    if (outras_desp is not None and resultado_bruto is not None 
-        and np.isfinite(outras_desp) and np.isfinite(resultado_bruto) and resultado_bruto > 0):
-        resultado["INDICE_EFICIENCIA"] = _normalizar_valor(abs(outras_desp) / resultado_bruto * 100)
-    else:
-        resultado["INDICE_EFICIENCIA"] = None
-    
-    # ==================== ESTRUTURA ====================
-    
-    # CORREÇÃO: Usar busca inteligente para Depósitos
-    depositos = _buscar_conta_banco(
-        dados.bpp,
-        CONTAS_BPP_BANCOS["depositos"],  # Lista de códigos
-        periodo,
-        prefer_nonzero=True
+    # ROE = (Lucro Líquido LTM / PL Médio) × 100
+    resultado["ROE"] = _normalizar_valor(
+        _safe_divide(ll_ltm, pl_medio) * 100 if np.isfinite(pl_medio) and pl_medio > 0 else np.nan
     )
     
-    # Loan-to-Deposit = Carteira de Crédito / Depósitos × 100
-    if (np.isfinite(carteira_credito) and np.isfinite(depositos) 
-        and depositos > 0 and carteira_credito > 0):
-        resultado["LOAN_DEPOSIT"] = _normalizar_valor(carteira_credito / depositos * 100)
-    else:
-        resultado["LOAN_DEPOSIT"] = None
+    # ROA = (Lucro Líquido LTM / Ativo Total Médio) × 100
+    resultado["ROA"] = _normalizar_valor(
+        _safe_divide(ll_ltm, at_medio) * 100 if np.isfinite(at_medio) and at_medio > 0 else np.nan
+    )
     
-    # PL/Ativos (capitalização)
-    resultado["PL_ATIVOS"] = _normalizar_valor(_safe_divide(pl, at) * 100 if at else None)
+    # Margem Líquida = (Lucro Líquido LTM / Receita Intermediação LTM) × 100
+    resultado["MARGEM_LIQUIDA"] = _normalizar_valor(
+        _safe_divide(ll_ltm, receita_interm) * 100 if np.isfinite(receita_interm) and receita_interm > 0 else np.nan
+    )
+    
+    # ==================== ESTRUTURA (1 MÚLTIPLO) ====================
+    
+    # PL/Ativos = (Patrimônio Líquido / Ativo Total) × 100
+    resultado["PL_ATIVOS"] = _normalizar_valor(
+        _safe_divide(pl, at) * 100 if np.isfinite(at) and at > 0 else np.nan
+    )
     
     return resultado
 
@@ -1346,7 +1257,10 @@ def processar_ticker(ticker: str, salvar: bool = True) -> Tuple[bool, str, Optio
     ultimo = resultado.get("ltm", {}).get("periodo_referencia", "?")
     preco = resultado.get("ltm", {}).get("preco_utilizado", "?")
     
-    msg = f"OK | {n_anos} anos | fiscal={padrao} | LTM={ultimo} | Preço=R${preco}"
+    tipo_empresa = "BANCO" if _is_banco(ticker_upper) else "GERAL"
+    n_multiplos = len(MULTIPLOS_BANCOS_METADATA) if _is_banco(ticker_upper) else len(MULTIPLOS_METADATA)
+    
+    msg = f"OK | {n_anos} anos | fiscal={padrao} | LTM={ultimo} | Preço=R${preco} | Tipo={tipo_empresa} | {n_multiplos} múltiplos"
     
     return True, msg, resultado
 
@@ -1398,7 +1312,7 @@ def _salvar_csv_historico(resultado: Dict, path: Path):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Calculadora de Múltiplos Financeiros para Empresas Não-Financeiras"
+        description="Calculadora de Múltiplos Financeiros"
     )
     parser.add_argument("--modo", default="quantidade", 
                        choices=["quantidade", "ticker", "lista", "faixa"])
@@ -1432,9 +1346,10 @@ def main():
         df_sel = df.head(10)
     
     print(f"\n{'='*70}")
-    print(f">>> CALCULADORA DE MÚLTIPLOS - EMPRESAS NÃO-FINANCEIRAS <<<")
+    print(f">>> CALCULADORA DE MÚLTIPLOS FINANCEIROS <<<")
     print(f"{'='*70}")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
+    print(f"Empresas: 22 múltiplos | Bancos: 8 múltiplos essenciais")
     print(f"Saída: balancos/<TICKER>/multiplos.json + multiplos.csv")
     print(f"{'='*70}\n")
     
@@ -1455,7 +1370,7 @@ def main():
                 ok_count += 1
                 print(f"✅ {ticker}: {msg}")
             else:
-                if "financeira" in msg.lower():
+                if "seguradora" in msg.lower() or "holding" in msg.lower():
                     skip_count += 1
                     print(f"⏭️  {ticker}: {msg}")
                 else:
@@ -1469,7 +1384,7 @@ def main():
             traceback.print_exc()
     
     print(f"\n{'='*70}")
-    print(f"RESUMO: OK={ok_count} | SKIP(Financeiras)={skip_count} | ERRO={err_count}")
+    print(f"RESUMO: OK={ok_count} | SKIP(Seguradoras)={skip_count} | ERRO={err_count}")
     print(f"{'='*70}\n")
 
 
