@@ -1,0 +1,22 @@
+{
+  "ticker": "BBML3",
+  "ultima_atualizacao": "2026-01-01T10:17:15.880611Z",
+  "total_dividendos": 1,
+  "dividendos": [
+    {
+      "data": "2020-05-25",
+      "data_pagamento": "2020-05-22",
+      "tipo": "DIVIDENDO",
+      "valor": 0.080095,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.08,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2020-05-25",
+    "data_ultimo": "2020-05-25"
+  }
+}

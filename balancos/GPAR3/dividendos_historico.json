@@ -1,0 +1,54 @@
+{
+  "ticker": "GPAR3",
+  "ultima_atualizacao": "2026-01-01T10:14:59.232577Z",
+  "total_dividendos": 5,
+  "dividendos": [
+    {
+      "data": "2022-11-25",
+      "data_pagamento": "2022-09-09",
+      "tipo": "REST CAP DIN",
+      "valor": 7.058087,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-06-30",
+      "data_pagamento": "2022-06-30",
+      "tipo": "DIVIDENDO",
+      "valor": 15.152681,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-29",
+      "data_pagamento": "2022-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.517551,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-04-30",
+      "data_pagamento": "2021-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.507242,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-07-31",
+      "data_pagamento": "2020-05-28",
+      "tipo": "REST CAP DIN",
+      "valor": 0.912336,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 24.15,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2020-07-31",
+    "data_ultimo": "2022-11-25"
+  }
+}

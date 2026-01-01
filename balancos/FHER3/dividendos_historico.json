@@ -1,0 +1,30 @@
+{
+  "ticker": "FHER3",
+  "ultima_atualizacao": "2026-01-01T10:17:11.902932Z",
+  "total_dividendos": 2,
+  "dividendos": [
+    {
+      "data": "2008-03-03",
+      "data_pagamento": "2008-02-26",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.06,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2007-11-27",
+      "data_pagamento": "2007-11-21",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.31,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.37,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2007-11-27",
+    "data_ultimo": "2008-03-03"
+  }
+}

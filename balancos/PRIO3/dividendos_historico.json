@@ -1,0 +1,22 @@
+{
+  "ticker": "PRIO3",
+  "ultima_atualizacao": "2026-01-01T10:17:03.790518Z",
+  "total_dividendos": 1,
+  "dividendos": [
+    {
+      "data": "2023-12-13",
+      "data_pagamento": "2023-12-08",
+      "tipo": "DIVIDENDO",
+      "valor": 0.072643,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.07,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2023-12-13",
+    "data_ultimo": "2023-12-13"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "ticker": "LWSA3",
+  "ultima_atualizacao": "2026-01-01T10:17:09.190242Z",
+  "total_dividendos": 4,
+  "dividendos": [
+    {
+      "data": "2025-08-19",
+      "data_pagamento": "2025-08-14",
+      "tipo": "DIVIDENDO",
+      "valor": 0.051909,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-11-12",
+      "data_pagamento": "2024-11-07",
+      "tipo": "DIVIDENDO",
+      "valor": 0.071647,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-05-09",
+      "data_pagamento": "2023-05-04",
+      "tipo": "DIVIDENDO",
+      "valor": 0.052421,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-12-08",
+      "data_pagamento": "2020-12-03",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.127109,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.3,
+    "total_ultimos_12m": 0.05,
+    "quantidade_ultimos_12m": 1,
+    "data_primeiro": "2020-12-08",
+    "data_ultimo": "2025-08-19"
+  }
+}

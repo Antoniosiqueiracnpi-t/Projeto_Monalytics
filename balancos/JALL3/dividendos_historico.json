@@ -1,0 +1,54 @@
+{
+  "ticker": "JALL3",
+  "ultima_atualizacao": "2026-01-01T10:14:28.988684Z",
+  "total_dividendos": 5,
+  "dividendos": [
+    {
+      "data": "2024-07-25",
+      "data_pagamento": "2024-07-25",
+      "tipo": "DIVIDENDO",
+      "valor": 0.067695,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-07-31",
+      "data_pagamento": "2023-07-31",
+      "tipo": "DIVIDENDO",
+      "valor": 0.442607,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-07-26",
+      "data_pagamento": "2022-07-26",
+      "tipo": "DIVIDENDO",
+      "valor": 0.177908,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-12-08",
+      "data_pagamento": "2021-12-03",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.155111,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-07-27",
+      "data_pagamento": "2021-07-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.138697,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.98,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2021-07-27",
+    "data_ultimo": "2024-07-25"
+  }
+}

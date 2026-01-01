@@ -1,0 +1,38 @@
+{
+  "ticker": "AMBP3",
+  "ultima_atualizacao": "2026-01-01T10:14:25.835578Z",
+  "total_dividendos": 3,
+  "dividendos": [
+    {
+      "data": "2023-05-15",
+      "data_pagamento": "2023-04-28",
+      "tipo": "DIVIDENDO",
+      "valor": 0.134135,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-05-04",
+      "data_pagamento": "2022-05-04",
+      "tipo": "DIVIDENDO",
+      "valor": 0.303171,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-04-30",
+      "data_pagamento": "2021-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.094268,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.53,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2021-04-30",
+    "data_ultimo": "2023-05-15"
+  }
+}

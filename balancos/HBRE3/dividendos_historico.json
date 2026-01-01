@@ -1,0 +1,30 @@
+{
+  "ticker": "HBRE3",
+  "ultima_atualizacao": "2026-01-01T10:15:02.794794Z",
+  "total_dividendos": 2,
+  "dividendos": [
+    {
+      "data": "2025-12-30",
+      "data_pagamento": "2025-12-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.874071,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-12-30",
+      "data_pagamento": "2025-12-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.291357,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 1.17,
+    "total_ultimos_12m": 1.17,
+    "quantidade_ultimos_12m": 2,
+    "data_primeiro": "2025-12-30",
+    "data_ultimo": "2025-12-30"
+  }
+}
