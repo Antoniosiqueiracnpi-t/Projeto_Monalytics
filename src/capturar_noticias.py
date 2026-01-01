@@ -57,36 +57,40 @@ class CapturadorNoticiasB3:
         return self.pasta_saida / ticker_base
     
     def _carregar_empresas(self) -> pd.DataFrame:
-        """Carrega lista de empresas do CSV."""
+        """Carrega lista de empresas do CSV SEM remover duplicatas ainda."""
         df = pd.read_csv(self.arquivo_mapeamento, sep=';', encoding='utf-8-sig')
         df['ticker_base'] = df['ticker'].apply(self._extrair_ticker_base)
-        return df.drop_duplicates(subset=['ticker_base'], keep='first')
+        # NÃO fazer drop_duplicates aqui!
+        return df
     
     def _selecionar_empresas(self, df: pd.DataFrame, modo: str, **kwargs) -> pd.DataFrame:
         """Seleciona empresas baseado no modo especificado."""
         
         if modo == 'quantidade':
             qtd = int(kwargs.get('quantidade', 10))
-            return df.head(qtd)
+            df_selecionado = df.head(qtd)
         
         elif modo == 'ticker':
             ticker = kwargs.get('ticker', '').strip().upper()
             ticker_base = self._extrair_ticker_base(ticker)
-            return df[df['ticker_base'] == ticker_base]
+            df_selecionado = df[df['ticker_base'] == ticker_base]
         
         elif modo == 'lista':
             lista = kwargs.get('lista', '')
             tickers = [self._extrair_ticker_base(t.strip().upper()) for t in lista.split(',') if t.strip()]
-            return df[df['ticker_base'].isin(tickers)]
+            df_selecionado = df[df['ticker_base'].isin(tickers)]
         
         elif modo == 'faixa':
             faixa = kwargs.get('faixa', '1-50')
             inicio, fim = map(int, faixa.split('-'))
-            return df.iloc[inicio-1:fim]
+            df_selecionado = df.iloc[inicio-1:fim]
         
         else:
             print(f"⚠️ Modo '{modo}' não reconhecido. Usando primeiras 10 empresas.")
-            return df.head(10)
+            df_selecionado = df.head(10)
+        
+        # AGORA SIM remove duplicatas por ticker_base (mantém primeiro de cada)
+        return df_selecionado.drop_duplicates(subset=['ticker_base'], keep='first')
     
     def _classificar_noticia(self, titulo: str, headline: str) -> str:
         """Classifica notícia por palavras-chave."""
