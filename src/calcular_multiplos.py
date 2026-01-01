@@ -209,7 +209,7 @@ def _is_holding_seguros(ticker: str) -> bool:
     ticker_upper = ticker.upper().strip()
     return ticker_upper in {"BBSE3", "CXSE3"}
 
-def _is_seguradora(ticker: str) -> bool:
+def _is_seguradora_operacional(ticker: str) -> bool:
     """Verifica se ticker é de seguradora (excluída do cálculo)."""
     return ticker.upper().strip() in TICKERS_SEGURADORAS
 
