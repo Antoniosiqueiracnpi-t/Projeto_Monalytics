@@ -480,41 +480,87 @@ def _obter_preco_atual(dados: DadosEmpresa) -> Tuple[float, str]:
 def _obter_acoes(dados: DadosEmpresa, periodo: str) -> float:
     """
     Obtém número de ações no período específico.
-    
-    FORMATO ESPERADO DO CSV:
-    Espécie_Acao,2010T4,...,2024T4,2025T1,...
-    ON,98897500,...,443329716,443329716,...
-    PN,0,...,0,0,...
-    TOTAL,98897500,...,443329716,443329716,...
+
+    CORREÇÃO (cirúrgica):
+    - Se o período (ex: 2025T3) NÃO existir no acoes_historico.csv (que muitas vezes só tem T4),
+      escolhe o melhor "fallback":
+        1) Preferir o mesmo ANO (ex: 2025T4) se existir
+           - se houver trimestre <= solicitado, usa o mais próximo
+           - senão, usa o maior trimestre do ano (normalmente T4)
+        2) Se não houver nada do ano, usa o período mais recente disponível no CSV
     """
     if dados.acoes is None:
         return np.nan
-    
-    if periodo not in dados.acoes.columns:
-        return np.nan
-    
-    ticker_upper = dados.ticker.upper()
-    
+
+    ticker_upper = dados.ticker.upper().strip()
+
     # UNITS CONHECIDAS: Usar apenas ON (não TOTAL)
     TICKERS_UNITS = {'KLBN11', 'ITUB', 'SANB11', 'BPAC11'}
-    
+
+    # colunas de período existentes no CSV de ações
+    col_periodos = [c for c in dados.acoes.columns if _parse_periodo(c)[0] > 0]
+    if not col_periodos:
+        return np.nan
+
+    periodo_busca = periodo
+
+    # Se o período não existe, escolher fallback
+    if periodo_busca not in dados.acoes.columns:
+        ano_req, tri_req = _parse_periodo(periodo_busca)
+
+        # se período inválido, usa o mais recente do CSV
+        if ano_req == 0:
+            periodo_busca = _ordenar_periodos(col_periodos)[-1]
+        else:
+            tri_num_req = {'T1': 1, 'T2': 2, 'T3': 3, 'T4': 4}.get(tri_req, 0)
+
+            # candidatos do mesmo ano
+            mesmo_ano = []
+            for c in col_periodos:
+                a, t = _parse_periodo(c)
+                if a == ano_req:
+                    tn = {'T1': 1, 'T2': 2, 'T3': 3, 'T4': 4}.get(t, 0)
+                    if tn > 0:
+                        mesmo_ano.append((tn, c))
+
+            if mesmo_ano:
+                # pega o mais próximo <= trimestre solicitado; se não houver, pega o maior do ano (normalmente T4)
+                leq = [x for x in mesmo_ano if x[0] <= tri_num_req] if tri_num_req > 0 else []
+                if leq:
+                    periodo_busca = max(leq, key=lambda x: x[0])[1]
+                else:
+                    periodo_busca = max(mesmo_ano, key=lambda x: x[0])[1]
+            else:
+                # sem dados do ano: usa o mais recente do CSV
+                periodo_busca = _ordenar_periodos(col_periodos)[-1]
+
+    # Agora, extrair o número de ações
     if 'Espécie_Acao' in dados.acoes.columns:
         # Para UNITS: usar apenas ON
         if ticker_upper in TICKERS_UNITS:
             mask_on = dados.acoes['Espécie_Acao'] == 'ON'
             if mask_on.any():
-                val = dados.acoes.loc[mask_on, periodo].values[0]
+                val = dados.acoes.loc[mask_on, periodo_busca].values[0]
                 if pd.notna(val):
-                    return float(val)
-        
+                    try:
+                        v = float(val)
+                        return v if v > 0 else np.nan
+                    except (ValueError, TypeError):
+                        return np.nan
+
         # Para outras empresas: usar TOTAL
         mask_total = dados.acoes['Espécie_Acao'] == 'TOTAL'
         if mask_total.any():
-            val = dados.acoes.loc[mask_total, periodo].values[0]
+            val = dados.acoes.loc[mask_total, periodo_busca].values[0]
             if pd.notna(val):
-                return float(val)
-    
+                try:
+                    v = float(val)
+                    return v if v > 0 else np.nan
+                except (ValueError, TypeError):
+                    return np.nan
+
     return np.nan
+
 
 
 def _obter_acoes_atual(dados: DadosEmpresa) -> Tuple[float, str]:
@@ -1684,13 +1730,13 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
     ultimo_periodo = dados.periodos[-1]
 
     if _is_banco(dados.ticker):
-        multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True)
+        multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=False)
     elif _is_holding_seguros(dados.ticker):
-        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=True)
+        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=False)
     elif _is_seguradora_operacional(dados.ticker):
-        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=True)
+        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=False)
     else:
-        multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True)
+        multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=False)
 
     # Informações de preço e ações utilizados (LTM)
     preco_atual, periodo_preco = _obter_preco_atual(dados)
