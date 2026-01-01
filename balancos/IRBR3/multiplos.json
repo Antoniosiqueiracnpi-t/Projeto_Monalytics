@@ -1,0 +1,275 @@
+{
+  "ticker": "IRBR3",
+  "padrao_fiscal": {
+    "tipo": "PADRAO",
+    "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
+    "trimestres_ltm": 4
+  },
+  "metadata": {
+    "P_L": {
+      "nome": "P/L",
+      "categoria": "Valuation",
+      "formula": "Market Cap / Lucro Líquido LTM",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "P_VPA": {
+      "nome": "P/VPA",
+      "categoria": "Valuation",
+      "formula": "Market Cap / Patrimônio Líquido",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "DY": {
+      "nome": "Dividend Yield",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Market Cap × 100",
+      "unidade": "%",
+      "usa_preco": true
+    },
+    "PAYOUT": {
+      "nome": "Payout",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Lucro Líquido LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "ROE": {
+      "nome": "ROE",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / PL Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "ROA": {
+      "nome": "ROA",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / Ativo Total Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "PL_ATIVOS": {
+      "nome": "PL/Ativos",
+      "categoria": "Estrutura",
+      "formula": "Patrimônio Líquido / Ativo Total × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "COMBINED_RATIO": {
+      "nome": "Combined Ratio",
+      "categoria": "Operacional",
+      "formula": "(Sinistros + Custos Aq. + Desp. Admin.) / Prêmios Ganhos × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "SINISTRALIDADE": {
+      "nome": "Sinistralidade",
+      "categoria": "Operacional",
+      "formula": "Sinistros Retidos / Prêmios Ganhos × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "MARGEM_SUBSCRICAO": {
+      "nome": "Margem Subscrição",
+      "categoria": "Operacional",
+      "formula": "(Prêmios - Sinistros - Custos Aq.) / Prêmios × 100",
+      "unidade": "%",
+      "usa_preco": false
+    }
+  },
+  "historico_anual": {
+    "2017": {
+      "periodo_referencia": "2017T4",
+      "multiplos": {
+        "P_L": 80.8323,
+        "P_VPA": 20.8797,
+        "DY": 0.0637,
+        "PAYOUT": 5.1483,
+        "ROE": 25.8308,
+        "ROA": 6.4494,
+        "PL_ATIVOS": 24.9678,
+        "COMBINED_RATIO": 58.8157,
+        "SINISTRALIDADE": 49.0841,
+        "MARGEM_SUBSCRICAO": 17.5984
+      }
+    },
+    "2018": {
+      "periodo_referencia": "2018T4",
+      "multiplos": {
+        "P_L": 158.0152,
+        "P_VPA": 48.1377,
+        "DY": 0.0945,
+        "PAYOUT": 14.9343,
+        "ROE": 32.1499,
+        "ROA": 8.0492,
+        "PL_ATIVOS": 25.0983,
+        "COMBINED_RATIO": 55.4813,
+        "SINISTRALIDADE": 46.7342,
+        "MARGEM_SUBSCRICAO": 22.1034
+      }
+    },
+    "2019": {
+      "periodo_referencia": "2019T4",
+      "multiplos": {
+        "P_L": 690.2354,
+        "P_VPA": 211.7201,
+        "DY": 0.0251,
+        "PAYOUT": 17.2908,
+        "ROE": 30.4589,
+        "ROA": 7.2372,
+        "PL_ATIVOS": 22.5421,
+        "COMBINED_RATIO": 78.4051,
+        "SINISTRALIDADE": 70.053,
+        "MARGEM_SUBSCRICAO": 9.4181
+      }
+    },
+    "2020": {
+      "periodo_referencia": "2020T4",
+      "multiplos": {
+        "P_L": -169.6979,
+        "P_VPA": 60.6549,
+        "DY": 0.001,
+        "PAYOUT": null,
+        "ROE": -37.0982,
+        "ROA": -7.5643,
+        "PL_ATIVOS": 18.7322,
+        "COMBINED_RATIO": 110.1858,
+        "SINISTRALIDADE": 101.5561,
+        "MARGEM_SUBSCRICAO": -18.8472
+      }
+    },
+    "2021": {
+      "periodo_referencia": "2021T4",
+      "multiplos": {
+        "P_L": -185.8282,
+        "P_VPA": 34.9071,
+        "DY": null,
+        "PAYOUT": null,
+        "ROE": -17.3044,
+        "ROA": -3.0078,
+        "PL_ATIVOS": 16.0284,
+        "COMBINED_RATIO": 120.3734,
+        "SINISTRALIDADE": 111.3244,
+        "MARGEM_SUBSCRICAO": -21.2056
+      }
+    },
+    "2022": {
+      "periodo_referencia": "2022T4",
+      "multiplos": {
+        "P_L": -3.367,
+        "P_VPA": 0.521,
+        "DY": null,
+        "PAYOUT": null,
+        "ROE": -16.3558,
+        "ROA": -2.7615,
+        "PL_ATIVOS": 17.7282,
+        "COMBINED_RATIO": 108.0778,
+        "SINISTRALIDADE": 98.4378,
+        "MARGEM_SUBSCRICAO": -20.4973
+      }
+    },
+    "2023": {
+      "periodo_referencia": "2023T4",
+      "multiplos": {
+        "P_L": -882.7202,
+        "P_VPA": 25.6794,
+        "DY": null,
+        "PAYOUT": null,
+        "ROE": -2.9733,
+        "ROA": -0.644,
+        "PL_ATIVOS": 27.4911,
+        "COMBINED_RATIO": 0.9274,
+        "SINISTRALIDADE": 0.0,
+        "MARGEM_SUBSCRICAO": -5.6204
+      }
+    },
+    "2024": {
+      "periodo_referencia": "2024T4",
+      "multiplos": {
+        "P_L": 4.3119,
+        "P_VPA": 0.7053,
+        "DY": null,
+        "PAYOUT": null,
+        "ROE": 17.5476,
+        "ROA": 5.0464,
+        "PL_ATIVOS": 29.9514,
+        "COMBINED_RATIO": 0.3885,
+        "SINISTRALIDADE": 0.0,
+        "MARGEM_SUBSCRICAO": 12.8216
+      }
+    },
+    "2025": {
+      "periodo_referencia": "2025T3",
+      "multiplos": {
+        "P_L": 7.4914,
+        "P_VPA": 0.7528,
+        "DY": null,
+        "PAYOUT": null,
+        "ROE": 10.5874,
+        "ROA": 3.3805,
+        "PL_ATIVOS": 34.0118,
+        "COMBINED_RATIO": 0.4916,
+        "SINISTRALIDADE": 0.0,
+        "MARGEM_SUBSCRICAO": 12.0618
+      }
+    }
+  },
+  "ltm": {
+    "periodo_referencia": "2025T3",
+    "data_calculo": "2026-01-01T21:34:58.083231",
+    "preco_utilizado": 49.0,
+    "periodo_preco": "2025T3",
+    "acoes_utilizadas": 81842887,
+    "periodo_acoes": "2025T3",
+    "multiplos": {
+      "P_L": 7.4914,
+      "P_VPA": 0.7528,
+      "DY": null,
+      "PAYOUT": null,
+      "ROE": 10.5874,
+      "ROA": 3.3805,
+      "PL_ATIVOS": 34.0118,
+      "COMBINED_RATIO": 0.4916,
+      "SINISTRALIDADE": 0.0,
+      "MARGEM_SUBSCRICAO": 12.0618
+    }
+  },
+  "periodos_disponiveis": [
+    "2017T1",
+    "2017T2",
+    "2017T3",
+    "2017T4",
+    "2018T1",
+    "2018T2",
+    "2018T3",
+    "2018T4",
+    "2019T1",
+    "2019T2",
+    "2019T3",
+    "2019T4",
+    "2020T1",
+    "2020T2",
+    "2020T3",
+    "2020T4",
+    "2021T1",
+    "2021T2",
+    "2021T3",
+    "2021T4",
+    "2022T1",
+    "2022T2",
+    "2022T3",
+    "2022T4",
+    "2023T1",
+    "2023T2",
+    "2023T3",
+    "2023T4",
+    "2024T1",
+    "2024T2",
+    "2024T3",
+    "2024T4",
+    "2025T1",
+    "2025T2",
+    "2025T3"
+  ],
+  "erros": []
+}
