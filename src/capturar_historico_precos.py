@@ -25,6 +25,7 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
+import re
 
 try:
     import yfinance as yf
@@ -60,19 +61,69 @@ def load_mapeamento_b3() -> pd.DataFrame:
         return pd.DataFrame()
 
 
+import re  # <-- adicione este import
+
 def get_pasta_balanco(ticker: str) -> Path:
     """
-    Retorna pasta balancos/{TICKER_BASE}/ para salvar dados.
-    Remove sufixos numéricos (3, 4, 11) do ticker.
+    Define a pasta balancos/{TICKER_CANONICO}/ para salvar os dados.
+
+    Regras:
+      - Se já existir uma pasta para a empresa (qualquer classe 3/4/11), reutiliza essa pasta (não cria outra).
+      - Se existir apenas a pasta "base" sem classe (ex.: PETR) e o ticker solicitado tem classe (ex.: PETR4),
+        cria/usa a pasta com classe (PETR4) para não perpetuar o padrão antigo.
+      - Se não existir nenhuma pasta, usa o ticker exatamente como informado.
     """
-    # Remover sufixos de classe
-    ticker_base = ticker.rstrip('0123456789')
-    
-    # Se ficou vazio, usar o ticker original
-    if not ticker_base:
-        ticker_base = ticker
-    
-    return Path("balancos") / ticker_base.upper()
+    ticker = str(ticker).upper().strip()
+
+    # IBOVESPA é sempre fixo
+    if ticker == "IBOV":
+        return Path("balancos") / "IBOV"
+
+    root = Path("balancos")
+    base = re.sub(r"\d+$", "", ticker)  # remove apenas sufixo numérico final
+    has_suffix = bool(re.search(r"\d+$", ticker))
+    if not base:
+        base = ticker
+        has_suffix = False
+
+    # 1) Se já existe pasta exatamente com o ticker solicitado (ex.: ABEV3), usar ela
+    exact = root / ticker
+    if exact.exists() and exact.is_dir():
+        return exact
+
+    # 2) Se existe alguma pasta de classe para a mesma empresa (ex.: ABEV3/ABEV4/ABEV11), reutilizar (não criar outra)
+    class_candidates = []
+    if root.exists():
+        for p in root.iterdir():
+            if not p.is_dir():
+                continue
+            name = p.name.upper()
+            if re.fullmatch(re.escape(base) + r"\d+", name):
+                class_candidates.append(p)
+
+    if class_candidates:
+        # Preferência determinística (11 > 4 > 3; senão, ordem alfabética)
+        def _prio(path: Path):
+            n = path.name.upper()
+            suf = n[len(base):]
+            if suf == "11":
+                return (0, n)
+            if suf == "4":
+                return (1, n)
+            if suf == "3":
+                return (2, n)
+            return (9, n)
+
+        return sorted(class_candidates, key=_prio)[0]
+
+    # 3) Se existe somente a pasta base (legado), só reutiliza quando o ticker NÃO tem sufixo numérico
+    base_path = root / base
+    if base_path.exists() and base_path.is_dir() and (not has_suffix):
+        return base_path
+
+    # 4) Caso contrário, criar/usar a pasta do ticker informado (mantém a classe)
+    return exact
+
 
 
 # ======================================================================================
