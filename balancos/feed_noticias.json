@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "ultima_atualizacao": "2026-01-02T12:52:18.482684Z",
+    "data_atualizacao": "2026-01-02",
+    "hora_atualizacao": "12:52:18",
+    "total_empresas": 1,
+    "total_noticias": 7,
+    "periodo": {
+      "inicio": "2025-12-09",
+      "fim": "2025-12-23"
+    }
+  },
+  "estatisticas": {
+    "por_categoria": {
+      "Outros": 4,
+      "Aviso": 2,
+      "Governança": 1
+    },
+    "por_ticker": {
+      "ABEV": 7
+    },
+    "top_categorias": [
+      {
+        "categoria": "Outros",
+        "total": 4
+      },
+      {
+        "categoria": "Aviso",
+        "total": 2
+      },
+      {
+        "categoria": "Governança",
+        "total": 1
+      }
+    ],
+    "top_empresas": [
+      {
+        "ticker": "ABEV",
+        "total": 7
+      }
+    ]
+  },
+  "feed": [
+    {
+      "data": "2025-12-23",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Transacao entre Partes Relacionadas  22/12/25",
+        "headline": "AMBEV S/A (ABEV) - Transacao entre Partes Relacionadas - 22/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3181880&agencia=18&dataNoticia=2025-12-23%2008:00:08"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Politica de Remuneracao  09/12/25",
+        "headline": "AMBEV S/A (ABEV) - Politica de Remuneracao - 09/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3166075&agencia=18&dataNoticia=2025-12-10%2019:35:04"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Polit. p/ Contr de Servs ExtraAuditoria  09/12/25",
+        "headline": "AMBEV S/A (ABEV) - Polit. p/ Contr de Servs Extra-Auditoria - 09/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3166074&agencia=18&dataNoticia=2025-12-10%2019:34:58"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Aviso aos Acionistas  09/12/25 (N)",
+        "headline": "AMBEV S/A (ABEV) - Aviso aos Acionistas - 09/12/25 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164699&agencia=18&dataNoticia=2025-12-10%2009:43:41"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Aviso aos Acionistas  09/12/25",
+        "headline": "AMBEV S/A (ABEV) - Aviso aos Acionistas - 09/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164428&agencia=18&dataNoticia=2025-12-09%2019:12:55"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Ata Reuniao do Conselho de Administracao  09/12/25",
+        "headline": "AMBEV S/A (ABEV) - Ata Reuniao do Conselho de Administracao - 09/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164423&agencia=18&dataNoticia=2025-12-09%2019:10:19"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "AMBEV S/A (ABEV) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164419&agencia=18&dataNoticia=2025-12-09%2019:06:17"
+      }
+    }
+  ]
+}
