@@ -1,0 +1,93 @@
+name: Atualizar Agenda Dividendos via Feed
+
+on:
+  # Executa após captura de notícias (todos os dias 22h30 UTC = 19h30 BRT)
+  schedule:
+    - cron: '30 22 * * *'
+  
+  # Execução manual
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar-agenda:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Verificar feed de notícias
+        id: check-feed
+        run: |
+          if [ -f "balancos/feed_noticias.json" ]; then
+            echo "✅ Feed de notícias encontrado"
+            echo "feed_exists=true" >> $GITHUB_ENV
+            
+            # Verificar última atualização
+            ULTIMA_ATUALIZACAO=$(jq -r '.meta.ultima_atualizacao' balancos/feed_noticias.json)
+            echo "Última atualização do feed: $ULTIMA_ATUALIZACAO"
+          else
+            echo "⚠️  Feed de notícias não encontrado"
+            echo "feed_exists=false" >> $GITHUB_ENV
+          fi
+      
+      - name: Atualizar agenda de dividendos
+        if: env.feed_exists == 'true'
+        run: |
+          echo "📊 Atualizando agenda de dividendos a partir do feed..."
+          python src/atualizar_agenda_dividendos_feed.py
+      
+      - name: Verificar arquivo atualizado
+        if: env.feed_exists == 'true'
+        run: |
+          if [ -f "agenda_dividendos_acoes_investidor10.json" ]; then
+            echo "✅ Agenda atualizada"
+            
+            # Estatísticas
+            TOTAL=$(jq 'length' agenda_dividendos_acoes_investidor10.json)
+            FUTUROS=$(jq --arg hoje "$(date +%Y-%m-%d)" '[.[] | select(.data_pagamento >= $hoje)] | length' agenda_dividendos_acoes_investidor10.json)
+            
+            echo ""
+            echo "📊 Estatísticas da agenda:"
+            echo "   Total de proventos: $TOTAL"
+            echo "   Proventos futuros: $FUTUROS"
+          else
+            echo "⚠️  Agenda não encontrada"
+          fi
+      
+      - name: Commit e Push
+        if: env.feed_exists == 'true'
+        run: |
+          git config user.name "actions-user"
+          git config user.email "actions-user@users.noreply.github.com"
+          
+          # Verificar mudanças
+          if git diff --quiet agenda_dividendos_acoes_investidor10.json; then
+            echo "ℹ️  Nenhuma mudança na agenda"
+            exit 0
+          fi
+          
+          # Commit
+          git add agenda_dividendos_acoes_investidor10.json
+          git commit -m "📊 Atualizar agenda de dividendos via feed ($(date +'%Y-%m-%d %H:%M'))"
+          git push
+          
+          echo "✅ Agenda atualizada e commitada"
+      
+      - name: Resumo
+        if: always()
+        run: |
+          echo "======================================================================"
+          echo "                   RESUMO DA ATUALIZAÇÃO"
+          echo "======================================================================"
+          echo "Feed de notícias: ${feed_exists:-false}"
+          echo "Arquivo agenda: $([ -f agenda_dividendos_acoes_investidor10.json ] && echo 'existe' || echo 'não existe')"
+          echo "======================================================================"
