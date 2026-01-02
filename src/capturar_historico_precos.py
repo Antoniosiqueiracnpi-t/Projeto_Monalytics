@@ -47,7 +47,13 @@ def load_mapeamento_b3() -> pd.DataFrame:
         return pd.DataFrame()
     
     try:
-        df = pd.read_csv(csv_path, encoding='utf-8', sep=',')
+        # CSV usa ; como separador e pode ter BOM UTF-8
+        df = pd.read_csv(
+            csv_path, 
+            encoding='utf-8-sig',  # Remove BOM se existir
+            sep=';',                # Separador é ponto e vírgula
+            on_bad_lines='warn'     # Avisar sobre linhas problemáticas
+        )
         return df
     except Exception as e:
         print(f"❌ Erro ao ler CSV: {e}")
