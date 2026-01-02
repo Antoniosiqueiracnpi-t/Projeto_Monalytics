@@ -1,0 +1,116 @@
+name: Atualizar Histórico de Preços
+
+on:
+  schedule:
+    - cron: '0 23 * * *'  # 23h UTC (20h BRT) - após fechamento do mercado
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'Modo de execução'
+        required: false
+        default: 'todos'
+        type: choice
+        options:
+          - todos
+          - quantidade
+          - lista
+      quantidade:
+        description: 'Quantidade de empresas (se modo=quantidade)'
+        required: false
+        default: '50'
+      lista:
+        description: 'Lista de tickers (se modo=lista, ex: PETR4,VALE3)'
+        required: false
+        default: ''
+
+jobs:
+  atualizar-historico:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+      
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Instalar dependências
+        run: |
+          pip install -q yfinance pandas numpy openpyxl
+      
+      - name: Verificar arquivos necessários
+        run: |
+          if [ ! -f "mapeamento_consolidado_tickers.xlsx" ]; then
+            echo "⚠️  mapeamento_consolidado_tickers.xlsx não encontrado"
+            exit 1
+          fi
+          echo "✅ Arquivos OK"
+      
+      - name: Capturar histórico de preços
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Execução manual com parâmetros
+            MODO="${{ github.event.inputs.modo }}"
+            QTD="${{ github.event.inputs.quantidade }}"
+            LISTA="${{ github.event.inputs.lista }}"
+            
+            if [ "$MODO" = "lista" ] && [ -n "$LISTA" ]; then
+              python src/capturar_historico_precos.py --modo lista --lista "$LISTA" --incluir-ibov
+            elif [ "$MODO" = "quantidade" ]; then
+              python src/capturar_historico_precos.py --modo quantidade --quantidade "$QTD" --incluir-ibov
+            else
+              python src/capturar_historico_precos.py --modo todos --incluir-ibov
+            fi
+          else
+            # Execução automática: todas as empresas + IBOVESPA
+            python src/capturar_historico_precos.py --modo todos --incluir-ibov
+          fi
+      
+      - name: Estatísticas de captura
+        run: |
+          echo "📊 Estatísticas de Histórico de Preços"
+          echo "======================================"
+          
+          # Contar arquivos criados
+          TOTAL=$(find balancos -name "historico_precos.json" 2>/dev/null | wc -l)
+          echo "Total de arquivos: $TOTAL"
+          
+          # Verificar IBOVESPA
+          if [ -f "balancos/IBOV/historico_precos.json" ]; then
+            echo "✅ IBOVESPA capturado"
+            
+            # Mostrar última cotação do IBOV
+            IBOV_ULTIMO=$(jq -r '.estatisticas.preco_atual // "N/A"' balancos/IBOV/historico_precos.json)
+            IBOV_VAR=$(jq -r '.estatisticas.variacao_periodo // "N/A"' balancos/IBOV/historico_precos.json)
+            echo "   Último: $IBOV_ULTIMO | Variação 5Y: ${IBOV_VAR}%"
+          fi
+          
+          # Exemplos de arquivos criados
+          echo ""
+          echo "Exemplos de arquivos:"
+          find balancos -name "historico_precos.json" | head -5
+          
+          # Tamanho médio dos arquivos
+          if [ "$TOTAL" -gt 0 ]; then
+            AVG_SIZE=$(find balancos -name "historico_precos.json" -exec ls -l {} \; | awk '{sum+=$5; count++} END {print int(sum/count/1024)}')
+            echo ""
+            echo "Tamanho médio por arquivo: ${AVG_SIZE} KB"
+          fi
+      
+      - name: Commit e Push
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
+          
+          # Verificar se há mudanças
+          if [ -n "$(git status --porcelain balancos/*/historico_precos.json)" ]; then
+            git add balancos/*/historico_precos.json
+            git commit -m "🤖 Atualizar histórico de preços - $(date +'%Y-%m-%d %H:%M')"
+            git push
+            echo "✅ Histórico atualizado e commitado"
+          else
+            echo "ℹ️  Nenhuma mudança detectada"
+          fi
