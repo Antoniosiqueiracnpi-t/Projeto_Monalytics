@@ -1,0 +1,80 @@
+# =========================== OS FILES ===========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# =========================== IDE FILES ===========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
+
+# =========================== NODE MODULES ===========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# =========================== BUILD FILES ===========================
+dist/
+build/
+.cache/
+*.min.css
+*.min.js
+
+# =========================== ENVIRONMENT FILES ===========================
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*.local
+
+# =========================== LOGS ===========================
+logs/
+*.log
+
+# =========================== TEMPORARY FILES ===========================
+tmp/
+temp/
+*.tmp
+
+# =========================== BACKUP FILES ===========================
+*.bak
+*.backup
+*~
+
+# =========================== NETLIFY ===========================
+.netlify/
+.netlify.state
+
+# =========================== PYTHON (SE USAR) ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# =========================== DATABASE ===========================
+*.sql
+*.sqlite
+*.db
+
+# =========================== OUTROS ===========================
+*.zip
+*.rar
+*.7z
+.history/
