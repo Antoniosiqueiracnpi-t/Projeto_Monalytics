@@ -90,27 +90,27 @@ PERIODOS_MM = [20, 50, 200]  # Médias móveis
 def capturar_historico_ticker(ticker: str, anos: int = ANOS_HISTORICO) -> Optional[pd.DataFrame]:
     """
     Captura histórico de preços ajustados via yfinance.
-    
+
     Args:
         ticker: Código B3 (ex: PETR4) ou ^BVSP para Ibovespa
         anos: Anos de histórico (padrão: 5)
-    
+
     Returns:
         DataFrame com OHLCV ou None
     """
     if not HAS_YFINANCE:
         return None
-    
+
     # Converter para formato Yahoo
     if ticker == "IBOV":
         ticker_yahoo = "^BVSP"
     else:
         ticker_yahoo = f"{ticker}.SA" if not ticker.endswith(".SA") else ticker
-    
+
     # Período
     end_date = datetime.now()
     start_date = end_date - timedelta(days=anos * 365 + 30)  # +30 dias de margem
-    
+
     try:
         hist = yf.download(
             ticker_yahoo,
@@ -119,17 +119,45 @@ def capturar_historico_ticker(ticker: str, anos: int = ANOS_HISTORICO) -> Option
             progress=False,
             auto_adjust=True  # Preços ajustados
         )
-        
+
         # Verificações robustas
         if hist is None:
             return None
-        
+
         if not isinstance(hist, pd.DataFrame):
             return None
-        
+
         if len(hist) == 0:
             return None
-        
+
+        # ------------------------------------------------------------------
+        # yfinance pode retornar colunas MultiIndex (dependendo da versão/ambiente).
+        # Isso pode fazer com que df['Close'].iloc[0] vire Series e estoure:
+        # "The truth value of a Series is ambiguous".
+        # Normalizamos para um DataFrame com colunas simples (Open/High/Low/Close/Volume).
+        # ------------------------------------------------------------------
+        if isinstance(hist.columns, pd.MultiIndex):
+            # 1) Se existir um nível contendo o ticker solicitado, seleciona apenas ele
+            for lvl in range(hist.columns.nlevels):
+                lvl_vals = hist.columns.get_level_values(lvl)
+                if ticker_yahoo in set(lvl_vals):
+                    hist = hist.xs(ticker_yahoo, level=lvl, axis=1)
+                    break
+
+            # 2) Se ainda for MultiIndex, achata para o nível que contém OHLCV
+            if isinstance(hist.columns, pd.MultiIndex):
+                ohlcv = {"Open", "High", "Low", "Close", "Adj Close", "Volume"}
+                lv0 = hist.columns.get_level_values(0)
+                lv1 = hist.columns.get_level_values(1)
+
+                if any(c in ohlcv for c in lv0):
+                    hist.columns = lv0
+                elif any(c in ohlcv for c in lv1):
+                    hist.columns = lv1
+                else:
+                    # fallback: concatena os níveis em string
+                    hist.columns = ["_".join(map(str, c)).strip() for c in hist.columns.to_list()]
+
         # Renomear colunas para padrão
         hist = hist.rename(columns={
             'Open': 'abertura',
@@ -138,23 +166,26 @@ def capturar_historico_ticker(ticker: str, anos: int = ANOS_HISTORICO) -> Option
             'Close': 'fechamento',
             'Volume': 'volume'
         })
-        
+
         # Garantir que índice é datetime
         hist.index = pd.to_datetime(hist.index)
-        
+
         # Verificar se tem as colunas necessárias
         colunas_necessarias = ['abertura', 'maxima', 'minima', 'fechamento', 'volume']
         colunas_disponiveis = [col for col in colunas_necessarias if col in hist.columns]
-        
+
         if len(colunas_disponiveis) < 4:  # Precisa de pelo menos 4 colunas (menos volume)
             return None
-        
+
+        # Garantir que 'fechamento' seja Series (evita ambiguidade em operações futuras)
+        if 'fechamento' in hist.columns and isinstance(hist['fechamento'], pd.DataFrame):
+            hist['fechamento'] = hist['fechamento'].iloc[:, 0]
+
         return hist[colunas_disponiveis]
-        
+
     except Exception as e:
         print(f"  ⚠️  Erro ao baixar {ticker}: {e}")
         return None
-
 
 # ======================================================================================
 # CÁLCULO DE MÉDIAS MÓVEIS
@@ -163,20 +194,28 @@ def capturar_historico_ticker(ticker: str, anos: int = ANOS_HISTORICO) -> Option
 def calcular_medias_moveis(df: pd.DataFrame, periodos: List[int] = PERIODOS_MM) -> pd.DataFrame:
     """
     Calcula médias móveis do fechamento.
-    
+
     Args:
         df: DataFrame com coluna 'fechamento'
         periodos: Lista de períodos (ex: [20, 50, 200])
-    
+
     Returns:
         DataFrame com colunas mm20, mm50, mm200 adicionadas
     """
     df = df.copy()
-    
+
+    # Garantir que fechamento é Series (pode vir como DataFrame se houver colunas duplicadas)
+    fechamento = df.get('fechamento')
+    if isinstance(fechamento, pd.DataFrame):
+        if fechamento.shape[1] == 0:
+            return df
+        fechamento = fechamento.iloc[:, 0]
+        df['fechamento'] = fechamento
+
     for periodo in periodos:
         col_name = f"mm{periodo}"
         df[col_name] = df['fechamento'].rolling(window=periodo, min_periods=periodo).mean()
-    
+
     return df
 
 
@@ -188,22 +227,60 @@ def calcular_estatisticas(df: pd.DataFrame) -> Dict:
     """Calcula estatísticas do período."""
     if len(df) == 0:
         return {}
-    
+
     if 'fechamento' not in df.columns:
         return {}
-    
-    primeiro_preco = df['fechamento'].iloc[0]
-    ultimo_preco = df['fechamento'].iloc[-1]
-    variacao_pct = ((ultimo_preco - primeiro_preco) / primeiro_preco * 100) if primeiro_preco > 0 else 0
-    
+
+    fechamento = df['fechamento']
+
+    # Se por algum motivo 'fechamento' vier como DataFrame (colunas duplicadas / MultiIndex)
+    if isinstance(fechamento, pd.DataFrame):
+        if fechamento.shape[1] == 0:
+            return {}
+        fechamento = fechamento.iloc[:, 0]
+
+    # Converter para float com segurança
+    primeiro_preco_raw = fechamento.iloc[0]
+    ultimo_preco_raw = fechamento.iloc[-1]
+
+    try:
+        primeiro_preco = float(primeiro_preco_raw)
+    except Exception:
+        return {}
+
+    try:
+        ultimo_preco = float(ultimo_preco_raw)
+    except Exception:
+        return {}
+
+    if primeiro_preco <= 0:
+        variacao_pct = 0.0
+    else:
+        variacao_pct = (ultimo_preco - primeiro_preco) / primeiro_preco * 100.0
+
+    # Volume (opcional)
+    volume_medio = 0
+    if 'volume' in df.columns:
+        vol = df['volume']
+        if isinstance(vol, pd.DataFrame):
+            if vol.shape[1] > 0:
+                vol = vol.iloc[:, 0]
+            else:
+                vol = None
+        if vol is not None:
+            try:
+                volume_medio = int(float(vol.mean()))
+            except Exception:
+                volume_medio = 0
+
     return {
-        "total_dias": len(df),
-        "preco_inicial": round(float(primeiro_preco), 2),
-        "preco_atual": round(float(ultimo_preco), 2),
-        "variacao_periodo": round(variacao_pct, 2),
-        "maxima_periodo": round(float(df['fechamento'].max()), 2),
-        "minima_periodo": round(float(df['fechamento'].min()), 2),
-        "volume_medio": int(df['volume'].mean()) if 'volume' in df.columns else 0
+        "total_dias": int(len(df)),
+        "preco_inicial": round(primeiro_preco, 2),
+        "preco_atual": round(ultimo_preco, 2),
+        "variacao_periodo": round(float(variacao_pct), 2),
+        "maxima_periodo": round(float(fechamento.max()), 2),
+        "minima_periodo": round(float(fechamento.min()), 2),
+        "volume_medio": volume_medio
     }
 
 
