@@ -120,7 +120,14 @@ def capturar_historico_ticker(ticker: str, anos: int = ANOS_HISTORICO) -> Option
             auto_adjust=True  # Preços ajustados
         )
         
-        if hist.empty:
+        # Verificações robustas
+        if hist is None:
+            return None
+        
+        if not isinstance(hist, pd.DataFrame):
+            return None
+        
+        if len(hist) == 0:
             return None
         
         # Renomear colunas para padrão
@@ -135,7 +142,14 @@ def capturar_historico_ticker(ticker: str, anos: int = ANOS_HISTORICO) -> Option
         # Garantir que índice é datetime
         hist.index = pd.to_datetime(hist.index)
         
-        return hist[['abertura', 'maxima', 'minima', 'fechamento', 'volume']]
+        # Verificar se tem as colunas necessárias
+        colunas_necessarias = ['abertura', 'maxima', 'minima', 'fechamento', 'volume']
+        colunas_disponiveis = [col for col in colunas_necessarias if col in hist.columns]
+        
+        if len(colunas_disponiveis) < 4:  # Precisa de pelo menos 4 colunas (menos volume)
+            return None
+        
+        return hist[colunas_disponiveis]
         
     except Exception as e:
         print(f"  ⚠️  Erro ao baixar {ticker}: {e}")
@@ -172,7 +186,10 @@ def calcular_medias_moveis(df: pd.DataFrame, periodos: List[int] = PERIODOS_MM) 
 
 def calcular_estatisticas(df: pd.DataFrame) -> Dict:
     """Calcula estatísticas do período."""
-    if df.empty:
+    if len(df) == 0:
+        return {}
+    
+    if 'fechamento' not in df.columns:
         return {}
     
     primeiro_preco = df['fechamento'].iloc[0]
@@ -207,26 +224,34 @@ def df_para_json(df: pd.DataFrame, ticker: str) -> Dict:
             "estatisticas": {...}
         }
     """
-    if df.empty:
+    if len(df) == 0:
         return {}
     
     # Resetar índice para ter 'data' como coluna
     df = df.reset_index()
-    df['data'] = df['Date'].dt.strftime('%Y-%m-%d')
+    
+    # Tentar diferentes nomes de coluna de data
+    if 'Date' in df.columns:
+        df['data'] = df['Date'].dt.strftime('%Y-%m-%d')
+    elif df.index.name == 'Date' or isinstance(df.index, pd.DatetimeIndex):
+        df['data'] = df.index.strftime('%Y-%m-%d')
+    else:
+        # Se não encontrar coluna de data, usar o índice resetado
+        df['data'] = pd.to_datetime(df.index).strftime('%Y-%m-%d')
     
     # Converter para lista de dicts
     dados = []
     for _, row in df.iterrows():
         ponto = {
             "data": row['data'],
-            "abertura": round(float(row['abertura']), 2) if pd.notna(row['abertura']) else None,
-            "maxima": round(float(row['maxima']), 2) if pd.notna(row['maxima']) else None,
-            "minima": round(float(row['minima']), 2) if pd.notna(row['minima']) else None,
-            "fechamento": round(float(row['fechamento']), 2) if pd.notna(row['fechamento']) else None,
-            "volume": int(row['volume']) if pd.notna(row['volume']) else 0,
-            "mm20": round(float(row['mm20']), 2) if pd.notna(row['mm20']) else None,
-            "mm50": round(float(row['mm50']), 2) if pd.notna(row['mm50']) else None,
-            "mm200": round(float(row['mm200']), 2) if pd.notna(row['mm200']) else None
+            "abertura": round(float(row['abertura']), 2) if 'abertura' in row and pd.notna(row['abertura']) else None,
+            "maxima": round(float(row['maxima']), 2) if 'maxima' in row and pd.notna(row['maxima']) else None,
+            "minima": round(float(row['minima']), 2) if 'minima' in row and pd.notna(row['minima']) else None,
+            "fechamento": round(float(row['fechamento']), 2) if 'fechamento' in row and pd.notna(row['fechamento']) else None,
+            "volume": int(row['volume']) if 'volume' in row and pd.notna(row['volume']) else 0,
+            "mm20": round(float(row['mm20']), 2) if 'mm20' in row and pd.notna(row['mm20']) else None,
+            "mm50": round(float(row['mm50']), 2) if 'mm50' in row and pd.notna(row['mm50']) else None,
+            "mm200": round(float(row['mm200']), 2) if 'mm200' in row and pd.notna(row['mm200']) else None
         }
         dados.append(ponto)
     
@@ -254,40 +279,51 @@ def processar_ticker(ticker: str, anos: int = ANOS_HISTORICO) -> Tuple[bool, str
     Returns:
         (sucesso, mensagem)
     """
-    # Determinar pasta
-    if ticker == "IBOV":
-        pasta = Path("balancos") / "IBOV"
-    else:
-        pasta = get_pasta_balanco(ticker)
-    
-    pasta.mkdir(parents=True, exist_ok=True)
-    
-    # Baixar histórico
-    df = capturar_historico_ticker(ticker, anos)
-    
-    if df is None or df.empty:
-        return False, "sem dados disponíveis"
-    
-    # Calcular médias móveis
-    df = calcular_medias_moveis(df, PERIODOS_MM)
-    
-    # Converter para JSON
-    dados_json = df_para_json(df, ticker)
-    
-    # Salvar
-    arquivo = pasta / "historico_precos_diarios.json"
-    with open(arquivo, 'w', encoding='utf-8') as f:
-        json.dump(dados_json, f, ensure_ascii=False, indent=2)
-    
-    # Estatísticas para log
-    stats = dados_json.get('estatisticas', {})
-    total_dias = stats.get('total_dias', 0)
-    preco_atual = stats.get('preco_atual', 0)
-    variacao = stats.get('variacao_periodo', 0)
-    
-    msg = f"{total_dias} dias | R$ {preco_atual} | Δ {variacao:+.1f}%"
-    
-    return True, msg
+    try:
+        # Determinar pasta
+        if ticker == "IBOV":
+            pasta = Path("balancos") / "IBOV"
+        else:
+            pasta = get_pasta_balanco(ticker)
+        
+        pasta.mkdir(parents=True, exist_ok=True)
+        
+        # Baixar histórico
+        df = capturar_historico_ticker(ticker, anos)
+        
+        # Verificação corrigida para evitar erro de ambiguidade
+        if df is None:
+            return False, "sem dados disponíveis"
+        
+        if not isinstance(df, pd.DataFrame):
+            return False, "formato de dados inválido"
+        
+        if len(df) == 0:
+            return False, "sem dados disponíveis"
+        
+        # Calcular médias móveis
+        df = calcular_medias_moveis(df, PERIODOS_MM)
+        
+        # Converter para JSON
+        dados_json = df_para_json(df, ticker)
+        
+        # Salvar
+        arquivo = pasta / "historico_precos_diarios.json"
+        with open(arquivo, 'w', encoding='utf-8') as f:
+            json.dump(dados_json, f, ensure_ascii=False, indent=2)
+        
+        # Estatísticas para log
+        stats = dados_json.get('estatisticas', {})
+        total_dias = stats.get('total_dias', 0)
+        preco_atual = stats.get('preco_atual', 0)
+        variacao = stats.get('variacao_periodo', 0)
+        
+        msg = f"{total_dias} dias | R$ {preco_atual} | Δ {variacao:+.1f}%"
+        
+        return True, msg
+        
+    except Exception as e:
+        return False, f"{type(e).__name__}: {str(e)[:50]}"
 
 
 # ======================================================================================
@@ -362,7 +398,7 @@ def main():
     # Carregar mapeamento
     df = load_mapeamento_b3()
     
-    if df.empty:
+    if df is None or len(df) == 0:
         print("❌ Não foi possível carregar mapeamento")
         return
     
