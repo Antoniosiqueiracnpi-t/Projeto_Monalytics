@@ -77,7 +77,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas numpy requests yfinance openpyxl pillow
+          pip install -r requirements.txt
 
       - name: Selecionar tickers por setor (mapeamento_b3_consolidado.csv)
         id: selecionar
