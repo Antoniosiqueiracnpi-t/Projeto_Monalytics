@@ -8,7 +8,10 @@
   # Default build command
   command = ""
 
-# Redirect rules
+[build]
+  publish = "site/"
+  command = ""
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
