@@ -1,0 +1,77 @@
+{
+  "empresa": {
+    "cnpj": "60.476.884/0001-87",
+    "nome": "",
+    "ticker": "LEVE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 5,
+  "acionistas": [
+    {
+      "nome": "MAHLE Indústria e Comércio Ltda.",
+      "cpf_cnpj": "49.342.181/0001-23",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 76985132,
+      "percentual_total": 56.799,
+      "acoes_ordinarias": 76985132,
+      "percentual_ordinarias": 56.799,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "MAHLE Industriebeteiligungen GmbH",
+      "cpf_cnpj": "05.515.156/0001-29",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Alemanha",
+      "acoes_total": 5687992,
+      "percentual_total": 4.197,
+      "acoes_ordinarias": 5687992,
+      "percentual_ordinarias": 4.197,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "HEINZ KONRAD JUNKER",
+      "cpf_cnpj": "219.554.108-36",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1,
+      "percentual_total": 0.0,
+      "acoes_ordinarias": 1,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "PETER PAUL WILHELM GRUNOW",
+      "cpf_cnpj": "044.222.338-23",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1,
+      "percentual_total": 0.0,
+      "acoes_ordinarias": 1,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "REGINALDO FERREIRA ALEXANDRE",
+      "cpf_cnpj": "003.662.408-03",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1,
+      "percentual_total": 0.0,
+      "acoes_ordinarias": 1,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    }
+  ]
+}
