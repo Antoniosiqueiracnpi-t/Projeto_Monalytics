@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "22.543.331/0001-00",
+    "nome": "",
+    "ticker": "CXSE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "CAIXA ECONÔMICA FEDERAL",
+      "cpf_cnpj": "00.360.305/0001-04",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2400000000,
+      "percentual_total": 80.0,
+      "acoes_ordinarias": 2400000000,
+      "percentual_ordinarias": 80.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    }
+  ]
+}
