@@ -194,9 +194,9 @@ jobs:
           python src/capturar_noticias.py --modo lista --lista "${TICKERS}" --dias 30
 
       - name: Capturar histórico de preços (5 anos)
+        continue-on-error: true
         run: |
-          python src/capturar_historico_precos.py --modo todos --incluir-ibov
-        continue-on-error: true          
+          python src/capturar_historico_precos.py --modo lista --lista "${TICKERS}" --incluir-ibov     
           
 
       # ========================================================================
