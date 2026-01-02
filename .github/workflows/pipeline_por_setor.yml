@@ -186,6 +186,14 @@ jobs:
         run: |
           python src/capturar_logos.py --modo lista --lista "${TICKERS}"
 
+
+      - name: Capturar Notícias (30 dias retroativos)
+        id: noticias
+        continue-on-error: true
+        run: |
+          python src/capturar_noticias.py --modo lista --lista "${TICKERS}" --dias 30
+          
+
       # ========================================================================
       # PADRONIZAÇÕES
       # ========================================================================
@@ -270,6 +278,7 @@ jobs:
           echo "  - Ações:                 ${{ steps.acoes.outcome }}"
           echo "  - Acionistas:            ${{ steps.acionistas.outcome }}"
           echo "  - Logos:                 ${{ steps.logos.outcome }}"
+          echo "  - Notícias:              ${{ steps.noticias.outcome }}"
           echo ""
           echo "🔄 PADRONIZAÇÕES:"
           echo "  - DRE:                   ${{ steps.dre.outcome }}"
