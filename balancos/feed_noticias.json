@@ -1,0 +1,250 @@
+{
+  "meta": {
+    "ultima_atualizacao": "2026-01-02T17:08:59.567077Z",
+    "data_atualizacao": "2026-01-02",
+    "hora_atualizacao": "17:08:59",
+    "total_empresas": 3,
+    "total_noticias": 13,
+    "periodo": {
+      "inicio": "2025-12-04",
+      "fim": "2025-12-23"
+    }
+  },
+  "estatisticas": {
+    "por_categoria": {
+      "Outros": 6,
+      "Aviso": 4,
+      "Governança": 3
+    },
+    "por_ticker": {
+      "ABEV": 7,
+      "MYPK": 3,
+      "LEVE": 3
+    },
+    "top_categorias": [
+      {
+        "categoria": "Outros",
+        "total": 6
+      },
+      {
+        "categoria": "Aviso",
+        "total": 4
+      },
+      {
+        "categoria": "Governança",
+        "total": 3
+      }
+    ],
+    "top_empresas": [
+      {
+        "ticker": "ABEV",
+        "total": 7
+      },
+      {
+        "ticker": "MYPK",
+        "total": 3
+      },
+      {
+        "ticker": "LEVE",
+        "total": 3
+      }
+    ]
+  },
+  "feed": [
+    {
+      "data": "2025-12-23",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Transacao entre Partes Relacionadas  22/12/25",
+        "headline": "AMBEV S/A (ABEV) - Transacao entre Partes Relacionadas - 22/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3181880&agencia=18&dataNoticia=2025-12-23%2008:00:08"
+      }
+    },
+    {
+      "data": "2025-12-11",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "LEVE",
+        "nome": "MAHLE-METAL LEVE S.A.",
+        "cnpj": "60.476.884/0001-87"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas  11/12/25 (N)",
+        "headline": "METAL LEVE (LEVE-NM) - Aviso aos Acionistas - 11/12/25 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3167490&agencia=18&dataNoticia=2025-12-11%2018:42:36"
+      }
+    },
+    {
+      "data": "2025-12-11",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "LEVE",
+        "nome": "MAHLE-METAL LEVE S.A.",
+        "cnpj": "60.476.884/0001-87"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas  11/12/25",
+        "headline": "METAL LEVE (LEVE-NM) - Aviso aos Acionistas - 11/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3167383&agencia=18&dataNoticia=2025-12-11%2018:11:21"
+      }
+    },
+    {
+      "data": "2025-12-11",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "LEVE",
+        "nome": "MAHLE-METAL LEVE S.A.",
+        "cnpj": "60.476.884/0001-87"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  11/12/25",
+        "headline": "METAL LEVE (LEVE-NM) - Ata Reuniao do Conselho de Administracao - 11/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3167360&agencia=18&dataNoticia=2025-12-11%2018:10:07"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Politica de Remuneracao  09/12/25",
+        "headline": "AMBEV S/A (ABEV) - Politica de Remuneracao - 09/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3166075&agencia=18&dataNoticia=2025-12-10%2019:35:04"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Polit. p/ Contr de Servs ExtraAuditoria  09/12/25",
+        "headline": "AMBEV S/A (ABEV) - Polit. p/ Contr de Servs Extra-Auditoria - 09/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3166074&agencia=18&dataNoticia=2025-12-10%2019:34:58"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Aviso aos Acionistas  09/12/25 (N)",
+        "headline": "AMBEV S/A (ABEV) - Aviso aos Acionistas - 09/12/25 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164699&agencia=18&dataNoticia=2025-12-10%2009:43:41"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Aviso aos Acionistas  09/12/25",
+        "headline": "AMBEV S/A (ABEV) - Aviso aos Acionistas - 09/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164428&agencia=18&dataNoticia=2025-12-09%2019:12:55"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " Ata Reuniao do Conselho de Administracao  09/12/25",
+        "headline": "AMBEV S/A (ABEV) - Ata Reuniao do Conselho de Administracao - 09/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164423&agencia=18&dataNoticia=2025-12-09%2019:10:19"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ABEV",
+        "nome": "AMBEV S/A",
+        "cnpj": "07.526.557/0001-00"
+      },
+      "noticia": {
+        "titulo": " VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "AMBEV S/A (ABEV) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164419&agencia=18&dataNoticia=2025-12-09%2019:06:17"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "MYPK",
+        "nome": "IOCHPE MAXION S.A.",
+        "cnpj": "61.156.113/0001-75"
+      },
+      "noticia": {
+        "titulo": "MAXION (MYPKNM)  Relatorio de Agencia de Rating  08/12/25",
+        "headline": "IOCHP-MAXION (MYPK-NM) - Relatorio de Agencia de Rating - 08/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3162976&agencia=18&dataNoticia=2025-12-09%2008:00:07"
+      }
+    },
+    {
+      "data": "2025-12-04",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "MYPK",
+        "nome": "IOCHPE MAXION S.A.",
+        "cnpj": "61.156.113/0001-75"
+      },
+      "noticia": {
+        "titulo": "MAXION (MYPKNM)  Calendario de Eventos Corporativos  ate 31/12/26",
+        "headline": "IOCHP-MAXION (MYPK-NM) - Calendario de Eventos Corporativos - ate 31/12/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3159397&agencia=18&dataNoticia=2025-12-04%2019:06:33"
+      }
+    },
+    {
+      "data": "2025-12-04",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "MYPK",
+        "nome": "IOCHPE MAXION S.A.",
+        "cnpj": "61.156.113/0001-75"
+      },
+      "noticia": {
+        "titulo": "MAXION (MYPKNM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "IOCHP-MAXION (MYPK-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3159243&agencia=18&dataNoticia=2025-12-04%2018:34:50"
+      }
+    }
+  ]
+}
