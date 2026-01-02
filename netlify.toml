@@ -1,16 +1,23 @@
-# Netlify Configuration - Monalytics
-# Site estático dentro da pasta site/
+# =========================== NETLIFY CONFIG - MONALYTICS ===========================
+# Site estático HTML/CSS/JS puro
 
 [build]
-  publish = "site/"
-  command = "echo 'Static site only'"
-  ignore = "exit 0"
+  # Base directory: Netlify entra aqui PRIMEIRO e procura dependências
+  base = "site/"
+  
+  # Build command: vazio (site estático, sem build)
+  command = ""
+  
+  # Publish directory: RELATIVO ao base (. = aqui mesmo, ou seja site/)
+  publish = "."
 
+# =========================== REDIRECTS ===========================
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
+# =========================== SECURITY HEADERS ===========================
 [[headers]]
   for = "/*"
   [headers.values]
