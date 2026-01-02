@@ -26,15 +26,47 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).parent))
-from multi_ticker_utils import get_ticker_principal, get_pasta_balanco, load_mapeamento_consolidado
-
 try:
     import yfinance as yf
     HAS_YFINANCE = True
 except ImportError:
     HAS_YFINANCE = False
     print("❌ yfinance não instalado: pip install yfinance")
+
+
+# ======================================================================================
+# UTILITÁRIOS DE MAPEAMENTO
+# ======================================================================================
+
+def load_mapeamento_b3() -> pd.DataFrame:
+    """Carrega mapeamento de tickers B3 do CSV."""
+    csv_path = Path("mapeamento_b3_consolidado.csv")
+    
+    if not csv_path.exists():
+        print(f"❌ Arquivo não encontrado: {csv_path}")
+        return pd.DataFrame()
+    
+    try:
+        df = pd.read_csv(csv_path, encoding='utf-8', sep=',')
+        return df
+    except Exception as e:
+        print(f"❌ Erro ao ler CSV: {e}")
+        return pd.DataFrame()
+
+
+def get_pasta_balanco(ticker: str) -> Path:
+    """
+    Retorna pasta balancos/{TICKER_BASE}/ para salvar dados.
+    Remove sufixos numéricos (3, 4, 11) do ticker.
+    """
+    # Remover sufixos de classe
+    ticker_base = ticker.rstrip('0123456789')
+    
+    # Se ficou vazio, usar o ticker original
+    if not ticker_base:
+        ticker_base = ticker
+    
+    return Path("balancos") / ticker_base.upper()
 
 
 # ======================================================================================
@@ -237,7 +269,7 @@ def processar_ticker(ticker: str, anos: int = ANOS_HISTORICO) -> Tuple[bool, str
     dados_json = df_para_json(df, ticker)
     
     # Salvar
-    arquivo = pasta / "historico_precos.json"
+    arquivo = pasta / "historico_precos_diarios.json"
     with open(arquivo, 'w', encoding='utf-8') as f:
         json.dump(dados_json, f, ensure_ascii=False, indent=2)
     
@@ -322,8 +354,19 @@ def main():
         return
     
     # Carregar mapeamento
-    df = load_mapeamento_consolidado()
-    df = df[df["cnpj"].notna()].reset_index(drop=True)
+    df = load_mapeamento_b3()
+    
+    if df.empty:
+        print("❌ Não foi possível carregar mapeamento")
+        return
+    
+    # Filtrar linhas válidas
+    if 'cnpj' in df.columns:
+        df = df[df["cnpj"].notna()].reset_index(drop=True)
+    elif 'CNPJ' in df.columns:
+        df = df[df["CNPJ"].notna()].reset_index(drop=True)
+    else:
+        print("⚠️  Coluna CNPJ não encontrada, usando todos os registros")
     
     # Selecionar tickers
     if args.modo == "quantidade":
