@@ -1,0 +1,41 @@
+{
+  "empresa": {
+    "ticker": "RSID",
+    "nome": "ROSSI RESIDENCIAL S.A.",
+    "cnpj": "61.065.751/0001-80"
+  },
+  "ultima_atualizacao": "2026-01-02T09:21:32.559715",
+  "total_noticias": 3,
+  "noticias": [
+    {
+      "data": "2025-12-09",
+      "data_hora": "2025-12-09 19:42:41",
+      "titulo": "NM)  Fato Relevante  09/11/25",
+      "headline": "ROSSI RESID (RSID-NM) - Fato Relevante - 09/11/25",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164463&agencia=18&dataNoticia=2025-12-09%2019:42:41",
+      "id": 3164463,
+      "categoria": "Fato Relevante"
+    },
+    {
+      "data": "2025-12-09",
+      "data_hora": "2025-12-09 08:23:21",
+      "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "headline": "ROSSI RESID (RSID-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3163043&agencia=18&dataNoticia=2025-12-09%2008:23:21",
+      "id": 3163043,
+      "categoria": "Outros"
+    },
+    {
+      "data": "2025-12-05",
+      "data_hora": "2025-12-05 08:00:09",
+      "titulo": "NM)  Fato Relevante  05/12/25",
+      "headline": "ROSSI RESID (RSID-NM) - Fato Relevante - 05/12/25",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3159457&agencia=18&dataNoticia=2025-12-05%2008:00:09",
+      "id": 3159457,
+      "categoria": "Fato Relevante"
+    }
+  ]
+}
