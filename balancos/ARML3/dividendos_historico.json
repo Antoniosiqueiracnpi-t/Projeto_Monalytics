@@ -1,0 +1,174 @@
+{
+  "ticker": "ARML3",
+  "ultima_atualizacao": "2026-01-02T10:14:46.691246Z",
+  "total_dividendos": 20,
+  "dividendos": [
+    {
+      "data": "2025-10-14",
+      "data_pagamento": "2025-10-09",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.062661,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-08-19",
+      "data_pagamento": "2025-08-12",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.082329,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-04-15",
+      "data_pagamento": "2025-04-09",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.068164,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-10-04",
+      "data_pagamento": "2024-09-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.075108,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-07-03",
+      "data_pagamento": "2024-06-28",
+      "tipo": "DIVIDENDO",
+      "valor": 0.099962,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-07-03",
+      "data_pagamento": "2024-06-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.073383,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-04-02",
+      "data_pagamento": "2024-03-26",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.069437,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-12-28",
+      "data_pagamento": "2023-12-22",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.06597,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-10-02",
+      "data_pagamento": "2023-09-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.049196,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-07-05",
+      "data_pagamento": "2023-06-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.086874,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-04-03",
+      "data_pagamento": "2023-03-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.034749,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-12-28",
+      "data_pagamento": "2022-12-22",
+      "tipo": "DIVIDENDO",
+      "valor": 0.052124,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-12-28",
+      "data_pagamento": "2022-12-22",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.066603,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-09-27",
+      "data_pagamento": "2022-09-22",
+      "tipo": "DIVIDENDO",
+      "valor": 0.043469,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-09-27",
+      "data_pagamento": "2022-09-22",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.055061,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-06-30",
+      "data_pagamento": "2022-06-24",
+      "tipo": "DIVIDENDO",
+      "valor": 0.031886,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-06-30",
+      "data_pagamento": "2022-06-24",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.041401,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-05-05",
+      "data_pagamento": "2022-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.071208,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-05-03",
+      "data_pagamento": "2022-04-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.044993,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-11-19",
+      "data_pagamento": "2021-11-12",
+      "tipo": "DIVIDENDO",
+      "valor": 0.067264,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 1.24,
+    "total_ultimos_12m": 0.21,
+    "quantidade_ultimos_12m": 3,
+    "data_primeiro": "2021-11-19",
+    "data_ultimo": "2025-10-14"
+  }
+}

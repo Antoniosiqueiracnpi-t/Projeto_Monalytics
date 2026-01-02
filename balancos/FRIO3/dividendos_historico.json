@@ -1,0 +1,62 @@
+{
+  "ticker": "FRIO3",
+  "ultima_atualizacao": "2026-01-02T10:16:36.175876Z",
+  "total_dividendos": 6,
+  "dividendos": [
+    {
+      "data": "2011-06-28",
+      "data_pagamento": "2011-04-07",
+      "tipo": "REST CAP DIN",
+      "valor": 0.2337,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2011-04-07",
+      "data_pagamento": "2011-04-07",
+      "tipo": "DIVIDENDO",
+      "valor": 0.449,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2010-05-07",
+      "data_pagamento": "2010-05-06",
+      "tipo": "DIVIDENDO",
+      "valor": 0.302,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2010-04-30",
+      "data_pagamento": "2010-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.292282,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2009-11-10",
+      "data_pagamento": "2009-11-05",
+      "tipo": "DIVIDENDO",
+      "valor": 0.265,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2008-04-08",
+      "data_pagamento": "2008-04-08",
+      "tipo": "DIVIDENDO",
+      "valor": 0.063953,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 1.61,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2008-04-08",
+    "data_ultimo": "2011-06-28"
+  }
+}

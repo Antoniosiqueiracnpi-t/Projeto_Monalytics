@@ -1,0 +1,182 @@
+{
+  "ticker": "EVEN3",
+  "ultima_atualizacao": "2026-01-02T10:14:34.687602Z",
+  "total_dividendos": 21,
+  "dividendos": [
+    {
+      "data": "2025-11-17",
+      "data_pagamento": "2025-11-10",
+      "tipo": "DIVIDENDO",
+      "valor": 0.765226,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-10-08",
+      "data_pagamento": "2024-10-03",
+      "tipo": "DIVIDENDO",
+      "valor": 0.4,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-05-16",
+      "data_pagamento": "2024-05-13",
+      "tipo": "DIVIDENDO",
+      "valor": 0.20116,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-05-16",
+      "data_pagamento": "2024-05-13",
+      "tipo": "DIVIDENDO",
+      "valor": 0.301739,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-12-19",
+      "data_pagamento": "2023-12-14",
+      "tipo": "DIVIDENDO",
+      "valor": 0.251718,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-09-20",
+      "data_pagamento": "2023-09-15",
+      "tipo": "DIVIDENDO",
+      "valor": 0.251767,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-11-18",
+      "data_pagamento": "2022-11-14",
+      "tipo": "DIVIDENDO",
+      "valor": 0.150011,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-12-20",
+      "data_pagamento": "2021-12-15",
+      "tipo": "DIVIDENDO",
+      "valor": 0.07347,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-06-18",
+      "data_pagamento": "2021-06-15",
+      "tipo": "DIVIDENDO",
+      "valor": 0.193118,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-04-28",
+      "data_pagamento": "2021-04-28",
+      "tipo": "DIVIDENDO",
+      "valor": 0.564208,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-04-30",
+      "data_pagamento": "2020-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.144301,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-05-23",
+      "data_pagamento": "2016-05-05",
+      "tipo": "DIVIDENDO",
+      "valor": 0.010732,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-04-22",
+      "data_pagamento": "2016-04-22",
+      "tipo": "DIVIDENDO",
+      "valor": 0.160137,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-04-30",
+      "data_pagamento": "2015-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.262483,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-05-20",
+      "data_pagamento": "2014-05-20",
+      "tipo": "DIVIDENDO",
+      "valor": 0.288726,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-04-29",
+      "data_pagamento": "2013-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.261552,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-04-18",
+      "data_pagamento": "2012-04-18",
+      "tipo": "DIVIDENDO",
+      "valor": 0.230198,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2011-04-29",
+      "data_pagamento": "2011-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.257043,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2010-04-09",
+      "data_pagamento": "2010-04-09",
+      "tipo": "DIVIDENDO",
+      "valor": 0.16614,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2009-04-22",
+      "data_pagamento": "2009-04-22",
+      "tipo": "DIVIDENDO",
+      "valor": 0.079774,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2008-04-14",
+      "data_pagamento": "2008-04-14",
+      "tipo": "DIVIDENDO",
+      "valor": 0.048966,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 5.06,
+    "total_ultimos_12m": 0.77,
+    "quantidade_ultimos_12m": 1,
+    "data_primeiro": "2008-04-14",
+    "data_ultimo": "2025-11-17"
+  }
+}

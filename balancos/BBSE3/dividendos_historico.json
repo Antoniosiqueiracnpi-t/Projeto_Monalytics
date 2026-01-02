@@ -1,0 +1,382 @@
+{
+  "ticker": "BBSE3",
+  "ultima_atualizacao": "2026-01-02T10:17:45.854676Z",
+  "total_dividendos": 46,
+  "dividendos": [
+    {
+      "data": "2025-08-14",
+      "data_pagamento": "2025-06-27",
+      "tipo": "DIVIDENDO",
+      "valor": 1.942095,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-02-20",
+      "data_pagamento": "2024-12-20",
+      "tipo": "DIVIDENDO",
+      "valor": 2.272329,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-02-20",
+      "data_pagamento": "2024-12-20",
+      "tipo": "RENDIMENTO",
+      "valor": 0.047832,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-08-16",
+      "data_pagamento": "2024-06-21",
+      "tipo": "DIVIDENDO",
+      "valor": 1.390909,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-02-08",
+      "data_pagamento": "2023-12-15",
+      "tipo": "DIVIDENDO",
+      "valor": 1.241876,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-02-08",
+      "data_pagamento": "2023-12-15",
+      "tipo": "RENDIMENTO",
+      "valor": 0.019413,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-08-16",
+      "data_pagamento": "2023-06-30",
+      "tipo": "DIVIDENDO",
+      "valor": 1.607637,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-02-14",
+      "data_pagamento": "2022-12-16",
+      "tipo": "DIVIDENDO",
+      "valor": 1.839874,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-02-14",
+      "data_pagamento": "2022-12-16",
+      "tipo": "RENDIMENTO",
+      "valor": 0.038704,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-08-17",
+      "data_pagamento": "2022-06-27",
+      "tipo": "DIVIDENDO",
+      "valor": 1.036045,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-02-10",
+      "data_pagamento": "2021-12-17",
+      "tipo": "RENDIMENTO",
+      "valor": 0.012894,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-02-10",
+      "data_pagamento": "2021-12-17",
+      "tipo": "DIVIDENDO",
+      "valor": 0.917154,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-08-11",
+      "data_pagamento": "2021-06-18",
+      "tipo": "DIVIDENDO",
+      "valor": 0.520875,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-02-11",
+      "data_pagamento": "2020-12-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.474808,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-02-11",
+      "data_pagamento": "2020-12-30",
+      "tipo": "RENDIMENTO",
+      "valor": 0.001314,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-08-12",
+      "data_pagamento": "2020-06-25",
+      "tipo": "DIVIDENDO",
+      "valor": 0.875255,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-02-13",
+      "data_pagamento": "2019-12-18",
+      "tipo": "RENDIMENTO",
+      "valor": 0.012457,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-02-13",
+      "data_pagamento": "2019-12-18",
+      "tipo": "DIVIDENDO",
+      "valor": 1.898384,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-01-09",
+      "data_pagamento": "2019-10-30",
+      "tipo": "REST CAP DIN",
+      "valor": 1.352298,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-08-09",
+      "data_pagamento": "2019-05-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.890683,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-08-09",
+      "data_pagamento": "2019-05-29",
+      "tipo": "RENDIMENTO",
+      "valor": 0.008136,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-02-14",
+      "data_pagamento": "2018-12-19",
+      "tipo": "DIVIDENDO",
+      "valor": 0.677191,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-02-14",
+      "data_pagamento": "2018-12-19",
+      "tipo": "RENDIMENTO",
+      "valor": 0.006701,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-12-11",
+      "data_pagamento": "2018-12-05",
+      "tipo": "DIVIDENDO",
+      "valor": 1.352301,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-08-09",
+      "data_pagamento": "2018-06-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.780899,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-08-09",
+      "data_pagamento": "2018-06-27",
+      "tipo": "RENDIMENTO",
+      "valor": 0.007145,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-02-22",
+      "data_pagamento": "2018-02-16",
+      "tipo": "DIVIDENDO",
+      "valor": 0.946684,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-02-22",
+      "data_pagamento": "2018-02-16",
+      "tipo": "RENDIMENTO",
+      "valor": 0.010951,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-08-10",
+      "data_pagamento": "2017-06-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.780989,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-08-10",
+      "data_pagamento": "2017-06-29",
+      "tipo": "RENDIMENTO",
+      "valor": 0.010649,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-02-16",
+      "data_pagamento": "2017-02-10",
+      "tipo": "DIVIDENDO",
+      "valor": 0.835756,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-02-16",
+      "data_pagamento": "2017-02-10",
+      "tipo": "RENDIMENTO",
+      "valor": 0.017274,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-08-11",
+      "data_pagamento": "2016-08-05",
+      "tipo": "DIVIDENDO",
+      "valor": 0.819149,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-08-11",
+      "data_pagamento": "2016-08-05",
+      "tipo": "RENDIMENTO",
+      "valor": 0.016951,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-02-23",
+      "data_pagamento": "2016-02-19",
+      "tipo": "RENDIMENTO",
+      "valor": 0.019137,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-02-23",
+      "data_pagamento": "2016-02-19",
+      "tipo": "DIVIDENDO",
+      "valor": 0.818638,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-08-12",
+      "data_pagamento": "2015-08-10",
+      "tipo": "DIVIDENDO",
+      "valor": 0.865729,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-08-12",
+      "data_pagamento": "2015-08-10",
+      "tipo": "RENDIMENTO",
+      "valor": 0.01804,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-02-12",
+      "data_pagamento": "2015-02-06",
+      "tipo": "DIVIDENDO",
+      "valor": 0.785018,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-02-12",
+      "data_pagamento": "2015-02-06",
+      "tipo": "RENDIMENTO",
+      "valor": 0.013479,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-08-18",
+      "data_pagamento": "2014-08-08",
+      "tipo": "DIVIDENDO",
+      "valor": 0.597661,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-08-18",
+      "data_pagamento": "2014-08-08",
+      "tipo": "RENDIMENTO",
+      "valor": 0.010896,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-02-14",
+      "data_pagamento": "2014-02-11",
+      "tipo": "DIVIDENDO",
+      "valor": 0.580577,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-02-14",
+      "data_pagamento": "2014-02-11",
+      "tipo": "RENDIMENTO",
+      "valor": 0.009073,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-08-19",
+      "data_pagamento": "2013-08-09",
+      "tipo": "DIVIDENDO",
+      "valor": 0.408924,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-08-19",
+      "data_pagamento": "2013-08-09",
+      "tipo": "RENDIMENTO",
+      "valor": 0.005864,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 28.8,
+    "total_ultimos_12m": 4.26,
+    "quantidade_ultimos_12m": 3,
+    "data_primeiro": "2013-08-19",
+    "data_ultimo": "2025-08-14"
+  }
+}

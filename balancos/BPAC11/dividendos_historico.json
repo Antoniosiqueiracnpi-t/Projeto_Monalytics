@@ -1,0 +1,838 @@
+{
+  "ticker": "BPAC11",
+  "ultima_atualizacao": "2026-01-02T10:15:42.109181Z",
+  "total_dividendos": 103,
+  "dividendos": [
+    {
+      "data": "2025-12-29",
+      "data_pagamento": "2025-12-22",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.049459,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-12-29",
+      "data_pagamento": "2025-12-22",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.049459,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-12-29",
+      "data_pagamento": "2025-12-22",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.148376,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-12-18",
+      "data_pagamento": "2025-12-15",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.165008,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-12-18",
+      "data_pagamento": "2025-12-15",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.495023,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-12-18",
+      "data_pagamento": "2025-12-15",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.165008,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-08-08",
+      "data_pagamento": "2025-08-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.604007,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-08-08",
+      "data_pagamento": "2025-08-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.201336,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-08-08",
+      "data_pagamento": "2025-08-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.201336,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-01-03",
+      "data_pagamento": "2024-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.049459,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-01-03",
+      "data_pagamento": "2024-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.049459,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-01-03",
+      "data_pagamento": "2024-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.148376,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-12-19",
+      "data_pagamento": "2024-12-16",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.10109,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-12-19",
+      "data_pagamento": "2024-12-16",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.10109,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-12-19",
+      "data_pagamento": "2024-12-16",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.303269,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-07-03",
+      "data_pagamento": "2024-06-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.135563,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-07-03",
+      "data_pagamento": "2024-06-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.135563,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-07-03",
+      "data_pagamento": "2024-06-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.40669,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-01-03",
+      "data_pagamento": "2023-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.148245,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-01-03",
+      "data_pagamento": "2023-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.049415,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-01-03",
+      "data_pagamento": "2023-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.049415,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-12-04",
+      "data_pagamento": "2023-11-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.230895,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-12-04",
+      "data_pagamento": "2023-11-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.076965,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-12-04",
+      "data_pagamento": "2023-11-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.076965,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-08-04",
+      "data_pagamento": "2023-08-01",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.401443,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-08-04",
+      "data_pagamento": "2023-08-01",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.133814,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-08-04",
+      "data_pagamento": "2023-08-01",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.133814,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-01-04",
+      "data_pagamento": "2022-12-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.147698,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-01-04",
+      "data_pagamento": "2022-12-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.049233,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-01-04",
+      "data_pagamento": "2022-12-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.049233,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-12-16",
+      "data_pagamento": "2022-12-13",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.196059,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-12-16",
+      "data_pagamento": "2022-12-13",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.065353,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-12-16",
+      "data_pagamento": "2022-12-13",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.065353,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-08-04",
+      "data_pagamento": "2022-08-01",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.313248,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-08-04",
+      "data_pagamento": "2022-08-01",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.104416,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-08-04",
+      "data_pagamento": "2022-08-01",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.104416,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-01-05",
+      "data_pagamento": "2021-12-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.147313,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-01-05",
+      "data_pagamento": "2021-12-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.049104,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-01-05",
+      "data_pagamento": "2021-12-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.049104,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-12-20",
+      "data_pagamento": "2021-12-15",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.022597,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-12-20",
+      "data_pagamento": "2021-12-15",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.06779,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-12-20",
+      "data_pagamento": "2021-12-15",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.022597,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-08-05",
+      "data_pagamento": "2021-08-02",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.056635,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-08-05",
+      "data_pagamento": "2021-08-02",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.056635,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-08-05",
+      "data_pagamento": "2021-08-02",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.169905,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-01-06",
+      "data_pagamento": "2020-12-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.207542,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-01-06",
+      "data_pagamento": "2020-12-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.622625,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-01-06",
+      "data_pagamento": "2020-12-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.207542,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-07-22",
+      "data_pagamento": "2020-07-17",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.196483,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-07-22",
+      "data_pagamento": "2020-07-17",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.196483,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-07-22",
+      "data_pagamento": "2020-07-17",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.589448,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-01-06",
+      "data_pagamento": "2019-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.206807,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-01-06",
+      "data_pagamento": "2019-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.62042,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-01-06",
+      "data_pagamento": "2019-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.206807,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-08-08",
+      "data_pagamento": "2019-08-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.238335,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-08-08",
+      "data_pagamento": "2019-08-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.715006,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-08-08",
+      "data_pagamento": "2019-08-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.238335,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-01-07",
+      "data_pagamento": "2018-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.230887,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-01-07",
+      "data_pagamento": "2018-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.230887,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-01-07",
+      "data_pagamento": "2018-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.692662,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-08-13",
+      "data_pagamento": "2018-08-07",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.224484,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-08-13",
+      "data_pagamento": "2018-08-07",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.224484,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-08-13",
+      "data_pagamento": "2018-08-07",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.673451,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-01-04",
+      "data_pagamento": "2017-12-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.22843,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-01-04",
+      "data_pagamento": "2017-12-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.22843,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-01-04",
+      "data_pagamento": "2017-12-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.685289,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-07-05",
+      "data_pagamento": "2017-06-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.686993,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-07-05",
+      "data_pagamento": "2017-06-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.228998,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-07-05",
+      "data_pagamento": "2017-06-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.228998,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-01-04",
+      "data_pagamento": "2016-12-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.322373,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-01-04",
+      "data_pagamento": "2016-12-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.322373,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-07-05",
+      "data_pagamento": "2016-06-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.18774,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-07-05",
+      "data_pagamento": "2016-06-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.18774,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-12-29",
+      "data_pagamento": "2015-12-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.181131,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-12-29",
+      "data_pagamento": "2015-12-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.181131,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-08-11",
+      "data_pagamento": "2015-08-05",
+      "tipo": "DIVIDENDO",
+      "valor": 0.017431,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-08-11",
+      "data_pagamento": "2015-08-05",
+      "tipo": "DIVIDENDO",
+      "valor": 0.017431,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-07-06",
+      "data_pagamento": "2015-06-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.155438,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-07-06",
+      "data_pagamento": "2015-06-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.155438,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-03-02",
+      "data_pagamento": "2015-02-25",
+      "tipo": "DIVIDENDO",
+      "valor": 0.039092,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-03-02",
+      "data_pagamento": "2015-02-25",
+      "tipo": "DIVIDENDO",
+      "valor": 0.039092,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-01-06",
+      "data_pagamento": "2014-12-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.109838,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-01-06",
+      "data_pagamento": "2014-12-30",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.109838,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-08-11",
+      "data_pagamento": "2014-08-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.111164,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-08-11",
+      "data_pagamento": "2014-08-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.111164,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-08-11",
+      "data_pagamento": "2014-08-05",
+      "tipo": "DIVIDENDO",
+      "valor": 0.054013,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-08-11",
+      "data_pagamento": "2014-08-05",
+      "tipo": "DIVIDENDO",
+      "valor": 0.054013,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-02-21",
+      "data_pagamento": "2014-02-18",
+      "tipo": "DIVIDENDO",
+      "valor": 0.048691,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-02-21",
+      "data_pagamento": "2014-02-18",
+      "tipo": "DIVIDENDO",
+      "valor": 0.048691,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-12-23",
+      "data_pagamento": "2013-12-17",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.090943,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-12-23",
+      "data_pagamento": "2013-12-17",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.090943,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-08-09",
+      "data_pagamento": "2013-08-06",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.093926,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-08-09",
+      "data_pagamento": "2013-08-06",
+      "tipo": "DIVIDENDO",
+      "valor": 0.022272,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-08-09",
+      "data_pagamento": "2013-08-06",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.093926,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-08-09",
+      "data_pagamento": "2013-08-06",
+      "tipo": "DIVIDENDO",
+      "valor": 0.022272,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-02-22",
+      "data_pagamento": "2013-02-19",
+      "tipo": "DIVIDENDO",
+      "valor": 0.070826,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-02-22",
+      "data_pagamento": "2013-02-19",
+      "tipo": "DIVIDENDO",
+      "valor": 0.070826,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-12-26",
+      "data_pagamento": "2012-12-19",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.081241,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-12-26",
+      "data_pagamento": "2012-12-19",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.081241,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-08-14",
+      "data_pagamento": "2012-08-09",
+      "tipo": "DIVIDENDO",
+      "valor": 0.068573,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-08-14",
+      "data_pagamento": "2012-08-09",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.083069,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-08-14",
+      "data_pagamento": "2012-08-09",
+      "tipo": "DIVIDENDO",
+      "valor": 0.068573,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-08-14",
+      "data_pagamento": "2012-08-09",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.083069,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 18.83,
+    "total_ultimos_12m": 2.33,
+    "quantidade_ultimos_12m": 12,
+    "data_primeiro": "2012-08-14",
+    "data_ultimo": "2025-12-29"
+  }
+}

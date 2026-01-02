@@ -1,0 +1,70 @@
+{
+  "ticker": "CSED3",
+  "ultima_atualizacao": "2026-01-02T10:14:51.257427Z",
+  "total_dividendos": 7,
+  "dividendos": [
+    {
+      "data": "2025-12-18",
+      "data_pagamento": "2025-12-10",
+      "tipo": "DIVIDENDO",
+      "valor": 0.274316,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-04-30",
+      "data_pagamento": "2025-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.211224,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-08-27",
+      "data_pagamento": "2024-08-22",
+      "tipo": "DIVIDENDO",
+      "valor": 0.16459,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-11-14",
+      "data_pagamento": "2023-11-09",
+      "tipo": "DIVIDENDO",
+      "valor": 0.16459,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-04-28",
+      "data_pagamento": "2023-04-28",
+      "tipo": "DIVIDENDO",
+      "valor": 0.068807,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-29",
+      "data_pagamento": "2022-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.130951,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-04-30",
+      "data_pagamento": "2021-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.18819,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 1.2,
+    "total_ultimos_12m": 0.49,
+    "quantidade_ultimos_12m": 2,
+    "data_primeiro": "2021-04-30",
+    "data_ultimo": "2025-12-18"
+  }
+}

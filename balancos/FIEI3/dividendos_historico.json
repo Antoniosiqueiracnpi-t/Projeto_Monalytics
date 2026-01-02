@@ -1,0 +1,126 @@
+{
+  "ticker": "FIEI3",
+  "ultima_atualizacao": "2026-01-02T10:14:35.286371Z",
+  "total_dividendos": 14,
+  "dividendos": [
+    {
+      "data": "2020-05-13",
+      "data_pagamento": "2020-05-04",
+      "tipo": "REST CAP DIN",
+      "valor": 2.065,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-05-13",
+      "data_pagamento": "2020-05-04",
+      "tipo": "REST CAP DIN",
+      "valor": 2.065,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-04-01",
+      "data_pagamento": "2020-03-23",
+      "tipo": "REST CAP DIN",
+      "valor": 10.32,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-04-27",
+      "data_pagamento": "2015-02-10",
+      "tipo": "REST CAP DIN",
+      "valor": 0.25,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-04-27",
+      "data_pagamento": "2015-02-10",
+      "tipo": "REST CAP DIN",
+      "valor": 0.25,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-04-27",
+      "data_pagamento": "2015-02-10",
+      "tipo": "REST CAP DIN",
+      "valor": 0.25,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-04-27",
+      "data_pagamento": "2015-02-10",
+      "tipo": "REST CAP DIN",
+      "valor": 0.25,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-04-30",
+      "data_pagamento": "2012-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.036347,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2011-05-02",
+      "data_pagamento": "2011-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.5,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2010-11-18",
+      "data_pagamento": "2010-11-17",
+      "tipo": "DIVIDENDO",
+      "valor": 0.39,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2010-04-30",
+      "data_pagamento": "2010-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.077717,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2008-12-26",
+      "data_pagamento": "2008-12-23",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.195074,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2008-08-15",
+      "data_pagamento": "2008-08-14",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.243691,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2007-11-26",
+      "data_pagamento": "2007-11-19",
+      "tipo": "DIVIDENDO",
+      "valor": 0.007607,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 16.9,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2007-11-26",
+    "data_ultimo": "2020-05-13"
+  }
+}

@@ -1,0 +1,814 @@
+{
+  "ticker": "LEVE3",
+  "ultima_atualizacao": "2026-01-02T10:14:20.964679Z",
+  "total_dividendos": 100,
+  "dividendos": [
+    {
+      "data": "2025-12-16",
+      "data_pagamento": "2025-12-11",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.206159,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-11-14",
+      "data_pagamento": "2025-11-11",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.608935,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-04-29",
+      "data_pagamento": "2025-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.220119,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-04-29",
+      "data_pagamento": "2025-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 1.686722,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-12-19",
+      "data_pagamento": "2024-12-16",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.190647,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-11-08",
+      "data_pagamento": "2024-11-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.539198,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-04-29",
+      "data_pagamento": "2024-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 1.632479,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-12-21",
+      "data_pagamento": "2023-12-18",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.168138,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-11-10",
+      "data_pagamento": "2023-11-07",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.650993,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-11-01",
+      "data_pagamento": "2023-10-23",
+      "tipo": "DIVIDENDO",
+      "valor": 5.54,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-04-27",
+      "data_pagamento": "2023-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 1.902688,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-04-27",
+      "data_pagamento": "2023-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 1.368348,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-04-27",
+      "data_pagamento": "2023-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.251316,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-12-29",
+      "data_pagamento": "2022-12-26",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.835035,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-27",
+      "data_pagamento": "2022-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.505706,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-27",
+      "data_pagamento": "2022-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 3.151997,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-12-30",
+      "data_pagamento": "2021-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.544959,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-04-29",
+      "data_pagamento": "2021-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.378625,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-01-04",
+      "data_pagamento": "2020-12-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.550402,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-01-02",
+      "data_pagamento": "2019-12-26",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.092914,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-11-21",
+      "data_pagamento": "2019-11-14",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.545566,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-05-06",
+      "data_pagamento": "2019-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 1.498172,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-01-02",
+      "data_pagamento": "2018-12-26",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.113361,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-11-19",
+      "data_pagamento": "2018-11-13",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.558525,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-05-04",
+      "data_pagamento": "2018-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 1.119443,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-01-03",
+      "data_pagamento": "2017-12-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.11592,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-11-21",
+      "data_pagamento": "2017-11-14",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.17237,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-08-11",
+      "data_pagamento": "2017-08-08",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.397255,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-08-12",
+      "data_pagamento": "2016-08-09",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.24128,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-04-27",
+      "data_pagamento": "2016-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.202833,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-04-27",
+      "data_pagamento": "2016-04-27",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.180338,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-12-29",
+      "data_pagamento": "2015-12-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.058271,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-12-08",
+      "data_pagamento": "2015-12-08",
+      "tipo": "DIVIDENDO",
+      "valor": 0.734564,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-12-08",
+      "data_pagamento": "2015-12-08",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.21836,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-08-03",
+      "data_pagamento": "2015-08-03",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.197099,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-04-29",
+      "data_pagamento": "2015-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.359458,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-04-29",
+      "data_pagamento": "2015-04-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.13424,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-12-29",
+      "data_pagamento": "2014-12-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.041324,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-12-05",
+      "data_pagamento": "2014-12-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.160976,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-12-05",
+      "data_pagamento": "2014-12-05",
+      "tipo": "DIVIDENDO",
+      "valor": 0.834302,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-08-08",
+      "data_pagamento": "2014-08-08",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.160882,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-04-23",
+      "data_pagamento": "2014-04-23",
+      "tipo": "DIVIDENDO",
+      "valor": 0.698487,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-04-23",
+      "data_pagamento": "2014-04-23",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.125379,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-12-06",
+      "data_pagamento": "2013-12-06",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.03787,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-12-06",
+      "data_pagamento": "2013-12-06",
+      "tipo": "DIVIDENDO",
+      "valor": 0.623941,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-08-07",
+      "data_pagamento": "2013-08-07",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.129987,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-04-19",
+      "data_pagamento": "2013-04-19",
+      "tipo": "DIVIDENDO",
+      "valor": 0.350658,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2013-04-19",
+      "data_pagamento": "2013-04-19",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.105652,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-12-28",
+      "data_pagamento": "2012-12-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.060312,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-12-04",
+      "data_pagamento": "2012-12-04",
+      "tipo": "DIVIDENDO",
+      "valor": 0.603864,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-12-04",
+      "data_pagamento": "2012-12-04",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.137667,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-08-01",
+      "data_pagamento": "2012-08-01",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.17039,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-04-10",
+      "data_pagamento": "2012-04-10",
+      "tipo": "DIVIDENDO",
+      "valor": 0.466695,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2012-04-10",
+      "data_pagamento": "2012-04-10",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.390462,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2011-12-29",
+      "data_pagamento": "2011-12-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.148177,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2011-12-09",
+      "data_pagamento": "2011-12-09",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.576077,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2011-12-09",
+      "data_pagamento": "2011-12-09",
+      "tipo": "DIVIDENDO",
+      "valor": 2.651767,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2011-08-15",
+      "data_pagamento": "2011-08-12",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.974747,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2010-11-10",
+      "data_pagamento": "2010-11-09",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.782294,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2010-11-10",
+      "data_pagamento": "2010-11-09",
+      "tipo": "DIVIDENDO",
+      "valor": 1.729426,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2010-11-10",
+      "data_pagamento": "2010-11-09",
+      "tipo": "DIVIDENDO",
+      "valor": 1.902368,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2010-11-10",
+      "data_pagamento": "2010-11-09",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.860523,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2009-12-15",
+      "data_pagamento": "2009-12-15",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 1.019823,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2009-12-15",
+      "data_pagamento": "2009-12-15",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 1.121806,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2008-11-28",
+      "data_pagamento": "2008-11-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.990471,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2008-11-28",
+      "data_pagamento": "2008-11-28",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 1.089518,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2008-04-30",
+      "data_pagamento": "2008-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.340843,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2008-04-30",
+      "data_pagamento": "2008-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.309858,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2007-12-04",
+      "data_pagamento": "2007-12-04",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.949799,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2007-12-04",
+      "data_pagamento": "2007-12-04",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.863454,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2007-04-26",
+      "data_pagamento": "2007-04-26",
+      "tipo": "DIVIDENDO",
+      "valor": 0.619715,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2007-04-26",
+      "data_pagamento": "2007-04-26",
+      "tipo": "DIVIDENDO",
+      "valor": 0.681687,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2006-12-05",
+      "data_pagamento": "2006-12-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.959055,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2006-12-05",
+      "data_pagamento": "2006-12-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 1.05496,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2006-04-18",
+      "data_pagamento": "2006-04-18",
+      "tipo": "DIVIDENDO",
+      "valor": 6.22952,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2006-04-18",
+      "data_pagamento": "2006-04-18",
+      "tipo": "DIVIDENDO",
+      "valor": 5.66321,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2006-04-18",
+      "data_pagamento": "2006-04-18",
+      "tipo": "DIVIDENDO",
+      "valor": 1.38888,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2006-04-18",
+      "data_pagamento": "2006-04-18",
+      "tipo": "DIVIDENDO",
+      "valor": 1.26255,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2005-12-06",
+      "data_pagamento": "2005-12-06",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 1.72468,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2005-12-06",
+      "data_pagamento": "2005-12-06",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 1.89714,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2005-04-29",
+      "data_pagamento": "2005-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 13.2166,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2005-04-29",
+      "data_pagamento": "2005-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 12.0151,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2004-12-02",
+      "data_pagamento": "2004-12-02",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 6.263714,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2004-12-02",
+      "data_pagamento": "2004-12-02",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 5.694285,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2003-12-01",
+      "data_pagamento": "2003-12-01",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 5.179476,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2003-12-01",
+      "data_pagamento": "2003-12-01",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 5.697424,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2003-04-23",
+      "data_pagamento": "2003-04-23",
+      "tipo": "DIVIDENDO",
+      "valor": 0.959,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2003-04-23",
+      "data_pagamento": "2003-04-23",
+      "tipo": "DIVIDENDO",
+      "valor": 1.0549,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2002-12-05",
+      "data_pagamento": "2002-12-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 2.06517,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2002-12-05",
+      "data_pagamento": "2002-12-05",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 1.877427,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2002-09-17",
+      "data_pagamento": "2002-09-17",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 1.384392,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2002-09-17",
+      "data_pagamento": "2002-09-17",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 1.258538,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2002-04-24",
+      "data_pagamento": "2002-04-24",
+      "tipo": "DIVIDENDO",
+      "valor": 4.563,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2002-04-24",
+      "data_pagamento": "2002-04-24",
+      "tipo": "DIVIDENDO",
+      "valor": 4.148,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2001-04-30",
+      "data_pagamento": "2001-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 2.183,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2001-04-30",
+      "data_pagamento": "2001-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 2.401,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2000-04-27",
+      "data_pagamento": "2000-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 1.112,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2000-04-27",
+      "data_pagamento": "2000-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 1.223,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "1998-03-31",
+      "data_pagamento": "1998-03-31",
+      "tipo": "DIVIDENDO",
+      "valor": 0.167,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "1998-03-31",
+      "data_pagamento": "1998-03-31",
+      "tipo": "DIVIDENDO",
+      "valor": 0.184,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 143.41,
+    "total_ultimos_12m": 2.72,
+    "quantidade_ultimos_12m": 4,
+    "data_primeiro": "1998-03-31",
+    "data_ultimo": "2025-12-16"
+  }
+}

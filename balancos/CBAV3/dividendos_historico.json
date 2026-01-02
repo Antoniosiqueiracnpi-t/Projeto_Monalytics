@@ -1,0 +1,46 @@
+{
+  "ticker": "CBAV3",
+  "ultima_atualizacao": "2026-01-02T10:17:21.234722Z",
+  "total_dividendos": 4,
+  "dividendos": [
+    {
+      "data": "2023-04-27",
+      "data_pagamento": "2023-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.345806,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-12-06",
+      "data_pagamento": "2022-11-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.094788,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-29",
+      "data_pagamento": "2022-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.095865,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-29",
+      "data_pagamento": "2022-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.192806,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.73,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2022-04-29",
+    "data_ultimo": "2023-04-27"
+  }
+}

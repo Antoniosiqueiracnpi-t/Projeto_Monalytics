@@ -1,0 +1,78 @@
+{
+  "ticker": "ANIM3",
+  "ultima_atualizacao": "2026-01-02T10:14:50.631659Z",
+  "total_dividendos": 8,
+  "dividendos": [
+    {
+      "data": "2025-04-24",
+      "data_pagamento": "2025-04-24",
+      "tipo": "DIVIDENDO",
+      "valor": 0.05354,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-08-13",
+      "data_pagamento": "2024-08-08",
+      "tipo": "DIVIDENDO",
+      "valor": 0.47127,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-04-25",
+      "data_pagamento": "2019-04-25",
+      "tipo": "DIVIDENDO",
+      "valor": 0.0069,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-04-25",
+      "data_pagamento": "2018-04-25",
+      "tipo": "DIVIDENDO",
+      "valor": 0.2536,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2017-04-26",
+      "data_pagamento": "2017-04-26",
+      "tipo": "DIVIDENDO",
+      "valor": 0.0619,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2016-04-25",
+      "data_pagamento": "2016-04-25",
+      "tipo": "DIVIDENDO",
+      "valor": 0.1875,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2015-03-30",
+      "data_pagamento": "2015-03-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.4728,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2014-04-30",
+      "data_pagamento": "2014-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.11002,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 1.62,
+    "total_ultimos_12m": 0.05,
+    "quantidade_ultimos_12m": 1,
+    "data_primeiro": "2014-04-30",
+    "data_ultimo": "2025-04-24"
+  }
+}

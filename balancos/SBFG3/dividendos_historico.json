@@ -1,0 +1,46 @@
+{
+  "ticker": "SBFG3",
+  "ultima_atualizacao": "2026-01-02T10:14:31.849422Z",
+  "total_dividendos": 4,
+  "dividendos": [
+    {
+      "data": "2025-04-25",
+      "data_pagamento": "2025-04-25",
+      "tipo": "DIVIDENDO",
+      "valor": 0.548366,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-04-26",
+      "data_pagamento": "2024-04-26",
+      "tipo": "DIVIDENDO",
+      "valor": 0.173525,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-04-28",
+      "data_pagamento": "2023-04-28",
+      "tipo": "DIVIDENDO",
+      "valor": 0.13582,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-29",
+      "data_pagamento": "2022-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.117848,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.98,
+    "total_ultimos_12m": 0.55,
+    "quantidade_ultimos_12m": 1,
+    "data_primeiro": "2022-04-29",
+    "data_ultimo": "2025-04-25"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "ticker": "LMED3",
+  "ultima_atualizacao": "2026-01-02T10:15:08.475518Z",
+  "total_dividendos": 5,
+  "dividendos": [
+    {
+      "data": "2022-04-27",
+      "data_pagamento": "2022-04-25",
+      "tipo": "DIVIDENDO",
+      "valor": 8.832326,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-27",
+      "data_pagamento": "2022-04-25",
+      "tipo": "RENDIMENTO",
+      "valor": 0.66556,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-06-30",
+      "data_pagamento": "2021-06-15",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.889468,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-04-22",
+      "data_pagamento": "2021-04-19",
+      "tipo": "DIVIDENDO",
+      "valor": 2.497351,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-04-20",
+      "data_pagamento": "2020-04-17",
+      "tipo": "DIVIDENDO",
+      "valor": 1.297219,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 14.18,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2020-04-20",
+    "data_ultimo": "2022-04-27"
+  }
+}
