@@ -2,11 +2,9 @@
 # Site estático dentro da pasta site/
 
 [build]
-  # Publica apenas a pasta site/ (ignora Python da raiz)
   publish = "site/"
-  
-  # Sem comando de build
-  command = ""
+  command = "echo 'Static site only'"
+  ignore = "exit 0"
 
 [[redirects]]
   from = "/*"
