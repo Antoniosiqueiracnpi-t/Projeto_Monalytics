@@ -524,7 +524,7 @@ const SECURITY_CONFIG = {
         'newmonalytics.netlify.app', 
         'localhost',
         '127.0.0.1'
-    ]
+    ],
     
     // Cache de dados em memória (ms)
     CACHE_DURATION: 30000, // 30 segundos
