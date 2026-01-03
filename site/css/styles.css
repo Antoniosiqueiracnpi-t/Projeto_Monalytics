@@ -323,7 +323,7 @@ body {
 
 .monalytics-logo {
     width: 100%;
-    max-width: 500px;
+    max-width: 350px !important;  /* Reduzido de 500px */
     height: auto;
     display: block;
     margin: 0 auto;
@@ -337,6 +337,7 @@ body {
     grid-template-columns: 1fr;
     gap: 1rem;
     margin-top: 2rem;
+    margin-bottom: 3rem !important;  /* Espaço extra inferior */
 }
 
 .stat-card {
@@ -376,13 +377,14 @@ body {
     color: var(--text-secondary);
 }
 
-/* Scroll Indicator */
+/* Empurrar botão Explore para baixo */
 .scroll-indicator {
     position: absolute;
-    bottom: 2rem;
+    bottom: 1rem !important;  /* Reduzido de 2rem */
     left: 50%;
     transform: translateX(-50%);
     animation: bounce 2s infinite;
+    z-index: 1;  /* Evita sobreposição */
 }
 
 .scroll-link {
@@ -1423,7 +1425,16 @@ textarea:focus {
     .carousel-arrow.next {
         right: 10px;
     }
+
+    .monalytics-logo {
+        max-width: 240px !important;
+    }
+    
+    .scroll-indicator {
+        bottom: 0.5rem !important;
+    }
 }
+    
 
 /* Mobile Small (320px - 480px) */
 @media screen and (max-width: 480px) {
