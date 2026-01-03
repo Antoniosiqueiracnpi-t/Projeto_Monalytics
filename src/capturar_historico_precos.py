@@ -271,6 +271,37 @@ def calcular_medias_moveis(df: pd.DataFrame, periodos: List[int] = PERIODOS_MM) 
 
 
 # ======================================================================================
+# ANÁLISE DE TENDÊNCIA
+# ======================================================================================
+
+def calcular_tendencia(preco: float, mm20: float, mm50: float, mm200: float) -> str:
+    """
+    Determina tendência baseada em preço e médias móveis.
+    
+    Args:
+        preco: Preço de fechamento atual
+        mm20, mm50, mm200: Valores das médias móveis
+    
+    Returns:
+        "alta" | "baixa" | "indefinida"
+    """
+    # Verificar se todos os valores são válidos
+    if any(pd.isna(v) or v is None for v in [preco, mm20, mm50, mm200]):
+        return "indefinida"
+    
+    # Tendência de ALTA: Preço > MM20 > MM50 > MM200
+    if preco > mm20 > mm50 > mm200:
+        return "alta"
+    
+    # Tendência de BAIXA: Preço < MM20 < MM50 < MM200
+    if preco < mm20 < mm50 < mm200:
+        return "baixa"
+    
+    # Qualquer outra configuração
+    return "indefinida"
+
+
+# ======================================================================================
 # ESTATÍSTICAS
 # ======================================================================================
 
@@ -324,6 +355,29 @@ def calcular_estatisticas(df: pd.DataFrame) -> Dict:
             except Exception:
                 volume_medio = 0
 
+    # ANÁLISE DE TENDÊNCIA (último dia com médias válidas)
+    tendencia = "indefinida"
+    try:
+        # Pegar último registro com todas as médias válidas
+        ultimos_validos = df[
+            df['mm20'].notna() & 
+            df['mm50'].notna() & 
+            df['mm200'].notna()
+        ]
+        
+        if len(ultimos_validos) > 0:
+            ultimo = ultimos_validos.iloc[-1]
+            
+            # Extrair valores (garantindo que são float)
+            preco = float(ultimo['fechamento']) if isinstance(ultimo['fechamento'], (int, float, np.number)) else float(ultimo['fechamento'].iloc[0])
+            mm20 = float(ultimo['mm20']) if isinstance(ultimo['mm20'], (int, float, np.number)) else float(ultimo['mm20'].iloc[0])
+            mm50 = float(ultimo['mm50']) if isinstance(ultimo['mm50'], (int, float, np.number)) else float(ultimo['mm50'].iloc[0])
+            mm200 = float(ultimo['mm200']) if isinstance(ultimo['mm200'], (int, float, np.number)) else float(ultimo['mm200'].iloc[0])
+            
+            tendencia = calcular_tendencia(preco, mm20, mm50, mm200)
+    except Exception:
+        tendencia = "indefinida"
+
     return {
         "total_dias": int(len(df)),
         "preco_inicial": round(primeiro_preco, 2),
@@ -331,7 +385,8 @@ def calcular_estatisticas(df: pd.DataFrame) -> Dict:
         "variacao_periodo": round(float(variacao_pct), 2),
         "maxima_periodo": round(float(fechamento.max()), 2),
         "minima_periodo": round(float(fechamento.min()), 2),
-        "volume_medio": volume_medio
+        "volume_medio": volume_medio,
+        "tendencia": tendencia
     }
 
 
