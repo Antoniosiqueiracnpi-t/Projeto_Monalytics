@@ -196,7 +196,13 @@ jobs:
       - name: Capturar histórico de preços (5 anos)
         continue-on-error: true
         run: |
-          python src/capturar_historico_precos.py --modo lista --lista "${TICKERS}" --incluir-ibov     
+          python src/capturar_historico_precos.py --modo lista --lista "${TICKERS}" --incluir-ibov   
+
+      - name: Analisar Balanços
+        id: analise
+        continue-on-error: true
+        run: |
+          python src/analisar_balancos.py --modo lista --lista "${TICKERS}"          
           
 
       # ========================================================================
@@ -284,6 +290,7 @@ jobs:
           echo "  - Acionistas:            ${{ steps.acionistas.outcome }}"
           echo "  - Logos:                 ${{ steps.logos.outcome }}"
           echo "  - Notícias:              ${{ steps.noticias.outcome }}"
+          echo "  - Análise Balanços:      ${{ steps.analise.outcome }}"
           echo ""
           echo "🔄 PADRONIZAÇÕES:"
           echo "  - DRE:                   ${{ steps.dre.outcome }}"
