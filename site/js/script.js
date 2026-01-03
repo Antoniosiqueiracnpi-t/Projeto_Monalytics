@@ -333,12 +333,14 @@ if (typeof module !== 'undefined' && module.exports) {
  */
 
 // =========================== VARIÁVEIS GLOBAIS ===========================
-const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/asiqueira013/Projeto_Monalytics/main/balancos';
+// Tenta primeiro master, depois main como fallback
+const GITHUB_BRANCHES = ['master', 'main'];
+const GITHUB_REPO = 'https://raw.githubusercontent.com/asiqueira013/Projeto_Monalytics';
 
-const DATA_URLS = {
-    bolsa: `${GITHUB_BASE_URL}/IBOV/monitor_diario.json`,
-    indicadores: `${GITHUB_BASE_URL}/INDICADORES/indicadores_economicos.json`,
-    noticias: `${GITHUB_BASE_URL}/feed_noticias.json`
+const DATA_PATHS = {
+    bolsa: '/balancos/IBOV/monitor_diario.json',
+    indicadores: '/balancos/INDICADORES/indicadores_economicos.json',
+    noticias: '/balancos/feed_noticias.json'
 };
 
 let currentSlide = 0;
@@ -489,17 +491,30 @@ async function loadAllData() {
 }
 
 /**
- * Faz requisição HTTP e retorna JSON
+ * Faz requisição HTTP com fallback de branches
  */
-async function fetchJSON(url) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return await response.json();
-    } catch (error) {
-        console.error(`Erro ao carregar ${url}:`, error);
-        return null;
+async function fetchJSON(dataType) {
+    const path = DATA_PATHS[dataType];
+    
+    // Tenta cada branch sequencialmente
+    for (const branch of GITHUB_BRANCHES) {
+        const url = `${GITHUB_REPO}/${branch}${path}`;
+        
+        try {
+            console.log(`Tentando carregar: ${url}`);
+            const response = await fetch(url);
+            
+            if (response.ok) {
+                console.log(`✅ Sucesso: ${url}`);
+                return await response.json();
+            }
+        } catch (error) {
+            console.warn(`Falha no branch ${branch}:`, error.message);
+        }
     }
+    
+    console.error(`❌ Falha ao carregar ${dataType} de todos os branches`);
+    return null;
 }
 
 // =========================== SLIDE 1: DESTAQUES DA BOLSA ===========================
@@ -508,7 +523,7 @@ async function fetchJSON(url) {
  * Carrega e renderiza dados da bolsa
  */
 async function loadBolsaData() {
-    const data = await fetchJSON(DATA_URLS.bolsa);
+    const data = await fetchJSON('bolsa');
     
     if (!data) {
         showError('bolsaLoading', 'Erro ao carregar dados da bolsa');
@@ -609,7 +624,7 @@ function initTabs() {
  * Carrega e renderiza indicadores econômicos
  */
 async function loadIndicadoresData() {
-    const data = await fetchJSON(DATA_URLS.indicadores);
+    const data = await fetchJSON('indicadores');
     
     if (!data) {
         showError('indicadoresLoading', 'Erro ao carregar indicadores');
@@ -668,7 +683,7 @@ function renderIndicadoresData(data) {
  * Carrega e renderiza notícias/comunicados
  */
 async function loadNoticiasData() {
-    const data = await fetchJSON(DATA_URLS.noticias);
+    const data = await fetchJSON('noticias');
     
     if (!data) {
         showError('noticiasLoading', 'Erro ao carregar comunicados');
