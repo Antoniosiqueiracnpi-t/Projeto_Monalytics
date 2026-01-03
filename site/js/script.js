@@ -333,7 +333,7 @@ if (typeof module !== 'undefined' && module.exports) {
  */
 
 // =========================== VARIÁVEIS GLOBAIS ===========================
-const GITHUB_API_BASE = 'https://api.github.com/repos/asiqueira013/Projeto_Monalytics/contents';
+const GITHUB_API_BASE = 'https://api.github.com/repos/Antoniosiqueiracnpi-t/Projeto_Monalytics/contents';
 const GITHUB_BRANCHES = ['master', 'main'];
 
 const DATA_PATHS = {
@@ -538,7 +538,7 @@ const SECURITY_CONFIG = {
 // ================================================================
 
 const DATA_CONFIG = {
-    GITHUB_RAW: 'https://raw.githubusercontent.com/asiqueira013/Projeto_Monalytics',
+    GITHUB_RAW: 'https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics',
     BRANCH: 'main', // ou 'master'
     
     PATHS: {
