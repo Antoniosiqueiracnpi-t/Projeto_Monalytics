@@ -50,13 +50,13 @@ jobs:
           # Adicionar apenas o arquivo de monitoramento
           git add balancos/IBOV/monitor_diario.json
 
-          # Verificar novamente após add
-          if [ -z "$(git diff --staged --quiet)" ]; then
+          # Verificar novamente após add (CORREÇÃO AQUI!)
+          if git diff --staged --quiet; then
             echo "✅ Sem alterações staged"
             exit 0
           fi
 
           # Commit com timestamp
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
-          git commit -m "Monitor IBOVESPA: ${TIMESTAMP}" || echo "Sem mudanças para commitar"
-          git push || echo "Nada para enviar"
+          git commit -m "Monitor IBOVESPA: ${TIMESTAMP}"
+          git push
