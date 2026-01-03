@@ -1,0 +1,106 @@
+{
+  "ultima_atualizacao": "2026-01-03T19:48:03.028433",
+  "total_acoes": 84,
+  "estatisticas": {
+    "variacao_media": -0.93,
+    "acoes_em_alta": 21,
+    "acoes_em_baixa": 62,
+    "acoes_estaveis": 1
+  },
+  "top_5_altas": [
+    {
+      "ticker": "PCAR3",
+      "variacao_pct": 4.21,
+      "preco_atual": 3.96,
+      "volume": 11494300
+    },
+    {
+      "ticker": "SLCE3",
+      "variacao_pct": 3.67,
+      "preco_atual": 14.79,
+      "volume": 4996500
+    },
+    {
+      "ticker": "KLBN11",
+      "variacao_pct": 1.76,
+      "preco_atual": 19.09,
+      "volume": 3933000
+    },
+    {
+      "ticker": "VBBR3",
+      "variacao_pct": 1.7,
+      "preco_atual": 25.76,
+      "volume": 9656400
+    },
+    {
+      "ticker": "TIMS3",
+      "variacao_pct": 1.41,
+      "preco_atual": 21.64,
+      "volume": 5150400
+    }
+  ],
+  "top_5_baixas": [
+    {
+      "ticker": "CYRE3",
+      "variacao_pct": -19.11,
+      "preco_atual": 23.96,
+      "volume": 5777400
+    },
+    {
+      "ticker": "BEEF3",
+      "variacao_pct": -6.77,
+      "preco_atual": 5.37,
+      "volume": 23036900
+    },
+    {
+      "ticker": "DIRR3",
+      "variacao_pct": -3.47,
+      "preco_atual": 13.63,
+      "volume": 10710200
+    },
+    {
+      "ticker": "NATU3",
+      "variacao_pct": -3.36,
+      "preco_atual": 7.2,
+      "volume": 5328000
+    },
+    {
+      "ticker": "VIVA3",
+      "variacao_pct": -2.95,
+      "preco_atual": 32.26,
+      "volume": 1686100
+    }
+  ],
+  "top_5_volumes": [
+    {
+      "ticker": "CSAN3",
+      "volume": 84158900,
+      "variacao_pct": -1.32,
+      "preco_atual": 5.25
+    },
+    {
+      "ticker": "VALE3",
+      "volume": 28418900,
+      "variacao_pct": 0.58,
+      "preco_atual": 72.38
+    },
+    {
+      "ticker": "B3SA3",
+      "volume": 25030000,
+      "variacao_pct": -0.59,
+      "preco_atual": 13.43
+    },
+    {
+      "ticker": "ABEV3",
+      "volume": 24557600,
+      "variacao_pct": -1.52,
+      "preco_atual": 13.65
+    },
+    {
+      "ticker": "BEEF3",
+      "volume": 23036900,
+      "variacao_pct": -6.77,
+      "preco_atual": 5.37
+    }
+  ]
+}
