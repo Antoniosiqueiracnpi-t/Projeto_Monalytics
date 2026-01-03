@@ -1,0 +1,150 @@
+{
+  "ticker": "CURY3",
+  "ultima_atualizacao": "2026-01-03T10:13:17.218132Z",
+  "total_dividendos": 17,
+  "dividendos": [
+    {
+      "data": "2025-12-16",
+      "data_pagamento": "2025-12-11",
+      "tipo": "DIVIDENDO",
+      "valor": 1.860102,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-11-27",
+      "data_pagamento": "2025-11-24",
+      "tipo": "DIVIDENDO",
+      "valor": 0.856531,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-09-30",
+      "data_pagamento": "2025-09-25",
+      "tipo": "DIVIDENDO",
+      "valor": 0.685225,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-04-17",
+      "data_pagamento": "2025-04-17",
+      "tipo": "DIVIDENDO",
+      "valor": 0.266206,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-04-17",
+      "data_pagamento": "2025-04-17",
+      "tipo": "DIVIDENDO",
+      "valor": 0.266206,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-02-10",
+      "data_pagamento": "2025-02-05",
+      "tipo": "DIVIDENDO",
+      "valor": 0.603689,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-10-04",
+      "data_pagamento": "2024-10-01",
+      "tipo": "DIVIDENDO",
+      "valor": 0.344965,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-05-08",
+      "data_pagamento": "2024-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.914158,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-04-30",
+      "data_pagamento": "2024-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.40891,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-12-04",
+      "data_pagamento": "2023-11-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.344965,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-09-22",
+      "data_pagamento": "2023-09-19",
+      "tipo": "DIVIDENDO",
+      "valor": 0.517448,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-04-28",
+      "data_pagamento": "2023-04-28",
+      "tipo": "DIVIDENDO",
+      "valor": 0.063293,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-01-24",
+      "data_pagamento": "2023-01-19",
+      "tipo": "DIVIDENDO",
+      "valor": 0.206979,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-29",
+      "data_pagamento": "2022-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.51535,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-12-07",
+      "data_pagamento": "2021-12-01",
+      "tipo": "DIVIDENDO",
+      "valor": 0.113062,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-12-07",
+      "data_pagamento": "2021-12-01",
+      "tipo": "DIVIDENDO",
+      "valor": 0.058244,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-04-23",
+      "data_pagamento": "2021-04-23",
+      "tipo": "DIVIDENDO",
+      "valor": 0.394004,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 8.42,
+    "total_ultimos_12m": 4.54,
+    "quantidade_ultimos_12m": 6,
+    "data_primeiro": "2021-04-23",
+    "data_ultimo": "2025-12-16"
+  }
+}

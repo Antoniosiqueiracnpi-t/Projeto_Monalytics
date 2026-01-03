@@ -1,0 +1,70 @@
+{
+  "ticker": "PRNR3",
+  "ultima_atualizacao": "2026-01-03T10:13:25.817553Z",
+  "total_dividendos": 7,
+  "dividendos": [
+    {
+      "data": "2025-04-29",
+      "data_pagamento": "2025-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.051595,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-05-02",
+      "data_pagamento": "2024-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.072442,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-12-14",
+      "data_pagamento": "2022-12-09",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.258296,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-05-04",
+      "data_pagamento": "2022-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.039503,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-12-29",
+      "data_pagamento": "2021-12-23",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.054213,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-04-18",
+      "data_pagamento": "2019-04-17",
+      "tipo": "DIVIDENDO",
+      "valor": 0.006887,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2018-01-02",
+      "data_pagamento": "2017-12-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.042686,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.53,
+    "total_ultimos_12m": 0.05,
+    "quantidade_ultimos_12m": 1,
+    "data_primeiro": "2018-01-02",
+    "data_ultimo": "2025-04-29"
+  }
+}

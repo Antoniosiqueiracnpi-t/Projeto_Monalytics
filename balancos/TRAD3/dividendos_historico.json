@@ -1,0 +1,22 @@
+{
+  "ticker": "TRAD3",
+  "ultima_atualizacao": "2026-01-03T10:15:15.277071Z",
+  "total_dividendos": 1,
+  "dividendos": [
+    {
+      "data": "2022-04-29",
+      "data_pagamento": "2022-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.000204,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.0,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2022-04-29",
+    "data_ultimo": "2022-04-29"
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "ticker": "VIVA3",
+  "ultima_atualizacao": "2026-01-03T10:15:31.662721Z",
+  "total_dividendos": 9,
+  "dividendos": [
+    {
+      "data": "2025-12-19",
+      "data_pagamento": "2025-12-15",
+      "tipo": "DIVIDENDO",
+      "valor": 0.697659,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-04-22",
+      "data_pagamento": "2025-04-22",
+      "tipo": "DIVIDENDO",
+      "valor": 0.660163,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-04-29",
+      "data_pagamento": "2024-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.37285,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-04-27",
+      "data_pagamento": "2023-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.364192,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-29",
+      "data_pagamento": "2022-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.053853,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-12-27",
+      "data_pagamento": "2021-12-21",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.275193,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-04-30",
+      "data_pagamento": "2021-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.052844,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2020-12-29",
+      "data_pagamento": "2020-12-22",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.105844,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2019-12-27",
+      "data_pagamento": "2019-12-20",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.16935,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 2.75,
+    "total_ultimos_12m": 1.36,
+    "quantidade_ultimos_12m": 2,
+    "data_primeiro": "2019-12-27",
+    "data_ultimo": "2025-12-19"
+  }
+}

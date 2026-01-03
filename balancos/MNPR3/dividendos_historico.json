@@ -1,0 +1,46 @@
+{
+  "ticker": "MNPR3",
+  "ultima_atualizacao": "2026-01-03T10:13:04.132879Z",
+  "total_dividendos": 4,
+  "dividendos": [
+    {
+      "data": "1999-04-30",
+      "data_pagamento": "1999-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.005,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "1999-04-30",
+      "data_pagamento": "1999-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.005,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "1996-04-29",
+      "data_pagamento": "1996-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.03,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "1996-04-29",
+      "data_pagamento": "1996-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.03,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.07,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "1996-04-29",
+    "data_ultimo": "1999-04-30"
+  }
+}

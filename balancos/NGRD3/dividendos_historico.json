@@ -1,0 +1,46 @@
+{
+  "ticker": "NGRD3",
+  "ultima_atualizacao": "2026-01-03T10:15:14.506631Z",
+  "total_dividendos": 4,
+  "dividendos": [
+    {
+      "data": "2024-04-19",
+      "data_pagamento": "2024-04-19",
+      "tipo": "DIVIDENDO",
+      "valor": 0.005431,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-04-28",
+      "data_pagamento": "2023-04-28",
+      "tipo": "DIVIDENDO",
+      "valor": 0.01479,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-27",
+      "data_pagamento": "2022-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.014865,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-04-30",
+      "data_pagamento": "2021-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.012421,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.05,
+    "total_ultimos_12m": 0,
+    "quantidade_ultimos_12m": 0,
+    "data_primeiro": "2021-04-30",
+    "data_ultimo": "2024-04-19"
+  }
+}

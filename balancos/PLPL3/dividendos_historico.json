@@ -1,0 +1,62 @@
+{
+  "ticker": "PLPL3",
+  "ultima_atualizacao": "2026-01-03T10:13:22.467771Z",
+  "total_dividendos": 6,
+  "dividendos": [
+    {
+      "data": "2025-12-29",
+      "data_pagamento": "2025-12-22",
+      "tipo": "DIVIDENDO",
+      "valor": 0.49283,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-01-28",
+      "data_pagamento": "2025-01-23",
+      "tipo": "DIVIDENDO",
+      "valor": 1.006013,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-01-18",
+      "data_pagamento": "2024-01-15",
+      "tipo": "DIVIDENDO",
+      "valor": 0.504398,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-04-28",
+      "data_pagamento": "2023-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.160141,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-29",
+      "data_pagamento": "2022-04-26",
+      "tipo": "DIVIDENDO",
+      "valor": 0.161175,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-04-30",
+      "data_pagamento": "2021-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.195833,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 2.52,
+    "total_ultimos_12m": 1.5,
+    "quantidade_ultimos_12m": 2,
+    "data_primeiro": "2021-04-30",
+    "data_ultimo": "2025-12-29"
+  }
+}

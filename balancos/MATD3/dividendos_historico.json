@@ -1,0 +1,54 @@
+{
+  "ticker": "MATD3",
+  "ultima_atualizacao": "2026-01-03T10:15:19.298086Z",
+  "total_dividendos": 5,
+  "dividendos": [
+    {
+      "data": "2025-12-08",
+      "data_pagamento": "2025-12-03",
+      "tipo": "DIVIDENDO",
+      "valor": 0.150522,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2025-05-13",
+      "data_pagamento": "2025-05-08",
+      "tipo": "DIVIDENDO",
+      "valor": 0.074861,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2024-04-30",
+      "data_pagamento": "2024-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.074861,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-04-28",
+      "data_pagamento": "2023-04-28",
+      "tipo": "DIVIDENDO",
+      "valor": 0.064345,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-04-29",
+      "data_pagamento": "2022-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.090022,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 0.45,
+    "total_ultimos_12m": 0.23,
+    "quantidade_ultimos_12m": 2,
+    "data_primeiro": "2022-04-29",
+    "data_ultimo": "2025-12-08"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "ticker": "SIMH3",
+  "ultima_atualizacao": "2026-01-03T10:13:50.833305Z",
+  "total_dividendos": 7,
+  "dividendos": [
+    {
+      "data": "2025-05-05",
+      "data_pagamento": "2025-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.07029,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2023-05-04",
+      "data_pagamento": "2023-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.019527,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-12-27",
+      "data_pagamento": "2022-12-21",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.137825,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2022-05-05",
+      "data_pagamento": "2022-04-27",
+      "tipo": "DIVIDENDO",
+      "valor": 0.515613,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-12-22",
+      "data_pagamento": "2021-12-16",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.105113,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-04-29",
+      "data_pagamento": "2021-04-29",
+      "tipo": "DIVIDENDO",
+      "valor": 0.225809,
+      "status": "pago",
+      "fonte": "b3_api"
+    },
+    {
+      "data": "2021-01-06",
+      "data_pagamento": "2020-12-29",
+      "tipo": "JRS CAP PROPRIO",
+      "valor": 0.116608,
+      "status": "pago",
+      "fonte": "b3_api"
+    }
+  ],
+  "estatisticas": {
+    "total_bruto": 1.19,
+    "total_ultimos_12m": 0.07,
+    "quantidade_ultimos_12m": 1,
+    "data_primeiro": "2021-01-06",
+    "data_ultimo": "2025-05-05"
+  }
+}
