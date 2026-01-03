@@ -493,33 +493,28 @@ async function loadAllData() {
  * Faz requisição HTTP com fallback de branches
  */
 async function fetchJSON(dataType) {
-    const path = DATA_PATHS[dataType];
+    const NETLIFY = 'https://newmonalytics.netlify.app'; 
     
-    // Tenta em cada branch
-    for (const branch of GITHUB_BRANCHES) {
-        const url = `${GITHUB_API_BASE}/${path}?ref=${branch}`;
+    const PATHS = {
+        bolsa: '/balancos/IBOV/monitor_diario.json',
+        indicadores: '/balancos/INDICADORES/indicadores_economicos.json',
+        noticias: '/balancos/feed_noticias.json'
+    };
+    
+    const url = `${NETLIFY}${PATHS[dataType]}?t=${Date.now()}`;
+    
+    try {
+        console.log(`🚀 Carregando: ${url}`);
+        const response = await fetch(url, { cache: 'no-store' });
         
-        try {
-            console.log(`Tentando carregar: ${url}`);
-            const response = await fetch(url);
-            
-            if (response.ok) {
-                const data = await response.json();
-                
-                // GitHub API retorna conteúdo em base64
-                if (data.content) {
-                    const decodedContent = atob(data.content.replace(/\n/g, ''));
-                    const jsonData = JSON.parse(decodedContent);
-                    console.log(`✅ Sucesso: ${url}`);
-                    return jsonData;
-                }
-            }
-        } catch (error) {
-            console.warn(`Falha no branch ${branch}:`, error.message);
+        if (response.ok) {
+            console.log(`✅ SUCESSO: ${dataType}`);
+            return await response.json();
         }
+    } catch (err) {
+        console.error(`❌ ERRO: ${err.message}`);
     }
     
-    console.error(`❌ Falha ao carregar ${dataType} de todos os branches`);
     return null;
 }
 
