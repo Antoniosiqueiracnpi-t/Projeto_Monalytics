@@ -1,0 +1,61 @@
+name: Capturar Notícias do Mercado
+
+on:
+  # Executa de hora em hora, seg-sex, 8h-18h (Brasília)
+  # UTC: 11h-21h (Brasília -3h)
+  schedule:
+    - cron: '0 11-21 * * 1-5'
+  
+  # Permite execução manual
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  noticias:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v3
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Instalar dependências
+        run: |
+          pip install --upgrade pip
+          pip install feedparser pytz beautifulsoup4
+
+      - name: 📰 Capturar notícias
+        run: |
+          python src/capturar_noticiario_economico.py
+
+      - name: 💾 Commit e push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          # Verificar se há alterações
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "✅ Sem alterações para commitar"
+            exit 0
+          fi
+
+          # Adicionar apenas o arquivo de notícias
+          git add balancos/NOTICIAS/noticias_mercado.json
+
+          # Verificar novamente após add
+          if git diff --staged --quiet; then
+            echo "✅ Sem alterações staged"
+            exit 0
+          fi
+
+          # Commit com timestamp
+          HORA=$(date -u +"%H:%M UTC")
+          git commit -m "Notícias: ${HORA}" || echo "Sem mudanças para commitar"
+          git push || echo "Nada para enviar"
