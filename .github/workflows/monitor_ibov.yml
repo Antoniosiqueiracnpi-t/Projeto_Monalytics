@@ -1,0 +1,62 @@
+name: Monitor IBOVESPA (Intraday)
+
+on:
+  # Executa segunda a sexta, 10h30-18h30 (horário de Brasília)
+  # UTC: 13h30-21h30 (Brasília -3h)
+  # A cada 30 minutos
+  schedule:
+    - cron: '0,30 13-21 * * 1-5'
+  
+  # Permite execução manual
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v3
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Instalar dependências
+        run: |
+          pip install --upgrade pip
+          pip install yfinance pandas numpy
+
+      - name: 📊 Monitorar IBOVESPA
+        run: |
+          python src/monitor_ibov.py
+
+      - name: 💾 Commit e push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          # Verificar se há alterações
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "✅ Sem alterações para commitar"
+            exit 0
+          fi
+
+          # Adicionar apenas o arquivo de monitoramento
+          git add balancos/IBOV/monitor_diario.json
+
+          # Verificar novamente após add
+          if [ -z "$(git diff --staged --quiet)" ]; then
+            echo "✅ Sem alterações staged"
+            exit 0
+          fi
+
+          # Commit com timestamp
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+          git commit -m "Monitor IBOVESPA: ${TIMESTAMP}" || echo "Sem mudanças para commitar"
+          git push || echo "Nada para enviar"
