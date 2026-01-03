@@ -150,6 +150,229 @@
         </div>
     </section>
 
+    <!-- =========================== CARROSSEL DE DESTAQUES =========================== -->
+    <section class="market-carousel-section" id="destaques">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Destaques do Mercado</h2>
+                <p class="section-subtitle">Acompanhe em tempo real os principais movimentos e indicadores</p>
+            </div>
+    
+            <div class="carousel-wrapper">
+                <!-- Carousel Container -->
+                <div class="carousel-container">
+                    <div class="carousel-track">
+                        
+                        <!-- ==================== SLIDE 1: DESTAQUES DA BOLSA ==================== -->
+                        <div class="carousel-slide active">
+                            <div class="slide-content">
+                                <div class="slide-header">
+                                    <div class="slide-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="slide-title-group">
+                                        <h3 class="slide-title">Destaques da Bolsa</h3>
+                                        <p class="slide-subtitle">Maiores movimentações do IBOVESPA</p>
+                                    </div>
+                                </div>
+    
+                                <div class="slide-body">
+                                    <!-- Loading State -->
+                                    <div class="loading-spinner" id="bolsaLoading">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        <span>Carregando dados...</span>
+                                    </div>
+    
+                                    <!-- Stats Overview -->
+                                    <div class="stats-overview" id="statsOverview" style="display: none;">
+                                        <div class="stat-box">
+                                            <span class="stat-value" id="variacaoMedia">-</span>
+                                            <span class="stat-label">Variação Média</span>
+                                        </div>
+                                        <div class="stat-box">
+                                            <span class="stat-value positive" id="acoesAlta">-</span>
+                                            <span class="stat-label">Em Alta</span>
+                                        </div>
+                                        <div class="stat-box">
+                                            <span class="stat-value negative" id="acoesBaixa">-</span>
+                                            <span class="stat-label">Em Baixa</span>
+                                        </div>
+                                    </div>
+    
+                                    <!-- Tabs for Altas/Baixas/Volumes -->
+                                    <div class="tabs-container" id="bolsaTabs" style="display: none;">
+                                        <div class="tabs-header">
+                                            <button class="tab-btn active" data-tab="altas">
+                                                <i class="fas fa-arrow-up"></i> Maiores Altas
+                                            </button>
+                                            <button class="tab-btn" data-tab="baixas">
+                                                <i class="fas fa-arrow-down"></i> Maiores Baixas
+                                            </button>
+                                            <button class="tab-btn" data-tab="volumes">
+                                                <i class="fas fa-chart-bar"></i> Maiores Volumes
+                                            </button>
+                                        </div>
+    
+                                        <div class="tabs-content">
+                                            <!-- Tab: Maiores Altas -->
+                                            <div class="tab-panel active" id="tab-altas">
+                                                <div class="stocks-list" id="listAltas"></div>
+                                            </div>
+    
+                                            <!-- Tab: Maiores Baixas -->
+                                            <div class="tab-panel" id="tab-baixas">
+                                                <div class="stocks-list" id="listBaixas"></div>
+                                            </div>
+    
+                                            <!-- Tab: Maiores Volumes -->
+                                            <div class="tab-panel" id="tab-volumes">
+                                                <div class="stocks-list" id="listVolumes"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <!-- Timestamp -->
+                                    <div class="slide-footer" id="bolsaFooter" style="display: none;">
+                                        <i class="fas fa-clock"></i>
+                                        <span id="bolsaTimestamp">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- ==================== SLIDE 2: INDICADORES ECONÔMICOS ==================== -->
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <div class="slide-header">
+                                    <div class="slide-icon">
+                                        <i class="fas fa-chart-pie"></i>
+                                    </div>
+                                    <div class="slide-title-group">
+                                        <h3 class="slide-title">Indicadores Econômicos</h3>
+                                        <p class="slide-subtitle">Principais taxas e índices</p>
+                                    </div>
+                                </div>
+    
+                                <div class="slide-body">
+                                    <!-- Loading State -->
+                                    <div class="loading-spinner" id="indicadoresLoading">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        <span>Carregando indicadores...</span>
+                                    </div>
+    
+                                    <!-- Indicadores Grid -->
+                                    <div class="indicators-grid" id="indicadoresGrid" style="display: none;">
+                                        <!-- SELIC -->
+                                        <div class="indicator-card">
+                                            <div class="indicator-icon selic">
+                                                <i class="fas fa-percentage"></i>
+                                            </div>
+                                            <div class="indicator-info">
+                                                <span class="indicator-label">SELIC</span>
+                                                <span class="indicator-value" id="selicValor">-</span>
+                                                <span class="indicator-sub">Taxa básica de juros</span>
+                                            </div>
+                                        </div>
+    
+                                        <!-- CDI -->
+                                        <div class="indicator-card">
+                                            <div class="indicator-icon cdi">
+                                                <i class="fas fa-chart-line"></i>
+                                            </div>
+                                            <div class="indicator-info">
+                                                <span class="indicator-label">CDI</span>
+                                                <span class="indicator-value" id="cdiValor">-</span>
+                                                <span class="indicator-sub">Certificado de Depósito</span>
+                                            </div>
+                                        </div>
+    
+                                        <!-- IPCA -->
+                                        <div class="indicator-card">
+                                            <div class="indicator-icon ipca">
+                                                <i class="fas fa-shopping-cart"></i>
+                                            </div>
+                                            <div class="indicator-info">
+                                                <span class="indicator-label">IPCA (12m)</span>
+                                                <span class="indicator-value" id="ipcaValor">-</span>
+                                                <span class="indicator-sub" id="ipcaMes">-</span>
+                                            </div>
+                                        </div>
+    
+                                        <!-- DÓLAR -->
+                                        <div class="indicator-card">
+                                            <div class="indicator-icon dolar">
+                                                <i class="fas fa-dollar-sign"></i>
+                                            </div>
+                                            <div class="indicator-info">
+                                                <span class="indicator-label">Dólar PTAX</span>
+                                                <span class="indicator-value" id="dolarValor">-</span>
+                                                <span class="indicator-sub" id="dolarData">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <!-- Timestamp -->
+                                    <div class="slide-footer" id="indicadoresFooter" style="display: none;">
+                                        <i class="fas fa-clock"></i>
+                                        <span id="indicadoresTimestamp">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- ==================== SLIDE 3: COMUNICADOS DO MERCADO ==================== -->
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <div class="slide-header">
+                                    <div class="slide-icon">
+                                        <i class="fas fa-newspaper"></i>
+                                    </div>
+                                    <div class="slide-title-group">
+                                        <h3 class="slide-title">Comunicados do Mercado</h3>
+                                        <p class="slide-subtitle">Fatos relevantes e eventos corporativos</p>
+                                    </div>
+                                </div>
+    
+                                <div class="slide-body">
+                                    <!-- Loading State -->
+                                    <div class="loading-spinner" id="noticiasLoading">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        <span>Carregando comunicados...</span>
+                                    </div>
+    
+                                    <!-- Comunicados List -->
+                                    <div class="news-list" id="comunicadosList" style="display: none;"></div>
+    
+                                    <!-- Timestamp -->
+                                    <div class="slide-footer" id="noticiasFooter" style="display: none;">
+                                        <i class="fas fa-clock"></i>
+                                        <span id="noticiasTimestamp">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+    
+                <!-- Navigation Arrows -->
+                <button class="carousel-arrow prev" id="prevSlide" aria-label="Slide Anterior">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-arrow next" id="nextSlide" aria-label="Próximo Slide">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+    
+                <!-- Indicators -->
+                <div class="carousel-indicators">
+                    <button class="indicator active" data-slide="0" aria-label="Slide 1"></button>
+                    <button class="indicator" data-slide="1" aria-label="Slide 2"></button>
+                    <button class="indicator" data-slide="2" aria-label="Slide 3"></button>
+                </div>
+            </div>
+        </div>
+    </section>    
+
     <!-- =========================== SEÇÃO DE AÇÕES (Em Construção) =========================== -->
     <section class="acoes-section" id="acoes">
         <div class="container">
