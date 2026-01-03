@@ -84,8 +84,8 @@ def buscar_cotacao_ticker(ticker: str) -> Optional[Dict]:
     try:
         stock = yf.Ticker(ticker_yahoo)
         
-        # Buscar dados do dia
-        hist = stock.history(period='2d')  # Hoje + ontem
+        # Buscar dados do dia com PREÇOS AJUSTADOS
+        hist = stock.history(period='2d', auto_adjust=True)  # ← CORREÇÃO
         
         if hist is None or len(hist) < 2:
             return None
