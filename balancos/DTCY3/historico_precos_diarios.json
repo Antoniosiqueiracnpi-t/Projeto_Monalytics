@@ -1,22 +1,11 @@
 {
   "ticker": "DTCY3",
-  "ultima_atualizacao": "2026-01-02T23:03:52.682433",
+  "ultima_atualizacao": "2026-01-03T23:03:28.367656",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 7.02,
-      "maxima": 7.02,
-      "minima": 7.02,
-      "fechamento": 7.02,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 7.02,
@@ -222,7 +211,7 @@
       "minima": 7.29,
       "fechamento": 7.44,
       "volume": 700,
-      "mm20": 7.27,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 9.5,
       "volume": 2800,
       "mm20": 9.86,
-      "mm50": 8.98,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 8.76,
       "mm50": 9.28,
-      "mm200": 9.63
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,6 +13887,17 @@
       "mm20": 2.75,
       "mm50": 2.77,
       "mm200": 3.15
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 2.75,
+      "maxima": 2.75,
+      "minima": 2.75,
+      "fechamento": 2.75,
+      "volume": 0,
+      "mm20": 2.75,
+      "mm50": 2.77,
+      "mm200": 3.15
     }
   ],
   "estatisticas": {
@@ -13907,6 +13907,7 @@
     "variacao_periodo": -60.83,
     "maxima_periodo": 14.0,
     "minima_periodo": 2.7,
-    "volume_medio": 1571
+    "volume_medio": 1571,
+    "tendencia": "baixa"
   }
 }

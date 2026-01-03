@@ -1,22 +1,11 @@
 {
   "ticker": "BPAC5",
-  "ultima_atualizacao": "2026-01-02T23:02:55.599660",
+  "ultima_atualizacao": "2026-01-03T23:02:44.515147",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 4.15,
-      "maxima": 4.15,
-      "minima": 3.85,
-      "fechamento": 3.97,
-      "volume": 18400,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 3.97,
@@ -222,7 +211,7 @@
       "minima": 4.33,
       "fechamento": 4.33,
       "volume": 9600,
-      "mm20": 4.46,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 6.19,
       "volume": 11600,
       "mm20": 6.11,
-      "mm50": 5.2,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 5200,
       "mm20": 5.37,
       "mm50": 5.59,
-      "mm200": 5.53
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 11.27,
       "mm50": 10.89,
       "mm200": 9.39
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 11.22,
+      "maxima": 11.35,
+      "minima": 11.04,
+      "fechamento": 11.19,
+      "volume": 7800,
+      "mm20": 11.26,
+      "mm50": 10.91,
+      "mm200": 9.41
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 3.97,
-    "preco_atual": 11.13,
-    "variacao_periodo": 180.59,
+    "preco_atual": 11.19,
+    "variacao_periodo": 182.11,
     "maxima_periodo": 12.2,
     "minima_periodo": 3.7,
-    "volume_medio": 14165
+    "volume_medio": 14156,
+    "tendencia": "indefinida"
   }
 }

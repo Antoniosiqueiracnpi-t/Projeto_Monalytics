@@ -1,9 +1,9 @@
 {
   "ticker": "AGXY3",
-  "ultima_atualizacao": "2026-01-02T23:01:33.542906",
+  "ultima_atualizacao": "2026-01-03T23:01:33.267151",
   "periodo": {
     "inicio": "2021-07-27",
-    "fim": "2025-12-30"
+    "fim": "2026-01-02"
   },
   "dados": [
     {
@@ -12182,15 +12182,27 @@
       "mm20": 4.75,
       "mm50": 5.25,
       "mm200": 6.13
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 4.42,
+      "maxima": 4.6,
+      "minima": 4.4,
+      "fechamento": 4.4,
+      "volume": 9300,
+      "mm20": 4.72,
+      "mm50": 5.22,
+      "mm200": 6.11
     }
   ],
   "estatisticas": {
-    "total_dias": 1107,
+    "total_dias": 1108,
     "preco_inicial": 151.72,
-    "preco_atual": 4.43,
-    "variacao_periodo": -97.08,
+    "preco_atual": 4.4,
+    "variacao_periodo": -97.1,
     "maxima_periodo": 175.91,
     "minima_periodo": 4.4,
-    "volume_medio": 19012
+    "volume_medio": 19004,
+    "tendencia": "baixa"
   }
 }

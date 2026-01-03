@@ -1,9 +1,9 @@
 {
   "ticker": "ARML3",
-  "ultima_atualizacao": "2026-01-02T23:02:06.211824",
+  "ultima_atualizacao": "2026-01-03T23:02:04.295284",
   "periodo": {
     "inicio": "2021-07-29",
-    "fim": "2025-12-30"
+    "fim": "2026-01-02"
   },
   "dados": [
     {
@@ -12160,15 +12160,27 @@
       "mm20": 4.54,
       "mm50": 4.13,
       "mm200": 3.99
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 4.53,
+      "maxima": 4.61,
+      "minima": 4.47,
+      "fechamento": 4.59,
+      "volume": 642900,
+      "mm20": 4.53,
+      "mm50": 4.16,
+      "mm200": 3.99
     }
   ],
   "estatisticas": {
-    "total_dias": 1105,
+    "total_dias": 1106,
     "preco_inicial": 19.23,
-    "preco_atual": 4.48,
-    "variacao_periodo": -76.7,
+    "preco_atual": 4.59,
+    "variacao_periodo": -76.13,
     "maxima_periodo": 23.43,
     "minima_periodo": 2.83,
-    "volume_medio": 814106
+    "volume_medio": 813951,
+    "tendencia": "alta"
   }
 }

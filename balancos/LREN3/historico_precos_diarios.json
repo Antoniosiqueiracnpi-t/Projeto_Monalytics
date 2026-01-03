@@ -1,22 +1,11 @@
 {
   "ticker": "LREN3",
-  "ultima_atualizacao": "2026-01-02T23:01:51.078566",
+  "ultima_atualizacao": "2026-01-03T23:01:52.578210",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 31.53,
-      "maxima": 31.84,
-      "minima": 30.8,
-      "fechamento": 31.14,
-      "volume": 7014442,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 31.14,
@@ -222,7 +211,7 @@
       "minima": 26.92,
       "fechamento": 27.04,
       "volume": 10880972,
-      "mm20": 30.03,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 26.11,
       "volume": 15266340,
       "mm20": 27.84,
-      "mm50": 28.94,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -1494,7 +1483,7 @@
     {
       "data": "2021-06-25",
       "abertura": 31.35,
-      "maxima": 31.57,
+      "maxima": 31.56,
       "minima": 30.5,
       "fechamento": 31.05,
       "volume": 7858103,
@@ -2204,7 +2193,7 @@
       "volume": 7369021,
       "mm20": 25.39,
       "mm50": 27.1,
-      "mm200": 28.82
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 14.02,
       "mm50": 14.39,
       "mm200": 15.25
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 13.56,
+      "maxima": 13.69,
+      "minima": 13.27,
+      "fechamento": 13.38,
+      "volume": 14265600,
+      "mm20": 13.91,
+      "mm50": 14.38,
+      "mm200": 15.26
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 31.14,
-    "preco_atual": 13.45,
-    "variacao_periodo": -56.81,
+    "preco_inicial": 30.61,
+    "preco_atual": 13.38,
+    "variacao_periodo": -56.29,
     "maxima_periodo": 33.58,
     "minima_periodo": 9.72,
-    "volume_medio": 16773028
+    "volume_medio": 16778770,
+    "tendencia": "baixa"
   }
 }

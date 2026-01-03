@@ -1,22 +1,11 @@
 {
   "ticker": "VLID3",
-  "ultima_atualizacao": "2026-01-02T23:03:54.753827",
+  "ultima_atualizacao": "2026-01-03T23:03:29.928380",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 6.82,
-      "maxima": 7.35,
-      "minima": 6.74,
-      "fechamento": 7.31,
-      "volume": 1434145,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 7.3,
@@ -222,7 +211,7 @@
       "minima": 6.09,
       "fechamento": 6.18,
       "volume": 972553,
-      "mm20": 6.84,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 5.62,
       "volume": 739400,
       "mm20": 6.12,
-      "mm50": 6.51,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 200900,
       "mm20": 6.1,
       "mm50": 6.14,
-      "mm200": 6.44
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 21.32,
       "mm50": 20.84,
       "mm200": 21.59
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 21.31,
+      "maxima": 21.52,
+      "minima": 21.03,
+      "fechamento": 21.03,
+      "volume": 265700,
+      "mm20": 21.28,
+      "mm50": 20.88,
+      "mm200": 21.58
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 7.31,
-    "preco_atual": 21.4,
-    "variacao_periodo": 192.94,
+    "preco_inicial": 7.04,
+    "preco_atual": 21.03,
+    "variacao_periodo": 198.69,
     "maxima_periodo": 26.23,
     "minima_periodo": 5.01,
-    "volume_medio": 444303
+    "volume_medio": 443378,
+    "tendencia": "indefinida"
   }
 }

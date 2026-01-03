@@ -1,22 +1,11 @@
 {
   "ticker": "GSHP3",
-  "ultima_atualizacao": "2026-01-02T23:02:36.560317",
+  "ultima_atualizacao": "2026-01-03T23:02:30.428360",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 61.13,
-      "maxima": 62.54,
-      "minima": 61.0,
-      "fechamento": 61.99,
-      "volume": 3300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 63.0,
@@ -222,7 +211,7 @@
       "minima": 53.78,
       "fechamento": 53.78,
       "volume": 100,
-      "mm20": 58.64,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 48.0,
       "volume": 1000,
       "mm20": 52.01,
-      "mm50": 54.95,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 300,
       "mm20": 38.84,
       "mm50": 38.96,
-      "mm200": 45.55
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 3.81,
       "mm50": 3.27,
       "mm200": 4.23
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 4.0,
+      "maxima": 4.0,
+      "minima": 4.0,
+      "fechamento": 4.0,
+      "volume": 500,
+      "mm20": 3.85,
+      "mm50": 3.29,
+      "mm200": 4.22
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 61.99,
+    "preco_inicial": 60.03,
     "preco_atual": 4.0,
-    "variacao_periodo": -93.55,
-    "maxima_periodo": 61.99,
+    "variacao_periodo": -93.34,
+    "maxima_periodo": 61.49,
     "minima_periodo": 2.68,
-    "volume_medio": 417
+    "volume_medio": 415,
+    "tendencia": "indefinida"
   }
 }

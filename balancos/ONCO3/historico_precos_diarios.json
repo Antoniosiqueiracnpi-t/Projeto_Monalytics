@@ -1,9 +1,9 @@
 {
   "ticker": "ONCO3",
-  "ultima_atualizacao": "2026-01-02T23:03:48.900710",
+  "ultima_atualizacao": "2026-01-03T23:03:26.450468",
   "periodo": {
     "inicio": "2021-09-21",
-    "fim": "2025-12-30"
+    "fim": "2026-01-02"
   },
   "dados": [
     {
@@ -11753,15 +11753,27 @@
       "mm20": 2.31,
       "mm50": 2.09,
       "mm200": 3.98
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 2.73,
+      "maxima": 2.77,
+      "minima": 2.6,
+      "fechamento": 2.72,
+      "volume": 4845300,
+      "mm20": 2.36,
+      "mm50": 2.1,
+      "mm200": 3.97
     }
   ],
   "estatisticas": {
-    "total_dias": 1068,
+    "total_dias": 1069,
     "preco_inicial": 14.77,
-    "preco_atual": 2.71,
-    "variacao_periodo": -81.65,
+    "preco_atual": 2.72,
+    "variacao_periodo": -81.58,
     "maxima_periodo": 15.41,
     "minima_periodo": 1.62,
-    "volume_medio": 3275936
+    "volume_medio": 3277404,
+    "tendencia": "indefinida"
   }
 }

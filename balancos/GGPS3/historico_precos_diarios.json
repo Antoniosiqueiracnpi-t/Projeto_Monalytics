@@ -1,9 +1,9 @@
 {
   "ticker": "GGPS3",
-  "ultima_atualizacao": "2026-01-02T23:03:54.144148",
+  "ultima_atualizacao": "2026-01-03T23:03:28.803184",
   "periodo": {
     "inicio": "2021-04-28",
-    "fim": "2025-12-30"
+    "fim": "2026-01-02"
   },
   "dados": [
     {
@@ -12864,15 +12864,27 @@
       "mm20": 16.51,
       "mm50": 16.73,
       "mm200": 14.6
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 16.35,
+      "maxima": 16.35,
+      "minima": 15.88,
+      "fechamento": 16.06,
+      "volume": 2333000,
+      "mm20": 16.44,
+      "mm50": 16.72,
+      "mm200": 14.62
     }
   ],
   "estatisticas": {
-    "total_dias": 1169,
+    "total_dias": 1170,
     "preco_inicial": 10.77,
-    "preco_atual": 16.16,
-    "variacao_periodo": 50.04,
+    "preco_atual": 16.06,
+    "variacao_periodo": 49.11,
     "maxima_periodo": 17.63,
     "minima_periodo": 8.61,
-    "volume_medio": 2319485
+    "volume_medio": 2319497,
+    "tendencia": "indefinida"
   }
 }

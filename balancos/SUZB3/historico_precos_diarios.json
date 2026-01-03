@@ -1,22 +1,11 @@
 {
   "ticker": "SUZB3",
-  "ultima_atualizacao": "2026-01-02T23:03:08.149279",
+  "ultima_atualizacao": "2026-01-03T23:02:53.391260",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 45.43,
-      "maxima": 47.0,
-      "minima": 44.77,
-      "fechamento": 46.11,
-      "volume": 9102900,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 46.0,
@@ -222,7 +211,7 @@
       "minima": 50.13,
       "fechamento": 50.27,
       "volume": 9016800,
-      "mm20": 48.08,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 67.14,
       "volume": 16165600,
       "mm20": 58.78,
-      "mm50": 53.62,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 3434200,
       "mm20": 50.74,
       "mm50": 50.03,
-      "mm200": 55.04
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 49.49,
       "mm50": 48.11,
       "mm200": 49.98
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 51.41,
+      "maxima": 52.11,
+      "minima": 51.29,
+      "fechamento": 51.87,
+      "volume": 5570600,
+      "mm20": 49.76,
+      "mm50": 48.22,
+      "mm200": 49.98
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 46.11,
-    "preco_atual": 51.45,
-    "variacao_periodo": 11.58,
+    "preco_inicial": 46.07,
+    "preco_atual": 51.87,
+    "variacao_periodo": 12.6,
     "maxima_periodo": 69.15,
     "minima_periodo": 35.2,
-    "volume_medio": 6503943
+    "volume_medio": 6501146,
+    "tendencia": "indefinida"
   }
 }

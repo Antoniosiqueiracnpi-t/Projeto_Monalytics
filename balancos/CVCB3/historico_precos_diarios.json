@@ -1,22 +1,11 @@
 {
   "ticker": "CVCB3",
-  "ultima_atualizacao": "2026-01-02T23:04:24.572024",
+  "ultima_atualizacao": "2026-01-03T23:03:54.415220",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 18.71,
-      "maxima": 19.01,
-      "minima": 17.65,
-      "fechamento": 17.99,
-      "volume": 16464360,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 18.15,
@@ -222,7 +211,7 @@
       "minima": 17.45,
       "fechamento": 17.85,
       "volume": 7794822,
-      "mm20": 17.99,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 15.51,
       "volume": 8586314,
       "mm20": 16.75,
-      "mm50": 17.35,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 10354320,
       "mm20": 19.53,
       "mm50": 19.53,
-      "mm200": 19.31
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 1.98,
       "mm50": 1.89,
       "mm200": 2.12
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 2.17,
+      "maxima": 2.2,
+      "minima": 2.13,
+      "fechamento": 2.2,
+      "volume": 19530400,
+      "mm20": 2.0,
+      "mm50": 1.9,
+      "mm200": 2.12
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 17.99,
-    "preco_atual": 2.16,
-    "variacao_periodo": -87.99,
+    "preco_inicial": 18.08,
+    "preco_atual": 2.2,
+    "variacao_periodo": -87.83,
     "maxima_periodo": 26.1,
     "minima_periodo": 1.38,
-    "volume_medio": 16358986
+    "volume_medio": 16361413,
+    "tendencia": "indefinida"
   }
 }

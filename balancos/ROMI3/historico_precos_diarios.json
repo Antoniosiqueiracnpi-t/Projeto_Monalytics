@@ -1,22 +1,11 @@
 {
   "ticker": "ROMI3",
-  "ultima_atualizacao": "2026-01-02T23:03:14.003929",
+  "ultima_atualizacao": "2026-01-03T23:02:57.300758",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 6.54,
-      "maxima": 6.69,
-      "minima": 6.54,
-      "fechamento": 6.67,
-      "volume": 629405,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 6.62,
@@ -222,7 +211,7 @@
       "minima": 8.86,
       "fechamento": 9.42,
       "volume": 1385607,
-      "mm20": 7.8,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 15.02,
       "volume": 3811372,
       "mm20": 11.24,
-      "mm50": 9.62,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 515314,
       "mm20": 12.16,
       "mm50": 12.92,
-      "mm200": 13.61
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 7.92,
       "mm50": 7.91,
       "mm200": 8.13
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 7.96,
+      "maxima": 8.07,
+      "minima": 7.96,
+      "fechamento": 8.0,
+      "volume": 118200,
+      "mm20": 7.92,
+      "mm50": 7.92,
+      "mm200": 8.13
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 6.67,
-    "preco_atual": 7.84,
-    "variacao_periodo": 17.62,
+    "preco_inicial": 6.58,
+    "preco_atual": 8.0,
+    "variacao_periodo": 21.57,
     "maxima_periodo": 21.65,
     "minima_periodo": 6.58,
-    "volume_medio": 637421
+    "volume_medio": 637016,
+    "tendencia": "indefinida"
   }
 }

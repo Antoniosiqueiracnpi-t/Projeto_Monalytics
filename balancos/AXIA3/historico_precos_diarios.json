@@ -1,22 +1,11 @@
 {
   "ticker": "AXIA6",
-  "ultima_atualizacao": "2026-01-02T23:02:15.991480",
+  "ultima_atualizacao": "2026-01-03T23:02:12.710930",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 19.59,
-      "maxima": 20.22,
-      "minima": 19.53,
-      "fechamento": 19.76,
-      "volume": 2965395,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 19.79,
@@ -222,7 +211,7 @@
       "minima": 19.73,
       "fechamento": 19.99,
       "volume": 1560741,
-      "mm20": 20.83,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 17.56,
       "volume": 16238074,
       "mm20": 17.78,
-      "mm50": 19.4,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 2181931,
       "mm20": 23.56,
       "mm50": 24.37,
-      "mm200": 22.81
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 53.08,
       "mm50": 49.85,
       "mm200": 38.66
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 53.03,
+      "maxima": 53.4,
+      "minima": 52.13,
+      "fechamento": 52.48,
+      "volume": 1142900,
+      "mm20": 53.07,
+      "mm50": 50.02,
+      "mm200": 38.76
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 19.76,
-    "preco_atual": 52.42,
-    "variacao_periodo": 165.28,
+    "preco_inicial": 19.58,
+    "preco_atual": 52.48,
+    "variacao_periodo": 167.99,
     "maxima_periodo": 55.62,
     "minima_periodo": 16.3,
-    "volume_medio": 2914875
+    "volume_medio": 2913432,
+    "tendencia": "indefinida"
   }
 }

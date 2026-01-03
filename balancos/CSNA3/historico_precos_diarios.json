@@ -1,22 +1,11 @@
 {
   "ticker": "CSNA3",
-  "ultima_atualizacao": "2026-01-02T23:03:55.146673",
+  "ultima_atualizacao": "2026-01-03T23:03:30.227621",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 15.14,
-      "maxima": 16.84,
-      "minima": 15.13,
-      "fechamento": 16.84,
-      "volume": 23128000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 16.81,
@@ -222,7 +211,7 @@
       "minima": 22.58,
       "fechamento": 23.39,
       "volume": 15970200,
-      "mm20": 19.27,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 23.08,
       "volume": 22345200,
       "mm20": 21.39,
-      "mm50": 20.94,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 19275500,
       "mm20": 21.77,
       "mm50": 25.77,
-      "mm200": 25.65
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 9.22,
       "mm50": 8.87,
       "mm200": 8.46
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 8.94,
+      "maxima": 9.02,
+      "minima": 8.7,
+      "fechamento": 8.7,
+      "volume": 12462400,
+      "mm20": 9.23,
+      "mm50": 8.88,
+      "mm200": 8.45
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 16.84,
-    "preco_atual": 8.94,
-    "variacao_periodo": -46.92,
+    "preco_inicial": 16.93,
+    "preco_atual": 8.7,
+    "variacao_periodo": -48.62,
     "maxima_periodo": 33.84,
     "minima_periodo": 6.77,
-    "volume_medio": 10451287
+    "volume_medio": 10442842,
+    "tendencia": "indefinida"
   }
 }

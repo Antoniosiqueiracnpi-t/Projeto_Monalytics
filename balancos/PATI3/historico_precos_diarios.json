@@ -1,22 +1,11 @@
 {
   "ticker": "PATI4",
-  "ultima_atualizacao": "2026-01-02T23:04:01.033066",
+  "ultima_atualizacao": "2026-01-03T23:03:34.552624",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 16.99,
-      "maxima": 16.99,
-      "minima": 16.99,
-      "fechamento": 16.99,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 17.64,
@@ -222,7 +211,7 @@
       "minima": 19.15,
       "fechamento": 19.15,
       "volume": 0,
-      "mm20": 18.19,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 22.18,
       "volume": 0,
       "mm20": 22.98,
-      "mm50": 21.17,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 46.03,
       "mm50": 47.56,
-      "mm200": 38.33
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 33.37,
       "mm50": 34.85,
       "mm200": 33.8
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 34.0,
+      "maxima": 34.0,
+      "minima": 34.0,
+      "fechamento": 34.0,
+      "volume": 0,
+      "mm20": 33.4,
+      "mm50": 34.77,
+      "mm200": 33.83
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 16.99,
+    "preco_inicial": 17.67,
     "preco_atual": 34.0,
-    "variacao_periodo": 100.16,
+    "variacao_periodo": 92.4,
     "maxima_periodo": 63.21,
-    "minima_periodo": 16.99,
-    "volume_medio": 71
+    "minima_periodo": 17.64,
+    "volume_medio": 71,
+    "tendencia": "indefinida"
   }
 }

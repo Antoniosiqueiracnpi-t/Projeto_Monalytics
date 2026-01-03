@@ -1,9 +1,9 @@
 {
   "ticker": "DOTZ3",
-  "ultima_atualizacao": "2026-01-02T23:02:09.330230",
+  "ultima_atualizacao": "2026-01-03T23:02:07.689595",
   "periodo": {
     "inicio": "2021-05-31",
-    "fim": "2025-12-30"
+    "fim": "2026-01-02"
   },
   "dados": [
     {
@@ -12611,15 +12611,27 @@
       "mm20": 5.8,
       "mm50": 6.65,
       "mm200": 6.31
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 4.0,
+      "maxima": 4.56,
+      "minima": 4.0,
+      "fechamento": 4.5,
+      "volume": 42800,
+      "mm20": 5.71,
+      "mm50": 6.59,
+      "mm200": 6.31
     }
   ],
   "estatisticas": {
-    "total_dias": 1146,
+    "total_dias": 1147,
     "preco_inicial": 132.0,
-    "preco_atual": 3.5,
-    "variacao_periodo": -97.35,
+    "preco_atual": 4.5,
+    "variacao_periodo": -96.59,
     "maxima_periodo": 171.5,
     "minima_periodo": 2.66,
-    "volume_medio": 15440
+    "volume_medio": 15464,
+    "tendencia": "indefinida"
   }
 }

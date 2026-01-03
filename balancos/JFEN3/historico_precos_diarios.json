@@ -1,22 +1,11 @@
 {
   "ticker": "JFEN3",
-  "ultima_atualizacao": "2026-01-02T23:01:59.389905",
+  "ultima_atualizacao": "2026-01-03T23:01:58.867310",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 433.0,
-      "maxima": 433.0,
-      "minima": 433.0,
-      "fechamento": 433.0,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 433.0,
@@ -222,7 +211,7 @@
       "minima": 433.0,
       "fechamento": 433.0,
       "volume": 0,
-      "mm20": 433.0,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 433.0,
       "volume": 0,
       "mm20": 433.0,
-      "mm50": 433.0,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 5323,
       "mm20": 222.85,
       "mm50": 276.36,
-      "mm200": 401.46
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 1.1,
       "mm50": 1.28,
       "mm200": 1.72
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 0.99,
+      "maxima": 0.99,
+      "minima": 0.96,
+      "fechamento": 0.96,
+      "volume": 9500,
+      "mm20": 1.09,
+      "mm50": 1.27,
+      "mm200": 1.71
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 433.0,
-    "preco_atual": 0.99,
-    "variacao_periodo": -99.77,
+    "preco_atual": 0.96,
+    "variacao_periodo": -99.78,
     "maxima_periodo": 650.0,
-    "minima_periodo": 0.97,
-    "volume_medio": 23403
+    "minima_periodo": 0.96,
+    "volume_medio": 23410,
+    "tendencia": "baixa"
   }
 }

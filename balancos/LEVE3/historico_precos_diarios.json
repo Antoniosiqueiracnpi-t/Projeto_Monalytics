@@ -1,22 +1,11 @@
 {
   "ticker": "LEVE3",
-  "ultima_atualizacao": "2026-01-02T23:01:41.992448",
+  "ultima_atualizacao": "2026-01-03T23:01:42.956196",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 9.75,
-      "maxima": 9.97,
-      "minima": 9.66,
-      "fechamento": 9.75,
-      "volume": 296720,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 9.92,
@@ -222,7 +211,7 @@
       "minima": 10.11,
       "fechamento": 10.12,
       "volume": 339355,
-      "mm20": 10.02,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 9.05,
       "volume": 331234,
       "mm20": 9.54,
-      "mm50": 9.88,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 434269,
       "mm20": 19.57,
       "mm50": 18.02,
-      "mm200": 13.67
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 33.53,
       "mm50": 31.56,
       "mm200": 28.76
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 34.17,
+      "maxima": 34.84,
+      "minima": 33.17,
+      "fechamento": 33.5,
+      "volume": 320100,
+      "mm20": 33.55,
+      "mm50": 31.7,
+      "mm200": 28.79
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 9.75,
-    "preco_atual": 34.11,
-    "variacao_periodo": 249.84,
+    "preco_inicial": 9.82,
+    "preco_atual": 33.5,
+    "variacao_periodo": 241.02,
     "maxima_periodo": 36.31,
     "minima_periodo": 8.56,
-    "volume_medio": 408788
+    "volume_medio": 408807,
+    "tendencia": "indefinida"
   }
 }

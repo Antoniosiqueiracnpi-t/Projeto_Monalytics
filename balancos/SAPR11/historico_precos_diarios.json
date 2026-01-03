@@ -1,22 +1,11 @@
 {
   "ticker": "SAPR4",
-  "ultima_atualizacao": "2026-01-02T23:01:37.309987",
+  "ultima_atualizacao": "2026-01-03T23:01:37.634382",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 3.86,
-      "maxima": 3.87,
-      "minima": 3.7,
-      "fechamento": 3.73,
-      "volume": 4039200,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 3.74,
@@ -222,7 +211,7 @@
       "minima": 3.45,
       "fechamento": 3.46,
       "volume": 7426500,
-      "mm20": 3.69,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 3.05,
       "volume": 14596000,
       "mm20": 3.17,
-      "mm50": 3.42,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 5804000,
       "mm20": 2.88,
       "mm50": 2.93,
-      "mm200": 3.12
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 7.32,
       "mm50": 7.03,
       "mm200": 6.51
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 7.82,
+      "maxima": 8.02,
+      "minima": 7.72,
+      "fechamento": 7.8,
+      "volume": 1241700,
+      "mm20": 7.36,
+      "mm50": 7.05,
+      "mm200": 6.52
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 3.73,
-    "preco_atual": 7.72,
-    "variacao_periodo": 107.11,
-    "maxima_periodo": 7.72,
+    "preco_inicial": 3.7,
+    "preco_atual": 7.8,
+    "variacao_periodo": 110.53,
+    "maxima_periodo": 7.8,
     "minima_periodo": 2.7,
-    "volume_medio": 2511007
+    "volume_medio": 2508792,
+    "tendencia": "alta"
   }
 }

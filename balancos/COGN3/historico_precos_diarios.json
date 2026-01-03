@@ -1,22 +1,11 @@
 {
   "ticker": "COGN3",
-  "ultima_atualizacao": "2026-01-02T23:02:08.711871",
+  "ultima_atualizacao": "2026-01-03T23:02:06.894395",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 4.57,
-      "maxima": 4.59,
-      "minima": 4.41,
-      "fechamento": 4.44,
-      "volume": 55945010,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 4.46,
@@ -222,7 +211,7 @@
       "minima": 3.84,
       "fechamento": 3.87,
       "volume": 69271840,
-      "mm20": 4.14,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 3.4,
       "volume": 65696070,
       "mm20": 3.76,
-      "mm50": 3.96,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 28638280,
       "mm20": 2.61,
       "mm50": 2.86,
-      "mm200": 3.47
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 3.24,
       "mm50": 3.2,
       "mm200": 2.61
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 3.18,
+      "maxima": 3.2,
+      "minima": 3.08,
+      "fechamento": 3.13,
+      "volume": 20341800,
+      "mm20": 3.23,
+      "mm50": 3.2,
+      "mm200": 2.62
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 4.44,
-    "preco_atual": 3.16,
-    "variacao_periodo": -28.86,
+    "preco_inicial": 4.37,
+    "preco_atual": 3.13,
+    "variacao_periodo": -28.3,
     "maxima_periodo": 4.53,
     "minima_periodo": 0.85,
-    "volume_medio": 39696086
+    "volume_medio": 39667897,
+    "tendencia": "indefinida"
   }
 }

@@ -1,9 +1,9 @@
 {
   "ticker": "OPCT3",
-  "ultima_atualizacao": "2026-01-02T23:03:30.398658",
+  "ultima_atualizacao": "2026-01-03T23:03:09.710497",
   "periodo": {
     "inicio": "2021-02-12",
-    "fim": "2025-12-30"
+    "fim": "2026-01-02"
   },
   "dados": [
     {
@@ -13403,15 +13403,27 @@
       "mm20": 7.89,
       "mm50": 7.8,
       "mm200": 6.75
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 8.68,
+      "maxima": 8.68,
+      "minima": 8.23,
+      "fechamento": 8.28,
+      "volume": 245800,
+      "mm20": 7.93,
+      "mm50": 7.81,
+      "mm200": 6.76
     }
   ],
   "estatisticas": {
-    "total_dias": 1218,
+    "total_dias": 1219,
     "preco_inicial": 11.15,
-    "preco_atual": 8.45,
-    "variacao_periodo": -24.22,
+    "preco_atual": 8.28,
+    "variacao_periodo": -25.74,
     "maxima_periodo": 11.15,
     "minima_periodo": 1.62,
-    "volume_medio": 866174
+    "volume_medio": 865665,
+    "tendencia": "alta"
   }
 }

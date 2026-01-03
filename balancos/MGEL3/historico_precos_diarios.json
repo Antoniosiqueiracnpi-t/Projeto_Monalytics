@@ -1,22 +1,11 @@
 {
   "ticker": "MGEL4",
-  "ultima_atualizacao": "2026-01-02T23:04:00.438503",
+  "ultima_atualizacao": "2026-01-03T23:03:33.977088",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 5.83,
-      "maxima": 6.0,
-      "minima": 5.83,
-      "fechamento": 5.83,
-      "volume": 26600,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 5.76,
@@ -222,7 +211,7 @@
       "minima": 8.07,
       "fechamento": 8.88,
       "volume": 96900,
-      "mm20": 7.95,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 9.1,
       "volume": 5800,
       "mm20": 8.32,
-      "mm50": 8.21,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 5100,
       "mm20": 15.15,
       "mm50": 19.18,
-      "mm200": 13.89
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 6.01,
       "mm50": 6.28,
       "mm200": 5.56
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 5.7,
+      "maxima": 5.95,
+      "minima": 5.7,
+      "fechamento": 5.95,
+      "volume": 600,
+      "mm20": 6.01,
+      "mm50": 6.27,
+      "mm200": 5.56
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 5.83,
-    "preco_atual": 6.0,
-    "variacao_periodo": 2.92,
+    "preco_inicial": 5.85,
+    "preco_atual": 5.95,
+    "variacao_periodo": 1.71,
     "maxima_periodo": 26.21,
     "minima_periodo": 3.96,
-    "volume_medio": 4553
+    "volume_medio": 4533,
+    "tendencia": "indefinida"
   }
 }

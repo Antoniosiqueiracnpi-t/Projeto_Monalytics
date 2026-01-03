@@ -1,9 +1,9 @@
 {
   "ticker": "HBRE3",
-  "ultima_atualizacao": "2026-01-02T23:02:37.868869",
+  "ultima_atualizacao": "2026-01-03T23:02:30.825548",
   "periodo": {
     "inicio": "2021-01-26",
-    "fim": "2025-12-30"
+    "fim": "2026-01-02"
   },
   "dados": [
     {
@@ -13546,15 +13546,27 @@
       "mm20": 3.36,
       "mm50": 3.28,
       "mm200": 2.92
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 3.49,
+      "maxima": 3.65,
+      "minima": 3.4,
+      "fechamento": 3.53,
+      "volume": 1553400,
+      "mm20": 3.36,
+      "mm50": 3.28,
+      "mm200": 2.93
     }
   ],
   "estatisticas": {
-    "total_dias": 1231,
+    "total_dias": 1232,
     "preco_inicial": 14.12,
-    "preco_atual": 3.44,
-    "variacao_periodo": -75.61,
+    "preco_atual": 3.53,
+    "variacao_periodo": -75.0,
     "maxima_periodo": 14.12,
     "minima_periodo": 1.95,
-    "volume_medio": 291660
+    "volume_medio": 292684,
+    "tendencia": "alta"
   }
 }

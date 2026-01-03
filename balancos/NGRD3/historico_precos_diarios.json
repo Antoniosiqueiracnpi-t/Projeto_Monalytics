@@ -1,9 +1,9 @@
 {
   "ticker": "NGRD3",
-  "ultima_atualizacao": "2026-01-02T23:03:40.557695",
+  "ultima_atualizacao": "2026-01-03T23:03:17.800557",
   "periodo": {
     "inicio": "2020-12-21",
-    "fim": "2025-12-30"
+    "fim": "2026-01-02"
   },
   "dados": [
     {
@@ -13777,15 +13777,27 @@
       "mm20": 26.31,
       "mm50": 25.85,
       "mm200": 24.91
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 27.74,
+      "maxima": 27.86,
+      "minima": 27.74,
+      "fechamento": 27.78,
+      "volume": 9100,
+      "mm20": 26.4,
+      "mm50": 25.88,
+      "mm200": 24.94
     }
   ],
   "estatisticas": {
-    "total_dias": 1252,
+    "total_dias": 1253,
     "preco_inicial": 120.51,
-    "preco_atual": 27.74,
-    "variacao_periodo": -76.98,
+    "preco_atual": 27.78,
+    "variacao_periodo": -76.95,
     "maxima_periodo": 286.14,
     "minima_periodo": 19.16,
-    "volume_medio": 60872
+    "volume_medio": 60831,
+    "tendencia": "alta"
   }
 }

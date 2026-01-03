@@ -1,9 +1,9 @@
 {
   "ticker": "VAMO3",
-  "ultima_atualizacao": "2026-01-02T23:02:10.621084",
+  "ultima_atualizacao": "2026-01-03T23:02:09.128630",
   "periodo": {
     "inicio": "2021-02-02",
-    "fim": "2025-12-30"
+    "fim": "2026-01-02"
   },
   "dados": [
     {
@@ -13491,15 +13491,27 @@
       "mm20": 3.47,
       "mm50": 3.37,
       "mm200": 3.86
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 3.25,
+      "maxima": 3.34,
+      "minima": 3.24,
+      "fechamento": 3.25,
+      "volume": 11660400,
+      "mm20": 3.45,
+      "mm50": 3.38,
+      "mm200": 3.85
     }
   ],
   "estatisticas": {
-    "total_dias": 1226,
+    "total_dias": 1227,
     "preco_inicial": 6.84,
-    "preco_atual": 3.23,
-    "variacao_periodo": -52.78,
+    "preco_atual": 3.25,
+    "variacao_periodo": -52.48,
     "maxima_periodo": 15.44,
     "minima_periodo": 2.78,
-    "volume_medio": 6921487
+    "volume_medio": 6925350,
+    "tendencia": "indefinida"
   }
 }

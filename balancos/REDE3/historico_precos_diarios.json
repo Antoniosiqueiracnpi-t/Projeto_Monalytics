@@ -1,22 +1,11 @@
 {
   "ticker": "REDE3",
-  "ultima_atualizacao": "2026-01-02T23:02:31.442864",
+  "ultima_atualizacao": "2026-01-03T23:02:27.193787",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 6.61,
-      "maxima": 6.64,
-      "minima": 6.61,
-      "fechamento": 6.64,
-      "volume": 5400,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 6.63,
@@ -222,7 +211,7 @@
       "minima": 6.95,
       "fechamento": 6.95,
       "volume": 100,
-      "mm20": 6.75,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 7.3,
       "volume": 1100,
       "mm20": 7.3,
-      "mm50": 7.03,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 3100,
       "mm20": 4.68,
       "mm50": 4.83,
-      "mm200": 5.73
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 6.21,
       "mm50": 6.26,
       "mm200": 6.27
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 6.25,
+      "maxima": 6.25,
+      "minima": 6.2,
+      "fechamento": 6.2,
+      "volume": 900,
+      "mm20": 6.2,
+      "mm50": 6.26,
+      "mm200": 6.27
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 6.64,
-    "preco_atual": 6.25,
-    "variacao_periodo": -5.88,
+    "preco_atual": 6.2,
+    "variacao_periodo": -6.64,
     "maxima_periodo": 7.33,
     "minima_periodo": 3.68,
-    "volume_medio": 4639
+    "volume_medio": 4635,
+    "tendencia": "baixa"
   }
 }

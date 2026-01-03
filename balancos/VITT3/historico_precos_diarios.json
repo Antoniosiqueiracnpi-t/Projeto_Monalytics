@@ -1,9 +1,9 @@
 {
   "ticker": "VITT3",
-  "ultima_atualizacao": "2026-01-02T23:03:46.758691",
+  "ultima_atualizacao": "2026-01-03T23:03:24.036683",
   "periodo": {
     "inicio": "2021-09-02",
-    "fim": "2025-12-30"
+    "fim": "2026-01-02"
   },
   "dados": [
     {
@@ -11885,15 +11885,27 @@
       "mm20": 4.61,
       "mm50": 4.58,
       "mm200": 4.69
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 4.6,
+      "maxima": 4.61,
+      "minima": 4.55,
+      "fechamento": 4.61,
+      "volume": 45300,
+      "mm20": 4.61,
+      "mm50": 4.58,
+      "mm200": 4.68
     }
   ],
   "estatisticas": {
-    "total_dias": 1080,
+    "total_dias": 1081,
     "preco_inicial": 7.81,
-    "preco_atual": 4.6,
-    "variacao_periodo": -41.12,
+    "preco_atual": 4.61,
+    "variacao_periodo": -40.99,
     "maxima_periodo": 12.38,
     "minima_periodo": 4.13,
-    "volume_medio": 296117
+    "volume_medio": 295885,
+    "tendencia": "indefinida"
   }
 }

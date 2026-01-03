@@ -1,22 +1,11 @@
 {
   "ticker": "VALE3",
-  "ultima_atualizacao": "2026-01-02T23:03:27.090241",
+  "ultima_atualizacao": "2026-01-03T23:03:07.343305",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 46.29,
-      "maxima": 47.79,
-      "minima": 46.29,
-      "fechamento": 47.38,
-      "volume": 48656900,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 47.63,
@@ -222,7 +211,7 @@
       "minima": 54.56,
       "fechamento": 55.51,
       "volume": 53722500,
-      "mm20": 50.08,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 55.11,
       "volume": 50160600,
       "mm20": 53.6,
-      "mm50": 52.73,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 38386300,
       "mm20": 56.81,
       "mm50": 62.74,
-      "mm200": 61.18
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -10549,7 +10538,7 @@
       "abertura": 53.13,
       "maxima": 53.47,
       "minima": 52.76,
-      "fechamento": 53.38,
+      "fechamento": 53.39,
       "volume": 22758400,
       "mm20": 53.21,
       "mm50": 51.47,
@@ -10702,7 +10691,7 @@
       "data": "2024-10-29",
       "abertura": 55.39,
       "maxima": 55.56,
-      "minima": 54.87,
+      "minima": 54.86,
       "fechamento": 54.87,
       "volume": 14941700,
       "mm20": 53.94,
@@ -13898,15 +13887,27 @@
       "mm20": 69.08,
       "mm50": 64.27,
       "mm200": 54.39
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 72.33,
+      "maxima": 72.55,
+      "minima": 71.65,
+      "fechamento": 72.38,
+      "volume": 28418900,
+      "mm20": 69.48,
+      "mm50": 64.58,
+      "mm200": 54.49
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 47.38,
-    "preco_atual": 71.96,
-    "variacao_periodo": 51.88,
+    "preco_inicial": 47.94,
+    "preco_atual": 72.38,
+    "variacao_periodo": 50.98,
     "maxima_periodo": 73.12,
     "minima_periodo": 42.38,
-    "volume_medio": 26174908
+    "volume_medio": 26158884,
+    "tendencia": "alta"
   }
 }

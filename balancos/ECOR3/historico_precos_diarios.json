@@ -1,22 +1,11 @@
 {
   "ticker": "ECOR3",
-  "ultima_atualizacao": "2026-01-02T23:04:19.317425",
+  "ultima_atualizacao": "2026-01-03T23:03:49.209320",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 12.21,
-      "maxima": 12.31,
-      "minima": 11.91,
-      "fechamento": 11.98,
-      "volume": 2805663,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 12.0,
@@ -222,7 +211,7 @@
       "minima": 11.27,
       "fechamento": 11.33,
       "volume": 5130808,
-      "mm20": 11.85,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 10.35,
       "volume": 5193277,
       "mm20": 11.23,
-      "mm50": 11.58,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 7925300,
       "mm20": 8.95,
       "mm50": 9.38,
-      "mm200": 10.64
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 10.54,
       "mm50": 9.51,
       "mm200": 7.47
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 10.62,
+      "maxima": 10.66,
+      "minima": 10.45,
+      "fechamento": 10.51,
+      "volume": 2466700,
+      "mm20": 10.51,
+      "mm50": 9.57,
+      "mm200": 7.5
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 11.98,
-    "preco_atual": 10.6,
-    "variacao_periodo": -11.5,
+    "preco_inicial": 11.78,
+    "preco_atual": 10.51,
+    "variacao_periodo": -10.76,
     "maxima_periodo": 12.34,
     "minima_periodo": 3.56,
-    "volume_medio": 4810261
+    "volume_medio": 4809993,
+    "tendencia": "indefinida"
   }
 }

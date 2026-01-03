@@ -1,22 +1,11 @@
 {
   "ticker": "TKNO4",
-  "ultima_atualizacao": "2026-01-02T23:04:01.883726",
+  "ultima_atualizacao": "2026-01-03T23:03:35.534432",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 25.23,
-      "maxima": 25.23,
-      "minima": 25.23,
-      "fechamento": 25.23,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 25.23,
@@ -222,7 +211,7 @@
       "minima": 27.34,
       "fechamento": 27.34,
       "volume": 100,
-      "mm20": 25.87,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 29.21,
       "volume": 0,
       "mm20": 28.24,
-      "mm50": 26.99,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 38.05,
       "mm50": 37.62,
-      "mm200": 32.9
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -10652,7 +10641,7 @@
       "volume": 0,
       "mm20": 72.23,
       "mm50": 71.53,
-      "mm200": 60.34
+      "mm200": 60.35
     },
     {
       "data": "2024-10-23",
@@ -13898,6 +13887,17 @@
       "mm20": 205.78,
       "mm50": 197.17,
       "mm200": 130.98
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 203.51,
+      "maxima": 203.51,
+      "minima": 203.51,
+      "fechamento": 203.51,
+      "volume": 0,
+      "mm20": 205.56,
+      "mm50": 197.61,
+      "mm200": 131.69
     }
   ],
   "estatisticas": {
@@ -13907,6 +13907,7 @@
     "variacao_periodo": 706.53,
     "maxima_periodo": 208.0,
     "minima_periodo": 24.66,
-    "volume_medio": 118
+    "volume_medio": 118,
+    "tendencia": "indefinida"
   }
 }

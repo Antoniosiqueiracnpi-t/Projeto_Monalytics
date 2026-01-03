@@ -1,22 +1,11 @@
 {
   "ticker": "MNPR3",
-  "ultima_atualizacao": "2026-01-02T23:01:40.758876",
+  "ultima_atualizacao": "2026-01-03T23:01:41.503514",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 0.63,
-      "maxima": 0.63,
-      "minima": 0.62,
-      "fechamento": 0.62,
-      "volume": 67000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 0.63,
@@ -222,7 +211,7 @@
       "minima": 0.67,
       "fechamento": 0.7,
       "volume": 97000,
-      "mm20": 0.66,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 0.67,
       "volume": 32000,
       "mm20": 0.7,
-      "mm50": 0.68,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 75000,
       "mm20": 1.09,
       "mm50": 1.18,
-      "mm200": 1.12
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 4.62,
       "mm50": 4.75,
       "mm200": 3.44
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 4.6,
+      "maxima": 4.88,
+      "minima": 4.21,
+      "fechamento": 4.68,
+      "volume": 136600,
+      "mm20": 4.59,
+      "mm50": 4.76,
+      "mm200": 3.45
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 0.62,
-    "preco_atual": 4.6,
-    "variacao_periodo": 645.54,
+    "preco_inicial": 0.64,
+    "preco_atual": 4.68,
+    "variacao_periodo": 628.97,
     "maxima_periodo": 5.78,
     "minima_periodo": 0.54,
-    "volume_medio": 113160
+    "volume_medio": 113215,
+    "tendencia": "indefinida"
   }
 }

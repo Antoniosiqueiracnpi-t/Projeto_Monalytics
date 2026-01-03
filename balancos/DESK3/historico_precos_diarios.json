@@ -1,9 +1,9 @@
 {
   "ticker": "DESK3",
-  "ultima_atualizacao": "2026-01-02T23:04:16.115145",
+  "ultima_atualizacao": "2026-01-03T23:03:45.650864",
   "periodo": {
     "inicio": "2021-07-22",
-    "fim": "2025-12-30"
+    "fim": "2026-01-02"
   },
   "dados": [
     {
@@ -12215,15 +12215,27 @@
       "mm20": 16.2,
       "mm50": 15.74,
       "mm200": 10.7
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 17.09,
+      "maxima": 17.13,
+      "minima": 16.71,
+      "fechamento": 16.84,
+      "volume": 751700,
+      "mm20": 16.23,
+      "mm50": 15.78,
+      "mm200": 10.74
     }
   ],
   "estatisticas": {
-    "total_dias": 1110,
+    "total_dias": 1111,
     "preco_inicial": 24.04,
-    "preco_atual": 17.09,
-    "variacao_periodo": -28.92,
+    "preco_atual": 16.84,
+    "variacao_periodo": -29.96,
     "maxima_periodo": 25.7,
     "minima_periodo": 6.11,
-    "volume_medio": 311520
+    "volume_medio": 311917,
+    "tendencia": "alta"
   }
 }

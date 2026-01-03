@@ -1,22 +1,11 @@
 {
   "ticker": "EGIE3",
-  "ultima_atualizacao": "2026-01-02T23:02:23.328180",
+  "ultima_atualizacao": "2026-01-03T23:02:19.810493",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 22.37,
-      "maxima": 22.54,
-      "minima": 22.13,
-      "fechamento": 22.3,
-      "volume": 2586500,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 22.3,
@@ -222,7 +211,7 @@
       "minima": 22.49,
       "fechamento": 22.75,
       "volume": 2486960,
-      "mm20": 23.05,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 22.46,
       "volume": 4005680,
       "mm20": 23.5,
-      "mm50": 23.31,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 2157120,
       "mm20": 21.49,
       "mm50": 21.1,
-      "mm200": 21.99
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 30.58,
       "mm50": 30.11,
       "mm200": 28.78
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 31.39,
+      "maxima": 31.79,
+      "minima": 31.13,
+      "fechamento": 31.13,
+      "volume": 1236700,
+      "mm20": 30.62,
+      "mm50": 30.16,
+      "mm200": 28.81
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 22.3,
-    "preco_atual": 31.37,
-    "variacao_periodo": 40.65,
+    "preco_inicial": 22.51,
+    "preco_atual": 31.13,
+    "variacao_periodo": 38.29,
     "maxima_periodo": 34.01,
     "minima_periodo": 20.08,
-    "volume_medio": 2148944
+    "volume_medio": 2147875,
+    "tendencia": "alta"
   }
 }

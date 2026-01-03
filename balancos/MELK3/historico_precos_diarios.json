@@ -1,22 +1,11 @@
 {
   "ticker": "MELK3",
-  "ultima_atualizacao": "2026-01-02T23:02:00.747715",
+  "ultima_atualizacao": "2026-01-03T23:02:00.346927",
   "periodo": {
-    "inicio": "2020-12-04",
-    "fim": "2025-12-30"
+    "inicio": "2020-12-07",
+    "fim": "2026-01-02"
   },
   "dados": [
-    {
-      "data": "2020-12-04",
-      "abertura": 3.76,
-      "maxima": 3.76,
-      "minima": 3.68,
-      "fechamento": 3.68,
-      "volume": 404000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-07",
       "abertura": 3.67,
@@ -222,7 +211,7 @@
       "minima": 3.25,
       "fechamento": 3.36,
       "volume": 1188300,
-      "mm20": 3.62,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 2.79,
       "volume": 785800,
       "mm20": 2.98,
-      "mm50": 3.28,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 605900,
       "mm20": 2.07,
       "mm50": 2.34,
-      "mm200": 2.81
+      "mm200": null
     },
     {
       "data": "2021-09-28",
@@ -13898,15 +13887,27 @@
       "mm20": 3.72,
       "mm50": 3.6,
       "mm200": 3.24
+    },
+    {
+      "data": "2026-01-02",
+      "abertura": 3.84,
+      "maxima": 3.84,
+      "minima": 3.77,
+      "fechamento": 3.8,
+      "volume": 533700,
+      "mm20": 3.74,
+      "mm50": 3.61,
+      "mm200": 3.24
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 3.68,
+    "preco_inicial": 3.72,
     "preco_atual": 3.8,
-    "variacao_periodo": 3.21,
+    "variacao_periodo": 2.06,
     "maxima_periodo": 3.85,
     "minima_periodo": 1.48,
-    "volume_medio": 499357
+    "volume_medio": 499460,
+    "tendencia": "alta"
   }
 }
