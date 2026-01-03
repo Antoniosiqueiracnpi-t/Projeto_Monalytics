@@ -333,14 +333,13 @@ if (typeof module !== 'undefined' && module.exports) {
  */
 
 // =========================== VARIÁVEIS GLOBAIS ===========================
-// Tenta primeiro master, depois main como fallback
+const GITHUB_API_BASE = 'https://api.github.com/repos/asiqueira013/Projeto_Monalytics/contents';
 const GITHUB_BRANCHES = ['master', 'main'];
-const GITHUB_REPO = 'https://raw.githubusercontent.com/asiqueira013/Projeto_Monalytics';
 
 const DATA_PATHS = {
-    bolsa: '/balancos/IBOV/monitor_diario.json',
-    indicadores: '/balancos/INDICADORES/indicadores_economicos.json',
-    noticias: '/balancos/feed_noticias.json'
+    bolsa: 'balancos/IBOV/monitor_diario.json',
+    indicadores: 'balancos/INDICADORES/indicadores_economicos.json',
+    noticias: 'balancos/feed_noticias.json'
 };
 
 let currentSlide = 0;
@@ -496,17 +495,24 @@ async function loadAllData() {
 async function fetchJSON(dataType) {
     const path = DATA_PATHS[dataType];
     
-    // Tenta cada branch sequencialmente
+    // Tenta em cada branch
     for (const branch of GITHUB_BRANCHES) {
-        const url = `${GITHUB_REPO}/${branch}${path}`;
+        const url = `${GITHUB_API_BASE}/${path}?ref=${branch}`;
         
         try {
             console.log(`Tentando carregar: ${url}`);
             const response = await fetch(url);
             
             if (response.ok) {
-                console.log(`✅ Sucesso: ${url}`);
-                return await response.json();
+                const data = await response.json();
+                
+                // GitHub API retorna conteúdo em base64
+                if (data.content) {
+                    const decodedContent = atob(data.content.replace(/\n/g, ''));
+                    const jsonData = JSON.parse(decodedContent);
+                    console.log(`✅ Sucesso: ${url}`);
+                    return jsonData;
+                }
             }
         } catch (error) {
             console.warn(`Falha no branch ${branch}:`, error.message);
