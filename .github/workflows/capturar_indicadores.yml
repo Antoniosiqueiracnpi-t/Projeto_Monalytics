@@ -1,0 +1,61 @@
+name: Capturar Indicadores Econômicos
+
+on:
+  # Executa segunda a sexta, 9h (horário de Brasília)
+  # UTC: 12h (Brasília -3h)
+  schedule:
+    - cron: '0 12 * * 1-5'
+  
+  # Permite execução manual
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  indicadores:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v3
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Instalar dependências
+        run: |
+          pip install --upgrade pip
+          pip install finbr pandas
+
+      - name: 📊 Capturar indicadores
+        run: |
+          python src/capturar_indicadores.py
+
+      - name: 💾 Commit e push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          # Verificar se há alterações
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "✅ Sem alterações para commitar"
+            exit 0
+          fi
+
+          # Adicionar apenas o arquivo de indicadores
+          git add balancos/INDICADORES/indicadores_economicos.json
+
+          # Verificar novamente após add
+          if git diff --staged --quiet; then
+            echo "✅ Sem alterações staged"
+            exit 0
+          fi
+
+          # Commit com data
+          DATA=$(date -u +"%Y-%m-%d")
+          git commit -m "Indicadores econômicos: ${DATA}" || echo "Sem mudanças para commitar"
+          git push || echo "Nada para enviar"
