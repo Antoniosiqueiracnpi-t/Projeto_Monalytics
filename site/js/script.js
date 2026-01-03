@@ -811,17 +811,12 @@ async function fetchWithRetry(dataType, attempt = 1) {
         const timeoutId = setTimeout(() => controller.abort(), SECURITY_CONFIG.REQUEST_TIMEOUT);
         
         const response = await fetch(url, {
-            signal: controller.signal,
-            cache: 'no-store',
-            headers: {
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
-                'Expires': '0'
-            },
-            // Modo de segurança
-            mode: 'cors',
-            credentials: 'omit'
+          signal: controller.signal,
+          cache: 'no-store',
+          mode: 'cors',
+          credentials: 'omit'
         });
+
         
         clearTimeout(timeoutId);
         
