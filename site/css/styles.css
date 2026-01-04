@@ -476,8 +476,11 @@ body {
 }
 
 .footer-column ul {
-    list-style: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
+
 
 /* Sub-navegação do rodapé (ex.: Agenda de Dividendos dentro de Análise de Ações) */
 .footer-subnav {
@@ -1154,19 +1157,25 @@ body {
     }
     
     .nav-menu {
-        position: fixed;
-        top: 70px;
-        right: -100%;
-        width: 100%;
-        max-width: 300px;
-        height: calc(100vh - 70px);
-        background-color: var(--bg-primary);
-        flex-direction: column;
-        padding: 2rem;
-        box-shadow: var(--shadow-lg);
-        transition: var(--transition-normal);
-        gap: 0;
+      position: fixed;
+      top: 70px;
+      right: -100%;
+      width: 100%;
+      max-width: 300px;
+      height: calc(100vh - 70px);
+      background-color: var(--bg-primary);
+      flex-direction: column;
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition-normal);
+      gap: 0;
+    
+      /* ✅ CORREÇÃO: permite rolar o menu quando tiver mais itens */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
     }
+
     
     .nav-menu.active {
         right: 0;
