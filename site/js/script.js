@@ -1716,12 +1716,13 @@ async function loadMapeamentoB3() {
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/${MAPEAMENTO_B3_PATH}?t=${timestamp}`);
         const csvText = await response.text();
         
-        // Parse CSV
+        // Parse CSV - USANDO PONTO-E-VÍRGULA como separador
         const lines = csvText.split('\n');
         mapeamentoB3 = lines.slice(1) // Pula header
             .filter(line => line.trim())
             .map(line => {
-                const parts = line.split(',');
+                // MUDANÇA AQUI: split(';') ao invés de split(',')
+                const parts = line.split(';');
                 return {
                     ticker: parts[0]?.trim(),
                     empresa: parts[1]?.trim(),
