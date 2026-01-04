@@ -197,6 +197,7 @@ function animateCounter(element, target, duration = 2000) {
 }
 
 // Observa números para animar
+/*
 const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
@@ -222,6 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statsObserver.observe(card);
     });
 });
+*/
 
 // =========================== RESIZE HANDLER ===========================
 /**
