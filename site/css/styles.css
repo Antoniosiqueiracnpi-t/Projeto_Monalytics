@@ -1875,6 +1875,42 @@ textarea:focus {
     background: var(--bg-gradient);
 }
 
+/* ===================== MARKET CAROUSEL | RESPONSIVO (FIX) ===================== */
+@media screen and (max-width: 768px) {
+  /* reduz “respiro” interno do slide no mobile/tablet */
+  .carousel-slide { padding: 1.25rem; } /* desktop está em 2.5rem */ 
+  .slide-body { min-height: auto; }     /* desktop está em 400px */
+
+  /* evita overflow no Slide 1 */
+  .stats-overview { grid-template-columns: 1fr; } /* desktop: repeat(3, 1fr) */
+  .stock-item { grid-template-columns: 80px 1fr; } /* desktop: 80px 1fr 120px 140px */
+
+  /* evita overflow no Slide 2 */
+  .indicators-grid { grid-template-columns: 1fr; } /* desktop: repeat(2, 1fr) */
+
+  /* setas “para dentro” do carrossel */
+  .carousel-arrow { width: 44px; height: 44px; font-size: 1.1rem; }
+  .carousel-arrow.prev { left: 10px; }
+  .carousel-arrow.next { right: 10px; }
+
+  .carousel-indicators { margin-top: 1.25rem; }
+}
+
+@media screen and (max-width: 480px) {
+  .carousel-slide { padding: 1rem; }
+
+  /* header do slide empilha melhor */
+  .slide-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .slide-title { font-size: 1.35rem; }
+  .slide-subtitle { font-size: 0.95rem; }
+
+  /* deixa a lista do slide 1 ainda mais confortável */
+  .stock-item { grid-template-columns: 70px 1fr; gap: 0.75rem; }
+
+  /* setas um pouco mais próximas das bordas */
+  .carousel-arrow.prev { left: 6px; }
+  .carousel-arrow.next { right: 6px; }
+}
 
 
     
