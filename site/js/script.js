@@ -346,6 +346,8 @@ const DATA_PATHS = {
 
 const NOTICIAS_MERCADO_PATH = 'balancos/NOTICIAS/noticias_mercado.json';
 const DIVIDENDOS_PATH = 'agenda_dividendos_acoes_investidor10.json';
+const MAPEAMENTO_B3_PATH = 'mapeamento_b3_consolidado.csv';
+const IBOV_PATH = 'balancos/IBOV/historico_precos_diarios.json';
 
 let currentSlide = 0;
 const totalSlides = 3;
@@ -494,7 +496,9 @@ async function loadAllData() {
         loadIndicadoresData(),
         loadNoticiasData(),
         loadNoticiasMercado(),
-        loadDividendosData()
+        loadDividendosData(),
+        loadMapeamentoB3(),
+        loadIbovData()
     ]);
 }
 
@@ -1249,6 +1253,12 @@ function renderNewsGrid(noticias) {
 
 let currentPeriodDays = 30;
 let allDividendos = [];
+let mapeamentoB3 = [];
+let acaoAtualData = null;
+let ibovData = null;
+let acaoChart = null;
+let ibovEnabled = false;
+let periodoAtual = 365;
 
 /**
  * Carrega dados de dividendos
@@ -1688,4 +1698,387 @@ if (typeof module !== 'undefined' && module.exports) {
         navigateSlide,
         goToSlide
     };
+}
+
+/* ========================================
+   ANÁLISE GRÁFICA DE AÇÕES
+   ======================================== */
+
+// Carrega mapeamento B3
+async function loadMapeamentoB3() {
+    try {
+        const timestamp = new Date().getTime();
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/${MAPEAMENTO_B3_PATH}?t=${timestamp}`);
+        const csvText = await response.text();
+        
+        // Parse CSV
+        const lines = csvText.split('\n');
+        mapeamentoB3 = lines.slice(1) // Pula header
+            .filter(line => line.trim())
+            .map(line => {
+                const parts = line.split(',');
+                return {
+                    ticker: parts[0]?.trim(),
+                    empresa: parts[1]?.trim(),
+                    cnpj: parts[2]?.trim(),
+                    setor: parts[3]?.trim(),
+                    segmento: parts[4]?.trim()
+                };
+            })
+            .filter(item => item.ticker && item.empresa);
+        
+        console.log('Mapeamento B3 carregado:', mapeamentoB3.length, 'empresas');
+    } catch (error) {
+        console.error('Erro ao carregar mapeamento B3:', error);
+    }
+}
+
+// Carrega dados do Ibovespa
+async function loadIbovData() {
+    try {
+        const timestamp = new Date().getTime();
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/${IBOV_PATH}?t=${timestamp}`);
+        ibovData = await response.json();
+        console.log('IBOV carregado:', ibovData.dados.length, 'registros');
+    } catch (error) {
+        console.error('Erro ao carregar IBOV:', error);
+    }
+}
+
+// Inicializa busca de ações
+function initAcaoBusca() {
+    const searchInput = document.getElementById('acaoSearchInput');
+    const searchBtn = document.getElementById('acaoSearchBtn');
+    const suggestions = document.getElementById('searchSuggestions');
+    
+    // Event listeners para busca
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim().toUpperCase();
+        
+        if (query.length >= 2) {
+            const matches = mapeamentoB3
+                .filter(item => 
+                    item.ticker.includes(query) || 
+                    item.empresa.toUpperCase().includes(query)
+                )
+                .slice(0, 8);
+            
+            if (matches.length > 0) {
+                renderSuggestions(matches);
+            } else {
+                suggestions.style.display = 'none';
+            }
+        } else {
+            suggestions.style.display = 'none';
+        }
+    });
+    
+    searchBtn.addEventListener('click', () => {
+        const query = searchInput.value.trim().toUpperCase();
+        if (query) {
+            const match = mapeamentoB3.find(item => item.ticker === query);
+            if (match) {
+                loadAcaoData(match.ticker);
+            }
+        }
+    });
+    
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            searchBtn.click();
+        }
+    });
+    
+    // Clicks fora fecham sugestões
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.analise-grafica-header')) {
+            suggestions.style.display = 'none';
+        }
+    });
+    
+    // Tags de mais buscados
+    document.querySelectorAll('.ticker-tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+            const ticker = tag.dataset.ticker;
+            searchInput.value = ticker;
+            loadAcaoData(ticker);
+        });
+    });
+}
+
+// Renderiza sugestões
+function renderSuggestions(matches) {
+    const suggestions = document.getElementById('searchSuggestions');
+    
+    suggestions.innerHTML = matches
+        .map(item => `
+            <div class="suggestion-item" data-ticker="${item.ticker}">
+                <div>
+                    <span class="suggestion-ticker">${item.ticker}</span>
+                    <span class="suggestion-nome">${item.empresa}</span>
+                </div>
+            </div>
+        `)
+        .join('');
+    
+    suggestions.style.display = 'block';
+    
+    // Click em sugestão
+    suggestions.querySelectorAll('.suggestion-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const ticker = item.dataset.ticker;
+            document.getElementById('acaoSearchInput').value = ticker;
+            loadAcaoData(ticker);
+            suggestions.style.display = 'none';
+        });
+    });
+}
+
+// Carrega dados da ação
+async function loadAcaoData(ticker) {
+    const emptyState = document.getElementById('acaoEmptyState');
+    const loadingState = document.getElementById('acaoLoadingState');
+    const content = document.getElementById('acaoAnaliseContent');
+    
+    // Mostra loading
+    emptyState.style.display = 'none';
+    content.style.display = 'none';
+    loadingState.style.display = 'block';
+    
+    try {
+        const timestamp = new Date().getTime();
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${ticker}/historico_precos_diarios.json?t=${timestamp}`);
+        
+        if (!response.ok) throw new Error('Ação não encontrada');
+        
+        acaoAtualData = await response.json();
+        
+        // Busca info da empresa
+        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
+        
+        // Atualiza UI
+        document.getElementById('acaoTicker').textContent = ticker;
+        document.getElementById('acaoNome').textContent = empresaInfo?.empresa || ticker;
+        document.getElementById('acaoLogo').textContent = ticker.substring(0, 4);
+        
+        // Atualiza indicadores
+        updateIndicadores();
+        
+        // Renderiza gráfico
+        renderAcaoChart();
+        
+        // Mostra conteúdo
+        loadingState.style.display = 'none';
+        content.style.display = 'block';
+        
+    } catch (error) {
+        console.error('Erro ao carregar ação:', error);
+        loadingState.style.display = 'none';
+        emptyState.style.display = 'block';
+        alert('Erro ao carregar dados da ação. Verifique se o ticker está correto.');
+    }
+}
+
+// Atualiza indicadores
+function updateIndicadores() {
+    if (!acaoAtualData || !acaoAtualData.dados.length) return;
+    
+    const dados = acaoAtualData.dados;
+    const ultimo = dados[dados.length - 1];
+    const umAnoAtras = dados.length >= 252 ? dados[dados.length - 252] : dados[0];
+    
+    // Cotação atual
+    document.getElementById('cotacaoAtual').textContent = `R$ ${ultimo.fechamento.toFixed(2)}`;
+    
+    // Variação 12M
+    const variacao12m = ((ultimo.fechamento - umAnoAtras.fechamento) / umAnoAtras.fechamento * 100).toFixed(2);
+    const varEl = document.getElementById('variacao12m');
+    varEl.textContent = `${variacao12m}% ${variacao12m >= 0 ? '↑' : '↓'}`;
+    varEl.className = 'indicador-valor ' + (variacao12m >= 0 ? 'positivo' : 'negativo');
+    
+    // Médias móveis atuais
+    document.getElementById('mm20Atual').textContent = ultimo.mm20 ? `R$ ${ultimo.mm20.toFixed(2)}` : 'N/D';
+    document.getElementById('mm50Atual').textContent = ultimo.mm50 ? `R$ ${ultimo.mm50.toFixed(2)}` : 'N/D';
+    document.getElementById('mm200Atual').textContent = ultimo.mm200 ? `R$ ${ultimo.mm200.toFixed(2)}` : 'N/D';
+    
+    // Placeholder para P/L, P/VP, DY (precisaria de dados fundamentalistas)
+    document.getElementById('plAtual').textContent = 'N/D';
+    document.getElementById('pvpAtual').textContent = 'N/D';
+    document.getElementById('dyAtual').textContent = 'N/D';
+}
+
+// Renderiza gráfico
+function renderAcaoChart() {
+    if (!acaoAtualData) return;
+    
+    const ctx = document.getElementById('acaoChart');
+    
+    // Destroi gráfico anterior
+    if (acaoChart) {
+        acaoChart.destroy();
+    }
+    
+    // Filtra dados por período
+    const dadosFiltrados = filterDataByPeriodo(acaoAtualData.dados, periodoAtual);
+    
+    // Prepara datasets
+    const datasets = [
+        {
+            label: acaoAtualData.ticker,
+            data: dadosFiltrados.map(d => d.fechamento),
+            borderColor: '#4f46e5',
+            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+            tension: 0.1,
+            fill: true,
+            yAxisID: 'y'
+        }
+    ];
+    
+    // Adiciona médias móveis
+    if (dadosFiltrados.some(d => d.mm20)) {
+        datasets.push({
+            label: 'MM20',
+            data: dadosFiltrados.map(d => d.mm20),
+            borderColor: '#10b981',
+            borderWidth: 1.5,
+            pointRadius: 0,
+            yAxisID: 'y'
+        });
+    }
+    
+    if (dadosFiltrados.some(d => d.mm50)) {
+        datasets.push({
+            label: 'MM50',
+            data: dadosFiltrados.map(d => d.mm50),
+            borderColor: '#f59e0b',
+            borderWidth: 1.5,
+            pointRadius: 0,
+            yAxisID: 'y'
+        });
+    }
+    
+    if (dadosFiltrados.some(d => d.mm200)) {
+        datasets.push({
+            label: 'MM200',
+            data: dadosFiltrados.map(d => d.mm200),
+            borderColor: '#ef4444',
+            borderWidth: 1.5,
+            pointRadius: 0,
+            yAxisID: 'y'
+        });
+    }
+    
+    // Adiciona IBOV se habilitado
+    if (ibovEnabled && ibovData) {
+        const ibovFiltrado = filterDataByPeriodo(ibovData.dados, periodoAtual);
+        datasets.push({
+            label: 'IBOVESPA',
+            data: ibovFiltrado.map(d => d.fechamento),
+            borderColor: '#8b5cf6',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            pointRadius: 0,
+            yAxisID: 'y1'
+        });
+    }
+    
+    // Cria gráfico
+    acaoChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dadosFiltrados.map(d => d.data),
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += 'R$ ' + context.parsed.y.toFixed(2);
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toFixed(2);
+                        }
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: ibovEnabled,
+                    position: 'right',
+                    grid: {
+                        drawOnChartArea: false
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString('pt-BR');
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Filtra dados por período
+function filterDataByPeriodo(dados, periodo) {
+    if (periodo === 'max') return dados;
+    
+    const diasAtras = parseInt(periodo);
+    return dados.slice(-diasAtras);
+}
+
+// Inicializa filtros de período
+function initPeriodoFilters() {
+    document.querySelectorAll('.periodo-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active de todos
+            document.querySelectorAll('.periodo-btn').forEach(b => b.classList.remove('active'));
+            
+            // Adiciona active no clicado
+            btn.classList.add('active');
+            
+            // Atualiza período
+            periodoAtual = btn.dataset.periodo;
+            
+            // Re-renderiza gráfico
+            renderAcaoChart();
+        });
+    });
+}
+
+// Inicializa toggle IBOV
+function initToggleIbov() {
+    const btn = document.getElementById('toggleIbovBtn');
+    
+    btn.addEventListener('click', () => {
+        ibovEnabled = !ibovEnabled;
+        btn.classList.toggle('active');
+        renderAcaoChart();
+    });
 }
