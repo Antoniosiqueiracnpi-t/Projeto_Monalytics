@@ -1120,7 +1120,6 @@ function renderNoticiasData(data) {
                 <span class="news-badge ${badgeClass}">${categoria}</span>
                 <div class="news-content">
                     <div class="news-header">
-                        <span class="news-ticker">${item.empresa.ticker}</span>
                         <span class="news-date">${formatDate(item.data)} ${item.hora}</span>
                     </div>
                     <div class="news-title">${item.noticia.headline}</div>
