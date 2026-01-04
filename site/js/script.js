@@ -1119,9 +1119,6 @@ function renderNoticiasData(data) {
             <div class="news-item">
                 <span class="news-badge ${badgeClass}">${categoria}</span>
                 <div class="news-content">
-                    <div class="news-header">
-                        <span class="news-date">${formatDate(item.data)} ${item.hora}</span>
-                    </div>
                     <div class="news-title">${item.noticia.headline}</div>
                     <div class="news-company">${item.empresa.nome}</div>
                     <a href="${item.noticia.url}" target="_blank" class="news-link">
