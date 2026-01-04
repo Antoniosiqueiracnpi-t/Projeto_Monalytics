@@ -344,6 +344,8 @@ const DATA_PATHS = {
     noticias: 'balancos/feed_noticias.json'
 };
 
+const NOTICIAS_MERCADO_PATH = 'balancos/NOTICIAS/noticias_mercado.json';
+
 let currentSlide = 0;
 const totalSlides = 3;
 let autoPlayInterval = null;
@@ -461,6 +463,8 @@ function startAutoPlay() {
     }, AUTO_PLAY_DELAY);
 }
 
+
+
 /**
  * Para o auto-play
  */
@@ -487,7 +491,8 @@ async function loadAllData() {
     await Promise.all([
         loadBolsaData(),
         loadIndicadoresData(),
-        loadNoticiasData()
+        loadNoticiasData(),
+        loadNoticiasMercado()
     ]);
 }
 
@@ -1134,6 +1139,152 @@ function renderNoticiasData(data) {
     // Timestamp
     const timestamp = new Date(data.meta.ultima_atualizacao);
     document.getElementById('noticiasTimestamp').textContent = formatTimestamp(timestamp);
+}
+
+// =========================== SLIDE 4: NOTÍCIAS DO MERCADO ===========================
+
+/**
+ * Carrega notícias do mercado
+ */
+async function loadNoticiasMercado() {
+    try {
+        const response = await fetch(`${DATA_CONFIG.GITHUB_RAW}/${DATA_CONFIG.BRANCH}/${NOTICIAS_MERCADO_PATH}?t=${Date.now()}`);
+        
+        if (!response.ok) {
+            throw new Error('Erro ao carregar notícias');
+        }
+        
+        const data = await response.json();
+        renderNoticiasMercado(data);
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar notícias:', error);
+        showNewsError();
+    }
+}
+
+/**
+ * Renderiza notícias do mercado
+ */
+function renderNoticiasMercado(data) {
+    // Esconde loading
+    document.getElementById('newsLoading').style.display = 'none';
+    
+    // Mostra grid
+    document.getElementById('newsGrid').style.display = 'grid';
+    document.getElementById('newsTimestampSection').style.display = 'block';
+    
+    // Agrega todas as notícias em uma lista flat
+    const todasNoticias = [];
+    
+    const portais = data.portais || {};
+    for (const noticias of Object.values(portais)) {
+        todasNoticias.push(...noticias);
+    }
+    
+    // Ordena por horário (mais recentes primeiro)
+    todasNoticias.sort((a, b) => {
+        const timeA = a.horario.split(':').map(Number);
+        const timeB = b.horario.split(':').map(Number);
+        return (timeB[0] * 60 + timeB[1]) - (timeA[0] * 60 + timeA[1]);
+    });
+    
+    // Renderiza grid
+    renderNewsGrid(todasNoticias);
+    
+    // Inicializa filtros
+    initNewsFilters(todasNoticias);
+    
+    // Timestamp
+    const timestamp = new Date(data.ultima_atualizacao);
+    document.getElementById('newsTimestamp').textContent = 
+        `Última atualização: ${formatTimestamp(timestamp)}`;
+}
+
+/**
+ * Renderiza grid de notícias
+ */
+function renderNewsGrid(noticias) {
+    const grid = document.getElementById('newsGrid');
+    if (!grid) return;
+    
+    grid.innerHTML = noticias.map(noticia => {
+        const categoriaClass = (noticia.categoria || 'geral').toLowerCase();
+        const tagsHtml = (noticia.tags || []).length > 0
+            ? `<div class="news-tags">${noticia.tags.map(tag => 
+                `<span class="news-tag">${tag}</span>`
+              ).join('')}</div>`
+            : '';
+        
+        return `
+            <div class="news-card" data-categoria="${noticia.categoria || 'Geral'}">
+                <img src="${noticia.imagem}" alt="${noticia.titulo}" class="news-card-image" 
+                     onerror="this.src='https://i.ibb.co/ZpSVYcgH/Monalytics-3-D.png'">
+                <div class="news-card-content">
+                    <div class="news-card-header">
+                        <span class="news-category-badge ${categoriaClass}">${noticia.categoria || 'Geral'}</span>
+                        <span class="news-time">
+                            <i class="fas fa-clock"></i> ${noticia.horario}
+                        </span>
+                    </div>
+                    <h3 class="news-card-title">${noticia.titulo}</h3>
+                    ${tagsHtml}
+                    <div class="news-card-footer">
+                        <span class="news-source">
+                            <i class="fas fa-newspaper"></i> ${noticia.fonte}
+                        </span>
+                        <a href="${noticia.link}" target="_blank" class="news-read-more">
+                            Ler mais <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+/**
+ * Inicializa sistema de filtros
+ */
+function initNewsFilters(noticias) {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const newsCards = document.querySelectorAll('.news-card');
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const filter = btn.dataset.filter;
+            
+            // Atualiza botões ativos
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Filtra cards
+            newsCards.forEach(card => {
+                const categoria = card.dataset.categoria;
+                
+                if (filter === 'todas' || categoria === filter) {
+                    card.style.display = 'flex';
+                    // Animação de entrada
+                    card.style.animation = 'fadeIn 0.3s ease';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+}
+
+/**
+ * Mostra erro ao carregar notícias
+ */
+function showNewsError() {
+    const loading = document.getElementById('newsLoading');
+    if (loading) {
+        loading.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Erro ao carregar notícias do mercado</span>
+        `;
+    }
 }
 
 /**
