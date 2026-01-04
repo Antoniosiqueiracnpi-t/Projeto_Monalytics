@@ -1688,6 +1688,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Carrega dados
     loadAllData();
+    
+    // Inicializa busca e funcionalidades de ações
+    initAcaoBusca();
+    initPeriodoFilters();
+    initToggleIbov();
 });
 
 // =========================== EXPORT ===========================
