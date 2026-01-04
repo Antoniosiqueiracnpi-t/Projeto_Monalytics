@@ -479,6 +479,25 @@ body {
     list-style: none;
 }
 
+/* Sub-navegação do rodapé (ex.: Agenda de Dividendos dentro de Análise de Ações) */
+.footer-subnav {
+    list-style: none;
+    margin-top: 0.35rem;
+    margin-left: 0.75rem;
+    padding-left: 0.75rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer-subnav li {
+    margin-bottom: 0.35rem;
+}
+
+.footer-subnav a {
+    font-size: 0.95em;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+
 .footer-column li {
     margin-bottom: 0.5rem;
 }
