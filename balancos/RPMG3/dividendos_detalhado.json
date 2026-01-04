@@ -1,0 +1,878 @@
+{
+  "ticker": "RPMG3",
+  "total_dividendos": 2.3782,
+  "periodo": "1996-2005",
+  "quantidade_pagamentos": 87,
+  "dividendos": [
+    {
+      "data_com": "1996-02-29",
+      "valor": 0.015,
+      "tipo": "DIVIDENDO",
+      "ano": 1996,
+      "mes": 2,
+      "dia": 29,
+      "trimestre": "T1",
+      "data_pagamento": "1996-02-29"
+    },
+    {
+      "data_com": "1996-02-29",
+      "valor": 0.015,
+      "tipo": "DIVIDENDO",
+      "ano": 1996,
+      "mes": 2,
+      "dia": 29,
+      "trimestre": "T1",
+      "data_pagamento": "1996-02-29"
+    },
+    {
+      "data_com": "1996-04-30",
+      "valor": 0.064174,
+      "tipo": "DIVIDENDO",
+      "ano": 1996,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1996-04-30"
+    },
+    {
+      "data_com": "1996-04-30",
+      "valor": 0.064174,
+      "tipo": "DIVIDENDO",
+      "ano": 1996,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1996-04-30"
+    },
+    {
+      "data_com": "1996-08-06",
+      "valor": 0.018257,
+      "tipo": "DIVIDENDO",
+      "ano": 1996,
+      "mes": 8,
+      "dia": 6,
+      "trimestre": "T3",
+      "data_pagamento": "1996-08-06"
+    },
+    {
+      "data_com": "1996-08-06",
+      "valor": 0.018257,
+      "tipo": "DIVIDENDO",
+      "ano": 1996,
+      "mes": 8,
+      "dia": 6,
+      "trimestre": "T3",
+      "data_pagamento": "1996-08-06"
+    },
+    {
+      "data_com": "1996-12-10",
+      "valor": 0.015,
+      "tipo": "DIVIDENDO",
+      "ano": 1996,
+      "mes": 12,
+      "dia": 10,
+      "trimestre": "T4",
+      "data_pagamento": "1996-12-09"
+    },
+    {
+      "data_com": "1996-12-10",
+      "valor": 0.015,
+      "tipo": "DIVIDENDO",
+      "ano": 1996,
+      "mes": 12,
+      "dia": 10,
+      "trimestre": "T4",
+      "data_pagamento": "1996-12-09"
+    },
+    {
+      "data_com": "1997-04-30",
+      "valor": 0.018,
+      "tipo": "DIVIDENDO",
+      "ano": 1997,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1997-04-30"
+    },
+    {
+      "data_com": "1997-04-30",
+      "valor": 0.01,
+      "tipo": "DIVIDENDO",
+      "ano": 1997,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1997-04-30"
+    },
+    {
+      "data_com": "1997-04-30",
+      "valor": 0.03127,
+      "tipo": "DIVIDENDO",
+      "ano": 1997,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1997-04-30"
+    },
+    {
+      "data_com": "1997-04-30",
+      "valor": 0.018,
+      "tipo": "DIVIDENDO",
+      "ano": 1997,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1997-04-30"
+    },
+    {
+      "data_com": "1997-04-30",
+      "valor": 0.01,
+      "tipo": "DIVIDENDO",
+      "ano": 1997,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1997-04-30"
+    },
+    {
+      "data_com": "1997-04-30",
+      "valor": 0.03127,
+      "tipo": "DIVIDENDO",
+      "ano": 1997,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1997-04-30"
+    },
+    {
+      "data_com": "1998-04-30",
+      "valor": 0.019027,
+      "tipo": "DIVIDENDO",
+      "ano": 1998,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1998-04-30"
+    },
+    {
+      "data_com": "1998-04-30",
+      "valor": 0.019123,
+      "tipo": "DIVIDENDO",
+      "ano": 1998,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1998-04-30"
+    },
+    {
+      "data_com": "1998-04-30",
+      "valor": 0.019123,
+      "tipo": "DIVIDENDO",
+      "ano": 1998,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1998-04-30"
+    },
+    {
+      "data_com": "1998-04-30",
+      "valor": 0.019027,
+      "tipo": "DIVIDENDO",
+      "ano": 1998,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1998-04-30"
+    },
+    {
+      "data_com": "1998-04-30",
+      "valor": 0.019027,
+      "tipo": "DIVIDENDO",
+      "ano": 1998,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1998-04-30"
+    },
+    {
+      "data_com": "1998-04-30",
+      "valor": 0.019027,
+      "tipo": "DIVIDENDO",
+      "ano": 1998,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1998-04-30"
+    },
+    {
+      "data_com": "1998-04-30",
+      "valor": 0.019027,
+      "tipo": "DIVIDENDO",
+      "ano": 1998,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1998-04-30"
+    },
+    {
+      "data_com": "1998-04-30",
+      "valor": 0.019027,
+      "tipo": "DIVIDENDO",
+      "ano": 1998,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1998-04-30"
+    },
+    {
+      "data_com": "1999-04-30",
+      "valor": 0.025373,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 1999,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1999-04-30"
+    },
+    {
+      "data_com": "1999-04-30",
+      "valor": 0.025368,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 1999,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1999-04-30"
+    },
+    {
+      "data_com": "1999-04-30",
+      "valor": 0.025368,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 1999,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1999-04-30"
+    },
+    {
+      "data_com": "1999-04-30",
+      "valor": 0.025368,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 1999,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1999-04-30"
+    },
+    {
+      "data_com": "1999-04-30",
+      "valor": 0.025368,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 1999,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1999-04-30"
+    },
+    {
+      "data_com": "1999-04-30",
+      "valor": 0.025373,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 1999,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1999-04-30"
+    },
+    {
+      "data_com": "1999-05-11",
+      "valor": 0.002156,
+      "tipo": "DIVIDENDO",
+      "ano": 1999,
+      "mes": 5,
+      "dia": 11,
+      "trimestre": "T2",
+      "data_pagamento": "1999-05-11"
+    },
+    {
+      "data_com": "1999-05-11",
+      "valor": 0.002156,
+      "tipo": "DIVIDENDO",
+      "ano": 1999,
+      "mes": 5,
+      "dia": 11,
+      "trimestre": "T2",
+      "data_pagamento": "1999-05-11"
+    },
+    {
+      "data_com": "1999-05-11",
+      "valor": 0.002156,
+      "tipo": "DIVIDENDO",
+      "ano": 1999,
+      "mes": 5,
+      "dia": 11,
+      "trimestre": "T2",
+      "data_pagamento": "1999-05-11"
+    },
+    {
+      "data_com": "1999-09-02",
+      "valor": 0.0605,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 1999,
+      "mes": 9,
+      "dia": 2,
+      "trimestre": "T3",
+      "data_pagamento": "1999-09-01"
+    },
+    {
+      "data_com": "1999-09-02",
+      "valor": 0.055,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 1999,
+      "mes": 9,
+      "dia": 2,
+      "trimestre": "T3",
+      "data_pagamento": "1999-09-01"
+    },
+    {
+      "data_com": "2000-01-18",
+      "valor": 0.049483,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 1,
+      "dia": 18,
+      "trimestre": "T1",
+      "data_pagamento": "1999-12-30"
+    },
+    {
+      "data_com": "2000-01-18",
+      "valor": 0.054432,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 1,
+      "dia": 18,
+      "trimestre": "T1",
+      "data_pagamento": "1999-12-30"
+    },
+    {
+      "data_com": "2000-08-10",
+      "valor": 0.013066,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 8,
+      "dia": 10,
+      "trimestre": "T3",
+      "data_pagamento": "2000-07-20"
+    },
+    {
+      "data_com": "2000-08-10",
+      "valor": 0.013066,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 8,
+      "dia": 10,
+      "trimestre": "T3",
+      "data_pagamento": "2000-07-20"
+    },
+    {
+      "data_com": "2000-08-10",
+      "valor": 0.013066,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 8,
+      "dia": 10,
+      "trimestre": "T3",
+      "data_pagamento": "2000-07-20"
+    },
+    {
+      "data_com": "2000-08-10",
+      "valor": 0.014373,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 8,
+      "dia": 10,
+      "trimestre": "T3",
+      "data_pagamento": "2000-07-20"
+    },
+    {
+      "data_com": "2000-08-10",
+      "valor": 0.014373,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 8,
+      "dia": 10,
+      "trimestre": "T3",
+      "data_pagamento": "2000-07-20"
+    },
+    {
+      "data_com": "2000-08-10",
+      "valor": 0.014373,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 8,
+      "dia": 10,
+      "trimestre": "T3",
+      "data_pagamento": "2000-07-20"
+    },
+    {
+      "data_com": "2000-11-22",
+      "valor": 0.020183,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 11,
+      "dia": 22,
+      "trimestre": "T4",
+      "data_pagamento": "2000-09-20"
+    },
+    {
+      "data_com": "2000-11-22",
+      "valor": 0.018348,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 11,
+      "dia": 22,
+      "trimestre": "T4",
+      "data_pagamento": "2000-09-20"
+    },
+    {
+      "data_com": "2001-02-06",
+      "valor": 0.018348,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 2,
+      "dia": 6,
+      "trimestre": "T1",
+      "data_pagamento": "2000-12-29"
+    },
+    {
+      "data_com": "2001-02-06",
+      "valor": 0.018348,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 2,
+      "dia": 6,
+      "trimestre": "T1",
+      "data_pagamento": "2000-12-29"
+    },
+    {
+      "data_com": "2001-02-06",
+      "valor": 0.01668,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 2,
+      "dia": 6,
+      "trimestre": "T1",
+      "data_pagamento": "2000-12-29"
+    },
+    {
+      "data_com": "2001-02-06",
+      "valor": 0.01668,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 2,
+      "dia": 6,
+      "trimestre": "T1",
+      "data_pagamento": "2000-12-29"
+    },
+    {
+      "data_com": "2001-02-06",
+      "valor": 0.01668,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 2,
+      "dia": 6,
+      "trimestre": "T1",
+      "data_pagamento": "2000-12-29"
+    },
+    {
+      "data_com": "2001-02-06",
+      "valor": 0.018348,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 2,
+      "dia": 6,
+      "trimestre": "T1",
+      "data_pagamento": "2000-12-29"
+    },
+    {
+      "data_com": "2001-07-20",
+      "valor": 0.020951,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 7,
+      "dia": 20,
+      "trimestre": "T3",
+      "data_pagamento": "2001-07-17"
+    },
+    {
+      "data_com": "2001-07-20",
+      "valor": 0.020951,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 7,
+      "dia": 20,
+      "trimestre": "T3",
+      "data_pagamento": "2001-07-17"
+    },
+    {
+      "data_com": "2001-07-20",
+      "valor": 0.020951,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 7,
+      "dia": 20,
+      "trimestre": "T3",
+      "data_pagamento": "2001-07-17"
+    },
+    {
+      "data_com": "2001-07-20",
+      "valor": 0.019046,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 7,
+      "dia": 20,
+      "trimestre": "T3",
+      "data_pagamento": "2001-07-17"
+    },
+    {
+      "data_com": "2001-07-20",
+      "valor": 0.019046,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 7,
+      "dia": 20,
+      "trimestre": "T3",
+      "data_pagamento": "2001-07-17"
+    },
+    {
+      "data_com": "2001-07-20",
+      "valor": 0.019046,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 7,
+      "dia": 20,
+      "trimestre": "T3",
+      "data_pagamento": "2001-07-17"
+    },
+    {
+      "data_com": "2002-02-01",
+      "valor": 0.066251,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2002,
+      "mes": 2,
+      "dia": 1,
+      "trimestre": "T1",
+      "data_pagamento": "2001-12-28"
+    },
+    {
+      "data_com": "2002-02-01",
+      "valor": 0.060228,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2002,
+      "mes": 2,
+      "dia": 1,
+      "trimestre": "T1",
+      "data_pagamento": "2001-12-28"
+    },
+    {
+      "data_com": "2002-04-09",
+      "valor": 0.020927,
+      "tipo": "DIVIDENDO",
+      "ano": 2002,
+      "mes": 4,
+      "dia": 9,
+      "trimestre": "T2",
+      "data_pagamento": "2002-04-09"
+    },
+    {
+      "data_com": "2002-04-09",
+      "valor": 0.023019,
+      "tipo": "DIVIDENDO",
+      "ano": 2002,
+      "mes": 4,
+      "dia": 9,
+      "trimestre": "T2",
+      "data_pagamento": "2002-04-09"
+    },
+    {
+      "data_com": "2002-04-09",
+      "valor": 0.023019,
+      "tipo": "DIVIDENDO",
+      "ano": 2002,
+      "mes": 4,
+      "dia": 9,
+      "trimestre": "T2",
+      "data_pagamento": "2002-04-09"
+    },
+    {
+      "data_com": "2002-04-09",
+      "valor": 0.020927,
+      "tipo": "DIVIDENDO",
+      "ano": 2002,
+      "mes": 4,
+      "dia": 9,
+      "trimestre": "T2",
+      "data_pagamento": "2002-04-09"
+    },
+    {
+      "data_com": "2002-07-31",
+      "valor": 0.029415,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2002,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2002-07-25"
+    },
+    {
+      "data_com": "2002-07-31",
+      "valor": 0.029415,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2002,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2002-07-25"
+    },
+    {
+      "data_com": "2002-07-31",
+      "valor": 0.029415,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2002,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2002-07-25"
+    },
+    {
+      "data_com": "2002-07-31",
+      "valor": 0.026741,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2002,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2002-07-25"
+    },
+    {
+      "data_com": "2002-07-31",
+      "valor": 0.026741,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2002,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2002-07-25"
+    },
+    {
+      "data_com": "2002-07-31",
+      "valor": 0.026741,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2002,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2002-07-25"
+    },
+    {
+      "data_com": "2003-03-19",
+      "valor": 0.022473,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 3,
+      "dia": 19,
+      "trimestre": "T1",
+      "data_pagamento": "2003-02-17"
+    },
+    {
+      "data_com": "2003-03-19",
+      "valor": 0.022473,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 3,
+      "dia": 19,
+      "trimestre": "T1",
+      "data_pagamento": "2003-02-17"
+    },
+    {
+      "data_com": "2003-03-19",
+      "valor": 0.022473,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 3,
+      "dia": 19,
+      "trimestre": "T1",
+      "data_pagamento": "2003-02-17"
+    },
+    {
+      "data_com": "2003-03-19",
+      "valor": 0.02043,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 3,
+      "dia": 19,
+      "trimestre": "T1",
+      "data_pagamento": "2003-02-17"
+    },
+    {
+      "data_com": "2003-03-19",
+      "valor": 0.02043,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 3,
+      "dia": 19,
+      "trimestre": "T1",
+      "data_pagamento": "2003-02-17"
+    },
+    {
+      "data_com": "2003-03-19",
+      "valor": 0.02043,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 3,
+      "dia": 19,
+      "trimestre": "T1",
+      "data_pagamento": "2003-02-17"
+    },
+    {
+      "data_com": "2003-10-20",
+      "valor": 0.012579,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 10,
+      "dia": 20,
+      "trimestre": "T4",
+      "data_pagamento": "2003-10-20"
+    },
+    {
+      "data_com": "2003-10-20",
+      "valor": 0.012579,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 10,
+      "dia": 20,
+      "trimestre": "T4",
+      "data_pagamento": "2003-10-20"
+    },
+    {
+      "data_com": "2003-10-20",
+      "valor": 0.013837,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 10,
+      "dia": 20,
+      "trimestre": "T4",
+      "data_pagamento": "2003-10-20"
+    },
+    {
+      "data_com": "2003-10-20",
+      "valor": 0.013837,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 10,
+      "dia": 20,
+      "trimestre": "T4",
+      "data_pagamento": "2003-10-20"
+    },
+    {
+      "data_com": "2003-10-20",
+      "valor": 0.012579,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 10,
+      "dia": 20,
+      "trimestre": "T4",
+      "data_pagamento": "2003-10-20"
+    },
+    {
+      "data_com": "2003-10-20",
+      "valor": 0.013837,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2003,
+      "mes": 10,
+      "dia": 20,
+      "trimestre": "T4",
+      "data_pagamento": "2003-10-20"
+    },
+    {
+      "data_com": "2004-03-16",
+      "valor": 0.038051,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2004,
+      "mes": 3,
+      "dia": 16,
+      "trimestre": "T1",
+      "data_pagamento": "2004-02-19"
+    },
+    {
+      "data_com": "2004-03-16",
+      "valor": 0.038051,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2004,
+      "mes": 3,
+      "dia": 16,
+      "trimestre": "T1",
+      "data_pagamento": "2004-02-19"
+    },
+    {
+      "data_com": "2004-03-16",
+      "valor": 0.034592,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2004,
+      "mes": 3,
+      "dia": 16,
+      "trimestre": "T1",
+      "data_pagamento": "2004-02-19"
+    },
+    {
+      "data_com": "2004-03-16",
+      "valor": 0.038051,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2004,
+      "mes": 3,
+      "dia": 16,
+      "trimestre": "T1",
+      "data_pagamento": "2004-02-19"
+    },
+    {
+      "data_com": "2004-03-16",
+      "valor": 0.034592,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2004,
+      "mes": 3,
+      "dia": 16,
+      "trimestre": "T1",
+      "data_pagamento": "2004-02-19"
+    },
+    {
+      "data_com": "2004-03-16",
+      "valor": 0.034592,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2004,
+      "mes": 3,
+      "dia": 16,
+      "trimestre": "T1",
+      "data_pagamento": "2004-02-19"
+    },
+    {
+      "data_com": "2005-01-26",
+      "valor": 0.166514,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2005,
+      "mes": 1,
+      "dia": 26,
+      "trimestre": "T1",
+      "data_pagamento": "2004-12-28"
+    },
+    {
+      "data_com": "2005-01-26",
+      "valor": 0.183166,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2005,
+      "mes": 1,
+      "dia": 26,
+      "trimestre": "T1",
+      "data_pagamento": "2004-12-28"
+    }
+  ]
+}

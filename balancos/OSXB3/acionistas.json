@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "09.112.685/0001-32",
+    "nome": "",
+    "ticker": "OSXB3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "Centennial Asset Mining Fund LLC",
+      "cpf_cnpj": "07.732.392/0001-22",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Panamá",
+      "acoes_total": 709459,
+      "percentual_total": 22.537,
+      "acoes_ordinarias": 709459,
+      "percentual_ordinarias": 22.537,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Centennial Asset Mining Fund LLC - Itau Unibanco S.A.",
+      "cpf_cnpj": "12.359.115/0001-56",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Panamá",
+      "acoes_total": 453801,
+      "percentual_total": 14.415,
+      "acoes_ordinarias": 453801,
+      "percentual_ordinarias": 14.415,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "EIKE FUHRKEN BATISTA",
+      "cpf_cnpj": "664.976.807-30",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 392612,
+      "percentual_total": 12.472,
+      "acoes_ordinarias": 392612,
+      "percentual_ordinarias": 12.472,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "ROBERTO LOMBARDI DE BARROS",
+      "cpf_cnpj": "083.885.308-01",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 304100,
+      "percentual_total": 9.66,
+      "acoes_ordinarias": 304100,
+      "percentual_ordinarias": 9.66,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    }
+  ]
+}

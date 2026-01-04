@@ -1,0 +1,103 @@
+{
+  "empresa": {
+    "cnpj": "34.274.233/0001-02",
+    "nome": "",
+    "ticker": "VBBR3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 7,
+  "acionistas": [
+    {
+      "nome": "NOVA FUTURA GESTORA DE RECURSOS LTDA",
+      "cpf_cnpj": "41.020.034/0001-25",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 121534342,
+      "percentual_total": 10.14,
+      "acoes_ordinarias": 121534342,
+      "percentual_ordinarias": 10.14,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Samambaia Master Fundo de Investimento em Ações Investimento no Exterior - BDR Nível I",
+      "cpf_cnpj": "10.643.191/0001-63",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 99456802,
+      "percentual_total": 8.298,
+      "acoes_ordinarias": 99456802,
+      "percentual_ordinarias": 8.298,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "Dynamo Administração de Recursos Ltda.",
+      "cpf_cnpj": "72.116.353/0001-62",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 69025274,
+      "percentual_total": 5.759,
+      "acoes_ordinarias": 69025274,
+      "percentual_ordinarias": 5.759,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "Caixa de Previdência dos Funcionários do Banco do Brasil - PREVI",
+      "cpf_cnpj": "33.754.482/0001-24",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 62816715,
+      "percentual_total": 5.241,
+      "acoes_ordinarias": 62816715,
+      "percentual_ordinarias": 5.241,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "BlackRock, Inc.",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 62565016,
+      "percentual_total": 5.22,
+      "acoes_ordinarias": 62565016,
+      "percentual_ordinarias": 5.22,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "LAZARD ASSET MANAGEMENT",
+      "cpf_cnpj": "14.406.534/0001-27",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 59928177,
+      "percentual_total": 5.0,
+      "acoes_ordinarias": 59928177,
+      "percentual_ordinarias": 5.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "Dynamo Internacional Gestão de Recursos Ltda.",
+      "cpf_cnpj": "07.880.927/0001-02",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 50783137,
+      "percentual_total": 4.237,
+      "acoes_ordinarias": 50783137,
+      "percentual_ordinarias": 4.237,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    }
+  ]
+}

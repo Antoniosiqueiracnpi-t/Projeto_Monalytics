@@ -1,0 +1,818 @@
+{
+  "ticker": "UGPA3",
+  "total_dividendos": 57.122,
+  "periodo": "2000-2025",
+  "quantidade_pagamentos": 81,
+  "dividendos": [
+    {
+      "data_com": "2000-03-09",
+      "valor": 0.23853,
+      "tipo": "DIVIDENDO",
+      "ano": 2000,
+      "mes": 3,
+      "dia": 9,
+      "trimestre": "T1",
+      "data_pagamento": "2000-02-22"
+    },
+    {
+      "data_com": "2000-03-09",
+      "valor": 0.26238,
+      "tipo": "DIVIDENDO",
+      "ano": 2000,
+      "mes": 3,
+      "dia": 9,
+      "trimestre": "T1",
+      "data_pagamento": "2000-02-22"
+    },
+    {
+      "data_com": "2000-08-18",
+      "valor": 0.33213,
+      "tipo": "DIVIDENDO",
+      "ano": 2000,
+      "mes": 8,
+      "dia": 18,
+      "trimestre": "T3",
+      "data_pagamento": "2000-08-03"
+    },
+    {
+      "data_com": "2000-08-18",
+      "valor": 0.30194,
+      "tipo": "DIVIDENDO",
+      "ano": 2000,
+      "mes": 8,
+      "dia": 18,
+      "trimestre": "T3",
+      "data_pagamento": "2000-08-03"
+    },
+    {
+      "data_com": "2000-12-28",
+      "valor": 0.2688,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 12,
+      "dia": 28,
+      "trimestre": "T4",
+      "data_pagamento": "2000-12-28"
+    },
+    {
+      "data_com": "2000-12-28",
+      "valor": 0.29568,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2000,
+      "mes": 12,
+      "dia": 28,
+      "trimestre": "T4",
+      "data_pagamento": "2000-12-28"
+    },
+    {
+      "data_com": "2001-04-27",
+      "valor": 0.13771,
+      "tipo": "DIVIDENDO",
+      "ano": 2001,
+      "mes": 4,
+      "dia": 27,
+      "trimestre": "T2",
+      "data_pagamento": "2001-04-27"
+    },
+    {
+      "data_com": "2001-04-27",
+      "valor": 0.15148,
+      "tipo": "DIVIDENDO",
+      "ano": 2001,
+      "mes": 4,
+      "dia": 27,
+      "trimestre": "T2",
+      "data_pagamento": "2001-04-27"
+    },
+    {
+      "data_com": "2001-04-27",
+      "valor": 0.20359,
+      "tipo": "DIVIDENDO",
+      "ano": 2001,
+      "mes": 4,
+      "dia": 27,
+      "trimestre": "T2",
+      "data_pagamento": "2001-04-27"
+    },
+    {
+      "data_com": "2001-04-27",
+      "valor": 0.18509,
+      "tipo": "DIVIDENDO",
+      "ano": 2001,
+      "mes": 4,
+      "dia": 27,
+      "trimestre": "T2",
+      "data_pagamento": "2001-04-27"
+    },
+    {
+      "data_com": "2001-09-05",
+      "valor": 0.62567,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 9,
+      "dia": 5,
+      "trimestre": "T3",
+      "data_pagamento": "2001-08-21"
+    },
+    {
+      "data_com": "2001-09-05",
+      "valor": 0.623835,
+      "tipo": "DIVIDENDO",
+      "ano": 2001,
+      "mes": 9,
+      "dia": 5,
+      "trimestre": "T3",
+      "data_pagamento": "2001-08-21"
+    },
+    {
+      "data_com": "2001-09-05",
+      "valor": 0.568791,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2001,
+      "mes": 9,
+      "dia": 5,
+      "trimestre": "T3",
+      "data_pagamento": "2001-08-21"
+    },
+    {
+      "data_com": "2001-09-05",
+      "valor": 2.522862,
+      "tipo": "DIVIDENDO",
+      "ano": 2001,
+      "mes": 9,
+      "dia": 5,
+      "trimestre": "T3",
+      "data_pagamento": "2001-08-21"
+    },
+    {
+      "data_com": "2001-09-05",
+      "valor": 2.293511,
+      "tipo": "DIVIDENDO",
+      "ano": 2001,
+      "mes": 9,
+      "dia": 5,
+      "trimestre": "T3",
+      "data_pagamento": "2001-08-21"
+    },
+    {
+      "data_com": "2001-09-05",
+      "valor": 0.686218,
+      "tipo": "DIVIDENDO",
+      "ano": 2001,
+      "mes": 9,
+      "dia": 5,
+      "trimestre": "T3",
+      "data_pagamento": "2001-08-21"
+    },
+    {
+      "data_com": "2002-03-08",
+      "valor": 0.403658,
+      "tipo": "DIVIDENDO",
+      "ano": 2002,
+      "mes": 3,
+      "dia": 8,
+      "trimestre": "T1",
+      "data_pagamento": "2002-02-25"
+    },
+    {
+      "data_com": "2002-03-08",
+      "valor": 0.444024,
+      "tipo": "DIVIDENDO",
+      "ano": 2002,
+      "mes": 3,
+      "dia": 8,
+      "trimestre": "T1",
+      "data_pagamento": "2002-02-25"
+    },
+    {
+      "data_com": "2002-08-19",
+      "valor": 0.367112,
+      "tipo": "DIVIDENDO",
+      "ano": 2002,
+      "mes": 8,
+      "dia": 19,
+      "trimestre": "T3",
+      "data_pagamento": "2002-08-06"
+    },
+    {
+      "data_com": "2002-08-19",
+      "valor": 0.403823,
+      "tipo": "DIVIDENDO",
+      "ano": 2002,
+      "mes": 8,
+      "dia": 19,
+      "trimestre": "T3",
+      "data_pagamento": "2002-08-06"
+    },
+    {
+      "data_com": "2003-02-24",
+      "valor": 0.629268,
+      "tipo": "DIVIDENDO",
+      "ano": 2003,
+      "mes": 2,
+      "dia": 24,
+      "trimestre": "T1",
+      "data_pagamento": "2003-02-12"
+    },
+    {
+      "data_com": "2003-02-24",
+      "valor": 0.692195,
+      "tipo": "DIVIDENDO",
+      "ano": 2003,
+      "mes": 2,
+      "dia": 24,
+      "trimestre": "T1",
+      "data_pagamento": "2003-02-12"
+    },
+    {
+      "data_com": "2003-08-18",
+      "valor": 0.461996,
+      "tipo": "DIVIDENDO",
+      "ano": 2003,
+      "mes": 8,
+      "dia": 18,
+      "trimestre": "T3",
+      "data_pagamento": "2003-08-06"
+    },
+    {
+      "data_com": "2003-08-18",
+      "valor": 0.508195,
+      "tipo": "DIVIDENDO",
+      "ano": 2003,
+      "mes": 8,
+      "dia": 18,
+      "trimestre": "T3",
+      "data_pagamento": "2003-08-06"
+    },
+    {
+      "data_com": "2004-02-20",
+      "valor": 0.599754,
+      "tipo": "DIVIDENDO",
+      "ano": 2004,
+      "mes": 2,
+      "dia": 20,
+      "trimestre": "T1",
+      "data_pagamento": "2004-02-11"
+    },
+    {
+      "data_com": "2004-02-20",
+      "valor": 0.545231,
+      "tipo": "DIVIDENDO",
+      "ano": 2004,
+      "mes": 2,
+      "dia": 20,
+      "trimestre": "T1",
+      "data_pagamento": "2004-02-11"
+    },
+    {
+      "data_com": "2004-08-16",
+      "valor": 1.33,
+      "tipo": "DIVIDENDO",
+      "ano": 2004,
+      "mes": 8,
+      "dia": 16,
+      "trimestre": "T3",
+      "data_pagamento": "2004-08-04"
+    },
+    {
+      "data_com": "2004-08-16",
+      "valor": 1.33,
+      "tipo": "DIVIDENDO",
+      "ano": 2004,
+      "mes": 8,
+      "dia": 16,
+      "trimestre": "T3",
+      "data_pagamento": "2004-08-04"
+    },
+    {
+      "data_com": "2005-02-23",
+      "valor": 0.897985,
+      "tipo": "DIVIDENDO",
+      "ano": 2005,
+      "mes": 2,
+      "dia": 23,
+      "trimestre": "T1",
+      "data_pagamento": "2005-02-16"
+    },
+    {
+      "data_com": "2005-02-23",
+      "valor": 0.897985,
+      "tipo": "DIVIDENDO",
+      "ano": 2005,
+      "mes": 2,
+      "dia": 23,
+      "trimestre": "T1",
+      "data_pagamento": "2005-02-16"
+    },
+    {
+      "data_com": "2005-08-10",
+      "valor": 0.703817,
+      "tipo": "DIVIDENDO",
+      "ano": 2005,
+      "mes": 8,
+      "dia": 10,
+      "trimestre": "T3",
+      "data_pagamento": "2005-08-03"
+    },
+    {
+      "data_com": "2005-08-10",
+      "valor": 0.703817,
+      "tipo": "DIVIDENDO",
+      "ano": 2005,
+      "mes": 8,
+      "dia": 10,
+      "trimestre": "T3",
+      "data_pagamento": "2005-08-03"
+    },
+    {
+      "data_com": "2006-02-22",
+      "valor": 1.232498,
+      "tipo": "DIVIDENDO",
+      "ano": 2006,
+      "mes": 2,
+      "dia": 22,
+      "trimestre": "T1",
+      "data_pagamento": "2006-02-15"
+    },
+    {
+      "data_com": "2006-02-22",
+      "valor": 1.232498,
+      "tipo": "DIVIDENDO",
+      "ano": 2006,
+      "mes": 2,
+      "dia": 22,
+      "trimestre": "T1",
+      "data_pagamento": "2006-02-15"
+    },
+    {
+      "data_com": "2006-08-09",
+      "valor": 0.887398,
+      "tipo": "DIVIDENDO",
+      "ano": 2006,
+      "mes": 8,
+      "dia": 9,
+      "trimestre": "T3",
+      "data_pagamento": "2006-08-02"
+    },
+    {
+      "data_com": "2006-08-09",
+      "valor": 0.887398,
+      "tipo": "DIVIDENDO",
+      "ano": 2006,
+      "mes": 8,
+      "dia": 9,
+      "trimestre": "T3",
+      "data_pagamento": "2006-08-02"
+    },
+    {
+      "data_com": "2007-02-21",
+      "valor": 0.889633,
+      "tipo": "DIVIDENDO",
+      "ano": 2007,
+      "mes": 2,
+      "dia": 21,
+      "trimestre": "T1",
+      "data_pagamento": "2007-02-12"
+    },
+    {
+      "data_com": "2007-02-21",
+      "valor": 0.889633,
+      "tipo": "DIVIDENDO",
+      "ano": 2007,
+      "mes": 2,
+      "dia": 21,
+      "trimestre": "T1",
+      "data_pagamento": "2007-02-12"
+    },
+    {
+      "data_com": "2008-02-27",
+      "valor": 1.779403,
+      "tipo": "DIVIDENDO",
+      "ano": 2008,
+      "mes": 2,
+      "dia": 27,
+      "trimestre": "T1",
+      "data_pagamento": "2008-02-20"
+    },
+    {
+      "data_com": "2008-02-27",
+      "valor": 1.779403,
+      "tipo": "DIVIDENDO",
+      "ano": 2008,
+      "mes": 2,
+      "dia": 27,
+      "trimestre": "T1",
+      "data_pagamento": "2008-02-20"
+    },
+    {
+      "data_com": "2008-08-13",
+      "valor": 0.89,
+      "tipo": "DIVIDENDO",
+      "ano": 2008,
+      "mes": 8,
+      "dia": 13,
+      "trimestre": "T3",
+      "data_pagamento": "2008-08-06"
+    },
+    {
+      "data_com": "2008-08-13",
+      "valor": 0.89,
+      "tipo": "DIVIDENDO",
+      "ano": 2008,
+      "mes": 8,
+      "dia": 13,
+      "trimestre": "T3",
+      "data_pagamento": "2008-08-06"
+    },
+    {
+      "data_com": "2009-03-18",
+      "valor": 0.887031,
+      "tipo": "DIVIDENDO",
+      "ano": 2009,
+      "mes": 3,
+      "dia": 18,
+      "trimestre": "T1",
+      "data_pagamento": "2009-03-11"
+    },
+    {
+      "data_com": "2009-03-18",
+      "valor": 0.887031,
+      "tipo": "DIVIDENDO",
+      "ano": 2009,
+      "mes": 3,
+      "dia": 18,
+      "trimestre": "T1",
+      "data_pagamento": "2009-03-11"
+    },
+    {
+      "data_com": "2009-08-19",
+      "valor": 0.89,
+      "tipo": "DIVIDENDO",
+      "ano": 2009,
+      "mes": 8,
+      "dia": 19,
+      "trimestre": "T3",
+      "data_pagamento": "2009-08-12"
+    },
+    {
+      "data_com": "2009-08-19",
+      "valor": 0.89,
+      "tipo": "DIVIDENDO",
+      "ano": 2009,
+      "mes": 8,
+      "dia": 19,
+      "trimestre": "T3",
+      "data_pagamento": "2009-08-12"
+    },
+    {
+      "data_com": "2010-03-03",
+      "valor": 1.19,
+      "tipo": "DIVIDENDO",
+      "ano": 2010,
+      "mes": 3,
+      "dia": 3,
+      "trimestre": "T1",
+      "data_pagamento": "2010-02-24"
+    },
+    {
+      "data_com": "2010-03-03",
+      "valor": 1.19,
+      "tipo": "DIVIDENDO",
+      "ano": 2010,
+      "mes": 3,
+      "dia": 3,
+      "trimestre": "T1",
+      "data_pagamento": "2010-02-24"
+    },
+    {
+      "data_com": "2010-08-18",
+      "valor": 1.32,
+      "tipo": "DIVIDENDO",
+      "ano": 2010,
+      "mes": 8,
+      "dia": 18,
+      "trimestre": "T3",
+      "data_pagamento": "2010-08-11"
+    },
+    {
+      "data_com": "2010-08-18",
+      "valor": 1.32,
+      "tipo": "DIVIDENDO",
+      "ano": 2010,
+      "mes": 8,
+      "dia": 18,
+      "trimestre": "T3",
+      "data_pagamento": "2010-08-11"
+    },
+    {
+      "data_com": "2011-03-02",
+      "valor": 0.47,
+      "tipo": "DIVIDENDO",
+      "ano": 2011,
+      "mes": 3,
+      "dia": 2,
+      "trimestre": "T1",
+      "data_pagamento": "2011-02-23"
+    },
+    {
+      "data_com": "2011-03-02",
+      "valor": 0.47,
+      "tipo": "DIVIDENDO",
+      "ano": 2011,
+      "mes": 3,
+      "dia": 2,
+      "trimestre": "T1",
+      "data_pagamento": "2011-02-23"
+    },
+    {
+      "data_com": "2011-08-17",
+      "valor": 0.47,
+      "tipo": "DIVIDENDO",
+      "ano": 2011,
+      "mes": 8,
+      "dia": 17,
+      "trimestre": "T3",
+      "data_pagamento": "2011-08-10"
+    },
+    {
+      "data_com": "2012-02-22",
+      "valor": 0.51,
+      "tipo": "DIVIDENDO",
+      "ano": 2012,
+      "mes": 2,
+      "dia": 22,
+      "trimestre": "T1",
+      "data_pagamento": "2012-02-15"
+    },
+    {
+      "data_com": "2012-08-08",
+      "valor": 0.51,
+      "tipo": "DIVIDENDO",
+      "ano": 2012,
+      "mes": 8,
+      "dia": 8,
+      "trimestre": "T3",
+      "data_pagamento": "2012-08-01"
+    },
+    {
+      "data_com": "2013-02-27",
+      "valor": 0.66,
+      "tipo": "DIVIDENDO",
+      "ano": 2013,
+      "mes": 2,
+      "dia": 27,
+      "trimestre": "T1",
+      "data_pagamento": "2013-02-20"
+    },
+    {
+      "data_com": "2013-08-07",
+      "valor": 0.66,
+      "tipo": "DIVIDENDO",
+      "ano": 2013,
+      "mes": 8,
+      "dia": 7,
+      "trimestre": "T3",
+      "data_pagamento": "2013-07-31"
+    },
+    {
+      "data_com": "2014-02-26",
+      "valor": 0.71,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 2,
+      "dia": 26,
+      "trimestre": "T1",
+      "data_pagamento": "2014-02-19"
+    },
+    {
+      "data_com": "2014-08-13",
+      "valor": 0.71,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 8,
+      "dia": 13,
+      "trimestre": "T3",
+      "data_pagamento": "2014-08-06"
+    },
+    {
+      "data_com": "2015-03-04",
+      "valor": 0.71,
+      "tipo": "DIVIDENDO",
+      "ano": 2015,
+      "mes": 3,
+      "dia": 4,
+      "trimestre": "T1",
+      "data_pagamento": "2015-02-25"
+    },
+    {
+      "data_com": "2015-08-12",
+      "valor": 0.8,
+      "tipo": "DIVIDENDO",
+      "ano": 2015,
+      "mes": 8,
+      "dia": 12,
+      "trimestre": "T3",
+      "data_pagamento": "2015-08-05"
+    },
+    {
+      "data_com": "2016-02-24",
+      "valor": 0.8,
+      "tipo": "DIVIDENDO",
+      "ano": 2016,
+      "mes": 2,
+      "dia": 24,
+      "trimestre": "T1",
+      "data_pagamento": "2016-02-17"
+    },
+    {
+      "data_com": "2016-08-17",
+      "valor": 0.8,
+      "tipo": "DIVIDENDO",
+      "ano": 2016,
+      "mes": 8,
+      "dia": 17,
+      "trimestre": "T3",
+      "data_pagamento": "2016-08-10"
+    },
+    {
+      "data_com": "2017-03-01",
+      "valor": 0.87,
+      "tipo": "DIVIDENDO",
+      "ano": 2017,
+      "mes": 3,
+      "dia": 1,
+      "trimestre": "T1",
+      "data_pagamento": "2017-02-22"
+    },
+    {
+      "data_com": "2017-08-16",
+      "valor": 0.85,
+      "tipo": "DIVIDENDO",
+      "ano": 2017,
+      "mes": 8,
+      "dia": 16,
+      "trimestre": "T3",
+      "data_pagamento": "2017-08-09"
+    },
+    {
+      "data_com": "2018-03-01",
+      "valor": 0.9,
+      "tipo": "DIVIDENDO",
+      "ano": 2018,
+      "mes": 3,
+      "dia": 1,
+      "trimestre": "T1",
+      "data_pagamento": "2018-02-21"
+    },
+    {
+      "data_com": "2018-08-09",
+      "valor": 0.56,
+      "tipo": "DIVIDENDO",
+      "ano": 2018,
+      "mes": 8,
+      "dia": 9,
+      "trimestre": "T3",
+      "data_pagamento": "2018-08-01"
+    },
+    {
+      "data_com": "2019-02-28",
+      "valor": 0.7,
+      "tipo": "DIVIDENDO",
+      "ano": 2019,
+      "mes": 2,
+      "dia": 28,
+      "trimestre": "T1",
+      "data_pagamento": "2019-02-20"
+    },
+    {
+      "data_com": "2019-08-22",
+      "valor": 0.2,
+      "tipo": "DIVIDENDO",
+      "ano": 2019,
+      "mes": 8,
+      "dia": 22,
+      "trimestre": "T3",
+      "data_pagamento": "2019-08-14"
+    },
+    {
+      "data_com": "2020-02-27",
+      "valor": 0.24,
+      "tipo": "DIVIDENDO",
+      "ano": 2020,
+      "mes": 2,
+      "dia": 27,
+      "trimestre": "T1",
+      "data_pagamento": "2020-02-19"
+    },
+    {
+      "data_com": "2021-03-04",
+      "valor": 0.44,
+      "tipo": "DIVIDENDO",
+      "ano": 2021,
+      "mes": 3,
+      "dia": 4,
+      "trimestre": "T1",
+      "data_pagamento": "2021-02-24"
+    },
+    {
+      "data_com": "2021-08-19",
+      "valor": 0.2,
+      "tipo": "DIVIDENDO",
+      "ano": 2021,
+      "mes": 8,
+      "dia": 19,
+      "trimestre": "T3",
+      "data_pagamento": "2021-08-11"
+    },
+    {
+      "data_com": "2022-03-03",
+      "valor": 0.1704,
+      "tipo": "DIVIDENDO",
+      "ano": 2022,
+      "mes": 3,
+      "dia": 3,
+      "trimestre": "T1",
+      "data_pagamento": "2022-02-23"
+    },
+    {
+      "data_com": "2022-05-23",
+      "valor": 0.41247,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2022,
+      "mes": 5,
+      "dia": 23,
+      "trimestre": "T2",
+      "data_pagamento": "2022-05-11"
+    },
+    {
+      "data_com": "2023-02-23",
+      "valor": 0.1,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 2,
+      "dia": 23,
+      "trimestre": "T1",
+      "data_pagamento": "2023-02-15"
+    },
+    {
+      "data_com": "2023-08-17",
+      "valor": 0.25,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 8,
+      "dia": 17,
+      "trimestre": "T3",
+      "data_pagamento": "2023-08-09"
+    },
+    {
+      "data_com": "2024-03-07",
+      "valor": 0.4,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 3,
+      "dia": 7,
+      "trimestre": "T1",
+      "data_pagamento": "2024-02-28"
+    },
+    {
+      "data_com": "2024-08-15",
+      "valor": 0.25,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 8,
+      "dia": 15,
+      "trimestre": "T3",
+      "data_pagamento": "2024-08-07"
+    },
+    {
+      "data_com": "2025-03-06",
+      "valor": 0.450164,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 3,
+      "dia": 6,
+      "trimestre": "T1",
+      "data_pagamento": "2025-02-26"
+    },
+    {
+      "data_com": "2025-08-21",
+      "valor": 0.3,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 8,
+      "dia": 21,
+      "trimestre": "T3",
+      "data_pagamento": "2025-08-13"
+    },
+    {
+      "data_com": "2025-12-05",
+      "valor": 1.0,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 12,
+      "dia": 5,
+      "trimestre": "T4",
+      "data_pagamento": "2025-12-01"
+    }
+  ]
+}

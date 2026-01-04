@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "10.629.105/0001-68",
+    "nome": "",
+    "ticker": "PRIO3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "FMR LLC",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 44727674,
+      "percentual_total": 5.144,
+      "acoes_ordinarias": 44727674,
+      "percentual_ordinarias": 5.144,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Schroder Investment Management Brasil Ltda",
+      "cpf_cnpj": "92.886.662/0001-29",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 43741218,
+      "percentual_total": 5.031,
+      "acoes_ordinarias": 43741218,
+      "percentual_ordinarias": 5.031,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    }
+  ]
+}

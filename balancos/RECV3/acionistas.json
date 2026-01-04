@@ -1,0 +1,103 @@
+{
+  "empresa": {
+    "cnpj": "03.342.704/0001-30",
+    "nome": "",
+    "ticker": "RECV3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 7,
+  "acionistas": [
+    {
+      "nome": "PetroSantander Luxembourg Holdings S.a.r.l.",
+      "cpf_cnpj": "05.711.608/0001-48",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Luxemburgo",
+      "acoes_total": 57536716,
+      "percentual_total": 19.606,
+      "acoes_ordinarias": 57536716,
+      "percentual_ordinarias": 19.606,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Opportunity Holding Fundo de Investimento em Participações Multiestratégia Investimento no Exterior",
+      "cpf_cnpj": "08.277.553/0001-06",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 49930089,
+      "percentual_total": 17.014,
+      "acoes_ordinarias": 49930089,
+      "percentual_ordinarias": 17.014,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "Opeg Fundo de Investimento em Ações Investimento no Exterior",
+      "cpf_cnpj": "33.400.471/0001-46",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 28400199,
+      "percentual_total": 9.677,
+      "acoes_ordinarias": 28400199,
+      "percentual_ordinarias": 9.677,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "EDUARDO CINTRA SANTOS",
+      "cpf_cnpj": "064.858.395-34",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 17190000,
+      "percentual_total": 5.857,
+      "acoes_ordinarias": 17190000,
+      "percentual_ordinarias": 5.857,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "nan",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "nan",
+      "nacionalidade": "Espanha",
+      "acoes_total": 15326800,
+      "percentual_total": 5.223,
+      "acoes_ordinarias": 15326800,
+      "percentual_ordinarias": 5.223,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "Perbras - Empresa Brasileira de Perfurações Ltda.",
+      "cpf_cnpj": "15.126.451/0001-47",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 12523304,
+      "percentual_total": 4.267,
+      "acoes_ordinarias": 12523304,
+      "percentual_ordinarias": 4.267,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "OPEG SPECTRUM FUNDO DE INVESTIMENTO DE ACOES",
+      "cpf_cnpj": "53.653.582/0001-71",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2778401,
+      "percentual_total": 0.947,
+      "acoes_ordinarias": 2778401,
+      "percentual_ordinarias": 0.947,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    }
+  ]
+}
