@@ -26,6 +26,7 @@ from typing import Dict, List, Optional, Set
 import feedparser
 import pytz
 import re
+import hashlib
 
 # Timezone Brasil
 BR_TZ = pytz.timezone('America/Sao_Paulo')
@@ -51,6 +52,79 @@ def normalizar_titulo(titulo: str) -> str:
     titulo = (titulo or "").strip().lower()
     titulo = re.sub(r"\s+", " ", titulo)
     return titulo
+
+def gerar_id(titulo: str, link: str) -> str:
+    """Gera ID único baseado em título + link."""
+    chave = f"{titulo}{link}".encode('utf-8')
+    return hashlib.md5(chave).hexdigest()[:12]
+
+
+def categorizar_noticia(titulo: str) -> str:
+    """Categoriza notícia baseado em palavras-chave."""
+    titulo_lower = titulo.lower()
+    
+    # Política/Governo
+    if any(palavra in titulo_lower for palavra in ['governo', 'lula', 'congresso', 'senado', 'câmara', 'eleição', 'político']):
+        return 'Política'
+    
+    # Internacional
+    if any(palavra in titulo_lower for palavra in ['eua', 'china', 'europa', 'venezuela', 'mundial', 'internacional']):
+        return 'Internacional'
+    
+    # Commodities
+    if any(palavra in titulo_lower for palavra in ['petróleo', 'ouro', 'commodity', 'minério', 'soja', 'café']):
+        return 'Commodities'
+    
+    # Criptomoedas
+    if any(palavra in titulo_lower for palavra in ['bitcoin', 'cripto', 'blockchain', 'ethereum']):
+        return 'Criptomoedas'
+    
+    # Empresas
+    if any(palavra in titulo_lower for palavra in ['empresa', 'ação', 'ações', 'lucro', 'balanço', 'resultado']):
+        return 'Empresas'
+    
+    # Economia
+    if any(palavra in titulo_lower for palavra in ['inflação', 'juros', 'selic', 'pib', 'ipca', 'economia']):
+        return 'Economia'
+    
+    # Mercados
+    if any(palavra in titulo_lower for palavra in ['bolsa', 'ibovespa', 'mercado', 'índice', 'dólar']):
+        return 'Mercados'
+    
+    return 'Geral'
+
+
+def extrair_tags(titulo: str) -> List[str]:
+    """Extrai tags relevantes do título."""
+    tags = []
+    titulo_lower = titulo.lower()
+    
+    # Tags principais
+    mapa_tags = {
+        'venezuela': ['Venezuela'],
+        'eua': ['EUA'],
+        'lula': ['Lula'],
+        'petróleo': ['Petróleo'],
+        'bitcoin': ['Bitcoin', 'Cripto'],
+        'dólar': ['Dólar'],
+        'ibovespa': ['Ibovespa'],
+        'inflação': ['Inflação'],
+        'juros': ['Juros'],
+    }
+    
+    for palavra, tag_list in mapa_tags.items():
+        if palavra in titulo_lower:
+            tags.extend(tag_list)
+    
+    return list(set(tags))[:5]  # Max 5 tags únicas
+
+
+def gerar_resumo(titulo: str) -> str:
+    """Gera resumo curto (primeiras palavras do título)."""
+    palavras = titulo.split()
+    if len(palavras) <= 12:
+        return titulo
+    return ' '.join(palavras[:12]) + '...'
 
 
 def extrair_imagem(entry) -> str:
@@ -147,10 +221,15 @@ def coletar_investing(limite: int, titulos_usados: Set[str]) -> List[Dict]:
             titulos_usados.add(titulo_norm)
             
             noticias.append({
+                "id": gerar_id(titulo, link),
                 "titulo": titulo,
                 "link": link,
                 "horario": horario,
-                "imagem": imagem
+                "imagem": imagem,
+                "categoria": categorizar_noticia(titulo),
+                "tags": extrair_tags(titulo),
+                "resumo": gerar_resumo(titulo),
+                "fonte": "Investing.com"
             })
         except:
             continue
@@ -219,10 +298,15 @@ def coletar_valor(limite: int, titulos_usados: Set[str]) -> List[Dict]:
             titulos_usados.add(titulo_norm)
             
             noticias.append({
+                "id": gerar_id(titulo, link),
                 "titulo": titulo,
                 "link": link,
                 "horario": horario,
-                "imagem": imagem
+                "imagem": imagem,
+                "categoria": categorizar_noticia(titulo),
+                "tags": extrair_tags(titulo),
+                "resumo": gerar_resumo(titulo),
+                "fonte": "Valor Econômico"
             })
         except:
             continue
@@ -281,10 +365,15 @@ def coletar_infomoney(limite: int, titulos_usados: Set[str]) -> List[Dict]:
             titulos_usados.add(titulo_norm)
             
             noticias.append({
+                "id": gerar_id(titulo, link),
                 "titulo": titulo,
                 "link": link,
                 "horario": horario,
-                "imagem": imagem
+                "imagem": imagem,
+                "categoria": categorizar_noticia(titulo),
+                "tags": extrair_tags(titulo),
+                "resumo": gerar_resumo(titulo),
+                "fonte": "InfoMoney"
             })
         except:
             continue
@@ -342,11 +431,20 @@ def coletar_moneytimes(limite: int, titulos_usados: Set[str]) -> List[Dict]:
             titulos_locais.add(titulo_norm)
             titulos_usados.add(titulo_norm)
             
+            # Fallback para imagem vazia no Money Times
+            if not imagem:
+                imagem = "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png"
+            
             noticias.append({
+                "id": gerar_id(titulo, link),
                 "titulo": titulo,
                 "link": link,
                 "horario": horario,
-                "imagem": imagem
+                "imagem": imagem,
+                "categoria": categorizar_noticia(titulo),
+                "tags": extrair_tags(titulo),
+                "resumo": gerar_resumo(titulo),
+                "fonte": "Money Times"
             })
         except:
             continue
