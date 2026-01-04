@@ -1116,6 +1116,11 @@ body {
     .stats-cards {
         grid-template-columns: 1fr;
     }
+    
+    .monalytics-logo {
+        max-width: 300px !important;
+    }
+    
 }
 
 /* Mobile Large (481px - 768px) */
@@ -1276,6 +1281,10 @@ body {
     .news-card-title {
         font-size: 0.95rem;
     }
+
+    .monalytics-logo {
+        max-width: 220px !important;
+    }    
     
 }
 
