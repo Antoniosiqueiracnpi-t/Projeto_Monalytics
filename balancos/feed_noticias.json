@@ -1,10 +1,10 @@
 {
   "meta": {
-    "ultima_atualizacao": "2026-01-03T09:24:37.630455Z",
-    "data_atualizacao": "2026-01-03",
-    "hora_atualizacao": "09:24:37",
-    "total_empresas": 284,
-    "total_noticias": 2807,
+    "ultima_atualizacao": "2026-01-04T09:25:06.893551Z",
+    "data_atualizacao": "2026-01-04",
+    "hora_atualizacao": "09:25:06",
+    "total_empresas": 290,
+    "total_noticias": 2844,
     "periodo": {
       "inicio": "2025-12-04",
       "fim": "2026-01-02"
@@ -12,16 +12,17 @@
   },
   "estatisticas": {
     "por_categoria": {
-      "Governança": 968,
-      "Outros": 819,
-      "Aviso": 687,
+      "Governança": 992,
+      "Outros": 824,
+      "Aviso": 692,
       "Fato Relevante": 318,
-      "Resultados": 14,
+      "Resultados": 17,
       "Dividendos": 1
     },
     "por_ticker": {
       "AGRO": 291,
       "CSMG": 43,
+      "BRQB": 41,
       "SEQL": 33,
       "BHIA": 32,
       "RENT": 29,
@@ -35,7 +36,6 @@
       "PETR": 23,
       "SLCE": 22,
       "CLSC": 22,
-      "BRQB": 22,
       "REDE": 22,
       "PGMN": 20,
       "CMIG": 20,
@@ -44,15 +44,15 @@
     "top_categorias": [
       {
         "categoria": "Governança",
-        "total": 968
+        "total": 992
       },
       {
         "categoria": "Outros",
-        "total": 819
+        "total": 824
       },
       {
         "categoria": "Aviso",
-        "total": 687
+        "total": 692
       },
       {
         "categoria": "Fato Relevante",
@@ -60,7 +60,7 @@
       },
       {
         "categoria": "Resultados",
-        "total": 14
+        "total": 17
       },
       {
         "categoria": "Dividendos",
@@ -75,6 +75,10 @@
       {
         "ticker": "CSMG",
         "total": 43
+      },
+      {
+        "ticker": "BRQB",
+        "total": 41
       },
       {
         "ticker": "SEQL",
@@ -102,10 +106,6 @@
       },
       {
         "ticker": "AZUL",
-        "total": 25
-      },
-      {
-        "ticker": "AXIA",
         "total": 25
       }
     ]
@@ -1234,6 +1234,51 @@
         "headline": "CSNMINERACAO (CMIN-N2) - Outros Comunicados ao Mercado - 31/12/25",
         "categoria": "Aviso",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189648&agencia=18&dataNoticia=2026-01-02%2008:00:24"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Ata da AGE  02/01/26",
+        "headline": "BRQ (BRQB-MA) - Ata da AGE - 02/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3190736&agencia=18&dataNoticia=2026-01-02%2011:41:26"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "BRQ (BRQB-MA) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3190490&agencia=18&dataNoticia=2026-01-02%2009:56:06"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Mapa consolidado voto a distancia  AGE  02/01/26",
+        "headline": "BRQ (BRQB-MA) - Mapa consolidado voto a distancia - AGE - 02/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189512&agencia=18&dataNoticia=2026-01-02%2008:00:05"
       }
     },
     {
@@ -3370,6 +3415,21 @@
       "data": "2025-12-30",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "CATA",
+        "nome": "CIA INDUSTRIAL CATAGUASES",
+        "cnpj": "19.526.748/0001-50"
+      },
+      "noticia": {
+        "titulo": " Aviso aos Acionistas  29/12/25 (N)",
+        "headline": "IND CATAGUAS (CATA) - Aviso aos Acionistas - 29/12/25 (N)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3188212&agencia=18&dataNoticia=2025-12-30%2015:30:14"
+      }
+    },
+    {
+      "data": "2025-12-30",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "ITSA",
         "nome": "ITAUSA S.A.",
         "cnpj": "61.532.644/0001-15"
@@ -4144,6 +4204,21 @@
         "headline": "JALLESMACHAD (JALL-NM) - Ata Reuniao do Conselho de Administracao - 26/12/25",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3187137&agencia=18&dataNoticia=2025-12-29%2018:16:57"
+      }
+    },
+    {
+      "data": "2025-12-29",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "LMED",
+        "nome": "LIFEMED INDUSTRIAL EQUIP. DE ART. MÉD. HOSP. S.A.",
+        "cnpj": "02.357.251/0001-53"
+      },
+      "noticia": {
+        "titulo": "MA)  Calendario de Eventos Corporativos  ate 31/12/26",
+        "headline": "LIFEMED (LMED-MA) - Calendario de Eventos Corporativos - ate 31/12/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3186539&agencia=18&dataNoticia=2025-12-29%2015:34:40"
       }
     },
     {
@@ -5074,6 +5149,36 @@
         "headline": "SEQUOIA LOG (SEQL-NM) - Ata Reuniao do Conselho de Administracao - 19/12/25",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3185571&agencia=18&dataNoticia=2025-12-29%2008:00:07"
+      }
+    },
+    {
+      "data": "2025-12-29",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CATA",
+        "nome": "CIA INDUSTRIAL CATAGUASES",
+        "cnpj": "19.526.748/0001-50"
+      },
+      "noticia": {
+        "titulo": " Aviso aos Acionistas  29/12/25",
+        "headline": "IND CATAGUAS (CATA) - Aviso aos Acionistas - 29/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3187162&agencia=18&dataNoticia=2025-12-29%2018:25:08"
+      }
+    },
+    {
+      "data": "2025-12-29",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CATA",
+        "nome": "CIA INDUSTRIAL CATAGUASES",
+        "cnpj": "19.526.748/0001-50"
+      },
+      "noticia": {
+        "titulo": " Ata Reuniao do Conselho de Administracao  29/12/25",
+        "headline": "IND CATAGUAS (CATA) - Ata Reuniao do Conselho de Administracao - 29/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3187151&agencia=18&dataNoticia=2025-12-29%2018:20:19"
       }
     },
     {
@@ -9835,6 +9940,66 @@
       "data": "2025-12-22",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PTCA",
+        "nome": "PRATICA PRODUTOS S.A.",
+        "cnpj": "08.574.411/0001-00"
+      },
+      "noticia": {
+        "titulo": "M2)  Aviso aos Acionistas  22/12/25 (N)",
+        "headline": "PRATICA (PTCA-M2) - Aviso aos Acionistas - 22/12/25 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3181213&agencia=18&dataNoticia=2025-12-22%2017:26:42"
+      }
+    },
+    {
+      "data": "2025-12-22",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PTCA",
+        "nome": "PRATICA PRODUTOS S.A.",
+        "cnpj": "08.574.411/0001-00"
+      },
+      "noticia": {
+        "titulo": "M2)  Aviso aos Acionistas  22/12/25",
+        "headline": "PRATICA (PTCA-M2) - Aviso aos Acionistas - 22/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3180739&agencia=18&dataNoticia=2025-12-22%2015:21:53"
+      }
+    },
+    {
+      "data": "2025-12-22",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PTCA",
+        "nome": "PRATICA PRODUTOS S.A.",
+        "cnpj": "08.574.411/0001-00"
+      },
+      "noticia": {
+        "titulo": "M2)  Ata da AGE  19/10/25 (R)",
+        "headline": "PRATICA (PTCA-M2) - Ata da AGE - 19/10/25 (R)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3180475&agencia=18&dataNoticia=2025-12-22%2014:47:29"
+      }
+    },
+    {
+      "data": "2025-12-22",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PTCA",
+        "nome": "PRATICA PRODUTOS S.A.",
+        "cnpj": "08.574.411/0001-00"
+      },
+      "noticia": {
+        "titulo": "M2)  Ata Reuniao do Conselho de Administracao  10/12/25 (R)(C)",
+        "headline": "PRATICA (PTCA-M2) - Ata Reuniao do Conselho de Administracao - 10/12/25 (R)(C)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3180472&agencia=18&dataNoticia=2025-12-22%2014:46:33"
+      }
+    },
+    {
+      "data": "2025-12-22",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "ESPA",
         "nome": "MPM CORPÓREOS S.A.",
         "cnpj": "26.659.061/0001-59"
@@ -12880,6 +13045,66 @@
       "data": "2025-12-19",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PTCA",
+        "nome": "PRATICA PRODUTOS S.A.",
+        "cnpj": "08.574.411/0001-00"
+      },
+      "noticia": {
+        "titulo": "M2)  Ata Reuniao do Conselho de Administracao  10/12/25 (R)",
+        "headline": "PRATICA (PTCA-M2) - Ata Reuniao do Conselho de Administracao - 10/12/25 (R)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3178870&agencia=18&dataNoticia=2025-12-19%2018:27:54"
+      }
+    },
+    {
+      "data": "2025-12-19",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PTCA",
+        "nome": "PRATICA PRODUTOS S.A.",
+        "cnpj": "08.574.411/0001-00"
+      },
+      "noticia": {
+        "titulo": "M2)  Ata da AGE  19/10/25",
+        "headline": "PRATICA (PTCA-M2) - Ata da AGE - 19/10/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3178336&agencia=18&dataNoticia=2025-12-19%2016:17:24"
+      }
+    },
+    {
+      "data": "2025-12-19",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PTCA",
+        "nome": "PRATICA PRODUTOS S.A.",
+        "cnpj": "08.574.411/0001-00"
+      },
+      "noticia": {
+        "titulo": "M2)  Ata Reuniao do Conselho de Administracao  18/12/25",
+        "headline": "PRATICA (PTCA-M2) - Ata Reuniao do Conselho de Administracao - 18/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3178332&agencia=18&dataNoticia=2025-12-19%2016:14:28"
+      }
+    },
+    {
+      "data": "2025-12-19",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PTCA",
+        "nome": "PRATICA PRODUTOS S.A.",
+        "cnpj": "08.574.411/0001-00"
+      },
+      "noticia": {
+        "titulo": "M2)  Ata Reuniao do Conselho de Administracao  10/12/25",
+        "headline": "PRATICA (PTCA-M2) - Ata Reuniao do Conselho de Administracao - 10/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3178094&agencia=18&dataNoticia=2025-12-19%2013:58:44"
+      }
+    },
+    {
+      "data": "2025-12-19",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "MOAR",
         "nome": "MONTEIRO ARANHA S.A.",
         "cnpj": "33.102.476/0001-92"
@@ -14719,6 +14944,51 @@
         "headline": "WEG (WEGE-NM) - Ata da AGE - 19/12/25",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3178112&agencia=18&dataNoticia=2025-12-19%2014:06:51"
+      }
+    },
+    {
+      "data": "2025-12-19",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Aviso aos Acionistas  19/12/25 (N)",
+        "headline": "BRQ (BRQB-MA) - Aviso aos Acionistas - 19/12/25 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3178931&agencia=18&dataNoticia=2025-12-19%2018:54:27"
+      }
+    },
+    {
+      "data": "2025-12-19",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Aviso aos Acionistas  19/12/25",
+        "headline": "BRQ (BRQB-MA) - Aviso aos Acionistas - 19/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3178840&agencia=18&dataNoticia=2025-12-19%2018:17:27"
+      }
+    },
+    {
+      "data": "2025-12-19",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Ata da AGE  19/12/25",
+        "headline": "BRQ (BRQB-MA) - Ata da AGE - 19/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3177771&agencia=18&dataNoticia=2025-12-19%2011:21:55"
       }
     },
     {
@@ -16924,6 +17194,21 @@
         "headline": "WEG (WEGE-NM) - Mapa consolidado voto a distancia - AGE - 19/12/25",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3175460&agencia=18&dataNoticia=2025-12-18%2008:00:08"
+      }
+    },
+    {
+      "data": "2025-12-18",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Mapa consolidado voto a distancia  AGE  19/12/25",
+        "headline": "BRQ (BRQB-MA) - Mapa consolidado voto a distancia - AGE - 19/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3175933&agencia=18&dataNoticia=2025-12-18%2010:37:24"
       }
     },
     {
@@ -23245,6 +23530,21 @@
       "data": "2025-12-15",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Proposta da Administracao para AGE  02/01/26",
+        "headline": "BRQ (BRQB-MA) - Proposta da Administracao para AGE - 02/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3169896&agencia=18&dataNoticia=2025-12-15%2012:04:17"
+      }
+    },
+    {
+      "data": "2025-12-15",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "MERC",
         "nome": "CREDITAQUI FINANCEIRA S.A. – CRÉDITO FINANCIAMENTO",
         "cnpj": "33.040.601/0001-87"
@@ -25390,6 +25690,96 @@
       "data": "2025-12-12",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Boletim de voto a distancia para AGE  02/01/26",
+        "headline": "BRQ (BRQB-MA) - Boletim de voto a distancia para AGE - 02/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3169198&agencia=18&dataNoticia=2025-12-12%2019:19:39"
+      }
+    },
+    {
+      "data": "2025-12-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Edital de Convocacao de AGE  02/01/26",
+        "headline": "BRQ (BRQB-MA) - Edital de Convocacao de AGE - 02/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3168729&agencia=18&dataNoticia=2025-12-12%2017:53:33"
+      }
+    },
+    {
+      "data": "2025-12-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Edital de Convocacao de AGE  19/12/25",
+        "headline": "BRQ (BRQB-MA) - Edital de Convocacao de AGE - 19/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3168566&agencia=18&dataNoticia=2025-12-12%2016:21:12"
+      }
+    },
+    {
+      "data": "2025-12-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Proposta da Administracao para AGE  19/12/25",
+        "headline": "BRQ (BRQB-MA) - Proposta da Administracao para AGE - 19/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3168519&agencia=18&dataNoticia=2025-12-12%2015:54:16"
+      }
+    },
+    {
+      "data": "2025-12-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Proposta da Administracao para AGE  15/12/25  (R)(C)",
+        "headline": "BRQ (BRQB-MA) - Proposta da Administracao para AGE - 15/12/25  (R)(C)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3168512&agencia=18&dataNoticia=2025-12-12%2015:42:52"
+      }
+    },
+    {
+      "data": "2025-12-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Edital de Convocacao de AGE  15/12/25 (R)(C)",
+        "headline": "BRQ (BRQB-MA) - Edital de Convocacao de AGE - 15/12/25 (R)(C)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3168501&agencia=18&dataNoticia=2025-12-12%2015:29:20"
+      }
+    },
+    {
+      "data": "2025-12-12",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "MERC",
         "nome": "CREDITAQUI FINANCEIRA S.A. – CRÉDITO FINANCIAMENTO",
         "cnpj": "33.040.601/0001-87"
@@ -26104,6 +26494,51 @@
         "headline": "BAUMER (BALM) - Ata Reuniao do Conselho de Administracao - 12/12/25",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3169230&agencia=18&dataNoticia=2025-12-12%2019:56:16"
+      }
+    },
+    {
+      "data": "2025-12-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "INNC",
+        "nome": "INC EMPREENDIMENTOS IMOBILIÁRIOS S.A.",
+        "cnpj": "09.611.768/0001-76"
+      },
+      "noticia": {
+        "titulo": "MA)  Calendario de Eventos Corporativos  ate 31/12/26",
+        "headline": "INC SA (INNC-MA) - Calendario de Eventos Corporativos - ate 31/12/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3168120&agencia=18&dataNoticia=2025-12-12%2011:50:29"
+      }
+    },
+    {
+      "data": "2025-12-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "INNC",
+        "nome": "INC EMPREENDIMENTOS IMOBILIÁRIOS S.A.",
+        "cnpj": "09.611.768/0001-76"
+      },
+      "noticia": {
+        "titulo": "MA)  Dados Financeiros  Pressrelease  30/09/25 (R)",
+        "headline": "INC SA (INNC-MA) - Dados Financeiros - Press-release - 30/09/25 (R)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3168064&agencia=18&dataNoticia=2025-12-12%2011:15:24"
+      }
+    },
+    {
+      "data": "2025-12-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "INNC",
+        "nome": "INC EMPREENDIMENTOS IMOBILIÁRIOS S.A.",
+        "cnpj": "09.611.768/0001-76"
+      },
+      "noticia": {
+        "titulo": "MA)  Demonstracoes Financeiras  ITR de 30/09/25 (R)",
+        "headline": "INC SA (INNC-MA) - Demonstracoes Financeiras - ITR de 30/09/25 (R)",
+        "categoria": "Resultados",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3168059&agencia=18&dataNoticia=2025-12-12%2011:10:56"
       }
     },
     {
@@ -31255,6 +31690,36 @@
       "data": "2025-12-10",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "BBML",
+        "nome": "BBM LOGÍSTICA S.A.",
+        "cnpj": "01.107.327/0001-20"
+      },
+      "noticia": {
+        "titulo": "MA)  Demonstracoes Financeiras  ITR de 30/09/25",
+        "headline": "BBMLOGISTICA (BBML-MA) - Demonstracoes Financeiras - ITR de 30/09/25",
+        "categoria": "Resultados",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3165870&agencia=18&dataNoticia=2025-12-10%2018:28:02"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBML",
+        "nome": "BBM LOGÍSTICA S.A.",
+        "cnpj": "01.107.327/0001-20"
+      },
+      "noticia": {
+        "titulo": "MA)  Demonstracoes Financeiras  ITR de 30/06/25",
+        "headline": "BBMLOGISTICA (BBML-MA) - Demonstracoes Financeiras - ITR de 30/06/25",
+        "categoria": "Resultados",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3165857&agencia=18&dataNoticia=2025-12-10%2018:22:25"
+      }
+    },
+    {
+      "data": "2025-12-10",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "AMER",
         "nome": "LOJAS AMERICANAS S.A.",
         "cnpj": "33.014.556/0001-96"
@@ -35350,6 +35815,66 @@
       "data": "2025-12-09",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Proposta da Administracao para AGE  15/12/25  (R)",
+        "headline": "BRQ (BRQB-MA) - Proposta da Administracao para AGE - 15/12/25  (R)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164067&agencia=18&dataNoticia=2025-12-09%2017:39:39"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Edital de Convocacao de AGE  15/12/25 (R)",
+        "headline": "BRQ (BRQB-MA) - Edital de Convocacao de AGE - 15/12/25 (R)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164066&agencia=18&dataNoticia=2025-12-09%2017:38:27"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Boletim de voto a distancia para AGE  15/12/25 (C)",
+        "headline": "BRQ (BRQB-MA) - Boletim de voto a distancia para AGE - 15/12/25 (C)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164047&agencia=18&dataNoticia=2025-12-09%2017:28:42"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Boletim de voto a distancia para AGE  19/12/25",
+        "headline": "BRQ (BRQB-MA) - Boletim de voto a distancia para AGE - 19/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3164044&agencia=18&dataNoticia=2025-12-09%2017:23:21"
+      }
+    },
+    {
+      "data": "2025-12-09",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "TTEN",
         "nome": "TRÊS TENTOS AGROINDUSTRIAL S/A",
         "cnpj": "94.813.102/0001-70"
@@ -36739,6 +37264,21 @@
         "headline": "JALLESMACHAD (JALL-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3161895&agencia=18&dataNoticia=2025-12-08%2011:44:14"
+      }
+    },
+    {
+      "data": "2025-12-08",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PTCA",
+        "nome": "PRATICA PRODUTOS S.A.",
+        "cnpj": "08.574.411/0001-00"
+      },
+      "noticia": {
+        "titulo": "M2)  Esclarecimentos de questionamentos CVM/B3 08/12/25",
+        "headline": "PRATICA (PTCA-M2) - Esclarecimentos de questionamentos CVM/B3- 08/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3162430&agencia=18&dataNoticia=2025-12-08%2017:42:53"
       }
     },
     {
@@ -39874,6 +40414,21 @@
         "headline": "ITAUSA (ITSA-N1) - Calendario de Eventos Corporativos - ate 31/12/26",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3160807&agencia=18&dataNoticia=2025-12-05%2018:05:00"
+      }
+    },
+    {
+      "data": "2025-12-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Aviso aos Acionistas: Subscricao privada  12/11/25 (R)(N)",
+        "headline": "BRQ (BRQB-MA) - Aviso aos Acionistas: Subscricao privada - 12/11/25 (R)(N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3159581&agencia=18&dataNoticia=2025-12-05%2009:00:14"
       }
     },
     {
