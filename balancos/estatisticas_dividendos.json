@@ -1,7 +1,7 @@
 {
   "meta": {
-    "ultima_atualizacao": "2026-01-03T10:16:14.662224Z",
-    "total_empresas": 275
+    "ultima_atualizacao": "2026-01-04T10:17:02.199409Z",
+    "total_empresas": 276
   },
   "proximos_dividendos": [],
   "por_empresa": [
@@ -1734,6 +1734,14 @@
       "proximo_pagamento": null
     },
     {
+      "ticker": "FRIO3",
+      "historicos": 6,
+      "futuros": 0,
+      "total_valor": 1.61,
+      "ultimo_pagamento": "2011-04-07",
+      "proximo_pagamento": null
+    },
+    {
       "ticker": "RSID3",
       "historicos": 13,
       "futuros": 0,
@@ -2207,7 +2215,7 @@
     }
   ],
   "resumo": {
-    "total_empresas_com_historico": 275,
+    "total_empresas_com_historico": 276,
     "total_empresas_com_futuros": 0,
     "total_dividendos_futuros": 0,
     "valor_total_provisionado": 0

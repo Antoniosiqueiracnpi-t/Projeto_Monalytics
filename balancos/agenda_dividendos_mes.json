@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ultima_atualizacao": "2026-01-03T10:16:14.649810Z",
+    "ultima_atualizacao": "2026-01-04T10:17:02.187727Z",
     "total_meses": 361,
     "meses_disponiveis": [
       "2025-12",
@@ -95233,6 +95233,22 @@
         "status": "pago"
       },
       {
+        "ticker": "FRIO3",
+        "tipo": "REST CAP DIN",
+        "valor": 0.2337,
+        "data_com": null,
+        "data_pagamento": "2011-04-07",
+        "status": "pago"
+      },
+      {
+        "ticker": "FRIO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.449,
+        "data_com": null,
+        "data_pagamento": "2011-04-07",
+        "status": "pago"
+      },
+      {
         "ticker": "RADL3",
         "tipo": "DIVIDENDO",
         "valor": 0.017913,
@@ -100759,6 +100775,14 @@
         "status": "pago"
       },
       {
+        "ticker": "FRIO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.302,
+        "data_com": null,
+        "data_pagamento": "2010-05-06",
+        "status": "pago"
+      },
+      {
         "ticker": "PCAR3",
         "tipo": "DIVIDENDO",
         "valor": 0.072727,
@@ -102292,6 +102316,14 @@
         "ticker": "AXIA3",
         "tipo": "JRS CAP PROPRIO",
         "valor": 1.630533,
+        "data_com": null,
+        "data_pagamento": "2010-04-30",
+        "status": "pago"
+      },
+      {
+        "ticker": "FRIO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.292282,
         "data_com": null,
         "data_pagamento": "2010-04-30",
         "status": "pago"
@@ -104566,6 +104598,14 @@
         "ticker": "GGBR3",
         "tipo": "JRS CAP PROPRIO",
         "valor": 0.075,
+        "data_com": null,
+        "data_pagamento": "2009-11-05",
+        "status": "pago"
+      },
+      {
+        "ticker": "FRIO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.265,
         "data_com": null,
         "data_pagamento": "2009-11-05",
         "status": "pago"
@@ -112764,6 +112804,14 @@
         "ticker": "RENT3",
         "tipo": "DIVIDENDO",
         "valor": 0.123517,
+        "data_com": null,
+        "data_pagamento": "2008-04-08",
+        "status": "pago"
+      },
+      {
+        "ticker": "FRIO3",
+        "tipo": "DIVIDENDO",
+        "valor": 0.063953,
         "data_com": null,
         "data_pagamento": "2008-04-08",
         "status": "pago"

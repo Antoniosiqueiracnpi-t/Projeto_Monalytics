@@ -1,21 +1,21 @@
 {
   "meta": {
-    "ultima_atualizacao": "2026-01-03T10:16:14.633130Z",
-    "data_atualizacao": "2026-01-03",
-    "hora_atualizacao": "10:16:14",
-    "total_empresas": 275,
-    "total_dividendos": 19324,
-    "dividendos_historicos": 19324,
+    "ultima_atualizacao": "2026-01-04T10:17:02.171243Z",
+    "data_atualizacao": "2026-01-04",
+    "hora_atualizacao": "10:17:02",
+    "total_empresas": 276,
+    "total_dividendos": 19330,
+    "dividendos_historicos": 19330,
     "dividendos_futuros": 0
   },
   "estatisticas": {
     "por_status": {
-      "pago": 19324
+      "pago": 19330
     },
     "por_tipo": {
-      "DIVIDENDO": 9319,
+      "DIVIDENDO": 9324,
       "JRS CAP PROPRIO": 9561,
-      "REST CAP DIN": 72,
+      "REST CAP DIN": 73,
       "RENDIMENTO": 372
     },
     "por_ticker_top10": [
@@ -61,9 +61,9 @@
       }
     ],
     "valores": {
-      "total_pago": 21452.23,
+      "total_pago": 21453.83,
       "total_provisionado": 0,
-      "total_geral": 21452.23
+      "total_geral": 21453.83
     },
     "top_pagadores": [
       {
@@ -107858,6 +107858,24 @@
       "ticker": "MDIA3"
     },
     {
+      "data": "2011-06-28",
+      "data_pagamento": "2011-04-07",
+      "tipo": "REST CAP DIN",
+      "valor": 0.2337,
+      "status": "pago",
+      "fonte": "b3_api",
+      "ticker": "FRIO3"
+    },
+    {
+      "data": "2011-04-07",
+      "data_pagamento": "2011-04-07",
+      "tipo": "DIVIDENDO",
+      "valor": 0.449,
+      "status": "pago",
+      "fonte": "b3_api",
+      "ticker": "FRIO3"
+    },
+    {
       "data": "2011-04-29",
       "data_pagamento": "2011-04-05",
       "tipo": "DIVIDENDO",
@@ -112799,6 +112817,15 @@
       "ticker": "GGBR3"
     },
     {
+      "data": "2010-05-07",
+      "data_pagamento": "2010-05-06",
+      "tipo": "DIVIDENDO",
+      "valor": 0.302,
+      "status": "pago",
+      "fonte": "b3_api",
+      "ticker": "FRIO3"
+    },
+    {
       "data": "2010-05-03",
       "data_pagamento": "2010-05-03",
       "tipo": "DIVIDENDO",
@@ -113364,6 +113391,15 @@
       "status": "pago",
       "fonte": "b3_api",
       "ticker": "AXIA3"
+    },
+    {
+      "data": "2010-04-30",
+      "data_pagamento": "2010-04-30",
+      "tipo": "DIVIDENDO",
+      "valor": 0.292282,
+      "status": "pago",
+      "fonte": "b3_api",
+      "ticker": "FRIO3"
     },
     {
       "data": "2010-04-30",
@@ -117261,6 +117297,15 @@
       "status": "pago",
       "fonte": "b3_api",
       "ticker": "GGBR3"
+    },
+    {
+      "data": "2009-11-10",
+      "data_pagamento": "2009-11-05",
+      "tipo": "DIVIDENDO",
+      "valor": 0.265,
+      "status": "pago",
+      "fonte": "b3_api",
+      "ticker": "FRIO3"
     },
     {
       "data": "2009-11-17",
@@ -127197,6 +127242,15 @@
       "status": "pago",
       "fonte": "b3_api",
       "ticker": "RENT3"
+    },
+    {
+      "data": "2008-04-08",
+      "data_pagamento": "2008-04-08",
+      "tipo": "DIVIDENDO",
+      "valor": 0.063953,
+      "status": "pago",
+      "fonte": "b3_api",
+      "ticker": "FRIO3"
     },
     {
       "data": "2008-04-18",
