@@ -1865,7 +1865,14 @@ async function loadAcaoData(ticker) {
         // Atualiza UI
         document.getElementById('acaoTicker').textContent = ticker;
         document.getElementById('acaoNome').textContent = empresaInfo?.empresa || ticker;
-        document.getElementById('acaoLogo').textContent = ticker.substring(0, 4);
+        
+        // Carrega logo
+        const logoImg = document.getElementById('acaoLogoImg');
+        const logoFallback = document.getElementById('acaoLogoFallback');
+        logoImg.src = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${ticker}/logo.png?t=${timestamp}`;
+        logoImg.style.display = 'block';
+        logoFallback.style.display = 'none';
+        logoFallback.textContent = ticker.substring(0, 4);
         
         // Atualiza indicadores
         updateIndicadores();
@@ -1899,18 +1906,66 @@ function updateIndicadores() {
     // Variação 12M
     const variacao12m = ((ultimo.fechamento - umAnoAtras.fechamento) / umAnoAtras.fechamento * 100).toFixed(2);
     const varEl = document.getElementById('variacao12m');
-    varEl.textContent = `${variacao12m}% ${variacao12m >= 0 ? '↑' : '↓'}`;
+    varEl.textContent = `${variacao12m >= 0 ? '+' : ''}${variacao12m}% ${variacao12m >= 0 ? '↑' : '↓'}`;
     varEl.className = 'indicador-valor ' + (variacao12m >= 0 ? 'positivo' : 'negativo');
+    
+    // Tendência MM20
+    const tendenciaMM20El = document.getElementById('tendenciaMM20');
+    if (ultimo.mm20) {
+        const distMM20 = ((ultimo.fechamento - ultimo.mm20) / ultimo.mm20 * 100).toFixed(1);
+        if (distMM20 > 2) {
+            tendenciaMM20El.innerHTML = '<span class="tendencia-icon">📈</span><span>Alta</span>';
+            tendenciaMM20El.className = 'indicador-valor positivo';
+        } else if (distMM20 < -2) {
+            tendenciaMM20El.innerHTML = '<span class="tendencia-icon">📉</span><span>Baixa</span>';
+            tendenciaMM20El.className = 'indicador-valor negativo';
+        } else {
+            tendenciaMM20El.innerHTML = '<span class="tendencia-icon">➡️</span><span>Lateral</span>';
+            tendenciaMM20El.className = 'indicador-valor neutro';
+        }
+    } else {
+        tendenciaMM20El.innerHTML = '<span>N/D</span>';
+        tendenciaMM20El.className = 'indicador-valor';
+    }
+    
+    // Tendência MM200
+    const tendenciaMM200El = document.getElementById('tendenciaMM200');
+    if (ultimo.mm200) {
+        const distMM200 = ((ultimo.fechamento - ultimo.mm200) / ultimo.mm200 * 100).toFixed(1);
+        if (distMM200 > 5) {
+            tendenciaMM200El.innerHTML = '<span class="tendencia-icon">📈</span><span>Alta</span>';
+            tendenciaMM200El.className = 'indicador-valor positivo';
+        } else if (distMM200 < -5) {
+            tendenciaMM200El.innerHTML = '<span class="tendencia-icon">📉</span><span>Baixa</span>';
+            tendenciaMM200El.className = 'indicador-valor negativo';
+        } else {
+            tendenciaMM200El.innerHTML = '<span class="tendencia-icon">➡️</span><span>Lateral</span>';
+            tendenciaMM200El.className = 'indicador-valor neutro';
+        }
+    } else {
+        tendenciaMM200El.innerHTML = '<span>N/D</span>';
+        tendenciaMM200El.className = 'indicador-valor';
+    }
+    
+    // Cruzamento de médias móveis
+    const cruzamentoEl = document.getElementById('cruzamentoMMs');
+    if (ultimo.mm20 && ultimo.mm50) {
+        if (ultimo.mm20 > ultimo.mm50) {
+            cruzamentoEl.innerHTML = '<span class="tendencia-icon">⚡</span><span>Golden Cross</span>';
+            cruzamentoEl.className = 'indicador-valor positivo';
+        } else {
+            cruzamentoEl.innerHTML = '<span class="tendencia-icon">⚠️</span><span>Death Cross</span>';
+            cruzamentoEl.className = 'indicador-valor negativo';
+        }
+    } else {
+        cruzamentoEl.innerHTML = '<span>N/D</span>';
+        cruzamentoEl.className = 'indicador-valor';
+    }
     
     // Médias móveis atuais
     document.getElementById('mm20Atual').textContent = ultimo.mm20 ? `R$ ${ultimo.mm20.toFixed(2)}` : 'N/D';
     document.getElementById('mm50Atual').textContent = ultimo.mm50 ? `R$ ${ultimo.mm50.toFixed(2)}` : 'N/D';
     document.getElementById('mm200Atual').textContent = ultimo.mm200 ? `R$ ${ultimo.mm200.toFixed(2)}` : 'N/D';
-    
-    // Placeholder para P/L, P/VP, DY (precisaria de dados fundamentalistas)
-    document.getElementById('plAtual').textContent = 'N/D';
-    document.getElementById('pvpAtual').textContent = 'N/D';
-    document.getElementById('dyAtual').textContent = 'N/D';
 }
 
 // Renderiza gráfico
