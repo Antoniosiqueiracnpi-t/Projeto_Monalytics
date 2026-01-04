@@ -1142,7 +1142,6 @@ function renderNoticiasData(data) {
  * Seleciona top N notícias priorizando categoria
  */
 function selectTopNews(feed, limit = 5) {
-    // Prioridades de categoria (menor = maior prioridade)
     const priorities = {
         'Fato Relevante': 1,
         'Dividendos': 2,
@@ -1159,15 +1158,21 @@ function selectTopNews(feed, limit = 5) {
         
         if (prioA !== prioB) return prioA - prioB;
         
-        // Se mesma prioridade, ordena por data (mais recente primeiro)
         const dateCompare = b.data.localeCompare(a.data);
         if (dateCompare !== 0) return dateCompare;
         
-        // Se mesma data, ordena por hora
         return b.hora.localeCompare(a.hora);
     });
     
-    return sorted.slice(0, limit);
+    // Remove duplicatas por ticker
+    const seen = new Set();
+    const unique = sorted.filter(item => {
+        if (seen.has(item.empresa.ticker)) return false;
+        seen.add(item.empresa.ticker);
+        return true;
+    });
+    
+    return unique.slice(0, limit);
 }
 
 /**
