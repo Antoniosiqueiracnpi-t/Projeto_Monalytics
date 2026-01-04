@@ -486,29 +486,26 @@
                 </div>
             </div>
 
-            <!-- 2️⃣ ANÁLISE GRÁFICA DE AÇÕES (DEPOIS) -->
+            <!-- Análise Gráfica de Ações -->
             <div class="analise-grafica-container">
-                <!-- Header com busca -->
-                <div class="analise-grafica-header">
+                <!-- Card de Busca Destacado -->
+                <div class="search-card">
+                    <div class="search-card-header">
+                        <h3>🔍 Buscar Ação</h3>
+                        <p>Digite o ticker ou nome da empresa</p>
+                    </div>
                     <div class="search-box">
-                        <input type="text" id="acaoSearchInput" placeholder="Pesquise pelo ativo desejado" autocomplete="off">
+                        <input type="text" id="acaoSearchInput" placeholder="Ex: ABEV3, ITSA4, PETR4..." autocomplete="off">
                         <button id="acaoSearchBtn" class="search-btn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <path d="m21 21-4.35-4.35"></path>
                             </svg>
+                            Buscar
                         </button>
                     </div>
                     <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
-                </div>
-    
-                <!-- Estado inicial (sem ação selecionada) -->
-                <div id="acaoEmptyState" class="acao-empty-state">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M3 3v18h18"></path>
-                        <path d="M18 17l-5-5-4 4-4-4"></path>
-                    </svg>
-                    <p>Pesquise uma ação para visualizar o gráfico e análise técnica</p>
+                    
                     <div class="mais-buscados">
                         <span>Mais buscados:</span>
                         <button class="ticker-tag" data-ticker="ITSA4">Itaúsa</button>
@@ -517,16 +514,26 @@
                         <button class="ticker-tag" data-ticker="AAPL34">Apple</button>
                     </div>
                 </div>
-    
+            
+                <!-- Estado inicial (sem ação selecionada) -->
+                <div id="acaoEmptyState" class="acao-empty-state">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M3 3v18h18"></path>
+                        <path d="M18 17l-5-5-4 4-4-4"></path>
+                    </svg>
+                    <p>Selecione uma ação acima para visualizar o gráfico e análise técnica</p>
+                </div>
+            
                 <!-- Container da análise (oculto inicialmente) -->
                 <div id="acaoAnaliseContent" class="acao-analise-content" style="display: none;">
                     <!-- Cabeçalho com logo e nome da empresa -->
                     <div class="acao-info-header">
                         <div class="acao-logo-nome">
-                            <div class="acao-logo" id="acaoLogo"></div>
+                            <img id="acaoLogoImg" class="acao-logo-img" src="" alt="Logo" onerror="this.style.display='none'; document.getElementById('acaoLogoFallback').style.display='flex';">
+                            <div id="acaoLogoFallback" class="acao-logo-fallback" style="display: none;"></div>
                             <div>
                                 <h2 id="acaoTicker">ABEV3</h2>
-                                <p id="acaoNome">AMBEV</p>
+                                <p id="acaoNome">AMBEV S/A</p>
                             </div>
                         </div>
                         <button id="toggleIbovBtn" class="toggle-ibov-btn">
@@ -537,7 +544,7 @@
                             Comparar com IBOV
                         </button>
                     </div>
-    
+            
                     <!-- Cards de indicadores -->
                     <div class="indicadores-cards">
                         <div class="indicador-card">
@@ -546,22 +553,31 @@
                         </div>
                         <div class="indicador-card">
                             <div class="indicador-label">VARIAÇÃO (12M)</div>
-                            <div class="indicador-valor positivo" id="variacao12m">24,38% ↑</div>
+                            <div class="indicador-valor positivo" id="variacao12m">+24,38% ↑</div>
                         </div>
                         <div class="indicador-card">
-                            <div class="indicador-label">P/L</div>
-                            <div class="indicador-valor" id="plAtual">13,38</div>
+                            <div class="indicador-label">TENDÊNCIA MM20</div>
+                            <div class="indicador-valor" id="tendenciaMM20">
+                                <span class="tendencia-icon">📈</span>
+                                <span>Alta</span>
+                            </div>
                         </div>
                         <div class="indicador-card">
-                            <div class="indicador-label">P/VP</div>
-                            <div class="indicador-valor" id="pvpAtual">2,33</div>
+                            <div class="indicador-label">TENDÊNCIA MM200</div>
+                            <div class="indicador-valor" id="tendenciaMM200">
+                                <span class="tendencia-icon">📈</span>
+                                <span>Alta</span>
+                            </div>
                         </div>
                         <div class="indicador-card">
-                            <div class="indicador-label">DY</div>
-                            <div class="indicador-valor" id="dyAtual">8,19%</div>
+                            <div class="indicador-label">CRUZAMENTO MMS</div>
+                            <div class="indicador-valor" id="cruzamentoMMs">
+                                <span class="tendencia-icon">⚡</span>
+                                <span>Golden Cross</span>
+                            </div>
                         </div>
                     </div>
-    
+            
                     <!-- Filtros de período -->
                     <div class="periodo-filters">
                         <button class="periodo-btn" data-periodo="180">6 MESES</button>
@@ -569,12 +585,12 @@
                         <button class="periodo-btn" data-periodo="1095">3 ANOS</button>
                         <button class="periodo-btn" data-periodo="max">MÁXIMO</button>
                     </div>
-    
+            
                     <!-- Gráfico -->
                     <div class="grafico-container">
                         <canvas id="acaoChart"></canvas>
                     </div>
-    
+            
                     <!-- Dados das médias móveis atuais -->
                     <div class="medias-moveis">
                         <div class="media-item">
@@ -591,7 +607,7 @@
                         </div>
                     </div>
                 </div>
-    
+            
                 <!-- Loading state -->
                 <div id="acaoLoadingState" class="acao-loading" style="display: none;">
                     <div class="loading-spinner"></div>
