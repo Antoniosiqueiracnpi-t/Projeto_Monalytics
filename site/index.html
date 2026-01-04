@@ -556,6 +556,10 @@
                             <div class="indicador-valor positivo" id="variacao12m">+24,38% ↑</div>
                         </div>
                         <div class="indicador-card">
+                            <div class="indicador-label">VARIAÇÃO (24M)</div>
+                            <div class="indicador-valor positivo" id="variacao24m">+45,20% ↑</div>
+                        </div>                
+                        <div class="indicador-card">
                             <div class="indicador-label">TENDÊNCIA MM20</div>
                             <div class="indicador-valor" id="tendenciaMM20">
                                 <span class="tendencia-icon">📈</span>
@@ -567,13 +571,6 @@
                             <div class="indicador-valor" id="tendenciaMM200">
                                 <span class="tendencia-icon">📈</span>
                                 <span>Alta</span>
-                            </div>
-                        </div>
-                        <div class="indicador-card">
-                            <div class="indicador-label">CRUZAMENTO MMS</div>
-                            <div class="indicador-valor" id="cruzamentoMMs">
-                                <span class="tendencia-icon">⚡</span>
-                                <span>Golden Cross</span>
                             </div>
                         </div>
                     </div>
@@ -606,7 +603,50 @@
                             <span class="mm-valor" id="mm200Atual">R$ 12,40</span>
                         </div>
                     </div>
+            
+                    <!-- Card de Informações da Empresa -->
+                    <div class="empresa-info-card">
+                        <h3 class="empresa-info-title">📋 Informações da Empresa</h3>
+                        
+                        <div class="empresa-info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Razão Social</div>
+                                <div class="info-valor" id="empresaRazaoSocial">-</div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-label">CNPJ</div>
+                                <div class="info-valor" id="empresaCNPJ">-</div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-label">Setor / Segmento</div>
+                                <div class="info-valor" id="empresaSetorSegmento">-</div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-label">Tickers de Negociação</div>
+                                <div class="info-valor" id="empresaTickers">-</div>
+                            </div>
+                            
+                            <div class="info-item full-width">
+                                <div class="info-label">Endereço da Sede</div>
+                                <div class="info-valor" id="empresaSede">-</div>
+                            </div>
+                            
+                            <div class="info-item full-width">
+                                <div class="info-label">Descrição</div>
+                                <div class="info-valor descricao" id="empresaDescricao">-</div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-label">Empresas do Mesmo Setor</div>
+                                <div class="info-valor" id="empresasMesmoSetor">-</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+           
             
                 <!-- Loading state -->
                 <div id="acaoLoadingState" class="acao-loading" style="display: none;">
