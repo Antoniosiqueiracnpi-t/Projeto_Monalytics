@@ -367,7 +367,52 @@
                 </div>
             </div>
         </div>
-    </section>    
+    </section>   
+
+    <!-- =========================== SEÇÃO DE NOTÍCIAS DO MERCADO =========================== -->
+    <section class="news-section" id="noticias">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Notícias do Mercado</h2>
+                <p class="section-subtitle">Últimas atualizações dos principais portais financeiros</p>
+            </div>
+
+            <!-- Filtros por Categoria -->
+            <div class="news-filters">
+                <button class="filter-btn active" data-filter="todas">
+                    <i class="fas fa-globe"></i> Todas
+                </button>
+                <button class="filter-btn" data-filter="Internacional">
+                    <i class="fas fa-flag"></i> Internacional
+                </button>
+                <button class="filter-btn" data-filter="Empresas">
+                    <i class="fas fa-building"></i> Empresas
+                </button>
+                <button class="filter-btn" data-filter="Economia">
+                    <i class="fas fa-chart-line"></i> Economia
+                </button>
+                <button class="filter-btn" data-filter="Mercados">
+                    <i class="fas fa-chart-bar"></i> Mercados
+                </button>
+            </div>
+
+            <!-- Loading -->
+            <div class="news-loading" id="newsLoading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>Carregando notícias...</span>
+            </div>
+
+            <!-- Grid de Notícias -->
+            <div class="news-grid" id="newsGrid" style="display: none;"></div>
+
+            <!-- Timestamp -->
+            <div class="news-timestamp" id="newsTimestampSection" style="display: none;">
+                <i class="fas fa-clock"></i>
+                <span id="newsTimestamp">-</span>
+            </div>
+        </div>
+    </section>
+    
 
     <!-- =========================== SEÇÃO DE AÇÕES (Em Construção) =========================== -->
     <section class="acoes-section" id="acoes">
