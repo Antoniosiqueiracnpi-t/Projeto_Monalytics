@@ -345,6 +345,7 @@ const DATA_PATHS = {
 };
 
 const NOTICIAS_MERCADO_PATH = 'balancos/NOTICIAS/noticias_mercado.json';
+const DIVIDENDOS_PATH = 'agenda_dividendos_acoes_investidor10.json';
 
 let currentSlide = 0;
 const totalSlides = 3;
@@ -492,7 +493,8 @@ async function loadAllData() {
         loadBolsaData(),
         loadIndicadoresData(),
         loadNoticiasData(),
-        loadNoticiasMercado()
+        loadNoticiasMercado(),
+        loadDividendosData()
     ]);
 }
 
@@ -1242,6 +1244,219 @@ function renderNewsGrid(noticias) {
         `;
     }).join('');
 }
+
+// =========================== AGENDA DE DIVIDENDOS ===========================
+
+let currentPeriodDays = 30;
+let allDividendos = [];
+
+/**
+ * Carrega dados de dividendos
+ */
+async function loadDividendosData() {
+    try {
+        const response = await fetch(`${DATA_CONFIG.GITHUB_RAW}/${DATA_CONFIG.BRANCH}/${DIVIDENDOS_PATH}?t=${Date.now()}`);
+
+        if (!response.ok) {
+            throw new Error('Erro ao carregar dividendos');
+        }
+
+        const data = await response.json();
+        allDividendos = data;
+        renderDividendos(currentPeriodDays);
+
+    } catch (error) {
+        console.error('❌ Erro ao carregar dividendos:', error);
+        showDividendosError();
+    }
+}
+
+/**
+ * Renderiza agenda de dividendos
+ */
+function renderDividendos(days = 30) {
+    // Esconde loading
+    document.getElementById('dividendosLoading').style.display = 'none';
+
+    // Mostra filtros e grid
+    document.getElementById('dividendosTipoFilters').style.display = 'flex';
+    document.getElementById('dividendosGrid').style.display = 'grid';
+    document.getElementById('dividendosFooter').style.display = 'block';
+
+    // Filtra dividendos futuros
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const dataLimite = new Date(hoje);
+    dataLimite.setDate(dataLimite.getDate() + days);
+
+    const dividendosFuturos = allDividendos.filter(div => {
+        const dataCom = new Date(div.data_com);
+        return dataCom >= hoje && dataCom <= dataLimite;
+    });
+
+    // Ordena por data COM (mais próxima primeiro)
+    dividendosFuturos.sort((a, b) => {
+        return new Date(a.data_com) - new Date(b.data_com);
+    });
+
+    // Remove duplicatas por ticker + data_com (mantém apenas um registro por ação/data)
+    const dividendosUnicos = [];
+    const vistos = new Set();
+
+    for (const div of dividendosFuturos) {
+        const key = `${div.ticker}_${div.data_com}`;
+        if (!vistos.has(key)) {
+            vistos.add(key);
+            dividendosUnicos.push(div);
+        }
+    }
+
+    // Renderiza grid
+    if (dividendosUnicos.length === 0) {
+        showDividendosEmpty();
+    } else {
+        renderDividendosGrid(dividendosUnicos);
+        initDividendosTipoFilters(dividendosUnicos);
+        initPeriodFilters();
+    }
+}
+
+/**
+ * Renderiza grid de dividendos
+ * (sem nome da empresa — apenas ticker)
+ */
+function renderDividendosGrid(dividendos) {
+    const grid = document.getElementById('dividendosGrid');
+    if (!grid) return;
+
+    // Esconde mensagem vazia
+    document.getElementById('dividendosEmpty').style.display = 'none';
+    grid.style.display = 'grid';
+
+    grid.innerHTML = dividendos.map(div => {
+        const tipoClass = String(div.tipo || '').toLowerCase();
+        const tipoLabel = div.tipo === 'DIVIDENDO' ? 'Dividendo' : (div.tipo === 'JSCP' ? 'JSCP' : div.tipo);
+
+        return `
+            <div class="dividendo-card" data-tipo="${div.tipo}">
+                <div class="dividendo-card-header">
+                    <div class="dividendo-ticker">${div.ticker}</div>
+                    <span class="dividendo-tipo-badge ${tipoClass}">${tipoLabel}</span>
+                </div>
+
+                <div class="dividendo-valor-container">
+                    <div class="dividendo-valor-label">Valor por ação</div>
+                    <div class="dividendo-valor">R$ ${Number(div.valor || 0).toFixed(2)}</div>
+                </div>
+
+                <div class="dividendo-datas">
+                    <div class="dividendo-data-item">
+                        <div class="dividendo-data-label">
+                            <i class="fas fa-calendar-check"></i> Data COM
+                        </div>
+                        <div class="dividendo-data-value">${formatDividendoDate(div.data_com)}</div>
+                    </div>
+                    <div class="dividendo-data-item">
+                        <div class="dividendo-data-label">
+                            <i class="fas fa-calendar-day"></i> Pagamento
+                        </div>
+                        <div class="dividendo-data-value">${formatDividendoDate(div.data_pagamento)}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+/**
+ * Inicializa filtros de período
+ */
+function initPeriodFilters() {
+    const periodBtns = document.querySelectorAll('.dividendos-filter-btn');
+
+    periodBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const period = parseInt(btn.dataset.period);
+            currentPeriodDays = period;
+
+            // Atualiza botões ativos
+            periodBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Re-renderiza
+            renderDividendos(period);
+        });
+    });
+}
+
+/**
+ * Inicializa filtros de tipo
+ */
+function initDividendosTipoFilters(dividendos) {
+    const tipoBtns = document.querySelectorAll('.tipo-filter-btn');
+    const cards = document.querySelectorAll('.dividendo-card');
+
+    tipoBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tipo = btn.dataset.tipo;
+
+            // Atualiza botões ativos
+            tipoBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Filtra cards
+            cards.forEach(card => {
+                const cardTipo = card.dataset.tipo;
+
+                if (tipo === 'todos' || cardTipo === tipo) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeIn 0.3s ease';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+}
+
+/**
+ * Formata data para exibição
+ */
+function formatDividendoDate(dateStr) {
+    if (!dateStr) return '-';
+
+    const date = new Date(dateStr + 'T00:00:00');
+    if (isNaN(date)) return dateStr;
+
+    return date.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    });
+}
+
+/**
+ * Mostra mensagem de erro
+ */
+function showDividendosError() {
+    const loading = document.getElementById('dividendosLoading');
+    if (loading) {
+        loading.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Erro ao carregar agenda de dividendos</span>
+        `;
+    }
+}
+
+/**
+ * Mostra mensagem vazia
+ */
+function showDividendosEmpty() {
+    document.getElementById('dividendosGrid').style.display = 'none';
+    document.getElementById('dividendosEmpty').style.display = 'flex';
+}
+
 
 /**
  * Inicializa sistema de filtros
