@@ -1840,6 +1840,426 @@ textarea:focus {
     font-size: 0.75rem;
 }
 
+/* ========================================
+   ANÁLISE GRÁFICA DE AÇÕES
+   ======================================== */
+
+.analise-grafica-container {
+    background: var(--primary-bg);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+/* Header com busca */
+.analise-grafica-header {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 15px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 1rem;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.search-btn {
+    padding: 15px 25px;
+    background: linear-gradient(135deg, var(--accent-color), #6366f1);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
+}
+
+/* Sugestões de busca */
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 600px;
+    background: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    margin-top: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.suggestion-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background: rgba(79, 70, 229, 0.1);
+}
+
+.suggestion-ticker {
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-right: 10px;
+}
+
+.suggestion-nome {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Estado vazio */
+.acao-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.acao-empty-state svg {
+    color: var(--text-secondary);
+    opacity: 0.5;
+    margin-bottom: 20px;
+}
+
+.acao-empty-state p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+.mais-buscados {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.mais-buscados span {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.ticker-tag {
+    padding: 8px 16px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.ticker-tag:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+/* Conteúdo da análise */
+.acao-analise-content {
+    animation: fadeIn 0.5s ease;
+}
+
+.acao-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.acao-logo-nome {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.acao-logo {
+    width: 60px;
+    height: 60px;
+    background: var(--secondary-bg);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    border: 2px solid var(--border-color);
+}
+
+.acao-info-header h2 {
+    font-size: 1.8rem;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.acao-info-header p {
+    margin: 5px 0 0 0;
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.toggle-ibov-btn {
+    padding: 10px 20px;
+    background: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.toggle-ibov-btn:hover {
+    border-color: var(--accent-color);
+    background: rgba(79, 70, 229, 0.1);
+}
+
+.toggle-ibov-btn.active {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+/* Cards de indicadores */
+.indicadores-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.indicador-card {
+    background: var(--secondary-bg);
+    border-radius: 12px;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.indicador-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.indicador-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.indicador-valor {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.indicador-valor.positivo {
+    color: #10b981;
+}
+
+.indicador-valor.negativo {
+    color: #ef4444;
+}
+
+/* Filtros de período */
+.periodo-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.periodo-btn {
+    padding: 10px 20px;
+    background: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.periodo-btn:hover {
+    background: rgba(79, 70, 229, 0.1);
+    border-color: var(--accent-color);
+}
+
+.periodo-btn.active {
+    background: linear-gradient(135deg, var(--accent-color), #6366f1);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+/* Gráfico */
+.grafico-container {
+    background: var(--secondary-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px solid var(--border-color);
+    min-height: 400px;
+}
+
+.grafico-container canvas {
+    max-height: 400px;
+}
+
+/* Médias móveis */
+.medias-moveis {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    padding: 15px;
+    background: var(--secondary-bg);
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+}
+
+.media-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mm-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.mm-valor {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Loading state */
+.acao-loading {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.acao-loading p {
+    color: var(--text-secondary);
+    margin-top: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .analise-grafica-container {
+        padding: 20px;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .acao-info-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .toggle-ibov-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .indicadores-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .periodo-filters {
+        justify-content: center;
+    }
+
+    .medias-moveis {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .grafico-container {
+        padding: 15px;
+        min-height: 300px;
+    }
+
+    .grafico-container canvas {
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .acao-info-header h2 {
+        font-size: 1.4rem;
+    }
+
+    .indicadores-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .indicador-valor {
+        font-size: 1.3rem;
+    }
+
+    .periodo-btn {
+        flex: 1;
+        min-width: calc(50% - 5px);
+    }
+}
+
 /* =========================== CAROUSEL NAVIGATION =========================== */
 .carousel-arrow {
     position: absolute;
@@ -1948,6 +2368,8 @@ textarea:focus {
   .carousel-arrow.prev { left: 6px; }
   .carousel-arrow.next { right: 6px; }
 }
+
+
 
 
     
