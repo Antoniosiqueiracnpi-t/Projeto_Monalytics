@@ -1,115 +1,212 @@
 {
-  "ultima_atualizacao": "2026-01-03T10:28:54.788431-03:00",
+  "ultima_atualizacao": "2026-01-04T10:19:09.852292-03:00",
   "total_noticias": 17,
   "portais": {
     "Investing.com": [
       {
-        "titulo": "Instalações petrolíferas da Venezuela não foram afetadas por ataque dos EUA, dizem fontes",
-        "link": "https://br.investing.com/news/commodities-news/instalacoes-petroliferas-da-venezuela-nao-foram-afetadas-por-ataque-dos-eua-dizem-fontes-1788751",
-        "horario": "09:56",
-        "imagem": "https://i-invdn-com.investing.com/news/oil_2_M_1440047844.jpg"
+        "id": "2faa4d8c73ae",
+        "titulo": "China diz que EUA devem libertar Maduro imediatamente",
+        "link": "https://br.investing.com/news/economy-news/china-diz-que-eua-devem-libertar-maduro-imediatamente-1788846",
+        "horario": "10:07",
+        "imagem": "https://i-invdn-com.investing.com/news/World_News_8_M_1440052125.jpg",
+        "categoria": "Internacional",
+        "tags": [
+          "EUA"
+        ],
+        "resumo": "China diz que EUA devem libertar Maduro imediatamente",
+        "fonte": "Investing.com"
       },
       {
-        "titulo": "Ações da Fras-le disparam 52% após indicação de subavaliação do InvestingPro",
-        "link": "https://br.investing.com/news/investment-ideas/acoes-da-frasle-disparam-52-apos-indicacao-de-subavaliacao-do-investingpro-93CH-1788749",
-        "horario": "08:41",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg"
+        "id": "7f4e93a2ffda",
+        "titulo": "Suprema Corte da Venezuela determina que Delcy Rodríguez se torne presidente interina",
+        "link": "https://br.investing.com/news/stock-market-news/suprema-corte-da-venezuela-determina-que-delcy-rodriguez-se-torne-presidente-interina-1788845",
+        "horario": "10:00",
+        "imagem": "https://i-invdn-com.investing.com/trkd-images/LYNXMPEM0306Y_L.jpg",
+        "categoria": "Internacional",
+        "tags": [
+          "Venezuela"
+        ],
+        "resumo": "Suprema Corte da Venezuela determina que Delcy Rodríguez se torne presidente interina",
+        "fonte": "Investing.com"
       },
       {
-        "titulo": "Rússia condena \"ato de agressão armada\" dos EUA contra Venezuela",
-        "link": "https://br.investing.com/news/world-news/russia-condena-ato-de-agressao-armada-dos-eua-contra-venezuela-1788747",
-        "horario": "08:35",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg"
+        "id": "007b1d84759a",
+        "titulo": "Arábia Saudita - Ações fecharam o pregão em queda e o Índice Tadawul All Share recuou 1,75%",
+        "link": "https://br.investing.com/news/stock-market-news/arabia-saudita--acoes-fecharam-o-pregao-em-queda-e-o-indice-tadawul-all-share-recuou-175-1788844",
+        "horario": "09:50",
+        "imagem": "https://i-invdn-com.investing.com/news/LYNXNPEC4208E_M.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Arábia Saudita - Ações fecharam o pregão em queda e o Índice...",
+        "fonte": "Investing.com"
       },
       {
-        "titulo": "Governo venezuelano diz desconhecer paradeiro de Maduro e esposa e exige provas de vida",
-        "link": "https://br.investing.com/news/world-news/governo-venezuelano-diz-desconhecer-paradeiro-de-maduro-e-esposa-e-exige-provas-de-vida-1788746",
-        "horario": "08:21",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg"
+        "id": "8662afa8e6b4",
+        "titulo": "Porto Seguro entrega retorno de 50% após análise de subvalorização do InvestingPro",
+        "link": "https://br.investing.com/news/investment-ideas/porto-seguro-entrega-retorno-de-50-apos-analise-de-subvalorizacao-do-investingpro-93CH-1788841",
+        "horario": "08:42",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Porto Seguro entrega retorno de 50% após análise de subvalorização do InvestingPro",
+        "fonte": "Investing.com"
       },
       {
-        "titulo": "Toppoint Holdings anuncia mudanças executivas e acordo de venda de ações",
-        "link": "https://br.investing.com/news/sec-filings/toppoint-holdings-anuncia-mudancas-executivas-e-acordo-de-venda-de-acoes-93CH-1788745",
-        "horario": "08:11",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg"
+        "id": "f9253c24dd99",
+        "titulo": "Ações da NESR disparam 64% após análise de Valor Justo do InvestingPro",
+        "link": "https://br.investing.com/news/investment-ideas/acoes-da-nesr-disparam-64-apos-analise-de-valor-justo-do-investingpro-93CH-1788840",
+        "horario": "08:07",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Ações da NESR disparam 64% após análise de Valor Justo do InvestingPro",
+        "fonte": "Investing.com"
       }
     ],
     "Valor Econômico": [
       {
-        "titulo": "Lula: Bombardeios em território venezuelano e captura do seu presidente “ultrapassam uma linha inaceitável”",
-        "link": "https://valor.globo.com/brasil/noticia/2026/01/03/lula-bombardeios-em-territrio-venezuelano-e-captura-do-seu-presidente-ultrapassam-uma-linha-inaceitvel.ghtml",
-        "horario": "10:18",
-        "imagem": "https://s2-valor.glbimg.com/vitPoyC9lwzjBIDs-hdr1oQYecM=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/v/b/YHbbDBSC6UGu6jF0W9xg/2025-12-18t151309z-425275674-rc23jia7m43u-rtrmadp-3-brazil-politics.jpg"
-      },
-      {
-        "titulo": "FT: Ação climática passará por testes cruciais em 2026",
-        "link": "https://valor.globo.com/mundo/noticia/2026/01/03/ft-acao-climatica-passara-por-testes-cruciais-em-2026.ghtml",
+        "id": "677fc77bbb10",
+        "titulo": "TST faz mediação entre aeroviários e companhias aéreas",
+        "link": "https://valor.globo.com/legislacao/noticia/2026/01/04/tst-faz-mediacao-entre-aeroviarios-e-companhias-aereas.ghtml",
         "horario": "10:00",
-        "imagem": "https://s2-valor.glbimg.com/1LGXaJgufaySFg3jvJ34s8BMhCY=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/R/0/7lvPYvT02RAmROVerEww/06opin-200-col-op1-a18-img01.jpg"
+        "imagem": "https://s2-valor.glbimg.com/ecd-92p6aU6D2Tscl3iPaEiqxLY=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2021/C/o/Syjk8dSpucSkdBL320BQ/35444864482-1226c75577-k.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "TST faz mediação entre aeroviários e companhias aéreas",
+        "fonte": "Valor Econômico"
       },
       {
-        "titulo": "O problema de alinhamento da humanidade",
-        "link": "https://valor.globo.com/opiniao/coluna/o-problema-de-alinhamento-da-humanidade.ghtml",
-        "horario": "10:00",
-        "imagem": "https://s2-valor.glbimg.com/Huqj5UQKJ7g5h3SvRDBJy5Urw8c=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/P/P/UCv8uNQI6C2qwWuwTVEA/nemotron-3-release.jpg"
+        "id": "07367cd9db93",
+        "titulo": "Boom de IA testa os limites do mercado de crédito",
+        "link": "https://valor.globo.com/financas/intraday/post/2026/01/boom-da-ia-testa-os-limites-do-mercado-de-credito.ghtml",
+        "horario": "08:02",
+        "imagem": "https://s2-valor.glbimg.com/ke1E1WN_9cUSQtrIbgzx-fPT3bU=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/J/J/3wJNVGQqOBwK9eNqDE2Q/434381581.jpg",
+        "categoria": "Mercados",
+        "tags": [],
+        "resumo": "Boom de IA testa os limites do mercado de crédito",
+        "fonte": "Valor Econômico"
       },
       {
-        "titulo": "União Europeia vê ação dos EUA na Venezuela 'com grande preocupação'",
-        "link": "https://valor.globo.com/mundo/noticia/2026/01/03/unio-europeia-v-ao-dos-eua-na-venezuela-com-grande-preocupao.ghtml",
-        "horario": "09:49",
-        "imagem": "https://s2-valor.glbimg.com/l1BAFVY8QFng_6EFDzkP9h9mWLU=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2021/E/A/NIct36RIAO60TVrUxDsQ/flag-3370970-1920.jpg"
+        "id": "59f8bce09c56",
+        "titulo": "Livros: Um novo do Nobel de Literatura; a perseguição aos homossexuais na Espanha de Franco",
+        "link": "https://valor.globo.com/eu-e/noticia/2026/01/04/livros-um-novo-do-nobel-de-literatura-a-perseguicao-aos-homossexuais-na-espanha-de-franco.ghtml",
+        "horario": "08:00",
+        "imagem": "https://s2-valor.glbimg.com/FDlGBncjSLG7xwPswIMoioRxfRc=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/B/E/r5VmXgTOGcEyS2feoczw/foto02cul-101-lanca1-d14.jpg",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Livros: Um novo do Nobel de Literatura; a perseguição aos homossexuais na...",
+        "fonte": "Valor Econômico"
+      },
+      {
+        "id": "9b318c8ebb9f",
+        "titulo": "'Salinger chinês' faz relato sobre duras condições de trabalho como entregador",
+        "link": "https://valor.globo.com/eu-e/noticia/2026/01/04/salinger-chines-faz-relato-sobre-duras-condicoes-de-trabalho-como-entregador.ghtml",
+        "horario": "08:00",
+        "imagem": "https://s2-valor.glbimg.com/Fp_Gl8Z5ObjC1nbqLXyZs_ml9yI=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/7/X/IynMTQSyqDlU24vMZSDw/foto02cul-302-livro3-d15.jpg",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "'Salinger chinês' faz relato sobre duras condições de trabalho como entregador",
+        "fonte": "Valor Econômico"
       }
     ],
     "InfoMoney": [
       {
-        "titulo": "Fronteira entre Brasil e Venezuela é fechada do lado venezuelano após ataque dos EUA",
-        "link": "https://www.infomoney.com.br/mundo/fronteira-entre-brasil-e-venezuela-e-fechada-do-lado-venezuelano-apos-ataque-dos-eua/",
-        "horario": "10:24",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2024/09/2024-09-11T161932Z_145852739_RC29Y9AB6KIU_RTRMADP_3_VENEZUELA-ELECTION-BRAZIL.jpg?fit=300%2C200&amp;quality=70&amp;strip=all"
+        "id": "c2b091c9648a",
+        "titulo": "Petróleo: OPEP+ mantém plano de manter fluxo estável em meio a turbulências",
+        "link": "https://www.infomoney.com.br/mercados/petroleo-opep-mantem-plano-de-manter-fluxo-estavel-em-meio-a-turbulencias/",
+        "horario": "10:13",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/04/Petroleo.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "categoria": "Commodities",
+        "tags": [
+          "Petróleo"
+        ],
+        "resumo": "Petróleo: OPEP+ mantém plano de manter fluxo estável em meio a turbulências",
+        "fonte": "InfoMoney"
       },
       {
-        "titulo": "O ex-motorista que virou inimigo nº 1 dos EUA: conheça a trajetória de Nicolás Maduro",
-        "link": "https://www.infomoney.com.br/mundo/o-ex-motorista-que-virou-inimigo-no-1-dos-eua-conheca-a-trajetoria-de-nicolas-maduro/",
-        "horario": "10:11",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/08/2025-08-28T185714Z_1_LYNXMPEL7R0YT_RTROPTP_4_USA-MILITARY-CARIBBEAN-VENEZUELA.jpg?fit=300%2C200&amp;quality=70&amp;strip=all"
+        "id": "4b6c52d7885b",
+        "titulo": "Wagner Moura indicado: Critics Choice Awards tem cerimônia de premiação neste domingo",
+        "link": "https://www.infomoney.com.br/consumo/wagner-moura-indicado-critics-choice-awards-tem-cerimonia-de-premiacao-neste-domingo/",
+        "horario": "09:48",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/05/wagner-moura-o-agente-secreto.jpg?fit=300%2C184&amp;quality=70&amp;strip=all",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Wagner Moura indicado: Critics Choice Awards tem cerimônia de premiação neste domingo",
+        "fonte": "InfoMoney"
       },
       {
-        "titulo": "Quem é Nicolás Maduro, ditador da Venezuela capturado pelos EUA",
-        "link": "https://www.infomoney.com.br/mundo/quem-e-nicolas-maduro-ditador-da-venezuela-capturado-pelos-eua/",
-        "horario": "10:09",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/09/2025-09-01T174219Z_950221571_RC25JGA3D1SL_RTRMADP_3_VENEZUELA-POLITICS.jpg?fit=300%2C200&amp;quality=70&amp;strip=all"
+        "id": "f59c51152834",
+        "titulo": "Coreia do Norte condena operação dos EUA como “grave violação da soberania”",
+        "link": "https://www.infomoney.com.br/mundo/coreia-do-norte-condena-operacao-dos-eua-como-grave-violacao-da-soberania/",
+        "horario": "09:40",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/10/O-presidente-dos-EUA-Donald-Trump-aperta-a-mao-do-lider-norte-coreano-Kim-Jong-Un-em-zona-desmilitarizada-que-separa-as-duas-Coreias-em-Panmunjom-Coreia-do-Sul-REUTERS-Kevin-Lamarque-e1760801007157.jpg?fit=300%2C188&amp;quality=70&amp;strip=all",
+        "categoria": "Internacional",
+        "tags": [
+          "EUA"
+        ],
+        "resumo": "Coreia do Norte condena operação dos EUA como “grave violação da soberania”",
+        "fonte": "InfoMoney"
       },
       {
-        "titulo": "Ataque dos EUA à Venezuela eleva incerteza e traz 3 impactos para mercado brasileiro",
-        "link": "https://www.infomoney.com.br/mercados/ataque-dos-eua-a-venezuela-eleva-incerteza-e-traz-3-efeitos-para-o-mercado-brasileiro-avalia-estrategista/",
-        "horario": "10:08",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2019/06/preco-do-petroleo-alta.jpg?fit=300%2C200&amp;quality=70&amp;strip=all"
+        "id": "7bcfe89b30d1",
+        "titulo": "João Fonseca desiste do ATP de Brisbane por lesão e corre risco de deixar o Top 30",
+        "link": "https://www.infomoney.com.br/esportes/joao-fonseca-desiste-do-atp-de-brisbane-por-lesao-e-corre-risco-de-deixar-o-top-30/",
+        "horario": "09:35",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/12/Joao_Fonseca6-e1765208721906.jpg?fit=174%2C300&amp;quality=70&amp;strip=all",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "João Fonseca desiste do ATP de Brisbane por lesão e corre risco...",
+        "fonte": "InfoMoney"
       }
     ],
     "Money Times": [
       {
-        "titulo": "Lula condena ataques dos EUA à Venezuela e se dispõe a promover diálogo entre os dois países",
-        "link": "https://www.moneytimes.com.br/lula-condena-ataques-dos-eua-a-venezuela-e-se-dispoe-a-promover-dialogo-entre-os-dois-paises-lils/",
-        "horario": "10:12",
-        "imagem": ""
-      },
-      {
-        "titulo": "Esqueça o Bitcoin se você quer lucros de 100x: A estratégia agora é antecipar a listagem nas grandes corretoras",
-        "link": "https://www.moneytimes.com.br/conteudo-de-marca/esqueca-o-bitcoin-se-voce-quer-lucros-de-100x-a-estrategia-agora-e-antecipar-a-listagem-nas-grandes-corretoras-lbrd5me128/",
+        "id": "975eaf9cabef",
+        "titulo": "Entre crescimento e tensão: O que 2026 reserva para a economia brasileira",
+        "link": "https://www.moneytimes.com.br/entre-crescimento-e-tensao-o-que-2026-reserva-para-a-economia-brasileira-jals/",
         "horario": "10:00",
-        "imagem": ""
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Economia",
+        "tags": [],
+        "resumo": "Entre crescimento e tensão: O que 2026 reserva para a economia brasileira",
+        "fonte": "Money Times"
       },
       {
-        "titulo": "Reação da América Latina: Colômbia, Chile e Cuba condenam ataque dos EUA à Venezuela, enquanto Argentina comemora",
-        "link": "https://www.moneytimes.com.br/reacao-da-america-latina-colombia-chile-e-cuba-condenam-ataque-dos-eua-a-venezuela-enquanto-argentina-comemora-lils/",
-        "horario": "09:04",
-        "imagem": ""
+        "id": "bd5a6caa944f",
+        "titulo": "América Latina está à mercê da intervenção dos EUA, dizem analistas",
+        "link": "https://www.moneytimes.com.br/america-latina-esta-a-merce-da-intervencao-dos-eua-dizem-analistas/",
+        "horario": "08:53",
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Internacional",
+        "tags": [
+          "EUA"
+        ],
+        "resumo": "América Latina está à mercê da intervenção dos EUA, dizem analistas",
+        "fonte": "Money Times"
       },
       {
-        "titulo": "BB Investimentos recomenda small caps que saltaram mais de 100% em 2025 para carteira de janeiro",
-        "link": "https://www.moneytimes.com.br/bb-investimentos-recomenda-small-caps-que-saltaram-mais-de-100-em-2025-para-carteira-de-janeiro/",
-        "horario": "09:00",
-        "imagem": ""
+        "id": "8c83e1eda6e4",
+        "titulo": "Ataque de Trump à Venezuela é ilegal e imprudente, diz New York Times",
+        "link": "https://www.moneytimes.com.br/ataque-de-trump-a-venezuela-e-ilegal-e-imprudente-diz-new-york-times/",
+        "horario": "08:46",
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Internacional",
+        "tags": [
+          "Venezuela"
+        ],
+        "resumo": "Ataque de Trump à Venezuela é ilegal e imprudente, diz New York...",
+        "fonte": "Money Times"
+      },
+      {
+        "id": "4e49386fd8c6",
+        "titulo": "Maduro desembarca em Nova York com grande escolta policial",
+        "link": "https://www.moneytimes.com.br/maduro-desembarca-em-nova-york-com-grande-escolta-policial/",
+        "horario": "08:39",
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Maduro desembarca em Nova York com grande escolta policial",
+        "fonte": "Money Times"
       }
     ]
   }
