@@ -1721,14 +1721,16 @@ async function loadMapeamentoB3() {
         mapeamentoB3 = lines.slice(1) // Pula header
             .filter(line => line.trim())
             .map(line => {
-                // MUDANÇA AQUI: split(';') ao invés de split(',')
                 const parts = line.split(';');
                 return {
                     ticker: parts[0]?.trim(),
                     empresa: parts[1]?.trim(),
                     cnpj: parts[2]?.trim(),
-                    setor: parts[3]?.trim(),
-                    segmento: parts[4]?.trim()
+                    codigo_cvm: parts[3]?.trim(),
+                    setor: parts[4]?.trim(),
+                    segmento: parts[5]?.trim(),
+                    sede: parts[6]?.trim(),
+                    descricao: parts[7]?.trim()
                 };
             })
             .filter(item => item.ticker && item.empresa);
