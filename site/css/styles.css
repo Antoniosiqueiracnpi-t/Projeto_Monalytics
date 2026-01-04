@@ -775,6 +775,332 @@ body {
     margin-right: 0.5rem;
 }
 
+/* =========================== DIVIDENDOS SECTION =========================== */
+.dividendos-container {
+    background-color: var(--bg-primary);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    margin-top: 2rem;
+}
+
+.dividendos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid rgba(0, 102, 204, 0.1);
+    margin-bottom: 2rem;
+}
+
+.dividendos-title-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dividendos-title-group > i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+}
+
+.dividendos-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.dividendos-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.dividendos-filters {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.dividendos-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--bg-secondary);
+    border: 2px solid rgba(0, 102, 204, 0.1);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.dividendos-filter-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.dividendos-filter-btn.active {
+    background: var(--bg-gradient);
+    color: var(--text-white);
+    border-color: transparent;
+    box-shadow: var(--shadow-md);
+}
+
+.dividendos-filter-btn i {
+    font-size: 1rem;
+}
+
+.dividendos-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 200px;
+    color: var(--text-secondary);
+}
+
+.dividendos-loading i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+}
+
+.dividendos-tipo-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.tipo-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background-color: var(--bg-secondary);
+    border: 2px solid rgba(0, 102, 204, 0.1);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.tipo-filter-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.tipo-filter-btn.active {
+    background-color: var(--primary-color);
+    color: var(--text-white);
+    border-color: var(--primary-color);
+}
+
+.dividendos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.dividendo-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-normal);
+}
+
+.dividendo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.dividendo-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.dividendo-ticker {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.dividendo-tipo-badge {
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dividendo-tipo-badge.dividendo {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.dividendo-tipo-badge.jscp {
+    background-color: rgba(0, 102, 204, 0.1);
+    color: var(--primary-color);
+}
+
+.dividendo-empresa {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.dividendo-valor-container {
+    background-color: rgba(0, 102, 204, 0.05);
+    padding: 1rem;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 1rem;
+}
+
+.dividendo-valor-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.dividendo-valor {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #10b981;
+}
+
+.dividendo-datas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.dividendo-data-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.dividendo-data-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.dividendo-data-label i {
+    color: var(--primary-color);
+}
+
+.dividendo-data-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.dividendos-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 200px;
+    color: var(--text-secondary);
+}
+
+.dividendos-empty i {
+    font-size: 3rem;
+    color: var(--text-light);
+}
+
+.dividendos-footer {
+    text-align: center;
+    padding: 1rem;
+    color: var(--text-light);
+    font-size: 0.875rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dividendos-footer i {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+/* =========================== RESPONSIVE - DIVIDENDOS =========================== */
+@media screen and (max-width: 768px) {
+    .dividendos-container {
+        padding: 1.5rem;
+    }
+    
+    .dividendos-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .dividendos-filters {
+        width: 100%;
+    }
+    
+    .dividendos-filter-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 0.625rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .dividendos-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .dividendos-tipo-filters {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .tipo-filter-btn {
+        flex: 1 1 calc(50% - 0.5rem);
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .dividendos-title {
+        font-size: 1.5rem;
+    }
+    
+    .dividendo-card {
+        padding: 1.25rem;
+    }
+    
+    .dividendo-valor {
+        font-size: 1.5rem;
+    }
+    
+    .dividendo-datas {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}
+
 /* =========================== RESPONSIVE DESIGN =========================== */
 
 /* Tablet (768px - 1024px) */
@@ -952,6 +1278,8 @@ body {
     }
     
 }
+
+
 
 /* =========================== ACCESSIBILITY =========================== */
 @media (prefers-reduced-motion: reduce) {
