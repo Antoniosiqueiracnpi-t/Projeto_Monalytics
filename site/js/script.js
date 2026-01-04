@@ -1892,6 +1892,54 @@ async function loadAcaoData(ticker) {
     }
 }
 
+// Atualiza informações da empresa
+function updateEmpresaInfo(ticker) {
+    // Busca informações da empresa no mapeamento
+    const empresaInfo = mapeamentoB3.find(item => {
+        const tickers = item.ticker.split(';');
+        return tickers.includes(ticker);
+    });
+    
+    if (!empresaInfo) {
+        // Se não encontrou, limpa os campos
+        document.getElementById('empresaRazaoSocial').textContent = 'Não disponível';
+        document.getElementById('empresaCNPJ').textContent = 'Não disponível';
+        document.getElementById('empresaSetorSegmento').textContent = 'Não disponível';
+        document.getElementById('empresaTickers').textContent = ticker;
+        document.getElementById('empresaSede').textContent = 'Não disponível';
+        document.getElementById('empresaDescricao').textContent = 'Informações não disponíveis.';
+        document.getElementById('empresasMesmoSetor').textContent = 'Não disponível';
+        return;
+    }
+    
+    // Preenche os campos
+    document.getElementById('empresaRazaoSocial').textContent = empresaInfo.empresa || 'Não disponível';
+    document.getElementById('empresaCNPJ').textContent = empresaInfo.cnpj || 'Não disponível';
+    
+    const setorSegmento = `${empresaInfo.setor || 'N/D'} / ${empresaInfo.segmento || 'N/D'}`;
+    document.getElementById('empresaSetorSegmento').textContent = setorSegmento;
+    
+    document.getElementById('empresaTickers').textContent = empresaInfo.ticker || ticker;
+    document.getElementById('empresaSede').textContent = empresaInfo.sede || 'Não disponível';
+    document.getElementById('empresaDescricao').textContent = empresaInfo.descricao || 'Descrição não disponível.';
+    
+    // Busca empresas do mesmo setor (exclui a empresa atual)
+    const mesmoSetor = mapeamentoB3
+        .filter(item => 
+            item.setor === empresaInfo.setor && 
+            item.ticker !== empresaInfo.ticker
+        )
+        .slice(0, 5) // Pega até 5 empresas
+        .map(item => {
+            const tickers = item.ticker.split(';');
+            const primeiroTicker = tickers[0];
+            return `<span class="ticker-similar" onclick="loadAcaoData('${primeiroTicker}')" style="cursor: pointer; color: #4f46e5; font-weight: 600; margin-right: 10px; text-decoration: underline;">${primeiroTicker}</span>`;
+        })
+        .join('');
+    
+    document.getElementById('empresasMesmoSetor').innerHTML = mesmoSetor || 'Nenhuma empresa encontrada';
+}
+
 // Atualiza indicadores
 function updateIndicadores() {
     if (!acaoAtualData || !acaoAtualData.dados.length) return;
@@ -1899,15 +1947,22 @@ function updateIndicadores() {
     const dados = acaoAtualData.dados;
     const ultimo = dados[dados.length - 1];
     const umAnoAtras = dados.length >= 252 ? dados[dados.length - 252] : dados[0];
+    const doisAnosAtras = dados.length >= 504 ? dados[dados.length - 504] : dados[0];
     
     // Cotação atual
     document.getElementById('cotacaoAtual').textContent = `R$ ${ultimo.fechamento.toFixed(2)}`;
     
-    // Variação 12M
+    // Variação 12M (252 dias úteis)
     const variacao12m = ((ultimo.fechamento - umAnoAtras.fechamento) / umAnoAtras.fechamento * 100).toFixed(2);
     const varEl = document.getElementById('variacao12m');
     varEl.textContent = `${variacao12m >= 0 ? '+' : ''}${variacao12m}% ${variacao12m >= 0 ? '↑' : '↓'}`;
     varEl.className = 'indicador-valor ' + (variacao12m >= 0 ? 'positivo' : 'negativo');
+    
+    // Variação 24M (504 dias úteis)
+    const variacao24m = ((ultimo.fechamento - doisAnosAtras.fechamento) / doisAnosAtras.fechamento * 100).toFixed(2);
+    const var24mEl = document.getElementById('variacao24m');
+    var24mEl.textContent = `${variacao24m >= 0 ? '+' : ''}${variacao24m}% ${variacao24m >= 0 ? '↑' : '↓'}`;
+    var24mEl.className = 'indicador-valor ' + (variacao24m >= 0 ? 'positivo' : 'negativo');
     
     // Tendência MM20
     const tendenciaMM20El = document.getElementById('tendenciaMM20');
@@ -1947,25 +2002,13 @@ function updateIndicadores() {
         tendenciaMM200El.className = 'indicador-valor';
     }
     
-    // Cruzamento de médias móveis
-    const cruzamentoEl = document.getElementById('cruzamentoMMs');
-    if (ultimo.mm20 && ultimo.mm50) {
-        if (ultimo.mm20 > ultimo.mm50) {
-            cruzamentoEl.innerHTML = '<span class="tendencia-icon">⚡</span><span>Golden Cross</span>';
-            cruzamentoEl.className = 'indicador-valor positivo';
-        } else {
-            cruzamentoEl.innerHTML = '<span class="tendencia-icon">⚠️</span><span>Death Cross</span>';
-            cruzamentoEl.className = 'indicador-valor negativo';
-        }
-    } else {
-        cruzamentoEl.innerHTML = '<span>N/D</span>';
-        cruzamentoEl.className = 'indicador-valor';
-    }
-    
     // Médias móveis atuais
     document.getElementById('mm20Atual').textContent = ultimo.mm20 ? `R$ ${ultimo.mm20.toFixed(2)}` : 'N/D';
     document.getElementById('mm50Atual').textContent = ultimo.mm50 ? `R$ ${ultimo.mm50.toFixed(2)}` : 'N/D';
     document.getElementById('mm200Atual').textContent = ultimo.mm200 ? `R$ ${ultimo.mm200.toFixed(2)}` : 'N/D';
+    
+    // Preenche informações da empresa
+    updateEmpresaInfo(acaoAtualData.ticker);
 }
 
 // Renderiza gráfico
