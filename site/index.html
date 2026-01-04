@@ -414,14 +414,73 @@
     </section>
     
 
-    <!-- =========================== SEÇÃO DE AÇÕES (Em Construção) =========================== -->
+    <!-- =========================== SEÇÃO DE AÇÕES =========================== -->
     <section class="acoes-section" id="acoes">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Análise de Ações</h2>
-                <p class="section-subtitle">Em breve: ferramentas completas de análise quantitativa</p>
+                <p class="section-subtitle">Ferramentas completas de análise quantitativa</p>
             </div>
-            <!-- Blocos de Ações serão adicionados aqui -->
+    
+            <!-- Agenda de Dividendos -->
+            <div class="dividendos-container">
+                <div class="dividendos-header">
+                    <div class="dividendos-title-group">
+                        <i class="fas fa-calendar-check"></i>
+                        <div>
+                            <h3 class="dividendos-title">Agenda de Dividendos</h3>
+                            <p class="dividendos-subtitle">Próximos pagamentos de proventos</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Filtros -->
+                    <div class="dividendos-filters">
+                        <button class="dividendos-filter-btn active" data-period="30">
+                            <i class="fas fa-calendar-day"></i> 30 dias
+                        </button>
+                        <button class="dividendos-filter-btn" data-period="60">
+                            <i class="fas fa-calendar-week"></i> 60 dias
+                        </button>
+                        <button class="dividendos-filter-btn" data-period="90">
+                            <i class="fas fa-calendar"></i> 90 dias
+                        </button>
+                    </div>
+                </div>
+    
+                <!-- Loading -->
+                <div class="dividendos-loading" id="dividendosLoading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Carregando agenda...</span>
+                </div>
+    
+                <!-- Filtro de Tipo -->
+                <div class="dividendos-tipo-filters" id="dividendosTipoFilters" style="display: none;">
+                    <button class="tipo-filter-btn active" data-tipo="todos">
+                        <i class="fas fa-list"></i> Todos
+                    </button>
+                    <button class="tipo-filter-btn" data-tipo="DIVIDENDO">
+                        <i class="fas fa-coins"></i> Dividendos
+                    </button>
+                    <button class="tipo-filter-btn" data-tipo="JSCP">
+                        <i class="fas fa-percentage"></i> JSCP
+                    </button>
+                </div>
+    
+                <!-- Grid de Dividendos -->
+                <div class="dividendos-grid" id="dividendosGrid" style="display: none;"></div>
+    
+                <!-- Mensagem Vazia -->
+                <div class="dividendos-empty" id="dividendosEmpty" style="display: none;">
+                    <i class="fas fa-inbox"></i>
+                    <p>Nenhum pagamento previsto para o período selecionado</p>
+                </div>
+    
+                <!-- Timestamp -->
+                <div class="dividendos-footer" id="dividendosFooter" style="display: none;">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Dados consolidados de fontes oficiais da B3/CVM</span>
+                </div>
+            </div>
         </div>
     </section>
 
