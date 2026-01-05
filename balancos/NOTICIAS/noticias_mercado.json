@@ -1,65 +1,78 @@
 {
-  "ultima_atualizacao": "2026-01-05T20:14:44.707293-03:00",
+  "ultima_atualizacao": "2026-01-05T20:40:15.686327-03:00",
   "total_noticias": 17,
   "portais": {
     "Investing.com": [
       {
-        "id": "3b3cdd2b7c7e",
-        "titulo": "Ataques russos atingem alvos de energia em Kharkiv, na Ucrânia, e empresa norte-americana em Dnipro",
-        "link": "https://br.investing.com/news/stock-market-news/ataques-russos-atingem-alvos-de-energia-em-kharkiv-na-ucrania-e-empresa-norteamericana-em-dnipro-1790409",
-        "horario": "19:56",
-        "imagem": "https://i-invdn-com.investing.com/trkd-images/LYNXMPEM0417C_L.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Ataques russos atingem alvos de energia em Kharkiv, na Ucrânia, e empresa...",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "bb9b686e0a9a",
-        "titulo": "Big Tree Cloud recebe notificações da Nasdaq sobre requisitos mínimos de valor",
-        "link": "https://br.investing.com/news/company-news/big-tree-cloud-recebe-notificacoes-da-nasdaq-sobre-requisitos-minimos-de-valor-93CH-1790408",
-        "horario": "19:55",
+        "id": "880586ebedee",
+        "titulo": "CRO da Clearwater Analytics vende ações no valor de US$ 107 mil",
+        "link": "https://br.investing.com/news/insider-trading-news/cro-da-clearwater-analytics-vende-acoes-no-valor-de-us-107-mil-93CH-1790430",
+        "horario": "20:18",
         "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
         "categoria": "Empresas",
         "tags": [],
-        "resumo": "Big Tree Cloud recebe notificações da Nasdaq sobre requisitos mínimos de valor",
+        "resumo": "CRO da Clearwater Analytics vende ações no valor de US$ 107 mil",
         "fonte": "Investing.com"
       },
       {
-        "id": "153fcc24bccb",
-        "titulo": "WAFD anuncia resultados trimestrais em 15 de janeiro",
-        "link": "https://br.investing.com/news/sec-filings/wafd-anuncia-resultados-trimestrais-em-15-de-janeiro-93CH-1790407",
-        "horario": "19:54",
+        "id": "6f3c2d9a3402",
+        "titulo": "Nvidia acelera roadmap de IA: superchip Rubin em produção total, 5x mais rápido",
+        "link": "https://br.investing.com/news/stock-market-news/nvidia-acelera-roadmap-de-ia-superchip-rubin-em-producao-total-5x-mais-rapido-1790428",
+        "horario": "20:16",
         "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
         "categoria": "Geral",
         "tags": [],
-        "resumo": "WAFD anuncia resultados trimestrais em 15 de janeiro",
+        "resumo": "Nvidia acelera roadmap de IA: superchip Rubin em produção total, 5x mais...",
         "fonte": "Investing.com"
       },
       {
-        "id": "d757e0f40245",
-        "titulo": "Six Flags Entertainment decide não resgatar participações na parceria do Texas",
-        "link": "https://br.investing.com/news/sec-filings/six-flags-entertainment-decide-nao-resgatar-participacoes-na-parceria-do-texas-93CH-1790406",
-        "horario": "19:50",
+        "id": "d4b10be56193",
+        "titulo": "HP apresenta série EliteBook X G2 com desempenho de IA para empresas",
+        "link": "https://br.investing.com/news/company-news/hp-apresenta-serie-elitebook-x-g2-com-desempenho-de-ia-para-empresas-93CH-1790427",
+        "horario": "20:15",
         "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
         "categoria": "Empresas",
         "tags": [],
-        "resumo": "Six Flags Entertainment decide não resgatar participações na parceria do Texas",
+        "resumo": "HP apresenta série EliteBook X G2 com desempenho de IA para empresas",
         "fonte": "Investing.com"
       },
       {
-        "id": "376f3d3fdfb5",
-        "titulo": "Nvidia revela plataforma de armazenamento com BlueField-4 para sistemas de IA",
-        "link": "https://br.investing.com/news/company-news/nvidia-revela-plataforma-de-armazenamento-com-bluefield4-para-sistemas-de-ia-93CH-1790405",
-        "horario": "19:46",
+        "id": "d509fa365a65",
+        "titulo": "CoreWeave vai adicionar tecnologia NVIDIA Rubin à sua plataforma de nuvem para IA",
+        "link": "https://br.investing.com/news/company-news/coreweave-vai-adicionar-tecnologia-nvidia-rubin-a-sua-plataforma-de-nuvem-para-ia-93CH-1790426",
+        "horario": "20:15",
         "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
         "categoria": "Geral",
         "tags": [],
-        "resumo": "Nvidia revela plataforma de armazenamento com BlueField-4 para sistemas de IA",
+        "resumo": "CoreWeave vai adicionar tecnologia NVIDIA Rubin à sua plataforma de nuvem para...",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "d812841afcf2",
+        "titulo": "Intel revela primeiros processadores 18A fabricados nos EUA para PCs com IA no CES",
+        "link": "https://br.investing.com/news/company-news/intel-revela-primeiros-processadores-18a-fabricados-nos-eua-para-pcs-com-ia-no-ces-93CH-1790425",
+        "horario": "20:15",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Internacional",
+        "tags": [
+          "EUA"
+        ],
+        "resumo": "Intel revela primeiros processadores 18A fabricados nos EUA para PCs com IA...",
         "fonte": "Investing.com"
       }
     ],
     "Valor Econômico": [
+      {
+        "id": "07be82df094d",
+        "titulo": "Moraes revoga autorização a general para visitar ex-ministro da Defesa após suspeita de crime",
+        "link": "https://valor.globo.com/politica/noticia/2026/01/05/moraes-revoga-autorizacao-a-general-para-visitar-ex-ministro-da-defesa-apos-suspeita-de-crime.ghtml",
+        "horario": "20:38",
+        "imagem": "https://s2-valor.glbimg.com/owW-_8Ju3HvrCBkZl4vAjEzn8wU=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/4/3/3a3JBgTsW2OWmTGjVCIQ/paulo-sergio-nogueira-julgamento.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Moraes revoga autorização a general para visitar ex-ministro da Defesa após suspeita...",
+        "fonte": "Valor Econômico"
+      },
       {
         "id": "f0e9d49a2717",
         "titulo": "Tecnisa fecha 3º trimestre de 2025 com prejuízo de R$ 9,5 milhões",
@@ -91,17 +104,6 @@
         "categoria": "Geral",
         "tags": [],
         "resumo": "Multiplan firma memorando para venda de 10% do BH Shopping por R$...",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "5ce0126de72b",
-        "titulo": "Lindbergh pede para PF investigar Flávio, Eduardo e Nikolas por ataques ao Estado de Direito",
-        "link": "https://valor.globo.com/politica/noticia/2026/01/05/lindbergh-pede-para-pf-investigar-flavio-eduardo-e-nikolas-por-ataques-ao-estado-de-direito.ghtml",
-        "horario": "19:18",
-        "imagem": "https://s2-valor.glbimg.com/uIs7Bz18IsLL-GATmqH8BqOZaOk=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/G/r/JUmazySLAixh7lIY0Lcg/img20250826205844790med.jpg",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Lindbergh pede para PF investigar Flávio, Eduardo e Nikolas por ataques ao...",
         "fonte": "Valor Econômico"
       }
     ],
