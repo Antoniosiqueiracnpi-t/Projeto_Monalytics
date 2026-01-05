@@ -1,7 +1,8 @@
 {
-  "timestamp": 1767631821000,
+  "timestamp": 1767632494000,
   "data": "2026-01-05",
-  "hora": "13:50 BRT",
-  "fonte": "noticias_mercado",
-  "versao": "1.0.0"
+  "hora": "14:01 BRT",
+  "deploy": "manual",
+  "versao": "1.0.0",
+  "trigger": "workflow_dispatch"
 }
