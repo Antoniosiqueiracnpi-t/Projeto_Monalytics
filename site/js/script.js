@@ -1803,12 +1803,24 @@ function initAcaoBusca() {
         }
     });
     
+    // CORREÇÃO: Busca agora tenta carregar mesmo se não encontrar no mapeamento
     searchBtn.addEventListener('click', () => {
         const query = searchInput.value.trim().toUpperCase();
         if (query) {
+            console.log('Buscando ticker:', query);
+            
+            // Primeiro tenta encontrar no mapeamento
             const match = mapeamentoB3.find(item => item.ticker === query);
+            
             if (match) {
+                console.log('Ticker encontrado no mapeamento:', match);
                 loadAcaoData(match.ticker);
+                suggestions.style.display = 'none';
+            } else {
+                // Se não encontrar, tenta carregar diretamente
+                console.log('Ticker não encontrado no mapeamento, tentando carregar diretamente...');
+                loadAcaoData(query);
+                suggestions.style.display = 'none';
             }
         }
     });
