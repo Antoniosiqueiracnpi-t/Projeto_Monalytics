@@ -2648,7 +2648,7 @@ textarea:focus {
 
 /* Cards de Múltiplos */
 .multiplo-card {
-    background: white;
+    background: #f8f9fa;
     border-radius: 16px;
     padding: 20px;
     border: 2px solid var(--border-color);
