@@ -1,0 +1,43 @@
+{
+  "ticker": "VBBR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-05T23:22:24.878012",
+  "periodo_analisado": {
+    "inicio": "2017T1",
+    "fim": "2025T3",
+    "total_trimestres": 35,
+    "anos": 8.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.58,
+      "variacao_total": 141.13,
+      "ultimo_valor": 48345.0
+    },
+    "margens": {
+      "bruta": 5.5,
+      "operacional": 3.09,
+      "liquida": 2.38
+    },
+    "rentabilidade": {
+      "roe_medio": 23.89
+    },
+    "caixa": {
+      "media": 891.66,
+      "ultimo": 5261.0
+    },
+    "balanco": {
+      "ativo_total": 60987.0,
+      "patrimonio": 21338.0
+    }
+  },
+  "analise_critica": "VBBR3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 2.38%). Gera excelente retorno sobre o patrimônio (ROE médio de 23.89%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.58%)",
+    "Excelente retorno sobre patrimônio (ROE: 23.89%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (2.38%)"
+  ]
+}

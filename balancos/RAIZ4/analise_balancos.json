@@ -1,0 +1,43 @@
+{
+  "ticker": "RAIZ4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-05T23:22:24.813911",
+  "periodo_analisado": {
+    "inicio": "2020T2",
+    "fim": "2025T3",
+    "total_trimestres": 17,
+    "anos": 4.2
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 37.33,
+      "variacao_total": 285.07,
+      "ultimo_valor": 59910.62
+    },
+    "margens": {
+      "bruta": 5.09,
+      "operacional": 2.12,
+      "liquida": -0.08
+    },
+    "rentabilidade": {
+      "roe_medio": -0.89
+    },
+    "caixa": {
+      "media": -3018.02,
+      "ultimo": -9775.18
+    },
+    "balanco": {
+      "ativo_total": 132793.41,
+      "patrimonio": 14418.6
+    }
+  },
+  "analise_critica": "RAIZ4 apresenta trajetória consistente de crescimento de receita no período analisado. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 37.33%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (-0.08%)",
+    "Retorno sobre patrimônio baixo (ROE: -0.89%)",
+    "Queima de caixa operacional"
+  ]
+}

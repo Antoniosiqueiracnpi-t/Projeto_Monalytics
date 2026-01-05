@@ -1,0 +1,40 @@
+{
+  "ticker": "CSAN3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-05T23:22:24.662746",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 17.2,
+      "variacao_total": 450.97,
+      "ultimo_valor": 10664.18
+    },
+    "margens": {
+      "bruta": 29.51,
+      "operacional": 25.23,
+      "liquida": 10.04
+    },
+    "rentabilidade": {
+      "roe_medio": 8.67
+    },
+    "caixa": {
+      "media": 1608.04,
+      "ultimo": 9669.53
+    },
+    "balanco": {
+      "ativo_total": 125738.7,
+      "patrimonio": 32053.99
+    }
+  },
+  "analise_critica": "CSAN3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 10.04%. Retorno sobre patrimônio abaixo do esperado (ROE de 8.67%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 17.2%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

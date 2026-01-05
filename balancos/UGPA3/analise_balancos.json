@@ -1,0 +1,41 @@
+{
+  "ticker": "UGPA3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-05T23:22:24.857428",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 7.28,
+      "variacao_total": 112.79,
+      "ultimo_valor": 37033.86
+    },
+    "margens": {
+      "bruta": 7.12,
+      "operacional": 2.89,
+      "liquida": 1.52
+    },
+    "rentabilidade": {
+      "roe_medio": 14.19
+    },
+    "caixa": {
+      "media": 770.66,
+      "ultimo": 3070.9
+    },
+    "balanco": {
+      "ativo_total": 45564.67,
+      "patrimonio": 18666.59
+    }
+  },
+  "analise_critica": "UGPA3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 1.52%). Retorno sobre patrimônio adequado (ROE de 14.19%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (1.52%)"
+  ]
+}

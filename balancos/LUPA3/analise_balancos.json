@@ -1,0 +1,42 @@
+{
+  "ticker": "LUPA3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-05T23:22:24.684745",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -15.63,
+      "variacao_total": -83.92,
+      "ultimo_valor": 13.38
+    },
+    "margens": {
+      "bruta": 12.48,
+      "operacional": -45.56,
+      "liquida": -16.04
+    },
+    "rentabilidade": {
+      "roe_medio": 102.46
+    },
+    "caixa": {
+      "media": -1.33,
+      "ultimo": 11.0
+    },
+    "balanco": {
+      "ativo_total": 488.9,
+      "patrimonio": 113.32
+    }
+  },
+  "analise_critica": "LUPA3 enfrenta desafios no crescimento, com receita em tendência de queda. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Gera excelente retorno sobre o patrimônio (ROE médio de 102.46%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Excelente retorno sobre patrimônio (ROE: 102.46%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -15.63%)",
+    "Margem líquida comprimida (-16.04%)"
+  ]
+}
