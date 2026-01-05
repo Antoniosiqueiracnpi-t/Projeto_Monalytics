@@ -1,10 +1,7 @@
 name: Deploy Netlify
 
 on:
-  # Execução manual (para deploys urgentes)
   workflow_dispatch:
-  
-  # Execução automática 3x por dia
   schedule:
     - cron: '0 13 * * 1-5'  # 10h BRT (após abertura do mercado)
     - cron: '30 18 * * 1-5' # 15h30 BRT (após fechamento do mercado)
@@ -15,10 +12,62 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: 🕐 Aguardar workflows finalizarem
         run: |
           echo "⏳ Aguardando 3 minutos para garantir que todos os workflows completaram..."
           sleep 180
+      
+      - name: 📝 Atualizar timestamp de atualização
+        run: |
+          # Criar diretório se não existir
+          mkdir -p site/data
+          
+          # Gerar timestamp Unix em milissegundos
+          TIMESTAMP=$(date +%s)000
+          DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
+          HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
+          
+          # Determinar tipo de deploy
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TIPO="manual"
+          else
+            TIPO="automatico"
+          fi
+          
+          # Criar JSON com timestamp
+          cat > site/data/ultima_atualizacao.json << EOF
+          {
+            "timestamp": ${TIMESTAMP},
+            "data": "${DATA}",
+            "hora": "${HORA}",
+            "deploy": "${TIPO}",
+            "versao": "1.0.0",
+            "trigger": "${{ github.event_name }}"
+          }
+          EOF
+          
+          echo "✅ Timestamp criado: ${TIMESTAMP} (${DATA} ${HORA})"
+          cat site/data/ultima_atualizacao.json
+      
+      - name: 💾 Commit timestamp
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          git add site/data/ultima_atualizacao.json
+          
+          if git diff --staged --quiet; then
+            echo "ℹ️  Timestamp não mudou"
+          else
+            git commit -m "🕐 Atualizar timestamp de deploy [skip ci]"
+            git push
+            echo "✅ Timestamp commitado"
+          fi
       
       - name: 🚀 Trigger Netlify Build
         run: |
@@ -52,7 +101,7 @@ jobs:
           echo "════════════════════════════════════════"
           echo ""
           echo "🌐 Verifique o deploy em:"
-          echo "   https://app.netlify.com/sites/SEU-SITE-NAME/deploys"
+          echo "   https://app.netlify.com/sites/monalytics/deploys"
       
       - name: 🚨 Notificar falha
         if: failure()
