@@ -1709,50 +1709,74 @@ if (typeof module !== 'undefined' && module.exports) {
    ANÁLISE GRÁFICA DE AÇÕES
    ======================================== */
 
-// Carrega mapeamento B3
+// ==================== 1. FUNÇÃO parseCSVLine (NOVA) ====================
+// Adicione esta função ANTES de loadMapeamentoB3()
+/**
+ * Parser CSV robusto que lida com campos entre aspas
+ * RFC 4180 compliant - baseado em regex pattern testado
+ */
+function parseCSVLine(csvText, delimiter = ';') {
+    const pattern = new RegExp(
+        (
+            "(\\"+delimiter+"|\\r?\\n|\\r|^)" +
+            "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|((?!\")[^\\"+delimiter+"\\r\\n]*))"
+        ),
+        "gi"
+    );
+    
+    const rows = [[]];
+    let matches;
+    
+    while ((matches = pattern.exec(csvText)) !== null) {
+        const matchedDelimiter = matches[1];
+        let value = matches[2] !== undefined 
+            ? matches[2].replace(/""/g, '"')  // Substitui "" por "
+            : matches[3];                      // Campo sem aspas
+        
+        if (matchedDelimiter.length && matchedDelimiter !== delimiter) {
+            rows.push([]);
+        }
+        
+        rows[rows.length - 1].push(value || '');
+    }
+    
+    return rows;
+}
+
+
+// ==================== 2. FUNÇÃO loadMapeamentoB3 CORRIGIDA ====================
 async function loadMapeamentoB3() {
     try {
         const timestamp = new Date().getTime();
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/${MAPEAMENTO_B3_PATH}?t=${timestamp}`);
         const csvText = await response.text();
         
-        // Parse CSV - USANDO PONTO-E-VÍRGULA como separador
-        const lines = csvText.split('\n');
-        const rawData = lines.slice(1) // Pula header
-            .filter(line => line.trim())
-            .map(line => {
-                const parts = line.split(';');
-                
-                // CORREÇÃO CRÍTICA: Remove aspas dos campos
-                // Campos como "PETR3;PETR4" ficam com aspas, precisamos removê-las
-                const cleanField = (field) => {
-                    if (!field) return '';
-                    return field.trim().replace(/^"|"$/g, ''); // Remove aspas inicial/final
-                };
-                
-                return {
-                    ticker: cleanField(parts[0]),
-                    empresa: cleanField(parts[1]),
-                    cnpj: cleanField(parts[2]),
-                    codigo_cvm: cleanField(parts[3]),
-                    setor: cleanField(parts[4]),
-                    segmento: cleanField(parts[5]),
-                    sede: cleanField(parts[6]),
-                    descricao: cleanField(parts[7])
-                };
-            })
-            .filter(item => item.ticker && item.empresa);
+        console.log('📥 Carregando mapeamento B3...');
         
-        console.log('Raw data carregado:', rawData.length, 'empresas');
+        // Parse CSV usando função robusta
+        const rows = parseCSVLine(csvText);
         
-        // CORREÇÃO: Expande empresas com múltiplos tickers
+        // Remove header e linhas vazias
+        const rawData = rows.slice(1)
+            .filter(row => row.length >= 2 && row[0] && row[1])
+            .map(row => ({
+                ticker: row[0] || '',
+                empresa: row[1] || '',
+                cnpj: row[2] || '',
+                codigo_cvm: row[3] || '',
+                setor: row[4] || '',
+                segmento: row[5] || '',
+                sede: row[6] || '',
+                descricao: row[7] || ''
+            }));
+        
+        console.log(`📊 Empresas carregadas: ${rawData.length}`);
+        
+        // Expande empresas com múltiplos tickers
         mapeamentoB3 = [];
         rawData.forEach(item => {
-            // Se ticker contém múltiplos (separados por ;), cria uma entrada para cada
             const tickers = item.ticker.split(';').map(t => t.trim()).filter(t => t);
-            const todosTickersStr = item.ticker; // Guarda string original
-            
-            console.log(`Processando: ${item.empresa} - Tickers: ${todosTickersStr} (${tickers.length} tickers)`);
+            const todosTickersStr = item.ticker;
             
             tickers.forEach(ticker => {
                 mapeamentoB3.push({
@@ -1764,21 +1788,21 @@ async function loadMapeamentoB3() {
                     segmento: item.segmento,
                     sede: item.sede,
                     descricao: item.descricao,
-                    todosTickersStr: todosTickersStr // Adiciona string original para exibição
+                    todosTickersStr: todosTickersStr
                 });
             });
         });
         
-        console.log('Mapeamento B3 carregado:', mapeamentoB3.length, 'entradas (tickers expandidos)');
+        console.log(`✅ Mapeamento B3 carregado: ${mapeamentoB3.length} entradas (tickers expandidos)`);
         
-        // Debug: Verifica se PETR3 e PETR4 foram criados
+        // Debug: Verifica PETR3 e PETR4
         const petr3 = mapeamentoB3.find(item => item.ticker === 'PETR3');
         const petr4 = mapeamentoB3.find(item => item.ticker === 'PETR4');
-        console.log('PETR3 encontrado:', petr3 ? '✅' : '❌', petr3);
-        console.log('PETR4 encontrado:', petr4 ? '✅' : '❌', petr4);
+        if (petr3) console.log('✅ PETR3 encontrado:', petr3.empresa);
+        if (petr4) console.log('✅ PETR4 encontrado:', petr4.empresa);
         
     } catch (error) {
-        console.error('Erro ao carregar mapeamento B3:', error);
+        console.error('❌ Erro ao carregar mapeamento B3:', error);
     }
 }
 
@@ -1822,24 +1846,20 @@ function initAcaoBusca() {
         }
     });
     
-    // CORREÇÃO: Busca agora tenta carregar mesmo se não encontrar no mapeamento
     searchBtn.addEventListener('click', () => {
         const query = searchInput.value.trim().toUpperCase();
         if (query) {
-            console.log('Buscando ticker:', query);
+            console.log('🔍 Buscando ticker:', query);
             
-            // Primeiro tenta encontrar no mapeamento
             const match = mapeamentoB3.find(item => item.ticker === query);
             
             if (match) {
-                console.log('Ticker encontrado no mapeamento:', match);
+                console.log('✅ Ticker encontrado:', match);
                 loadAcaoData(match.ticker);
                 suggestions.style.display = 'none';
             } else {
-                // Se não encontrar, tenta carregar diretamente
-                console.log('Ticker não encontrado no mapeamento, tentando carregar diretamente...');
-                loadAcaoData(query);
-                suggestions.style.display = 'none';
+                console.log('⚠️ Ticker não encontrado no mapeamento');
+                alert(`Ticker ${query} não encontrado no mapeamento B3`);
             }
         }
     });
@@ -1850,14 +1870,12 @@ function initAcaoBusca() {
         }
     });
     
-    // Clicks fora fecham sugestões
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.analise-grafica-header')) {
             suggestions.style.display = 'none';
         }
     });
     
-    // Tags de mais buscados
     document.querySelectorAll('.ticker-tag').forEach(tag => {
         tag.addEventListener('click', () => {
             const ticker = tag.dataset.ticker;
@@ -1915,44 +1933,44 @@ async function loadAcaoData(ticker) {
     const loadingState = document.getElementById('acaoLoadingState');
     const content = document.getElementById('acaoAnaliseContent');
     
-    // Mostra loading
     emptyState.style.display = 'none';
     content.style.display = 'none';
     loadingState.style.display = 'block';
     
     try {
-        // NOVO: Busca info da empresa ANTES de tentar carregar
+        console.log(`🔍 Carregando dados de ${ticker}...`);
+        
+        // Busca info da empresa no mapeamento
         const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
         
         if (!empresaInfo) {
             throw new Error(`Ticker ${ticker} não encontrado no mapeamento B3`);
         }
         
-        console.log('Empresa encontrada:', empresaInfo);
+        console.log('✅ Empresa encontrada:', empresaInfo.empresa);
         
-        // NOVO: Pega o primeiro ticker da lista para usar como pasta
-        // Se empresa tem PETR3;PETR4, sempre usa PETR3 (primeiro)
+        // Usa o primeiro ticker como pasta
         const tickerPasta = empresaInfo.todosTickersStr 
             ? empresaInfo.todosTickersStr.split(';')[0].trim()
             : ticker;
         
-        console.log(`Carregando dados da pasta: balancos/${tickerPasta}/`);
+        console.log(`📂 Usando pasta: balancos/${tickerPasta}/`);
         
         const timestamp = new Date().getTime();
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/historico_precos_diarios.json?t=${timestamp}`);
         
         if (!response.ok) {
-            throw new Error(`Dados não encontrados para ${ticker} (tentou pasta ${tickerPasta})`);
+            throw new Error(`Dados não encontrados para ${ticker}`);
         }
         
         acaoAtualData = await response.json();
-        console.log('Dados carregados:', acaoAtualData.dados.length, 'registros');
+        console.log('✅ Dados carregados:', acaoAtualData.dados.length, 'registros');
         
-        // Atualiza UI com o ticker SOLICITADO (não o ticker da pasta)
+        // Atualiza UI com ticker solicitado
         document.getElementById('acaoTicker').textContent = ticker;
         document.getElementById('acaoNome').textContent = empresaInfo.empresa;
         
-        // Carrega logo usando a pasta correta
+        // Carrega logo
         const logoImg = document.getElementById('acaoLogoImg');
         const logoFallback = document.getElementById('acaoLogoFallback');
         logoImg.src = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/logo.png?t=${timestamp}`;
@@ -1960,7 +1978,7 @@ async function loadAcaoData(ticker) {
         logoFallback.style.display = 'none';
         logoFallback.textContent = ticker.substring(0, 4);
         
-        // NOVO: Atualiza informações da empresa
+        // Atualiza informações da empresa
         updateEmpresaInfo(ticker);
         
         // Atualiza indicadores
@@ -1973,22 +1991,22 @@ async function loadAcaoData(ticker) {
         loadingState.style.display = 'none';
         content.style.display = 'block';
         
+        console.log('✅ Ação carregada com sucesso!');
+        
     } catch (error) {
-        console.error('Erro ao carregar ação:', error);
+        console.error('❌ Erro ao carregar ação:', error);
         loadingState.style.display = 'none';
         emptyState.style.display = 'block';
-        alert(`Erro ao carregar dados da ação ${ticker}:\n${error.message}`);
+        alert(`Erro ao carregar ${ticker}:\n${error.message}`);
     }
 }
 
 // Atualiza informações da empresa
 function updateEmpresaInfo(ticker) {
-    // Busca informações da empresa no mapeamento
     const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
     
     if (!empresaInfo) {
-        console.warn('Empresa não encontrada no mapeamento para ticker:', ticker);
-        // Se não encontrou, limpa os campos
+        console.warn('⚠️ Empresa não encontrada para ticker:', ticker);
         document.getElementById('empresaRazaoSocial').textContent = 'Não disponível';
         document.getElementById('empresaCNPJ').textContent = 'Não disponível';
         document.getElementById('empresaSetorSegmento').textContent = 'Não disponível';
@@ -1999,7 +2017,7 @@ function updateEmpresaInfo(ticker) {
         return;
     }
     
-    console.log('Atualizando informações da empresa:', empresaInfo);
+    console.log('📋 Atualizando informações da empresa:', empresaInfo.empresa);
     
     // Preenche os campos
     document.getElementById('empresaRazaoSocial').textContent = empresaInfo.empresa || 'Não disponível';
@@ -2008,23 +2026,27 @@ function updateEmpresaInfo(ticker) {
     const setorSegmento = `${empresaInfo.setor || 'N/D'} / ${empresaInfo.segmento || 'N/D'}`;
     document.getElementById('empresaSetorSegmento').textContent = setorSegmento;
     
-    // CORREÇÃO: Mostra TODOS os tickers da empresa
+    // Mostra TODOS os tickers
     const todosTickersExibicao = empresaInfo.todosTickersStr || ticker;
     document.getElementById('empresaTickers').textContent = todosTickersExibicao;
+    console.log('✅ Tickers exibidos:', todosTickersExibicao);
     
     document.getElementById('empresaSede').textContent = empresaInfo.sede || 'Não disponível';
     document.getElementById('empresaDescricao').textContent = empresaInfo.descricao || 'Descrição não disponível.';
     
-    // Busca empresas do mesmo setor (exclui a empresa atual)
-    // CORREÇÃO: Compara por empresa, não por ticker individual
-    const mesmoSetor = mapeamentoB3
-        .filter(item => 
-            item.setor === empresaInfo.setor && 
-            item.empresa !== empresaInfo.empresa // Compara empresa, não ticker
-        )
-        .slice(0, 5) // Pega até 5 empresas
+    // Empresas do mesmo setor (sem duplicatas)
+    const empresasUnicas = new Map();
+    mapeamentoB3.forEach(item => {
+        if (item.setor === empresaInfo.setor && item.empresa !== empresaInfo.empresa) {
+            if (!empresasUnicas.has(item.empresa)) {
+                empresasUnicas.set(item.empresa, item);
+            }
+        }
+    });
+    
+    const mesmoSetor = Array.from(empresasUnicas.values())
+        .slice(0, 5)
         .map(item => {
-            // Pega o primeiro ticker para clique
             const primeiroTicker = item.todosTickersStr 
                 ? item.todosTickersStr.split(';')[0].trim()
                 : item.ticker;
