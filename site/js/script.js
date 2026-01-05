@@ -1902,27 +1902,47 @@ async function loadAcaoData(ticker) {
     loadingState.style.display = 'block';
     
     try {
-        const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${ticker}/historico_precos_diarios.json?t=${timestamp}`);
-        
-        if (!response.ok) throw new Error('Ação não encontrada');
-        
-        acaoAtualData = await response.json();
-        
-        // Busca info da empresa
+        // NOVO: Busca info da empresa ANTES de tentar carregar
         const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
         
-        // Atualiza UI
-        document.getElementById('acaoTicker').textContent = ticker;
-        document.getElementById('acaoNome').textContent = empresaInfo?.empresa || ticker;
+        if (!empresaInfo) {
+            throw new Error(`Ticker ${ticker} não encontrado no mapeamento B3`);
+        }
         
-        // Carrega logo
+        console.log('Empresa encontrada:', empresaInfo);
+        
+        // NOVO: Pega o primeiro ticker da lista para usar como pasta
+        // Se empresa tem PETR3;PETR4, sempre usa PETR3 (primeiro)
+        const tickerPasta = empresaInfo.todosTickersStr 
+            ? empresaInfo.todosTickersStr.split(';')[0].trim()
+            : ticker;
+        
+        console.log(`Carregando dados da pasta: balancos/${tickerPasta}/`);
+        
+        const timestamp = new Date().getTime();
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/historico_precos_diarios.json?t=${timestamp}`);
+        
+        if (!response.ok) {
+            throw new Error(`Dados não encontrados para ${ticker} (tentou pasta ${tickerPasta})`);
+        }
+        
+        acaoAtualData = await response.json();
+        console.log('Dados carregados:', acaoAtualData.dados.length, 'registros');
+        
+        // Atualiza UI com o ticker SOLICITADO (não o ticker da pasta)
+        document.getElementById('acaoTicker').textContent = ticker;
+        document.getElementById('acaoNome').textContent = empresaInfo.empresa;
+        
+        // Carrega logo usando a pasta correta
         const logoImg = document.getElementById('acaoLogoImg');
         const logoFallback = document.getElementById('acaoLogoFallback');
-        logoImg.src = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${ticker}/logo.png?t=${timestamp}`;
+        logoImg.src = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/logo.png?t=${timestamp}`;
         logoImg.style.display = 'block';
         logoFallback.style.display = 'none';
         logoFallback.textContent = ticker.substring(0, 4);
+        
+        // NOVO: Atualiza informações da empresa
+        updateEmpresaInfo(ticker);
         
         // Atualiza indicadores
         updateIndicadores();
@@ -1938,19 +1958,17 @@ async function loadAcaoData(ticker) {
         console.error('Erro ao carregar ação:', error);
         loadingState.style.display = 'none';
         emptyState.style.display = 'block';
-        alert('Erro ao carregar dados da ação. Verifique se o ticker está correto.');
+        alert(`Erro ao carregar dados da ação ${ticker}:\n${error.message}`);
     }
 }
 
 // Atualiza informações da empresa
 function updateEmpresaInfo(ticker) {
     // Busca informações da empresa no mapeamento
-    const empresaInfo = mapeamentoB3.find(item => {
-        const tickers = item.ticker.split(';');
-        return tickers.includes(ticker);
-    });
+    const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
     
     if (!empresaInfo) {
+        console.warn('Empresa não encontrada no mapeamento para ticker:', ticker);
         // Se não encontrou, limpa os campos
         document.getElementById('empresaRazaoSocial').textContent = 'Não disponível';
         document.getElementById('empresaCNPJ').textContent = 'Não disponível';
@@ -1962,6 +1980,8 @@ function updateEmpresaInfo(ticker) {
         return;
     }
     
+    console.log('Atualizando informações da empresa:', empresaInfo);
+    
     // Preenche os campos
     document.getElementById('empresaRazaoSocial').textContent = empresaInfo.empresa || 'Não disponível';
     document.getElementById('empresaCNPJ').textContent = empresaInfo.cnpj || 'Não disponível';
@@ -1969,20 +1989,26 @@ function updateEmpresaInfo(ticker) {
     const setorSegmento = `${empresaInfo.setor || 'N/D'} / ${empresaInfo.segmento || 'N/D'}`;
     document.getElementById('empresaSetorSegmento').textContent = setorSegmento;
     
-    document.getElementById('empresaTickers').textContent = empresaInfo.ticker || ticker;
+    // CORREÇÃO: Mostra TODOS os tickers da empresa
+    const todosTickersExibicao = empresaInfo.todosTickersStr || ticker;
+    document.getElementById('empresaTickers').textContent = todosTickersExibicao;
+    
     document.getElementById('empresaSede').textContent = empresaInfo.sede || 'Não disponível';
     document.getElementById('empresaDescricao').textContent = empresaInfo.descricao || 'Descrição não disponível.';
     
     // Busca empresas do mesmo setor (exclui a empresa atual)
+    // CORREÇÃO: Compara por empresa, não por ticker individual
     const mesmoSetor = mapeamentoB3
         .filter(item => 
             item.setor === empresaInfo.setor && 
-            item.ticker !== empresaInfo.ticker
+            item.empresa !== empresaInfo.empresa // Compara empresa, não ticker
         )
         .slice(0, 5) // Pega até 5 empresas
         .map(item => {
-            const tickers = item.ticker.split(';');
-            const primeiroTicker = tickers[0];
+            // Pega o primeiro ticker para clique
+            const primeiroTicker = item.todosTickersStr 
+                ? item.todosTickersStr.split(';')[0].trim()
+                : item.ticker;
             return `<span class="ticker-similar" onclick="loadAcaoData('${primeiroTicker}')" style="cursor: pointer; color: #4f46e5; font-weight: 600; margin-right: 10px; text-decoration: underline;">${primeiroTicker}</span>`;
         })
         .join('');
