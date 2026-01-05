@@ -108,7 +108,7 @@ jobs:
           # Verificar se há mudanças
           if [ -n "$(git status --porcelain balancos/*/historico_precos_diarios.json)" ]; then
             git add balancos/*/historico_precos_diarios.json
-            git commit -m "🤖 Atualizar histórico de preços - $(date +'%Y-%m-%d %H:%M')"
+            git commit -m "🤖 Atualizar histórico de preços - $(date +'%Y-%m-%d %H:%M') [skip netlify]"
             git push
             echo "✅ Histórico atualizado e commitado"
           else
