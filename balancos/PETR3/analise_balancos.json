@@ -1,0 +1,39 @@
+{
+  "ticker": "PETR4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-05T17:55:33.288707",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 5.18,
+      "variacao_total": 72.03,
+      "ultimo_valor": 127906.0
+    },
+    "margens": {
+      "bruta": 42.4,
+      "operacional": 24.34,
+      "liquida": 10.4
+    },
+    "rentabilidade": {
+      "roe_medio": 13.17
+    },
+    "caixa": {
+      "media": 41234.58,
+      "ultimo": 145417.0
+    },
+    "balanco": {
+      "ativo_total": 1212038.0,
+      "patrimonio": 424961.0
+    }
+  },
+  "analise_critica": "PETR4 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 10.4%. Retorno sobre patrimônio adequado (ROE de 13.17%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

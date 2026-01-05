@@ -1,0 +1,39 @@
+{
+  "ticker": "LEVE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-05T17:55:33.232558",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.88,
+      "variacao_total": 149.47,
+      "ultimo_valor": 1445.34
+    },
+    "margens": {
+      "bruta": 27.02,
+      "operacional": 13.6,
+      "liquida": 10.0
+    },
+    "rentabilidade": {
+      "roe_medio": 29.19
+    },
+    "caixa": {
+      "media": 108.89,
+      "ultimo": 390.95
+    },
+    "balanco": {
+      "ativo_total": 3939.11,
+      "patrimonio": 879.2
+    }
+  },
+  "analise_critica": "LEVE3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 10.0%). Gera excelente retorno sobre o patrimônio (ROE médio de 29.19%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Excelente retorno sobre patrimônio (ROE: 29.19%)"
+  ],
+  "pontos_atencao": []
+}

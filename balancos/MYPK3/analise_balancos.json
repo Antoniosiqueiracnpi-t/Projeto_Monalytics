@@ -1,0 +1,40 @@
+{
+  "ticker": "MYPK3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-05T17:55:33.251253",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.67,
+      "variacao_total": 144.46,
+      "ultimo_valor": 3802.4
+    },
+    "margens": {
+      "bruta": 11.76,
+      "operacional": 5.78,
+      "liquida": 1.39
+    },
+    "rentabilidade": {
+      "roe_medio": 6.06
+    },
+    "caixa": {
+      "media": 189.3,
+      "ultimo": 71.13
+    },
+    "balanco": {
+      "ativo_total": 14452.67,
+      "patrimonio": 4668.77
+    }
+  },
+  "analise_critica": "MYPK3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 1.39%). Retorno sobre patrimônio abaixo do esperado (ROE de 6.06%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Margem líquida comprimida (1.39%)",
+    "Retorno sobre patrimônio baixo (ROE: 6.06%)"
+  ]
+}
