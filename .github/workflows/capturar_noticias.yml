@@ -33,8 +33,6 @@ on:
         description: 'Período de busca em dias'
         required: false
         default: '30'
-  
-  # Executar automaticamente todo dia às 9h (horário UTC = 6h BRT)
   schedule:
     - cron: '0 9 * * *'
 
@@ -58,7 +56,6 @@ jobs:
       
       - name: Executar captura de notícias
         run: |
-          # Se for execução automática (schedule), capturar todas as empresas
           if [ "${{ github.event_name }}" == "schedule" ]; then
             echo "🤖 Execução automática: capturando TODAS as empresas"
             python src/capturar_noticias.py --modo faixa --faixa 1-999 --dias 30
@@ -77,24 +74,42 @@ jobs:
         run: |
           echo "📊 Consolidando notícias para feed web..."
           python src/consolidar_noticias.py
+
+      - name: 📝 Atualizar timestamp
+        run: |
+          mkdir -p site/data
+          
+          TIMESTAMP=$(date +%s)000
+          DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
+          HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
+          
+          cat > site/data/ultima_atualizacao.json << EOF
+          {
+            "timestamp": ${TIMESTAMP},
+            "data": "${DATA}",
+            "hora": "${HORA}",
+            "fonte": "noticias_b3",
+            "versao": "1.0.0"
+          }
+          EOF
+          
+          echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
       
       - name: Commit e Push resultados
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # Verificar se há arquivos para commit
           if [ -n "$(find balancos -name 'noticias.json' 2>/dev/null)" ]; then
-            # Adicionar notícias individuais
             git add balancos/*/noticias.json
             
-            # Adicionar feed consolidado (se existir)
             if [ -f "balancos/feed_noticias.json" ]; then
               git add balancos/feed_noticias.json
               echo "✅ Feed consolidado adicionado"
             fi
             
-            # Criar mensagem de commit baseada no modo
+            git add site/data/ultima_atualizacao.json
+            
             if [ "${{ github.event_name }}" == "schedule" ]; then
               COMMIT_MSG="📰 Atualizar notícias B3 (automático diário - $(date +'%Y-%m-%d %H:%M')) [skip netlify]"
             else
@@ -106,6 +121,5 @@ jobs:
             echo "✅ Arquivos commitados com sucesso"
           else
             echo "⚠️ Nenhum arquivo noticias.json foi gerado"
-            echo "Verifique os logs acima para identificar o problema"
             exit 0
           fi
