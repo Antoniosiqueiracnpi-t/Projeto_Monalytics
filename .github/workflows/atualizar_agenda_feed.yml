@@ -1,11 +1,8 @@
 name: Atualizar Agenda Dividendos via Feed
 
 on:
-  # Executa após captura de notícias (todos os dias 22h30 UTC = 19h30 BRT)
   schedule:
     - cron: '30 22 * * *'
-  
-  # Execução manual
   workflow_dispatch:
 
 permissions:
@@ -31,7 +28,6 @@ jobs:
             echo "✅ Feed de notícias encontrado"
             echo "feed_exists=true" >> $GITHUB_ENV
             
-            # Verificar última atualização
             ULTIMA_ATUALIZACAO=$(jq -r '.meta.ultima_atualizacao' balancos/feed_noticias.json)
             echo "Última atualização do feed: $ULTIMA_ATUALIZACAO"
           else
@@ -51,7 +47,6 @@ jobs:
           if [ -f "agenda_dividendos_acoes_investidor10.json" ]; then
             echo "✅ Agenda atualizada"
             
-            # Estatísticas
             TOTAL=$(jq 'length' agenda_dividendos_acoes_investidor10.json)
             FUTUROS=$(jq --arg hoje "$(date +%Y-%m-%d)" '[.[] | select(.data_pagamento >= $hoje)] | length' agenda_dividendos_acoes_investidor10.json)
             
@@ -69,15 +64,13 @@ jobs:
           git config user.name "actions-user"
           git config user.email "actions-user@users.noreply.github.com"
           
-          # Verificar mudanças
           if git diff --quiet agenda_dividendos_acoes_investidor10.json; then
             echo "ℹ️  Nenhuma mudança na agenda"
             exit 0
           fi
           
-          # Commit
           git add agenda_dividendos_acoes_investidor10.json
-          git commit -m "📊 Atualizar agenda de dividendos via feed ($(date +'%Y-%m-%d %H:%M'))"
+          git commit -m "📊 Atualizar agenda dividendos - $(date +'%Y-%m-%d %H:%M') [skip netlify]"
           git push
           
           echo "✅ Agenda atualizada e commitada"
