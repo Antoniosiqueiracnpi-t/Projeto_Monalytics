@@ -5,8 +5,6 @@ on:
     - cron: "*/30 * * * *"
   workflow_dispatch:
 
-# SOLUÇÃO: Usar o mesmo grupo de concurrency que outros workflows
-# Isso previne que workflows diferentes se cancelem mutuamente
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -51,6 +49,30 @@ jobs:
           fi
         continue-on-error: false
 
+      - name: 📝 Atualizar timestamp
+        if: steps.captura.outputs.success == 'true'
+        run: |
+          # Criar diretório se não existir
+          mkdir -p site/data
+          
+          # Gerar timestamp Unix em milissegundos
+          TIMESTAMP=$(date +%s)000
+          DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
+          HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
+          
+          # Criar JSON com timestamp
+          cat > site/data/ultima_atualizacao.json << EOF
+          {
+            "timestamp": ${TIMESTAMP},
+            "data": "${DATA}",
+            "hora": "${HORA}",
+            "fonte": "noticias_mercado",
+            "versao": "1.0.0"
+          }
+          EOF
+          
+          echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
+
       - name: 🔍 Verificar mudanças
         id: verificar
         run: |
@@ -73,6 +95,7 @@ jobs:
           git config user.email "actions@github.com"
 
           git add balancos/NOTICIAS/noticias_mercado.json
+          git add site/data/ultima_atualizacao.json
           
           if git diff --staged --quiet; then
             echo "⚠️  Nenhuma alteração staged"
@@ -82,16 +105,14 @@ jobs:
           TIMESTAMP=$(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')
           git commit -m "📰 Notícias: ${TIMESTAMP} [skip netlify]"
           
-          # Push com retry e pull antes de cada tentativa
+          # Push com retry
           MAX_RETRIES=5
           RETRY_COUNT=0
           
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            # Pull antes de push para evitar conflitos
             echo "🔄 Pull antes do push..."
             git fetch origin main
             git rebase origin/main
-
             
             echo "🚀 Tentando push (${RETRY_COUNT}/${MAX_RETRIES})..."
             
@@ -103,7 +124,7 @@ jobs:
               echo "⚠️  Tentativa ${RETRY_COUNT} falhou"
               
               if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-                WAIT_TIME=$((RETRY_COUNT * 10))  # 10s, 20s, 30s, 40s, 50s
+                WAIT_TIME=$((RETRY_COUNT * 10))
                 echo "⏳ Aguardando ${WAIT_TIME}s antes de tentar novamente..."
                 sleep $WAIT_TIME
               fi
@@ -122,17 +143,9 @@ jobs:
           echo "Script executado: ${{ steps.captura.outputs.success }}"
           echo "Mudanças detectadas: ${{ steps.verificar.outputs.has_changes }}"
           echo "Horário: $(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')"
-          echo "Workflow: ${{ github.workflow }}"
-          echo "Run ID: ${{ github.run_id }}"
           echo "═══════════════════════════════════════"
 
       - name: 🚨 Notificar falha
         if: failure()
         run: |
           echo "❌ Workflow falhou!"
-          echo ""
-          echo "🔍 Debug Info:"
-          echo "Git status: $(git status --porcelain | head -5)"
-          echo "Último commit: $(git log -1 --oneline)"
-          echo "Branch: $(git branch --show-current)"
-          echo "Ref: ${{ github.ref }}"
