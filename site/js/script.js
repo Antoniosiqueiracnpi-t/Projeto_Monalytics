@@ -2763,32 +2763,57 @@ async function carregarDYAtual(ticker) {
 /**
  * Carrega histórico de dividendos
  */
+/**
+ * Carrega histórico de dividendos
+ */
 async function loadDividendosHistorico(ticker) {
     try {
         console.log(`💰 Carregando histórico de dividendos de ${ticker}...`);
         
         const timestamp = new Date().getTime();
-        
-        // CORREÇÃO: Arquivo está na raiz do repositório
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/agenda_dividendos_acoes_investidor10.json?t=${timestamp}`);
         
         if (!response.ok) {
-            throw new Error('Arquivo de dividendos não encontrado');
+            throw new Error(`HTTP ${response.status}: Arquivo de dividendos não encontrado`);
         }
         
         const allData = await response.json();
         
-        // Busca dados específicos do ticker
-        dividendosHistoricoData = allData[ticker];
+        // 🔍 DEBUG: Mostra estrutura do JSON
+        console.log('📦 Estrutura do JSON:', {
+            total_tickers: Object.keys(allData).length,
+            primeiros_10_tickers: Object.keys(allData).slice(0, 10),
+            ticker_buscado: ticker,
+            ticker_existe: ticker in allData
+        });
         
-        if (!dividendosHistoricoData) {
-            throw new Error(`Dados de dividendos não encontrados para ${ticker}`);
+        // 🔍 DEBUG: Se não encontrar, tenta variações
+        if (!allData[ticker]) {
+            console.log('⚠️ Tentando variações do ticker...');
+            
+            // Tenta sem número
+            const tickerSemNumero = ticker.replace(/\d+$/, '');
+            console.log(`  - Sem número: ${tickerSemNumero}`, tickerSemNumero in allData ? '✅' : '❌');
+            
+            // Tenta com B3 no final
+            const tickerComB3 = ticker + '.SA';
+            console.log(`  - Com .SA: ${tickerComB3}`, tickerComB3 in allData ? '✅' : '❌');
+            
+            // Busca parcial
+            const tickersProximos = Object.keys(allData).filter(t => 
+                t.includes(ticker.substring(0, 4))
+            );
+            console.log(`  - Tickers próximos:`, tickersProximos.slice(0, 5));
+            
+            document.getElementById('dividendosHistoricoSection').style.display = 'none';
+            return;
         }
         
-        // CORREÇÃO: Busca DY atual de multiplos.json
-        await carregarDYAtual(ticker);
+        dividendosHistoricoData = allData[ticker];
+        console.log('✅ Dados encontrados:', dividendosHistoricoData);
         
-        console.log('✅ Histórico de dividendos carregado:', dividendosHistoricoData.historico_anos.length, 'anos');
+        // Busca DY atual de multiplos.json
+        await carregarDYAtual(ticker);
         
         renderDividendosHistorico();
         
