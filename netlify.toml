@@ -1,6 +1,5 @@
 # =========================== NETLIFY CONFIG - MONALYTICS ===========================
 # Site estático HTML/CSS/JS puro
-
 [build]
   # Base directory: Netlify entra aqui PRIMEIRO e procura dependências
   base = "site/"
@@ -10,6 +9,28 @@
   
   # Publish directory: RELATIVO ao base (. = aqui mesmo, ou seja site/)
   publish = "."
+  
+  # ✨ CORREÇÃO: Força rebuild em QUALQUER commit (resolve "No changes in base directory")
+  # Sem isto, mudanças em balancos/NOTICIAS/ não triggam deploy
+  ignore = "exit 0"
+
+# Configuração de processamento
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = false
+  minify = false
+
+[build.processing.js]
+  bundle = false
+  minify = false
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
 
 # =========================== REDIRECTS ===========================
 [[redirects]]
@@ -41,3 +62,18 @@
   for = "/js/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# ✨ NOVO: Headers para arquivos JSON (sem cache + CORS)
+[[headers]]
+  for = "/data/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "application/json; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/noticias_mercado.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "application/json; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
