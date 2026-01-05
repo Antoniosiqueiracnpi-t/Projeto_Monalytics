@@ -2532,6 +2532,468 @@ textarea:focus {
     }
 }
 
+/* ========================================
+   MÚLTIPLOS DA EMPRESA
+   ======================================== */
+
+.multiplos-empresa-section {
+    background: var(--secondary-bg);
+    border-radius: 20px;
+    padding: 40px;
+    margin-top: 30px;
+    border: 2px solid var(--border-color);
+}
+
+.multiplos-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.multiplos-header-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
+}
+
+.multiplos-header-text h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 5px 0;
+}
+
+.multiplos-header-text p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.multiplos-timestamp {
+    margin-left: auto;
+    text-align: right;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.multiplos-timestamp i {
+    color: var(--accent-color);
+    margin-right: 5px;
+}
+
+/* Categorias de Múltiplos */
+.multiplos-categoria {
+    margin-bottom: 30px;
+}
+
+.categoria-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.categoria-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.categoria-icon.valuation {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+.categoria-icon.rentabilidade {
+    background: linear-gradient(135deg, #10b981, #34d399);
+}
+
+.categoria-icon.endividamento {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+.categoria-icon.liquidez {
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+}
+
+.categoria-icon.eficiencia {
+    background: linear-gradient(135deg, #ec4899, #f472b6);
+}
+
+.categoria-titulo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.categoria-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+/* Cards de Múltiplos */
+.multiplo-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.multiplo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4f46e5, #6366f1);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.multiplo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: var(--accent-color);
+}
+
+.multiplo-card:hover::before {
+    transform: scaleX(1);
+}
+
+.multiplo-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.multiplo-nome {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-historico {
+    background: rgba(79, 70, 229, 0.1);
+    border: 1px solid rgba(79, 70, 229, 0.3);
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.btn-historico:hover {
+    background: var(--accent-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+.btn-historico i {
+    font-size: 0.85rem;
+}
+
+.multiplo-valor {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+}
+
+.multiplo-unidade {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Modal de Histórico */
+.multiplo-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    animation: fadeIn 0.3s ease;
+}
+
+.multiplo-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 85vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+}
+
+.modal-header p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 30px;
+    overflow-y: auto;
+    max-height: calc(85vh - 140px);
+}
+
+.modal-info {
+    background: var(--secondary-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.info-box {
+    text-align: center;
+}
+
+.info-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.info-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.info-value.positivo {
+    color: #10b981;
+}
+
+.info-value.negativo {
+    color: #ef4444;
+}
+
+.modal-chart-container {
+    background: var(--secondary-bg);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.modal-chart-container canvas {
+    max-height: 350px;
+}
+
+.modal-table-container {
+    overflow-x: auto;
+}
+
+.multiplos-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.multiplos-table thead {
+    background: var(--secondary-bg);
+}
+
+.multiplos-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.multiplos-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.multiplos-table tbody tr:hover {
+    background: var(--secondary-bg);
+}
+
+.multiplos-table td {
+    padding: 12px;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.multiplos-table td:first-child {
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .multiplos-empresa-section {
+        padding: 25px;
+    }
+
+    .multiplos-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .multiplos-timestamp {
+        margin-left: 0;
+        margin-top: 10px;
+        text-align: left;
+    }
+
+    .categoria-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 12px;
+    }
+
+    .multiplo-card {
+        padding: 16px;
+    }
+
+    .multiplo-valor {
+        font-size: 1.6rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+
+    .modal-header {
+        padding: 20px;
+    }
+
+    .modal-header h3 {
+        font-size: 1.4rem;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-info {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .categoria-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .multiplos-header-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .multiplos-header-text h3 {
+        font-size: 1.5rem;
+    }
+
+    .modal-chart-container canvas {
+        max-height: 250px;
+    }
+
+    .multiplos-table {
+        font-size: 0.85rem;
+    }
+
+    .multiplos-table th,
+    .multiplos-table td {
+        padding: 8px;
+    }
+}
+
 /* =========================== CAROUSEL NAVIGATION =========================== */
 .carousel-arrow {
     position: absolute;
