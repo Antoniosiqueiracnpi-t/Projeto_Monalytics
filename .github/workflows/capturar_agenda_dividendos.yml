@@ -1,11 +1,8 @@
 name: Capturar Agenda Dividendos Completa
 
 on:
-  # Execução automática diária às 10h UTC (7h BRT) - após captura de notícias
   schedule:
     - cron: '0 10 * * *'
-  
-  # Execução manual com parâmetros
   workflow_dispatch:
     inputs:
       modo:
@@ -18,17 +15,14 @@ on:
           - ticker
           - lista
           - completo
-      
       quantidade:
         description: 'Quantidade de empresas (modo quantidade)'
         required: false
         default: '10'
-      
       ticker:
         description: 'Ticker específico (modo ticker)'
         required: false
         default: ''
-      
       lista:
         description: 'Lista de tickers separados por vírgula (modo lista)'
         required: false
@@ -59,11 +53,9 @@ jobs:
           echo "📊 Capturando dividendos históricos (finbr)..."
           
           if [ "${{ github.event_name }}" == "schedule" ]; then
-            # Execução automática: capturar todas as empresas
             echo "🤖 Execução automática: modo completo"
             python src/capturar_dividendos_passados.py --modo completo
           else
-            # Execução manual: usar parâmetros fornecidos
             echo "👤 Execução manual: modo ${{ github.event.inputs.modo }}"
             
             if [ "${{ github.event.inputs.modo }}" == "ticker" ]; then
@@ -91,11 +83,9 @@ jobs:
           echo "🔮 Capturando dividendos futuros (notícias + B3 API)..."
           
           if [ "${{ github.event_name }}" == "schedule" ]; then
-            # Execução automática: capturar todas as empresas
             echo "🤖 Execução automática: modo completo"
             python src/capturar_dividendos_futuros.py --modo completo
           else
-            # Execução manual: usar parâmetros fornecidos
             echo "👤 Execução manual: modo ${{ github.event.inputs.modo }}"
             
             if [ "${{ github.event.inputs.modo }}" == "ticker" ]; then
@@ -127,7 +117,6 @@ jobs:
         run: |
           echo "🔍 Verificando arquivos gerados..."
           
-          # Verificar se os JSONs principais foram criados
           if [ -f "balancos/agenda_dividendos.json" ]; then
             echo "✅ agenda_dividendos.json criado"
             TAMANHO=$(du -h balancos/agenda_dividendos.json | cut -f1)
@@ -144,7 +133,6 @@ jobs:
             echo "✅ estatisticas_dividendos.json criado"
           fi
           
-          # Contar arquivos individuais
           HISTORICO_COUNT=$(find balancos -name "dividendos_historico.json" | wc -l)
           FUTUROS_COUNT=$(find balancos -name "dividendos_futuros.json" | wc -l)
           
@@ -152,39 +140,51 @@ jobs:
           echo "📊 Resumo:"
           echo "   Dividendos históricos: $HISTORICO_COUNT empresas"
           echo "   Dividendos futuros: $FUTUROS_COUNT empresas"
+
+      - name: 📝 Atualizar timestamp
+        run: |
+          mkdir -p site/data
+          
+          TIMESTAMP=$(date +%s)000
+          DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
+          HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
+          
+          cat > site/data/ultima_atualizacao.json << EOF
+          {
+            "timestamp": ${TIMESTAMP},
+            "data": "${DATA}",
+            "hora": "${HORA}",
+            "fonte": "agenda_dividendos",
+            "versao": "1.0.0"
+          }
+          EOF
+          
+          echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
       
       - name: Commit e Push resultados
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # Adicionar todos os arquivos de dividendos
           git add balancos/*/dividendos_historico.json 2>/dev/null || true
           git add balancos/*/dividendos_futuros.json 2>/dev/null || true
           git add balancos/agenda_dividendos.json 2>/dev/null || true
           git add balancos/agenda_dividendos_mes.json 2>/dev/null || true
           git add balancos/estatisticas_dividendos.json 2>/dev/null || true
+          git add site/data/ultima_atualizacao.json
           
-          # Verificar se há mudanças
           if git diff --staged --quiet; then
             echo "⚠️  Nenhuma mudança para commit"
             exit 0
           fi
           
-          # Criar mensagem de commit
           if [ "${{ github.event_name }}" == "schedule" ]; then
             COMMIT_MSG="💰 Atualizar agenda completa de dividendos (automático - $(date +'%Y-%m-%d %H:%M')) [skip netlify]"
           else
             COMMIT_MSG="💰 Atualizar agenda completa de dividendos - ${{ github.event.inputs.modo }} [skip netlify]"
           fi
           
-          # Commit e push
           git commit -m "$COMMIT_MSG"
           git push
           
           echo "✅ Arquivos commitados e enviados com sucesso!"
-          echo ""
-          echo "📂 Arquivos disponíveis:"
-          echo "   - balancos/agenda_dividendos.json"
-          echo "   - balancos/agenda_dividendos_mes.json"
-          echo "   - balancos/estatisticas_dividendos.json"
