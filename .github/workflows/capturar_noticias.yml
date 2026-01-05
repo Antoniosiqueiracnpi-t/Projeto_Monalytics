@@ -96,9 +96,9 @@ jobs:
             
             # Criar mensagem de commit baseada no modo
             if [ "${{ github.event_name }}" == "schedule" ]; then
-              COMMIT_MSG="📰 Atualizar notícias B3 (automático diário - $(date +'%Y-%m-%d %H:%M'))"
+              COMMIT_MSG="📰 Atualizar notícias B3 (automático diário - $(date +'%Y-%m-%d %H:%M')) [skip netlify]"
             else
-              COMMIT_MSG="📰 Atualizar notícias B3 - ${{ github.event.inputs.modo }}"
+              COMMIT_MSG="📰 Atualizar notícias B3 - ${{ github.event.inputs.modo }} [skip netlify]"
             fi
             
             git diff --staged --quiet || git commit -m "$COMMIT_MSG"
