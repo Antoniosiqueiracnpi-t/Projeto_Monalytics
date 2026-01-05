@@ -2533,6 +2533,247 @@ textarea:focus {
 }
 
 /* ========================================
+   COMPOSIÇÃO ACIONÁRIA
+   ======================================== */
+
+.composicao-acionaria-card {
+    background: #f5f5f7;
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 25px;
+    border: 2px solid var(--border-color);
+}
+
+.composicao-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.composicao-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+}
+
+.composicao-title-group h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 5px 0;
+}
+
+.composicao-title-group p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.composicao-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: center;
+}
+
+.chart-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 1;
+}
+
+.acionistas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.acionista-item {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.acionista-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.acionista-item:nth-child(1) {
+    border-left-color: #8b5cf6;
+}
+
+.acionista-item:nth-child(2) {
+    border-left-color: #ec4899;
+}
+
+.acionista-item:nth-child(3) {
+    border-left-color: #f59e0b;
+}
+
+.acionista-item:nth-child(4) {
+    border-left-color: #10b981;
+}
+
+.acionista-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.acionista-posicao {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: white;
+}
+
+.acionista-item:nth-child(1) .acionista-posicao {
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+}
+
+.acionista-item:nth-child(2) .acionista-posicao {
+    background: linear-gradient(135deg, #ec4899, #f472b6);
+}
+
+.acionista-item:nth-child(3) .acionista-posicao {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+.acionista-item:nth-child(4) .acionista-posicao {
+    background: linear-gradient(135deg, #10b981, #34d399);
+}
+
+.acionista-nome {
+    flex: 1;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1rem;
+    padding: 0 12px;
+}
+
+.acionista-percentual {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.acionista-detalhes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    margin-top: 8px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.acionista-nacionalidade {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.acionista-nacionalidade i {
+    color: var(--accent-color);
+}
+
+.acionista-acoes {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.composicao-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.composicao-footer i {
+    color: var(--accent-color);
+    margin-right: 5px;
+}
+
+/* Responsivo */
+@media (max-width: 968px) {
+    .composicao-content {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-container {
+        max-width: 280px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .composicao-acionaria-card {
+        padding: 20px;
+    }
+
+    .composicao-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .composicao-title-group h3 {
+        font-size: 1.2rem;
+    }
+
+    .chart-container {
+        max-width: 240px;
+    }
+}
+
+@media (max-width: 480px) {
+    .acionista-header {
+        flex-wrap: wrap;
+    }
+
+    .acionista-nome {
+        width: 100%;
+        padding: 8px 0;
+    }
+
+    .acionista-percentual {
+        font-size: 1.1rem;
+    }
+}
+
+/* ========================================
    MÚLTIPLOS DA EMPRESA
    ======================================== */
 
