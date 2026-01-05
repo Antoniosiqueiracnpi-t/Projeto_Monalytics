@@ -2260,7 +2260,6 @@ function renderMultiplosSection() {
                         </button>
                     </div>
                     <div class="multiplo-valor">${valorFormatado}</div>
-                    <div class="multiplo-unidade">${mult.unidade}</div>
                 </div>
             `;
         });
