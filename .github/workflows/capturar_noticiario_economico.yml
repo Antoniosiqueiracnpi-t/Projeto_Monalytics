@@ -1,18 +1,15 @@
 name: Capturar Notícias do Mercado
 
 on:
-  # Executa de hora em hora, seg-sex, 8h-18h (Brasília)
-  # UTC: 11h-21h (Brasília -3h)
   schedule:
     - cron: '0 11-21 * * 1-5'
-  
-  # Permite execução manual
   workflow_dispatch:
 
-# CRÍTICO: Previne múltiplas execuções simultâneas
+# SOLUÇÃO: Usar o mesmo grupo de concurrency que outros workflows
+# Isso previne que workflows diferentes se cancelem mutuamente
 concurrency:
-  group: noticias-mercado
-  cancel-in-progress: false  # Não cancela execuções em andamento
+  group: production-deploy-${{ github.ref }}  # ← Mesmo grupo que production
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -44,7 +41,6 @@ jobs:
         run: |
           echo "🔄 Iniciando captura de notícias..."
           
-          # Executa script e captura saída
           if python src/capturar_noticiario_economico.py; then
             echo "✅ Script executado com sucesso"
             echo "success=true" >> $GITHUB_OUTPUT
@@ -58,11 +54,9 @@ jobs:
       - name: 🔍 Verificar mudanças
         id: verificar
         run: |
-          # Mostra status do git
           echo "📊 Status do repositório:"
           git status
           
-          # Verifica se há mudanças
           if [ -z "$(git status --porcelain)" ]; then
             echo "ℹ️  Nenhuma alteração detectada"
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -75,39 +69,41 @@ jobs:
       - name: 💾 Commit e push
         if: steps.verificar.outputs.has_changes == 'true'
         run: |
-          # Configurar Git
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
 
-          # Adicionar arquivo de notícias
           git add balancos/NOTICIAS/noticias_mercado.json
           
-          # Verificar se há algo staged
           if git diff --staged --quiet; then
-            echo "⚠️  Nenhuma alteração staged após git add"
+            echo "⚠️  Nenhuma alteração staged"
             exit 0
           fi
 
-          # Commit com timestamp detalhado
           TIMESTAMP=$(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')
-          git commit -m "📰 Notícias atualizadas: ${TIMESTAMP}"
+          git commit -m "📰 Notícias: ${TIMESTAMP}"
           
-          # Push com retry
-          MAX_RETRIES=3
+          # Push com retry e pull antes de cada tentativa
+          MAX_RETRIES=5
           RETRY_COUNT=0
           
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            # Pull antes de push para evitar conflitos
+            echo "🔄 Pull antes do push..."
+            git pull --rebase origin main || true
+            
+            echo "🚀 Tentando push (${RETRY_COUNT}/${MAX_RETRIES})..."
+            
             if git push origin main; then
               echo "✅ Push realizado com sucesso!"
               exit 0
             else
               RETRY_COUNT=$((RETRY_COUNT + 1))
-              echo "⚠️  Tentativa ${RETRY_COUNT} de ${MAX_RETRIES} falhou"
+              echo "⚠️  Tentativa ${RETRY_COUNT} falhou"
               
               if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-                echo "🔄 Aguardando 5 segundos antes de tentar novamente..."
-                sleep 5
-                git pull --rebase origin main
+                WAIT_TIME=$((RETRY_COUNT * 10))  # 10s, 20s, 30s, 40s, 50s
+                echo "⏳ Aguardando ${WAIT_TIME}s antes de tentar novamente..."
+                sleep $WAIT_TIME
               fi
             fi
           done
@@ -124,17 +120,17 @@ jobs:
           echo "Script executado: ${{ steps.captura.outputs.success }}"
           echo "Mudanças detectadas: ${{ steps.verificar.outputs.has_changes }}"
           echo "Horário: $(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
           echo "═══════════════════════════════════════"
 
       - name: 🚨 Notificar falha
         if: failure()
         run: |
           echo "❌ Workflow falhou!"
-          echo "Verifique os logs acima para detalhes"
-          
-          # Mostra informações úteis para debug
           echo ""
           echo "🔍 Debug Info:"
           echo "Git status: $(git status --porcelain | head -5)"
           echo "Último commit: $(git log -1 --oneline)"
           echo "Branch: $(git branch --show-current)"
+          echo "Ref: ${{ github.ref }}"
