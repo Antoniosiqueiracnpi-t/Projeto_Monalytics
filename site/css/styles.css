@@ -3235,6 +3235,325 @@ textarea:focus {
     }
 }
 
+/* ========================================
+   I.A ANALISA
+   ======================================== */
+
+.ia-analisa-section {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 20px;
+    padding: 40px;
+    margin-top: 30px;
+    border: 2px solid rgba(139, 92, 246, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.ia-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.ia-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 30px rgba(139, 92, 246, 0.7);
+    }
+}
+
+.ia-title-group h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 5px 0;
+}
+
+.ia-title-group p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.ia-badge {
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    margin-left: auto;
+}
+
+.ia-content {
+    display: grid;
+    gap: 25px;
+}
+
+/* Análise Crítica */
+.ia-analise-critica {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px;
+    border-left: 4px solid #8b5cf6;
+}
+
+.ia-analise-critica h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ia-analise-critica h4 i {
+    color: #8b5cf6;
+}
+
+.ia-analise-critica p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    text-align: justify;
+}
+
+/* Grid de Pontos */
+.ia-pontos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.ia-pontos-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.ia-pontos-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.ia-pontos-card.fortes {
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.ia-pontos-card.fortes:hover {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.ia-pontos-card.atencao {
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.ia-pontos-card.atencao:hover {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.ia-pontos-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.ia-pontos-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.ia-pontos-card.fortes .ia-pontos-icon {
+    background: linear-gradient(135deg, #10b981, #34d399);
+}
+
+.ia-pontos-card.atencao .ia-pontos-icon {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+.ia-pontos-header h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+
+.ia-pontos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ia-ponto-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.ia-ponto-item i {
+    flex-shrink: 0;
+    margin-top: 4px;
+    font-size: 0.8rem;
+}
+
+.ia-pontos-card.fortes .ia-ponto-item i {
+    color: #10b981;
+}
+
+.ia-pontos-card.atencao .ia-ponto-item i {
+    color: #f59e0b;
+}
+
+.ia-pontos-empty {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}
+
+/* Métricas Destaque */
+.ia-metricas-destaque {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px;
+    border: 2px solid rgba(139, 92, 246, 0.2);
+}
+
+.ia-metricas-destaque h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ia-metricas-destaque h4 i {
+    color: #8b5cf6;
+}
+
+.ia-metricas-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.ia-metrica-item {
+    text-align: center;
+}
+
+.ia-metrica-valor {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #8b5cf6;
+    margin-bottom: 5px;
+}
+
+.ia-metrica-label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Footer */
+.ia-footer {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(139, 92, 246, 0.2);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+}
+
+.ia-footer i {
+    color: #8b5cf6;
+    margin-right: 5px;
+}
+
+/* Responsivo */
+@media (max-width: 968px) {
+    .ia-pontos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ia-metricas-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .ia-analisa-section {
+        padding: 25px;
+    }
+
+    .ia-header {
+        flex-wrap: wrap;
+    }
+
+    .ia-badge {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .ia-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .ia-title-group h3 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ia-metricas-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .ia-metrica-valor {
+        font-size: 1.5rem;
+    }
+}
+
 /* =========================== CAROUSEL NAVIGATION =========================== */
 .carousel-arrow {
     position: absolute;
