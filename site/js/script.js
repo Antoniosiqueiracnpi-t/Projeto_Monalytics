@@ -2135,6 +2135,398 @@ async function loadAcaoData(ticker) {
     }
 }
 
+/* ========================================
+   SISTEMA DE MÚLTIPLOS DA EMPRESA
+   ======================================== */
+
+let multiplosData = null;
+let multiplosChart = null;
+
+/**
+ * Carrega dados de múltiplos da empresa
+ */
+async function loadMultiplosData(ticker) {
+    try {
+        console.log(`📊 Carregando múltiplos de ${ticker}...`);
+        
+        // Busca info no mapeamento para pegar o ticker correto da pasta
+        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
+        const tickerPasta = empresaInfo && empresaInfo.todosTickersStr 
+            ? empresaInfo.todosTickersStr.split(';')[0].trim()
+            : ticker;
+        
+        const timestamp = new Date().getTime();
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
+        
+        if (!response.ok) {
+            throw new Error(`Múltiplos não encontrados para ${ticker}`);
+        }
+        
+        multiplosData = await response.json();
+        console.log('✅ Múltiplos carregados:', Object.keys(multiplosData.ltm.multiplos).length);
+        
+        renderMultiplosSection();
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar múltiplos:', error);
+        document.getElementById('multiplosSection').style.display = 'none';
+    }
+}
+
+/**
+ * Renderiza seção completa de múltiplos
+ */
+function renderMultiplosSection() {
+    const section = document.getElementById('multiplosSection');
+    if (!section || !multiplosData) return;
+    
+    const ltm = multiplosData.ltm;
+    const metadata = multiplosData.metadata;
+    
+    // Agrupa múltiplos por categoria
+    const categorias = {
+        'Valuation': [],
+        'Rentabilidade': [],
+        'Endividamento': [],
+        'Liquidez': [],
+        'Eficiência': []
+    };
+    
+    for (const [codigo, meta] of Object.entries(metadata)) {
+        const valor = ltm.multiplos[codigo];
+        if (valor !== undefined && valor !== null) {
+            categorias[meta.categoria].push({
+                codigo: codigo,
+                nome: meta.nome,
+                valor: valor,
+                unidade: meta.unidade,
+                formula: meta.formula
+            });
+        }
+    }
+    
+    // Gera HTML
+    let html = `
+        <div class="multiplos-header">
+            <div class="multiplos-header-icon">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <div class="multiplos-header-text">
+                <h3>Múltiplos Financeiros</h3>
+                <p>Análise fundamentalista baseada em ${ltm.periodo_referencia}</p>
+            </div>
+            <div class="multiplos-timestamp">
+                <i class="fas fa-clock"></i>
+                Preço: R$ ${ltm.preco_utilizado.toFixed(2)} (${ltm.periodo_preco})
+            </div>
+        </div>
+    `;
+    
+    // Renderiza cada categoria
+    const iconesCategoria = {
+        'Valuation': 'fa-dollar-sign',
+        'Rentabilidade': 'fa-chart-line',
+        'Endividamento': 'fa-balance-scale',
+        'Liquidez': 'fa-tint',
+        'Eficiência': 'fa-cogs'
+    };
+    
+    for (const [categoria, multiplos] of Object.entries(categorias)) {
+        if (multiplos.length === 0) continue;
+        
+        const categoriaClass = categoria.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        
+        html += `
+            <div class="multiplos-categoria">
+                <div class="categoria-header">
+                    <div class="categoria-icon ${categoriaClass}">
+                        <i class="fas ${iconesCategoria[categoria]}"></i>
+                    </div>
+                    <h4 class="categoria-titulo">${categoria}</h4>
+                </div>
+                <div class="categoria-grid">
+        `;
+        
+        multiplos.forEach(mult => {
+            const valorFormatado = formatMultiploValor(mult.valor, mult.unidade);
+            
+            html += `
+                <div class="multiplo-card">
+                    <div class="multiplo-card-header">
+                        <div class="multiplo-nome">${mult.nome}</div>
+                        <button class="btn-historico" onclick="openMultiploModal('${mult.codigo}')">
+                            <i class="fas fa-chart-area"></i>
+                            Histórico
+                        </button>
+                    </div>
+                    <div class="multiplo-valor">${valorFormatado}</div>
+                    <div class="multiplo-unidade">${mult.unidade}</div>
+                </div>
+            `;
+        });
+        
+        html += `
+                </div>
+            </div>
+        `;
+    }
+    
+    section.innerHTML = html;
+    section.style.display = 'block';
+    
+    // Cria modal (se não existe)
+    createMultiploModal();
+}
+
+/**
+ * Formata valor do múltiplo
+ */
+function formatMultiploValor(valor, unidade) {
+    if (valor === null || valor === undefined) return 'N/D';
+    
+    if (unidade === '%') {
+        return valor.toFixed(2) + '%';
+    } else if (unidade === 'x') {
+        return valor.toFixed(2) + 'x';
+    } else if (unidade === 'dias') {
+        return Math.round(valor);
+    }
+    
+    return valor.toFixed(2);
+}
+
+/**
+ * Cria modal para exibir histórico
+ */
+function createMultiploModal() {
+    // Verifica se já existe
+    if (document.getElementById('multiplo-modal')) return;
+    
+    const modal = document.createElement('div');
+    modal.id = 'multiplo-modal';
+    modal.className = 'multiplo-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h3 id="modal-titulo">Título</h3>
+                    <p id="modal-subtitulo">Subtítulo</p>
+                </div>
+                <button class="modal-close" onclick="closeMultiploModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info">
+                    <div class="info-box">
+                        <div class="info-label">Valor Atual (LTM)</div>
+                        <div class="info-value" id="modal-valor-atual">-</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">Média 5 Anos</div>
+                        <div class="info-value" id="modal-media-5y">-</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">Variação vs Média</div>
+                        <div class="info-value" id="modal-variacao">-</div>
+                    </div>
+                </div>
+                
+                <div class="modal-chart-container">
+                    <canvas id="modal-chart"></canvas>
+                </div>
+                
+                <div class="modal-table-container">
+                    <table class="multiplos-table">
+                        <thead>
+                            <tr>
+                                <th>Ano</th>
+                                <th>Valor</th>
+                                <th>Variação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modal-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Fecha ao clicar fora
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeMultiploModal();
+        }
+    });
+}
+
+/**
+ * Abre modal com histórico do múltiplo
+ */
+function openMultiploModal(codigo) {
+    if (!multiplosData) return;
+    
+    const modal = document.getElementById('multiplo-modal');
+    const metadata = multiplosData.metadata[codigo];
+    const historico = multiplosData.historico_anual;
+    const ltmValor = multiplosData.ltm.multiplos[codigo];
+    
+    // Atualiza título
+    document.getElementById('modal-titulo').textContent = metadata.nome;
+    document.getElementById('modal-subtitulo').textContent = metadata.formula;
+    
+    // Calcula estatísticas
+    const anos = Object.keys(historico).sort();
+    const valores = anos.map(ano => historico[ano].multiplos[codigo]);
+    const ultimos5Anos = valores.slice(-5);
+    const media5y = ultimos5Anos.reduce((a, b) => a + b, 0) / ultimos5Anos.length;
+    const variacao = ((ltmValor - media5y) / media5y * 100);
+    
+    // Atualiza info boxes
+    document.getElementById('modal-valor-atual').textContent = formatMultiploValor(ltmValor, metadata.unidade);
+    document.getElementById('modal-media-5y').textContent = formatMultiploValor(media5y, metadata.unidade);
+    
+    const varEl = document.getElementById('modal-variacao');
+    varEl.textContent = (variacao >= 0 ? '+' : '') + variacao.toFixed(1) + '%';
+    varEl.className = 'info-value ' + (variacao >= 0 ? 'positivo' : 'negativo');
+    
+    // Renderiza gráfico
+    renderMultiploChart(anos, valores, metadata);
+    
+    // Renderiza tabela
+    renderMultiploTable(anos, valores, metadata);
+    
+    // Mostra modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Fecha modal
+ */
+function closeMultiploModal() {
+    const modal = document.getElementById('multiplo-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Destroi gráfico
+    if (multiplosChart) {
+        multiplosChart.destroy();
+        multiplosChart = null;
+    }
+}
+
+/**
+ * Renderiza gráfico do histórico
+ */
+function renderMultiploChart(anos, valores, metadata) {
+    const ctx = document.getElementById('modal-chart');
+    
+    if (multiplosChart) {
+        multiplosChart.destroy();
+    }
+    
+    multiplosChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: anos,
+            datasets: [{
+                label: metadata.nome,
+                data: valores,
+                borderColor: '#4f46e5',
+                backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                tension: 0.3,
+                fill: true,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                pointBackgroundColor: '#4f46e5',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = metadata.nome + ': ';
+                            label += formatMultiploValor(context.parsed.y, metadata.unidade);
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: metadata.unidade !== '%',
+                    ticks: {
+                        callback: function(value) {
+                            if (metadata.unidade === '%') {
+                                return value.toFixed(1) + '%';
+                            } else if (metadata.unidade === 'x') {
+                                return value.toFixed(1) + 'x';
+                            }
+                            return value;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+/**
+ * Renderiza tabela do histórico
+ */
+function renderMultiploTable(anos, valores, metadata) {
+    const tbody = document.getElementById('modal-table-body');
+    
+    let html = '';
+    for (let i = anos.length - 1; i >= 0; i--) {
+        const ano = anos[i];
+        const valor = valores[i];
+        const valorAnterior = i > 0 ? valores[i - 1] : null;
+        const variacao = valorAnterior ? ((valor - valorAnterior) / valorAnterior * 100) : null;
+        
+        html += `
+            <tr>
+                <td>${ano}</td>
+                <td>${formatMultiploValor(valor, metadata.unidade)}</td>
+                <td style="color: ${variacao > 0 ? '#10b981' : variacao < 0 ? '#ef4444' : '#6b7280'}">
+                    ${variacao !== null ? (variacao >= 0 ? '+' : '') + variacao.toFixed(1) + '%' : '-'}
+                </td>
+            </tr>
+        `;
+    }
+    
+    tbody.innerHTML = html;
+}
+
+/**
+ * HOOK: Adiciona carregamento de múltiplos ao carregar ação
+ */
+const originalLoadAcaoData = loadAcaoData;
+loadAcaoData = async function(ticker) {
+    await originalLoadAcaoData.call(this, ticker);
+    
+    // Carrega múltiplos após carregar a ação
+    await loadMultiplosData(ticker);
+};
+
+// Fecha modal ao pressionar ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeMultiploModal();
+    }
+});
+
 // Atualiza informações da empresa
 function updateEmpresaInfo(ticker) {
     const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
