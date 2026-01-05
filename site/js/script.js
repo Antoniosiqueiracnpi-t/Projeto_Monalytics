@@ -2724,6 +2724,43 @@ let currentDividendosView = 'dy'; // 'dy' ou 'pagos'
 let currentDividendosPeriod = 5; // 5 ou 10 anos
 
 /**
+ * Carrega DY atual do arquivo multiplos.json
+ */
+async function carregarDYAtual(ticker) {
+    try {
+        // Busca info no mapeamento para pegar o ticker correto da pasta
+        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
+        const tickerPasta = empresaInfo && empresaInfo.todosTickersStr 
+            ? empresaInfo.todosTickersStr.split(';')[0].trim()
+            : ticker;
+        
+        const timestamp = new Date().getTime();
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
+        
+        if (response.ok) {
+            const multiplosData = await response.json();
+            
+            // Busca o DY nos múltiplos
+            const dyMultiplo = multiplosData.multiplos.find(m => m.nome === 'Dividend Yield');
+            
+            if (dyMultiplo && dyMultiplo.valor_atual) {
+                // Atualiza o DY atual nos dados de dividendos
+                dividendosHistoricoData.dy_atual = dyMultiplo.valor_atual;
+                console.log('✅ DY atual atualizado:', dyMultiplo.valor_atual);
+            } else {
+                console.log('⚠️ DY não encontrado em múltiplos, usando valor padrão');
+            }
+        } else {
+            console.log('⚠️ Arquivo multiplos.json não encontrado, usando DY do histórico');
+        }
+        
+    } catch (error) {
+        console.log('⚠️ Erro ao buscar DY atual:', error.message);
+        // Continua com o DY do arquivo de dividendos se houver erro
+    }
+}
+
+/**
  * Carrega histórico de dividendos
  */
 async function loadDividendosHistorico(ticker) {
@@ -2731,7 +2768,9 @@ async function loadDividendosHistorico(ticker) {
         console.log(`💰 Carregando histórico de dividendos de ${ticker}...`);
         
         const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/dados/agenda_dividendos_acoes_investidor10.json?t=${timestamp}`);
+        
+        // CORREÇÃO: Arquivo está na raiz do repositório
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/agenda_dividendos_acoes_investidor10.json?t=${timestamp}`);
         
         if (!response.ok) {
             throw new Error('Arquivo de dividendos não encontrado');
@@ -2746,6 +2785,9 @@ async function loadDividendosHistorico(ticker) {
             throw new Error(`Dados de dividendos não encontrados para ${ticker}`);
         }
         
+        // CORREÇÃO: Busca DY atual de multiplos.json
+        await carregarDYAtual(ticker);
+        
         console.log('✅ Histórico de dividendos carregado:', dividendosHistoricoData.historico_anos.length, 'anos');
         
         renderDividendosHistorico();
@@ -2755,6 +2797,7 @@ async function loadDividendosHistorico(ticker) {
         document.getElementById('dividendosHistoricoSection').style.display = 'none';
     }
 }
+
 
 /**
  * Renderiza seção de histórico de dividendos
@@ -2807,7 +2850,7 @@ function renderDividendosHistorico() {
         <div class="dividendos-stats">
             <div class="dividendos-stat-card">
                 <div class="stat-label">DY Atual</div>
-                <div class="stat-value">${data.dy_atual.toFixed(2)}%</div>
+                <div class="stat-value">${data.dy_atual ? data.dy_atual.toFixed(2) + '%' : 'N/D'}</div>
             </div>
             <div class="dividendos-stat-card">
                 <div class="stat-label">DY Médio em ${currentDividendosPeriod} Anos</div>
