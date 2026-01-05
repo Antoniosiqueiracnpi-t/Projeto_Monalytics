@@ -57,6 +57,27 @@ jobs:
           else
             echo "⚠️  Agenda não encontrada"
           fi
+
+      - name: 📝 Atualizar timestamp
+        if: env.feed_exists == 'true'
+        run: |
+          mkdir -p site/data
+          
+          TIMESTAMP=$(date +%s)000
+          DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
+          HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
+          
+          cat > site/data/ultima_atualizacao.json << EOF
+          {
+            "timestamp": ${TIMESTAMP},
+            "data": "${DATA}",
+            "hora": "${HORA}",
+            "fonte": "agenda_feed",
+            "versao": "1.0.0"
+          }
+          EOF
+          
+          echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
       
       - name: Commit e Push
         if: env.feed_exists == 'true'
@@ -70,6 +91,7 @@ jobs:
           fi
           
           git add agenda_dividendos_acoes_investidor10.json
+          git add site/data/ultima_atualizacao.json
           git commit -m "📊 Atualizar agenda dividendos - $(date +'%Y-%m-%d %H:%M') [skip netlify]"
           git push
           
