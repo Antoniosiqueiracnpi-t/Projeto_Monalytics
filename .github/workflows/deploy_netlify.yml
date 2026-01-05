@@ -1,0 +1,65 @@
+name: Deploy Netlify
+
+on:
+  # Execução manual (para deploys urgentes)
+  workflow_dispatch:
+  
+  # Execução automática 3x por dia
+  schedule:
+    - cron: '0 13 * * 1-5'  # 10h BRT (após abertura do mercado)
+    - cron: '30 18 * * 1-5' # 15h30 BRT (após fechamento do mercado)
+    - cron: '0 23 * * *'     # 20h BRT (deploy noturno - todos os dias)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🕐 Aguardar workflows finalizarem
+        run: |
+          echo "⏳ Aguardando 3 minutos para garantir que todos os workflows completaram..."
+          sleep 180
+      
+      - name: 🚀 Trigger Netlify Build
+        run: |
+          echo "🔄 Disparando build no Netlify..."
+          
+          RESPONSE=$(curl -X POST -d {} \
+            -w "\n%{http_code}" \
+            -s "${{ secrets.NETLIFY_BUILD_HOOK }}")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+          
+          if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "201" ]; then
+            echo "✅ Build disparado com sucesso!"
+            echo "📋 Response: $BODY"
+          else
+            echo "❌ Erro ao disparar build (HTTP $HTTP_CODE)"
+            echo "📋 Response: $BODY"
+            exit 1
+          fi
+      
+      - name: 📊 Resumo
+        if: always()
+        run: |
+          echo "════════════════════════════════════════"
+          echo "           DEPLOY NETLIFY"
+          echo "════════════════════════════════════════"
+          echo "⏰ Horário: $(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')"
+          echo "🔄 Trigger: ${{ github.event_name }}"
+          echo "🆔 Run ID: ${{ github.run_id }}"
+          echo "════════════════════════════════════════"
+          echo ""
+          echo "🌐 Verifique o deploy em:"
+          echo "   https://app.netlify.com/sites/SEU-SITE-NAME/deploys"
+      
+      - name: 🚨 Notificar falha
+        if: failure()
+        run: |
+          echo "❌ Falha ao disparar deploy no Netlify!"
+          echo ""
+          echo "Possíveis causas:"
+          echo "  - Secret NETLIFY_BUILD_HOOK não configurado"
+          echo "  - URL do build hook inválida"
+          echo "  - Problemas de rede"
