@@ -9,6 +9,11 @@ on:
   # Permite execução manual
   workflow_dispatch:
 
+# CRÍTICO: Previne múltiplas execuções simultâneas
+concurrency:
+  group: noticias-mercado
+  cancel-in-progress: false  # Não cancela execuções em andamento
+
 permissions:
   contents: write
 
@@ -20,11 +25,14 @@ jobs:
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
 
       - name: 🐍 Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+          cache: 'pip'
 
       - name: 📦 Instalar dependências
         run: |
@@ -32,30 +40,101 @@ jobs:
           pip install feedparser pytz beautifulsoup4
 
       - name: 📰 Capturar notícias
+        id: captura
         run: |
-          python src/capturar_noticiario_economico.py
+          echo "🔄 Iniciando captura de notícias..."
+          
+          # Executa script e captura saída
+          if python src/capturar_noticiario_economico.py; then
+            echo "✅ Script executado com sucesso"
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Erro ao executar script"
+            echo "success=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+        continue-on-error: false
+
+      - name: 🔍 Verificar mudanças
+        id: verificar
+        run: |
+          # Mostra status do git
+          echo "📊 Status do repositório:"
+          git status
+          
+          # Verifica se há mudanças
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "ℹ️  Nenhuma alteração detectada"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Alterações detectadas:"
+            git status --short
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
 
       - name: 💾 Commit e push
+        if: steps.verificar.outputs.has_changes == 'true'
         run: |
-          git config user.name "GitHub Actions"
+          # Configurar Git
+          git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
 
-          # Verificar se há alterações
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "✅ Sem alterações para commitar"
-            exit 0
-          fi
-
-          # Adicionar apenas o arquivo de notícias
+          # Adicionar arquivo de notícias
           git add balancos/NOTICIAS/noticias_mercado.json
-
-          # Verificar novamente após add
+          
+          # Verificar se há algo staged
           if git diff --staged --quiet; then
-            echo "✅ Sem alterações staged"
+            echo "⚠️  Nenhuma alteração staged após git add"
             exit 0
           fi
 
-          # Commit com timestamp
-          HORA=$(date -u +"%H:%M UTC")
-          git commit -m "Notícias: ${HORA}" || echo "Sem mudanças para commitar"
-          git push || echo "Nada para enviar"
+          # Commit com timestamp detalhado
+          TIMESTAMP=$(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')
+          git commit -m "📰 Notícias atualizadas: ${TIMESTAMP}"
+          
+          # Push com retry
+          MAX_RETRIES=3
+          RETRY_COUNT=0
+          
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            if git push origin main; then
+              echo "✅ Push realizado com sucesso!"
+              exit 0
+            else
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              echo "⚠️  Tentativa ${RETRY_COUNT} de ${MAX_RETRIES} falhou"
+              
+              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                echo "🔄 Aguardando 5 segundos antes de tentar novamente..."
+                sleep 5
+                git pull --rebase origin main
+              fi
+            fi
+          done
+          
+          echo "❌ Falha após ${MAX_RETRIES} tentativas"
+          exit 1
+
+      - name: 📊 Resumo da execução
+        if: always()
+        run: |
+          echo "═══════════════════════════════════════"
+          echo "📋 RESUMO DA EXECUÇÃO"
+          echo "═══════════════════════════════════════"
+          echo "Script executado: ${{ steps.captura.outputs.success }}"
+          echo "Mudanças detectadas: ${{ steps.verificar.outputs.has_changes }}"
+          echo "Horário: $(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')"
+          echo "═══════════════════════════════════════"
+
+      - name: 🚨 Notificar falha
+        if: failure()
+        run: |
+          echo "❌ Workflow falhou!"
+          echo "Verifique os logs acima para detalhes"
+          
+          # Mostra informações úteis para debug
+          echo ""
+          echo "🔍 Debug Info:"
+          echo "Git status: $(git status --porcelain | head -5)"
+          echo "Último commit: $(git log -1 --oneline)"
+          echo "Branch: $(git branch --show-current)"
