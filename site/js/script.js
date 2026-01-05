@@ -1885,6 +1885,140 @@ function initAcaoBusca() {
     });
 }
 
+/* ========================================
+   SISTEMA DE EXPANSÃO DE BLOCOS
+   ======================================== */
+
+/**
+ * Inicializa sistema de expansão para Notícias e Dividendos
+ */
+function initExpandSystem() {
+    // Notícias
+    const newsGrid = document.getElementById('newsGrid');
+    const newsBtn = document.getElementById('newsExpandBtn');
+    const newsText = document.getElementById('newsExpandText');
+    const newsCount = document.getElementById('newsExpandCount');
+    
+    if (newsBtn && newsGrid) {
+        newsBtn.addEventListener('click', () => {
+            toggleExpand(newsGrid, newsBtn, newsText, newsCount, 'notícias');
+        });
+    }
+    
+    // Dividendos
+    const divGrid = document.getElementById('dividendosGrid');
+    const divBtn = document.getElementById('dividendosExpandBtn');
+    const divText = document.getElementById('dividendosExpandText');
+    const divCount = document.getElementById('dividendosExpandCount');
+    
+    if (divBtn && divGrid) {
+        divBtn.addEventListener('click', () => {
+            toggleExpand(divGrid, divBtn, divText, divCount, 'dividendos');
+        });
+    }
+}
+
+/**
+ * Toggle expansão com animação suave
+ */
+function toggleExpand(grid, btn, textEl, countEl, type) {
+    const isCollapsed = grid.classList.contains('collapsed');
+    
+    if (isCollapsed) {
+        // Expandir
+        grid.classList.remove('collapsed');
+        grid.style.maxHeight = grid.scrollHeight + 'px';
+        
+        btn.classList.add('expanded');
+        textEl.textContent = `Ver menos ${type}`;
+        countEl.style.display = 'none';
+        
+        // Scroll suave para o botão
+        setTimeout(() => {
+            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 300);
+        
+    } else {
+        // Colapsar
+        grid.style.maxHeight = grid.scrollHeight + 'px';
+        
+        // Force reflow
+        grid.offsetHeight;
+        
+        grid.classList.add('collapsed');
+        grid.style.maxHeight = '';
+        
+        btn.classList.remove('expanded');
+        textEl.textContent = `Ver mais ${type}`;
+        countEl.style.display = 'inline-block';
+        
+        // Scroll para o topo da seção
+        setTimeout(() => {
+            grid.parentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+}
+
+/**
+ * Atualiza contador de itens ocultos
+ */
+function updateExpandCounter(gridId, btnId, countId) {
+    const grid = document.getElementById(gridId);
+    const btn = document.getElementById(btnId);
+    const countEl = document.getElementById(countId);
+    
+    if (!grid || !btn || !countEl) return;
+    
+    const cards = grid.children;
+    const totalCards = cards.length;
+    
+    if (totalCards <= 6) {
+        // Se tiver 6 ou menos cards, não precisa botão
+        btn.style.display = 'none';
+        grid.classList.remove('collapsed');
+        return;
+    }
+    
+    // Calcula quantos cards estão visíveis (aproximadamente 2 linhas = 6 cards em desktop)
+    const visibleCards = window.innerWidth > 768 ? 6 : 4;
+    const hiddenCards = totalCards - visibleCards;
+    
+    countEl.textContent = `+${hiddenCards}`;
+    btn.style.display = 'flex';
+}
+
+// Hook nas funções de renderização existentes
+const originalRenderNewsGrid = renderNewsGrid;
+renderNewsGrid = function(noticias) {
+    originalRenderNewsGrid(noticias);
+    setTimeout(() => {
+        updateExpandCounter('newsGrid', 'newsExpandBtn', 'newsExpandCount');
+    }, 100);
+};
+
+const originalRenderDividendosGrid = renderDividendosGrid;
+renderDividendosGrid = function(dividendos) {
+    originalRenderDividendosGrid(dividendos);
+    setTimeout(() => {
+        updateExpandCounter('dividendosGrid', 'dividendosExpandBtn', 'dividendosExpandCount');
+    }, 100);
+};
+
+// Inicializa ao carregar DOM
+document.addEventListener('DOMContentLoaded', () => {
+    initExpandSystem();
+    
+    // Recalcula ao redimensionar janela
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            updateExpandCounter('newsGrid', 'newsExpandBtn', 'newsExpandCount');
+            updateExpandCounter('dividendosGrid', 'dividendosExpandBtn', 'dividendosExpandCount');
+        }, 250);
+    });
+});
+
 // Renderiza sugestões
 function renderSuggestions(matches) {
     const suggestions = document.getElementById('searchSuggestions');
