@@ -1123,6 +1123,139 @@ body {
     }
 }
 
+/* =========================== EXPANSÃO DE BLOCOS - NOTÍCIAS E DIVIDENDOS =========================== */
+
+/* Container com limite de altura */
+.news-grid.collapsed,
+.dividendos-grid.collapsed {
+    max-height: 850px; /* ~2 linhas de cards */
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Gradiente de fade no final quando colapsado */
+.news-grid.collapsed::after,
+.dividendos-grid.collapsed::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, rgba(248, 249, 250, 0) 0%, rgba(248, 249, 250, 1) 80%);
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+/* Remove gradiente quando expandido */
+.news-grid:not(.collapsed)::after,
+.dividendos-grid:not(.collapsed)::after {
+    opacity: 0;
+}
+
+/* Botão de expansão */
+.expand-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 2rem auto 0;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, #0066cc 0%, #00b4d8 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 102, 204, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.expand-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.4);
+}
+
+.expand-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Ícone animado */
+.expand-btn i {
+    font-size: 1.2rem;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.expand-btn.expanded i {
+    transform: rotate(180deg);
+}
+
+/* Contador de itens */
+.expand-btn .count {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+/* Efeito ripple ao clicar */
+.expand-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.expand-btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Responsivo - Tablet */
+@media screen and (max-width: 768px) {
+    .news-grid.collapsed,
+    .dividendos-grid.collapsed {
+        max-height: 950px; /* Ajuste para cards em 1 coluna */
+    }
+    
+    .expand-btn {
+        width: calc(100% - 2rem);
+        max-width: 400px;
+        padding: 0.875rem 2rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Responsivo - Mobile */
+@media screen and (max-width: 480px) {
+    .news-grid.collapsed,
+    .dividendos-grid.collapsed {
+        max-height: 800px;
+    }
+    
+    .expand-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        gap: 0.5rem;
+    }
+    
+    .expand-btn .count {
+        padding: 0.2rem 0.6rem;
+        font-size: 0.8rem;
+    }
+}
+
 /* =========================== RESPONSIVE DESIGN =========================== */
 
 /* Tablet (768px - 1024px) */
