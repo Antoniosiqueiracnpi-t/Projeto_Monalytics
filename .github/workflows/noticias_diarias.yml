@@ -2,7 +2,7 @@ name: Atualização Diária de Notícias
 
 on:
   schedule:
-    - cron: '0 22 * * *'  # Todo dia às 22h UTC (19h Brasília)
+    - cron: '0 22 * * *'
   workflow_dispatch:
     inputs:
       dias:
@@ -36,6 +36,26 @@ jobs:
         run: |
           DIAS=${{ inputs.dias || '1' }}
           python src/capturar_noticias.py --modo quantidade --quantidade 0 --dias ${DIAS}
+
+      - name: 📝 Atualizar timestamp
+        run: |
+          mkdir -p site/data
+          
+          TIMESTAMP=$(date +%s)000
+          DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
+          HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
+          
+          cat > site/data/ultima_atualizacao.json << EOF
+          {
+            "timestamp": ${TIMESTAMP},
+            "data": "${DATA}",
+            "hora": "${HORA}",
+            "fonte": "noticias_diarias",
+            "versao": "1.0.0"
+          }
+          EOF
+          
+          echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
       
       - name: Commit e push
         run: |
@@ -48,5 +68,6 @@ jobs:
           fi
           
           git add balancos/*/noticias.json
+          git add site/data/ultima_atualizacao.json
           git commit -m "Notícias diárias: $(date +'%Y-%m-%d') [skip netlify]"
           git push
