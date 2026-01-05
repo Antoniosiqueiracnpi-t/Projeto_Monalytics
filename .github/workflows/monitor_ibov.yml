@@ -1,13 +1,8 @@
 name: Monitor IBOVESPA (Intraday)
 
 on:
-  # Executa segunda a sexta, 10h30-18h30 (horário de Brasília)
-  # UTC: 13h30-21h30 (Brasília -3h)
-  # A cada 30 minutos
   schedule:
     - cron: '0,30 13-21 * * 1-5'
-  
-  # Permite execução manual
   workflow_dispatch:
 
 permissions:
@@ -36,27 +31,44 @@ jobs:
         run: |
           python src/monitor_ibov.py
 
+      - name: 📝 Atualizar timestamp
+        run: |
+          mkdir -p site/data
+          
+          TIMESTAMP=$(date +%s)000
+          DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
+          HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
+          
+          cat > site/data/ultima_atualizacao.json << EOF
+          {
+            "timestamp": ${TIMESTAMP},
+            "data": "${DATA}",
+            "hora": "${HORA}",
+            "fonte": "monitor_ibov",
+            "versao": "1.0.0"
+          }
+          EOF
+          
+          echo "✅ Timestamp: ${TIMESTAMP} (${DATA} ${HORA})"
+
       - name: 💾 Commit e push
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-          # Verificar se há alterações
           if [ -z "$(git status --porcelain)" ]; then
-            echo "✅ Sem alterações para commitar"
+            echo "✅ Sem alterações"
             exit 0
           fi
 
-          # Adicionar apenas o arquivo de monitoramento
           git add balancos/IBOV/monitor_diario.json
+          git add site/data/ultima_atualizacao.json
 
-          # Verificar novamente após add
           if git diff --staged --quiet; then
             echo "✅ Sem alterações staged"
             exit 0
           fi
 
-          # Commit com timestamp
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
           git commit -m "Monitor IBOVESPA: ${TIMESTAMP} [skip netlify]"
           git push
