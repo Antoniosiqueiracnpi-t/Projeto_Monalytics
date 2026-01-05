@@ -173,9 +173,9 @@ jobs:
           
           # Criar mensagem de commit
           if [ "${{ github.event_name }}" == "schedule" ]; then
-            COMMIT_MSG="💰 Atualizar agenda completa de dividendos (automático - $(date +'%Y-%m-%d %H:%M'))"
+            COMMIT_MSG="💰 Atualizar agenda completa de dividendos (automático - $(date +'%Y-%m-%d %H:%M')) [skip netlify]"
           else
-            COMMIT_MSG="💰 Atualizar agenda completa de dividendos - ${{ github.event.inputs.modo }}"
+            COMMIT_MSG="💰 Atualizar agenda completa de dividendos - ${{ github.event.inputs.modo }} [skip netlify]"
           fi
           
           # Commit e push
