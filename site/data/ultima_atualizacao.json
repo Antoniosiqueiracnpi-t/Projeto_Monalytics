@@ -2,6 +2,7 @@
   "timestamp": 1767634227000,
   "data": "2026-01-05",
   "hora": "14:30 BRT",
-  "fonte": "monitor_ibov",
-  "versao": "1.0.0"
+  "deploy": "automatico",
+  "versao": "1.0.0",
+  "trigger": "schedule"
 }
