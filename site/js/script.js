@@ -3603,16 +3603,31 @@ function updateEmpresaInfo(ticker) {
     
     // Empresas do mesmo setor (sem duplicatas)
     const empresasUnicas = new Map();
+    
     mapeamentoB3.forEach(item => {
-        if (item.setor === empresaInfo.setor && item.empresa !== empresaInfo.empresa) {
+        // Condições:
+        // 1. Setor deve ser igual (trim e case-insensitive)
+        // 2. Empresa deve ser diferente (para não incluir a mesma)
+        // 3. Setor não pode estar vazio
+        const setorA = (empresaInfo.setor || '').trim().toLowerCase();
+        const setorB = (item.setor || '').trim().toLowerCase();
+        
+        if (
+            setorA && 
+            setorB && 
+            setorA === setorB && 
+            item.empresa !== empresaInfo.empresa
+        ) {
             if (!empresasUnicas.has(item.empresa)) {
                 empresasUnicas.set(item.empresa, item);
             }
         }
     });
     
+    console.log(`   🔍 Empresas encontradas no setor: ${empresasUnicas.size}`);
+    
     const mesmoSetor = Array.from(empresasUnicas.values())
-        .slice(0, 5)
+        .slice(0, 15)  
         .map(item => {
             const primeiroTicker = item.todosTickersStr 
                 ? item.todosTickersStr.split(';')[0].trim()
