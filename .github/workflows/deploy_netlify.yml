@@ -1,5 +1,10 @@
 name: Deploy Netlify
 
+# 👇 ADICIONA CONTROLE DE CONCORRÊNCIA
+concurrency:
+  group: netlify-deploy
+  cancel-in-progress: false  # Aguarda o anterior terminar
+
 on:
   workflow_dispatch:
   schedule:
@@ -15,6 +20,7 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0  # 👈 IMPORTANTE: Pega histórico completo
           token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: 🕐 Aguardar workflows finalizarem
@@ -54,20 +60,62 @@ jobs:
           echo "✅ Timestamp criado: ${TIMESTAMP} (${DATA} ${HORA})"
           cat site/data/ultima_atualizacao.json
       
-      - name: 💾 Commit timestamp
+      # 👇 STEP CORRIGIDO COM PULL + RETRY
+      - name: 💾 Commit e Push com Retry
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           
           git add site/data/ultima_atualizacao.json
           
+          # Verifica se há mudanças
           if git diff --staged --quiet; then
-            echo "ℹ️  Timestamp não mudou"
-          else
-            git commit -m "🕐 Atualizar timestamp de deploy [skip ci]"
-            git push
-            echo "✅ Timestamp commitado"
+            echo "ℹ️  Timestamp não mudou, nada para commitar"
+            exit 0
           fi
+          
+          # Commit
+          git commit -m "🕐 Atualizar timestamp de deploy [skip ci]"
+          echo "✅ Commit criado"
+          
+          # Push com retry (até 5 tentativas)
+          MAX_ATTEMPTS=5
+          ATTEMPT=1
+          
+          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+            echo "🔄 Tentativa $ATTEMPT de $MAX_ATTEMPTS..."
+            
+            # Pull com rebase antes de push
+            if git pull --rebase origin main; then
+              echo "✅ Pull com rebase OK"
+            else
+              echo "⚠️  Conflito no rebase, tentando resolver..."
+              git rebase --abort 2>/dev/null || true
+              git reset --hard HEAD~1
+              git pull origin main
+              git add site/data/ultima_atualizacao.json
+              git commit -m "🕐 Atualizar timestamp de deploy [skip ci]"
+            fi
+            
+            # Tenta push
+            if git push origin main; then
+              echo "✅ Push realizado com sucesso!"
+              exit 0
+            else
+              echo "❌ Push falhou na tentativa $ATTEMPT"
+              
+              if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
+                SLEEP_TIME=$((ATTEMPT * 5))
+                echo "⏳ Aguardando ${SLEEP_TIME}s antes de tentar novamente..."
+                sleep $SLEEP_TIME
+              fi
+              
+              ATTEMPT=$((ATTEMPT + 1))
+            fi
+          done
+          
+          echo "❌ Falha após $MAX_ATTEMPTS tentativas"
+          exit 1
       
       - name: 🚀 Trigger Netlify Build
         run: |
@@ -112,3 +160,4 @@ jobs:
           echo "  - Secret NETLIFY_BUILD_HOOK não configurado"
           echo "  - URL do build hook inválida"
           echo "  - Problemas de rede"
+          echo "  - Conflito no Git (após múltiplas tentativas)"
