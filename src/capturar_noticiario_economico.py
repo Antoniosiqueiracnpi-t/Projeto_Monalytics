@@ -1,24 +1,20 @@
 """
-CAPTURADOR DE NOTÍCIAS DO MERCADO FINANCEIRO
-============================================
+CAPTURADOR DE NOTÍCIAS DO MERCADO FINANCEIRO - VERSÃO MELHORADA
+==================================================================
 Janeiro 2025
 
-Agrega notícias de portais financeiros brasileiros:
-- Investing.com
-- Valor Econômico
-- InfoMoney
-- Money Times
-
-SAÍDA: balancos/NOTICIAS/noticias_mercado.json
-
-EXECUÇÃO:
-python src/capturar_noticias.py
+Melhorias:
+- Logs detalhados para debug
+- Tratamento robusto de erros
+- Validação de dados
+- Retry automático em falhas temporárias
 """
 
 from __future__ import annotations
 
 import json
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Set
@@ -31,63 +27,57 @@ import hashlib
 # Timezone Brasil
 BR_TZ = pytz.timezone('America/Sao_Paulo')
 
-# User-Agent para evitar bloqueios em RSS
+# User-Agent para evitar bloqueios
 feedparser.USER_AGENT = "Mozilla/5.0 (MonalisaResearch; +https://monalisaresearch.com)"
 
-
-# ======================================================================================
-# CONFIGURAÇÃO
-# ======================================================================================
-
+# Configuração
 OUTPUT_DIR = Path("balancos") / "NOTICIAS"
 OUTPUT_FILE = "noticias_mercado.json"
 
+# Controle de erros
+MAX_RETRIES = 3
+RETRY_DELAY = 2  # segundos
+
 
 # ======================================================================================
-# UTILITÁRIOS DE EXTRAÇÃO
+# UTILITÁRIOS
 # ======================================================================================
+
+def log(mensagem: str, nivel: str = "INFO"):
+    """Log com timestamp."""
+    agora = datetime.now(BR_TZ).strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{agora}] [{nivel}] {mensagem}")
+
 
 def normalizar_titulo(titulo: str) -> str:
-    """Normaliza título para comparação (evita duplicatas)."""
+    """Normaliza título para comparação."""
     titulo = (titulo or "").strip().lower()
     titulo = re.sub(r"\s+", " ", titulo)
     return titulo
 
+
 def gerar_id(titulo: str, link: str) -> str:
-    """Gera ID único baseado em título + link."""
+    """Gera ID único."""
     chave = f"{titulo}{link}".encode('utf-8')
     return hashlib.md5(chave).hexdigest()[:12]
 
 
 def categorizar_noticia(titulo: str) -> str:
-    """Categoriza notícia baseado em palavras-chave."""
+    """Categoriza notícia."""
     titulo_lower = titulo.lower()
     
-    # Política/Governo
-    if any(palavra in titulo_lower for palavra in ['governo', 'lula', 'congresso', 'senado', 'câmara', 'eleição', 'político']):
+    if any(palavra in titulo_lower for palavra in ['governo', 'lula', 'congresso', 'senado', 'câmara']):
         return 'Política'
-    
-    # Internacional
-    if any(palavra in titulo_lower for palavra in ['eua', 'china', 'europa', 'venezuela', 'mundial', 'internacional']):
+    if any(palavra in titulo_lower for palavra in ['eua', 'china', 'europa', 'venezuela', 'mundial']):
         return 'Internacional'
-    
-    # Commodities
-    if any(palavra in titulo_lower for palavra in ['petróleo', 'ouro', 'commodity', 'minério', 'soja', 'café']):
+    if any(palavra in titulo_lower for palavra in ['petróleo', 'ouro', 'commodity', 'minério']):
         return 'Commodities'
-    
-    # Criptomoedas
-    if any(palavra in titulo_lower for palavra in ['bitcoin', 'cripto', 'blockchain', 'ethereum']):
+    if any(palavra in titulo_lower for palavra in ['bitcoin', 'cripto', 'blockchain']):
         return 'Criptomoedas'
-    
-    # Empresas
-    if any(palavra in titulo_lower for palavra in ['empresa', 'ação', 'ações', 'lucro', 'balanço', 'resultado']):
+    if any(palavra in titulo_lower for palavra in ['empresa', 'ação', 'ações', 'lucro', 'balanço']):
         return 'Empresas'
-    
-    # Economia
-    if any(palavra in titulo_lower for palavra in ['inflação', 'juros', 'selic', 'pib', 'ipca', 'economia']):
+    if any(palavra in titulo_lower for palavra in ['inflação', 'juros', 'selic', 'pib', 'ipca']):
         return 'Economia'
-    
-    # Mercados
     if any(palavra in titulo_lower for palavra in ['bolsa', 'ibovespa', 'mercado', 'índice', 'dólar']):
         return 'Mercados'
     
@@ -95,11 +85,10 @@ def categorizar_noticia(titulo: str) -> str:
 
 
 def extrair_tags(titulo: str) -> List[str]:
-    """Extrai tags relevantes do título."""
+    """Extrai tags do título."""
     tags = []
     titulo_lower = titulo.lower()
     
-    # Tags principais
     mapa_tags = {
         'venezuela': ['Venezuela'],
         'eua': ['EUA'],
@@ -116,11 +105,11 @@ def extrair_tags(titulo: str) -> List[str]:
         if palavra in titulo_lower:
             tags.extend(tag_list)
     
-    return list(set(tags))[:5]  # Max 5 tags únicas
+    return list(set(tags))[:5]
 
 
 def gerar_resumo(titulo: str) -> str:
-    """Gera resumo curto (primeiras palavras do título)."""
+    """Gera resumo curto."""
     palavras = titulo.split()
     if len(palavras) <= 12:
         return titulo
@@ -128,8 +117,7 @@ def gerar_resumo(titulo: str) -> str:
 
 
 def extrair_imagem(entry) -> str:
-    """Extrai URL da imagem do RSS feed."""
-    # Tenta múltiplas fontes de imagem no RSS
+    """Extrai URL da imagem."""
     try:
         if hasattr(entry, "media_content") and entry.media_content:
             return entry.media_content[0].get("url", "")
@@ -160,43 +148,74 @@ def extrair_imagem(entry) -> str:
 
 
 # ======================================================================================
-# SCRAPERS POR PORTAL
+# COLETOR GENÉRICO COM RETRY
 # ======================================================================================
 
-def coletar_investing(limite: int, titulos_usados: Set[str]) -> List[Dict]:
-    """Coleta notícias do Investing.com."""
-    feeds = [
-        "https://br.investing.com/rss/news.rss",
-        "https://br.investing.com/rss/news_285.rss",  # Mercados
-        "https://br.investing.com/rss/news_95.rss",   # Análises
-    ]
-    
+def coletar_feed_com_retry(
+    nome_portal: str,
+    feed_urls: List[str],
+    limite: int,
+    titulos_usados: Set[str],
+    logo_fallback: str = ""
+) -> List[Dict]:
+    """
+    Coleta notícias de um portal com retry automático.
+    """
     todas_entradas = []
     
-    for feed_url in feeds:
-        try:
-            feed = feedparser.parse(feed_url)
-            for entry in getattr(feed, "entries", []) or []:
-                try:
-                    # Parsear timestamp
-                    if hasattr(entry, "published_parsed"):
-                        dt_utc = datetime(*entry.published_parsed[:6], tzinfo=pytz.utc)
-                        entry.dt_local = dt_utc.astimezone(BR_TZ)
-                    else:
-                        entry.dt_local = datetime.now(BR_TZ)
-                except:
-                    entry.dt_local = datetime.now(BR_TZ)
+    for feed_url in feed_urls:
+        for tentativa in range(MAX_RETRIES):
+            try:
+                log(f"Tentando {nome_portal} ({feed_url})... tentativa {tentativa + 1}/{MAX_RETRIES}")
                 
-                todas_entradas.append(entry)
-        except Exception as e:
-            print(f"⚠️  Erro no feed Investing {feed_url}: {e}")
-            continue
+                feed = feedparser.parse(
+                    feed_url,
+                    request_headers={
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                        "Accept": "application/rss+xml, application/xml;q=0.9,*/*;q=0.8",
+                    }
+                )
+                
+                # Verifica se feed tem dados
+                if not hasattr(feed, "entries") or not feed.entries:
+                    log(f"Feed vazio: {feed_url}", "WARN")
+                    break
+                
+                log(f"✅ Feed carregado: {len(feed.entries)} entradas brutas")
+                
+                # Processa entradas
+                for entry in feed.entries:
+                    try:
+                        if hasattr(entry, "published_parsed") and entry.published_parsed:
+                            dt_utc = datetime(*entry.published_parsed[:6], tzinfo=pytz.utc)
+                            entry.dt_local = dt_utc.astimezone(BR_TZ)
+                        else:
+                            entry.dt_local = datetime.now(BR_TZ)
+                    except Exception as e:
+                        log(f"Erro ao parsear data: {e}", "WARN")
+                        entry.dt_local = datetime.now(BR_TZ)
+                    
+                    todas_entradas.append(entry)
+                
+                # Sucesso - não precisa de retry
+                break
+                
+            except Exception as e:
+                log(f"❌ Erro no feed {feed_url}: {e}", "ERROR")
+                
+                if tentativa < MAX_RETRIES - 1:
+                    log(f"⏳ Aguardando {RETRY_DELAY}s antes de tentar novamente...", "WARN")
+                    time.sleep(RETRY_DELAY)
+                else:
+                    log(f"❌ Falha após {MAX_RETRIES} tentativas", "ERROR")
     
     if not todas_entradas:
+        log(f"❌ Nenhuma entrada coletada de {nome_portal}", "ERROR")
         return []
     
-    # Ordenar por data (mais recentes primeiro)
+    # Ordenar por data
     todas_entradas.sort(key=lambda x: x.dt_local, reverse=True)
+    log(f"📊 Total de entradas após ordenação: {len(todas_entradas)}")
     
     # Extrair notícias únicas
     noticias = []
@@ -215,7 +234,7 @@ def coletar_investing(limite: int, titulos_usados: Set[str]) -> List[Dict]:
             
             link = entry.link
             horario = entry.dt_local.strftime("%H:%M")
-            imagem = extrair_imagem(entry)
+            imagem = extrair_imagem(entry) or logo_fallback
             
             titulos_locais.add(titulo_norm)
             titulos_usados.add(titulo_norm)
@@ -229,226 +248,13 @@ def coletar_investing(limite: int, titulos_usados: Set[str]) -> List[Dict]:
                 "categoria": categorizar_noticia(titulo),
                 "tags": extrair_tags(titulo),
                 "resumo": gerar_resumo(titulo),
-                "fonte": "Investing.com"
+                "fonte": nome_portal
             })
-        except:
-            continue
-    
-    return noticias
-
-
-def coletar_valor(limite: int, titulos_usados: Set[str]) -> List[Dict]:
-    """Coleta notícias do Valor Econômico."""
-    feeds = [
-        "https://valor.globo.com/rss/ultimas/",
-        "https://pox.globo.com/rss/valor",
-    ]
-    
-    todas_entradas = []
-    
-    for feed_url in feeds:
-        try:
-            feed = feedparser.parse(
-                feed_url,
-                request_headers={
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-                    "Accept": "application/rss+xml, application/xml;q=0.9,*/*;q=0.8",
-                }
-            )
-            
-            for entry in getattr(feed, "entries", []) or []:
-                try:
-                    if hasattr(entry, "published_parsed") and entry.published_parsed:
-                        dt_utc = datetime(*entry.published_parsed[:6], tzinfo=pytz.utc)
-                        entry.dt_local = dt_utc.astimezone(BR_TZ)
-                    else:
-                        entry.dt_local = datetime.now(BR_TZ)
-                except:
-                    entry.dt_local = datetime.now(BR_TZ)
-                
-                todas_entradas.append(entry)
         except Exception as e:
-            print(f"⚠️  Erro no feed Valor {feed_url}: {e}")
+            log(f"Erro ao processar entrada: {e}", "WARN")
             continue
     
-    if not todas_entradas:
-        return []
-    
-    todas_entradas.sort(key=lambda x: x.dt_local, reverse=True)
-    
-    noticias = []
-    titulos_locais = set()
-    
-    for entry in todas_entradas:
-        if len(noticias) >= limite:
-            break
-        
-        try:
-            titulo = (entry.title or "").strip().replace("[", "").replace("]", "")
-            titulo_norm = normalizar_titulo(titulo)
-            
-            if not titulo_norm or titulo_norm in titulos_locais or titulo_norm in titulos_usados:
-                continue
-            
-            link = entry.link
-            horario = entry.dt_local.strftime("%H:%M")
-            imagem = extrair_imagem(entry)
-            
-            titulos_locais.add(titulo_norm)
-            titulos_usados.add(titulo_norm)
-            
-            noticias.append({
-                "id": gerar_id(titulo, link),
-                "titulo": titulo,
-                "link": link,
-                "horario": horario,
-                "imagem": imagem,
-                "categoria": categorizar_noticia(titulo),
-                "tags": extrair_tags(titulo),
-                "resumo": gerar_resumo(titulo),
-                "fonte": "Valor Econômico"
-            })
-        except:
-            continue
-    
-    return noticias
-
-
-def coletar_infomoney(limite: int, titulos_usados: Set[str]) -> List[Dict]:
-    """Coleta notícias do InfoMoney."""
-    feeds = ["https://www.infomoney.com.br/feed/"]
-    
-    todas_entradas = []
-    
-    for feed_url in feeds:
-        try:
-            feed = feedparser.parse(feed_url)
-            for entry in getattr(feed, "entries", []) or []:
-                try:
-                    if hasattr(entry, "published_parsed"):
-                        dt_utc = datetime(*entry.published_parsed[:6], tzinfo=pytz.utc)
-                        entry.dt_local = dt_utc.astimezone(BR_TZ)
-                    else:
-                        entry.dt_local = datetime.now(BR_TZ)
-                except:
-                    entry.dt_local = datetime.now(BR_TZ)
-                
-                todas_entradas.append(entry)
-        except Exception as e:
-            print(f"⚠️  Erro no feed InfoMoney: {e}")
-            continue
-    
-    if not todas_entradas:
-        return []
-    
-    todas_entradas.sort(key=lambda x: x.dt_local, reverse=True)
-    
-    noticias = []
-    titulos_locais = set()
-    
-    for entry in todas_entradas:
-        if len(noticias) >= limite:
-            break
-        
-        try:
-            titulo = (entry.title or "").strip().replace("[", "").replace("]", "")
-            titulo_norm = normalizar_titulo(titulo)
-            
-            if not titulo_norm or titulo_norm in titulos_locais or titulo_norm in titulos_usados:
-                continue
-            
-            link = entry.link
-            horario = entry.dt_local.strftime("%H:%M")
-            imagem = extrair_imagem(entry)
-            
-            titulos_locais.add(titulo_norm)
-            titulos_usados.add(titulo_norm)
-            
-            noticias.append({
-                "id": gerar_id(titulo, link),
-                "titulo": titulo,
-                "link": link,
-                "horario": horario,
-                "imagem": imagem,
-                "categoria": categorizar_noticia(titulo),
-                "tags": extrair_tags(titulo),
-                "resumo": gerar_resumo(titulo),
-                "fonte": "InfoMoney"
-            })
-        except:
-            continue
-    
-    return noticias
-
-
-def coletar_moneytimes(limite: int, titulos_usados: Set[str]) -> List[Dict]:
-    """Coleta notícias do Money Times."""
-    feeds = ["https://www.moneytimes.com.br/feed/"]
-    
-    todas_entradas = []
-    
-    for feed_url in feeds:
-        try:
-            feed = feedparser.parse(feed_url)
-            for entry in getattr(feed, "entries", []) or []:
-                try:
-                    if hasattr(entry, "published_parsed"):
-                        dt_utc = datetime(*entry.published_parsed[:6], tzinfo=pytz.utc)
-                        entry.dt_local = dt_utc.astimezone(BR_TZ)
-                    else:
-                        entry.dt_local = datetime.now(BR_TZ)
-                except:
-                    entry.dt_local = datetime.now(BR_TZ)
-                
-                todas_entradas.append(entry)
-        except Exception as e:
-            print(f"⚠️  Erro no feed Money Times: {e}")
-            continue
-    
-    if not todas_entradas:
-        return []
-    
-    todas_entradas.sort(key=lambda x: x.dt_local, reverse=True)
-    
-    noticias = []
-    titulos_locais = set()
-    
-    for entry in todas_entradas:
-        if len(noticias) >= limite:
-            break
-        
-        try:
-            titulo = (entry.title or "").strip().replace("[", "").replace("]", "")
-            titulo_norm = normalizar_titulo(titulo)
-            
-            if not titulo_norm or titulo_norm in titulos_locais or titulo_norm in titulos_usados:
-                continue
-            
-            link = entry.link
-            horario = entry.dt_local.strftime("%H:%M")
-            imagem = extrair_imagem(entry)
-            
-            titulos_locais.add(titulo_norm)
-            titulos_usados.add(titulo_norm)
-            
-            # Fallback para imagem vazia no Money Times
-            if not imagem:
-                imagem = "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png"
-            
-            noticias.append({
-                "id": gerar_id(titulo, link),
-                "titulo": titulo,
-                "link": link,
-                "horario": horario,
-                "imagem": imagem,
-                "categoria": categorizar_noticia(titulo),
-                "tags": extrair_tags(titulo),
-                "resumo": gerar_resumo(titulo),
-                "fonte": "Money Times"
-            })
-        except:
-            continue
-    
+    log(f"✅ {nome_portal}: {len(noticias)} notícias extraídas")
     return noticias
 
 
@@ -457,55 +263,81 @@ def coletar_moneytimes(limite: int, titulos_usados: Set[str]) -> List[Dict]:
 # ======================================================================================
 
 def agregar_noticias() -> Dict:
-    """
-    Agrega notícias de todos os portais.
-    
-    Returns:
-        {
-            'ultima_atualizacao': str,
-            'total_noticias': int,
-            'portais': {
-                'Investing.com': [...],
-                'Valor Econômico': [...],
-                ...
-            }
-        }
-    """
-    print(f"\n{'='*70}")
-    print(f"📰 CAPTURANDO NOTÍCIAS DO MERCADO")
-    print(f"{'='*70}\n")
+    """Agrega notícias de todos os portais."""
+    log("="*70)
+    log("📰 INICIANDO CAPTURA DE NOTÍCIAS DO MERCADO")
+    log("="*70)
     
     titulos_usados = set()
     portais_noticias = {}
     total = 0
     
-    # Configuração: (Nome Portal, Função Coleta, Limite)
+    # Configuração de portais
     configuracao = [
-        ("Investing.com", coletar_investing, 5),
-        ("Valor Econômico", coletar_valor, 4),
-        ("InfoMoney", coletar_infomoney, 4),
-        ("Money Times", coletar_moneytimes, 4),
+        {
+            "nome": "Investing.com",
+            "feeds": [
+                "https://br.investing.com/rss/news.rss",
+                "https://br.investing.com/rss/news_285.rss",
+                "https://br.investing.com/rss/news_95.rss",
+            ],
+            "limite": 5,
+            "logo": ""
+        },
+        {
+            "nome": "Valor Econômico",
+            "feeds": [
+                "https://valor.globo.com/rss/ultimas/",
+                "https://pox.globo.com/rss/valor",
+            ],
+            "limite": 4,
+            "logo": ""
+        },
+        {
+            "nome": "InfoMoney",
+            "feeds": ["https://www.infomoney.com.br/feed/"],
+            "limite": 4,
+            "logo": ""
+        },
+        {
+            "nome": "Money Times",
+            "feeds": ["https://www.moneytimes.com.br/feed/"],
+            "limite": 4,
+            "logo": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png"
+        },
     ]
     
-    for nome_portal, funcao_coleta, limite in configuracao:
-        print(f"Coletando {nome_portal}...", end=" ")
+    # Coleta de cada portal
+    for config in configuracao:
+        log(f"\n🔄 Processando {config['nome']}...")
         
         try:
-            noticias = funcao_coleta(limite, titulos_usados)
+            noticias = coletar_feed_com_retry(
+                nome_portal=config['nome'],
+                feed_urls=config['feeds'],
+                limite=config['limite'],
+                titulos_usados=titulos_usados,
+                logo_fallback=config['logo']
+            )
             
             if noticias:
-                portais_noticias[nome_portal] = noticias
+                portais_noticias[config['nome']] = noticias
                 total += len(noticias)
-                print(f"✅ {len(noticias)} notícias")
+                log(f"✅ {config['nome']}: {len(noticias)} notícias adicionadas")
             else:
-                print("⚠️  sem dados")
+                log(f"⚠️  {config['nome']}: Nenhuma notícia coletada", "WARN")
+                
         except Exception as e:
-            print(f"❌ erro: {e}")
+            log(f"❌ Erro crítico em {config['nome']}: {e}", "ERROR")
             continue
     
-    print(f"\n{'='*70}")
-    print(f"Total de notícias: {total}")
-    print(f"{'='*70}\n")
+    log("\n" + "="*70)
+    log(f"📊 TOTAL CAPTURADO: {total} notícias de {len(portais_noticias)} portais")
+    log("="*70)
+    
+    if total == 0:
+        log("❌ ALERTA: Nenhuma notícia foi capturada!", "ERROR")
+        raise Exception("Falha total na captura de notícias")
     
     return {
         'ultima_atualizacao': datetime.now(BR_TZ).isoformat(),
@@ -521,18 +353,26 @@ def agregar_noticias() -> Dict:
 def salvar_noticias(dados: Dict) -> bool:
     """Salva notícias em JSON."""
     try:
-        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+        log(f"💾 Salvando dados em {OUTPUT_DIR / OUTPUT_FILE}...")
         
+        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
         arquivo = OUTPUT_DIR / OUTPUT_FILE
         
+        # Salva com indentação bonita
         with open(arquivo, 'w', encoding='utf-8') as f:
             json.dump(dados, f, ensure_ascii=False, indent=2)
         
-        print(f"✅ Arquivo salvo: {arquivo}")
+        # Verifica se arquivo foi criado
+        if not arquivo.exists():
+            raise Exception("Arquivo não foi criado!")
+        
+        tamanho = arquivo.stat().st_size
+        log(f"✅ Arquivo salvo com sucesso! Tamanho: {tamanho} bytes")
+        
         return True
         
     except Exception as e:
-        print(f"❌ Erro ao salvar: {e}")
+        log(f"❌ Erro ao salvar arquivo: {e}", "ERROR")
         return False
 
 
@@ -541,26 +381,24 @@ def salvar_noticias(dados: Dict) -> bool:
 # ======================================================================================
 
 def exibir_resumo(dados: Dict):
-    """Exibe resumo das notícias capturadas."""
-    print(f"\n{'='*70}")
-    print(f"📋 RESUMO DAS NOTÍCIAS")
-    print(f"{'='*70}")
+    """Exibe resumo das notícias."""
+    log("\n" + "="*70)
+    log("📋 RESUMO DAS NOTÍCIAS CAPTURADAS")
+    log("="*70)
     
     total = dados.get('total_noticias', 0)
-    print(f"Total capturado: {total} notícias")
-    print()
+    log(f"Total: {total} notícias")
     
     portais = dados.get('portais', {})
     
     for nome_portal, noticias in portais.items():
-        print(f"{nome_portal}: {len(noticias)} notícias")
-        for i, noticia in enumerate(noticias[:2], 1):  # Mostra só as 2 primeiras
-            print(f"  {i}. [{noticia['horario']}] {noticia['titulo'][:60]}...")
-        if len(noticias) > 2:
-            print(f"  ... e mais {len(noticias) - 2}")
-        print()
+        log(f"\n{nome_portal}: {len(noticias)} notícias")
+        for i, noticia in enumerate(noticias[:3], 1):
+            log(f"  {i}. [{noticia['horario']}] {noticia['titulo'][:70]}...")
+        if len(noticias) > 3:
+            log(f"  ... e mais {len(noticias) - 3}")
     
-    print(f"{'='*70}\n")
+    log("\n" + "="*70)
 
 
 # ======================================================================================
@@ -568,21 +406,42 @@ def exibir_resumo(dados: Dict):
 # ======================================================================================
 
 def main():
+    """Função principal com tratamento de erros."""
+    codigo_saida = 0
+    
     try:
-        # Importar feedparser aqui para verificar se está instalado
-        import feedparser
-    except ImportError:
-        print("❌ feedparser não instalado: pip install feedparser")
-        return
+        log("🚀 INICIANDO SCRIPT DE CAPTURA DE NOTÍCIAS")
+        log(f"Horário: {datetime.now(BR_TZ).strftime('%Y-%m-%d %H:%M:%S %Z')}")
+        
+        # Verifica dependências
+        try:
+            import feedparser
+            log(f"✅ feedparser versão: {feedparser.__version__}")
+        except ImportError:
+            log("❌ feedparser não instalado!", "ERROR")
+            log("Execute: pip install feedparser", "ERROR")
+            sys.exit(1)
+        
+        # Agregar notícias
+        dados = agregar_noticias()
+        
+        # Exibir resumo
+        exibir_resumo(dados)
+        
+        # Salvar
+        if not salvar_noticias(dados):
+            raise Exception("Falha ao salvar arquivo")
+        
+        log("\n✅ SCRIPT FINALIZADO COM SUCESSO!")
+        
+    except Exception as e:
+        log(f"\n❌ ERRO FATAL: {e}", "ERROR")
+        log("Script abortado devido a erro crítico", "ERROR")
+        codigo_saida = 1
     
-    # Agregar notícias
-    dados = agregar_noticias()
-    
-    # Exibir resumo
-    exibir_resumo(dados)
-    
-    # Salvar
-    salvar_noticias(dados)
+    finally:
+        log(f"Código de saída: {codigo_saida}")
+        sys.exit(codigo_saida)
 
 
 if __name__ == "__main__":
