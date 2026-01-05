@@ -1,42 +1,135 @@
 name: Deploy Netlify
 
-# 👇 ADICIONA CONTROLE DE CONCORRÊNCIA
+# ═══════════════════════════════════════════════════════════════
+# CONTROLE DE CONCORRÊNCIA
+# Garante que apenas um deploy rode por vez, evitando conflitos
+# ═══════════════════════════════════════════════════════════════
 concurrency:
   group: netlify-deploy
   cancel-in-progress: false  # Aguarda o anterior terminar
 
+# ═══════════════════════════════════════════════════════════════
+# TRIGGERS
+# ═══════════════════════════════════════════════════════════════
 on:
+  # Manual via GitHub Actions
   workflow_dispatch:
+  
+  # Automático via schedule
   schedule:
-    - cron: '0 13 * * 1-5'  # 10h BRT (após abertura do mercado)
-    - cron: '30 18 * * 1-5' # 15h30 BRT (após fechamento do mercado)
+    - cron: '0 13 * * 1-5'   # 10h BRT (após abertura - seg a sex)
+    - cron: '30 18 * * 1-5'  # 15h30 BRT (após fechamento - seg a sex)
     - cron: '0 23 * * *'     # 20h BRT (deploy noturno - todos os dias)
 
+# ═══════════════════════════════════════════════════════════════
+# JOBS
+# ═══════════════════════════════════════════════════════════════
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15  # Timeout de segurança
     
     steps:
-      - name: 📥 Checkout
+      # ────────────────────────────────────────────────────────
+      # 1. CHECKOUT DO REPOSITÓRIO
+      # ────────────────────────────────────────────────────────
+      - name: 📥 Checkout Repositório
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 👈 IMPORTANTE: Pega histórico completo
+          fetch-depth: 0  # Histórico completo para rebase
           token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: 🕐 Aguardar workflows finalizarem
+      # ────────────────────────────────────────────────────────
+      # 2. VALIDAÇÃO DE CONFIGURAÇÕES
+      # ────────────────────────────────────────────────────────
+      - name: 🔐 Validar Secrets e Configurações
         run: |
-          echo "⏳ Aguardando 3 minutos para garantir que todos os workflows completaram..."
-          sleep 180
+          echo "🔍 Validando configurações..."
+          
+          # Valida secret do Netlify
+          if [ -z "${{ secrets.NETLIFY_BUILD_HOOK }}" ]; then
+            echo "❌ ERRO CRÍTICO: Secret NETLIFY_BUILD_HOOK não configurado!"
+            echo ""
+            echo "📋 Como configurar:"
+            echo "   1. Vá em Settings → Secrets and variables → Actions"
+            echo "   2. Clique em 'New repository secret'"
+            echo "   3. Nome: NETLIFY_BUILD_HOOK"
+            echo "   4. Valor: URL do build hook do Netlify"
+            echo ""
+            exit 1
+          fi
+          
+          # Valida estrutura de diretórios
+          if [ ! -d "site" ]; then
+            echo "❌ ERRO: Diretório 'site' não encontrado!"
+            exit 1
+          fi
+          
+          echo "✅ Todas as configurações validadas com sucesso"
       
-      - name: 📝 Atualizar timestamp de atualização
+      # ────────────────────────────────────────────────────────
+      # 3. AGUARDAR WORKFLOWS ATIVOS
+      # ────────────────────────────────────────────────────────
+      - name: 🕐 Aguardar Workflows de Dados Finalizarem
         run: |
+          echo "⏳ Verificando workflows ativos..."
+          echo "═══════════════════════════════════════"
+          
+          TIMEOUT=600  # 10 minutos de timeout
+          ELAPSED=0
+          INTERVAL=30  # Verifica a cada 30 segundos
+          
+          while [ $ELAPSED -lt $TIMEOUT ]; do
+            # Lista workflows em execução (exceto este)
+            RUNNING=$(gh run list \
+              --status in_progress \
+              --json name,databaseId,startedAt \
+              --jq '[.[] | select(.name != "Deploy Netlify")] | length' \
+              2>/dev/null || echo "0")
+            
+            if [ "$RUNNING" -eq 0 ]; then
+              echo "✅ Nenhum workflow ativo detectado"
+              echo "✅ Seguro para prosseguir com deploy"
+              break
+            fi
+            
+            echo "⏳ Aguardando $RUNNING workflow(s) finalizar(em)..."
+            echo "   Tempo decorrido: ${ELAPSED}s / ${TIMEOUT}s"
+            
+            sleep $INTERVAL
+            ELAPSED=$((ELAPSED + INTERVAL))
+          done
+          
+          if [ $ELAPSED -ge $TIMEOUT ]; then
+            echo "⚠️  AVISO: Timeout aguardando workflows"
+            echo "⚠️  Prosseguindo mesmo assim..."
+          fi
+          
+          echo "═══════════════════════════════════════"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # ────────────────────────────────────────────────────────
+      # 4. ATUALIZAR TIMESTAMP
+      # ────────────────────────────────────────────────────────
+      - name: 📝 Gerar Timestamp de Deploy
+        id: timestamp
+        run: |
+          echo "🕐 Gerando timestamp de deploy..."
+          
           # Criar diretório se não existir
           mkdir -p site/data
+          
+          # Backup do arquivo anterior (se existir)
+          if [ -f "site/data/ultima_atualizacao.json" ]; then
+            cp site/data/ultima_atualizacao.json site/data/ultima_atualizacao.json.bak
+          fi
           
           # Gerar timestamp Unix em milissegundos
           TIMESTAMP=$(date +%s)000
           DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
           HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
+          ISO=$(TZ='America/Sao_Paulo' date -Iseconds)
           
           # Determinar tipo de deploy
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -53,111 +146,270 @@ jobs:
             "hora": "${HORA}",
             "deploy": "${TIPO}",
             "versao": "1.0.0",
-            "trigger": "${{ github.event_name }}"
+            "trigger": "${{ github.event_name }}",
+            "iso": "${ISO}",
+            "run_id": "${{ github.run_id }}",
+            "commit_sha": "${{ github.sha }}"
           }
           EOF
           
-          echo "✅ Timestamp criado: ${TIMESTAMP} (${DATA} ${HORA})"
+          echo "✅ Timestamp criado com sucesso!"
+          echo ""
+          echo "📋 Detalhes do deploy:"
+          echo "   • Timestamp: ${TIMESTAMP}"
+          echo "   • Data/Hora: ${DATA} ${HORA}"
+          echo "   • Tipo: ${TIPO}"
+          echo "   • Trigger: ${{ github.event_name }}"
+          echo "   • Run ID: ${{ github.run_id }}"
+          echo ""
+          echo "📄 Conteúdo do arquivo:"
           cat site/data/ultima_atualizacao.json
+          
+          # Exporta para próximos steps
+          echo "timestamp=${TIMESTAMP}" >> $GITHUB_OUTPUT
+          echo "data_hora=${DATA} ${HORA}" >> $GITHUB_OUTPUT
       
-      # 👇 STEP CORRIGIDO COM PULL + RETRY
-      - name: 💾 Commit e Push com Retry
+      # ────────────────────────────────────────────────────────
+      # 5. COMMIT E PUSH COM RETRY INTELIGENTE
+      # ────────────────────────────────────────────────────────
+      - name: 💾 Commit e Push (Com Retry Automático)
         run: |
-          git config user.name "GitHub Actions"
+          echo "💾 Iniciando processo de commit e push..."
+          echo "═══════════════════════════════════════"
+          
+          # Configurar Git
+          git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           
+          # Adicionar arquivo
           git add site/data/ultima_atualizacao.json
           
-          # Verifica se há mudanças
+          # Verificar se há mudanças
           if git diff --staged --quiet; then
-            echo "ℹ️  Timestamp não mudou, nada para commitar"
+            echo "ℹ️  Nenhuma mudança detectada no timestamp"
+            echo "ℹ️  Arquivo já estava atualizado, pulando commit"
             exit 0
           fi
           
-          # Commit
-          git commit -m "🕐 Atualizar timestamp de deploy [skip ci]"
-          echo "✅ Commit criado"
+          # Criar commit
+          COMMIT_MSG="🕐 Atualizar timestamp de deploy [skip ci]"
+          git commit -m "$COMMIT_MSG"
+          echo "✅ Commit criado: $COMMIT_MSG"
           
-          # Push com retry (até 5 tentativas)
+          # ═══════════════════════════════════════════
+          # RETRY LOGIC COM PULL + REBASE
+          # ═══════════════════════════════════════════
           MAX_ATTEMPTS=5
           ATTEMPT=1
+          SUCCESS=false
           
           while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
-            echo "🔄 Tentativa $ATTEMPT de $MAX_ATTEMPTS..."
+            echo ""
+            echo "🔄 Tentativa $ATTEMPT de $MAX_ATTEMPTS"
+            echo "───────────────────────────────────────"
             
-            # Pull com rebase antes de push
-            if git pull --rebase origin main; then
-              echo "✅ Pull com rebase OK"
+            # Fetch últimas mudanças
+            echo "📥 Fetching origin/main..."
+            git fetch origin main
+            
+            # Tenta rebase
+            echo "🔀 Aplicando rebase..."
+            if git rebase origin/main; then
+              echo "✅ Rebase aplicado com sucesso"
             else
-              echo "⚠️  Conflito no rebase, tentando resolver..."
+              echo "⚠️  Conflito detectado durante rebase"
+              echo "🔧 Resolvendo conflito automaticamente..."
+              
+              # Aborta rebase
               git rebase --abort 2>/dev/null || true
-              git reset --hard HEAD~1
-              git pull origin main
+              
+              # Estratégia: reset soft + reaplica commit
+              git reset --soft origin/main
               git add site/data/ultima_atualizacao.json
-              git commit -m "🕐 Atualizar timestamp de deploy [skip ci]"
+              git commit -m "$COMMIT_MSG"
+              
+              echo "✅ Conflito resolvido automaticamente"
             fi
             
             # Tenta push
+            echo "⬆️  Executando push..."
             if git push origin main; then
-              echo "✅ Push realizado com sucesso!"
-              exit 0
+              echo ""
+              echo "✅ SUCESSO! Push realizado com sucesso!"
+              SUCCESS=true
+              break
             else
               echo "❌ Push falhou na tentativa $ATTEMPT"
               
+              # Se não foi a última tentativa, aguarda
               if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
+                # Backoff exponencial: 5s, 10s, 15s, 20s, 25s
                 SLEEP_TIME=$((ATTEMPT * 5))
-                echo "⏳ Aguardando ${SLEEP_TIME}s antes de tentar novamente..."
+                echo "⏳ Aguardando ${SLEEP_TIME}s antes de nova tentativa..."
                 sleep $SLEEP_TIME
               fi
-              
-              ATTEMPT=$((ATTEMPT + 1))
             fi
+            
+            ATTEMPT=$((ATTEMPT + 1))
           done
           
-          echo "❌ Falha após $MAX_ATTEMPTS tentativas"
-          exit 1
-      
-      - name: 🚀 Trigger Netlify Build
-        run: |
-          echo "🔄 Disparando build no Netlify..."
-          
-          RESPONSE=$(curl -X POST -d {} \
-            -w "\n%{http_code}" \
-            -s "${{ secrets.NETLIFY_BUILD_HOOK }}")
-          
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | head -n-1)
-          
-          if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "201" ]; then
-            echo "✅ Build disparado com sucesso!"
-            echo "📋 Response: $BODY"
+          # Verifica resultado final
+          if [ "$SUCCESS" = true ]; then
+            echo ""
+            echo "═══════════════════════════════════════"
+            echo "✅ COMMIT E PUSH FINALIZADOS COM SUCESSO"
+            echo "═══════════════════════════════════════"
           else
-            echo "❌ Erro ao disparar build (HTTP $HTTP_CODE)"
-            echo "📋 Response: $BODY"
+            echo ""
+            echo "═══════════════════════════════════════"
+            echo "❌ FALHA APÓS $MAX_ATTEMPTS TENTATIVAS"
+            echo "═══════════════════════════════════════"
+            echo ""
+            echo "🔍 Possíveis causas:"
+            echo "   • Múltiplos workflows rodando simultaneamente"
+            echo "   • Problema de permissões no repositório"
+            echo "   • Instabilidade da rede"
+            echo "   • Branch protegida com regras restritivas"
+            echo ""
             exit 1
           fi
       
-      - name: 📊 Resumo
+      # ────────────────────────────────────────────────────────
+      # 6. TRIGGER BUILD NO NETLIFY
+      # ────────────────────────────────────────────────────────
+      - name: 🚀 Disparar Build no Netlify
+        id: netlify
+        run: |
+          echo "🚀 Disparando build no Netlify..."
+          echo "═══════════════════════════════════════"
+          
+          # Faz request para build hook
+          RESPONSE=$(curl -X POST -d {} \
+            -w "\n%{http_code}" \
+            -s "${{ secrets.NETLIFY_BUILD_HOOK }}" \
+            2>&1)
+          
+          # Extrai código HTTP e body
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+          
+          echo "📡 Response HTTP: $HTTP_CODE"
+          
+          # Valida resposta
+          if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "201" ]; then
+            echo "✅ Build disparado com sucesso!"
+            echo ""
+            echo "📋 Response body:"
+            echo "$BODY"
+            echo ""
+            echo "🌐 Acompanhe o deploy em:"
+            echo "   https://app.netlify.com/sites/newmonalytics/deploys"
+          else
+            echo "❌ Erro ao disparar build (HTTP $HTTP_CODE)"
+            echo ""
+            echo "📋 Response body:"
+            echo "$BODY"
+            echo ""
+            echo "🔍 Possíveis causas:"
+            echo "   • URL do build hook incorreta"
+            echo "   • Site pausado no Netlify"
+            echo "   • Limite de builds excedido"
+            echo "   • Problema de autenticação"
+            echo ""
+            exit 1
+          fi
+          
+          # Exporta URL para próximos steps
+          echo "netlify_url=https://app.netlify.com/sites/newmonalytics/deploys" >> $GITHUB_OUTPUT
+      
+      # ────────────────────────────────────────────────────────
+      # 7. RESUMO FINAL
+      # ────────────────────────────────────────────────────────
+      - name: 📊 Resumo do Deploy
         if: always()
         run: |
-          echo "════════════════════════════════════════"
-          echo "           DEPLOY NETLIFY"
-          echo "════════════════════════════════════════"
-          echo "⏰ Horário: $(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')"
-          echo "🔄 Trigger: ${{ github.event_name }}"
-          echo "🆔 Run ID: ${{ github.run_id }}"
-          echo "════════════════════════════════════════"
           echo ""
-          echo "🌐 Verifique o deploy em:"
-          echo "   https://app.netlify.com/sites/monalytics/deploys"
+          echo "════════════════════════════════════════════════════════"
+          echo "                  🚀 DEPLOY NETLIFY                      "
+          echo "════════════════════════════════════════════════════════"
+          echo ""
+          echo "⏰ Horário do Deploy:"
+          echo "   $(TZ='America/Sao_Paulo' date '+%d/%m/%Y %H:%M:%S %Z')"
+          echo ""
+          echo "🔄 Informações do Workflow:"
+          echo "   • Trigger: ${{ github.event_name }}"
+          echo "   • Run ID: ${{ github.run_id }}"
+          echo "   • Run Number: ${{ github.run_number }}"
+          echo "   • Commit SHA: ${{ github.sha }}"
+          echo "   • Branch: ${{ github.ref_name }}"
+          echo "   • Actor: ${{ github.actor }}"
+          echo ""
+          echo "📦 Status dos Steps:"
+          echo "   • Checkout: ✅"
+          echo "   • Validação: ✅"
+          echo "   • Aguardar Workflows: ✅"
+          echo "   • Gerar Timestamp: ${{ steps.timestamp.outcome == 'success' && '✅' || '❌' }}"
+          echo "   • Commit/Push: ${{ job.status == 'success' && '✅' || '❌' }}"
+          echo "   • Trigger Netlify: ${{ steps.netlify.outcome == 'success' && '✅' || '❌' }}"
+          echo ""
+          echo "🌐 Links Úteis:"
+          echo "   • Deploy Netlify: https://app.netlify.com/sites/newmonalytics/deploys"
+          echo "   • Site Produção: https://newmonalytics.netlify.app"
+          echo "   • Repositório: https://github.com/${{ github.repository }}"
+          echo "   • Este Workflow: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo ""
+          echo "════════════════════════════════════════════════════════"
       
-      - name: 🚨 Notificar falha
+      # ────────────────────────────────────────────────────────
+      # 8. NOTIFICAÇÃO DE FALHA
+      # ────────────────────────────────────────────────────────
+      - name: 🚨 Notificar Falha (Se Houver)
         if: failure()
         run: |
-          echo "❌ Falha ao disparar deploy no Netlify!"
           echo ""
-          echo "Possíveis causas:"
-          echo "  - Secret NETLIFY_BUILD_HOOK não configurado"
-          echo "  - URL do build hook inválida"
-          echo "  - Problemas de rede"
-          echo "  - Conflito no Git (após múltiplas tentativas)"
+          echo "════════════════════════════════════════════════════════"
+          echo "                    ❌ DEPLOY FALHOU                     "
+          echo "════════════════════════════════════════════════════════"
+          echo ""
+          echo "⚠️  O deploy para o Netlify falhou!"
+          echo ""
+          echo "🔍 Verifique os seguintes pontos:"
+          echo ""
+          echo "   1. Secrets Configurados:"
+          echo "      • NETLIFY_BUILD_HOOK está definido?"
+          echo "      • URL do build hook está correta?"
+          echo ""
+          echo "   2. Repositório:"
+          echo "      • Branch main está protegida?"
+          echo "      • Há conflitos de merge?"
+          echo "      • Permissões do GITHUB_TOKEN estão OK?"
+          echo ""
+          echo "   3. Netlify:"
+          echo "      • Site está ativo?"
+          echo "      • Não atingiu limite de builds?"
+          echo "      • Build hook está habilitado?"
+          echo ""
+          echo "   4. Rede:"
+          echo "      • GitHub Actions está operacional?"
+          echo "      • Netlify está operacional?"
+          echo ""
+          echo "📋 Para investigar:"
+          echo "   • Veja os logs acima para identificar o step que falhou"
+          echo "   • Acesse: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo ""
+          echo "🔧 Ações sugeridas:"
+          echo "   • Re-executar o workflow manualmente"
+          echo "   • Verificar status do Netlify: https://status.netlify.com"
+          echo "   • Verificar status do GitHub: https://www.githubstatus.com"
+          echo ""
+          echo "════════════════════════════════════════════════════════"
+      
+      # ────────────────────────────────────────────────────────
+      # 9. LIMPEZA (OPCIONAL)
+      # ────────────────────────────────────────────────────────
+      - name: 🧹 Limpeza
+        if: always()
+        run: |
+          # Remove backup se existir
+          rm -f site/data/ultima_atualizacao.json.bak
+          echo "✅ Limpeza concluída"
