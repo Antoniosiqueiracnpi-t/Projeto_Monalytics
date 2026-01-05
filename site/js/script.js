@@ -1722,18 +1722,28 @@ async function loadMapeamentoB3() {
             .filter(line => line.trim())
             .map(line => {
                 const parts = line.split(';');
+                
+                // CORREÇÃO CRÍTICA: Remove aspas dos campos
+                // Campos como "PETR3;PETR4" ficam com aspas, precisamos removê-las
+                const cleanField = (field) => {
+                    if (!field) return '';
+                    return field.trim().replace(/^"|"$/g, ''); // Remove aspas inicial/final
+                };
+                
                 return {
-                    ticker: parts[0]?.trim(),
-                    empresa: parts[1]?.trim(),
-                    cnpj: parts[2]?.trim(),
-                    codigo_cvm: parts[3]?.trim(),
-                    setor: parts[4]?.trim(),
-                    segmento: parts[5]?.trim(),
-                    sede: parts[6]?.trim(),
-                    descricao: parts[7]?.trim()
+                    ticker: cleanField(parts[0]),
+                    empresa: cleanField(parts[1]),
+                    cnpj: cleanField(parts[2]),
+                    codigo_cvm: cleanField(parts[3]),
+                    setor: cleanField(parts[4]),
+                    segmento: cleanField(parts[5]),
+                    sede: cleanField(parts[6]),
+                    descricao: cleanField(parts[7])
                 };
             })
             .filter(item => item.ticker && item.empresa);
+        
+        console.log('Raw data carregado:', rawData.length, 'empresas');
         
         // CORREÇÃO: Expande empresas com múltiplos tickers
         mapeamentoB3 = [];
@@ -1741,6 +1751,8 @@ async function loadMapeamentoB3() {
             // Se ticker contém múltiplos (separados por ;), cria uma entrada para cada
             const tickers = item.ticker.split(';').map(t => t.trim()).filter(t => t);
             const todosTickersStr = item.ticker; // Guarda string original
+            
+            console.log(`Processando: ${item.empresa} - Tickers: ${todosTickersStr} (${tickers.length} tickers)`);
             
             tickers.forEach(ticker => {
                 mapeamentoB3.push({
@@ -1758,6 +1770,13 @@ async function loadMapeamentoB3() {
         });
         
         console.log('Mapeamento B3 carregado:', mapeamentoB3.length, 'entradas (tickers expandidos)');
+        
+        // Debug: Verifica se PETR3 e PETR4 foram criados
+        const petr3 = mapeamentoB3.find(item => item.ticker === 'PETR3');
+        const petr4 = mapeamentoB3.find(item => item.ticker === 'PETR4');
+        console.log('PETR3 encontrado:', petr3 ? '✅' : '❌', petr3);
+        console.log('PETR4 encontrado:', petr4 ? '✅' : '❌', petr4);
+        
     } catch (error) {
         console.error('Erro ao carregar mapeamento B3:', error);
     }
