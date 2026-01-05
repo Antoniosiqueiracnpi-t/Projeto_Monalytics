@@ -1,214 +1,210 @@
 {
-  "ultima_atualizacao": "2026-01-05T14:18:44.685118-03:00",
+  "ultima_atualizacao": "2026-01-05T14:44:46.823973-03:00",
   "total_noticias": 17,
   "portais": {
     "Investing.com": [
       {
-        "id": "7727ece0d479",
-        "titulo": "Reino Unido - Ações fecharam o pregão em alta e o Índice Investing.com Reino Unido 100 avançou 0,46%",
-        "link": "https://br.investing.com/news/stock-market-news/reino-unido--acoes-fecharam-o-pregao-em-alta-e-o-indice-investingcom-reino-unido-100-avancou-046-1790083",
-        "horario": "14:11",
-        "imagem": "https://i-invdn-com.investing.com/news/LYNXMPEE020E3_M.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Reino Unido - Ações fecharam o pregão em alta e o Índice...",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "28a2754789d8",
-        "titulo": "Espanha - Ações fecharam o pregão em alta e o Índice IBEX 35 avançou 0,70%",
-        "link": "https://br.investing.com/news/stock-market-news/espanha--acoes-fecharam-o-pregao-em-alta-e-o-indice-ibex-35-avancou-070-1790081",
-        "horario": "14:10",
-        "imagem": "https://i-invdn-com.investing.com/news/LYNXMPEE390H7_M.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Espanha - Ações fecharam o pregão em alta e o Índice IBEX...",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "723c7d522c24",
-        "titulo": "Portugal - Ações fecharam o pregão em alta e o Índice PSI avançou 0,82%",
-        "link": "https://br.investing.com/news/stock-market-news/portugal--acoes-fecharam-o-pregao-em-alta-e-o-indice-psi-avancou-082-1790079",
-        "horario": "14:10",
-        "imagem": "",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Portugal - Ações fecharam o pregão em alta e o Índice PSI...",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "16b4a192cf0b",
-        "titulo": "CQS New City High Yield Fund emitirá 2 milhões de novas ações",
-        "link": "https://br.investing.com/news/company-news/cqs-new-city-high-yield-fund-emitira-2-milhoes-de-novas-acoes-93CH-1790074",
-        "horario": "14:10",
+        "id": "37e046f85eba",
+        "titulo": "Ações da Estrella Immunopharma caem após anúncio de oferta de US$ 8 milhões",
+        "link": "https://br.investing.com/news/stock-market-news/acoes-da-estrella-immunopharma-caem-apos-anuncio-de-oferta-de-us-8-milhoes-93CH-1790098",
+        "horario": "14:30",
         "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
         "categoria": "Empresas",
         "tags": [],
-        "resumo": "CQS New City High Yield Fund emitirá 2 milhões de novas ações",
+        "resumo": "Ações da Estrella Immunopharma caem após anúncio de oferta de US$ 8...",
         "fonte": "Investing.com"
       },
       {
-        "id": "09617de322e5",
-        "titulo": "Holanda - Ações fecharam o pregão em alta e o Índice AEX avançou 1,81%",
-        "link": "https://br.investing.com/news/stock-market-news/holanda--acoes-fecharam-o-pregao-em-alta-e-o-indice-aex-avancou-181-1790073",
-        "horario": "14:09",
-        "imagem": "",
+        "id": "bfd69a5de886",
+        "titulo": "Ações da Brookfield Business Partners atingem máxima de 52 semanas a US$ 36,91",
+        "link": "https://br.investing.com/news/company-news/acoes-da-brookfield-business-partners-atingem-maxima-de-52-semanas-a-us-3691-93CH-1790096",
+        "horario": "14:27",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
         "categoria": "Empresas",
         "tags": [],
-        "resumo": "Holanda - Ações fecharam o pregão em alta e o Índice AEX...",
+        "resumo": "Ações da Brookfield Business Partners atingem máxima de 52 semanas a US$...",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "c7f0099389c7",
+        "titulo": "Coro Energy realizará assembleia para captação de £1 milhão e reorganização de ações",
+        "link": "https://br.investing.com/news/company-news/coro-energy-realizara-assembleia-para-captacao-de-1-milhao-e-reorganizacao-de-acoes-93CH-1790095",
+        "horario": "14:21",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Coro Energy realizará assembleia para captação de £1 milhão e reorganização de...",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "91bfbe154f11",
+        "titulo": "Petróleo sobe 1% em negociações instáveis enquanto mercado avalia turbulência na Venezuela",
+        "link": "https://br.investing.com/news/economy-news/petroleo-sobe-1-em-negociacoes-instaveis-enquanto-mercado-avalia-turbulencia-na-venezuela-1790094",
+        "horario": "14:21",
+        "imagem": "https://i-invdn-com.investing.com/trkd-images/LYNXMPEM040Y2_L.jpg",
+        "categoria": "Internacional",
+        "tags": [
+          "Petróleo",
+          "Venezuela"
+        ],
+        "resumo": "Petróleo sobe 1% em negociações instáveis enquanto mercado avalia turbulência na Venezuela",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "f20b6a3b14ef",
+        "titulo": "Barclays rebaixa Rapid7 enquanto mudança para produtos de segurança de maior crescimento levará tempo",
+        "link": "https://br.investing.com/news/stock-market-news/barclays-rebaixa-rapid7-enquanto-mudanca-para-produtos-de-seguranca-de-maior-crescimento-levara-tempo-1790092",
+        "horario": "14:18",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Barclays rebaixa Rapid7 enquanto mudança para produtos de segurança de maior crescimento...",
         "fonte": "Investing.com"
       }
     ],
     "Valor Econômico": [
       {
-        "id": "4e9166fdfd70",
-        "titulo": "Mais de 145 países concordam com nova versão de acordo sobre imposto global mínimo",
-        "link": "https://valor.globo.com/mundo/noticia/2026/01/05/mais-de-145-pases-concordam-com-nova-verso-de-acordo-sobre-imposto-global-mnimo.ghtml",
-        "horario": "14:18",
-        "imagem": "https://s2-valor.glbimg.com/0BFmjW_woFY1gppMxFaEOl821ME=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2020/Z/j/hdvnnaQjGrlSrx8zyfIQ/tributos.jpg",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Mais de 145 países concordam com nova versão de acordo sobre imposto...",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "08696832e167",
-        "titulo": "Ibovespa sobe e dólar tem leve queda enquanto mercados digerem invasão dos EUA à Venezuela",
-        "link": "https://valor.globo.com/financas/ao-vivo/2023/06/16/dolar-avanca-e-ibovespa-recua-em-dia-de-correcao-siga-os-mercados.ghtml",
-        "horario": "14:07",
-        "imagem": "https://s2-valor.glbimg.com/JyaKfeBTMczK5L8p0nJdPY8Xf7Q=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/x/4/VN6jzXTnOReKOCXGm2JQ/2026-01-03t181943z-1529124610-rc2ttiatb14i-rtrmadp-3-usa-venezuela.jpg",
+        "id": "9d93be02500f",
+        "titulo": "Maduro se declara inocente em audiência nos EUA",
+        "link": "https://valor.globo.com/mundo/noticia/2026/01/05/maduro-se-declara-inocente-em-audiencia-nos-eua.ghtml",
+        "horario": "14:37",
+        "imagem": "https://s2-valor.glbimg.com/BaOh1I06dOQnrW5brLYwwFGN1yI=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/1/N/laobyXQoaYnqCcx8siNQ/447068779.jpg",
         "categoria": "Internacional",
         "tags": [
-          "Venezuela",
-          "EUA",
-          "Dólar",
-          "Ibovespa"
+          "EUA"
         ],
-        "resumo": "Ibovespa sobe e dólar tem leve queda enquanto mercados digerem invasão dos...",
+        "resumo": "Maduro se declara inocente em audiência nos EUA",
         "fonte": "Valor Econômico"
       },
       {
-        "id": "d72ce8e55a1f",
-        "titulo": "Nova carteira do Ibovespa passa a vigorar hoje com entrada de Copasa e saída de CVC",
-        "link": "https://valor.globo.com/financas/noticia/2026/01/05/nova-carteira-do-ibovespa-passa-a-vigorar-hoje-com-entrada-de-copasa-e-saida-de-cvc.ghtml",
-        "horario": "14:04",
-        "imagem": "https://s2-valor.glbimg.com/SPhEfICwdXsdJX-4seNoHNHgKXY=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/Z/f/cBBicjTDmUARec7iNSjA/439453433.jpg",
-        "categoria": "Mercados",
-        "tags": [
-          "Ibovespa"
-        ],
-        "resumo": "Nova carteira do Ibovespa passa a vigorar hoje com entrada de Copasa...",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "3f3419cb9311",
-        "titulo": "Destituição de Nicolás Maduro deixa regime cubano sem apoiador",
-        "link": "https://valor.globo.com/mundo/noticia/2026/01/05/destituicao-de-nicolas-maduro-deixa-regime-cubano-sem-apoiador.ghtml",
-        "horario": "14:02",
-        "imagem": "https://s2-valor.glbimg.com/4kyB8kY0Q0kWJTl0lRqKknkPHuE=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/a/O/ljWwm6QAG4fAGgR4S5Aw/447038917.jpg",
+        "id": "0145684a2cf5",
+        "titulo": "O ano de 2026 traz um cenário de extremos para as marcas",
+        "link": "https://valor.globo.com/empresas/marketing/noticia/2026/01/05/o-ano-de-2026-traz-um-cenario-de-extremos-para-as-marcas.ghtml",
+        "horario": "14:37",
+        "imagem": "https://s2-valor.glbimg.com/wPmV4cw1bCPcllzFyfh76gpGZto=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2023/V/e/YkRr9eRM6FT9uJI4dLAA/pessoa-escuta-musica-no-celular-streaming-de-musica-andrea-piacquadio-pexels.jpg",
         "categoria": "Geral",
         "tags": [],
-        "resumo": "Destituição de Nicolás Maduro deixa regime cubano sem apoiador",
+        "resumo": "O ano de 2026 traz um cenário de extremos para as marcas",
+        "fonte": "Valor Econômico"
+      },
+      {
+        "id": "814d012f76b9",
+        "titulo": "Reino Unido exige que X, de Elon Musk, responda sobre preocupações com fotos sexualizadas no Grok",
+        "link": "https://valor.globo.com/empresas/noticia/2026/01/05/reino-unido-exige-que-x-de-elon-musk-responda-sobre-preocupaes-com-fotos-sexualizadas-no-grok.ghtml",
+        "horario": "14:34",
+        "imagem": "https://s2-valor.glbimg.com/YALmIcj6dyOr7v8BirSd1gOZzso=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/K/3/KQov5gRcKfzjjzASEbYQ/grok-print.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Reino Unido exige que X, de Elon Musk, responda sobre preocupações com...",
+        "fonte": "Valor Econômico"
+      },
+      {
+        "id": "408b2dee313a",
+        "titulo": "Quais são as acusações dos EUA contra Nicolás Maduro?",
+        "link": "https://valor.globo.com/mundo/noticia/2026/01/05/quais-sao-as-acusacoes-dos-eua-contra-nicolas-maduro.ghtml",
+        "horario": "14:29",
+        "imagem": "https://s2-valor.glbimg.com/CmNLEswGNj5vHrN59M02gtTfsgM=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/B/p/r4uDAYQx66Q3Qm2U8r1w/trump-e-maduro-2-.png",
+        "categoria": "Internacional",
+        "tags": [
+          "EUA"
+        ],
+        "resumo": "Quais são as acusações dos EUA contra Nicolás Maduro?",
         "fonte": "Valor Econômico"
       }
     ],
     "InfoMoney": [
       {
-        "id": "6f2feeca655c",
-        "titulo": "Playoffs da NFL 2025-26 estão definidos; veja confrontos do Wild Card",
-        "link": "https://www.infomoney.com.br/esportes/playoffs-da-nfl-2025-26-estao-definidos-veja-confrontos-do-wild-card/",
-        "horario": "14:15",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/LEVIS_STADIUM_SOUTH_VIEW-800x400-1.jpg?fit=300%2C150&amp;quality=70&amp;strip=all",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Playoffs da NFL 2025-26 estão definidos; veja confrontos do Wild Card",
-        "fonte": "InfoMoney"
-      },
-      {
-        "id": "3c9624e91571",
-        "titulo": "Maduro contrata advogado de Julian Assange para defesa em processo nos EUA",
-        "link": "https://www.infomoney.com.br/mundo/maduro-contrata-advogado-de-julian-assange-para-defesa-em-processo-nos-eua/",
-        "horario": "14:06",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/2026-01-05T160114Z_894859872_RC20VIAIE7YU_RTRMADP_3_USA-VENEZUELA-MADURO-NEW-YORK.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "id": "a9279ea3618a",
+        "titulo": "Eurasia Group: Brasil não tem questão de segurança com EUA e está em posição forte",
+        "link": "https://www.infomoney.com.br/mercados/eurasia-group-brasil-nao-tem-questao-de-seguranca-com-eua-e-esta-em-posicao-forte/",
+        "horario": "14:38",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/10/2025-10-26T095120Z_1_LYNXMPEL9P06N_RTROPTP_4_POLITICA-LULA-TRUMP-VIEIRA.jpeg?fit=300%2C200&amp;quality=70&amp;strip=all",
         "categoria": "Internacional",
         "tags": [
           "EUA"
         ],
-        "resumo": "Maduro contrata advogado de Julian Assange para defesa em processo nos EUA",
+        "resumo": "Eurasia Group: Brasil não tem questão de segurança com EUA e está...",
         "fonte": "InfoMoney"
       },
       {
-        "id": "093503bcb693",
-        "titulo": "PT publica vídeo de Lula convocando militância para ato em 8 de janeiro",
-        "link": "https://www.infomoney.com.br/politica/pt-publica-video-de-lula-convocando-militancia-para-ato-em-8-de-janeiro/",
-        "horario": "13:51",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/12/2025-12-17T163046Z_1_LYNXMPELBG0XC_RTROPTP_4_BRAZIL-POLITICS.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
-        "categoria": "Política",
-        "tags": [
-          "Lula"
-        ],
-        "resumo": "PT publica vídeo de Lula convocando militância para ato em 8 de...",
+        "id": "98646eaa7427",
+        "titulo": "Com Flávio Bolsonaro no páreo pelo Planalto, Tarcísio deve apostar na reeleição em SP",
+        "link": "https://www.infomoney.com.br/politica/com-flavio-bolsonaro-no-pareo-pelo-planalto-tarcisio-deve-apostar-na-reeleicao-em-sp/",
+        "horario": "14:31",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/12/AF820251211017.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Com Flávio Bolsonaro no páreo pelo Planalto, Tarcísio deve apostar na reeleição...",
         "fonte": "InfoMoney"
       },
       {
-        "id": "00a9fb1b4221",
-        "titulo": "Quais os impactos da instabilidade na Venezuela para os mercados da América Latina?",
-        "link": "https://www.infomoney.com.br/mercados/quais-os-impactos-da-instabilidade-na-venezuela-para-os-mercados-da-america-latina/",
-        "horario": "13:47",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/447066004.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
-        "categoria": "Internacional",
-        "tags": [
-          "Venezuela"
-        ],
-        "resumo": "Quais os impactos da instabilidade na Venezuela para os mercados da América...",
+        "id": "d5ec87797fb7",
+        "titulo": "Versant conclui cisão com a Comcast e passa a ser negociada na Nasdaq",
+        "link": "https://www.infomoney.com.br/mercados/versant-conclui-cisao-com-a-comcast-e-passa-a-ser-negociada-na-nasdaq/",
+        "horario": "14:27",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/2026-01-05T153319Z_691266527_RC21RFA33DNM_RTRMADP_3_COMCAST-DIVESTITURE.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Versant conclui cisão com a Comcast e passa a ser negociada na...",
+        "fonte": "InfoMoney"
+      },
+      {
+        "id": "c65a0085f94b",
+        "titulo": "Maduro se declara inocente em audiência em tribunal federal de Nova York",
+        "link": "https://www.infomoney.com.br/mundo/maduro-se-declara-inocente-em-audiencia-em-tribunal-federal-de-nova-york/",
+        "horario": "14:24",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/2026-01-05T160114Z_894859872_RC20VIAIE7YU_RTRMADP_3_USA-VENEZUELA-MADURO-NEW-YORK.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Maduro se declara inocente em audiência em tribunal federal de Nova York",
         "fonte": "InfoMoney"
       }
     ],
     "Money Times": [
       {
-        "id": "4eb2f2fa8440",
-        "titulo": "TCU determina inspeção no BC com ‘urgência’ para ver documentos sobre Master",
-        "link": "https://www.moneytimes.com.br/tcu-determina-inspecao-no-bc-com-urgencia-para-ver-documentos-sobre-master-igdl/",
-        "horario": "13:54",
+        "id": "82e9c2210cc7",
+        "titulo": "‘IA está em fase inicial de bolha’, alerta Ray Dalio; entenda",
+        "link": "https://www.moneytimes.com.br/ia-esta-em-fase-inicial-de-bolha-alerta-ray-dalio-entenda-igdl/",
+        "horario": "14:40",
         "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
         "categoria": "Geral",
         "tags": [],
-        "resumo": "TCU determina inspeção no BC com ‘urgência’ para ver documentos sobre Master",
+        "resumo": "‘IA está em fase inicial de bolha’, alerta Ray Dalio; entenda",
         "fonte": "Money Times"
       },
       {
-        "id": "647e8922c269",
-        "titulo": "10 ações para começar um ‘ano promissor, mas turbulento’, segundo BTG Pactual",
-        "link": "https://www.moneytimes.com.br/10-acoes-para-comecar-um-ano-promissor-mas-turbulento-segundo-btg-pactual-lmrs/",
-        "horario": "13:53",
+        "id": "653261c46189",
+        "titulo": "Fundos imobiliários: XP aponta os melhores para começar 2026; confira",
+        "link": "https://www.moneytimes.com.br/xp-faz-mudancas-na-carteira-de-fiis-para-janeiro-veja-os-destaques-igdl/",
+        "horario": "14:37",
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Fundos imobiliários: XP aponta os melhores para começar 2026; confira",
+        "fonte": "Money Times"
+      },
+      {
+        "id": "fe207b85b546",
+        "titulo": "5 ações para começar 2026 com bons retornos, segundo o Itaú BBA; carteira devolveu 56,5% no ano passado",
+        "link": "https://www.moneytimes.com.br/5-acoes-para-comecar-2026-com-bons-retornos-segundo-o-itau-bba-carteira-devolveu-565-no-ano-passado-pads/",
+        "horario": "14:26",
         "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
         "categoria": "Empresas",
         "tags": [],
-        "resumo": "10 ações para começar um ‘ano promissor, mas turbulento’, segundo BTG Pactual",
+        "resumo": "5 ações para começar 2026 com bons retornos, segundo o Itaú BBA;...",
         "fonte": "Money Times"
       },
       {
-        "id": "a364adf848f0",
-        "titulo": "Regras do INSS mudam em 2026; veja quando você vai se aposentar",
-        "link": "https://www.moneytimes.com.br/regras-do-inss-mudam-em-2026-veja-quando-voce-vai-se-aposentar-isbl/",
-        "horario": "13:47",
+        "id": "cd6621a92f6f",
+        "titulo": "Petróleo no centro do conflito: Como a prisão de Maduro afeta os investimentos; veja análise do Giro do Mercado",
+        "link": "https://www.moneytimes.com.br/petroleo-no-centro-do-conflito-como-a-prisao-de-maduro-afeta-os-investimentos-veja-analise-do-giro-do-mercado-ceci/",
+        "horario": "14:19",
         "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Regras do INSS mudam em 2026; veja quando você vai se aposentar",
-        "fonte": "Money Times"
-      },
-      {
-        "id": "77286a63b18e",
-        "titulo": "Única petroleira americana na Venezuela está no país há mais de 100 anos e se prepara para efeitos da queda de Maduro",
-        "link": "https://www.moneytimes.com.br/unica-petroleira-americana-na-venezuela-esta-no-pais-ha-mais-de-100-anos-e-se-prepara-para-efeitos-da-queda-de-maduro-otrp/",
-        "horario": "13:46",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Internacional",
+        "categoria": "Commodities",
         "tags": [
-          "Venezuela"
+          "Petróleo"
         ],
-        "resumo": "Única petroleira americana na Venezuela está no país há mais de 100...",
+        "resumo": "Petróleo no centro do conflito: Como a prisão de Maduro afeta os...",
         "fonte": "Money Times"
       }
     ]
