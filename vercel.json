@@ -1,0 +1,11 @@
+{
+  "buildCommand": "echo 'Rebuilding...'",
+  "outputDirectory": "site",
+  "framework": null,
+  "ignoreCommand": "bash -c 'exit 0'",
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
+}
