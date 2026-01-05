@@ -90,6 +90,27 @@ jobs:
           echo "=== Arquivos de múltiplos modificados ==="
           git diff --name-only | grep "multiplos.json\|multiplos.csv" || echo "Nenhum"
 
+      - name: 📝 Atualizar timestamp
+        if: steps.check_weekday.outputs.skip != 'true'
+        run: |
+          mkdir -p site/data
+          
+          TIMESTAMP=$(date +%s)000
+          DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
+          HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
+          
+          cat > site/data/ultima_atualizacao.json << EOF
+          {
+            "timestamp": ${TIMESTAMP},
+            "data": "${DATA}",
+            "hora": "${HORA}",
+            "fonte": "precos_diarios",
+            "versao": "1.0.0"
+          }
+          EOF
+          
+          echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
+
       - name: 💾 Commit e Push
         if: steps.check_weekday.outputs.skip != 'true'
         run: |
@@ -99,6 +120,7 @@ jobs:
           git add -u balancos/*/precos_trimestrais.csv 2>/dev/null || true
           git add -u balancos/*/multiplos.json 2>/dev/null || true
           git add -u balancos/*/multiplos.csv 2>/dev/null || true
+          git add site/data/ultima_atualizacao.json
 
           if git diff --staged --quiet; then
             echo "Sem alterações para commitar."
