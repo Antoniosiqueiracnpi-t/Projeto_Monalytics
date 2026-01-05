@@ -48,5 +48,5 @@ jobs:
           fi
           
           git add balancos/*/noticias.json
-          git commit -m "Notícias diárias: $(date +'%Y-%m-%d')"
+          git commit -m "Notícias diárias: $(date +'%Y-%m-%d') [skip netlify]"
           git push
