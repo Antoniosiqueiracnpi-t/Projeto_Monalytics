@@ -2734,29 +2734,28 @@ async function carregarDYAtual(ticker) {
             ? empresaInfo.todosTickersStr.split(';')[0].trim()
             : ticker;
         
+        console.log(`🔍 Buscando DY em multiplos.json (ticker: ${tickerPasta})...`);
+        
         const timestamp = new Date().getTime();
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
         
         if (response.ok) {
             const multiplosData = await response.json();
             
-            // Busca o DY nos múltiplos
-            const dyMultiplo = multiplosData.multiplos.find(m => m.nome === 'Dividend Yield');
-            
-            if (dyMultiplo && dyMultiplo.valor_atual) {
-                // Atualiza o DY atual nos dados de dividendos
-                dividendosHistoricoData.dy_atual = dyMultiplo.valor_atual;
-                console.log('✅ DY atual atualizado:', dyMultiplo.valor_atual);
+            // ✅ CORREÇÃO: Busca DY do caminho correto
+            if (multiplosData.ltm && multiplosData.ltm.multiplos && multiplosData.ltm.multiplos.DY) {
+                const dyAtual = multiplosData.ltm.multiplos.DY;
+                dividendosHistoricoData.dy_atual = dyAtual;
+                console.log(`✅ DY atual carregado: ${dyAtual.toFixed(2)}%`);
             } else {
-                console.log('⚠️ DY não encontrado em múltiplos, usando valor padrão');
+                console.log('⚠️ DY não encontrado em multiplos.ltm, usando 0');
             }
         } else {
-            console.log('⚠️ Arquivo multiplos.json não encontrado, usando DY do histórico');
+            console.log(`⚠️ Arquivo multiplos.json não encontrado (${response.status})`);
         }
         
     } catch (error) {
         console.log('⚠️ Erro ao buscar DY atual:', error.message);
-        // Continua com o DY do arquivo de dividendos se houver erro
     }
 }
 
@@ -2904,17 +2903,6 @@ function renderDividendosHistorico() {
                         DIVIDENDOS PAGOS
                     </button>
                 </div>
-                
-                <div class="dividendos-period-btns">
-                    <button class="period-btn ${currentDividendosPeriod === 5 ? 'active' : ''}" 
-                            onclick="toggleDividendosPeriod(5)">
-                        5 ANOS
-                    </button>
-                    <button class="period-btn ${currentDividendosPeriod === 10 ? 'active' : ''}" 
-                            onclick="toggleDividendosPeriod(10)">
-                        10 ANOS
-                    </button>
-                </div>
             </div>
         </div>
         
@@ -2925,7 +2913,7 @@ function renderDividendosHistorico() {
                 <div class="stat-value">${data.dy_atual ? data.dy_atual.toFixed(2) + '%' : 'N/D'}</div>
             </div>
             <div class="dividendos-stat-card">
-                <div class="stat-label">DY Médio em ${currentDividendosPeriod} Anos</div>
+                <div class="stat-label">DY Médio (2020-2025)</div>
                 <div class="stat-value">${calcularDYMedio().toFixed(2)}%</div>
             </div>
         </div>
@@ -2959,9 +2947,7 @@ function renderDividendosHistorico() {
 function calcularDYMedio() {
     if (!dividendosHistoricoData) return 0;
     
-    const anos = dividendosHistoricoData.historico_anos
-        .slice(-currentDividendosPeriod)
-        .filter(a => a.dy_percent > 0);
+    const anos = dividendosHistoricoData.historico_anos.filter(a => a.dy_percent > 0);
     
     if (anos.length === 0) return 0;
     
@@ -3076,11 +3062,9 @@ function renderDividendosTable() {
     const container = document.getElementById('dividendosTableContainer');
     if (!container || !dividendosHistoricoData) return;
     
-    // Coleta todos os dividendos do período
-    const anosPeriodo = dividendosHistoricoData.historico_anos.slice(-currentDividendosPeriod);
-    
-    let todosDividendos = [];
-    anosPeriodo.forEach(ano => {
+    // Coleta todos os dividendos
+    const todosDividendos = [];
+    dividendosHistoricoData.historico_anos.forEach(ano => {
         ano.dividendos.forEach(div => {
             todosDividendos.push({
                 ...div,
@@ -3091,8 +3075,8 @@ function renderDividendosTable() {
     
     // Ordena por data_com (mais recente primeiro)
     todosDividendos.sort((a, b) => {
-        const dateA = new Date(a.data_com.split('/').reverse().join('-'));
-        const dateB = new Date(b.data_com.split('/').reverse().join('-'));
+        const dateA = parseDataBR(a.data_com);
+        const dateB = parseDataBR(b.data_com);
         return dateB - dateA;
     });
     
@@ -3101,55 +3085,155 @@ function renderDividendosTable() {
             <div class="dividendos-empty">
                 <i class="fas fa-inbox"></i>
                 <h4>Nenhum dividendo encontrado</h4>
-                <p>Não há registros de dividendos para o período selecionado</p>
+                <p>Não há registros de dividendos disponíveis</p>
             </div>
         `;
         return;
     }
     
+    // Limite inicial: 5 linhas
+    const LIMITE_INICIAL = 5;
+    const totalDividendos = todosDividendos.length;
+    const temMais = totalDividendos > LIMITE_INICIAL;
+    
     let html = `
         <div class="dividendos-table-header">
             <h4>Detalhamento de Proventos</h4>
             <div class="dividendos-table-info">
-                ${todosDividendos.length} provento(s) nos últimos ${currentDividendosPeriod} anos
+                <span id="dividendosCount">${temMais ? LIMITE_INICIAL : totalDividendos}</span> de ${totalDividendos} provento(s)
             </div>
         </div>
         
-        <table class="dividendos-table">
-            <thead>
-                <tr>
-                    <th>TIPO</th>
-                    <th>DATA COM</th>
-                    <th>PAGAMENTO</th>
-                    <th style="text-align: right;">VALOR</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="dividendos-table-wrapper ${temMais ? 'collapsed' : ''}" id="dividendosTableWrapper">
+            <table class="dividendos-table">
+                <thead>
+                    <tr>
+                        <th>TIPO</th>
+                        <th>DATA COM</th>
+                        <th>PAGAMENTO</th>
+                        <th style="text-align: right;">VALOR</th>
+                    </tr>
+                </thead>
+                <tbody id="dividendosTableBody">
     `;
     
-    todosDividendos.forEach(div => {
-        const tipoClass = div.tipo.toLowerCase().replace(/\s+/g, '-');
-        
-        html += `
-            <tr>
-                <td>
-                    <span class="dividendos-tipo-badge ${tipoClass}">${div.tipo}</span>
-                </td>
-                <td>${div.data_com}</td>
-                <td>${div.data_pagamento}</td>
-                <td style="text-align: right;">
-                    <span class="dividendos-valor-destaque">R$ ${div.valor.toFixed(8)}</span>
-                </td>
-            </tr>
-        `;
+    // Renderiza dividendos (inicialmente 5)
+    const dividendosExibir = temMais ? todosDividendos.slice(0, LIMITE_INICIAL) : todosDividendos;
+    
+    dividendosExibir.forEach(div => {
+        html += renderDividendoRow(div);
     });
     
     html += `
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     `;
     
+    // Botão de expansão (se necessário)
+    if (temMais) {
+        html += `
+            <button class="dividendos-expand-btn" onclick="toggleDividendosExpand()">
+                <span id="dividendosExpandText">Ver mais ${totalDividendos - LIMITE_INICIAL} dividendos</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        `;
+    }
+    
     container.innerHTML = html;
+    
+    // Guarda todos os dividendos globalmente para expansão
+    window.todosDividendosData = todosDividendos;
+}
+
+/**
+ * Renderiza uma linha de dividendo
+ */
+function renderDividendoRow(div) {
+    const tipoClass = div.tipo.toLowerCase().replace(/\s+/g, '-');
+    
+    return `
+        <tr>
+            <td>
+                <span class="dividendos-tipo-badge ${tipoClass}">${div.tipo}</span>
+            </td>
+            <td>${div.data_com}</td>
+            <td>${div.data_pagamento}</td>
+            <td style="text-align: right;">
+                <span class="dividendos-valor-destaque">R$ ${div.valor.toFixed(8)}</span>
+            </td>
+        </tr>
+    `;
+}
+
+/**
+ * Parse de data brasileira para comparação
+ */
+function parseDataBR(dataStr) {
+    if (!dataStr) return new Date(0);
+    
+    const partes = dataStr.split('/');
+    if (partes.length === 3) {
+        return new Date(partes[2], partes[1] - 1, partes[0]);
+    }
+    
+    return new Date(dataStr);
+}
+
+
+/**
+ * Toggle expansão da tabela de dividendos
+ */
+function toggleDividendosExpand() {
+    const wrapper = document.getElementById('dividendosTableWrapper');
+    const tbody = document.getElementById('dividendosTableBody');
+    const btn = document.querySelector('.dividendos-expand-btn');
+    const countSpan = document.getElementById('dividendosCount');
+    const textSpan = document.getElementById('dividendosExpandText');
+    
+    if (!wrapper || !todosDividendosData) return;
+    
+    const isCollapsed = wrapper.classList.contains('collapsed');
+    const LIMITE_INICIAL = 5;
+    const total = todosDividendosData.length;
+    
+    if (isCollapsed) {
+        // Expandir - mostra todos
+        let html = '';
+        todosDividendosData.forEach(div => {
+            html += renderDividendoRow(div);
+        });
+        tbody.innerHTML = html;
+        
+        wrapper.classList.remove('collapsed');
+        btn.classList.add('expanded');
+        countSpan.textContent = total;
+        textSpan.textContent = 'Ver menos';
+        
+        // Scroll suave até o botão
+        setTimeout(() => {
+            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+        
+    } else {
+        // Colapsar - mostra apenas 5
+        let html = '';
+        todosDividendosData.slice(0, LIMITE_INICIAL).forEach(div => {
+            html += renderDividendoRow(div);
+        });
+        tbody.innerHTML = html;
+        
+        wrapper.classList.add('collapsed');
+        btn.classList.remove('expanded');
+        countSpan.textContent = LIMITE_INICIAL;
+        textSpan.textContent = `Ver mais ${total - LIMITE_INICIAL} dividendos`;
+        
+        // Scroll até o início da tabela
+        document.getElementById('dividendosTableContainer').scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+    }
 }
 
 /**
@@ -3160,13 +3244,6 @@ function toggleDividendosView(view) {
     renderDividendosHistorico();
 }
 
-/**
- * Toggle entre períodos (5 / 10 anos)
- */
-function toggleDividendosPeriod(period) {
-    currentDividendosPeriod = period;
-    renderDividendosHistorico();
-}
 
 /**
  * HOOK: Adiciona carregamento de dividendos ao carregar ação
