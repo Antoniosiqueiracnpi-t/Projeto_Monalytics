@@ -2728,7 +2728,6 @@ let currentDividendosPeriod = 5; // 5 ou 10 anos
  */
 async function carregarDYAtual(ticker) {
     try {
-        // Busca info no mapeamento para pegar o ticker correto da pasta
         const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
         const tickerPasta = empresaInfo && empresaInfo.todosTickersStr 
             ? empresaInfo.todosTickersStr.split(';')[0].trim()
@@ -2742,22 +2741,41 @@ async function carregarDYAtual(ticker) {
         if (response.ok) {
             const multiplosData = await response.json();
             
-            // ✅ CORREÇÃO: Busca DY do caminho correto
-            if (multiplosData.ltm && multiplosData.ltm.multiplos && multiplosData.ltm.multiplos.DY) {
+            // ✅ ACESSO CORRETO: multiplosData.ltm.multiplos.DY
+            if (multiplosData?.ltm?.multiplos?.DY) {
                 const dyAtual = multiplosData.ltm.multiplos.DY;
-                dividendosHistoricoData.dy_atual = dyAtual;
+                
+                // ✅ Atribuição robusta
+                if (dividendosHistoricoData) {
+                    dividendosHistoricoData.dy_atual = dyAtual;
+                }
+                
                 console.log(`✅ DY atual carregado: ${dyAtual.toFixed(2)}%`);
+                return dyAtual;
             } else {
-                console.log('⚠️ DY não encontrado em multiplos.ltm, usando 0');
+                console.log('⚠️ DY não encontrado em multiplos.ltm.multiplos.DY, usando 0');
+                if (dividendosHistoricoData) {
+                    dividendosHistoricoData.dy_atual = 0;
+                }
+                return 0;
             }
         } else {
             console.log(`⚠️ Arquivo multiplos.json não encontrado (${response.status})`);
+            if (dividendosHistoricoData) {
+                dividendosHistoricoData.dy_atual = 0;
+            }
+            return 0;
         }
         
     } catch (error) {
         console.log('⚠️ Erro ao buscar DY atual:', error.message);
+        if (dividendosHistoricoData) {
+            dividendosHistoricoData.dy_atual = 0;
+        }
+        return 0;
     }
 }
+
 
 /**
  * Carrega e processa histórico de dividendos
