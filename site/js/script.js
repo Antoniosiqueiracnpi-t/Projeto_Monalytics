@@ -2761,10 +2761,7 @@ async function carregarDYAtual(ticker) {
 }
 
 /**
- * Carrega histórico de dividendos
- */
-/**
- * Carrega histórico de dividendos
+ * Carrega e processa histórico de dividendos
  */
 async function loadDividendosHistorico(ticker) {
     try {
@@ -2778,39 +2775,21 @@ async function loadDividendosHistorico(ticker) {
         }
         
         const allData = await response.json();
+        console.log('📦 Arquivo carregado:', allData.length, 'registros');
         
-        // 🔍 DEBUG: Mostra estrutura do JSON
-        console.log('📦 Estrutura do JSON:', {
-            total_tickers: Object.keys(allData).length,
-            primeiros_10_tickers: Object.keys(allData).slice(0, 10),
-            ticker_buscado: ticker,
-            ticker_existe: ticker in allData
-        });
+        // Filtra dividendos do ticker específico
+        const dividendosDoTicker = allData.filter(d => d.ticker === ticker);
         
-        // 🔍 DEBUG: Se não encontrar, tenta variações
-        if (!allData[ticker]) {
-            console.log('⚠️ Tentando variações do ticker...');
-            
-            // Tenta sem número
-            const tickerSemNumero = ticker.replace(/\d+$/, '');
-            console.log(`  - Sem número: ${tickerSemNumero}`, tickerSemNumero in allData ? '✅' : '❌');
-            
-            // Tenta com B3 no final
-            const tickerComB3 = ticker + '.SA';
-            console.log(`  - Com .SA: ${tickerComB3}`, tickerComB3 in allData ? '✅' : '❌');
-            
-            // Busca parcial
-            const tickersProximos = Object.keys(allData).filter(t => 
-                t.includes(ticker.substring(0, 4))
-            );
-            console.log(`  - Tickers próximos:`, tickersProximos.slice(0, 5));
-            
+        if (dividendosDoTicker.length === 0) {
+            console.warn(`⚠️ Nenhum dividendo encontrado para ${ticker}`);
             document.getElementById('dividendosHistoricoSection').style.display = 'none';
             return;
         }
         
-        dividendosHistoricoData = allData[ticker];
-        console.log('✅ Dados encontrados:', dividendosHistoricoData);
+        console.log(`✅ Encontrados ${dividendosDoTicker.length} dividendos de ${ticker}`);
+        
+        // Agrupa por ano e processa
+        dividendosHistoricoData = processarDividendosPorAno(dividendosDoTicker, ticker);
         
         // Busca DY atual de multiplos.json
         await carregarDYAtual(ticker);
@@ -2823,6 +2802,74 @@ async function loadDividendosHistorico(ticker) {
     }
 }
 
+/**
+ * Processa array de dividendos e agrupa por ano
+ */
+function processarDividendosPorAno(dividendos, ticker) {
+    // Agrupa por ano
+    const dividendosPorAno = {};
+    
+    dividendos.forEach(div => {
+        const ano = div.ano_ref || new Date(div.data_com).getFullYear();
+        
+        if (!dividendosPorAno[ano]) {
+            dividendosPorAno[ano] = [];
+        }
+        
+        dividendosPorAno[ano].push({
+            tipo: div.tipo || div.tipo_raw || 'Dividendos',
+            valor: div.valor,
+            data_com: formatarData(div.data_com_raw || div.data_com),
+            data_pagamento: formatarData(div.data_pagamento_raw || div.data_pagamento)
+        });
+    });
+    
+    // Converte para array de anos com totais
+    const historico_anos = Object.keys(dividendosPorAno)
+        .sort((a, b) => a - b)
+        .map(ano => {
+            const divsAno = dividendosPorAno[ano];
+            const valor_total = divsAno.reduce((sum, d) => sum + d.valor, 0);
+            
+            return {
+                ano: parseInt(ano),
+                valor_total: valor_total,
+                dy_percent: 0, // Será calculado depois se tivermos o preço
+                dividendos: divsAno
+            };
+        });
+    
+    return {
+        ticker: ticker,
+        dy_atual: 0, // Será sobrescrito por multiplos.json
+        historico_anos: historico_anos
+    };
+}
+
+/**
+ * Formata data para padrão brasileiro
+ */
+function formatarData(data) {
+    if (!data) return '';
+    
+    // Se já está no formato DD/MM/YYYY
+    if (data.includes('/')) {
+        const partes = data.split('/');
+        if (partes[2].length === 2) {
+            // Converte YY para YYYY
+            partes[2] = '20' + partes[2];
+        }
+        return partes.join('/');
+    }
+    
+    // Se está no formato YYYY-MM-DD
+    if (data.includes('-')) {
+        const partes = data.split('-');
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+    
+    return data;
+}
 
 /**
  * Renderiza seção de histórico de dividendos
