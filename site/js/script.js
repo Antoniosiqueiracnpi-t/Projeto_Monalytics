@@ -2173,6 +2173,255 @@ async function loadMultiplosData(ticker) {
     }
 }
 
+/* ========================================
+   COMPOSIÇÃO ACIONÁRIA
+   ======================================== */
+
+let acionistasData = null;
+let acionistasChart = null;
+
+/**
+ * Carrega dados de composição acionária
+ */
+async function loadAcionistasData(ticker) {
+    try {
+        console.log(`📊 Carregando composição acionária de ${ticker}...`);
+        
+        // Busca info no mapeamento para pegar o ticker correto da pasta
+        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
+        const tickerPasta = empresaInfo && empresaInfo.todosTickersStr 
+            ? empresaInfo.todosTickersStr.split(';')[0].trim()
+            : ticker;
+        
+        const timestamp = new Date().getTime();
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/acionistas.json?t=${timestamp}`);
+        
+        if (!response.ok) {
+            throw new Error(`Dados de acionistas não encontrados para ${ticker}`);
+        }
+        
+        acionistasData = await response.json();
+        console.log('✅ Composição acionária carregada:', acionistasData.acionistas.length, 'acionistas');
+        
+        renderComposicaoAcionaria();
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar composição acionária:', error);
+        document.getElementById('composicaoAcionariaCard').style.display = 'none';
+    }
+}
+
+/**
+ * Renderiza card de composição acionária
+ */
+function renderComposicaoAcionaria() {
+    const card = document.getElementById('composicaoAcionariaCard');
+    if (!card || !acionistasData) return;
+    
+    const acionistas = acionistasData.acionistas;
+    const dataRef = acionistasData.data_referencia;
+    
+    // Calcula "Outros" (100% - soma dos top acionistas)
+    const somaTop = acionistas.reduce((sum, a) => sum + a.percentual_total, 0);
+    const outros = 100 - somaTop;
+    
+    // HTML do card
+    let html = `
+        <div class="composicao-header">
+            <div class="composicao-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="composicao-title-group">
+                <h3>Composição Acionária</h3>
+                <p>Top ${acionistas.length} principais acionistas</p>
+            </div>
+        </div>
+        
+        <div class="composicao-content">
+            <div class="chart-wrapper">
+                <div class="chart-container">
+                    <canvas id="acionistasChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="acionistas-list">
+    `;
+    
+    // Lista de acionistas
+    acionistas.forEach((acionista, index) => {
+        const acoesMilhoes = (acionista.acoes_total / 1000000).toFixed(1);
+        
+        html += `
+            <div class="acionista-item">
+                <div class="acionista-header">
+                    <div class="acionista-posicao">${acionista.posicao}º</div>
+                    <div class="acionista-nome">${acionista.nome}</div>
+                    <div class="acionista-percentual">${acionista.percentual_total.toFixed(2)}%</div>
+                </div>
+                <div class="acionista-detalhes">
+                    <div class="acionista-nacionalidade">
+                        <i class="fas fa-flag"></i>
+                        ${acionista.nacionalidade}
+                    </div>
+                    <div class="acionista-acoes">
+                        ${acoesMilhoes}M ações
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    // Adiciona "Outros" se necessário
+    if (outros > 0) {
+        html += `
+            <div class="acionista-item">
+                <div class="acionista-header">
+                    <div class="acionista-posicao" style="background: #94a3b8;">•</div>
+                    <div class="acionista-nome">Outros Acionistas</div>
+                    <div class="acionista-percentual">${outros.toFixed(2)}%</div>
+                </div>
+                <div class="acionista-detalhes">
+                    <div class="acionista-nacionalidade">
+                        <i class="fas fa-chart-pie"></i>
+                        Free Float e Minoritários
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    html += `
+            </div>
+        </div>
+        
+        <div class="composicao-footer">
+            <i class="fas fa-calendar-alt"></i>
+            Dados referentes a ${formatDataReferencia(dataRef)}
+        </div>
+    `;
+    
+    card.innerHTML = html;
+    card.style.display = 'block';
+    
+    // Renderiza gráfico
+    renderAcionistasChart(acionistas, outros);
+}
+
+/**
+ * Renderiza gráfico de pizza dos acionistas
+ */
+function renderAcionistasChart(acionistas, outros) {
+    const ctx = document.getElementById('acionistasChart');
+    
+    if (!ctx) return;
+    
+    // Destroi gráfico anterior se existir
+    if (acionistasChart) {
+        acionistasChart.destroy();
+    }
+    
+    // Prepara dados
+    const labels = acionistas.map(a => a.nome);
+    const data = acionistas.map(a => a.percentual_total);
+    
+    // Adiciona "Outros" se necessário
+    if (outros > 0) {
+        labels.push('Outros');
+        data.push(outros);
+    }
+    
+    // Cores personalizadas (gradiente visual)
+    const cores = [
+        'rgba(139, 92, 246, 0.8)',  // Roxo
+        'rgba(236, 72, 153, 0.8)',  // Rosa
+        'rgba(245, 158, 11, 0.8)',  // Laranja
+        'rgba(16, 185, 129, 0.8)',  // Verde
+        'rgba(148, 163, 184, 0.6)'  // Cinza (Outros)
+    ];
+    
+    const coresBorda = [
+        'rgba(139, 92, 246, 1)',
+        'rgba(236, 72, 153, 1)',
+        'rgba(245, 158, 11, 1)',
+        'rgba(16, 185, 129, 1)',
+        'rgba(148, 163, 184, 0.8)'
+    ];
+    
+    // Cria gráfico
+    acionistasChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: cores.slice(0, data.length),
+                borderColor: coresBorda.slice(0, data.length),
+                borderWidth: 3,
+                hoverOffset: 15
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false  // Legenda desabilitada (lista ao lado já mostra)
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
+                    padding: 12,
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            return `${label}: ${value.toFixed(2)}%`;
+                        }
+                    }
+                }
+            },
+            cutout: '60%',  // Estilo doughnut (anel)
+            animation: {
+                animateRotate: true,
+                animateScale: true
+            }
+        }
+    });
+}
+
+/**
+ * Formata data de referência
+ */
+function formatDataReferencia(dataStr) {
+    if (!dataStr) return '-';
+    
+    const [ano, mes, dia] = dataStr.split('-');
+    const meses = [
+        'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+        'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+    ];
+    
+    const mesNome = meses[parseInt(mes, 10) - 1];
+    return `${dia} de ${mesNome} de ${ano}`;
+}
+
+/**
+ * HOOK: Adiciona carregamento de acionistas ao carregar ação
+ */
+const originalLoadAcaoDataWithAcionistas = loadAcaoData;
+loadAcaoData = async function(ticker) {
+    await originalLoadAcaoDataWithAcionistas.call(this, ticker);
+    
+    // Carrega composição acionária após carregar a ação
+    await loadAcionistasData(ticker);
+};
+
 /**
  * Renderiza seção completa de múltiplos
  */
