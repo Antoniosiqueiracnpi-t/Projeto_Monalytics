@@ -2211,6 +2211,194 @@ async function loadAcionistasData(ticker) {
     }
 }
 
+/* ========================================
+   I.A ANALISA - ANÁLISE AUTOMÁTICA
+   ======================================== */
+
+let analiseBalancosData = null;
+
+/**
+ * Carrega análise de balanços da I.A
+ */
+async function loadAnaliseBalancos(ticker) {
+    try {
+        console.log(`🤖 Carregando análise I.A de ${ticker}...`);
+        
+        // Busca info no mapeamento para pegar o ticker correto da pasta
+        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
+        const tickerPasta = empresaInfo && empresaInfo.todosTickersStr 
+            ? empresaInfo.todosTickersStr.split(';')[0].trim()
+            : ticker;
+        
+        const timestamp = new Date().getTime();
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/analise_balancos.json?t=${timestamp}`);
+        
+        if (!response.ok) {
+            throw new Error(`Análise não encontrada para ${ticker}`);
+        }
+        
+        analiseBalancosData = await response.json();
+        console.log('✅ Análise I.A carregada com sucesso');
+        
+        renderIAAnalisa();
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar análise I.A:', error);
+        document.getElementById('iaAnalisaSection').style.display = 'none';
+    }
+}
+
+/**
+ * Renderiza seção de análise da I.A
+ */
+function renderIAAnalisa() {
+    const section = document.getElementById('iaAnalisaSection');
+    if (!section || !analiseBalancosData) return;
+    
+    const data = analiseBalancosData;
+    
+    // Formata data de atualização
+    const dataAtualizacao = new Date(data.ultima_atualizacao);
+    const dataFormatada = dataAtualizacao.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    });
+    
+    // HTML principal
+    let html = `
+        <div class="ia-header">
+            <div class="ia-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <div class="ia-title-group">
+                <h3>I.A Analisa</h3>
+                <p>Análise automática de balanços e demonstrativos</p>
+            </div>
+            <div class="ia-badge">
+                <i class="fas fa-robot"></i> Powered by AI
+            </div>
+        </div>
+        
+        <div class="ia-content">
+            <!-- Análise Crítica -->
+            <div class="ia-analise-critica">
+                <h4>
+                    <i class="fas fa-lightbulb"></i>
+                    Análise Crítica
+                </h4>
+                <p>${data.analise_critica}</p>
+            </div>
+            
+            <!-- Grid de Pontos Fortes e Atenção -->
+            <div class="ia-pontos-grid">
+                <!-- Pontos Fortes -->
+                <div class="ia-pontos-card fortes">
+                    <div class="ia-pontos-header">
+                        <div class="ia-pontos-icon">
+                            <i class="fas fa-thumbs-up"></i>
+                        </div>
+                        <h4>Pontos Fortes</h4>
+                    </div>
+                    <div class="ia-pontos-list">
+    `;
+    
+    // Renderiza pontos fortes
+    if (data.pontos_fortes && data.pontos_fortes.length > 0) {
+        data.pontos_fortes.forEach(ponto => {
+            html += `
+                <div class="ia-ponto-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>${ponto}</span>
+                </div>
+            `;
+        });
+    } else {
+        html += `<div class="ia-pontos-empty">Nenhum ponto forte identificado</div>`;
+    }
+    
+    html += `
+                    </div>
+                </div>
+                
+                <!-- Pontos de Atenção -->
+                <div class="ia-pontos-card atencao">
+                    <div class="ia-pontos-header">
+                        <div class="ia-pontos-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h4>Pontos de Atenção</h4>
+                    </div>
+                    <div class="ia-pontos-list">
+    `;
+    
+    // Renderiza pontos de atenção
+    if (data.pontos_atencao && data.pontos_atencao.length > 0) {
+        data.pontos_atencao.forEach(ponto => {
+            html += `
+                <div class="ia-ponto-item">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>${ponto}</span>
+                </div>
+            `;
+        });
+    } else {
+        html += `<div class="ia-pontos-empty">✓ Nenhum ponto crítico identificado</div>`;
+    }
+    
+    html += `
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Métricas em Destaque -->
+            <div class="ia-metricas-destaque">
+                <h4>
+                    <i class="fas fa-chart-bar"></i>
+                    Métricas em Destaque
+                </h4>
+                <div class="ia-metricas-grid">
+                    <div class="ia-metrica-item">
+                        <div class="ia-metrica-valor">${data.metricas.receita.cagr.toFixed(2)}%</div>
+                        <div class="ia-metrica-label">CAGR Receita</div>
+                    </div>
+                    <div class="ia-metrica-item">
+                        <div class="ia-metrica-valor">${data.metricas.margens.liquida.toFixed(2)}%</div>
+                        <div class="ia-metrica-label">Margem Líquida</div>
+                    </div>
+                    <div class="ia-metrica-item">
+                        <div class="ia-metrica-valor">${data.metricas.rentabilidade.roe_medio.toFixed(2)}%</div>
+                        <div class="ia-metrica-label">ROE Médio</div>
+                    </div>
+                    <div class="ia-metrica-item">
+                        <div class="ia-metrica-valor">${data.periodo_analisado.anos.toFixed(1)}</div>
+                        <div class="ia-metrica-label">Anos Analisados</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ia-footer">
+            <i class="fas fa-info-circle"></i>
+            Análise gerada automaticamente • Última atualização: ${dataFormatada} • Período: ${data.periodo_analisado.inicio} a ${data.periodo_analisado.fim}
+        </div>
+    `;
+    
+    section.innerHTML = html;
+    section.style.display = 'block';
+}
+
+/**
+ * HOOK: Adiciona carregamento de análise I.A ao carregar ação
+ */
+const originalLoadAcaoDataWithIA = loadAcaoData;
+loadAcaoData = async function(ticker) {
+    await originalLoadAcaoDataWithIA.call(this, ticker);
+    
+    // Carrega análise I.A após carregar a ação
+    await loadAnaliseBalancos(ticker);
+};
+
 /**
  * Renderiza card de composição acionária
  */
