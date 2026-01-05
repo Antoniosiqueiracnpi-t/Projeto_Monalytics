@@ -2,14 +2,14 @@ name: Capturar Notícias do Mercado
 
 on:
   schedule:
-    - cron: '0 11-21 * * 1-5'
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 # SOLUÇÃO: Usar o mesmo grupo de concurrency que outros workflows
 # Isso previne que workflows diferentes se cancelem mutuamente
 concurrency:
-  group: production-deploy-${{ github.ref }}  # ← Mesmo grupo que production
-  cancel-in-progress: false
+  group: capturar-noticiario-economico
+  cancel-in-progress: true
 
 permissions:
   contents: write
