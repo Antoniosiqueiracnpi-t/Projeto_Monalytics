@@ -733,16 +733,16 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="js/script.js"></script>
 
-<!-- Auto-Atualização de Dados -->
-<script src="/js/auto-update.js"></script>
-
-<!-- Opcional: Event listener para reagir a atualizações -->
-<script>
-window.addEventListener('monalytics:dataUpdated', function(event) {
-  console.log('📊 Dados atualizados:', event.detail);
-  // Aqui você pode adicionar lógica customizada quando dados são atualizados
-});
-</script>
+    <!-- Auto-Atualização de Dados -->
+    <script src="/js/auto-update.js"></script>
+    
+    <!-- Opcional: Event listener para reagir a atualizações -->
+    <script>
+    window.addEventListener('monalytics:dataUpdated', function(event) {
+      console.log('📊 Dados atualizados:', event.detail);
+      // Aqui você pode adicionar lógica customizada quando dados são atualizados
+    });
+    </script>
     
 </body>
 </html>
