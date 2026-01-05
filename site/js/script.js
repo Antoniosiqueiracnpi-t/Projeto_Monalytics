@@ -2776,6 +2776,51 @@ async function carregarDYAtual(ticker) {
     }
 }
 
+/**
+ * Carrega DY histórico do arquivo multiplos.json
+ */
+async function carregarDYHistorico(ticker) {
+    try {
+        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
+        const tickerPasta = empresaInfo && empresaInfo.todosTickersStr 
+            ? empresaInfo.todosTickersStr.split(';')[0].trim()
+            : ticker;
+        
+        console.log(`📈 Buscando DY histórico em multiplos.json (ticker: ${tickerPasta})...`);
+        
+        const timestamp = new Date().getTime();
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
+        
+        if (response.ok) {
+            const multiplosData = await response.json();
+            
+            // ✅ Extrai DY de cada ano do histórico
+            const historicoAnual = multiplosData.historico_anual || {};
+            
+            for (const ano in historicoAnual) {
+                const dyAno = historicoAnual[ano].multiplos?.DY;
+                
+                if (dyAno !== undefined && dyAno !== null) {
+                    // Atualiza dy_percent no historico_anos correspondente
+                    const anoObj = dividendosHistoricoData.historico_anos.find(
+                        a => a.ano === parseInt(ano)
+                    );
+                    
+                    if (anoObj) {
+                        anoObj.dy_percent = dyAno;
+                        console.log(`   ✅ ${ano}: ${dyAno.toFixed(2)}%`);
+                    }
+                }
+            }
+            
+            console.log('✅ DY histórico atualizado de multiplos.json');
+        }
+        
+    } catch (error) {
+        console.warn('⚠️ Erro ao carregar DY histórico:', error);
+    }
+}
+
 
 /**
  * Carrega e processa histórico de dividendos
@@ -2810,7 +2855,7 @@ async function loadDividendosHistorico(ticker) {
         
         // Busca DY atual de multiplos.json
         await carregarDYAtual(ticker);
-        
+        await carregarDYHistorico(ticker);        
         renderDividendosHistorico();
         
     } catch (error) {
