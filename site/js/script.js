@@ -1718,7 +1718,7 @@ async function loadMapeamentoB3() {
         
         // Parse CSV - USANDO PONTO-E-VÍRGULA como separador
         const lines = csvText.split('\n');
-        mapeamentoB3 = lines.slice(1) // Pula header
+        const rawData = lines.slice(1) // Pula header
             .filter(line => line.trim())
             .map(line => {
                 const parts = line.split(';');
@@ -1735,7 +1735,29 @@ async function loadMapeamentoB3() {
             })
             .filter(item => item.ticker && item.empresa);
         
-        console.log('Mapeamento B3 carregado:', mapeamentoB3.length, 'empresas');
+        // CORREÇÃO: Expande empresas com múltiplos tickers
+        mapeamentoB3 = [];
+        rawData.forEach(item => {
+            // Se ticker contém múltiplos (separados por ;), cria uma entrada para cada
+            const tickers = item.ticker.split(';').map(t => t.trim()).filter(t => t);
+            const todosTickersStr = item.ticker; // Guarda string original
+            
+            tickers.forEach(ticker => {
+                mapeamentoB3.push({
+                    ticker: ticker,
+                    empresa: item.empresa,
+                    cnpj: item.cnpj,
+                    codigo_cvm: item.codigo_cvm,
+                    setor: item.setor,
+                    segmento: item.segmento,
+                    sede: item.sede,
+                    descricao: item.descricao,
+                    todosTickersStr: todosTickersStr // Adiciona string original para exibição
+                });
+            });
+        });
+        
+        console.log('Mapeamento B3 carregado:', mapeamentoB3.length, 'entradas (tickers expandidos)');
     } catch (error) {
         console.error('Erro ao carregar mapeamento B3:', error);
     }
@@ -1818,11 +1840,25 @@ function initAcaoBusca() {
 function renderSuggestions(matches) {
     const suggestions = document.getElementById('searchSuggestions');
     
-    suggestions.innerHTML = matches
+    // Remove duplicatas por empresa (mantém apenas primeira ocorrência)
+    const uniqueMatches = [];
+    const seenEmpresas = new Set();
+    
+    for (const item of matches) {
+        if (!seenEmpresas.has(item.empresa)) {
+            seenEmpresas.add(item.empresa);
+            uniqueMatches.push(item);
+        }
+    }
+    
+    suggestions.innerHTML = uniqueMatches
         .map(item => `
             <div class="suggestion-item" data-ticker="${item.ticker}">
                 <div>
                     <span class="suggestion-ticker">${item.ticker}</span>
+                    ${item.todosTickersStr && item.todosTickersStr.includes(';') 
+                        ? `<span style="color: #999; font-size: 0.85em; margin-left: 4px;">(${item.todosTickersStr})</span>` 
+                        : ''}
                     <span class="suggestion-nome">${item.empresa}</span>
                 </div>
             </div>
