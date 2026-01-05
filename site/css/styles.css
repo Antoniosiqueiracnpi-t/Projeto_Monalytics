@@ -3928,6 +3928,59 @@ textarea:focus {
     }
 }
 
+/* Sistema de Expansão - Tabela Dividendos */
+.dividendos-table-wrapper {
+    position: relative;
+}
+
+.dividendos-table-wrapper.collapsed {
+    max-height: 450px;
+    overflow: hidden;
+}
+
+.dividendos-table-wrapper.collapsed::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to bottom, transparent, white);
+    pointer-events: none;
+}
+
+.dividendos-expand-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #10b981, #34d399);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.dividendos-expand-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.dividendos-expand-btn i {
+    transition: transform 0.3s ease;
+}
+
+.dividendos-expand-btn.expanded i {
+    transform: rotate(180deg);
+}
+
 /* =========================== CAROUSEL NAVIGATION =========================== */
 .carousel-arrow {
     position: absolute;
