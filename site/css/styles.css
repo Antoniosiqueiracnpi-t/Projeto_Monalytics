@@ -2415,19 +2415,129 @@ textarea:focus {
     font-weight: 600;
 }
 
+
+
+/* ========================================
+   CORREÇÃO: QUEBRA DE TEXTO NO CARD DE INFORMAÇÕES
+   ======================================== */
+
+/* 1. Corrige TODOS os campos de texto */
 .info-valor {
     font-size: 0.95rem;
     color: var(--text-primary);
     font-weight: 500;
     line-height: 1.6;
+    
+    /* ✅ CORREÇÕES ADICIONADAS */
+    word-wrap: break-word;        /* Quebra palavras longas (legacy) */
+    overflow-wrap: break-word;    /* Padrão moderno */
+    word-break: break-word;       /* Força quebra em pontos arbitrários */
+    white-space: normal;          /* Permite quebra de linha */
+    max-width: 100%;              /* Limita largura ao container */
+    hyphens: auto;                /* Hifenização automática (português) */
 }
 
+/* 2. Correção específica para ENDEREÇO (quebre em qualquer ponto) */
+.info-valor:has(+ .info-label:contains("ENDEREÇO")),
+#empresaSede {
+    word-break: break-all;        /* Quebra agressiva para endereços longos */
+}
+
+/* 3. Correção para CNPJ (permite quebra após / ou -) */
+#empresaCNPJ {
+    font-family: 'Courier New', monospace;  /* Fonte monoespaçada */
+    letter-spacing: 0.5px;
+}
+
+/* 4. Correção para DESCRIÇÃO (justificado + hifenização) */
 .info-valor.descricao {
     font-size: 0.9rem;
     text-align: justify;
     line-height: 1.8;
     color: #4a5568;
+    
+    /* ✅ Garante quebra suave */
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
 }
+
+/* 5. Correção para LISTA DE EMPRESAS DO MESMO SETOR */
+#empresasMesmoSetor {
+    display: flex;
+    flex-wrap: wrap;              /* Permite quebra em múltiplas linhas */
+    gap: 8px;                     /* Espaçamento entre tickers */
+    max-width: 100%;
+}
+
+#empresasMesmoSetor .ticker-similar {
+    display: inline-block;        /* Evita quebra dentro do ticker */
+    white-space: nowrap;          /* Mantém ticker inteiro */
+}
+
+/* 6. Container do card (garante overflow oculto) */
+.empresa-info-card {
+    background: #f5f5f7;
+    border-radius: 16px;
+    padding: 30px;
+    margin-top: 25px;
+    border: 2px solid var(--border-color);
+    
+    /* ✅ Previne overflow do card */
+    overflow: hidden;             /* Esconde qualquer overflow */
+    max-width: 100%;
+}
+
+/* 7. Grid de informações (garante responsividade) */
+.empresa-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    
+    /* ✅ Previne colunas fixas que estouram */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* ========================================
+   RESPONSIVO MOBILE/TABLET
+   ======================================== */
+
+@media (max-width: 768px) {
+    .empresa-info-card {
+        padding: 20px;              /* Reduz padding em mobile */
+    }
+
+    .empresa-info-grid {
+        grid-template-columns: 1fr;  /* Uma coluna em mobile */
+        gap: 15px;
+    }
+    
+    .info-valor {
+        font-size: 0.875rem;        /* Texto menor */
+    }
+    
+    #empresaSede {
+        word-break: break-all;      /* Quebra agressiva em endereços */
+    }
+}
+
+@media (max-width: 480px) {
+    .empresa-info-card {
+        padding: 15px;
+    }
+    
+    .info-valor {
+        font-size: 0.85rem;
+    }
+    
+    .info-valor.descricao {
+        text-align: left;           /* Remove justificação em telas pequenas */
+    }
+}
+
+
+
 
 /* Loading state */
 .acao-loading {
