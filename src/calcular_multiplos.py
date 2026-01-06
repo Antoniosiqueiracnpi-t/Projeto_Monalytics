@@ -1158,6 +1158,10 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
         market_cap = _calcular_market_cap(dados, periodo)
     
     ev = _calcular_ev(dados, periodo, market_cap)
+
+    # ==================== LUCRO LÍQUIDO LTM (para PAYOUT) ====================
+    
+    ll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["lucro_liquido"], periodo)
     
     # ==================== VALUATION ====================
     
