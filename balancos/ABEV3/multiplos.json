@@ -9,7 +9,7 @@
     "P_L": {
       "nome": "P/L",
       "categoria": "Valuation",
-      "formula": "Market Cap / Lucro Líquido LTM",
+      "formula": "Preço / Lucro por Ação LTM",
       "unidade": "x",
       "usa_preco": true
     },
@@ -172,7 +172,7 @@
     "2015": {
       "periodo_referencia": "2015T4",
       "multiplos": {
-        "P_L": 14.0345,
+        "P_L": 14.557,
         "P_VPA": 3.5911,
         "EV_EBITDA": 9.0789,
         "EV_EBIT": 9.0789,
@@ -200,7 +200,7 @@
     "2016": {
       "periodo_referencia": "2016T4",
       "multiplos": {
-        "P_L": 13.1547,
+        "P_L": 13.6875,
         "P_VPA": 3.6892,
         "EV_EBITDA": 9.903,
         "EV_EBIT": 9.903,
@@ -228,7 +228,7 @@
     "2017": {
       "periodo_referencia": "2017T4",
       "multiplos": {
-        "P_L": 29.2593,
+        "P_L": 31.0851,
         "P_VPA": 4.7871,
         "EV_EBITDA": 13.5102,
         "EV_EBIT": 13.5102,
@@ -256,7 +256,7 @@
     "2018": {
       "periodo_referencia": "2018T4",
       "multiplos": {
-        "P_L": 15.0673,
+        "P_L": 15.5714,
         "P_VPA": 2.9789,
         "EV_EBITDA": 9.5567,
         "EV_EBIT": 9.5567,
@@ -284,7 +284,7 @@
     "2019": {
       "periodo_referencia": "2019T4",
       "multiplos": {
-        "P_L": 17.5318,
+        "P_L": 18.1306,
         "P_VPA": 3.4159,
         "EV_EBITDA": 12.76,
         "EV_EBIT": 12.76,
@@ -312,7 +312,7 @@
     "2020": {
       "periodo_referencia": "2020T4",
       "multiplos": {
-        "P_L": 15.683,
+        "P_L": 16.1625,
         "P_VPA": 2.4483,
         "EV_EBITDA": 10.672,
         "EV_EBIT": 10.672,
@@ -340,7 +340,7 @@
     "2021": {
       "periodo_referencia": "2021T4",
       "multiplos": {
-        "P_L": 14.4269,
+        "P_L": 14.9285,
         "P_VPA": 2.2533,
         "EV_EBITDA": 10.2494,
         "EV_EBIT": 10.2494,
@@ -368,7 +368,7 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
-        "P_L": 12.6104,
+        "P_L": 12.9785,
         "P_VPA": 2.2536,
         "EV_EBITDA": 9.9766,
         "EV_EBIT": 9.9766,
@@ -396,7 +396,7 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
-        "P_L": 12.492,
+        "P_L": 12.8764,
         "P_VPA": 2.3319,
         "EV_EBITDA": 9.3346,
         "EV_EBIT": 9.3346,
@@ -424,7 +424,7 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
-        "P_L": 11.3592,
+        "P_L": 11.6615,
         "P_VPA": 1.6936,
         "EV_EBITDA": 6.5242,
         "EV_EBIT": 6.5242,
@@ -452,7 +452,7 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "P_L": 10.9581,
+        "P_L": 11.1875,
         "P_VPA": 1.9479,
         "EV_EBITDA": 6.8396,
         "EV_EBIT": 6.8396,
@@ -480,13 +480,13 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-05T21:27:06.752251",
+    "data_calculo": "2026-01-06T12:13:28.866942",
     "preco_utilizado": 11.46,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 15761638756,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 10.9581,
+      "P_L": 11.1875,
       "P_VPA": 1.9479,
       "EV_EBITDA": 6.8396,
       "EV_EBIT": 6.8396,
