@@ -1,7 +1,11 @@
 {
-  "timestamp": 1767720642000,
+  "timestamp": 1767721362000,
   "data": "2026-01-06",
-  "hora": "14:30 BRT",
-  "fonte": "monitor_ibov",
-  "versao": "1.0.0"
+  "hora": "14:42 BRT",
+  "deploy": "manual",
+  "versao": "1.0.0",
+  "trigger": "workflow_dispatch",
+  "iso": "2026-01-06T14:42:42-03:00",
+  "run_id": "20756788191",
+  "commit_sha": "67b2efd1bcaf5310d4e58466d3a30a07f61579e3"
 }
