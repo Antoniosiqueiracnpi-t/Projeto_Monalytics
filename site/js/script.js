@@ -3931,7 +3931,7 @@ class MobileRotationAssistant {
         const userAgent = navigator.userAgent.toLowerCase();
         const isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        const isSmallScreen = window.innerWidth <= 768;
+        const isSmallScreen = Math.min(window.innerWidth, window.innerHeight) <= 768;
         
         return isMobileUA && isTouchDevice && isSmallScreen;
     }
@@ -4035,8 +4035,10 @@ class MobileRotationAssistant {
             // Voltou para vertical: limpa dimensões antigas para não estourar layout
             this.resetCanvasInlineSize();
         } else {
-            // Foi para horizontal: dá tempo do layout aparecer e força resize do Chart.js
-            setTimeout(() => this.resizeAllCharts(), 250);
+            // Foi para horizontal: garante que o CSS aplicou antes do resize do Chart.js
+            requestAnimationFrame(() => {
+                setTimeout(() => this.resizeAllCharts(), 150);
+            });
         }
     }
 
