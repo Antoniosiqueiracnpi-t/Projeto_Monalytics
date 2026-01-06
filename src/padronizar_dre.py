@@ -381,12 +381,59 @@ def _normalize_value(v: float, decimals: int = 3) -> float:
         return np.nan
     return round(float(v), decimals)
 
+def _validate_account_sign(code: str, value: float) -> float:
+    """
+    Valida e corrige sinais de contas baseado em regras contábeis.
+    
+    REGRAS:
+    - Receitas (3.01, 3.06.01): devem ser POSITIVAS
+    - Custos/Despesas (3.02, 3.04, 3.06.02): devem ser NEGATIVOS
+    - Lucros: podem ser positivos ou negativos (prejuízo)
+    
+    Returns:
+        Valor com sinal correto
+    """
+    if pd.isna(value) or value == 0:
+        return value
+    
+    # Contas que DEVEM ser positivas
+    DEVE_SER_POSITIVO = [
+        "3.01",      # Receita
+        "3.03",      # Resultado Bruto
+        "3.06.01",   # Receitas Financeiras
+        "3.09",      # Lucro Operacional Continuado
+        "3.11"       # Lucro Líquido
+    ]
+    
+    # Contas que DEVEM ser negativas
+    DEVE_SER_NEGATIVO = [
+        "3.02",      # Custo dos Bens Vendidos
+        "3.04",      # Despesas Operacionais
+        "3.04.02",   # Despesas Administrativas
+        "3.04.05",   # Outras Despesas
+        "3.06.02",   # Despesas Financeiras
+        "3.08"       # IR/CSLL
+    ]
+    
+    # Aplicar correção se necessário
+    if code in DEVE_SER_POSITIVO and value < 0:
+        print(f"    ⚠️ Invertendo sinal de {code}: {value} → {-value}")
+        return -value
+    
+    if code in DEVE_SER_NEGATIVO and value > 0:
+        print(f"    ⚠️ Invertendo sinal de {code}: {value} → {-value}")
+        return -value
+    
+    return value
+
+
 
 def _pick_value_for_base_code(group: pd.DataFrame, base_code: str) -> float:
     """Extrai valor para um código base, buscando conta exata ou somando filhas."""
     exact = group[group["cd_conta"] == base_code]
     if not exact.empty:
         v = _ensure_numeric(exact["valor_mil"]).sum()
+        v = _validate_account_sign(base_code, float(v))  # ← ADICIONAR
         return float(v) if np.isfinite(v) else np.nan
 
     children = group[group["cd_conta"].astype(str).str.startswith(base_code + ".")]
@@ -644,6 +691,36 @@ class PadronizadorDRE:
                 rows.append((int(ano), str(trimestre), EPS_CODE, _compute_eps_value(g)))
     
             return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
+
+    def _filter_empty_quarters(qtot: pd.DataFrame, threshold: float = 0.01) -> pd.DataFrame:
+        """
+        Remove trimestres completamente zerados ou com valores insignificantes.
+        
+        Critério: Se TODAS as contas principais têm |valor| < threshold (milhares),
+        o trimestre é considerado vazio e removido.
+        
+        Exemplo: 2021T1 da RECV3 (todas contas = 0.0) seria removido.
+        """
+        main_accounts = ["3.01", "3.03", "3.11"]  # Receita, Lucro Bruto, Lucro Líquido
+        
+        quarters_to_remove = []
+        
+        for (ano, trimestre), g in qtot.groupby(['ano', 'trimestre'], sort=False):
+            main_values = g[g['code'].isin(main_accounts)]['valor'].abs()
+            
+            # Se TODOS os valores principais são zero/insignificantes
+            if (main_values < threshold).all():
+                quarters_to_remove.append((ano, trimestre))
+        
+        if quarters_to_remove:
+            print(f"  ℹ️  Removendo trimestres zerados: {quarters_to_remove}")
+            mask = ~qtot.apply(lambda x: (x['ano'], x['trimestre']) in quarters_to_remove, axis=1)
+            return qtot[mask]
+        
+        return qtot
+
+
+    
 
     def _extract_annual_values(self, df_anu: pd.DataFrame) -> pd.DataFrame:
             """
@@ -1041,6 +1118,9 @@ class PadronizadorDRE:
         
         # 3. Construir totais trimestrais (preserva originais)
         qtot = self._build_quarter_totals(df_tri)
+
+        # 3.1 NOVO: Filtrar trimestres zerados
+        qtot = _filter_empty_quarters(qtot)  # ← ADICIONAR        
         
         # 4. Extrair valores anuais
         anu = self._extract_annual_values(df_anu)
@@ -1129,7 +1209,6 @@ class PadronizadorDRE:
         msg = f"dre_padronizado.csv | {' | '.join(msg_parts)}"
         
         return ok, msg
-
 
 # ======================================================================================
 # CLI
