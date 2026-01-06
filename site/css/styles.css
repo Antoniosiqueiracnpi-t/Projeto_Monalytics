@@ -4163,6 +4163,85 @@ textarea:focus {
 }
 
 
+/* ===================== ROTAÇÃO MOBILE (SEM POPUP) ===================== */
+
+/* Placeholder (fica no lugar do canvas no retrato) */
+.chart-rotation-placeholder{
+  display:none;
+  width:100%;
+  box-sizing:border-box;
+  border-radius:14px;
+  border:2px dashed rgba(0,102,204,.35);
+  background: rgba(0,102,204,.06);
+  padding:16px;
+  min-height:220px;
+
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.rotation-placeholder-inner{ max-width:320px; margin:0 auto; }
+.rotation-placeholder-icon{ font-size:34px; margin-bottom:10px; }
+.rotation-placeholder-title{ font-weight:800; margin-bottom:6px; color: var(--text-primary); }
+.rotation-placeholder-text{ line-height:1.4; color: var(--text-secondary); }
+
+/* Sempre: evita canvas “alargar” a página após rotacionar */
+.grafico-container canvas,
+.dividendos-chart-container canvas,
+.chart-container canvas,
+.modal-chart-container canvas{
+  max-width:100% !important;
+}
+
+/* ========== MOBILE RETRATO: ESCONDE GRÁFICOS E MOSTRA AVISO ========== */
+html.is-mobile-portrait #acaoChart,
+html.is-mobile-portrait #dividendosHistoricoChart,
+html.is-mobile-portrait #modal-chart{
+  display:none !important;
+}
+
+html.is-mobile-portrait .chart-rotation-placeholder{
+  display:flex;
+}
+
+/* Evita duplicidade se ainda existir hint antigo */
+html.is-mobile-portrait .chart-rotation-hint{
+  display:none !important;
+}
+
+/* ========== MOBILE LANDSCAPE: LIMITA ALTURA PRA CABER NA TELA ========== */
+@media (max-width: 768px) and (orientation: landscape){
+
+  /* AÇÃO (container do gráfico principal) */
+  .grafico-container{
+    min-height: 0 !important;
+    padding: 10px !important;
+  }
+  .grafico-container canvas{
+    max-height: calc(100vh - 170px) !important;
+    width: 100% !important;
+  }
+
+  /* DIVIDENDOS */
+  .dividendos-chart-container{
+    height: calc(100vh - 210px) !important;
+  }
+  .dividendos-chart-container canvas{
+    max-height: 100% !important;
+    width: 100% !important;
+  }
+
+
+  /* MODAL */
+  .modal-chart-container canvas{
+    max-height: 70vh !important;
+    width: 100% !important;
+  }
+}
+
+
+
 /* =========================== CAROUSEL INDICATORS =========================== */
 .carousel-indicators {
     display: flex;
