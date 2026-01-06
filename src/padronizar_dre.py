@@ -811,42 +811,6 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame, tick
         description=description
     )
     
-def _fill_resultado_operacoes_continuadas(self, qiso: pd.DataFrame) -> pd.DataFrame:
-    """
-    Preenche 3.09 com 3.11 quando vazio.
-    RECV3 e outras empresas reportam lucro em 3.11 mas deixam 3.09 vazio.
-    """
-    out = qiso.copy()
-    
-    has_309 = '3.09' in out['code'].values
-    has_311 = '3.11' in out['code'].values
-    
-    if not has_311 or not has_309:
-        return out
-    
-    new_rows = []
-    
-    for (ano, trimestre), g in out.groupby(['ano', 'trimestre'], sort=False):
-        val_311 = g.loc[g['code'] == '3.11', 'valor'].values
-        val_309 = g.loc[g['code'] == '3.09', 'valor'].values
-        
-        # Se 3.11 tem valor
-        if len(val_311) > 0 and pd.notna(val_311[0]) and val_311[0] != 0:
-            # Se 3.09 não existe ou está vazio
-            if len(val_309) == 0 or pd.isna(val_309[0]) or val_309[0] == 0:
-                new_rows.append({
-                    'ano': ano,
-                    'trimestre': trimestre,
-                    'code': '3.09',
-                    'valor': float(val_311[0])
-                })
-    
-    if new_rows:
-        out = out[~((out['code'] == '3.09') & (out['valor'].isna() | (out['valor'] == 0)))]
-        out = pd.concat([out, pd.DataFrame(new_rows)], ignore_index=True)
-    
-    return out
-
 
 # ======================================================================================
 # PADRONIZADOR
@@ -1302,6 +1266,40 @@ class PadronizadorDRE:
                     print(f"    🔧 Corrigindo {cd_conta} ({col}): {valor} → {-valor}")
         
         return df
+
+
+    def _fill_resultado_operacoes_continuadas(self, qiso: pd.DataFrame) -> pd.DataFrame:
+        """
+        Preenche 3.09 com 3.11 quando vazio.
+        """
+        out = qiso.copy()
+        
+        has_309 = '3.09' in out['code'].values
+        has_311 = '3.11' in out['code'].values
+        
+        if not has_311 or not has_309:
+            return out
+        
+        new_rows = []
+        
+        for (ano, trimestre), g in out.groupby(['ano', 'trimestre'], sort=False):
+            val_311 = g.loc[g['code'] == '3.11', 'valor'].values
+            val_309 = g.loc[g['code'] == '3.09', 'valor'].values
+            
+            if len(val_311) > 0 and pd.notna(val_311[0]) and val_311[0] != 0:
+                if len(val_309) == 0 or pd.isna(val_309[0]) or val_309[0] == 0:
+                    new_rows.append({
+                        'ano': ano,
+                        'trimestre': trimestre,
+                        'code': '3.09',
+                        'valor': float(val_311[0])
+                    })
+        
+        if new_rows:
+            out = out[~((out['code'] == '3.09') & (out['valor'].isna() | (out['valor'] == 0)))]
+            out = pd.concat([out, pd.DataFrame(new_rows)], ignore_index=True)
+        
+        return out    
     
 
     def _carregar_acoes_por_ano(self, pasta_ticker: Path) -> Dict[int, int]:
