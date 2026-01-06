@@ -1,8 +1,30 @@
 {
-  "ultima_atualizacao": "2026-01-06T01:13:26.982434-03:00",
+  "ultima_atualizacao": "2026-01-06T01:56:01.779052-03:00",
   "total_noticias": 17,
   "portais": {
     "Investing.com": [
+      {
+        "id": "de3716ecaa55",
+        "titulo": "AMD revela novos processadores de IA no CES Las Vegas, visando grande salto de desempenho",
+        "link": "https://br.investing.com/news/stock-market-news/amd-revela-novos-processadores-de-ia-no-ces-las-vegas-visando-grande-salto-de-desempenho-1790499",
+        "horario": "01:13",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "AMD revela novos processadores de IA no CES Las Vegas, visando grande...",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "5b0802b144bb",
+        "titulo": "PMGC Holdings implementará grupamento de ações na proporção de 1 para 4",
+        "link": "https://br.investing.com/news/company-news/pmgc-holdings-implementara-grupamento-de-acoes-na-proporcao-de-1-para-4-93CH-1790497",
+        "horario": "01:06",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "PMGC Holdings implementará grupamento de ações na proporção de 1 para 4",
+        "fonte": "Investing.com"
+      },
       {
         "id": "bf0ff3e10095",
         "titulo": "Fabricante chinesa de lidar Hesai dispara após parceria com Nvidia em direção autônoma",
@@ -35,42 +57,41 @@
         "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
         "categoria": "Internacional",
         "tags": [
+          "Petróleo",
           "Venezuela",
-          "EUA",
-          "Petróleo"
+          "EUA"
         ],
         "resumo": "Mercado de petróleo vê impacto limitado da ação dos EUA na Venezuela...",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "c6d34efff7ed",
-        "titulo": "Moedas asiáticas estáveis enquanto dólar se recupera do choque da Venezuela",
-        "link": "https://br.investing.com/news/forex-news/moedas-asiaticas-estaveis-enquanto-dolar-se-recupera-do-choque-da-venezuela-1790486",
-        "horario": "00:26",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Internacional",
-        "tags": [
-          "Venezuela",
-          "Dólar"
-        ],
-        "resumo": "Moedas asiáticas estáveis enquanto dólar se recupera do choque da Venezuela",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "109eb0fd15c5",
-        "titulo": "Os Futuros do Petróleo caíram durante a sessão asiática",
-        "link": "https://br.investing.com/news/commodities-news/os-futuros-do-petroleo-cairam-durante-a-sessao-asiatica-1790484",
-        "horario": "00:25",
-        "imagem": "",
-        "categoria": "Commodities",
-        "tags": [
-          "Petróleo"
-        ],
-        "resumo": "Os Futuros do Petróleo caíram durante a sessão asiática",
         "fonte": "Investing.com"
       }
     ],
     "Valor Econômico": [
+      {
+        "id": "e6d264eccc88",
+        "titulo": "Trump descarta eleições na Venezuela em 30 dias e diz que precisa 'consertar o país primeiro'",
+        "link": "https://valor.globo.com/mundo/noticia/2026/01/06/trump-descarta-eleies-na-venezuela-em-30-dias-e-diz-que-precisa-consertar-o-pas-primeiro.ghtml",
+        "horario": "01:48",
+        "imagem": "https://s2-valor.glbimg.com/HeooCSgIllhYZVRMy02Wzg-lYzc=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2024/s/F/JtYbO4SiAljuRTEYDGIQ/c333176c7972475d934c74ba6731614c-1-f9e236aafc6841aa9d534eeb0cecd8a8.jpg",
+        "categoria": "Internacional",
+        "tags": [
+          "Venezuela"
+        ],
+        "resumo": "Trump descarta eleições na Venezuela em 30 dias e diz que precisa...",
+        "fonte": "Valor Econômico"
+      },
+      {
+        "id": "6515572f21d9",
+        "titulo": "Venezuela: Oposicionista Corina Machado diz que não fala com Trump desde outubro",
+        "link": "https://valor.globo.com/mundo/noticia/2026/01/06/venezuela-oposicionista-corina-machado-diz-que-no-fala-com-trump-desde-outubro.ghtml",
+        "horario": "01:37",
+        "imagem": "https://s2-valor.glbimg.com/bO8vFZV3ldmHsWOO6moQ0Fk6mEk=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/g/F/WEvWJAT3ugDg6oseWrMw/nobel.jpg",
+        "categoria": "Internacional",
+        "tags": [
+          "Venezuela"
+        ],
+        "resumo": "Venezuela: Oposicionista Corina Machado diz que não fala com Trump desde outubro",
+        "fonte": "Valor Econômico"
+      },
       {
         "id": "a1c08ba6aa07",
         "titulo": "Quanto era o salário mínimo em 2025?",
@@ -91,32 +112,6 @@
         "categoria": "Geral",
         "tags": [],
         "resumo": "Imposto de Renda em 2026: Veja o que muda para este ano",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "b119caaf3891",
-        "titulo": "Trump sugere reembolsar petroleiras americanas que investirem na Venezuela",
-        "link": "https://valor.globo.com/mundo/noticia/2026/01/05/trump-sugere-reembolsar-petroleiras-americanas-que-investirem-na-venezuela.ghtml",
-        "horario": "22:58",
-        "imagem": "https://s2-valor.glbimg.com/yW-yrkkY3Z4QvKy1rtB998PPwn0=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/t/5/vK3QraTHK0JE27b9O38A/d0fe54be421840f1a59c3b5f274df054-0-6e4f6b298c05439f95781eba92ae5370.jpg",
-        "categoria": "Internacional",
-        "tags": [
-          "Venezuela"
-        ],
-        "resumo": "Trump sugere reembolsar petroleiras americanas que investirem na Venezuela",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "d5dd36384b7c",
-        "titulo": "Falha de comunicação entre agentes  termina em tiros contra drones no palácio presidencial da Venezuela",
-        "link": "https://valor.globo.com/mundo/noticia/2026/01/05/tiroteio-ouvido-perto-do-palcio-presidencial-da-venezuela-diz-site.ghtml",
-        "horario": "22:17",
-        "imagem": "https://s2-valor.glbimg.com/KIEB_jDyqD2dudNgkS76FK5OgLE=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/N/C/L1OlhwSSW9x7GIIodeYw/palacio-miraflores.webp",
-        "categoria": "Internacional",
-        "tags": [
-          "Venezuela"
-        ],
-        "resumo": "Falha de comunicação entre agentes termina em tiros contra drones no palácio...",
         "fonte": "Valor Econômico"
       }
     ],
