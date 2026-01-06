@@ -811,6 +811,41 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame, tick
         description=description
     )
     
+def _fill_resultado_operacoes_continuadas(self, qiso: pd.DataFrame) -> pd.DataFrame:
+    """
+    Preenche 3.09 com 3.11 quando vazio.
+    RECV3 e outras empresas reportam lucro em 3.11 mas deixam 3.09 vazio.
+    """
+    out = qiso.copy()
+    
+    has_309 = '3.09' in out['code'].values
+    has_311 = '3.11' in out['code'].values
+    
+    if not has_311 or not has_309:
+        return out
+    
+    new_rows = []
+    
+    for (ano, trimestre), g in out.groupby(['ano', 'trimestre'], sort=False):
+        val_311 = g.loc[g['code'] == '3.11', 'valor'].values
+        val_309 = g.loc[g['code'] == '3.09', 'valor'].values
+        
+        # Se 3.11 tem valor
+        if len(val_311) > 0 and pd.notna(val_311[0]) and val_311[0] != 0:
+            # Se 3.09 não existe ou está vazio
+            if len(val_309) == 0 or pd.isna(val_309[0]) or val_309[0] == 0:
+                new_rows.append({
+                    'ano': ano,
+                    'trimestre': trimestre,
+                    'code': '3.09',
+                    'valor': float(val_311[0])
+                })
+    
+    if new_rows:
+        out = out[~((out['code'] == '3.09') & (out['valor'].isna() | (out['valor'] == 0)))]
+        out = pd.concat([out, pd.DataFrame(new_rows)], ignore_index=True)
+    
+    return out
 
 
 # ======================================================================================
@@ -1200,6 +1235,219 @@ class PadronizadorDRE:
 
         return pivot.reset_index(drop=True)
 
+    def _validar_sinais_pos_processamento(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Valida e corrige sinais de contas APÓS construir tabela horizontal.
+        
+        OBJETIVO: Corrigir valores que escaparam da validação inicial em _pick_value_for_base_code.
+        
+        CONTAS VALIDADAS:
+        - 3.01 (Receita): deve ser POSITIVO
+        - 3.06.01 (Receitas Financeiras): deve ser POSITIVO
+        - 3.06.02 (Despesas Financeiras): deve ser NEGATIVO
+        - 3.04 (Despesas Operacionais): deve ser NEGATIVO
+        - 3.04.02 (Despesas Administrativas): deve ser NEGATIVO
+        - 3.04.05 (Outras Despesas): deve ser NEGATIVO
+        - 3.08 (IR/CSLL): deve ser NEGATIVO
+        
+        Args:
+            df: DataFrame horizontal (cd_conta, ds_conta, períodos)
+        
+        Returns:
+            DataFrame com sinais corrigidos
+        """
+        df = df.copy()
+        
+        # Dicionário: {conta: sinal_esperado}
+        contas_validar = {
+            "3.01": "positivo",      # Receita de Vendas
+            "3.06.01": "positivo",   # Receitas Financeiras
+            "3.06.02": "negativo",   # Despesas Financeiras
+            "3.04": "negativo",      # Despesas/Receitas Operacionais
+            "3.04.02": "negativo",   # Despesas Administrativas
+            "3.04.05": "negativo",   # Outras Despesas Operacionais
+            "3.08": "negativo"       # IR/CSLL
+        }
+        
+        # Colunas de períodos (ignorar cd_conta e ds_conta)
+        colunas_periodos = [c for c in df.columns if c not in ["cd_conta", "ds_conta"]]
+        
+        if not colunas_periodos:
+            return df
+        
+        # Iterar sobre cada conta que precisa validação
+        for idx, row in df.iterrows():
+            cd_conta = str(row["cd_conta"])
+            
+            if cd_conta not in contas_validar:
+                continue
+            
+            sinal_esperado = contas_validar[cd_conta]
+            
+            # Validar cada período
+            for col in colunas_periodos:
+                valor = row[col]
+                
+                # Pular valores nulos ou zeros
+                if pd.isna(valor) or valor == 0:
+                    continue
+                
+                # Aplicar correção se necessário
+                if sinal_esperado == "positivo" and valor < 0:
+                    df.at[idx, col] = -valor
+                    print(f"    🔧 Corrigindo {cd_conta} ({col}): {valor} → {-valor}")
+                
+                elif sinal_esperado == "negativo" and valor > 0:
+                    df.at[idx, col] = -valor
+                    print(f"    🔧 Corrigindo {cd_conta} ({col}): {valor} → {-valor}")
+        
+        return df
+    
+
+    def _carregar_acoes_por_ano(self, pasta_ticker: Path) -> Dict[int, int]:
+        """
+        Carrega quantidade de ações por ano do arquivo acoes_historico.csv.
+        """
+        arquivo = pasta_ticker / "acoes_historico.csv"
+        
+        if not arquivo.exists():
+            return {}
+        
+        try:
+            df = pd.read_csv(arquivo, encoding="utf-8-sig")
+            
+            # Verificar estrutura
+            if df.empty or "especie" not in df.columns:
+                if "Espécie_Acao" in df.columns:
+                    df = df.rename(columns={"Espécie_Acao": "especie"})
+                else:
+                    return {}
+            
+            # Pegar linha TOTAL
+            linha_total = df[df["especie"].str.upper() == "TOTAL"]
+            
+            if linha_total.empty:
+                linha_total = df[df["especie"].str.upper() == "ON"]
+            
+            if linha_total.empty:
+                return {}
+            
+            # Extrair quantidade por ano
+            acoes_por_ano = {}
+            
+            for col in df.columns:
+                if col == "especie":
+                    continue
+                
+                try:
+                    ano = int(col[:4])
+                    qtd = int(linha_total[col].iloc[0])
+                    
+                    if qtd > 0:
+                        acoes_por_ano[ano] = qtd
+                except (ValueError, IndexError, TypeError):
+                    continue
+            
+            return acoes_por_ano
+        
+        except Exception as e:
+            print(f"    ⚠️ Erro ao carregar ações: {e}")
+            return {}
+    
+    def _get_acoes_com_fallback(self, ano: int, acoes_por_ano: Dict[int, int]) -> Optional[int]:
+        """
+        Obtém quantidade de ações para um ano com fallback para anos anteriores.
+        """
+        if not acoes_por_ano:
+            return None
+        
+        # Tentar ano exato
+        if ano in acoes_por_ano:
+            return acoes_por_ano[ano]
+        
+        # Fallback: tentar anos anteriores
+        for ano_fallback in range(ano - 1, ano - 11, -1):
+            if ano_fallback in acoes_por_ano:
+                return acoes_por_ano[ano_fallback]
+        
+        # Último recurso: pegar ano mais recente
+        if acoes_por_ano:
+            ano_mais_recente = max(acoes_por_ano.keys())
+            return acoes_por_ano[ano_mais_recente]
+        
+        return None
+    
+    def _calcular_lpa_quando_zerado(
+        self, 
+        df_horizontal: pd.DataFrame, 
+        pasta_ticker: Path
+    ) -> Tuple[pd.DataFrame, int]:
+        """
+        Calcula Lucro Por Ação (LPA) quando linha 3.99 está zerada.
+        """
+        df = df_horizontal.copy()
+        
+        # Verificar se linha 3.99 existe
+        idx_lpa = df[df["cd_conta"] == EPS_CODE].index
+        idx_ll = df[df["cd_conta"] == "3.11"].index
+        
+        if len(idx_lpa) == 0 or len(idx_ll) == 0:
+            return df, 0
+        
+        idx_lpa = idx_lpa[0]
+        idx_ll = idx_ll[0]
+        
+        # Carregar quantidade de ações por ano
+        acoes_por_ano = self._carregar_acoes_por_ano(pasta_ticker)
+        
+        if not acoes_por_ano:
+            return df, 0
+        
+        # Colunas de períodos
+        colunas_periodos = [c for c in df.columns if c not in ["cd_conta", "ds_conta"]]
+        
+        if not colunas_periodos:
+            return df, 0
+        
+        # Processar cada período
+        periodos_calculados = 0
+        
+        for col in colunas_periodos:
+            try:
+                ano = int(col[:4])
+            except (ValueError, TypeError):
+                continue
+            
+            # Verificar se LPA está zerado/vazio
+            lpa_atual = df.at[idx_lpa, col]
+            
+            if pd.notna(lpa_atual) and lpa_atual != 0:
+                continue
+            
+            # Obter lucro líquido (em milhares)
+            lucro_liquido_mil = df.at[idx_ll, col]
+            
+            if pd.isna(lucro_liquido_mil):
+                continue
+            
+            # Obter quantidade de ações do ano (com fallback)
+            qtd_acoes = self._get_acoes_com_fallback(ano, acoes_por_ano)
+            
+            if qtd_acoes is None or qtd_acoes == 0:
+                continue
+            
+            # CÁLCULO DO LPA
+            lucro_liquido_reais = float(lucro_liquido_mil) * 1000
+            lpa_calculado = lucro_liquido_reais / float(qtd_acoes)
+            lpa_final = round(lpa_calculado, 8)
+            
+            # Atualizar DataFrame
+            df.at[idx_lpa, col] = lpa_final
+            periodos_calculados += 1
+        
+        return df, periodos_calculados
+    
+
     def _checkup_linha_a_linha(
             self, 
             qiso: pd.DataFrame, 
@@ -1345,6 +1593,9 @@ class PadronizadorDRE:
         
         # 6.1 BANCOS: Copiar 3.09 → 3.11 (Lucro Líquido)
         qiso = self._fill_lucro_liquido_banco(qiso)
+
+        # 6.2 NÃO-FINANCEIRAS: Copiar 3.11 → 3.09 quando vazio
+        qiso = self._fill_resultado_operacoes_continuadas(qiso)        
         
         # 7. Ordenar
         qiso = qiso.assign(qord=qiso["trimestre"].apply(_quarter_order)).sort_values(["ano", "qord", "code"])
@@ -1352,6 +1603,19 @@ class PadronizadorDRE:
         
         # 8. Construir tabela horizontal
         df_out = self._build_horizontal(qiso)
+
+        # 8.1 VALIDAR SINAIS PÓS-PROCESSAMENTO
+        df_out = self._validar_sinais_pos_processamento(df_out)
+        
+        # 8.2 CALCULAR LPA QUANDO ZERADO
+        lpa_calculados = 0
+        try:
+            df_out, lpa_calculados = self._calcular_lpa_quando_zerado(df_out, pasta)
+            if lpa_calculados > 0:
+                print(f"  ℹ️  LPA calculado para {lpa_calculados} período(s)")
+        except Exception as e:
+            print(f"  ⚠️ Erro ao calcular LPA: {e}")
+        
         
         # ============================================================================
         # 8.1 NOVO: CALCULAR LPA QUANDO ZERADO
@@ -1436,6 +1700,8 @@ class PadronizadorDRE:
         msg = f"dre_padronizado.csv | {' | '.join(msg_parts)}"
         
         return ok, msg
+
+
 
 
 # ======================================================================================
