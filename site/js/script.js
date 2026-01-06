@@ -2436,6 +2436,7 @@ function renderComposicaoAcionaria() {
     `;
     
     // Lista de acionistas
+    const top5Acionistas = acionistas.slice(0, 5);
     acionistas.forEach((acionista, index) => {
         const acoesMilhoes = (acionista.acoes_total / 1000000).toFixed(1);
         
