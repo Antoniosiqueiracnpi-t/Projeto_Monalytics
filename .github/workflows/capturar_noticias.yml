@@ -40,9 +40,16 @@ jobs:
   capturar-noticias:
     runs-on: ubuntu-latest
     
+    # ✅ ADICIONAR: Prevenir execuções paralelas
+    concurrency:
+      group: noticias-workflow
+      cancel-in-progress: false
+    
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # ✅ Buscar histórico completo (ajuda no rebase)
       
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -95,31 +102,28 @@ jobs:
           
           echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
       
+      # ✅ SUBSTITUIR: Usar action com retry automático
       - name: Commit e Push resultados
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: |
+            📰 Atualizar notícias B3 (${{ github.event_name == 'schedule' && 'automático diário' || 'manual' }} - ${{ github.run_number }}) [skip netlify]
           
-          if [ -n "$(find balancos -name 'noticias.json' 2>/dev/null)" ]; then
-            git add balancos/*/noticias.json
-            
-            if [ -f "balancos/feed_noticias.json" ]; then
-              git add balancos/feed_noticias.json
-              echo "✅ Feed consolidado adicionado"
-            fi
-            
-            git add site/data/ultima_atualizacao.json
-            
-            if [ "${{ github.event_name }}" == "schedule" ]; then
-              COMMIT_MSG="📰 Atualizar notícias B3 (automático diário - $(date +'%Y-%m-%d %H:%M')) [skip netlify]"
-            else
-              COMMIT_MSG="📰 Atualizar notícias B3 - ${{ github.event.inputs.modo }} [skip netlify]"
-            fi
-            
-            git diff --staged --quiet || git commit -m "$COMMIT_MSG"
-            git push
-            echo "✅ Arquivos commitados com sucesso"
-          else
-            echo "⚠️ Nenhum arquivo noticias.json foi gerado"
-            exit 0
-          fi
+          file_pattern: |
+            balancos/*/noticias.json
+            balancos/feed_noticias.json
+            site/data/ultima_atualizacao.json
+          
+          commit_user_name: github-actions[bot]
+          commit_user_email: github-actions[bot]@users.noreply.github.com
+          
+          # ✅ Pull com rebase antes de push
+          pull: '--rebase --autostash'
+          
+          # ✅ Push seguro (só sobrescreve se remote não mudou desde último fetch)
+          push_options: '--force-with-lease'
+          
+          # ✅ Pular se não houver mudanças
+          skip_dirty_check: false
+          skip_fetch: false
+          skip_checkout: false
