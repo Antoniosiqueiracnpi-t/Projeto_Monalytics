@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "28.127.603/0001-78",
+    "nome": "",
+    "ticker": "BEES3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "ESTADO DO ESPÍRITO SANTO",
+      "cpf_cnpj": "27.080.571/0001-30",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 320972882,
+      "percentual_total": 92.365,
+      "acoes_ordinarias": 234988742,
+      "percentual_ordinarias": 92.476,
+      "acoes_preferenciais": 85984140,
+      "percentual_preferenciais": 92.063,
+      "posicao": 1
+    }
+  ]
+}

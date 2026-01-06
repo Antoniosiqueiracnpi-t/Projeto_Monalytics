@@ -1,22 +1,11 @@
 {
   "ticker": "BNBR3",
-  "ultima_atualizacao": "2026-01-05T23:03:33.078995",
+  "ultima_atualizacao": "2026-01-06T22:11:49.523090",
   "periodo": {
-    "inicio": "2020-12-07",
-    "fim": "2026-01-02"
+    "inicio": "2020-12-08",
+    "fim": "2026-01-05"
   },
   "dados": [
-    {
-      "data": "2020-12-07",
-      "abertura": 50.77,
-      "maxima": 50.83,
-      "minima": 50.18,
-      "fechamento": 50.77,
-      "volume": 1100,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-08",
       "abertura": 50.77,
@@ -222,7 +211,7 @@
       "minima": 52.42,
       "fechamento": 55.11,
       "volume": 800,
-      "mm20": 53.4,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 50.04,
       "volume": 400,
       "mm20": 51.43,
-      "mm50": 52.74,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 53.76,
       "mm50": 52.54,
-      "mm200": 51.89
+      "mm200": null
     },
     {
       "data": "2021-09-29",
@@ -5249,7 +5238,7 @@
       "minima": 58.9,
       "fechamento": 58.9,
       "volume": 0,
-      "mm20": 62.88,
+      "mm20": 62.87,
       "mm50": 62.04,
       "mm200": 57.09
     },
@@ -13898,14 +13887,25 @@
       "mm20": 109.3,
       "mm50": 106.13,
       "mm200": 98.12
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 113.0,
+      "maxima": 114.8,
+      "minima": 113.0,
+      "fechamento": 114.75,
+      "volume": 1300,
+      "mm20": 109.67,
+      "mm50": 106.41,
+      "mm200": 98.22
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 50.77,
-    "preco_atual": 110.02,
-    "variacao_periodo": 116.71,
-    "maxima_periodo": 110.02,
+    "preco_atual": 114.75,
+    "variacao_periodo": 126.02,
+    "maxima_periodo": 114.75,
     "minima_periodo": 47.58,
     "volume_medio": 138,
     "tendencia": "alta"

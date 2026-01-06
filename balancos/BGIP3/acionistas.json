@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "13.009.717/0001-46",
+    "nome": "",
+    "ticker": "BGIP3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "Governo do Estado de Sergipe",
+      "cpf_cnpj": "13.128.798/0011-75",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 19830074,
+      "percentual_total": 92.026,
+      "acoes_ordinarias": 10277957,
+      "percentual_ordinarias": 95.395,
+      "acoes_preferenciais": 9552117,
+      "percentual_preferenciais": 88.658,
+      "posicao": 1
+    }
+  ]
+}

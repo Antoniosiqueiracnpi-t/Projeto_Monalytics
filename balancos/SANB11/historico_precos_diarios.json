@@ -1,22 +1,11 @@
 {
   "ticker": "SANB4",
-  "ultima_atualizacao": "2026-01-05T23:03:42.993753",
+  "ultima_atualizacao": "2026-01-06T22:11:58.467577",
   "periodo": {
-    "inicio": "2020-12-07",
-    "fim": "2026-01-02"
+    "inicio": "2020-12-08",
+    "fim": "2026-01-05"
   },
   "dados": [
-    {
-      "data": "2020-12-07",
-      "abertura": 15.56,
-      "maxima": 15.95,
-      "minima": 15.21,
-      "fechamento": 15.47,
-      "volume": 202844,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-08",
       "abertura": 15.49,
@@ -222,7 +211,7 @@
       "minima": 15.91,
       "fechamento": 16.61,
       "volume": 148696,
-      "mm20": 15.93,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 14.54,
       "volume": 86888,
       "mm20": 14.36,
-      "mm50": 15.29,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2131,7 +2120,7 @@
     },
     {
       "data": "2021-09-20",
-      "abertura": 13.71,
+      "abertura": 13.7,
       "maxima": 13.8,
       "minima": 13.37,
       "fechamento": 13.42,
@@ -2204,7 +2193,7 @@
       "volume": 35783,
       "mm20": 14.07,
       "mm50": 14.58,
-      "mm200": 14.76
+      "mm200": null
     },
     {
       "data": "2021-09-29",
@@ -13898,16 +13887,27 @@
       "mm20": 16.84,
       "mm50": 16.61,
       "mm200": 14.82
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 17.2,
+      "maxima": 17.43,
+      "minima": 17.04,
+      "fechamento": 17.36,
+      "volume": 60900,
+      "mm20": 16.81,
+      "mm50": 16.67,
+      "mm200": 14.84
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 15.47,
-    "preco_atual": 17.1,
-    "variacao_periodo": 10.53,
+    "preco_inicial": 15.65,
+    "preco_atual": 17.36,
+    "variacao_periodo": 10.92,
     "maxima_periodo": 17.91,
     "minima_periodo": 11.28,
-    "volume_medio": 129714,
+    "volume_medio": 129602,
     "tendencia": "alta"
   }
 }

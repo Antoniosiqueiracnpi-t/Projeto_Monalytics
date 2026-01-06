@@ -1,22 +1,11 @@
 {
   "ticker": "BRSR6",
-  "ultima_atualizacao": "2026-01-05T23:03:36.461503",
+  "ultima_atualizacao": "2026-01-06T22:11:52.751442",
   "periodo": {
-    "inicio": "2020-12-07",
-    "fim": "2026-01-02"
+    "inicio": "2020-12-08",
+    "fim": "2026-01-05"
   },
   "dados": [
-    {
-      "data": "2020-12-07",
-      "abertura": 8.61,
-      "maxima": 8.87,
-      "minima": 8.56,
-      "fechamento": 8.62,
-      "volume": 2872000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-08",
       "abertura": 8.68,
@@ -222,7 +211,7 @@
       "minima": 9.23,
       "fechamento": 9.3,
       "volume": 2296700,
-      "mm20": 8.88,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 8.33,
       "volume": 2037800,
       "mm20": 8.5,
-      "mm50": 8.77,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1772900,
       "mm20": 8.05,
       "mm50": 8.09,
-      "mm200": 8.39
+      "mm200": null
     },
     {
       "data": "2021-09-29",
@@ -13898,16 +13887,27 @@
       "mm20": 14.36,
       "mm50": 13.57,
       "mm200": 11.31
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 15.38,
+      "maxima": 16.04,
+      "minima": 15.35,
+      "fechamento": 15.92,
+      "volume": 1932500,
+      "mm20": 14.45,
+      "mm50": 13.65,
+      "mm200": 11.34
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 8.62,
-    "preco_atual": 15.31,
-    "variacao_periodo": 77.66,
-    "maxima_periodo": 15.31,
+    "preco_inicial": 8.65,
+    "preco_atual": 15.92,
+    "variacao_periodo": 84.07,
+    "maxima_periodo": 15.92,
     "minima_periodo": 6.34,
-    "volume_medio": 1765378,
+    "volume_medio": 1764634,
     "tendencia": "alta"
   }
 }

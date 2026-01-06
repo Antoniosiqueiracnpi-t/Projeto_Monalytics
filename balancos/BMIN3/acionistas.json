@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "34.169.557/0001-72",
+    "nome": "",
+    "ticker": "BMIN3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "Banco Mercantil do Brasil S.A.",
+      "cpf_cnpj": "17.184.037/0001-10",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4464907,
+      "percentual_total": 92.533,
+      "acoes_ordinarias": 4041975,
+      "percentual_ordinarias": 98.224,
+      "acoes_preferenciais": 422932,
+      "percentual_preferenciais": 59.556,
+      "posicao": 1
+    }
+  ]
+}
