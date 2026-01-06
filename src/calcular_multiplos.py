@@ -249,7 +249,7 @@ def _ordenar_periodos(periodos: List[str]) -> List[str]:
     return sorted(periodos, key=sort_key)
 
 
-def _safe_divide(numerador: float, denominador: float, default: float = np.nan, eps: float = 1e-12) -> float:
+def _safe_divide(numerador: float, denominador: float, default: float = np.nan, eps: float = 1e-9) -> float:
     if not np.isfinite(numerador) or not np.isfinite(denominador):
         return default
     if np.isclose(denominador, 0.0, atol=eps):
@@ -427,6 +427,99 @@ def carregar_dados_empresa(ticker: str) -> DadosEmpresa:
 # FUNÇÕES DE OBTENÇÃO DE PREÇO E AÇÕES - CORRIGIDAS
 # ======================================================================================
 
+# ======================================================================================
+# ✅ CORREÇÃO 2: FILTRO DE COLUNAS SUJAS
+# ======================================================================================
+
+def _get_colunas_numericas_validas(df: pd.DataFrame) -> List[str]:
+    """
+    ✅ CORREÇÃO 2: Retorna apenas colunas de período que contêm NÚMEROS válidos.
+
+    Problema: BEEF3 tem coluna "2026T1" com valores "ON", "TOTAL" (texto)
+    Solução: Testa se a coluna tem pelo menos 1 valor numérico válido
+
+    Exemplo:
+        2026T1: ["ON", "TOTAL"] → EXCLUÍDA (100% texto)
+        2025T4: ["15.50", "TOTAL"] → INCLUÍDA (tem número)
+
+    Args:
+        df: DataFrame com colunas de períodos
+
+    Returns:
+        Lista ordenada de períodos com dados numéricos
+    """
+    if df is None:
+        return []
+
+    # Candidatas: colunas que parecem períodos (formato YYYYTX)
+    candidatas = [c for c in df.columns if _parse_periodo(c)[0] > 0]
+
+    validas = []
+    for c in candidatas:
+        # Tenta converter para numérico
+        s = pd.to_numeric(df[c], errors='coerce')
+        # Se tiver PELO MENOS 1 número válido, a coluna é válida
+        if s.notna().any():
+            validas.append(c)
+
+    return _ordenar_periodos(validas)
+
+
+# ======================================================================================
+# ✅ CORREÇÃO 1: BACKFILL DE AÇÕES (CAML3 2017)
+# ======================================================================================
+
+def _encontrar_periodo_imputacao(df: pd.DataFrame, periodo_req: str) -> Optional[str]:
+    """
+    ✅ CORREÇÃO 1: Encontra período substituto para preencher lacunas.
+
+    Problema: CAML3 IPO 2018, mas precisa calcular múltiplos de 2017
+    Solução: Backfill - usa primeiro dado disponível (ações de 2018 para 2017)
+
+    Lógica:
+        1. Se período existe → usa exato
+        2. Se não, tenta anterior mais próximo (Forward Fill)
+        3. Se não houver anterior, tenta posterior mais próximo (Backfill) ← NOVO!
+
+    Args:
+        df: DataFrame com colunas de períodos
+        periodo_req: Período solicitado (ex: "2017T4")
+
+    Returns:
+        Período a usar ou None se nenhum dado disponível
+
+    Exemplo CAML3:
+        Solicitado: 2017T4
+        Disponível: [2018T4, 2019T1, ...]
+        Retorna: 2018T4 (Backfill)
+    """
+    validas = _get_colunas_numericas_validas(df)
+    if not validas:
+        return None
+
+    # 1. Exato
+    if periodo_req in validas:
+        return periodo_req
+
+    def key_fn(p):
+        a, t = _parse_periodo(p)
+        tn = {'T1': 1, 'T2': 2, 'T3': 3, 'T4': 4}.get(t, 0)
+        return (a, tn)
+
+    req_key = key_fn(periodo_req)
+
+    # 2. Forward Fill (Anteriores)
+    anteriores = [p for p in validas if key_fn(p) <= req_key]
+    if anteriores:
+        return max(anteriores, key=key_fn)
+
+    # 3. ✅ BACKFILL (Posteriores) - NOVO!
+    posteriores = [p for p in validas if key_fn(p) > req_key]
+    if posteriores:
+        return min(posteriores, key=key_fn)
+
+    return None
+
 def _obter_preco(dados: DadosEmpresa, periodo: str) -> float:
     """
     Obtém preço da ação no período específico.
@@ -469,7 +562,7 @@ def _obter_preco_atual(dados: DadosEmpresa) -> Tuple[float, str]:
         return np.nan, ""
     
     # Obter TODAS as colunas de período do CSV de preços (não só dados.periodos)
-    colunas_precos = [c for c in dados.precos.columns if _parse_periodo(c)[0] > 0]
+    colunas_precos = _get_colunas_numericas_validas(dados.precos)
     
     if not colunas_precos:
         return np.nan, ""
@@ -549,7 +642,7 @@ def _obter_acoes(dados: DadosEmpresa, periodo: str) -> float:
     TICKERS_UNITS = {'KLBN11', 'ITUB', 'SANB11', 'BPAC11'}
 
     # colunas de período existentes no CSV de ações
-    col_periodos = [c for c in dados.acoes.columns if _parse_periodo(c)[0] > 0]
+    col_periodos = _get_colunas_numericas_validas(dados.acoes)
     if not col_periodos:
         return np.nan
 
@@ -583,7 +676,7 @@ def _obter_acoes(dados: DadosEmpresa, periodo: str) -> float:
                     periodo_busca = max(mesmo_ano, key=lambda x: x[0])[1]
             else:
                 # sem dados do ano: usa o mais recente do CSV
-                periodo_busca = _ordenar_periodos(col_periodos)[-1]
+                periodo_busca = _ordenar_periodos(col_periodos)[0]
 
     # Agora, extrair o número de ações
     if 'Espécie_Acao' in dados.acoes.columns:
