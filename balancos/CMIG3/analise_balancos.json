@@ -1,0 +1,40 @@
+{
+  "ticker": "CMIG4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-06T22:37:55.540354",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 5.84,
+      "variacao_total": 81.56,
+      "ultimo_valor": 10619.74
+    },
+    "margens": {
+      "bruta": 21.34,
+      "operacional": 16.18,
+      "liquida": 10.48
+    },
+    "rentabilidade": {
+      "roe_medio": 16.09
+    },
+    "caixa": {
+      "media": 1070.54,
+      "ultimo": 3424.0
+    },
+    "balanco": {
+      "ativo_total": 64750.14,
+      "patrimonio": 28734.66
+    }
+  },
+  "analise_critica": "CMIG4 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 10.48%. Gera excelente retorno sobre o patrimônio (ROE médio de 16.09%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Excelente retorno sobre patrimônio (ROE: 16.09%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

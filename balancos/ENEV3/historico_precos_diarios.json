@@ -1,22 +1,11 @@
 {
   "ticker": "ENEV3",
-  "ultima_atualizacao": "2026-01-05T23:03:04.581482",
+  "ultima_atualizacao": "2026-01-06T22:34:49.900324",
   "periodo": {
-    "inicio": "2020-12-07",
-    "fim": "2026-01-02"
+    "inicio": "2020-12-08",
+    "fim": "2026-01-05"
   },
   "dados": [
-    {
-      "data": "2020-12-07",
-      "abertura": 14.35,
-      "maxima": 14.42,
-      "minima": 14.0,
-      "fechamento": 14.1,
-      "volume": 5872800,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-08",
       "abertura": 14.21,
@@ -222,7 +211,7 @@
       "minima": 14.65,
       "fechamento": 14.93,
       "volume": 9097200,
-      "mm20": 14.52,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 17.1,
       "volume": 4580400,
       "mm20": 17.44,
-      "mm50": 16.07,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 4914900,
       "mm20": 16.31,
       "mm50": 16.4,
-      "mm200": 16.48
+      "mm200": null
     },
     {
       "data": "2021-09-29",
@@ -13898,16 +13887,27 @@
       "mm20": 20.18,
       "mm50": 19.3,
       "mm200": 15.42
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 20.06,
+      "maxima": 20.2,
+      "minima": 19.9,
+      "fechamento": 20.1,
+      "volume": 6283100,
+      "mm20": 20.13,
+      "mm50": 19.36,
+      "mm200": 15.46
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 14.1,
-    "preco_atual": 20.02,
-    "variacao_periodo": 41.99,
+    "preco_inicial": 13.97,
+    "preco_atual": 20.1,
+    "variacao_periodo": 43.85,
     "maxima_periodo": 21.02,
     "minima_periodo": 9.55,
-    "volume_medio": 8316918,
+    "volume_medio": 8317242,
     "tendencia": "indefinida"
   }
 }

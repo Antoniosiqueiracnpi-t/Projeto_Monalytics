@@ -1,22 +1,11 @@
 {
   "ticker": "EQTL3",
-  "ultima_atualizacao": "2026-01-05T23:03:08.967497",
+  "ultima_atualizacao": "2026-01-06T22:34:53.068193",
   "periodo": {
-    "inicio": "2020-12-07",
-    "fim": "2026-01-02"
+    "inicio": "2020-12-08",
+    "fim": "2026-01-05"
   },
   "dados": [
-    {
-      "data": "2020-12-07",
-      "abertura": 19.18,
-      "maxima": 19.46,
-      "minima": 18.83,
-      "fechamento": 18.99,
-      "volume": 6106315,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-08",
       "abertura": 18.97,
@@ -222,7 +211,7 @@
       "minima": 18.57,
       "fechamento": 18.83,
       "volume": 16927903,
-      "mm20": 19.36,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 18.83,
       "volume": 7525492,
       "mm20": 19.68,
-      "mm50": 19.51,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 4326312,
       "mm20": 22.65,
       "mm50": 22.13,
-      "mm200": 20.9
+      "mm200": null
     },
     {
       "data": "2021-09-29",
@@ -13898,16 +13887,27 @@
       "mm20": 38.89,
       "mm50": 37.99,
       "mm200": 34.87
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 38.4,
+      "maxima": 38.64,
+      "minima": 37.99,
+      "fechamento": 38.6,
+      "volume": 4763000,
+      "mm20": 38.81,
+      "mm50": 38.06,
+      "mm200": 34.91
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 18.99,
-    "preco_atual": 38.3,
-    "variacao_periodo": 101.7,
+    "preco_inicial": 18.66,
+    "preco_atual": 38.6,
+    "variacao_periodo": 106.85,
     "maxima_periodo": 41.11,
     "minima_periodo": 17.14,
-    "volume_medio": 7915815,
+    "volume_medio": 7914752,
     "tendencia": "indefinida"
   }
 }

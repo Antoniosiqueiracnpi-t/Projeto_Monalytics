@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "02.302.101/0001-42",
+    "nome": "",
+    "ticker": "EMAE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "Centrais Elétricas Brasileiras S.A. - Eletrobras",
+      "cpf_cnpj": "00.001.180/0002-07",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 14333000,
+      "percentual_total": 38.793,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 14333000,
+      "percentual_preferenciais": 64.442,
+      "posicao": 1
+    },
+    {
+      "nome": "PHOENIX ÁGUA E ENERGIA S.A.",
+      "cpf_cnpj": "55.346.267/0001-27",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 11191450,
+      "percentual_total": 30.291,
+      "acoes_ordinarias": 11147300,
+      "percentual_ordinarias": 75.804,
+      "acoes_preferenciais": 44150,
+      "percentual_preferenciais": 0.199,
+      "posicao": 2
+    },
+    {
+      "nome": "ARYS FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+      "cpf_cnpj": "57.591.412/0001-60",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 3407000,
+      "percentual_total": 9.221,
+      "acoes_ordinarias": 3407000,
+      "percentual_ordinarias": 23.168,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "JULIA TALIA XAVIER ÁLVARES OTERO",
+      "cpf_cnpj": "092.256.937-10",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2231300,
+      "percentual_total": 6.039,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 2231300,
+      "percentual_preferenciais": 10.032,
+      "posicao": 4
+    }
+  ]
+}

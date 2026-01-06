@@ -1,22 +1,11 @@
 {
   "ticker": "RNEW4",
-  "ultima_atualizacao": "2026-01-05T23:03:13.782166",
+  "ultima_atualizacao": "2026-01-06T22:34:59.661881",
   "periodo": {
-    "inicio": "2020-12-07",
-    "fim": "2026-01-02"
+    "inicio": "2020-12-08",
+    "fim": "2026-01-05"
   },
   "dados": [
-    {
-      "data": "2020-12-07",
-      "abertura": 11.98,
-      "maxima": 12.04,
-      "minima": 11.0,
-      "fechamento": 11.44,
-      "volume": 85950,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-08",
       "abertura": 11.44,
@@ -222,7 +211,7 @@
       "minima": 7.6,
       "fechamento": 7.6,
       "volume": 41450,
-      "mm20": 10.49,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 6.82,
       "volume": 16150,
       "mm20": 7.47,
-      "mm50": 8.71,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 48350,
       "mm20": 5.99,
       "mm50": 6.35,
-      "mm200": 7.81
+      "mm200": null
     },
     {
       "data": "2021-09-29",
@@ -13898,16 +13887,27 @@
       "mm20": 0.88,
       "mm50": 0.92,
       "mm200": 1.21
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 0.92,
+      "maxima": 0.94,
+      "minima": 0.9,
+      "fechamento": 0.92,
+      "volume": 25800,
+      "mm20": 0.89,
+      "mm50": 0.92,
+      "mm200": 1.2
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 11.44,
+    "preco_inicial": 11.92,
     "preco_atual": 0.92,
-    "variacao_periodo": -91.96,
+    "variacao_periodo": -92.28,
     "maxima_periodo": 13.6,
     "minima_periodo": 0.85,
-    "volume_medio": 96416,
+    "volume_medio": 96368,
     "tendencia": "indefinida"
   }
 }

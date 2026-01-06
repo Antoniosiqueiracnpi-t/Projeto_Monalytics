@@ -1,0 +1,40 @@
+{
+  "ticker": "CPFE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-06T22:37:55.586330",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 7.52,
+      "variacao_total": 114.16,
+      "ultimo_valor": 11329.14
+    },
+    "margens": {
+      "bruta": 25.08,
+      "operacional": 18.8,
+      "liquida": 9.77
+    },
+    "rentabilidade": {
+      "roe_medio": 21.21
+    },
+    "caixa": {
+      "media": 1459.37,
+      "ultimo": 5908.3
+    },
+    "balanco": {
+      "ativo_total": 82448.15,
+      "patrimonio": 23688.35
+    }
+  },
+  "analise_critica": "CPFE3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 9.77%). Gera excelente retorno sobre o patrimônio (ROE médio de 21.21%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Excelente retorno sobre patrimônio (ROE: 21.21%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

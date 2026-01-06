@@ -1,0 +1,58 @@
+{
+  "ticker": "GPAR3",
+  "total_dividendos": 24.1479,
+  "periodo": "2020-2022",
+  "quantidade_pagamentos": 5,
+  "dividendos": [
+    {
+      "data_com": "2020-07-31",
+      "valor": 0.912336,
+      "tipo": "REST CAP DIN",
+      "ano": 2020,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2020-05-28"
+    },
+    {
+      "data_com": "2021-04-30",
+      "valor": 0.507242,
+      "tipo": "DIVIDENDO",
+      "ano": 2021,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2021-04-30"
+    },
+    {
+      "data_com": "2022-04-29",
+      "valor": 0.517551,
+      "tipo": "DIVIDENDO",
+      "ano": 2022,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2022-04-29"
+    },
+    {
+      "data_com": "2022-06-30",
+      "valor": 15.152681,
+      "tipo": "DIVIDENDO",
+      "ano": 2022,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2022-06-30"
+    },
+    {
+      "data_com": "2022-11-25",
+      "valor": 7.058087,
+      "tipo": "REST CAP DIN",
+      "ano": 2022,
+      "mes": 11,
+      "dia": 25,
+      "trimestre": "T4",
+      "data_pagamento": "2022-09-09"
+    }
+  ]
+}

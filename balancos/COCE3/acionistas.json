@@ -1,0 +1,90 @@
+{
+  "empresa": {
+    "cnpj": "07.047.251/0001-70",
+    "nome": "",
+    "ticker": "COCE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 6,
+  "acionistas": [
+    {
+      "nome": "Enel Brasil S.A.",
+      "cpf_cnpj": "07.523.555/0001-67",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 66095889,
+      "percentual_total": 76.587,
+      "acoes_ordinarias": 52395293,
+      "percentual_ordinarias": 98.115,
+      "acoes_preferenciais": 13700596,
+      "percentual_preferenciais": 41.644,
+      "posicao": 1
+    },
+    {
+      "nome": "Centrais Elétricas Brasileiras S.A.",
+      "cpf_cnpj": "00.001.180/0001-26",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 5531073,
+      "percentual_total": 6.409,
+      "acoes_ordinarias": 27543,
+      "percentual_ordinarias": 0.052,
+      "acoes_preferenciais": 5503530,
+      "percentual_preferenciais": 16.728,
+      "posicao": 2
+    },
+    {
+      "nome": "BANCARD INVERSIONES LIMITADA",
+      "cpf_cnpj": "51.185.787/0001-44",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Chile",
+      "acoes_total": 3359110,
+      "percentual_total": 3.892,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 3359110,
+      "percentual_preferenciais": 10.21,
+      "posicao": 3
+    },
+    {
+      "nome": "UNA CAPITAL LTDA",
+      "cpf_cnpj": "05.336.089/0001-85",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2338678,
+      "percentual_total": 2.71,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 2338678,
+      "percentual_preferenciais": 7.109,
+      "posicao": 4
+    },
+    {
+      "nome": "FOURTH SAIL LONG SHORT LLC",
+      "cpf_cnpj": "33.591.788/0001-07",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 2076000,
+      "percentual_total": 2.406,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 2076000,
+      "percentual_preferenciais": 6.31,
+      "posicao": 5
+    },
+    {
+      "nome": "FOURTH SAIL DISCOVERY LLC",
+      "cpf_cnpj": "33.476.602/0001-79",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 749500,
+      "percentual_total": 0.868,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 749500,
+      "percentual_preferenciais": 2.278,
+      "posicao": 6
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "empresa": {
+    "cnpj": "76.483.817/0001-20",
+    "nome": "",
+    "ticker": "CPLE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 8,
+  "acionistas": [
+    {
+      "nome": "BNDES Participações S.A. - BNDESPAR",
+      "cpf_cnpj": "00.383.281/0001-09",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 655807810,
+      "percentual_total": 21.986,
+      "acoes_ordinarias": 131161562,
+      "percentual_ordinarias": 10.087,
+      "acoes_preferenciais": 524646248,
+      "percentual_preferenciais": 31.183,
+      "posicao": 1
+    },
+    {
+      "nome": "ESTADO DO PARANÁ",
+      "cpf_cnpj": "76.416.890/0001-89",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 474643912,
+      "percentual_total": 15.913,
+      "acoes_ordinarias": 358562509,
+      "percentual_ordinarias": 27.574,
+      "acoes_preferenciais": 116081403,
+      "percentual_preferenciais": 6.899,
+      "posicao": 2
+    },
+    {
+      "nome": "BlackRock, Inc.",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 114861039,
+      "percentual_total": 3.851,
+      "acoes_ordinarias": 2370421,
+      "percentual_ordinarias": 0.182,
+      "acoes_preferenciais": 112490618,
+      "percentual_preferenciais": 6.686,
+      "posicao": 3
+    },
+    {
+      "nome": "SPX Gestão de Recursos Ltda.",
+      "cpf_cnpj": "12.330.774/0001-60",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 87600928,
+      "percentual_total": 2.937,
+      "acoes_ordinarias": 69554358,
+      "percentual_ordinarias": 5.349,
+      "acoes_preferenciais": 18046570,
+      "percentual_preferenciais": 1.073,
+      "posicao": 4
+    },
+    {
+      "nome": "RADAR GESTORA DE RECURSOS LTDA.",
+      "cpf_cnpj": "17.776.271/0001-36",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 66055900,
+      "percentual_total": 2.215,
+      "acoes_ordinarias": 66055900,
+      "percentual_ordinarias": 5.08,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "GQG Partners LCC",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 65162324,
+      "percentual_total": 2.185,
+      "acoes_ordinarias": 65162324,
+      "percentual_ordinarias": 5.011,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "VOTORANTIM CIMENTOS S.A.",
+      "cpf_cnpj": "01.637.895/0001-32",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 870704,
+      "percentual_total": 0.029,
+      "acoes_ordinarias": 510204,
+      "percentual_ordinarias": 0.039,
+      "acoes_preferenciais": 360500,
+      "percentual_preferenciais": 0.021,
+      "posicao": 7
+    },
+    {
+      "nome": "VICTOR ADLER",
+      "cpf_cnpj": "203.840.097-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 560700,
+      "percentual_total": 0.019,
+      "acoes_ordinarias": 100,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 560600,
+      "percentual_preferenciais": 0.033,
+      "posicao": 8
+    }
+  ]
+}

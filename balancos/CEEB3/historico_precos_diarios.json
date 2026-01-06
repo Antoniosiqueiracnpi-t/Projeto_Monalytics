@@ -1,22 +1,11 @@
 {
   "ticker": "CEEB5",
-  "ultima_atualizacao": "2026-01-05T23:02:55.488158",
+  "ultima_atualizacao": "2026-01-06T22:34:43.812161",
   "periodo": {
-    "inicio": "2020-12-07",
-    "fim": "2026-01-02"
+    "inicio": "2020-12-08",
+    "fim": "2026-01-05"
   },
   "dados": [
-    {
-      "data": "2020-12-07",
-      "abertura": 21.64,
-      "maxima": 21.64,
-      "minima": 21.39,
-      "fechamento": 21.39,
-      "volume": 200,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-08",
       "abertura": 22.43,
@@ -222,7 +211,7 @@
       "minima": 23.99,
       "fechamento": 23.99,
       "volume": 0,
-      "mm20": 22.87,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 23.99,
       "volume": 0,
       "mm20": 23.99,
-      "mm50": 23.54,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 22.53,
       "mm50": 26.63,
-      "mm200": 24.45
+      "mm200": null
     },
     {
       "data": "2021-09-29",
@@ -7153,7 +7142,7 @@
       "fechamento": 26.71,
       "volume": 0,
       "mm20": 26.58,
-      "mm50": 26.46,
+      "mm50": 26.45,
       "mm200": 26.06
     },
     {
@@ -13898,16 +13887,27 @@
       "mm20": 37.73,
       "mm50": 37.8,
       "mm200": 34.67
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 39.0,
+      "maxima": 39.0,
+      "minima": 39.0,
+      "fechamento": 39.0,
+      "volume": 0,
+      "mm20": 37.94,
+      "mm50": 37.96,
+      "mm200": 34.71
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 21.39,
+    "preco_inicial": 22.43,
     "preco_atual": 39.0,
-    "variacao_periodo": 82.35,
+    "variacao_periodo": 73.91,
     "maxima_periodo": 44.49,
     "minima_periodo": 18.95,
-    "volume_medio": 23,
+    "volume_medio": 22,
     "tendencia": "indefinida"
   }
 }

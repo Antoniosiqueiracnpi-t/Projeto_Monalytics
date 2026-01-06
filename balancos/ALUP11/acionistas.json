@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "08.364.948/0001-38",
+    "nome": "",
+    "ticker": "ALUP3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "Guarupart Participações Ltda.",
+      "cpf_cnpj": "07.709.106/0001-08",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 503572576,
+      "percentual_total": 50.923,
+      "acoes_ordinarias": 501684127,
+      "percentual_ordinarias": 74.712,
+      "acoes_preferenciais": 1888449,
+      "percentual_preferenciais": 0.595,
+      "posicao": 1
+    },
+    {
+      "nome": "Opportunity HDF Participações S.A.",
+      "cpf_cnpj": "33.857.830/0001-99",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 101010792,
+      "percentual_total": 10.215,
+      "acoes_ordinarias": 33670264,
+      "percentual_ordinarias": 5.014,
+      "acoes_preferenciais": 67340528,
+      "percentual_preferenciais": 21.217,
+      "posicao": 2
+    },
+    {
+      "nome": "Sharp Capital Gestora de Recursos Ltda.",
+      "cpf_cnpj": "27.957.477/0001-16",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 37643025,
+      "percentual_total": 3.807,
+      "acoes_ordinarias": 12547675,
+      "percentual_ordinarias": 1.869,
+      "acoes_preferenciais": 25095350,
+      "percentual_preferenciais": 7.907,
+      "posicao": 3
+    },
+    {
+      "nome": "CIME Administração e Participações S.A.",
+      "cpf_cnpj": "51.771.889/0001-41",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 12272564,
+      "percentual_total": 1.241,
+      "acoes_ordinarias": 12272564,
+      "percentual_ordinarias": 1.828,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    }
+  ]
+}
