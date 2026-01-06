@@ -4001,7 +4001,12 @@ class MobileRotationAssistant {
             const chartEl = document.getElementById(id);
             if (!chartEl) return;
     
-            const container = chartEl.closest('.chart-container') || chartEl.parentElement;
+
+            const container =
+              chartEl.closest('.grafico-container, .dividendos-chart-container, .chart-container, .modal-chart-container')
+              || chartEl.parentElement;
+
+            
             if (!container) return;
     
             // Evita duplicar
