@@ -59,6 +59,11 @@ on:
 permissions:
   contents: write
 
+# ✅ ADICIONAR: Prevenir execuções paralelas deste workflow
+concurrency:
+  group: pipeline-setor
+  cancel-in-progress: false
+
 jobs:
   pipeline:
     runs-on: ubuntu-latest
@@ -66,8 +71,10 @@ jobs:
       PYTHONUTF8: "1"
 
     steps:
-      - name: Checkout
+      - name: Checkout código
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -174,7 +181,7 @@ jobs:
         run: |
           python src/capturar_acoes.py --modo lista --lista "${TICKERS}"
 
-      - name: Capturar Acionistas (Top 10)
+      - name: Capturar Acionistas 
         id: acionistas
         continue-on-error: true
         run: |
@@ -340,31 +347,23 @@ jobs:
       
       - name: Commit e push dos resultados
         if: always()
-        run: |
-          git config user.name "actions-user"
-          git config user.email "actions-user@users.noreply.github.com"
-
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "✅ Nenhuma alteração para commitar."
-            exit 0
-          fi
-
-          # Mostrar resumo das mudanças
-          echo "======================================================================"
-          echo "Arquivos modificados:"
-          git status --short
-          echo "======================================================================"
-
-          git add -A
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: |
+            Pipeline: ${{ inputs.setor }} | Tickers: ${{ env.TICKERS_COUNT }}${{ inputs.limite != '0' && format(' | Limite: {0}', inputs.limite) || '' }}
           
-          # Mensagem de commit mais descritiva
-          commit_msg="Pipeline: ${{ inputs.setor }} | Tickers: ${TICKERS_COUNT}"
+          file_pattern: |
+            balancos/
+            site/data/
+            src/__pycache__/
           
-          if [ "${{ inputs.limite }}" != "0" ]; then
-            commit_msg="${commit_msg} | Limite: ${{ inputs.limite }}"
-          fi
+          commit_user_name: actions-user
+          commit_user_email: actions-user@users.noreply.github.com
           
-          git commit -m "${commit_msg}"
-          git push
+          pull: '--rebase --autostash'
+          push_options: '--force-with-lease'
           
-          echo "✅ Alterações commitadas e enviadas ao repositório"
+          skip_dirty_check: false
+          skip_fetch: false
+          skip_checkout: false
+          
