@@ -187,40 +187,108 @@ def extrair_series_temporal(df: pd.DataFrame, conta: str) -> pd.Series:
     return pd.Series(valores).sort_index()
 
 
+def obter_valor_valido(valores: pd.Series, direcao: str = 'primeiro') -> Tuple[Optional[float], Optional[int]]:
+    """
+    Busca primeiro ou último valor válido (não-zero, não-nan) em uma série.
+    
+    Args:
+        valores: Série temporal de valores
+        direcao: 'primeiro' ou 'ultimo'
+    
+    Returns:
+        (valor, índice) - valor válido e sua posição na série
+    
+    Exemplo:
+        Series: [0.0, 0.0, 249.11, 260.34, ...]
+        obter_valor_valido(series, 'primeiro') → (249.11, 2)
+    """
+    if len(valores) == 0:
+        return None, None
+    
+    # Filtrar valores válidos (não-nan, não-zero)
+    mask = (valores.notna()) & (valores != 0) & (valores.abs() > 0.01)
+    valores_validos = valores[mask]
+    
+    if len(valores_validos) == 0:
+        return None, None
+    
+    if direcao == 'primeiro':
+        idx = valores_validos.index[0]
+        return valores_validos.iloc[0], list(valores.index).index(idx)
+    else:  # 'ultimo'
+        idx = valores_validos.index[-1]
+        return valores_validos.iloc[-1], list(valores.index).index(idx)
+
+
 def calcular_cagr(valores: pd.Series, anos: int = 5) -> Optional[float]:
-    """Calcula CAGR (Compound Annual Growth Rate)."""
+    """
+    Calcula CAGR (Compound Annual Growth Rate) usando valores válidos.
+    
+    CORREÇÃO: Busca automaticamente primeiro e último valor NÃO-ZERO.
+    
+    Exemplo:
+        Series: [0.0, 0.0, 249.11, ..., 786.38]
+        CAGR = crescimento de 249.11 → 786.38 (ignora zeros iniciais)
+    """
     if len(valores) < 2:
         return None
     
-    inicio = valores.iloc[0]
-    fim = valores.iloc[-1]
+    # Buscar primeiro e último valor válidos
+    val_inicio, idx_inicio = obter_valor_valido(valores, 'primeiro')
+    val_fim, idx_fim = obter_valor_valido(valores, 'ultimo')
     
-    if inicio <= 0:
+    if val_inicio is None or val_fim is None:
         return None
     
-    periodos = len(valores) / 4  # Trimestres para anos
-    if periodos <= 0:
+    if idx_inicio >= idx_fim:  # Precisa de pelo menos 2 períodos
+        return None
+    
+    if val_inicio <= 0:
+        return None
+    
+    # Calcular número de anos entre primeiro e último valor válido
+    num_periodos = idx_fim - idx_inicio
+    periodos_anos = num_periodos / 4  # Trimestres para anos
+    
+    if periodos_anos <= 0:
         return None
     
     try:
-        cagr = ((fim / inicio) ** (1 / periodos) - 1) * 100
+        cagr = ((val_fim / val_inicio) ** (1 / periodos_anos) - 1) * 100
         return round(cagr, 2)
     except (ValueError, ZeroDivisionError):
         return None
 
 
 def calcular_variacao_periodo(valores: pd.Series) -> Optional[float]:
-    """Calcula variação percentual total do período."""
+    """
+    Calcula variação percentual total usando valores válidos.
+    
+    CORREÇÃO: Ignora zeros e NaNs no início/fim da série.
+    
+    Exemplo:
+        Series: [0.0, 249.11, ..., 786.38, 0.0]
+        Variação = (786.38 - 249.11) / 249.11 × 100
+    """
     if len(valores) < 2:
         return None
     
-    inicio = valores.iloc[0]
-    fim = valores.iloc[-1]
+    # Buscar primeiro e último valor válidos
+    val_inicio, _ = obter_valor_valido(valores, 'primeiro')
+    val_fim, _ = obter_valor_valido(valores, 'ultimo')
     
-    if inicio == 0:
+    if val_inicio is None or val_fim is None:
         return None
     
-    return round(((fim - inicio) / abs(inicio)) * 100, 2)
+    if val_inicio == 0:
+        return None
+    
+    try:
+        variacao = ((val_fim - val_inicio) / abs(val_inicio)) * 100
+        return round(variacao, 2)
+    except ZeroDivisionError:
+        return None
+
 
 
 # ======================================================================================
