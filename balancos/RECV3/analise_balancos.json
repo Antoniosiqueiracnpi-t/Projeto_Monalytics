@@ -1,7 +1,7 @@
 {
   "ticker": "RECV3",
   "tipo_empresa": "nao_financeira",
-  "ultima_atualizacao": "2026-01-06T00:14:05.653909",
+  "ultima_atualizacao": "2026-01-06T12:57:32.969982",
   "periodo_analisado": {
     "inicio": "2021T1",
     "fim": "2025T3",
@@ -10,8 +10,8 @@
   },
   "metricas": {
     "receita": {
-      "cagr": null,
-      "variacao_total": null,
+      "cagr": 31.06,
+      "variacao_total": 215.68,
       "ultimo_valor": 786.38
     },
     "margens": {
@@ -33,6 +33,7 @@
   },
   "analise_critica": "RECV3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 24.41%. Gera excelente retorno sobre o patrimônio (ROE médio de 18.63%). Geração de caixa operacional positiva.",
   "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 31.06%)",
     "Alta margem de lucro líquido (24.41%)",
     "Excelente retorno sobre patrimônio (ROE: 18.63%)",
     "Forte geração de caixa operacional"
