@@ -3942,32 +3942,72 @@ class MobileRotationAssistant {
      */
     init() {
         console.log('📱 Sistema de Rotação Mobile inicializado');
-        
-        // Cria overlay
-        this.createOverlay();
-        
-        // Adiciona hints visuais nos gráficos
-        this.addChartHints();
-        
+    
+        // Cria/garante os placeholders dentro dos containers dos gráficos
+        this.ensureRotationPlaceholders();
+    
+        // Aplica estado inicial (retratro x paisagem)
+        this.updatePortraitState();
+    
         // Monitora mudanças de orientação
         window.addEventListener('orientationchange', () => {
-            setTimeout(() => this.handleOrientationChange(), 200);
+            setTimeout(() => this.updatePortraitState(), 150);
         });
-        
+    
         // Monitora resize (fallback)
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => this.handleOrientationChange(), 300);
+            resizeTimer = setTimeout(() => this.updatePortraitState(), 200);
         });
-        
-        // Monitora scroll para detectar quando usuário chega em gráfico
-        let scrollTimer;
-        window.addEventListener('scroll', () => {
-            clearTimeout(scrollTimer);
-            scrollTimer = setTimeout(() => this.checkChartVisibility(), 150);
-        }, { passive: true });
     }
+
+    ensureRotationPlaceholders() {
+        const chartIds = [
+            'acaoChart',
+            'acionistasChart',
+            'dividendosHistoricoChart',
+            'modal-chart'
+        ];
+    
+        chartIds.forEach((id) => {
+            const chartEl = document.getElementById(id);
+            if (!chartEl) return;
+    
+            const container = chartEl.closest('.chart-container') || chartEl.parentElement;
+            if (!container) return;
+    
+            // Evita duplicar
+            if (container.querySelector(`.chart-rotation-placeholder[data-for="${id}"]`)) return;
+    
+            const placeholder = document.createElement('div');
+            placeholder.className = 'chart-rotation-placeholder';
+            placeholder.setAttribute('data-for', id);
+    
+            placeholder.innerHTML = `
+                <div class="rotation-placeholder-inner">
+                    <div class="rotation-placeholder-icon">📱↔️</div>
+                    <div class="rotation-placeholder-title">Gire o celular</div>
+                    <div class="rotation-placeholder-text">
+                        Para visualizar o gráfico, use o modo horizontal (paisagem).
+                    </div>
+                </div>
+            `;
+    
+            container.appendChild(placeholder);
+        });
+    }
+    
+    updatePortraitState() {
+        // garante placeholders mesmo se algum gráfico só aparecer depois (ex.: modal)
+        this.ensureRotationPlaceholders();
+    
+        const isPortrait = this.isPortraitMode();
+    
+        // Esta classe só será aplicada em mobile (porque a classe só roda se this.isMobile for true)
+        document.documentElement.classList.toggle('is-mobile-portrait', isPortrait);
+    }
+    
     
     /**
      * Cria overlay de sugestão de rotação
@@ -4119,7 +4159,9 @@ let mobileRotation = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     mobileRotation = new MobileRotationAssistant();
+    window.mobileRotation = mobileRotation;
 });
+
 
 // Exporta para uso global
 window.mobileRotation = mobileRotation;
