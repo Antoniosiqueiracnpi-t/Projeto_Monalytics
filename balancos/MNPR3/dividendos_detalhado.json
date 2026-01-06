@@ -1,0 +1,48 @@
+{
+  "ticker": "MNPR3",
+  "total_dividendos": 0.07,
+  "periodo": "1996-1999",
+  "quantidade_pagamentos": 4,
+  "dividendos": [
+    {
+      "data_com": "1996-04-29",
+      "valor": 0.03,
+      "tipo": "DIVIDENDO",
+      "ano": 1996,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "1996-04-29"
+    },
+    {
+      "data_com": "1996-04-29",
+      "valor": 0.03,
+      "tipo": "DIVIDENDO",
+      "ano": 1996,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "1996-04-29"
+    },
+    {
+      "data_com": "1999-04-30",
+      "valor": 0.005,
+      "tipo": "DIVIDENDO",
+      "ano": 1999,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1999-04-30"
+    },
+    {
+      "data_com": "1999-04-30",
+      "valor": 0.005,
+      "tipo": "DIVIDENDO",
+      "ano": 1999,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "1999-04-30"
+    }
+  ]
+}

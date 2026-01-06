@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "64.904.295/0001-03",
+    "nome": "",
+    "ticker": "CAML3"
+  },
+  "data_referencia": "2026-12-31",
+  "ano_fre": 2026,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "Camil Investimentos S.A.",
+      "cpf_cnpj": "02.303.632/0001-50",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 180000000,
+      "percentual_total": 51.429,
+      "acoes_ordinarias": 180000000,
+      "percentual_ordinarias": 51.429,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "LUCIANO MAGGI QUARTIERO",
+      "cpf_cnpj": "176.015.658-23",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 26101500,
+      "percentual_total": 7.458,
+      "acoes_ordinarias": 26101500,
+      "percentual_ordinarias": 7.458,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "JACQUES MAGGI QUARTIERO",
+      "cpf_cnpj": "157.083.508-06",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 19922895,
+      "percentual_total": 5.692,
+      "acoes_ordinarias": 19922895,
+      "percentual_ordinarias": 5.692,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "THIAGO MAGGI QUARTIERO",
+      "cpf_cnpj": "271.815.418-70",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 18828413,
+      "percentual_total": 5.38,
+      "acoes_ordinarias": 18828413,
+      "percentual_ordinarias": 5.38,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    }
+  ]
+}

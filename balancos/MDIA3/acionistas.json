@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "07.206.816/0001-15",
+    "nome": "",
+    "ticker": "MDIA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "DIBRA FUNDO DE INVESTIMENTO EM AÇÕES.",
+      "cpf_cnpj": "07.973.152/0001-10",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 214650000,
+      "percentual_total": 63.319,
+      "acoes_ordinarias": 214650000,
+      "percentual_ordinarias": 63.319,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "AVEIRO FUNDO DE INVESTIMENTOS EM AÇÕES",
+      "cpf_cnpj": "12.877.241/0001-00",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 13190941,
+      "percentual_total": 3.891,
+      "acoes_ordinarias": 13190941,
+      "percentual_ordinarias": 3.891,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    }
+  ]
+}

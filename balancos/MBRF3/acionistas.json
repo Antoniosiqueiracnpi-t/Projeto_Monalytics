@@ -1,0 +1,103 @@
+{
+  "empresa": {
+    "cnpj": "03.853.896/0001-40",
+    "nome": "",
+    "ticker": "MBRF3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 7,
+  "acionistas": [
+    {
+      "nome": "MMS PARTICIPAÇÕES LTDA.",
+      "cpf_cnpj": "08.542.030/0001-31",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 514215020,
+      "percentual_total": 35.768,
+      "acoes_ordinarias": 514215020,
+      "percentual_ordinarias": 35.768,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Banco Citibank",
+      "cpf_cnpj": "33.479.023/0001-80",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 158839712,
+      "percentual_total": 11.049,
+      "acoes_ordinarias": 158839712,
+      "percentual_ordinarias": 11.049,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "Banco BTG Pactual",
+      "cpf_cnpj": "30.306.294/0001-45",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 80009628,
+      "percentual_total": 5.565,
+      "acoes_ordinarias": 80009628,
+      "percentual_ordinarias": 5.565,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "JPMORGAN CHASE & CO",
+      "cpf_cnpj": "33.172.537/0001-98",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 72373205,
+      "percentual_total": 5.034,
+      "acoes_ordinarias": 72373205,
+      "percentual_ordinarias": 5.034,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "MARCIA AP. PASCOAL MARÇAL DOS SANTOS",
+      "cpf_cnpj": "182.070.698-21",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 69482984,
+      "percentual_total": 4.833,
+      "acoes_ordinarias": 69482984,
+      "percentual_ordinarias": 4.833,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "MARCOS ANTONIO MOLINA DOS SANTOS",
+      "cpf_cnpj": "102.174.668-18",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 59526979,
+      "percentual_total": 4.141,
+      "acoes_ordinarias": 59526979,
+      "percentual_ordinarias": 4.141,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "MAMS FIA",
+      "cpf_cnpj": "44.409.243/0001-53",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 19125705,
+      "percentual_total": 1.33,
+      "acoes_ordinarias": 19125705,
+      "percentual_ordinarias": 1.33,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    }
+  ]
+}

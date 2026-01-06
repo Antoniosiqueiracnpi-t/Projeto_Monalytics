@@ -1,0 +1,41 @@
+{
+  "ticker": "SMTO3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-06T16:14:15.260503",
+  "periodo_analisado": {
+    "inicio": "2015T2",
+    "fim": "2025T3",
+    "total_trimestres": 32,
+    "anos": 8.0
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 22.22,
+      "variacao_total": 373.51,
+      "ultimo_valor": 1738.64
+    },
+    "margens": {
+      "bruta": 31.37,
+      "operacional": 28.76,
+      "liquida": 15.06
+    },
+    "rentabilidade": {
+      "roe_medio": 15.88
+    },
+    "caixa": {
+      "media": 560.53,
+      "ultimo": 782.54
+    },
+    "balanco": {
+      "ativo_total": 22657.14,
+      "patrimonio": 6971.48
+    }
+  },
+  "analise_critica": "SMTO3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 15.06%. Gera excelente retorno sobre o patrimônio (ROE médio de 15.88%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 22.22%)",
+    "Alta margem de lucro líquido (15.06%)",
+    "Excelente retorno sobre patrimônio (ROE: 15.88%)"
+  ],
+  "pontos_atencao": []
+}

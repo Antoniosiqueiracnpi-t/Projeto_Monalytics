@@ -1,22 +1,11 @@
 {
   "ticker": "MDIA3",
-  "ultima_atualizacao": "2026-01-05T23:02:03.181233",
+  "ultima_atualizacao": "2026-01-06T16:12:49.979589",
   "periodo": {
-    "inicio": "2020-12-07",
-    "fim": "2026-01-02"
+    "inicio": "2020-12-08",
+    "fim": "2026-01-05"
   },
   "dados": [
-    {
-      "data": "2020-12-07",
-      "abertura": 27.95,
-      "maxima": 28.38,
-      "minima": 27.86,
-      "fechamento": 28.23,
-      "volume": 677400,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-08",
       "abertura": 28.23,
@@ -222,7 +211,7 @@
       "minima": 27.59,
       "fechamento": 27.65,
       "volume": 1193000,
-      "mm20": 28.37,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 24.83,
       "volume": 2098400,
       "mm20": 26.13,
-      "mm50": 27.37,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 747100,
       "mm20": 26.85,
       "mm50": 27.03,
-      "mm200": 26.06
+      "mm200": null
     },
     {
       "data": "2021-09-29",
@@ -8655,7 +8644,7 @@
     {
       "data": "2024-02-06",
       "abertura": 36.09,
-      "maxima": 36.8,
+      "maxima": 36.81,
       "minima": 35.91,
       "fechamento": 36.25,
       "volume": 992800,
@@ -13898,16 +13887,27 @@
       "mm20": 23.93,
       "mm50": 25.68,
       "mm200": 24.97
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 24.05,
+      "maxima": 24.19,
+      "minima": 23.64,
+      "fechamento": 23.99,
+      "volume": 197100,
+      "mm20": 23.89,
+      "mm50": 25.59,
+      "mm200": 24.98
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 28.23,
-    "preco_atual": 23.86,
-    "variacao_periodo": -15.47,
+    "preco_inicial": 28.29,
+    "preco_atual": 23.99,
+    "variacao_periodo": -15.19,
     "maxima_periodo": 41.6,
     "minima_periodo": 17.46,
-    "volume_medio": 1105795,
+    "volume_medio": 1105415,
     "tendencia": "indefinida"
   }
 }

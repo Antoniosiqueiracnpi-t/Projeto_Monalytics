@@ -1,0 +1,116 @@
+{
+  "empresa": {
+    "cnpj": "97.191.902/0001-94",
+    "nome": "",
+    "ticker": "ODER3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 8,
+  "acionistas": [
+    {
+      "nome": "Odepar Participações S/A",
+      "cpf_cnpj": "04.242.282/0001-94",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2591152,
+      "percentual_total": 22.957,
+      "acoes_ordinarias": 2208300,
+      "percentual_ordinarias": 22.4,
+      "acoes_preferenciais": 382852,
+      "percentual_preferenciais": 26.801,
+      "posicao": 1
+    },
+    {
+      "nome": "DADOPAR PARTICIPAÇÕES LTDA",
+      "cpf_cnpj": "54.169.108/0001-31",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2008996,
+      "percentual_total": 17.799,
+      "acoes_ordinarias": 1816404,
+      "percentual_ordinarias": 18.425,
+      "acoes_preferenciais": 192592,
+      "percentual_preferenciais": 13.482,
+      "posicao": 2
+    },
+    {
+      "nome": "FAMÍLIA CAU",
+      "cpf_cnpj": "53.851.167/0001-22",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1995891,
+      "percentual_total": 17.683,
+      "acoes_ordinarias": 1782336,
+      "percentual_ordinarias": 18.079,
+      "acoes_preferenciais": 213555,
+      "percentual_preferenciais": 14.949,
+      "posicao": 3
+    },
+    {
+      "nome": "MYER PARTICIPAÇÕES LTDA",
+      "cpf_cnpj": "54.310.508/0001-15",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1855778,
+      "percentual_total": 16.442,
+      "acoes_ordinarias": 1671381,
+      "percentual_ordinarias": 16.954,
+      "acoes_preferenciais": 184397,
+      "percentual_preferenciais": 12.908,
+      "posicao": 4
+    },
+    {
+      "nome": "JAO PARTICIPAÇÕES LTDA",
+      "cpf_cnpj": "53.930.903/0001-38",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1828664,
+      "percentual_total": 16.201,
+      "acoes_ordinarias": 1635315,
+      "percentual_ordinarias": 16.588,
+      "acoes_preferenciais": 193349,
+      "percentual_preferenciais": 13.535,
+      "posicao": 5
+    },
+    {
+      "nome": "THOMAS ODERICH",
+      "cpf_cnpj": "024.198.340-11",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1206,
+      "percentual_total": 0.011,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 1206,
+      "percentual_preferenciais": 0.084,
+      "posicao": 6
+    },
+    {
+      "nome": "VINICIUS ODERICH",
+      "cpf_cnpj": "693.594.150-49",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 730,
+      "percentual_total": 0.006,
+      "acoes_ordinarias": 730,
+      "percentual_ordinarias": 0.007,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    },
+    {
+      "nome": "HENRIQUE ODERICH",
+      "cpf_cnpj": "349.080.480-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 331,
+      "percentual_total": 0.003,
+      "acoes_ordinarias": 331,
+      "percentual_ordinarias": 0.003,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 8
+    }
+  ]
+}

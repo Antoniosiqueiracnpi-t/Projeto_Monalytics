@@ -1,0 +1,77 @@
+{
+  "empresa": {
+    "cnpj": "95.426.862/0001-97",
+    "nome": "",
+    "ticker": "BAUH3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 5,
+  "acionistas": [
+    {
+      "nome": "SEARA ALIMENTOS LTDA.",
+      "cpf_cnpj": "02.914.460/0112-76",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2402946,
+      "percentual_total": 46.014,
+      "acoes_ordinarias": 1534216,
+      "percentual_ordinarias": 53.89,
+      "acoes_preferenciais": 868730,
+      "percentual_preferenciais": 36.574,
+      "posicao": 1
+    },
+    {
+      "nome": "BAUMHARDT COMERCIO E PARTICIPAÇÕES LTDA",
+      "cpf_cnpj": "87.137.774/0001-47",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1310640,
+      "percentual_total": 25.097,
+      "acoes_ordinarias": 1310490,
+      "percentual_ordinarias": 46.032,
+      "acoes_preferenciais": 150,
+      "percentual_preferenciais": 0.006,
+      "posicao": 2
+    },
+    {
+      "nome": "REGILO FUNDO DE INVESTIMENTO EM ACOES",
+      "cpf_cnpj": "30.366.098/0001-66",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1096900,
+      "percentual_total": 21.004,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 1096900,
+      "percentual_preferenciais": 46.18,
+      "posicao": 3
+    },
+    {
+      "nome": "LIS VALUE FUNDO DE INVESTIMENTO EM ACOES",
+      "cpf_cnpj": "24.325.422/0001-03",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 216900,
+      "percentual_total": 4.153,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 216900,
+      "percentual_preferenciais": 9.132,
+      "posicao": 4
+    },
+    {
+      "nome": "NOTWEN DE CASTRO SAYAO CARDOZO",
+      "cpf_cnpj": "919.997.407-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 103749,
+      "percentual_total": 1.987,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 103749,
+      "percentual_preferenciais": 4.368,
+      "posicao": 5
+    }
+  ]
+}
