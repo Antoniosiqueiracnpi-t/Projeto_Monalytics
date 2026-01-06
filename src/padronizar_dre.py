@@ -380,6 +380,220 @@ def _normalize_value(v: float, decimals: int = 3) -> float:
     if not np.isfinite(v):
         return np.nan
     return round(float(v), decimals)
+    
+
+def _carregar_acoes_por_ano(self, pasta_ticker: Path) -> Dict[int, int]:
+    """
+    Carrega quantidade de ações por ano do arquivo acoes_historico.csv.
+    
+    Arquivo esperado:
+        especie,2021T4,2022T4,2023T4,2024T4
+        ON,248517120,293183802,293380126,293472126
+        TOTAL,248517120,293183802,293380126,293472126
+    
+    Retorna:
+        Dict {ano: quantidade_total}
+        Exemplo: {2021: 248517120, 2022: 293183802, ...}
+    
+    IMPORTANTE:
+    - Usa linha TOTAL (soma de todas as classes)
+    - Extrai ano de cada coluna (2021T4 → 2021)
+    - Retorna dict para acesso rápido por ano
+    """
+    arquivo = pasta_ticker / "acoes_historico.csv"
+    
+    if not arquivo.exists():
+        return {}
+    
+    try:
+        df = pd.read_csv(arquivo, encoding="utf-8-sig")
+        
+        # Verificar estrutura
+        if df.empty or "especie" not in df.columns:
+            # Tentar com nome antigo
+            if "Espécie_Acao" in df.columns:
+                df = df.rename(columns={"Espécie_Acao": "especie"})
+            else:
+                return {}
+        
+        # Pegar linha TOTAL
+        linha_total = df[df["especie"].str.upper() == "TOTAL"]
+        
+        if linha_total.empty:
+            # Fallback: usar linha ON se não tem TOTAL
+            linha_total = df[df["especie"].str.upper() == "ON"]
+        
+        if linha_total.empty:
+            return {}
+        
+        # Extrair quantidade por ano
+        acoes_por_ano = {}
+        
+        for col in df.columns:
+            if col == "especie":
+                continue
+            
+            # Extrair ano da coluna (ex: "2021T4" → 2021)
+            try:
+                ano = int(col[:4])
+                qtd = int(linha_total[col].iloc[0])
+                
+                if qtd > 0:
+                    acoes_por_ano[ano] = qtd
+            except (ValueError, IndexError, TypeError):
+                continue
+        
+        return acoes_por_ano
+    
+    except Exception as e:
+        print(f"    ⚠️ Erro ao carregar ações: {e}")
+        return {}
+
+
+def _get_acoes_com_fallback(self, ano: int, acoes_por_ano: Dict[int, int]) -> Optional[int]:
+    """
+    Obtém quantidade de ações para um ano com fallback para anos anteriores.
+    
+    Lógica:
+    1. Tenta ano exato (ex: 2025)
+    2. Se não existe, tenta 2024, 2023, 2022, ...
+    3. Busca até 10 anos no passado
+    4. Se não encontrar nada, retorna None
+    
+    Args:
+        ano: Ano desejado
+        acoes_por_ano: Dict {ano: quantidade}
+    
+    Returns:
+        Quantidade de ações ou None
+    
+    Exemplo:
+        acoes_por_ano = {2021: 248M, 2022: 293M, 2023: 293M, 2024: 293M}
+        _get_acoes_com_fallback(2025, acoes_por_ano) → 293M (usa 2024)
+    """
+    if not acoes_por_ano:
+        return None
+    
+    # Tentar ano exato
+    if ano in acoes_por_ano:
+        return acoes_por_ano[ano]
+    
+    # Fallback: tentar anos anteriores (até 10 anos no passado)
+    for ano_fallback in range(ano - 1, ano - 11, -1):
+        if ano_fallback in acoes_por_ano:
+            return acoes_por_ano[ano_fallback]
+    
+    # Último recurso: pegar qualquer ano disponível (mais recente)
+    if acoes_por_ano:
+        ano_mais_recente = max(acoes_por_ano.keys())
+        return acoes_por_ano[ano_mais_recente]
+    
+    return None
+
+
+def _calcular_lpa_quando_zerado(
+    self, 
+    df_horizontal: pd.DataFrame, 
+    pasta_ticker: Path
+) -> Tuple[pd.DataFrame, int]:
+    """
+    Calcula Lucro Por Ação (LPA) quando linha 3.99 está zerada.
+    
+    Fórmula:
+        LPA = Lucro Líquido (3.11) ÷ Quantidade de Ações
+    
+    Regras:
+    1. Apenas calcula se 3.99 existir no DataFrame
+    2. Apenas substitui valores que sejam 0 ou NaN
+    3. Usa quantidade de ações do arquivo acoes_historico.csv
+    4. Aplica fallback para anos sem dados de ações
+    5. Arredonda para 8 casas decimais (precisão adequada para LPA)
+    
+    Args:
+        df_horizontal: DataFrame com DRE padronizado (formato horizontal)
+        pasta_ticker: Path da pasta do ticker (para acessar acoes_historico.csv)
+    
+    Returns:
+        (DataFrame atualizado, quantidade de períodos calculados)
+    
+    Exemplo:
+        Entrada:  3.99 = [0, 0, 0, 0.4648]
+                  3.11 = [94566, 22926, 59407, 136181] (milhares)
+                  Ações = 248.517.120
+        
+        Saída:    3.99 = [0.3804, 0.0922, 0.2390, 0.4648]
+                         ↑ calculado ↑ mantido original
+    """
+    df = df_horizontal.copy()
+    
+    # Verificar se linha 3.99 existe
+    idx_lpa = df[df["cd_conta"] == EPS_CODE].index
+    idx_ll = df[df["cd_conta"] == "3.11"].index
+    
+    if len(idx_lpa) == 0 or len(idx_ll) == 0:
+        return df, 0
+    
+    idx_lpa = idx_lpa[0]
+    idx_ll = idx_ll[0]
+    
+    # Carregar quantidade de ações por ano
+    acoes_por_ano = self._carregar_acoes_por_ano(pasta_ticker)
+    
+    if not acoes_por_ano:
+        return df, 0
+    
+    # Colunas de períodos (ex: 2021T1, 2021T2, ...)
+    colunas_periodos = [c for c in df.columns if c not in ["cd_conta", "ds_conta"]]
+    
+    if not colunas_periodos:
+        return df, 0
+    
+    # Processar cada período
+    periodos_calculados = 0
+    
+    for col in colunas_periodos:
+        # Extrair ano da coluna (ex: "2021T1" → 2021)
+        try:
+            ano = int(col[:4])
+        except (ValueError, TypeError):
+            continue
+        
+        # Verificar se LPA está zerado/vazio
+        lpa_atual = df.at[idx_lpa, col]
+        
+        if pd.notna(lpa_atual) and lpa_atual != 0:
+            continue  # Já tem valor, manter original
+        
+        # Obter lucro líquido (em milhares)
+        lucro_liquido_mil = df.at[idx_ll, col]
+        
+        if pd.isna(lucro_liquido_mil):
+            continue  # Sem lucro líquido, não pode calcular
+        
+        # Obter quantidade de ações do ano (com fallback)
+        qtd_acoes = self._get_acoes_com_fallback(ano, acoes_por_ano)
+        
+        if qtd_acoes is None or qtd_acoes == 0:
+            continue  # Sem dados de ações, não pode calcular
+        
+        # CÁLCULO DO LPA
+        # Lucro Líquido está em MILHARES (exemplo: 94.566)
+        # Quantidade de Ações está em UNIDADES (exemplo: 248.517.120)
+        # LPA = (Lucro em milhares × 1000) ÷ Quantidade de Ações
+        
+        lucro_liquido_reais = float(lucro_liquido_mil) * 1000  # Converter para reais
+        lpa_calculado = lucro_liquido_reais / float(qtd_acoes)
+        
+        # Arredondar para 8 casas decimais (precisão adequada)
+        lpa_final = round(lpa_calculado, 8)
+        
+        # Atualizar DataFrame
+        df.at[idx_lpa, col] = lpa_final
+        periodos_calculados += 1
+    
+    return df, periodos_calculados
+
+
 
 def _validate_account_sign(code: str, value: float) -> float:
     """
@@ -1118,9 +1332,6 @@ class PadronizadorDRE:
         
         # 3. Construir totais trimestrais (preserva originais)
         qtot = self._build_quarter_totals(df_tri)
-
-        # 3.1 NOVO: Filtrar trimestres zerados
-        qtot = _filter_empty_quarters(qtot)  # ← ADICIONAR        
         
         # 4. Extrair valores anuais
         anu = self._extract_annual_values(df_anu)
@@ -1128,7 +1339,7 @@ class PadronizadorDRE:
         # 5. Detectar e converter dados acumulados (YTD) - só para padrão
         cumulative_years = self._detect_cumulative_years(qtot, anu, fiscal_info)
         qiso = self._to_isolated_quarters(qtot, cumulative_years, fiscal_info)
-
+    
         # 6. Adicionar T4 quando faltante (APENAS para ano fiscal padrão)
         qiso = self._add_t4_from_annual_when_missing(qiso, anu, fiscal_info)
         
@@ -1141,6 +1352,18 @@ class PadronizadorDRE:
         
         # 8. Construir tabela horizontal
         df_out = self._build_horizontal(qiso)
+        
+        # ============================================================================
+        # 8.1 NOVO: CALCULAR LPA QUANDO ZERADO
+        # ============================================================================
+        lpa_calculados = 0
+        try:
+            df_out, lpa_calculados = self._calcular_lpa_quando_zerado(df_out, pasta)
+            if lpa_calculados > 0:
+                print(f"  ℹ️  LPA calculado para {lpa_calculados} período(s)")
+        except Exception as e:
+            print(f"  ⚠️ Erro ao calcular LPA: {e}")
+        # ============================================================================
         
         # 9. CHECK-UP LINHA A LINHA
         checkup_results, diverge, incompleto, sem_anual, irregular_skip = self._checkup_linha_a_linha(
@@ -1206,9 +1429,14 @@ class PadronizadorDRE:
         if checkup_saved:
             msg_parts.append("checkup=SALVO")
         
+        # Adicionar info de LPA calculado
+        if lpa_calculados > 0:
+            msg_parts.append(f"LPA={lpa_calculados}períodos")
+        
         msg = f"dre_padronizado.csv | {' | '.join(msg_parts)}"
         
         return ok, msg
+
 
 # ======================================================================================
 # CLI
