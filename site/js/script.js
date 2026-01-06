@@ -1525,31 +1525,37 @@ function selectTopNews(feed, limit = 5) {
         'Outros': 5,
         'Governança': 6
     };
-    
+
     // Ordena por: prioridade da categoria > data > hora
-    // const sorted = [...feed].sort((a, b) => {
-    const sorted = [...(feed || [])].sort((a, b) => { ... })
-        const prioA = priorities[a.noticia.categoria] || 99;
-        const prioB = priorities[b.noticia.categoria] || 99;
-        
+    const sorted = [...(feed || [])].sort((a, b) => {
+        const prioA = priorities?.[a?.noticia?.categoria] ?? 99;
+        const prioB = priorities?.[b?.noticia?.categoria] ?? 99;
+
         if (prioA !== prioB) return prioA - prioB;
-        
-        const dateCompare = b.data.localeCompare(a.data);
+
+        const dateA = a?.data || '';
+        const dateB = b?.data || '';
+        const dateCompare = dateB.localeCompare(dateA);
         if (dateCompare !== 0) return dateCompare;
-        
-        return b.hora.localeCompare(a.hora);
+
+        const horaA = a?.hora || '';
+        const horaB = b?.hora || '';
+        return horaB.localeCompare(horaA);
     });
-    
+
     // Remove duplicatas por ticker
     const seen = new Set();
     const unique = sorted.filter(item => {
-        if (seen.has(item.empresa.ticker)) return false;
-        seen.add(item.empresa.ticker);
+        const t = item?.empresa?.ticker;
+        if (!t) return false;
+        if (seen.has(t)) return false;
+        seen.add(t);
         return true;
     });
-    
+
     return unique.slice(0, limit);
 }
+
 
 /**
  * Normaliza nome da categoria
