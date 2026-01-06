@@ -905,7 +905,7 @@ class PadronizadorDRE:
     
             return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
 
-    def _filter_empty_quarters(qtot: pd.DataFrame, threshold: float = 0.01) -> pd.DataFrame:
+    def _filter_empty_quarters(self, qtot: pd.DataFrame, threshold: float = 0.01) -> pd.DataFrame:
         """
         Remove trimestres completamente zerados ou com valores insignificantes.
         
@@ -1578,6 +1578,7 @@ class PadronizadorDRE:
         
         # 3. Construir totais trimestrais (preserva originais)
         qtot = self._build_quarter_totals(df_tri)
+        qtot = self._filter_empty_quarters(qtot)        
         
         # 4. Extrair valores anuais
         anu = self._extract_annual_values(df_anu)
@@ -1613,19 +1614,6 @@ class PadronizadorDRE:
                 print(f"  ℹ️  LPA calculado para {lpa_calculados} período(s)")
         except Exception as e:
             print(f"  ⚠️ Erro ao calcular LPA: {e}")
-        
-        
-        # ============================================================================
-        # 8.1 NOVO: CALCULAR LPA QUANDO ZERADO
-        # ============================================================================
-        lpa_calculados = 0
-        try:
-            df_out, lpa_calculados = self._calcular_lpa_quando_zerado(df_out, pasta)
-            if lpa_calculados > 0:
-                print(f"  ℹ️  LPA calculado para {lpa_calculados} período(s)")
-        except Exception as e:
-            print(f"  ⚠️ Erro ao calcular LPA: {e}")
-        # ============================================================================
         
         # 9. CHECK-UP LINHA A LINHA
         checkup_results, diverge, incompleto, sem_anual, irregular_skip = self._checkup_linha_a_linha(
