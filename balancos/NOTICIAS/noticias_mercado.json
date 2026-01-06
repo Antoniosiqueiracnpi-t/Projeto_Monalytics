@@ -1,65 +1,103 @@
 {
-  "ultima_atualizacao": "2026-01-06T16:14:54.112126-03:00",
+  "ultima_atualizacao": "2026-01-06T16:37:51.775553-03:00",
   "total_noticias": 17,
   "portais": {
     "Investing.com": [
       {
-        "id": "ccfb3a871387",
-        "titulo": "Sony Honda Mobility revela protótipo de carro elétrico na CES",
-        "link": "https://br.investing.com/news/stock-market-news/sony-honda-mobility-revela-prototipo-de-carro-eletrico-na-ces-1791611",
-        "horario": "15:56",
-        "imagem": "https://i-invdn-com.investing.com/trkd-images/LYNXMPEM050Y8_L.jpg",
+        "id": "c3df224fc7e4",
+        "titulo": "Maior venda de petróleo pela Venezuela depende de investimento, não acontecerá em 24 horas, diz Alckmin",
+        "link": "https://br.investing.com/news/economic-indicators/maior-venda-de-petroleo-pela-venezuela-depende-de-investimento-nao-acontecera-em-24-horas-diz-alckmin-1791630",
+        "horario": "16:21",
+        "imagem": "https://i-invdn-com.investing.com/news/indicatornews_2_M_1440048332.jpg",
+        "categoria": "Internacional",
+        "tags": [
+          "Venezuela",
+          "Petróleo"
+        ],
+        "resumo": "Maior venda de petróleo pela Venezuela depende de investimento, não acontecerá em...",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "cefcb18fc0a2",
+        "titulo": "Ações da Terex atingem máxima de 52 semanas a US$ 58,67",
+        "link": "https://br.investing.com/news/company-news/acoes-da-terex-atingem-maxima-de-52-semanas-a-us-5867-93CH-1791629",
+        "horario": "16:18",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Ações da Terex atingem máxima de 52 semanas a US$ 58,67",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "c9683cf1eee7",
+        "titulo": "Estrella Immunopharma conclui oferta direta registrada de US$ 8 milhões",
+        "link": "https://br.investing.com/news/company-news/estrella-immunopharma-conclui-oferta-direta-registrada-de-us-8-milhoes-93CH-1791628",
+        "horario": "16:14",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
         "categoria": "Geral",
         "tags": [],
-        "resumo": "Sony Honda Mobility revela protótipo de carro elétrico na CES",
+        "resumo": "Estrella Immunopharma conclui oferta direta registrada de US$ 8 milhões",
         "fonte": "Investing.com"
       },
       {
-        "id": "474a0983a956",
-        "titulo": "Hg adquire OneStream por US$ 6,4 bilhões em transação totalmente em dinheiro",
-        "link": "https://br.investing.com/news/company-news/hg-adquire-onestream-por-us-64-bilhoes-em-transacao-totalmente-em-dinheiro-93CH-1791610",
-        "horario": "15:54",
+        "id": "acdee99572c2",
+        "titulo": "Vazamento de fluido paralisa perfuração da Petrobras na Foz do Amazonas",
+        "link": "https://br.investing.com/news/commodities-news/vazamento-de-fluido-paralisa-perfuracao-da-petrobras-na-foz-do-amazonas-1791574",
+        "horario": "16:14",
+        "imagem": "https://i-invdn-com.investing.com/trkd-images/LYNXMPEM050WN_L.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Vazamento de fluido paralisa perfuração da Petrobras na Foz do Amazonas",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "39cc2b7103ce",
+        "titulo": "Ações da Natera Inc atingem máxima histórica de US$ 247,0",
+        "link": "https://br.investing.com/news/company-news/acoes-da-natera-inc-atingem-maxima-historica-de-us-2470-93CH-1791627",
+        "horario": "16:10",
         "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
         "categoria": "Empresas",
         "tags": [],
-        "resumo": "Hg adquire OneStream por US$ 6,4 bilhões em transação totalmente em dinheiro",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "d35ec8da931f",
-        "titulo": "Witkoff relata avanços nos planos de segurança e prosperidade para a Ucrânia",
-        "link": "https://br.investing.com/news/world-news/witkoff-relata-avancos-nos-planos-de-seguranca-e-prosperidade-para-a-ucrania-93CH-1791609",
-        "horario": "15:53",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Witkoff relata avanços nos planos de segurança e prosperidade para a Ucrânia",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "2ca368f31b3c",
-        "titulo": "AIxCrypto planeja compra de ações de US$ 10 milhões na Faraday Future",
-        "link": "https://br.investing.com/news/company-news/aixcrypto-planeja-compra-de-acoes-de-us-10-milhoes-na-faraday-future-93CH-1791606",
-        "horario": "15:47",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "AIxCrypto planeja compra de ações de US$ 10 milhões na Faraday Future",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "9dadb0e5996f",
-        "titulo": "Santander mantém recomendação em Multiplan após venda do BH Shopping",
-        "link": "https://br.investing.com/news/stock-market-news/santander-mantem-recomendacao-em-multiplan-apos-venda-do-bh-shopping-1791605",
-        "horario": "15:44",
-        "imagem": "",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Santander mantém recomendação em Multiplan após venda do BH Shopping",
+        "resumo": "Ações da Natera Inc atingem máxima histórica de US$ 247,0",
         "fonte": "Investing.com"
       }
     ],
     "Valor Econômico": [
+      {
+        "id": "8f8cb7ac5386",
+        "titulo": "Moraes solicita mais informações antes de decidir sobre pedido de exames para Bolsonaro após queda",
+        "link": "https://valor.globo.com/politica/noticia/2026/01/06/moraes-solicita-mais-informacoes-antes-de-decidir-sobre-pedido-de-exames-para-bolsonaro-apos-queda.ghtml",
+        "horario": "16:29",
+        "imagem": "",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Moraes solicita mais informações antes de decidir sobre pedido de exames para...",
+        "fonte": "Valor Econômico"
+      },
+      {
+        "id": "ed8ea482c230",
+        "titulo": "Venezuela, sob Maduro, enviou ouro no valor de US$ 5,2 bilhões à Suíça",
+        "link": "https://valor.globo.com/mundo/noticia/2026/01/06/venezuela-sob-maduro-enviou-ouro-no-valor-de-us-52-bilhes-sua.ghtml",
+        "horario": "16:21",
+        "imagem": "https://s2-valor.glbimg.com/gP4hr7yC8QvTAftU7D6PI5SfBVo=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2023/T/Q/AlJB4BRSiqZKAAsLnyFQ/405514662.jpg",
+        "categoria": "Internacional",
+        "tags": [
+          "Venezuela"
+        ],
+        "resumo": "Venezuela, sob Maduro, enviou ouro no valor de US$ 5,2 bilhões à...",
+        "fonte": "Valor Econômico"
+      },
+      {
+        "id": "a5eb9235a30f",
+        "titulo": "Ações da Vale ampliam ganhos e sobem quase 4% com forte movimento comprador",
+        "link": "https://valor.globo.com/financas/noticia/2026/01/06/aes-da-vale-ampliam-ganhos-e-sobem-quase-4-pontos-percentuais-com-forte-movimento-comprador.ghtml",
+        "horario": "16:17",
+        "imagem": "https://s2-valor.glbimg.com/d-b49rm0dFqZo-rCX21DBTZL8-o=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2021/v/M/IZCOAcROCyAvpCeo2qOg/sede1-banco.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Ações da Vale ampliam ganhos e sobem quase 4% com forte movimento...",
+        "fonte": "Valor Econômico"
+      },
       {
         "id": "9e6824cc437b",
         "titulo": "Tesouro da Argentina compra dólares dias antes de pagamento crucial de dívida",
@@ -72,90 +110,82 @@
         ],
         "resumo": "Tesouro da Argentina compra dólares dias antes de pagamento crucial de dívida",
         "fonte": "Valor Econômico"
-      },
-      {
-        "id": "27f23564f2e6",
-        "titulo": "Perfumes ganham espaço entre os presentes de Natal",
-        "link": "https://valor.globo.com/patrocinado/dino/noticia/2026/01/06/perfumes-ganham-espaco-entre-os-presentes-de-natal-1.ghtml",
-        "horario": "16:09",
-        "imagem": "https://s2-valor.glbimg.com/vwfntEBfFug8qfJICdYg4i060jc=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/d/B/JaU2SKRVeuKKvN8cDAfw/publicador-api-valor-dino-100-7f6228cb-6905-4dee-b7aa-61971e67f1c1.jpg",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Perfumes ganham espaço entre os presentes de Natal",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "6a9b8e175876",
-        "titulo": "Alckmin diz que acordo Mercosul e UE está bem encaminhado",
-        "link": "https://valor.globo.com/brasil/noticia/2026/01/06/alckmin-diz-que-acordo-mercosul-e-ue-esta-bem-encaminhado.ghtml",
-        "horario": "16:08",
-        "imagem": "https://s2-valor.glbimg.com/ErduECjv1yS2_V8vDa_UUhfS2_E=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/S/Y/BEPtAtQie3LkY6TwIRDQ/rbr7822-0.jpg",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Alckmin diz que acordo Mercosul e UE está bem encaminhado",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "10a095c75685",
-        "titulo": "Mercado corporativo do Grande ABC projeta expansão em 2026",
-        "link": "https://valor.globo.com/patrocinado/dino/noticia/2026/01/06/mercado-corporativo-do-grande-abc-projeta-expansao-em-2026-1.ghtml",
-        "horario": "16:01",
-        "imagem": "https://s2-valor.glbimg.com/bZZliOeYfP_v_HQBw5xtVX_lGHg=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/5/E/bssdtcSvGIFGrtka06Nw/publicador-api-valor-dino-100-ec7ea789-feeb-49a4-b945-d8fee214a828.jpg",
-        "categoria": "Mercados",
-        "tags": [],
-        "resumo": "Mercado corporativo do Grande ABC projeta expansão em 2026",
-        "fonte": "Valor Econômico"
       }
     ],
     "InfoMoney": [
       {
-        "id": "6fd27cc7656c",
-        "titulo": "Moraes nega transferência de Bolsonaro para hospital após queda em cela da PF",
-        "link": "https://www.infomoney.com.br/politica/moraes-nega-transferencia-de-bolsonaro-para-hospital-apos-queda-em-cela-da-pf/",
-        "horario": "16:06",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/09/WhatsApp-Image-2025-09-02-at-10.27.47.jpeg?fit=300%2C173&amp;quality=70&amp;strip=all",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Moraes nega transferência de Bolsonaro para hospital após queda em cela da...",
-        "fonte": "InfoMoney"
-      },
-      {
-        "id": "60a324ec53c0",
-        "titulo": "FII KNRI11 vende imóvel em Jundiaí por R$ 255 mi e projeta impacto nos dividendos",
-        "link": "https://www.infomoney.com.br/onde-investir/fii-knri11-vende-imovel-em-jundiai-por-r-255-mi-e-projeta-impacto-nos-dividendos/",
-        "horario": "16:01",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/08/pexels-pixabay-209251-1.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "FII KNRI11 vende imóvel em Jundiaí por R$ 255 mi e projeta...",
-        "fonte": "InfoMoney"
-      },
-      {
-        "id": "50de0fc14005",
-        "titulo": "Com tarifaço de Trump, exportações brasileiras para os EUA caem 6,6% em 2025",
-        "link": "https://www.infomoney.com.br/economia/com-tarifaco-de-trump-exportacoes-brasileiras-para-os-eua-caem-66-em-2025/",
-        "horario": "16:00",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/07/bandeira-brasil-eua750-1.png?fit=300%2C180&amp;quality=70&amp;strip=all",
+        "id": "ceb2a15a2a6c",
+        "titulo": "Maior venda de petróleo pela Venezuela depende de investimento, diz Alckmin",
+        "link": "https://www.infomoney.com.br/mercados/maior-venda-de-petroleo-pela-venezuela-depende-de-investimento-diz-alckmin/",
+        "horario": "16:36",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/12/lula-conselhao-mc_abr_04122025-8.webp?fit=300%2C225&amp;quality=70&amp;strip=all",
         "categoria": "Internacional",
         "tags": [
-          "EUA"
+          "Venezuela",
+          "Petróleo"
         ],
-        "resumo": "Com tarifaço de Trump, exportações brasileiras para os EUA caem 6,6% em...",
+        "resumo": "Maior venda de petróleo pela Venezuela depende de investimento, diz Alckmin",
         "fonte": "InfoMoney"
       },
       {
-        "id": "fc823e4137a7",
-        "titulo": "Exportações brasileiras para a China cresceram 6% em 2025 e batem US$ 100 bilhões",
-        "link": "https://www.infomoney.com.br/economia/exportacoes-brasileiras-para-a-china-cresceram-6-em-2025-e-batem-us-100-bilhoes/",
-        "horario": "15:58",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2019/09/bandeira-china.jpg?fit=300%2C198&amp;quality=70&amp;strip=all",
-        "categoria": "Internacional",
+        "id": "2ae7790227a6",
+        "titulo": "Concurso público do Detran em 2026? Confira os estados que terão processos seletivos",
+        "link": "https://www.infomoney.com.br/brasil/concurso-publico-detran-2026-estados-processos-seletivos/",
+        "horario": "16:35",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/2259.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "categoria": "Geral",
         "tags": [],
-        "resumo": "Exportações brasileiras para a China cresceram 6% em 2025 e batem US$...",
+        "resumo": "Concurso público do Detran em 2026? Confira os estados que terão processos...",
+        "fonte": "InfoMoney"
+      },
+      {
+        "id": "26e9916e0d19",
+        "titulo": "Carlos Bolsonaro relata hematomas e desorientação do pai após queda em cela da PF",
+        "link": "https://www.infomoney.com.br/politica/carlos-bolsonaro-relata-hematomas-e-desorientacao-do-pai-apos-queda-em-cela-da-pf/",
+        "horario": "16:32",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/12/2025-12-24T130234Z_204898995_RC20NIAA5ZZH_RTRMADP_3_BRAZIL-BOLSONARO.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Carlos Bolsonaro relata hematomas e desorientação do pai após queda em cela...",
+        "fonte": "InfoMoney"
+      },
+      {
+        "id": "2a3fe98a3793",
+        "titulo": "Corrida para investir na Venezuela é “loucura”, diz gestor de US$ 15 bilhões",
+        "link": "https://www.infomoney.com.br/onde-investir/corrida-para-investir-na-venezuela-e-loucura-diz-gestor-de-us-15-bilhoes/",
+        "horario": "16:29",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/447161654.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "categoria": "Internacional",
+        "tags": [
+          "Venezuela"
+        ],
+        "resumo": "Corrida para investir na Venezuela é “loucura”, diz gestor de US$ 15...",
         "fonte": "InfoMoney"
       }
     ],
     "Money Times": [
+      {
+        "id": "3838bfca5a26",
+        "titulo": "Calendário do IPVA 2026 em Santa Catarina: confira as datas de pagamento e descontos",
+        "link": "https://www.moneytimes.com.br/calendario-do-ipva-2026-em-santa-catarina-confira-as-datas-de-pagamento-e-descontos-otrp/",
+        "horario": "16:32",
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Calendário do IPVA 2026 em Santa Catarina: confira as datas de pagamento...",
+        "fonte": "Money Times"
+      },
+      {
+        "id": "cfd2ef193e74",
+        "titulo": "JP Morgan derruba preço-alvo de Axia (AXIA3), Copel (CPLE6) e Auren (AURE3)",
+        "link": "https://www.moneytimes.com.br/jp-morgan-derruba-preco-alvos-de-axia-axia3-copel-cple6-e-auren-aure3-vtra/",
+        "horario": "16:15",
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "JP Morgan derruba preço-alvo de Axia (AXIA3), Copel (CPLE6) e Auren (AURE3)",
+        "fonte": "Money Times"
+      },
       {
         "id": "16988929bf54",
         "titulo": "Hapvida (HAPV3) ensaia recuperação e sobe até 9% após despencar em 2025",
@@ -176,28 +206,6 @@
         "categoria": "Empresas",
         "tags": [],
         "resumo": "CSAN3, DIRR3, PRIO3 e mais 7 ações para buscar lucros em 2026,...",
-        "fonte": "Money Times"
-      },
-      {
-        "id": "1fdce2dc811d",
-        "titulo": "Petrobras (PETR4): Vazamento de fluido paralisa perfuração na Foz do Amazonas",
-        "link": "https://www.moneytimes.com.br/petrobras-petr4-vazamento-de-fluido-paralisa-perfuracao-na-foz-do-amazonas-igdl/",
-        "horario": "15:58",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Petrobras (PETR4): Vazamento de fluido paralisa perfuração na Foz do Amazonas",
-        "fonte": "Money Times"
-      },
-      {
-        "id": "8e6d5f20a0b5",
-        "titulo": "PF intima ex-executivos do Master e do BRB para prestar novos depoimentos; entenda",
-        "link": "https://www.moneytimes.com.br/pf-intima-ex-executivos-do-master-e-do-brb-para-prestar-novos-depoimentos-igdl/",
-        "horario": "15:51",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "PF intima ex-executivos do Master e do BRB para prestar novos depoimentos;...",
         "fonte": "Money Times"
       }
     ]
