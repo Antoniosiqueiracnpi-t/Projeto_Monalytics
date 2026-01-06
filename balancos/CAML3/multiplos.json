@@ -312,7 +312,7 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
-        "P_L": 6.53922665894196e+16,
+        "P_L": null,
         "P_VPA": 0.8714,
         "EV_EBITDA": 6.5021,
         "EV_EBIT": 8.1142,
@@ -424,7 +424,7 @@
   },
   "ltm": {
     "periodo_referencia": "2025T2",
-    "data_calculo": "2026-01-06T16:56:15.784222",
+    "data_calculo": "2026-01-06T17:34:23.580376",
     "preco_utilizado": 5.6,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 350000000,
