@@ -4285,6 +4285,42 @@ textarea:focus {
   .carousel-arrow.next { right: 6px; }
 }
 
+/* ===================== MOBILE LANDSCAPE: AJUSTE DE ALTURA DOS GRÁFICOS ===================== */
+@media (max-width: 768px) and (orientation: landscape) {
+
+  /* Gráfico principal (acaoChart) */
+  .grafico-container{
+    min-height: 0 !important;
+    height: calc(100vh - 140px) !important; /* header + respiros */
+    padding: 10px !important;
+  }
+  .grafico-container canvas{
+    width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  /* Dividendos histórico */
+  .dividendos-chart-wrapper{
+    padding: 16px !important;
+  }
+  .dividendos-chart-container{
+    height: calc(100vh - 170px) !important;
+  }
+  .dividendos-chart-container canvas{
+    width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  /* Modal chart (se existir) */
+  .modal-chart-container{
+    padding: 16px !important;
+  }
+  .modal-chart-container canvas{
+    width: 100% !important;
+    max-height: 70vh !important;
+  }
+}
+
 
 
 
