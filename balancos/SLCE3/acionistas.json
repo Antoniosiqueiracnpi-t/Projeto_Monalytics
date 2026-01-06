@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "89.096.457/0001-55",
+    "nome": "",
+    "ticker": "SLCE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "SLC PARTICIPAÇÕES S.A.",
+      "cpf_cnpj": "90.522.921/0001-07",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 220071754,
+      "percentual_total": 49.941,
+      "acoes_ordinarias": 220071754,
+      "percentual_ordinarias": 49.941,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "ANA BEATRIZ LOGEMANN DE ALMEIDA",
+      "cpf_cnpj": "421.689.880-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4921258,
+      "percentual_total": 1.117,
+      "acoes_ordinarias": 4921258,
+      "percentual_ordinarias": 1.117,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "ELISABETH SILVA LOGEMANN",
+      "cpf_cnpj": "262.407.850-91",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4921292,
+      "percentual_total": 1.117,
+      "acoes_ordinarias": 4921292,
+      "percentual_ordinarias": 1.117,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "JORGE LUIZ SILVA LOGEMANN",
+      "cpf_cnpj": "221.552.870-20",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4921258,
+      "percentual_total": 1.117,
+      "acoes_ordinarias": 4921258,
+      "percentual_ordinarias": 1.117,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "MARCELO SILVA LOGEMANN",
+      "cpf_cnpj": "209.734.970-68",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4921322,
+      "percentual_total": 1.117,
+      "acoes_ordinarias": 4921322,
+      "percentual_ordinarias": 1.117,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "CAROLINA MOGNON SCHEFFER",
+      "cpf_cnpj": "390.766.109-59",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4758180,
+      "percentual_total": 1.08,
+      "acoes_ordinarias": 4758180,
+      "percentual_ordinarias": 1.08,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "ELIZEU ZULMAR MAGGI SCHEFFER",
+      "cpf_cnpj": "308.181.259-34",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4758180,
+      "percentual_total": 1.08,
+      "acoes_ordinarias": 4758180,
+      "percentual_ordinarias": 1.08,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    },
+    {
+      "nome": "GILLIARD ANTONIO SCHEFFER",
+      "cpf_cnpj": "869.480.081-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4758180,
+      "percentual_total": 1.08,
+      "acoes_ordinarias": 4758180,
+      "percentual_ordinarias": 1.08,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 8
+    },
+    {
+      "nome": "GISLAYNE RAFAELA SCHEFFER",
+      "cpf_cnpj": "883.243.381-87",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4758180,
+      "percentual_total": 1.08,
+      "acoes_ordinarias": 4758180,
+      "percentual_ordinarias": 1.08,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 9
+    },
+    {
+      "nome": "GUILHERME MOGNON SCHEFFER",
+      "cpf_cnpj": "883.249.581-34",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4758180,
+      "percentual_total": 1.08,
+      "acoes_ordinarias": 4758180,
+      "percentual_ordinarias": 1.08,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 10
+    }
+  ]
+}

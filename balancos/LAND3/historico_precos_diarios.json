@@ -1,9 +1,9 @@
 {
   "ticker": "LAND3",
-  "ultima_atualizacao": "2026-01-05T23:01:50.433097",
+  "ultima_atualizacao": "2026-01-06T19:21:18.105452",
   "periodo": {
     "inicio": "2021-08-10",
-    "fim": "2026-01-02"
+    "fim": "2026-01-05"
   },
   "dados": [
     {
@@ -12083,16 +12083,27 @@
       "mm20": 8.65,
       "mm50": 8.19,
       "mm200": 10.33
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 8.76,
+      "maxima": 8.86,
+      "minima": 8.39,
+      "fechamento": 8.39,
+      "volume": 19900,
+      "mm20": 8.65,
+      "mm50": 8.2,
+      "mm200": 10.3
     }
   ],
   "estatisticas": {
-    "total_dias": 1098,
+    "total_dias": 1099,
     "preco_inicial": 13.58,
-    "preco_atual": 8.83,
-    "variacao_periodo": -34.96,
+    "preco_atual": 8.39,
+    "variacao_periodo": -38.2,
     "maxima_periodo": 29.35,
     "minima_periodo": 7.26,
-    "volume_medio": 64371,
+    "volume_medio": 64331,
     "tendencia": "indefinida"
   }
 }
