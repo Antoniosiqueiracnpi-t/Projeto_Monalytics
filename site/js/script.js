@@ -82,13 +82,13 @@ if (menuToggle && navMenu) {
  * Adiciona classe 'scrolled' ao header quando usuário rola a página
  * Melhora a visibilidade do header
  */
+
 function handleHeaderScroll() {
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
-    }
+  if (!header) return;
+  if (window.scrollY > 50) header.classList.add('scrolled');
+  else header.classList.remove('scrolled');
 }
+
 
 window.addEventListener('scroll', handleHeaderScroll);
 
@@ -133,7 +133,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const targetElement = document.querySelector(targetId);
         
         if (targetElement) {
-            const headerHeight = header.offsetHeight;
+            // const headerHeight = header.offsetHeight;
+            const headerHeight = header ? header.offsetHeight : 0;
             const targetPosition = targetElement.offsetTop - headerHeight;
             
             window.scrollTo({
@@ -1526,7 +1527,8 @@ function selectTopNews(feed, limit = 5) {
     };
     
     // Ordena por: prioridade da categoria > data > hora
-    const sorted = [...feed].sort((a, b) => {
+    // const sorted = [...feed].sort((a, b) => {
+    const sorted = [...(feed || [])].sort((a, b) => { ... })
         const prioA = priorities[a.noticia.categoria] || 99;
         const prioB = priorities[b.noticia.categoria] || 99;
         
