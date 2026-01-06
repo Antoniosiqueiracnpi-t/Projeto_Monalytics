@@ -198,13 +198,6 @@ jobs:
         run: |
           python src/capturar_historico_precos.py --modo lista --lista "${TICKERS}" --incluir-ibov   
 
-      - name: Analisar Balanços
-        id: analise
-        continue-on-error: true
-        run: |
-          python src/analisar_balancos.py --modo lista --lista "${TICKERS}"          
-          
-
       # ========================================================================
       # PADRONIZAÇÕES
       # ========================================================================
@@ -267,6 +260,16 @@ jobs:
           python src/calcular_multiplos.py --modo lista --lista "${TICKERS}"
 
       # ========================================================================
+      # ANALISAR BALANÇOS 
+      # ========================================================================
+      
+      - name: Analisar Balanços
+        id: analise
+        continue-on-error: true
+        run: |
+          python src/analisar_balancos.py --modo lista --lista "${TICKERS}"            
+
+      # ========================================================================
       # RESUMO DE EXECUÇÃO
       # ========================================================================
       
@@ -290,7 +293,6 @@ jobs:
           echo "  - Acionistas:            ${{ steps.acionistas.outcome }}"
           echo "  - Logos:                 ${{ steps.logos.outcome }}"
           echo "  - Notícias:              ${{ steps.noticias.outcome }}"
-          echo "  - Análise Balanços:      ${{ steps.analise.outcome }}"
           echo ""
           echo "🔄 PADRONIZAÇÕES:"
           echo "  - DRE:                   ${{ steps.dre.outcome }}"
@@ -303,6 +305,7 @@ jobs:
           echo ""
           echo "📈 MÚLTIPLOS:"
           echo "  - Cálculo Final:         ${{ steps.multiplos.outcome }}"
+          echo "  - Análise Balanços:      ${{ steps.analise.outcome }}"
           echo ""
           echo "======================================================================"
           
