@@ -1,6 +1,6 @@
 # Padrão Fiscal: Ano fiscal padrão (jan-dez) - trimestres disponíveis: ['T1', 'T2', 'T3']
 # Trimestres encontrados: ['T1', 'T2', 'T3']
-# Data geração: 2026-01-02 17:06:01
+# Data geração: 2026-01-06 19:34:55
 ano,codigo,soma_trimestral,valor_anual,diferenca,diff_%,status
 2015,3.01,46720141.0,46720141.0,0.0,0.0,OK
 2015,3.02,-16061371.0,-16061371.0,0.0,0.0,OK
@@ -148,7 +148,7 @@ ano,codigo,soma_trimestral,valor_anual,diferenca,diff_%,status
 2022,3.06.01,4469011.0,4469011.0,0.0,0.0,OK
 2022,3.06.02,-7892181.0,-7892181.0,0.0,0.0,OK
 2022,3.07,14235670.0,14235670.0,0.0,0.0,OK
-2022,3.08,655621.0,655621.0,0.0,0.0,OK
+2022,3.08,-655621.0,-655621.0,0.0,0.0,OK
 2022,3.09,14891291.0,14891291.0,0.0,0.0,OK
 2022,3.10,0.0,0.0,0.0,0.0,OK
 2022,3.11,14891291.0,14891291.0,0.0,0.0,OK
@@ -197,7 +197,7 @@ ano,codigo,soma_trimestral,valor_anual,diferenca,diff_%,status
 2025,3.03,32322974.0,,,,SEM_ANUAL
 2025,3.04,-15916701.0,,,,SEM_ANUAL
 2025,3.04.02,-4270205.0,,,,SEM_ANUAL
-2025,3.04.05,570668.0,,,,SEM_ANUAL
+2025,3.04.05,-972462.0,,,,SEM_ANUAL
 2025,3.04.05.02,772901.0,,,,SEM_ANUAL
 2025,3.04.06,-8130.0,,,,SEM_ANUAL
 2025,3.05,16406273.0,,,,SEM_ANUAL
