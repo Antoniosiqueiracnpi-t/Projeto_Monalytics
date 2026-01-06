@@ -124,6 +124,39 @@ def _quarter_order(q: str) -> int:
     """Retorna ordem numérica do trimestre."""
     return {"T4": 4}.get(q, 99)
 
+def _remover_especies_zeradas(self, df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Remove linhas de espécies que têm TODOS os valores = 0.
+    
+    Exemplo: Se PN sempre zero, remove linha PN.
+    
+    Args:
+        df: DataFrame horizontal com Espécie_Acao + períodos
+    
+    Returns:
+        DataFrame sem linhas zeradas
+    """
+    if df.empty or "Espécie_Acao" not in df.columns:
+        return df
+    
+    # Colunas numéricas (períodos)
+    colunas_periodos = [c for c in df.columns if c != "Espécie_Acao"]
+    
+    if not colunas_periodos:
+        return df
+    
+    # Filtrar linhas onde ALGUM período tem valor > 0
+    mask = (df[colunas_periodos] > 0).any(axis=1)
+    
+    df_filtrado = df[mask].reset_index(drop=True)
+    
+    # Log de espécies removidas
+    especies_removidas = set(df["Espécie_Acao"]) - set(df_filtrado["Espécie_Acao"])
+    if especies_removidas:
+        print(f"  ℹ️  Removidas espécies zeradas: {', '.join(especies_removidas)}")
+    
+    return df_filtrado
+
 
 # ============================================================================
 # CAPTURADOR DE HISTÓRICO DE AÇÕES
@@ -257,6 +290,19 @@ class CapturadorAcoes:
         
         # Pegar primeira linha (último FRE do ano)
         linha = df_empresa.iloc[0]
+
+        if "Data_Referencia" in linha.index or "DT_Refer" in linha.index:
+            data_ref_col = "Data_Referencia" if "Data_Referencia" in linha.index else "DT_Refer"
+            try:
+                data_ref = pd.to_datetime(linha[data_ref_col], errors="coerce")
+                if pd.notna(data_ref):
+                    ano_ref = data_ref.year
+                    # Verificar se ano de referência bate com ano esperado
+                    if ano_ref != ano:
+                        print(f"    ⚠️ Ajustando ano: FRE {ano} tem data_ref {ano_ref}")
+                        ano = ano_ref
+            except Exception:
+                pass        
         
         # Extrair quantidades
         on = pd.to_numeric(linha.get("Quantidade_Acoes_Ordinarias", 0), errors="coerce")
@@ -369,7 +415,7 @@ class CapturadorAcoes:
         pivot = pivot.fillna(0).astype(int)
         
         # Adicionar coluna Espécie_Acao como primeira coluna
-        pivot.insert(0, "Espécie_Acao", pivot.index)
+        pivot.insert(0, "especie", pivot.index)
         pivot = pivot.reset_index(drop=True)
         
         return pivot
@@ -394,10 +440,23 @@ class CapturadorAcoes:
         
         cnpj_digits = self._cnpj_digits(cnpj)
         
-        # Baixar FRE de todos os anos
+        # ✅ ADICIONAR: Definir ano máximo válido
+        # FRE de YYYY reporta dados até 31/12/(YYYY-1)
+        # Exemplo: FRE 2025 (reportado em 2026) = dados de 2024T4
+        ano_atual_real = datetime.now().year
+        mes_atual = datetime.now().month
+        
+        # Se estamos em Jan-Abr, último ano fiscal completo é (ano_atual - 2)
+        # Se estamos em Mai-Dez, último ano fiscal completo é (ano_atual - 1)
+        if mes_atual <= 4:
+            ano_max_valido = ano_atual_real - 2
+        else:
+            ano_max_valido = ano_atual_real - 1
+        
+        # Baixar FRE de todos os anos VÁLIDOS
         dados_anos = []
         
-        for ano in range(self.ano_inicio, self.ano_atual + 1):
+        for ano in range(self.ano_inicio, ano_max_valido + 1):  # ← CORRIGIDO
             zip_path = self._download_fre_zip(ano)
             if zip_path is None:
                 continue
@@ -418,6 +477,9 @@ class CapturadorAcoes:
             
             # Construir formato horizontal
             horizontal = self._build_horizontal(consolidado)
+
+            # ✅ ADICIONAR: Remover espécies zeradas
+            horizontal = self._remover_especies_zeradas(horizontal)
             
             # Salvar
             arq_horizontal = pasta / "acoes_historico.csv"
