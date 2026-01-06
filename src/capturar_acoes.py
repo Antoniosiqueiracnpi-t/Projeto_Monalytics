@@ -124,39 +124,6 @@ def _quarter_order(q: str) -> int:
     """Retorna ordem numérica do trimestre."""
     return {"T4": 4}.get(q, 99)
 
-def _remover_especies_zeradas(self, df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Remove linhas de espécies que têm TODOS os valores = 0.
-    
-    Exemplo: Se PN sempre zero, remove linha PN.
-    
-    Args:
-        df: DataFrame horizontal com Espécie_Acao + períodos
-    
-    Returns:
-        DataFrame sem linhas zeradas
-    """
-    if df.empty or "Espécie_Acao" not in df.columns:
-        return df
-    
-    # Colunas numéricas (períodos)
-    colunas_periodos = [c for c in df.columns if c != "Espécie_Acao"]
-    
-    if not colunas_periodos:
-        return df
-    
-    # Filtrar linhas onde ALGUM período tem valor > 0
-    mask = (df[colunas_periodos] > 0).any(axis=1)
-    
-    df_filtrado = df[mask].reset_index(drop=True)
-    
-    # Log de espécies removidas
-    especies_removidas = set(df["Espécie_Acao"]) - set(df_filtrado["Espécie_Acao"])
-    if especies_removidas:
-        print(f"  ℹ️  Removidas espécies zeradas: {', '.join(especies_removidas)}")
-    
-    return df_filtrado
-
 
 # ============================================================================
 # CAPTURADOR DE HISTÓRICO DE AÇÕES
@@ -204,6 +171,39 @@ class CapturadorAcoes:
         
         self.ano_inicio = 2010
         self.ano_atual = datetime.now().year
+
+    def _remover_especies_zeradas(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Remove linhas de espécies que têm TODOS os valores = 0.
+        
+        Exemplo: Se PN sempre zero, remove linha PN.
+        
+        Args:
+            df: DataFrame horizontal com Espécie_Acao + períodos
+        
+        Returns:
+            DataFrame sem linhas zeradas
+        """
+        if df.empty or "especie" not in df.columns:
+            return df
+        
+        # Colunas numéricas (períodos)
+        colunas_periodos = [c for c in df.columns if c != "especie"]
+        
+        if not colunas_periodos:
+            return df
+        
+        # Filtrar linhas onde ALGUM período tem valor > 0
+        mask = (df[colunas_periodos] > 0).any(axis=1)
+        
+        df_filtrado = df[mask].reset_index(drop=True)
+        
+        # Log de espécies removidas
+        especies_removidas = set(df["especie"]) - set(df_filtrado["especie"])
+        if especies_removidas:
+            print(f"  ℹ️  Removidas espécies zeradas: {', '.join(especies_removidas)}")
+        
+        return df_filtrado    
     
     # ----------------------- DOWNLOAD / LEITURA -----------------------
     
@@ -478,8 +478,9 @@ class CapturadorAcoes:
             # Construir formato horizontal
             horizontal = self._build_horizontal(consolidado)
 
-            # ✅ ADICIONAR: Remover espécies zeradas
-            horizontal = self._remover_especies_zeradas(horizontal)
+            # ✅ Remover espécies zeradas (se houver)
+            if not horizontal.empty:
+                horizontal = self._remover_especies_zeradas(horizontal)
             
             # Salvar
             arq_horizontal = pasta / "acoes_historico.csv"
