@@ -885,6 +885,126 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     
     return soma if soma > 0 else np.nan
 
+# ======================================================================================
+# NOVAS FUNÇÕES PARA CÁLCULO DE P/L COM LPA
+# ======================================================================================
+
+def _obter_lpa_periodo(dados: DadosEmpresa, periodo: str) -> float:
+    """
+    Obtém Lucro por Ação (LPA) de um período específico.
+    
+    LPA está na conta 3.99 do DRE (já calculado pela CVM).
+    
+    Args:
+        dados: Dados da empresa
+        periodo: Período desejado (ex: "2025T3")
+    
+    Returns:
+        LPA em R$/ação ou np.nan se não disponível
+    """
+    if dados.dre is None:
+        return np.nan
+    
+    # Conta 3.99 = Lucro por Ação (Reais/Ação)
+    lpa = _extrair_valor_conta(dados.dre, "3.99", periodo)
+    
+    return lpa if np.isfinite(lpa) else np.nan
+
+
+def _calcular_lpa_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
+    """
+    Calcula Lucro por Ação LTM (anualizado) somando últimos 4 trimestres.
+    
+    Para empresas semestrais (AGRO3): usa 3 trimestres
+    Para empresas padrão: usa 4 trimestres
+    
+    Args:
+        dados: Dados da empresa
+        periodo_fim: Período final para cálculo LTM
+    
+    Returns:
+        LPA LTM em R$/ação ou np.nan se dados insuficientes
+    
+    Exemplo:
+        LTM 2025T3 = LPA(2024T4) + LPA(2025T1) + LPA(2025T2) + LPA(2025T3)
+    """
+    if dados.dre is None or dados.padrao_fiscal is None:
+        return np.nan
+    
+    periodos = dados.periodos
+    if periodo_fim not in periodos:
+        return np.nan
+    
+    idx_fim = periodos.index(periodo_fim)
+    padrao = dados.padrao_fiscal
+    
+    # Determinar número de trimestres para LTM
+    if padrao.tipo == 'SEMESTRAL':
+        n_trimestres = 3
+    else:
+        n_trimestres = 4
+    
+    # Obter períodos LTM
+    start_idx = max(0, idx_fim - n_trimestres + 1)
+    periodos_ltm = periodos[start_idx:idx_fim + 1]
+    
+    # Somar LPA dos períodos
+    soma_lpa = 0.0
+    count_valid = 0
+    
+    for p in periodos_ltm:
+        lpa = _obter_lpa_periodo(dados, p)
+        if np.isfinite(lpa):
+            soma_lpa += lpa
+            count_valid += 1
+    
+    # Validar mínimo de períodos
+    min_periodos = 3 if padrao.tipo == 'SEMESTRAL' else 4
+    if count_valid < min_periodos:
+        return np.nan
+    
+    return soma_lpa
+
+
+def _obter_preco_ultimo_trimestre_ano(dados: DadosEmpresa, periodo_referencia: str) -> Tuple[float, str]:
+    """
+    Obtém preço do último trimestre disponível DO ANO de referência.
+    
+    USO: Histórico anualizado (colunas de anos específicos no CSV)
+    
+    Lógica:
+    1. Extrai ano do período de referência
+    2. Tenta buscar T4 do ano (se existir, ano está fechado)
+    3. Se não existir T4, busca T3, depois T2, depois T1 DO MESMO ANO
+    
+    Args:
+        dados: Dados da empresa
+        periodo_referencia: Período de referência (ex: "2025T3")
+    
+    Returns:
+        (preço, período_usado)
+    
+    Exemplo:
+        Para 2025T3 → busca 2025T4 (não existe) → busca 2025T3 (11.46)
+    """
+    if dados.precos is None or not dados.periodos:
+        return np.nan, ""
+    
+    # Extrair ano do período de referência
+    ano_ref, _ = _parse_periodo(periodo_referencia)
+    if ano_ref == 0:
+        return np.nan, ""
+    
+    # Tentar períodos do ano em ordem decrescente: T4 → T3 → T2 → T1
+    for tri in ['T4', 'T3', 'T2', 'T1']:
+        periodo_teste = f"{ano_ref}{tri}"
+        preco = _obter_preco(dados, periodo_teste)
+        if np.isfinite(preco) and preco > 0:
+            return preco, periodo_teste
+    
+    # Se nenhum período do ano existe, busca último disponível
+    return _obter_preco_atual(dados)
+
 
 # ======================================================================================
 # FUNÇÕES PARA OBTER RECEITA CORRETA POR TIPO DE EMPRESA
@@ -1041,8 +1161,21 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     
     # ==================== VALUATION ====================
     
-    ll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["lucro_liquido"], periodo)
-    resultado["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
+    #ll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["lucro_liquido"], periodo)
+    #resultado["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
+    #################################################################################
+
+    # P/L = Preço / Lucro por Ação LTM
+    lpa_ltm = _calcular_lpa_ltm(dados, periodo)
+    
+    # LTM usa preço mais recente; Histórico usa preço do ano específico
+    if usar_preco_atual:
+        preco_pl, periodo_preco_pl = _obter_preco_atual(dados)
+    else:
+        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
+    
+    resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, lpa_ltm))
+    
     
     pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
     resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
@@ -1163,7 +1296,8 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
 # ======================================================================================
 
 MULTIPLOS_METADATA = {
-    "P_L": {"nome": "P/L", "categoria": "Valuation", "formula": "Market Cap / Lucro Líquido LTM", "unidade": "x", "usa_preco": True},
+    #"P_L": {"nome": "P/L", "categoria": "Valuation", "formula": "Market Cap / Lucro Líquido LTM", "unidade": "x", "usa_preco": True},
+    "P_L": {"nome": "P/L", "categoria": "Valuation", "formula": "Preço / Lucro por Ação LTM", "unidade": "x", "usa_preco": True},
     "P_VPA": {"nome": "P/VPA", "categoria": "Valuation", "formula": "Market Cap / Patrimônio Líquido", "unidade": "x", "usa_preco": True},
     "EV_EBITDA": {"nome": "EV/EBITDA", "categoria": "Valuation", "formula": "Enterprise Value / EBITDA LTM", "unidade": "x", "usa_preco": True},
     "EV_EBIT": {"nome": "EV/EBIT", "categoria": "Valuation", "formula": "Enterprise Value / EBIT LTM", "unidade": "x", "usa_preco": True},
@@ -1198,7 +1332,8 @@ MULTIPLOS_BANCOS_METADATA = {
     "P_L": {
         "nome": "P/L",
         "categoria": "Valuation",
-        "formula": "Market Cap / Lucro Líquido LTM",
+        #"formula": "Market Cap / Lucro Líquido LTM",
+        "formula": "Preço / Lucro por Ação LTM",
         "unidade": "x",
         "usa_preco": True
     },
@@ -1267,7 +1402,8 @@ MULTIPLOS_HOLDINGS_SEGUROS_METADATA = {
     "P_L": {
         "nome": "P/L",
         "categoria": "Valuation",
-        "formula": "Market Cap / Lucro Líquido LTM",
+        #"formula": "Market Cap / Lucro Líquido LTM",
+        "formula": "Preço / Lucro por Ação LTM",
         "unidade": "x",
         "usa_preco": True
     },
@@ -1350,7 +1486,8 @@ MULTIPLOS_SEGURADORAS_METADATA = {
     "P_L": {
         "nome": "P/L",
         "categoria": "Valuation",
-        "formula": "Market Cap / Lucro Líquido LTM",
+        #"formula": "Market Cap / Lucro Líquido LTM",
+        "formula": "Preço / Lucro por Ação LTM",
         "unidade": "x",
         "usa_preco": True
     },
@@ -1508,7 +1645,18 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     # ==================== VALUATION (4 MÚLTIPLOS) ====================
     
     # P/L = Market Cap / Lucro Líquido LTM
-    resultado["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
+    #resultado["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
+    ################################################################################
+
+    # P/L = Preço / Lucro por Ação LTM
+    lpa_ltm = _calcular_lpa_ltm(dados, periodo)
+    
+    if usar_preco_atual:
+        preco_pl, periodo_preco_pl = _obter_preco_atual(dados)
+    else:
+        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
+    
+    resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, lpa_ltm))    
     
     # P/VPA = Market Cap / Patrimônio Líquido
     resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
@@ -1622,7 +1770,19 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     # ==================== VALUATION (5 MÚLTIPLOS) ====================
     
     # P/L = Market Cap / Lucro Líquido LTM
-    resultado["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
+    #resultado["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
+    #########################################################################
+
+    # P/L = Preço / Lucro por Ação LTM
+    lpa_ltm = _calcular_lpa_ltm(dados, periodo)
+    
+    if usar_preco_atual:
+        preco_pl, periodo_preco_pl = _obter_preco_atual(dados)
+    else:
+        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
+    
+    resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, lpa_ltm))
+    
     
     # P/VPA = Market Cap / Patrimônio Líquido
     resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
@@ -1795,7 +1955,19 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     
     # ==================== VALUATION (4 MÚLTIPLOS) ====================
     
-    resultado["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
+    #resultado["P_L"] = _normalizar_valor(_safe_divide(market_cap, ll_ltm))
+    ##########################################################################
+
+    # P/L = Preço / Lucro por Ação LTM
+    lpa_ltm = _calcular_lpa_ltm(dados, periodo)
+    
+    if usar_preco_atual:
+        preco_pl, periodo_preco_pl = _obter_preco_atual(dados)
+    else:
+        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
+    
+    resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, lpa_ltm))    
+    
     resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
     
     resultado["DY"] = _normalizar_valor(
@@ -1909,14 +2081,27 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
     # LTM: Sempre usar último período disponível com preço atual (mantém comportamento atual)
     ultimo_periodo = dados.periodos[-1]
 
+    #if _is_banco(dados.ticker):
+    #    multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=False)
+    #elif _is_holding_seguros(dados.ticker):
+    #    multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=False)
+    #elif _is_seguradora_operacional(dados.ticker):
+    #    multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=False)
+    #else:
+    #    multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=False)
+    
+
+    # LTM usa preço MAIS RECENTE disponível (usar_preco_atual=True)
     if _is_banco(dados.ticker):
-        multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=False)
+        multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True)
     elif _is_holding_seguros(dados.ticker):
-        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=False)
+        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=True)
     elif _is_seguradora_operacional(dados.ticker):
-        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=False)
+        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=True)
     else:
-        multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=False)
+        multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True)
+
+    
 
     # Informações de preço e ações utilizados (LTM)
     preco_atual, periodo_preco = _obter_preco_atual(dados)
