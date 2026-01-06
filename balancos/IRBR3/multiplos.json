@@ -9,7 +9,7 @@
     "P_L": {
       "nome": "P/L",
       "categoria": "Valuation",
-      "formula": "Market Cap / Lucro Líquido LTM",
+      "formula": "Preço / Lucro por Ação LTM",
       "unidade": "x",
       "usa_preco": true
     },
@@ -81,10 +81,10 @@
     "2017": {
       "periodo_referencia": "2017T4",
       "multiplos": {
-        "P_L": 80.8323,
+        "P_L": 80.4228,
         "P_VPA": 20.8797,
-        "DY": 0.0637,
-        "PAYOUT": 5.1483,
+        "DY": 0.2428,
+        "PAYOUT": 19.6263,
         "ROE": 25.8308,
         "ROA": 6.4494,
         "PL_ATIVOS": 24.9678,
@@ -96,10 +96,10 @@
     "2018": {
       "periodo_referencia": "2018T4",
       "multiplos": {
-        "P_L": 158.0152,
+        "P_L": 157.0662,
         "P_VPA": 48.1377,
-        "DY": 0.0945,
-        "PAYOUT": 14.9343,
+        "DY": 0.3603,
+        "PAYOUT": 56.9323,
         "ROE": 32.1499,
         "ROA": 8.0492,
         "PL_ATIVOS": 25.0983,
@@ -111,10 +111,10 @@
     "2019": {
       "periodo_referencia": "2019T4",
       "multiplos": {
-        "P_L": 690.2354,
+        "P_L": 686.4462,
         "P_VPA": 211.7201,
-        "DY": 0.0251,
-        "PAYOUT": 17.2908,
+        "DY": 0.0955,
+        "PAYOUT": 65.9157,
         "ROE": 30.4589,
         "ROA": 7.2372,
         "PL_ATIVOS": 22.5421,
@@ -126,9 +126,9 @@
     "2020": {
       "periodo_referencia": "2020T4",
       "multiplos": {
-        "P_L": -169.6979,
+        "P_L": -128.8671,
         "P_VPA": 60.6549,
-        "DY": 0.001,
+        "DY": 0.0037,
         "PAYOUT": null,
         "ROE": -37.0982,
         "ROA": -7.5643,
@@ -141,7 +141,7 @@
     "2021": {
       "periodo_referencia": "2021T4",
       "multiplos": {
-        "P_L": -185.8282,
+        "P_L": -185.2963,
         "P_VPA": 34.9071,
         "DY": null,
         "PAYOUT": null,
@@ -156,7 +156,7 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
-        "P_L": -3.367,
+        "P_L": -99.2308,
         "P_VPA": 0.521,
         "DY": null,
         "PAYOUT": null,
@@ -171,7 +171,7 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
-        "P_L": -882.7202,
+        "P_L": -29.3377,
         "P_VPA": 25.6794,
         "DY": null,
         "PAYOUT": null,
@@ -186,7 +186,7 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
-        "P_L": 4.3119,
+        "P_L": 4.3096,
         "P_VPA": 0.7053,
         "DY": null,
         "PAYOUT": null,
@@ -201,8 +201,8 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "P_L": 7.4914,
-        "P_VPA": 0.7528,
+        "P_L": 5.2675,
+        "P_VPA": 2.8698,
         "DY": null,
         "PAYOUT": null,
         "ROE": 10.5874,
@@ -216,14 +216,14 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-05T21:27:08.704357",
-    "preco_utilizado": 49.0,
-    "periodo_preco": "2025T3",
-    "acoes_utilizadas": 81842887,
+    "data_calculo": "2026-01-06T21:26:51.987062",
+    "preco_utilizado": 52.76,
+    "periodo_preco": "2026T1",
+    "acoes_utilizadas": 312000001,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 7.4914,
-      "P_VPA": 0.7528,
+      "P_L": 5.6717,
+      "P_VPA": 3.0901,
       "DY": null,
       "PAYOUT": null,
       "ROE": 10.5874,

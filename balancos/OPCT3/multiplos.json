@@ -9,7 +9,7 @@
     "P_L": {
       "nome": "P/L",
       "categoria": "Valuation",
-      "formula": "Market Cap / Lucro Líquido LTM",
+      "formula": "Preço / Lucro por Ação LTM",
       "unidade": "x",
       "usa_preco": true
     },
@@ -172,7 +172,7 @@
     "2020": {
       "periodo_referencia": "2020T4",
       "multiplos": {
-        "P_L": null,
+        "P_L": -47.4444,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -200,7 +200,7 @@
     "2021": {
       "periodo_referencia": "2021T4",
       "multiplos": {
-        "P_L": -12.6615,
+        "P_L": -12.0,
         "P_VPA": 0.668,
         "EV_EBITDA": 6.9045,
         "EV_EBIT": 42.4073,
@@ -228,7 +228,7 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
-        "P_L": -6.1509,
+        "P_L": -6.2174,
         "P_VPA": 0.7489,
         "EV_EBITDA": 6.2593,
         "EV_EBIT": 49.1011,
@@ -256,7 +256,7 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
-        "P_L": 17.319,
+        "P_L": 17.1575,
         "P_VPA": 1.6106,
         "EV_EBITDA": 3.3436,
         "EV_EBIT": 7.9703,
@@ -284,7 +284,7 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
-        "P_L": -67.8155,
+        "P_L": -67.3028,
         "P_VPA": 1.0639,
         "EV_EBITDA": 4.1243,
         "EV_EBIT": 7.9517,
@@ -312,7 +312,7 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "P_L": 25.8829,
+        "P_L": 20.7972,
         "P_VPA": 1.5903,
         "EV_EBITDA": 3.0321,
         "EV_EBIT": 8.5535,
@@ -340,17 +340,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-05T21:27:07.240644",
-    "preco_utilizado": 7.67,
-    "periodo_preco": "2025T3",
+    "data_calculo": "2026-01-06T21:26:49.959975",
+    "preco_utilizado": 8.54,
+    "periodo_preco": "2026T1",
     "acoes_utilizadas": 199959554,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 25.8829,
-      "P_VPA": 1.5903,
-      "EV_EBITDA": 3.0321,
-      "EV_EBIT": 8.5535,
-      "EV_RECEITA": 1.3228,
+      "P_L": 23.1562,
+      "P_VPA": 1.7707,
+      "EV_EBITDA": 3.2275,
+      "EV_EBIT": 9.1048,
+      "EV_RECEITA": 1.408,
       "DY": null,
       "PAYOUT": null,
       "ROE": 6.4015,

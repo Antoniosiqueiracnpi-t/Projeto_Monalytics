@@ -9,7 +9,7 @@
     "P_L": {
       "nome": "P/L",
       "categoria": "Valuation",
-      "formula": "Market Cap / Lucro Líquido LTM",
+      "formula": "Preço / Lucro por Ação LTM",
       "unidade": "x",
       "usa_preco": true
     },
@@ -200,7 +200,7 @@
     "2021": {
       "periodo_referencia": "2021T4",
       "multiplos": {
-        "P_L": 2.8254,
+        "P_L": 7.8082,
         "P_VPA": 0.4742,
         "EV_EBITDA": 2.8593,
         "EV_EBIT": 6.6139,
@@ -228,7 +228,7 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
-        "P_L": 28.203,
+        "P_L": 31.2727,
         "P_VPA": 1.6332,
         "EV_EBITDA": 3.0833,
         "EV_EBIT": 14.0225,
@@ -256,7 +256,7 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
-        "P_L": 24.9979,
+        "P_L": 25.7994,
         "P_VPA": 1.7926,
         "EV_EBITDA": 3.0199,
         "EV_EBIT": 10.1632,
@@ -284,7 +284,7 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
-        "P_L": -25.7102,
+        "P_L": 5.2646,
         "P_VPA": 1.0946,
         "EV_EBITDA": 2.7985,
         "EV_EBIT": 10.5656,
@@ -312,7 +312,7 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "P_L": -1.5337,
+        "P_L": 5.4458,
         "P_VPA": 0.7324,
         "EV_EBITDA": 3.3402,
         "EV_EBIT": 33.179,
@@ -340,17 +340,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-05T21:27:07.908623",
-    "preco_utilizado": 1.02,
-    "periodo_preco": "2025T3",
+    "data_calculo": "2026-01-06T21:26:50.869933",
+    "preco_utilizado": 0.81,
+    "periodo_preco": "2026T1",
     "acoes_utilizadas": 10352509484,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": -1.5337,
-      "P_VPA": 0.7324,
-      "EV_EBITDA": 3.3402,
-      "EV_EBIT": 33.179,
-      "EV_RECEITA": 0.2745,
+      "P_L": 4.3246,
+      "P_VPA": 0.5816,
+      "EV_EBITDA": 3.236,
+      "EV_EBIT": 32.1439,
+      "EV_RECEITA": 0.2659,
       "DY": null,
       "PAYOUT": null,
       "ROE": -36.5508,
