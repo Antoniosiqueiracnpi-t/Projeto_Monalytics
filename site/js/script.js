@@ -2435,9 +2435,10 @@ function renderComposicaoAcionaria() {
             <div class="acionistas-list">
     `;
     
-    // Lista de acionistas
+    // ✅ CORREÇÃO: Lista apenas os TOP 5 maiores acionistas
     const top5Acionistas = acionistas.slice(0, 5);
-    acionistas.forEach((acionista, index) => {
+    
+    top5Acionistas.forEach((acionista, index) => {
         const acoesMilhoes = (acionista.acoes_total / 1000000).toFixed(1);
         
         html += `
@@ -2459,6 +2460,7 @@ function renderComposicaoAcionaria() {
             </div>
         `;
     });
+
     
     // Adiciona "Outros" se necessário
     if (outros > 0) {
