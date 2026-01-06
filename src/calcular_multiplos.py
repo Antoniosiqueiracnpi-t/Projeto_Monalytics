@@ -667,17 +667,61 @@ def processar_ticker(ticker: str, salvar: bool = True):
         return False, str(e), None
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--modo", default="ticker")
-    parser.add_argument("--ticker", default="")
+    parser = argparse.ArgumentParser(description="Calculadora de Múltiplos Financeiros")
+    parser.add_argument("--modo", default="ticker", 
+                        choices=["ticker", "lista", "quantidade", "faixa", "todos"],
+                        help="Modo de execução")
+    parser.add_argument("--ticker", default="", help="Ticker específico (ex: BEEF3)")
+    parser.add_argument("--lista", default="", help="Lista de tickers separados por vírgula (ex: BEEF3,CAML3)")
+    parser.add_argument("--quantidade", type=int, default=10, help="Quantidade de tickers a processar")
+    parser.add_argument("--faixa", default="", help="Faixa de tickers (ex: 1-50)")
     args = parser.parse_args()
     
+    # Carrega mapeamento completo
+    df = load_mapeamento_consolidado()
+    
     if args.modo == "ticker" and args.ticker:
+        # Modo 1: Ticker único
         processar_ticker(args.ticker)
+        
+    elif args.modo == "lista" and args.lista:
+        # Modo 2: Lista de tickers
+        tickers = [t.strip().upper() for t in args.lista.split(',')]
+        print(f"📊 Processando {len(tickers)} tickers da lista...")
+        for ticker in tickers:
+            processar_ticker(ticker)
+            
+    elif args.modo == "quantidade":
+        # Modo 3: Primeiros N tickers
+        print(f"📊 Processando os primeiros {args.quantidade} tickers...")
+        for idx, row in df.head(args.quantidade).iterrows():
+            processar_ticker(row['ticker'])
+            
+    elif args.modo == "faixa" and args.faixa:
+        # Modo 4: Faixa (ex: 1-50, 51-100)
+        try:
+            inicio, fim = map(int, args.faixa.split('-'))
+            # Ajusta para índice 0-based (usuário pensa em 1-based)
+            inicio_idx = max(0, inicio - 1)
+            fim_idx = min(len(df), fim)
+            print(f"📊 Processando tickers {inicio} a {fim} ({fim_idx - inicio_idx} tickers)...")
+            for idx, row in df.iloc[inicio_idx:fim_idx].iterrows():
+                processar_ticker(row['ticker'])
+        except ValueError:
+            print("❌ Formato de faixa inválido. Use: --faixa 1-50")
+            
+    elif args.modo == "todos":
+        # Modo 5: Todos os tickers
+        print(f"📊 Processando TODOS os {len(df)} tickers...")
+        for idx, row in df.iterrows():
+            processar_ticker(row['ticker'])
+            
     else:
-        df = load_mapeamento_consolidado()
-        for _, row in df.iterrows():
+        # Fallback: usa o comportamento padrão do código original
+        print("ℹ️  Nenhum modo especificado. Processando todos os tickers...")
+        for idx, row in df.iterrows():
             processar_ticker(row['ticker'])
 
 if __name__ == "__main__":
     main()
+
