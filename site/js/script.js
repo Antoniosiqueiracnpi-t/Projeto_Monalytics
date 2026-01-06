@@ -3942,6 +3942,27 @@ class MobileRotationAssistant {
     isPortraitMode() {
         return window.innerHeight > window.innerWidth;
     }
+
+    resetCanvasInlineSize() {
+        const ids = ['acaoChart', 'dividendosHistoricoChart', 'acionistasChart', 'modal-chart'];
+        ids.forEach(id => {
+            const c = document.getElementById(id);
+            if (!c) return;
+            c.removeAttribute('width');
+            c.removeAttribute('height');
+            c.style.width = '';
+            c.style.height = '';
+        });
+    }
+    
+    resizeAllCharts() {
+        // Esses "let" existem no seu script: acaoChart, dividendosChart, acionistasChart, multiplosChart
+        try { if (acaoChart) acaoChart.resize(); } catch(e) {}
+        try { if (dividendosChart) dividendosChart.resize(); } catch(e) {}
+        try { if (acionistasChart) acionistasChart.resize(); } catch(e) {}
+        try { if (multiplosChart) multiplosChart.resize(); } catch(e) {}
+    }
+    
     
     /**
      * Inicializa o sistema
@@ -4004,15 +4025,21 @@ class MobileRotationAssistant {
         });
     }
     
+
     updatePortraitState() {
-        // garante placeholders mesmo se algum gráfico só aparecer depois (ex.: modal)
-        this.ensureRotationPlaceholders();
-    
         const isPortrait = this.isPortraitMode();
     
-        // Esta classe só será aplicada em mobile (porque a classe só roda se this.isMobile for true)
         document.documentElement.classList.toggle('is-mobile-portrait', isPortrait);
+    
+        if (isPortrait) {
+            // Voltou para vertical: limpa dimensões antigas para não estourar layout
+            this.resetCanvasInlineSize();
+        } else {
+            // Foi para horizontal: dá tempo do layout aparecer e força resize do Chart.js
+            setTimeout(() => this.resizeAllCharts(), 250);
+        }
     }
+
     
     
     /**
