@@ -459,19 +459,31 @@ def _obter_preco_atual(dados: DadosEmpresa) -> Tuple[float, str]:
     """
     Obtém o preço mais recente disponível.
     
+    CORREÇÃO: Busca em TODAS as colunas do CSV de preços,
+    não apenas nos períodos com balanços reportados.
+    
     Returns:
         (preço, período) - preço mais recente e o período correspondente
     """
-    if dados.precos is None or not dados.periodos:
+    if dados.precos is None:
         return np.nan, ""
     
-    # Percorrer períodos do mais recente ao mais antigo
-    for p in reversed(dados.periodos):
+    # Obter TODAS as colunas de período do CSV de preços (não só dados.periodos)
+    colunas_precos = [c for c in dados.precos.columns if _parse_periodo(c)[0] > 0]
+    
+    if not colunas_precos:
+        return np.nan, ""
+    
+    # Ordenar períodos e percorrer do mais recente ao mais antigo
+    periodos_ordenados = _ordenar_periodos(colunas_precos)
+    
+    for p in reversed(periodos_ordenados):
         preco = _obter_preco(dados, p)
         if np.isfinite(preco) and preco > 0:
             return preco, p
     
     return np.nan, ""
+
 
 
 def _obter_acoes(dados: DadosEmpresa, periodo: str) -> float:
