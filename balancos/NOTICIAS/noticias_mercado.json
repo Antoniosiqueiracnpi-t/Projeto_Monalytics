@@ -1,8 +1,32 @@
 {
-  "ultima_atualizacao": "2026-01-06T01:56:01.779052-03:00",
+  "ultima_atualizacao": "2026-01-06T02:21:27.303813-03:00",
   "total_noticias": 17,
   "portais": {
     "Investing.com": [
+      {
+        "id": "8533cb1eae16",
+        "titulo": "Biotech francesa TheraVectys considera IPO em Hong Kong",
+        "link": "https://br.investing.com/news/stock-market-news/biotech-francesa-theravectys-considera-ipo-em-hong-kong-1790502",
+        "horario": "02:00",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Biotech francesa TheraVectys considera IPO em Hong Kong",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "14c79238b65c",
+        "titulo": "Tesla China oferece empréstimos com juros zero e baixos para Model 3/Y",
+        "link": "https://br.investing.com/news/stock-market-news/tesla-china-oferece-emprestimos-com-juros-zero-e-baixos-para-model-3y-1790501",
+        "horario": "01:45",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Internacional",
+        "tags": [
+          "Juros"
+        ],
+        "resumo": "Tesla China oferece empréstimos com juros zero e baixos para Model 3/Y",
+        "fonte": "Investing.com"
+      },
       {
         "id": "de3716ecaa55",
         "titulo": "AMD revela novos processadores de IA no CES Las Vegas, visando grande salto de desempenho",
@@ -35,37 +59,20 @@
         "tags": [],
         "resumo": "Fabricante chinesa de lidar Hesai dispara após parceria com Nvidia em direção...",
         "fonte": "Investing.com"
-      },
-      {
-        "id": "474c3728a065",
-        "titulo": "Jollibee Foods planeja listagem nos EUA para operações internacionais; ações sobem",
-        "link": "https://br.investing.com/news/stock-market-news/jollibee-foods-planeja-listagem-nos-eua-para-operacoes-internacionais-acoes-sobem-1790493",
-        "horario": "00:47",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Internacional",
-        "tags": [
-          "EUA"
-        ],
-        "resumo": "Jollibee Foods planeja listagem nos EUA para operações internacionais; ações sobem",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "bbce651dadfe",
-        "titulo": "Mercado de petróleo vê impacto limitado da ação dos EUA na Venezuela - ANZ",
-        "link": "https://br.investing.com/news/commodities-news/mercados-de-petroleo-veem-impacto-limitado-da-acao-dos-eua-na-venezuela--anz-1790488",
-        "horario": "00:33",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Internacional",
-        "tags": [
-          "Petróleo",
-          "Venezuela",
-          "EUA"
-        ],
-        "resumo": "Mercado de petróleo vê impacto limitado da ação dos EUA na Venezuela...",
-        "fonte": "Investing.com"
       }
     ],
     "Valor Econômico": [
+      {
+        "id": "44d4b3940f9a",
+        "titulo": "Vendas da Nissan no Japão caem ao menor nível em 32 anos por falta de novos modelos",
+        "link": "https://valor.globo.com/empresas/noticia/2026/01/06/vendas-da-nissan-no-japo-caem-ao-menor-nvel-em-32-anos-por-falta-de-novos-modelos.ghtml",
+        "horario": "02:18",
+        "imagem": "https://s2-valor.glbimg.com/P6REw7jStMIVcYPUt4mdaxkCHtc=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/j/O/cYmfhKTAKY1YDvWhDPww/2025-07-07t052632z-1098386037-rc2o8falt4oz-rtrmadp-3-nissanmotor-co-bonds.jpg",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Vendas da Nissan no Japão caem ao menor nível em 32 anos...",
+        "fonte": "Valor Econômico"
+      },
       {
         "id": "e6d264eccc88",
         "titulo": "Trump descarta eleições na Venezuela em 30 dias e diz que precisa 'consertar o país primeiro'",
@@ -101,17 +108,6 @@
         "categoria": "Geral",
         "tags": [],
         "resumo": "Quanto era o salário mínimo em 2025?",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "4dedaed3bab1",
-        "titulo": "Imposto de Renda em 2026: Veja o que muda para este ano",
-        "link": "https://valor.globo.com/brasil/noticia/2026/01/06/imposto-de-renda-2026-o-que-muda.ghtml",
-        "horario": "00:01",
-        "imagem": "https://s2-valor.glbimg.com/VanaMlxOlBaXym0u_3yH8Vjr9Ow=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2024/x/H/3OLWOXTGOIgzAHI5W1Nw/mcam20022020-4.jpg",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Imposto de Renda em 2026: Veja o que muda para este ano",
         "fonte": "Valor Econômico"
       }
     ],
