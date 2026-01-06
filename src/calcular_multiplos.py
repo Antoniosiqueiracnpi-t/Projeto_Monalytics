@@ -567,8 +567,24 @@ def _obter_acoes(dados: DadosEmpresa, periodo: str) -> float:
                     return v if v > 0 else np.nan
                 except (ValueError, TypeError):
                     return np.nan
+    
+    # ==================== CORREÇÃO: FALLBACK SEM 'Espécie_Acao' ====================
+    # Se não existe coluna 'Espécie_Acao', tentar extrair valor diretamente
+    # (casos onde CSV contém apenas uma linha de dados sem categorização)
+    else:
+        for idx in range(len(dados.acoes)):
+            val = dados.acoes.iloc[idx][periodo_busca]
+            if pd.notna(val):
+                try:
+                    v = float(val)
+                    if v > 0:
+                        return v
+                except (ValueError, TypeError):
+                    continue
+    # ===============================================================================
 
     return np.nan
+
 
 
 
