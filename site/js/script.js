@@ -2421,7 +2421,7 @@ function renderComposicaoAcionaria() {
             </div>
             <div class="composicao-title-group">
                 <h3>Composição Acionária</h3>
-                <p>Top ${acionistas.length} principais acionistas</p>
+                <p>Principais acionistas</p>
             </div>
         </div>
         
