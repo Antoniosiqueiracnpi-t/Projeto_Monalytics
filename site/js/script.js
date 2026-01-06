@@ -3888,3 +3888,237 @@ function initToggleIbov() {
         renderAcaoChart();
     });
 }
+
+/* =========================================================================
+   SISTEMA DE ROTAÇÃO INTELIGENTE PARA GRÁFICOS EM MOBILE
+   ========================================================================= */
+
+/**
+ * Sistema que detecta dispositivos móveis em modo retrato e sugere
+ * rotação para melhor visualização de gráficos
+ */
+class MobileRotationAssistant {
+    constructor() {
+        this.isMobile = this.detectMobile();
+        this.overlay = null;
+        this.dismissedSessions = new Set();
+        this.chartSections = [
+            'acaoChart',
+            'acionistasChart',
+            'dividendosHistoricoChart',
+            'multiplosSection',
+            'modal-chart'
+        ];
+        
+        // Só inicializa se for mobile
+        if (this.isMobile) {
+            this.init();
+        }
+    }
+    
+    /**
+     * Detecta se é dispositivo móvel real
+     */
+    detectMobile() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const isSmallScreen = window.innerWidth <= 768;
+        
+        return isMobileUA && isTouchDevice && isSmallScreen;
+    }
+    
+    /**
+     * Detecta se está em modo retrato
+     */
+    isPortraitMode() {
+        return window.innerHeight > window.innerWidth;
+    }
+    
+    /**
+     * Inicializa o sistema
+     */
+    init() {
+        console.log('📱 Sistema de Rotação Mobile inicializado');
+        
+        // Cria overlay
+        this.createOverlay();
+        
+        // Adiciona hints visuais nos gráficos
+        this.addChartHints();
+        
+        // Monitora mudanças de orientação
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => this.handleOrientationChange(), 200);
+        });
+        
+        // Monitora resize (fallback)
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => this.handleOrientationChange(), 300);
+        });
+        
+        // Monitora scroll para detectar quando usuário chega em gráfico
+        let scrollTimer;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => this.checkChartVisibility(), 150);
+        }, { passive: true });
+    }
+    
+    /**
+     * Cria overlay de sugestão de rotação
+     */
+    createOverlay() {
+        this.overlay = document.createElement('div');
+        this.overlay.className = 'rotation-overlay';
+        this.overlay.innerHTML = `
+            <div class="rotation-content">
+                <div class="rotation-icon">📱➡️📲</div>
+                <div class="rotation-title">Melhor Visualização</div>
+                <div class="rotation-message">
+                    Gire seu dispositivo para o modo horizontal para visualizar os gráficos com mais detalhes
+                </div>
+                <button class="rotation-dismiss" onclick="mobileRotation.dismiss()">
+                    Continuar mesmo assim
+                </button>
+            </div>
+        `;
+        
+        document.body.appendChild(this.overlay);
+    }
+    
+    /**
+     * Adiciona hints visuais acima dos gráficos
+     */
+    addChartHints() {
+        // Hint para gráfico de ações
+        const acaoChartContainer = document.getElementById('acaoChart')?.closest('.chart-container');
+        if (acaoChartContainer) {
+            this.insertHint(acaoChartContainer, 'Gire para visualizar melhor');
+        }
+        
+        // Hint para gráfico de acionistas
+        const acionistasChartContainer = document.getElementById('acionistasChart')?.closest('.chart-container');
+        if (acionistasChartContainer) {
+            this.insertHint(acionistasChartContainer, 'Gire para visualizar melhor');
+        }
+        
+        // Hint para gráfico de dividendos
+        const dividendosChartContainer = document.getElementById('dividendosHistoricoChart')?.closest('.chart-container');
+        if (dividendosChartContainer) {
+            this.insertHint(dividendosChartContainer, 'Gire para visualizar melhor');
+        }
+    }
+    
+    /**
+     * Insere hint visual antes do gráfico
+     */
+    insertHint(container, text) {
+        const hint = document.createElement('div');
+        hint.className = 'chart-rotation-hint';
+        hint.innerHTML = `<i class="fas fa-mobile-alt"></i>${text}`;
+        container.parentElement.insertBefore(hint, container);
+    }
+    
+    /**
+     * Verifica se algum gráfico está visível na tela
+     */
+    checkChartVisibility() {
+        // Só verifica em modo retrato
+        if (!this.isPortraitMode()) return;
+        
+        // Verifica cada seção de gráfico
+        for (const sectionId of this.chartSections) {
+            const section = document.getElementById(sectionId);
+            
+            if (section && this.isElementInViewport(section)) {
+                // Verifica se já foi dismissed nesta sessão
+                if (!this.dismissedSessions.has(sectionId)) {
+                    this.showOverlay(sectionId);
+                    return;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Verifica se elemento está visível no viewport
+     */
+    isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+        
+        const vertInView = (rect.top <= windowHeight) && ((rect.top + rect.height) >= 0);
+        const horInView = (rect.left <= windowWidth) && ((rect.left + rect.width) >= 0);
+        
+        return vertInView && horInView;
+    }
+    
+    /**
+     * Mostra overlay de sugestão
+     */
+    showOverlay(sectionId) {
+        // Só mostra se estiver em retrato
+        if (!this.isPortraitMode()) return;
+        
+        // Só mostra se não foi dismissed
+        if (this.dismissedSessions.has(sectionId)) return;
+        
+        console.log('📱 Sugerindo rotação para:', sectionId);
+        
+        this.overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Guarda qual seção ativou
+        this.overlay.dataset.section = sectionId;
+    }
+    
+    /**
+     * Esconde overlay
+     */
+    hideOverlay() {
+        this.overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    /**
+     * Dismiss permanente (nesta sessão) para a seção atual
+     */
+    dismiss() {
+        const sectionId = this.overlay.dataset.section;
+        
+        if (sectionId) {
+            this.dismissedSessions.add(sectionId);
+            console.log('✅ Rotação dismissed para:', sectionId);
+        }
+        
+        this.hideOverlay();
+    }
+    
+    /**
+     * Manipula mudança de orientação
+     */
+    handleOrientationChange() {
+        if (this.isPortraitMode()) {
+            console.log('📱 Mudou para retrato');
+            // Pode reativar verificação se usuário voltar para retrato
+        } else {
+            console.log('📱 Mudou para paisagem');
+            this.hideOverlay();
+        }
+    }
+}
+
+// Inicializa globalmente (apenas em mobile)
+let mobileRotation = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    mobileRotation = new MobileRotationAssistant();
+});
+
+// Exporta para uso global
+window.mobileRotation = mobileRotation;
+
