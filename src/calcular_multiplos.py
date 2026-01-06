@@ -249,13 +249,13 @@ def _ordenar_periodos(periodos: List[str]) -> List[str]:
     return sorted(periodos, key=sort_key)
 
 
-def _safe_divide(numerador: float, denominador: float, default: float = np.nan) -> float:
-    """Divisão segura que retorna default se denominador for zero ou inválido."""
+def _safe_divide(numerador: float, denominador: float, default: float = np.nan, eps: float = 1e-12) -> float:
     if not np.isfinite(numerador) or not np.isfinite(denominador):
         return default
-    if denominador == 0:
+    if np.isclose(denominador, 0.0, atol=eps):
         return default
     return numerador / denominador
+
 
 
 def _normalizar_valor(valor: float, decimals: int = 4) -> Optional[float]:
@@ -483,6 +483,48 @@ def _obter_preco_atual(dados: DadosEmpresa) -> Tuple[float, str]:
             return preco, p
     
     return np.nan, ""
+
+
+def _detectar_coluna_especie(df: pd.DataFrame) -> Optional[str]:
+    if df is None:
+        return None
+    # candidatos comuns no seu projeto
+    candidatos = {"espécie_acao", "especie_acao", "espécie_ação", "especie", "espécie", "espécie_acao", "Espécie_Acao"}
+    mapa = {c.lower().strip(): c for c in df.columns}
+    for key, original in mapa.items():
+        if key in candidatos:
+            return original
+    return None
+
+def _periodos_numericos(df: pd.DataFrame) -> List[str]:
+    if df is None:
+        return []
+    periodos = [c for c in df.columns if _parse_periodo(c)[0] > 0]
+    validos = []
+    for c in periodos:
+        s = pd.to_numeric(df[c], errors="coerce")
+        if s.notna().any():
+            validos.append(c)
+    return _ordenar_periodos(validos)
+
+def _melhor_periodo(periodos_validos: List[str], periodo_req: str) -> Optional[str]:
+    if not periodos_validos:
+        return None
+    if periodo_req in periodos_validos:
+        return periodo_req
+    ano_req, tri_req = _parse_periodo(periodo_req)
+    if ano_req == 0:
+        return periodos_validos[-1]
+
+    def key(p: str):
+        a, t = _parse_periodo(p)
+        tn = {"T1": 1, "T2": 2, "T3": 3, "T4": 4}.get(t, 0)
+        return (a, tn)
+
+    reqk = key(periodo_req)
+    leq = [p for p in periodos_validos if key(p) <= reqk]
+    return max(leq, key=key) if leq else periodos_validos[-1]
+
 
 
 
