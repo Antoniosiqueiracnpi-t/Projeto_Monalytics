@@ -4587,7 +4587,7 @@ async function buscarMultiplosEmpresa(ticker) {
         console.log(`📈 Buscando múltiplos de ${tickerNorm} (pasta: ${tickerPasta})`);
         
         const timestamp = new Date().getTime();
-        const url = `https://raw.githubusercontent.com/Antoniosiqueira/cnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`;
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`;
         
         // Timeout de 3 segundos
         const controller = new AbortController();
@@ -4614,7 +4614,7 @@ async function buscarMultiplosEmpresa(ticker) {
         return {
             ticker: tickerNorm,
             empresa: empresaInfo?.empresa || tickerNorm,
-            logo: `https://raw.githubusercontent.com/Antoniosiqueira/cnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/logo.png`,
+            logo: `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/logo.png`,
             multiplos: {
                 P_L: multiplos.P_L || null,
                 P_VPA: multiplos.P_VPA || null,
