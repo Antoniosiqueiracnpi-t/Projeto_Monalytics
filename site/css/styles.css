@@ -4202,5 +4202,15 @@ textarea:focus {
   .carousel-arrow.next { right: 6px; }
 }
 
+/* Corrige fonte/espaçamento do CNPJ */
+#empresaCNPJ{
+  font-family: inherit;
+  letter-spacing: normal;
+  word-spacing: normal;
+  font-variant-numeric: normal;
+  white-space: nowrap;
+}
+
+
     
 }
