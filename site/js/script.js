@@ -4419,8 +4419,10 @@ function initToggleIbov() {
     });
 }
 
+
+
 /* ========================================================================== */
-/* COMPARADOR DE AÇÕES POR SETOR
+/* COMPARADOR DE AÇÕES POR SETOR - VERSÃO CORRIGIDA
 /* ========================================================================== */
 
 // Configuração de indicadores
@@ -4476,46 +4478,6 @@ let comparadorState = {
 };
 
 /**
- * Carrega dados do mapeamento B3
- */
-async function carregarMapeamentoB3() {
-    try {
-        const response = await fetch('mapeamento_b3_consolidado.csv');
-        const text = await response.text();
-        
-        const lines = text.split('\n').slice(1); // Remove header
-        const empresas = [];
-        
-        lines.forEach(line => {
-            if (!line.trim()) return;
-            
-            // Parse CSV com separador ;
-            const match = line.match(/^"([^"]+)";"([^"]+)";"([^"]+)";"([^"]+)";"([^"]+)"/);
-            if (match) {
-                const [, tickers, empresa, cnpj, setor, segmento] = match;
-                
-                // Separa tickers múltiplos
-                const tickerList = tickers.split(';');
-                tickerList.forEach(ticker => {
-                    empresas.push({
-                        ticker: ticker.trim(),
-                        empresa: empresa.trim(),
-                        cnpj: cnpj.trim(),
-                        setor: setor.trim(),
-                        segmento: segmento.trim()
-                    });
-                });
-            }
-        });
-        
-        return empresas;
-    } catch (error) {
-        console.error('Erro ao carregar mapeamento B3:', error);
-        return [];
-    }
-}
-
-/**
  * Identifica se o setor é financeiro
  */
 function isSetorFinanceiro(setor) {
@@ -4523,66 +4485,116 @@ function isSetorFinanceiro(setor) {
 }
 
 /**
- * Busca empresas do mesmo setor
+ * Busca empresas do mesmo setor usando mapeamento global
  */
-async function buscarEmpresasDoSetor(ticker) {
-    const mapeamento = await carregarMapeamentoB3();
-    const empresaAtual = mapeamento.find(e => e.ticker === ticker);
+function buscarEmpresasDoSetor(ticker) {
+    console.log('🔍 Buscando empresas do setor para:', ticker);
+    console.log('📊 Mapeamento B3 disponível:', mapeamentoB3?.length || 0, 'empresas');
     
-    if (!empresaAtual) {
-        console.warn(`Ticker ${ticker} não encontrado no mapeamento`);
-        return [];
+    // Valida se mapeamento está carregado
+    if (!Array.isArray(mapeamentoB3) || mapeamentoB3.length === 0) {
+        console.error('❌ Mapeamento B3 não está carregado');
+        return { empresaAtual: null, empresasSetor: [], tipoSetor: 'NAO_FINANCEIRAS' };
     }
     
-    // Filtra empresas do mesmo setor
-    const empresasSetor = mapeamento.filter(e => 
-        e.setor === empresaAtual.setor && e.ticker !== ticker
+    const tickerNorm = normalizarTicker(ticker);
+    console.log('🎯 Ticker normalizado:', tickerNorm);
+    
+    // Busca empresa atual
+    const empresaAtual = mapeamentoB3.find(e => normalizarTicker(e.ticker) === tickerNorm);
+    
+    if (!empresaAtual) {
+        console.error('❌ Ticker não encontrado no mapeamento:', tickerNorm);
+        console.log('📝 Primeiros 5 tickers do mapeamento:', 
+            mapeamentoB3.slice(0, 5).map(e => e.ticker).join(', ')
+        );
+        return { empresaAtual: null, empresasSetor: [], tipoSetor: 'NAO_FINANCEIRAS' };
+    }
+    
+    console.log('✅ Empresa encontrada:', empresaAtual.empresa);
+    console.log('🏢 Setor:', empresaAtual.setor);
+    
+    // Filtra empresas do mesmo setor (exclui a empresa atual)
+    const empresasSetor = mapeamentoB3.filter(e => 
+        e.setor === empresaAtual.setor && 
+        normalizarTicker(e.ticker) !== tickerNorm
     );
+    
+    console.log('🎯 Empresas do mesmo setor encontradas:', empresasSetor.length);
+    
+    // Remove duplicatas por empresa (mantém apenas primeiro ticker)
+    const empresasUnicas = [];
+    const empresasVistas = new Set();
+    
+    for (const emp of empresasSetor) {
+        if (!empresasVistas.has(emp.empresa)) {
+            empresasVistas.add(emp.empresa);
+            empresasUnicas.push(emp);
+        }
+    }
+    
+    console.log('📊 Empresas únicas (sem duplicatas):', empresasUnicas.length);
     
     // Determina tipo de setor
     const tipoSetor = isSetorFinanceiro(empresaAtual.setor) ? 'FINANCEIRAS' : 'NAO_FINANCEIRAS';
+    console.log('💼 Tipo de setor:', tipoSetor);
     
     return {
         empresaAtual,
-        empresasSetor,
+        empresasSetor: empresasUnicas,
         tipoSetor
     };
 }
 
 /**
- * Busca múltiplos de uma empresa via API
+ * Busca múltiplos de uma empresa via arquivo multiplos.json
  */
 async function buscarMultiplosEmpresa(ticker) {
     try {
-        const response = await fetch(`https://brapi.dev/api/quote/${ticker}?modules=summaryProfile,defaultKeyStatistics,financialData&fundamental=true&dividends=true`);
+        const tickerNorm = normalizarTicker(ticker);
+        const tickerPasta = obterTickerPasta(tickerNorm);
         
-        if (!response.ok) return null;
+        console.log(`📈 Buscando múltiplos de ${tickerNorm} (pasta: ${tickerPasta})`);
+        
+        const timestamp = new Date().getTime();
+        const url = `https://raw.githubusercontent.com/Antoniosiqueira/cnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`;
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            console.warn(`⚠️ Múltiplos não encontrados para ${tickerNorm}`);
+            return null;
+        }
         
         const data = await response.json();
-        if (!data.results || data.results.length === 0) return null;
         
-        const result = data.results[0];
-        const fundamentalData = result.summaryProfile || {};
-        const keyStats = result.defaultKeyStatistics || {};
-        const financialData = result.financialData || {};
+        // Busca info da empresa no mapeamento
+        const empresaInfo = mapeamentoB3?.find(e => normalizarTicker(e.ticker) === tickerNorm);
+        
+        // Extrai múltiplos do LTM
+        const multiplos = data?.ltm?.multiplos || {};
+        
+        console.log(`✅ Múltiplos carregados para ${tickerNorm}:`, Object.keys(multiplos).join(', '));
         
         return {
-            ticker: ticker,
-            empresa: result.longName || result.shortName || ticker,
-            logo: result.logourl || `https://raw.githubusercontent.com/thefintz/icones-b3/main/icones/${ticker}.png`,
+            ticker: tickerNorm,
+            empresa: empresaInfo?.empresa || tickerNorm,
+            logo: `https://raw.githubusercontent.com/Antoniosiqueira/cnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/logo.png`,
             multiplos: {
-                P_L: keyStats.forwardPE || keyStats.trailingPE || null,
-                P_VPA: keyStats.priceToBook || null,
-                ROE: financialData.returnOnEquity ? financialData.returnOnEquity * 100 : null,
-                ROA: financialData.returnOnAssets ? financialData.returnOnAssets * 100 : null,
-                DY: keyStats.dividendYield ? keyStats.dividendYield * 100 : null,
-                MARGEM_LIQUIDA: financialData.profitMargins ? financialData.profitMargins * 100 : null,
-                PAYOUT: keyStats.payoutRatio ? keyStats.payoutRatio * 100 : null,
-                DIVIDA_LIQUIDA_PL: keyStats.debtToEquity || null
+                P_L: multiplos.P_L || null,
+                P_VPA: multiplos.P_VPA || null,
+                ROE: multiplos.ROE || null,
+                ROA: multiplos.ROA || null,
+                DY: multiplos.DY || null,
+                MARGEM_LIQUIDA: multiplos.MARGEM_LIQUIDA || null,
+                PAYOUT: multiplos.PAYOUT || null,
+                DIVIDA_LIQUIDA_PL: multiplos.DIVIDA_LIQUIDA_PL || null,
+                INDICE_BASILEIA: multiplos.INDICE_BASILEIA || null,
+                INDICE_COBERTURA: multiplos.INDICE_COBERTURA || null
             }
         };
     } catch (error) {
-        console.error(`Erro ao buscar múltiplos de ${ticker}:`, error);
+        console.error(`❌ Erro ao buscar múltiplos de ${ticker}:`, error);
         return null;
     }
 }
@@ -4590,7 +4602,7 @@ async function buscarMultiplosEmpresa(ticker) {
 /**
  * Formata valor do indicador
  */
-function formatarValor(valor, formato) {
+function formatarValorComparador(valor, formato) {
     if (valor === null || valor === undefined || isNaN(valor)) return '-';
     
     const num = parseFloat(valor);
@@ -4656,6 +4668,11 @@ function renderizarComparador(empresasComDados, indicadores, melhores) {
     const tableHead = document.getElementById('comparadorTableHead');
     const tableBody = document.getElementById('comparadorTableBody');
     
+    if (!tableHead || !tableBody) {
+        console.error('❌ Elementos da tabela não encontrados');
+        return;
+    }
+    
     // Limpa tabela
     tableHead.innerHTML = '';
     tableBody.innerHTML = '';
@@ -4707,7 +4724,7 @@ function renderizarComparador(empresasComDados, indicadores, melhores) {
         indicadores.forEach(ind => {
             const td = document.createElement('td');
             const valor = empresa.multiplos[ind.code];
-            const valorFormatado = formatarValor(valor, ind.format);
+            const valorFormatado = formatarValorComparador(valor, ind.format);
             
             td.className = 'valor-cell';
             
@@ -4733,12 +4750,16 @@ function renderizarComparador(empresasComDados, indicadores, melhores) {
         
         tableBody.appendChild(row);
     });
+    
+    console.log('✅ Tabela renderizada com', empresasComDados.length, 'empresas');
 }
 
 /**
  * Carrega e exibe comparador
  */
 async function carregarComparador(ticker) {
+    console.log('🚀 Iniciando carregamento do comparador para:', ticker);
+    
     const section = document.getElementById('comparadorAcoesSection');
     const loading = document.getElementById('comparadorLoading');
     const empty = document.getElementById('comparadorEmpty');
@@ -4746,6 +4767,11 @@ async function carregarComparador(ticker) {
     const tableWrapper = document.getElementById('comparadorTableWrapper');
     const footer = document.getElementById('comparadorFooter');
     const subtitle = document.getElementById('comparadorSubtitle');
+    
+    if (!section) {
+        console.error('❌ Seção do comparador não encontrada no HTML');
+        return;
+    }
     
     // Mostra loading
     section.style.display = 'block';
@@ -4756,10 +4782,30 @@ async function carregarComparador(ticker) {
     footer.style.display = 'none';
     
     try {
-        // Busca empresas do setor
-        const { empresaAtual, empresasSetor, tipoSetor } = await buscarEmpresasDoSetor(ticker);
+        // Aguarda mapeamento estar carregado (máximo 5 segundos)
+        let tentativas = 0;
+        while ((!mapeamentoB3 || mapeamentoB3.length === 0) && tentativas < 50) {
+            console.log('⏳ Aguardando mapeamento B3... tentativa', tentativas + 1);
+            await new Promise(resolve => setTimeout(resolve, 100));
+            tentativas++;
+        }
         
-        if (!empresaAtual || empresasSetor.length === 0) {
+        if (!mapeamentoB3 || mapeamentoB3.length === 0) {
+            throw new Error('Mapeamento B3 não carregado após timeout');
+        }
+        
+        // Busca empresas do setor
+        const { empresaAtual, empresasSetor, tipoSetor } = buscarEmpresasDoSetor(ticker);
+        
+        if (!empresaAtual) {
+            console.warn('⚠️ Empresa atual não encontrada');
+            loading.style.display = 'none';
+            empty.style.display = 'flex';
+            return;
+        }
+        
+        if (empresasSetor.length === 0) {
+            console.warn('⚠️ Nenhuma empresa do mesmo setor encontrada');
             loading.style.display = 'none';
             empty.style.display = 'flex';
             return;
@@ -4771,15 +4817,24 @@ async function carregarComparador(ticker) {
         comparadorState.tipoSetor = tipoSetor;
         subtitle.textContent = `Empresas do setor: ${empresaAtual.setor}`;
         
-        // Busca múltiplos das empresas (limita a 10 empresas)
-        const empresasParaComparar = [ticker, ...empresasSetor.slice(0, 9).map(e => e.ticker)];
-        const promessas = empresasParaComparar.map(t => buscarMultiplosEmpresa(t));
+        console.log(`📊 Buscando múltiplos de ${empresasSetor.length + 1} empresas...`);
+        
+        // Busca múltiplos das empresas (limita a 9 + empresa atual = 10 total)
+        const tickersParaComparar = [
+            ticker, 
+            ...empresasSetor.slice(0, 9).map(e => e.ticker)
+        ];
+        
+        const promessas = tickersParaComparar.map(t => buscarMultiplosEmpresa(t));
         const resultados = await Promise.all(promessas);
         
         // Filtra empresas com dados válidos
         const empresasComDados = resultados.filter(r => r !== null);
         
+        console.log(`✅ Múltiplos carregados de ${empresasComDados.length} empresas`);
+        
         if (empresasComDados.length < 2) {
+            console.warn('⚠️ Dados insuficientes para comparação');
             loading.style.display = 'none';
             empty.style.display = 'flex';
             return;
@@ -4798,8 +4853,10 @@ async function carregarComparador(ticker) {
         tableWrapper.style.display = 'block';
         footer.style.display = 'block';
         
+        console.log('🎉 Comparador carregado com sucesso!');
+        
     } catch (error) {
-        console.error('Erro ao carregar comparador:', error);
+        console.error('❌ Erro ao carregar comparador:', error);
         loading.style.display = 'none';
         empty.style.display = 'flex';
     }
@@ -4834,8 +4891,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-
-// Integração com a função de busca de ações existente
-// Adicione esta linha na função que carrega os dados de uma ação:
-// carregarComparador(ticker);
-
