@@ -2999,6 +2999,9 @@ loadAcaoData = async function(ticker) {
     
     // Carrega composição acionária após carregar a ação
     await loadAcionistasData(ticker);
+
+    await carregarComparador(ticker);
+    
 };
 
 
@@ -4416,4 +4419,423 @@ function initToggleIbov() {
     });
 }
 
+/* ========================================================================== */
+/* COMPARADOR DE AÇÕES POR SETOR
+/* ========================================================================== */
+
+// Configuração de indicadores
+const INDICADORES_CONFIG = {
+    // Empresas Não-Financeiras
+    'NAO_FINANCEIRAS': {
+        main: [
+            { code: 'P_L', label: 'P/L', type: 'menor_melhor', format: 'x', allowNegative: false },
+            { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: true },
+            { code: 'ROE', label: 'ROE', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'DY', label: 'DY', type: 'maior_melhor', format: '%', allowNegative: true }
+        ],
+        extra: [
+            { code: 'MARGEM_LIQUIDA', label: 'MARGEM LÍQUIDA', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'ROA', label: 'ROA', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'DIVIDA_LIQUIDA_PL', label: 'DÍV. LÍQ./PL', type: 'menor_melhor', format: 'x', allowNegative: true },
+            { code: 'PAYOUT', label: 'PAYOUT', type: 'equilibrio', format: '%', allowNegative: true }
+        ]
+    },
+    // Bancos e Instituições Financeiras
+    'FINANCEIRAS': {
+        main: [
+            { code: 'P_L', label: 'P/L', type: 'menor_melhor', format: 'x', allowNegative: false },
+            { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: true },
+            { code: 'ROE', label: 'ROE', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'DY', label: 'DY', type: 'maior_melhor', format: '%', allowNegative: true }
+        ],
+        extra: [
+            { code: 'MARGEM_LIQUIDA', label: 'MARGEM LÍQUIDA', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'ROA', label: 'ROA', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'INDICE_BASILEIA', label: 'BASILEIA', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'INDICE_COBERTURA', label: 'COBERTURA', type: 'maior_melhor', format: '%', allowNegative: true }
+        ]
+    }
+};
+
+// Setores Financeiros
+const SETORES_FINANCEIROS = [
+    'Intermediários Financeiros',
+    'Bancos',
+    'Seguradoras',
+    'Exploração de Imóveis',
+    'Previdência e Seguros'
+];
+
+// Estado do comparador
+let comparadorState = {
+    empresasSetor: [],
+    indicadorAtivo: 'main',
+    tickerAtual: null,
+    setorAtual: null,
+    tipoSetor: 'NAO_FINANCEIRAS'
+};
+
+/**
+ * Carrega dados do mapeamento B3
+ */
+async function carregarMapeamentoB3() {
+    try {
+        const response = await fetch('mapeamento_b3_consolidado.csv');
+        const text = await response.text();
+        
+        const lines = text.split('\n').slice(1); // Remove header
+        const empresas = [];
+        
+        lines.forEach(line => {
+            if (!line.trim()) return;
+            
+            // Parse CSV com separador ;
+            const match = line.match(/^"([^"]+)";"([^"]+)";"([^"]+)";"([^"]+)";"([^"]+)"/);
+            if (match) {
+                const [, tickers, empresa, cnpj, setor, segmento] = match;
+                
+                // Separa tickers múltiplos
+                const tickerList = tickers.split(';');
+                tickerList.forEach(ticker => {
+                    empresas.push({
+                        ticker: ticker.trim(),
+                        empresa: empresa.trim(),
+                        cnpj: cnpj.trim(),
+                        setor: setor.trim(),
+                        segmento: segmento.trim()
+                    });
+                });
+            }
+        });
+        
+        return empresas;
+    } catch (error) {
+        console.error('Erro ao carregar mapeamento B3:', error);
+        return [];
+    }
+}
+
+/**
+ * Identifica se o setor é financeiro
+ */
+function isSetorFinanceiro(setor) {
+    return SETORES_FINANCEIROS.some(sf => setor.includes(sf));
+}
+
+/**
+ * Busca empresas do mesmo setor
+ */
+async function buscarEmpresasDoSetor(ticker) {
+    const mapeamento = await carregarMapeamentoB3();
+    const empresaAtual = mapeamento.find(e => e.ticker === ticker);
+    
+    if (!empresaAtual) {
+        console.warn(`Ticker ${ticker} não encontrado no mapeamento`);
+        return [];
+    }
+    
+    // Filtra empresas do mesmo setor
+    const empresasSetor = mapeamento.filter(e => 
+        e.setor === empresaAtual.setor && e.ticker !== ticker
+    );
+    
+    // Determina tipo de setor
+    const tipoSetor = isSetorFinanceiro(empresaAtual.setor) ? 'FINANCEIRAS' : 'NAO_FINANCEIRAS';
+    
+    return {
+        empresaAtual,
+        empresasSetor,
+        tipoSetor
+    };
+}
+
+/**
+ * Busca múltiplos de uma empresa via API
+ */
+async function buscarMultiplosEmpresa(ticker) {
+    try {
+        const response = await fetch(`https://brapi.dev/api/quote/${ticker}?modules=summaryProfile,defaultKeyStatistics,financialData&fundamental=true&dividends=true`);
+        
+        if (!response.ok) return null;
+        
+        const data = await response.json();
+        if (!data.results || data.results.length === 0) return null;
+        
+        const result = data.results[0];
+        const fundamentalData = result.summaryProfile || {};
+        const keyStats = result.defaultKeyStatistics || {};
+        const financialData = result.financialData || {};
+        
+        return {
+            ticker: ticker,
+            empresa: result.longName || result.shortName || ticker,
+            logo: result.logourl || `https://raw.githubusercontent.com/thefintz/icones-b3/main/icones/${ticker}.png`,
+            multiplos: {
+                P_L: keyStats.forwardPE || keyStats.trailingPE || null,
+                P_VPA: keyStats.priceToBook || null,
+                ROE: financialData.returnOnEquity ? financialData.returnOnEquity * 100 : null,
+                ROA: financialData.returnOnAssets ? financialData.returnOnAssets * 100 : null,
+                DY: keyStats.dividendYield ? keyStats.dividendYield * 100 : null,
+                MARGEM_LIQUIDA: financialData.profitMargins ? financialData.profitMargins * 100 : null,
+                PAYOUT: keyStats.payoutRatio ? keyStats.payoutRatio * 100 : null,
+                DIVIDA_LIQUIDA_PL: keyStats.debtToEquity || null
+            }
+        };
+    } catch (error) {
+        console.error(`Erro ao buscar múltiplos de ${ticker}:`, error);
+        return null;
+    }
+}
+
+/**
+ * Formata valor do indicador
+ */
+function formatarValor(valor, formato) {
+    if (valor === null || valor === undefined || isNaN(valor)) return '-';
+    
+    const num = parseFloat(valor);
+    
+    if (formato === '%') {
+        return `${num.toFixed(2)}%`;
+    } else if (formato === 'x') {
+        return `${num.toFixed(2)}x`;
+    } else if (formato === 'R$') {
+        return `R$ ${num.toFixed(2)} B`;
+    }
+    
+    return num.toFixed(2);
+}
+
+/**
+ * Identifica o melhor valor para cada indicador
+ */
+function identificarMelhores(empresasComDados, indicadores) {
+    const melhores = {};
+    
+    indicadores.forEach(ind => {
+        const valores = empresasComDados
+            .map(e => ({
+                ticker: e.ticker,
+                valor: e.multiplos[ind.code]
+            }))
+            .filter(v => v.valor !== null && !isNaN(v.valor));
+        
+        if (valores.length === 0) return;
+        
+        // Filtra valores negativos para indicadores que não permitem
+        const valoresValidos = ind.allowNegative 
+            ? valores 
+            : valores.filter(v => v.valor >= 0);
+        
+        if (valoresValidos.length === 0) return;
+        
+        let melhorTicker;
+        
+        if (ind.type === 'maior_melhor') {
+            // Maior valor é melhor (ROE, DY, etc)
+            const max = Math.max(...valoresValidos.map(v => v.valor));
+            melhorTicker = valoresValidos.find(v => v.valor === max)?.ticker;
+        } else if (ind.type === 'menor_melhor') {
+            // Menor valor é melhor (P/L, P/VPA, etc)
+            const min = Math.min(...valoresValidos.map(v => v.valor));
+            melhorTicker = valoresValidos.find(v => v.valor === min)?.ticker;
+        }
+        
+        if (melhorTicker) {
+            melhores[ind.code] = melhorTicker;
+        }
+    });
+    
+    return melhores;
+}
+
+/**
+ * Renderiza tabela do comparador
+ */
+function renderizarComparador(empresasComDados, indicadores, melhores) {
+    const tableHead = document.getElementById('comparadorTableHead');
+    const tableBody = document.getElementById('comparadorTableBody');
+    
+    // Limpa tabela
+    tableHead.innerHTML = '';
+    tableBody.innerHTML = '';
+    
+    // Monta cabeçalho
+    const headerRow = document.createElement('tr');
+    
+    // Coluna empresa
+    const thEmpresa = document.createElement('th');
+    thEmpresa.textContent = 'EMPRESA';
+    headerRow.appendChild(thEmpresa);
+    
+    // Colunas de indicadores
+    indicadores.forEach(ind => {
+        const th = document.createElement('th');
+        th.textContent = ind.label;
+        th.title = ind.type === 'maior_melhor' ? 'Quanto maior, melhor' : 'Quanto menor, melhor';
+        headerRow.appendChild(th);
+    });
+    
+    tableHead.appendChild(headerRow);
+    
+    // Monta corpo
+    empresasComDados.forEach(empresa => {
+        const row = document.createElement('tr');
+        
+        // Coluna empresa (logo + ticker)
+        const tdEmpresa = document.createElement('td');
+        tdEmpresa.innerHTML = `
+            <div class="empresa-cell">
+                <img 
+                    src="${empresa.logo}" 
+                    alt="${empresa.ticker}" 
+                    class="empresa-logo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                <div class="empresa-logo-fallback" style="display: none;">
+                    ${empresa.ticker.substring(0, 2)}
+                </div>
+                <div class="empresa-info">
+                    <span class="empresa-ticker">${empresa.ticker}</span>
+                    <span class="empresa-nome">${empresa.empresa}</span>
+                </div>
+            </div>
+        `;
+        row.appendChild(tdEmpresa);
+        
+        // Colunas de indicadores
+        indicadores.forEach(ind => {
+            const td = document.createElement('td');
+            const valor = empresa.multiplos[ind.code];
+            const valorFormatado = formatarValor(valor, ind.format);
+            
+            td.className = 'valor-cell';
+            
+            // Aplica classe de cor
+            if (valor !== null && !isNaN(valor)) {
+                if (valor > 0) td.classList.add('positive');
+                else if (valor < 0) td.classList.add('negative');
+            }
+            
+            // Adiciona estrela se for o melhor
+            if (melhores[ind.code] === empresa.ticker) {
+                td.classList.add('destaque');
+                td.innerHTML = `
+                    ${valorFormatado}
+                    <i class="fas fa-star star-indicator"></i>
+                `;
+            } else {
+                td.textContent = valorFormatado;
+            }
+            
+            row.appendChild(td);
+        });
+        
+        tableBody.appendChild(row);
+    });
+}
+
+/**
+ * Carrega e exibe comparador
+ */
+async function carregarComparador(ticker) {
+    const section = document.getElementById('comparadorAcoesSection');
+    const loading = document.getElementById('comparadorLoading');
+    const empty = document.getElementById('comparadorEmpty');
+    const tabs = document.getElementById('comparadorTabs');
+    const tableWrapper = document.getElementById('comparadorTableWrapper');
+    const footer = document.getElementById('comparadorFooter');
+    const subtitle = document.getElementById('comparadorSubtitle');
+    
+    // Mostra loading
+    section.style.display = 'block';
+    loading.style.display = 'flex';
+    empty.style.display = 'none';
+    tabs.style.display = 'none';
+    tableWrapper.style.display = 'none';
+    footer.style.display = 'none';
+    
+    try {
+        // Busca empresas do setor
+        const { empresaAtual, empresasSetor, tipoSetor } = await buscarEmpresasDoSetor(ticker);
+        
+        if (!empresaAtual || empresasSetor.length === 0) {
+            loading.style.display = 'none';
+            empty.style.display = 'flex';
+            return;
+        }
+        
+        // Atualiza estado
+        comparadorState.tickerAtual = ticker;
+        comparadorState.setorAtual = empresaAtual.setor;
+        comparadorState.tipoSetor = tipoSetor;
+        subtitle.textContent = `Empresas do setor: ${empresaAtual.setor}`;
+        
+        // Busca múltiplos das empresas (limita a 10 empresas)
+        const empresasParaComparar = [ticker, ...empresasSetor.slice(0, 9).map(e => e.ticker)];
+        const promessas = empresasParaComparar.map(t => buscarMultiplosEmpresa(t));
+        const resultados = await Promise.all(promessas);
+        
+        // Filtra empresas com dados válidos
+        const empresasComDados = resultados.filter(r => r !== null);
+        
+        if (empresasComDados.length < 2) {
+            loading.style.display = 'none';
+            empty.style.display = 'flex';
+            return;
+        }
+        
+        comparadorState.empresasSetor = empresasComDados;
+        
+        // Renderiza indicadores principais
+        const indicadores = INDICADORES_CONFIG[tipoSetor].main;
+        const melhores = identificarMelhores(empresasComDados, indicadores);
+        renderizarComparador(empresasComDados, indicadores, melhores);
+        
+        // Mostra interface
+        loading.style.display = 'none';
+        tabs.style.display = 'flex';
+        tableWrapper.style.display = 'block';
+        footer.style.display = 'block';
+        
+    } catch (error) {
+        console.error('Erro ao carregar comparador:', error);
+        loading.style.display = 'none';
+        empty.style.display = 'flex';
+    }
+}
+
+/**
+ * Alterna entre indicadores principais e extras
+ */
+function alternarIndicadores(grupo) {
+    const { empresasSetor, tipoSetor } = comparadorState;
+    
+    if (empresasSetor.length === 0) return;
+    
+    const indicadores = INDICADORES_CONFIG[tipoSetor][grupo];
+    const melhores = identificarMelhores(empresasSetor, indicadores);
+    renderizarComparador(empresasSetor, indicadores, melhores);
+    
+    // Atualiza estado dos botões
+    document.querySelectorAll('.indicator-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.group === grupo);
+    });
+    
+    comparadorState.indicadorAtivo = grupo;
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Tabs de indicadores
+    document.querySelectorAll('.indicator-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            alternarIndicadores(btn.dataset.group);
+        });
+    });
+});
+
+// Integração com a função de busca de ações existente
+// Adicione esta linha na função que carrega os dados de uma ação:
+// carregarComparador(ticker);
 
