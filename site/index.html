@@ -678,8 +678,71 @@
                     <!-- Histórico de Dividendos -->
                     <div class="dividendos-historico-section" id="dividendosHistoricoSection" style="display: none;">
                         <!-- Conteúdo será gerado dinamicamente pelo JavaScript -->
-                    </div>                    
+                    </div>   
 
+                    <!-- Comparador de Ações do Setor -->
+                    <div class="comparador-acoes-section" id="comparadorAcoesSection" style="display: none;">
+                        <div class="comparador-header">
+                            <div class="comparador-title-group">
+                                <i class="fas fa-balance-scale"></i>
+                                <h3 class="comparador-title">Comparador de Ações</h3>
+                                <p class="comparador-subtitle" id="comparadorSubtitle">Empresas do setor</p>
+                            </div>
+                        </div>
+                    
+                        <!-- Loading State -->
+                        <div class="comparador-loading" id="comparadorLoading" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Carregando comparativo...</span>
+                        </div>
+                    
+                        <!-- Empty State -->
+                        <div class="comparador-empty" id="comparadorEmpty" style="display: none;">
+                            <i class="fas fa-info-circle"></i>
+                            <p>Não há dados suficientes para comparação neste setor</p>
+                        </div>
+                    
+                        <!-- Indicadores Selecionados -->
+                        <div class="comparador-indicators-tabs" id="comparadorTabs" style="display: none;">
+                            <button class="indicator-tab active" data-group="main">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Principais</span>
+                            </button>
+                            <button class="indicator-tab" data-group="extra">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Adicionar +4</span>
+                            </button>
+                        </div>
+                    
+                        <!-- Tabela de Comparação -->
+                        <div class="comparador-table-wrapper" id="comparadorTableWrapper" style="display: none;">
+                            <div class="comparador-table-scroll">
+                                <table class="comparador-table" id="comparadorTable">
+                                    <thead id="comparadorTableHead">
+                                        <!-- Cabeçalho gerado dinamicamente -->
+                                    </thead>
+                                    <tbody id="comparadorTableBody">
+                                        <!-- Dados gerados dinamicamente -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    
+                        <!-- Legenda -->
+                        <div class="comparador-footer" id="comparadorFooter" style="display: none;">
+                            <div class="comparador-legend">
+                                <div class="legend-item">
+                                    <i class="fas fa-star" style="color: #f59e0b;"></i>
+                                    <span>Melhor indicador do setor</span>
+                                </div>
+                                <div class="legend-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span id="comparadorDataSource">Dados referentes a 2025T3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     
                 </div>
            
