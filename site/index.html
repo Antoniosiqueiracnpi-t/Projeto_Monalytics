@@ -708,9 +708,9 @@
                                 <i class="fas fa-chart-line"></i>
                                 <span>Principais</span>
                             </button>
-                            <button class="indicator-tab" data-group="extra">
+                            <button class="indicator-tab" data-group="extra" id="comparadorAddIndicatorsBtn">
                                 <i class="fas fa-plus-circle"></i>
-                                <span>Adicionar +4</span>
+                                <span id="comparadorAddIndicatorsLabel">Adicionar +4</span>
                             </button>
                         </div>
                     
@@ -843,5 +843,34 @@
     });
     </script>
     
+
+    <!-- Modal: Seleção de indicadores (+4) do Comparador -->
+    <div class="multiplo-modal" id="comparadorIndicadoresModal" aria-hidden="true">
+        <div class="modal-content comparador-indicadores-modal-content" role="dialog" aria-modal="true" aria-labelledby="comparadorIndicadoresTitulo">
+            <div class="modal-header">
+                <div>
+                    <h3 id="comparadorIndicadoresTitulo">Adicionar indicadores</h3>
+                    <p>Selecione até <strong>4</strong> indicadores adicionais para comparar</p>
+                </div>
+                <button class="modal-close" id="comparadorIndicadoresClose" aria-label="Fechar">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="comparador-indicadores-toolbar">
+                    <div class="comparador-indicadores-counter" id="comparadorIndicadoresCounter">0/4 selecionados</div>
+                </div>
+                <div class="comparador-indicadores-list" id="comparadorIndicadoresList">
+                    <!-- Itens gerados via JS -->
+                </div>
+            </div>
+            <div class="comparador-indicadores-footer">
+                <button class="btn-secondary" id="comparadorIndicadoresClear">Limpar</button>
+                <div class="comparador-indicadores-footer-actions">
+                    <button class="btn-secondary" id="comparadorIndicadoresCancel">Cancelar</button>
+                    <button class="btn-primary" id="comparadorIndicadoresApply">Aplicar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
