@@ -679,29 +679,24 @@ def _obter_acoes(dados: DadosEmpresa, periodo: str) -> float:
                 periodo_busca = _ordenar_periodos(col_periodos)[0]
 
     # Agora, extrair o número de ações
-    if 'Espécie_Acao' in dados.acoes.columns:
+    col_especie = _detectar_coluna_especie(dados.acoes)
+    
+    if col_especie:
         # Para UNITS: usar apenas ON
         if ticker_upper in TICKERS_UNITS:
-            mask_on = dados.acoes['Espécie_Acao'] == 'ON'
+            mask_on = dados.acoes[col_especie].astype(str).str.upper().eq('ON')
             if mask_on.any():
                 val = dados.acoes.loc[mask_on, periodo_busca].values[0]
-                if pd.notna(val):
-                    try:
-                        v = float(val)
-                        return v if v > 0 else np.nan
-                    except (ValueError, TypeError):
-                        return np.nan
-
-        # Para outras empresas: usar TOTAL
-        mask_total = dados.acoes['Espécie_Acao'] == 'TOTAL'
+                v = float(val) if pd.notna(val) else np.nan
+                return v if np.isfinite(v) and v > 0 else np.nan
+    
+        # Para demais: usar TOTAL
+        mask_total = dados.acoes[col_especie].astype(str).str.upper().eq('TOTAL')
         if mask_total.any():
             val = dados.acoes.loc[mask_total, periodo_busca].values[0]
-            if pd.notna(val):
-                try:
-                    v = float(val)
-                    return v if v > 0 else np.nan
-                except (ValueError, TypeError):
-                    return np.nan
+            v = float(val) if pd.notna(val) else np.nan
+            return v if np.isfinite(v) and v > 0 else np.nan
+
     
     # ==================== CORREÇÃO: FALLBACK SEM 'Espécie_Acao' ====================
     # Se não existe coluna 'Espécie_Acao', tentar extrair valor diretamente
