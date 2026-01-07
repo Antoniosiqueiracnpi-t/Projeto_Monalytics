@@ -4521,6 +4521,10 @@ let comparadorState = {
     tipoSetor: 'NAO_FINANCEIRAS'
 };
 
+// Base RAW do repositório (usado no Comparador)
+const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main';
+
+
 /**
  * Identifica se o setor é financeiro
  */
@@ -4601,7 +4605,7 @@ async function buscarMultiplosEmpresa(ticker) {
         console.log(`📈 Buscando múltiplos de ${tickerNorm} (pasta: ${tickerPasta})`);
         
         const timestamp = new Date().getTime();
-        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`;
+        const url = `${GITHUB_RAW_BASE}/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`;
         
         // ✅ Timeout de 3 segundos
         const controller = new AbortController();
@@ -4628,19 +4632,8 @@ async function buscarMultiplosEmpresa(ticker) {
         return {
             ticker: tickerNorm,
             empresa: empresaInfo?.empresa || tickerNorm,
-            logo: `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/logo.png`,
-            multiplos: {
-                PL: multiplos?.PL || null,
-                PVPA: multiplos?.PVPA || null,
-                ROE: multiplos?.ROE || null,
-                ROA: multiplos?.ROA || null,
-                DY: multiplos?.DY || null,
-                MARGEM_LIQUIDA: multiplos?.MARGEM_LIQUIDA || null,
-                PAYOUT: multiplos?.PAYOUT || null,
-                DIVIDA_LIQUIDAPL: multiplos?.DIVIDA_LIQUIDAPL || null,
-                INDICE_BASILEIA: multiplos?.INDICE_BASILEIA || null,
-                INDICE_COBERTURA: multiplos?.INDICE_COBERTURA || null
-            }
+            logo: `${GITHUB_RAW_BASE}/balancos/${tickerPasta}/logo.png`,
+            multiplos: multiplos || {}
         };
         
     } catch (error) {
@@ -4877,33 +4870,61 @@ async function carregarComparador(ticker) {
         console.log(`📊 Buscando múltiplos de todas as empresas (incluindo ${ticker})...`);
         
         // ===== BUSCA MÚLTIPLOS DE TODAS AS EMPRESAS (incluindo a atual) =====
-        const tickersParaComparar = [ticker, ...empresasSetor.slice(0, 9).map(e => e.ticker)];
+        const tickersParaComparar = [ticker, ...empresasSetor.map(e => e.ticker)];
         console.log(`🔍 Total de empresas para comparar: ${tickersParaComparar.length}`);
         
         const promessas = tickersParaComparar.map(t => buscarMultiplosEmpresa(t));
         const resultados = await Promise.all(promessas);
-        
-        // Filtra empresas com dados válidos
-        const empresasComDados = resultados.filter(r => r !== null);
-        
-        console.log(`✅ Total de empresas com dados: ${empresasComDados.length}`);
-        
-        // Precisa de pelo menos 1 empresa
+
+        // Monta lista final (inclui placeholders para empresas sem multiplos.json)
+        const resultadosMap = new Map(
+            resultados
+                .filter(r => r !== null)
+                .map(r => [normalizarTicker(r.ticker), r])
+        );
+
+        const empresasFinal = tickersParaComparar.map(t => {
+            const tn = normalizarTicker(t);
+            const r = resultadosMap.get(tn);
+            if (r) return r;
+
+            const pasta = obterTickerPasta(tn);
+            const info = mapeamentoB3?.find(e => normalizarTicker(e.ticker) === tn);
+
+            return {
+                ticker: tn,
+                empresa: info?.empresa || tn,
+                logo: `${GITHUB_RAW_BASE}/balancos/${pasta}/logo.png`,
+                multiplos: {}
+            };
+        });
+
+        // Empresas com pelo menos algum múltiplo válido (para decidir se exibimos a tabela)
+        const empresasComDados = empresasFinal.filter(e => e.multiplos && Object.keys(e.multiplos).length > 0);
+
+        console.log(`✅ Total de empresas com dados: ${empresasComDados.length} (de ${empresasFinal.length})`);
+
+        // Precisa de pelo menos 1 empresa com dados para exibir
         if (empresasComDados.length < 1) {
             console.warn('⚠️ Nenhum dado disponível');
             loading.style.display = 'none';
             empty.style.display = 'flex';
             return;
         }
-        
-        // Se tem apenas a empresa atual, avisa
+
+        // Se tem apenas 1 empresa com dados, avisa (mas ainda mostra tabela)
         if (empresasComDados.length === 1) {
-            console.warn('⚠️ Mostrando apenas empresa atual (sem comparação)');
+            console.warn('⚠️ Mostrando apenas empresa atual (sem comparação completa)');
             subtitle.textContent = `${empresaAtual.setor} (dados limitados)`;
         }
-        
-        comparadorState.empresasSetor = empresasComDados;
-        
+
+        // Atualiza estado (mantém todas as empresas do setor, inclusive placeholders)
+        comparadorState.empresasSetor = empresasFinal;
+        comparadorState.indicadorAtivo = 'main';
+        comparadorState.indicadoresExtrasSelecionados = [];
+        comparadorState.indicadoresExtrasDisponiveis = montarListaIndicadoresExtrasDisponiveis(tipoSetor, empresasFinal);
+        atualizarBotaoAdicionarIndicadores();
+
         // Renderiza indicadores principais
         const indicadores = INDICADORES_CONFIG[tipoSetor].main;
         const melhores = identificarMelhores(empresasComDados, indicadores);
@@ -4930,19 +4951,220 @@ async function carregarComparador(ticker) {
  */
 function alternarIndicadores(grupo) {
     const { empresasSetor, tipoSetor } = comparadorState;
-    
-    if (empresasSetor.length === 0) return;
-    
-    const indicadores = INDICADORES_CONFIG[tipoSetor][grupo];
-    const melhores = identificarMelhores(empresasSetor, indicadores);
-    renderizarComparador(empresasSetor, indicadores, melhores);
-    
-    // Atualiza estado dos botões
+    if (!empresasSetor || empresasSetor.length === 0) return;
+
+    // "Principais" = apenas indicadores principais
+    if (grupo === 'main') {
+        comparadorState.indicadorAtivo = 'main';
+        comparadorState.indicadoresExtrasSelecionados = [];
+        atualizarBotaoAdicionarIndicadores();
+        marcarTabAtiva('main');
+
+        const indicadores = INDICADORES_CONFIG[tipoSetor].main;
+        const melhores = identificarMelhores(empresasSetor, indicadores);
+        renderizarComparador(empresasSetor, indicadores, melhores);
+        return;
+    }
+
+    // "Adicionar +4" = abre modal (usuário escolhe os indicadores)
+    abrirModalIndicadoresComparador();
+}
+
+/**
+ * Definições dos indicadores (labels/formatação) para o Comparador
+ * Obs.: os códigos precisam bater com os códigos do JSON (ex.: P_L, P_VPA, DIV_LIQ_PL, etc)
+ */
+function obterDefIndicador(code) {
+    const defs = {
+        // Principais (comuns)
+        P_L: { code: 'P_L', label: 'P/L', type: 'menor_melhor', format: 'x', allowNegative: false },
+        P_VPA: { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: true },
+        ROE: { code: 'ROE', label: 'ROE', type: 'maior_melhor', format: '%', allowNegative: true },
+        DY: { code: 'DY', label: 'DY', type: 'maior_melhor', format: '%', allowNegative: true },
+
+        // Não-financeiras
+        EV_EBITDA: { code: 'EV_EBITDA', label: 'EV/EBITDA', type: 'menor_melhor', format: 'x', allowNegative: true },
+        EV_EBIT: { code: 'EV_EBIT', label: 'EV/EBIT', type: 'menor_melhor', format: 'x', allowNegative: true },
+        EV_RECEITA: { code: 'EV_RECEITA', label: 'EV/RECEITA', type: 'menor_melhor', format: 'x', allowNegative: true },
+        ROA: { code: 'ROA', label: 'ROA', type: 'maior_melhor', format: '%', allowNegative: true },
+        ROIC: { code: 'ROIC', label: 'ROIC', type: 'maior_melhor', format: '%', allowNegative: true },
+        MARGEM_EBITDA: { code: 'MARGEM_EBITDA', label: 'MARGEM EBITDA', type: 'maior_melhor', format: '%', allowNegative: true },
+        MARGEM_LIQUIDA: { code: 'MARGEM_LIQUIDA', label: 'MARGEM LÍQUIDA', type: 'maior_melhor', format: '%', allowNegative: true },
+        DIV_LIQ_EBITDA: { code: 'DIV_LIQ_EBITDA', label: 'DÍV. LÍQ./EBITDA', type: 'menor_melhor', format: 'x', allowNegative: true },
+        DIV_LIQ_PL: { code: 'DIV_LIQ_PL', label: 'DÍV. LÍQ./PL', type: 'menor_melhor', format: 'x', allowNegative: true },
+        ICJ: { code: 'ICJ', label: 'ICJ', type: 'maior_melhor', format: 'x', allowNegative: true },
+        COMPOSICAO_DIVIDA: { code: 'COMPOSICAO_DIVIDA', label: 'COMPOSIÇÃO DÍVIDA', type: 'menor_melhor', format: '%', allowNegative: false },
+        LIQ_CORRENTE: { code: 'LIQ_CORRENTE', label: 'LIQ. CORRENTE', type: 'maior_melhor', format: 'x', allowNegative: false },
+        LIQ_SECA: { code: 'LIQ_SECA', label: 'LIQ. SECA', type: 'maior_melhor', format: 'x', allowNegative: false },
+        LIQ_GERAL: { code: 'LIQ_GERAL', label: 'LIQ. GERAL', type: 'maior_melhor', format: 'x', allowNegative: false },
+        GIRO_ATIVO: { code: 'GIRO_ATIVO', label: 'GIRO ATIVO', type: 'maior_melhor', format: 'x', allowNegative: false },
+        PME: { code: 'PME', label: 'PME', type: 'menor_melhor', format: '', allowNegative: false },
+        CICLO_CAIXA: { code: 'CICLO_CAIXA', label: 'CICLO CAIXA', type: 'menor_melhor', format: '', allowNegative: false },
+        NCG_RECEITA: { code: 'NCG_RECEITA', label: 'NCG/RECEITA', type: 'menor_melhor', format: '%', allowNegative: true },
+
+        // Financeiras
+        PAYOUT: { code: 'PAYOUT', label: 'PAYOUT', type: 'maior_melhor', format: '%', allowNegative: true },
+        PL_ATIVOS: { code: 'PL_ATIVOS', label: 'PL/ATIVOS', type: 'maior_melhor', format: '%', allowNegative: true }
+    };
+
+    if (defs[code]) return defs[code];
+
+    // Fallback (não quebra o comparador se surgir um novo indicador no JSON)
+    return {
+        code,
+        label: String(code || '').replace(/_/g, ' '),
+        type: 'maior_melhor',
+        format: 'x',
+        allowNegative: true
+    };
+}
+
+/**
+ * Monta a lista de indicadores extras disponíveis (com base nos códigos realmente presentes no JSON do setor)
+ */
+function montarListaIndicadoresExtrasDisponiveis(tipoSetor, empresas) {
+    const mainCodes = new Set((INDICADORES_CONFIG[tipoSetor]?.main || []).map(i => i.code));
+    const codes = new Set();
+
+    (empresas || []).forEach(emp => {
+        const m = emp?.multiplos || {};
+        Object.keys(m).forEach(k => {
+            if (!mainCodes.has(k)) codes.add(k);
+        });
+    });
+
+    const defs = Array.from(codes).map(obterDefIndicador);
+    defs.sort((a, b) => (a.label || '').localeCompare((b.label || ''), 'pt-BR'));
+    return defs;
+}
+
+/**
+ * Atualiza o texto do botão "Adicionar +4"
+ */
+function atualizarBotaoAdicionarIndicadores() {
+    const label = document.getElementById('comparadorAddIndicatorsLabel');
+    if (!label) return;
+
+    const qtd = (comparadorState.indicadoresExtrasSelecionados || []).length;
+    label.textContent = qtd > 0 ? `Indicadores +${qtd}` : 'Adicionar +4';
+}
+
+/**
+ * Marca tab ativa (somente visual)
+ */
+function marcarTabAtiva(grupo) {
     document.querySelectorAll('.indicator-tab').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.group === grupo);
     });
-    
-    comparadorState.indicadorAtivo = grupo;
+}
+
+/**
+ * Modal: abre/fecha + renderiza lista
+ */
+function abrirModalIndicadoresComparador() {
+    const modal = document.getElementById('comparadorIndicadoresModal');
+    if (!modal) return;
+
+    montarListaIndicadoresModal();
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+}
+
+function fecharModalIndicadoresComparador() {
+    const modal = document.getElementById('comparadorIndicadoresModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+}
+
+/**
+ * Renderiza checklist do modal e controla limite de 4
+ */
+function montarListaIndicadoresModal() {
+    const list = document.getElementById('comparadorIndicadoresList');
+    const counter = document.getElementById('comparadorIndicadoresCounter');
+    if (!list || !counter) return;
+
+    const disponiveis = comparadorState.indicadoresExtrasDisponiveis || [];
+    const selecionados = new Set((comparadorState.indicadoresExtrasSelecionados || []).map(i => i.code));
+
+    list.innerHTML = '';
+
+    disponiveis.forEach(def => {
+        const item = document.createElement('label');
+        item.className = 'comparador-indicadores-item';
+
+        item.innerHTML = `
+            <input type="checkbox" value="${def.code}" ${selecionados.has(def.code) ? 'checked' : ''} />
+            <div>
+                <div class="title">${def.label}</div>
+                <div class="meta">${def.code}</div>
+            </div>
+        `;
+
+        list.appendChild(item);
+    });
+
+    const atualizarLimite = () => {
+        const checks = Array.from(list.querySelectorAll('input[type="checkbox"]'));
+        const marcados = checks.filter(c => c.checked).length;
+
+        counter.textContent = `${marcados}/4 selecionados`;
+
+        checks.forEach(c => {
+            const parent = c.closest('.comparador-indicadores-item');
+            const deveDesabilitar = !c.checked && marcados >= 4;
+            c.disabled = deveDesabilitar;
+            if (parent) parent.classList.toggle('disabled', deveDesabilitar);
+        });
+    };
+
+    list.addEventListener('change', atualizarLimite, { once: true });
+    // re-anexa em tempo real
+    list.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener('change', atualizarLimite));
+
+    atualizarLimite();
+}
+
+/**
+ * Aplica seleção do modal: renderiza Principais + até 4 extras
+ */
+function aplicarIndicadoresSelecionadosComparador() {
+    const list = document.getElementById('comparadorIndicadoresList');
+    if (!list) return;
+
+    const checks = Array.from(list.querySelectorAll('input[type="checkbox"]')).filter(c => c.checked);
+    const codes = checks.map(c => c.value).slice(0, 4);
+    const extras = codes.map(obterDefIndicador);
+
+    comparadorState.indicadoresExtrasSelecionados = extras;
+    comparadorState.indicadorAtivo = 'custom';
+
+    atualizarBotaoAdicionarIndicadores();
+    marcarTabAtiva('extra');
+    fecharModalIndicadoresComparador();
+
+    const { empresasSetor } = comparadorState;
+    const principais = INDICADORES_CONFIG[comparadorState.tipoSetor].main;
+    const indicadores = [...principais, ...extras];
+    const melhores = identificarMelhores(empresasSetor, indicadores);
+    renderizarComparador(empresasSetor, indicadores, melhores);
+}
+
+/**
+ * Limpa seleção do modal (volta a Principais)
+ */
+function limparIndicadoresSelecionadosComparador() {
+    comparadorState.indicadoresExtrasSelecionados = [];
+    comparadorState.indicadorAtivo = 'main';
+    atualizarBotaoAdicionarIndicadores();
+    marcarTabAtiva('main');
+    fecharModalIndicadoresComparador();
+
+    const { empresasSetor, tipoSetor } = comparadorState;
+    const indicadores = INDICADORES_CONFIG[tipoSetor].main;
+    const melhores = identificarMelhores(empresasSetor, indicadores);
+    renderizarComparador(empresasSetor, indicadores, melhores);
 }
 
 // Event Listeners
@@ -4953,4 +5175,24 @@ document.addEventListener('DOMContentLoaded', () => {
             alternarIndicadores(btn.dataset.group);
         });
     });
+
+    // Modal (+4)
+    const modal = document.getElementById('comparadorIndicadoresModal');
+    const btnClose = document.getElementById('comparadorIndicadoresClose');
+    const btnCancel = document.getElementById('comparadorIndicadoresCancel');
+    const btnApply = document.getElementById('comparadorIndicadoresApply');
+    const btnClear = document.getElementById('comparadorIndicadoresClear');
+
+    if (btnClose) btnClose.addEventListener('click', fecharModalIndicadoresComparador);
+    if (btnCancel) btnCancel.addEventListener('click', fecharModalIndicadoresComparador);
+    if (btnApply) btnApply.addEventListener('click', aplicarIndicadoresSelecionadosComparador);
+    if (btnClear) btnClear.addEventListener('click', limparIndicadoresSelecionadosComparador);
+
+    // Fecha ao clicar fora do conteúdo
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) fecharModalIndicadoresComparador();
+        });
+    }
 });
+
