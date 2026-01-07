@@ -2999,9 +2999,6 @@ loadAcaoData = async function(ticker) {
     
     // Carrega composição acionária após carregar a ação
     await loadAcionistasData(ticker);
-
-    await carregarComparador(ticker);
-    
 };
 
 
@@ -3788,6 +3785,19 @@ loadAcaoData = async function(ticker) {
     // Carrega histórico de dividendos após carregar a ação
     await loadDividendosHistorico(ticker);
 };
+
+// HOOK Adiciona comparador (POR ÚLTIMO - após múltiplos e dividendos)
+const originalLoadAcaoDataWithComparador = loadAcaoData;
+loadAcaoData = async function(ticker) {
+    await originalLoadAcaoDataWithComparador.call(this, ticker);
+    
+    // Aguarda 300ms para garantir que multiplosData foi carregada
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    // Carrega comparador de ações
+    await carregarComparador(ticker);
+};
+
 
 /**
  * Formata valor do múltiplo
