@@ -511,59 +511,48 @@ async function loadAllData() {
 let MAPA_EMPRESAS_B3 = null;
 
 /**
- * Parser robusto para CSV com aspas duplas
- * Estrutura: ticker;empresa;cnpj;setor;segmento;sede;descricao
+ * Parser CSV para mapeamento B3
+ * ESTRUTURA: ticker;empresa;cnpj;setor;segmento;sede;descricao (7 COLUNAS APENAS)
  */
 function parseMapeamentoB3(csvText) {
     const linhas = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
     if (linhas.length === 0) return {};
     
-    // Remove BOM UTF-8 se existir
+    // Remove BOM UTF-8
     linhas[0] = linhas[0].replace(/^\uFEFF/, '');
     
     /**
-     * Parser de linha CSV que respeita aspas duplas
+     * Parser de linha CSV com aspas duplas
      */
     function parseCSVLine(linha) {
         const campos = [];
         let campoAtual = '';
         let dentroDeAspas = false;
-        let i = 0;
         
-        while (i < linha.length) {
+        for (let i = 0; i < linha.length; i++) {
             const char = linha[i];
             const proximoChar = linha[i + 1];
             
             if (char === '"') {
                 if (dentroDeAspas && proximoChar === '"') {
-                    // Aspas duplas escapadas ("") vira uma aspa literal
+                    // Aspas duplas escapadas
                     campoAtual += '"';
-                    i += 2; // Pula as duas aspas
-                    continue;
+                    i++;
                 } else {
                     // Alterna estado de aspas
                     dentroDeAspas = !dentroDeAspas;
-                    i++;
-                    continue;
                 }
-            }
-            
-            if (char === ';' && !dentroDeAspas) {
-                // Fim do campo - adiciona e reinicia
+            } else if (char === ';' && !dentroDeAspas) {
+                // Fim do campo
                 campos.push(campoAtual.trim());
                 campoAtual = '';
-                i++;
-                continue;
+            } else {
+                campoAtual += char;
             }
-            
-            // Adiciona caractere ao campo atual
-            campoAtual += char;
-            i++;
         }
         
         // Adiciona último campo
         campos.push(campoAtual.trim());
-        
         return campos;
     }
     
@@ -571,93 +560,93 @@ function parseMapeamentoB3(csvText) {
     const headerLinha = linhas.shift();
     const header = parseCSVLine(headerLinha).map(s => s.toLowerCase().trim());
     
-    console.log('📋 Header do CSV:', header);
+    console.log('📋 Header CSV:', header);
     
-    // Valida estrutura esperada
+    // VALIDAÇÃO: Deve ter exatamente 7 colunas
+    if (header.length !== 7) {
+        console.error('❌ CSV deve ter 7 colunas! Encontrado:', header.length);
+        console.error('Header recebido:', header);
+        return {};
+    }
+    
+    // VALIDAÇÃO: Não pode ter codigo_cvm
+    if (header.includes('codigo_cvm')) {
+        console.error('❌ Coluna codigo_cvm não deve existir!');
+        return {};
+    }
+    
+    // Estrutura obrigatória (SEM codigo_cvm!)
     const estruturaEsperada = ['ticker', 'empresa', 'cnpj', 'setor', 'segmento', 'sede', 'descricao'];
-    const headerValido = estruturaEsperada.every(col => header.includes(col));
+    const estruturaValida = estruturaEsperada.every((col, idx) => header[idx] === col);
     
-    if (!headerValido) {
-        console.error('❌ Estrutura do CSV inválida!');
+    if (!estruturaValida) {
+        console.error('❌ Estrutura incorreta!');
         console.error('Esperado:', estruturaEsperada);
         console.error('Recebido:', header);
         return {};
     }
     
-    // Índices das colunas
-    const idxTicker = header.indexOf('ticker');
-    const idxEmpresa = header.indexOf('empresa');
-    const idxCnpj = header.indexOf('cnpj');
-    const idxSetor = header.indexOf('setor');
-    const idxSegmento = header.indexOf('segmento');
-    const idxSede = header.indexOf('sede');
-    const idxDesc = header.indexOf('descricao');
+    // Índices FIXOS (não usar indexOf para evitar erros)
+    const IDX_TICKER = 0;
+    const IDX_EMPRESA = 1;
+    const IDX_CNPJ = 2;
+    const IDX_SETOR = 3;
+    const IDX_SEGMENTO = 4;
+    const IDX_SEDE = 5;
+    const IDX_DESCRICAO = 6;
     
     const mapa = {};
     let linhasProcessadas = 0;
-    let linhasComErro = 0;
     
     for (const linha of linhas) {
         if (!linha.trim()) continue;
         
-        try {
-            const cols = parseCSVLine(linha);
-            
-            // Valida número de colunas
-            if (cols.length !== 7) {
-                console.warn(`⚠️ Linha com ${cols.length} colunas (esperado 7):`, linha.substring(0, 100));
-                linhasComErro++;
-                continue;
-            }
-            
-            const tickerRaw = cols[idxTicker];
-            if (!tickerRaw) continue;
-            
-            // Processa múltiplos tickers (ex: "SAPR11;SAPR3;SAPR4")
-            const tickers = tickerRaw
-                .split(/[;,]/)
-                .map(t => t.trim().toUpperCase())
-                .filter(t => t && t.length > 0);
-            
-            const empresa = cols[idxEmpresa] || '';
-            const cnpj = cols[idxCnpj] || '';
-            const setor = cols[idxSetor] || '';
-            const segmento = cols[idxSegmento] || '';
-            const sede = cols[idxSede] || '';
-            const descricao = cols[idxDesc] || '';
-            
-            // Cria entrada para cada ticker
-            tickers.forEach(ticker => {
-                mapa[ticker] = {
-                    ticker,
-                    empresa: empresa.trim(),
-                    cnpj: cnpj.trim(),
-                    setor: setor.trim(),
-                    segmento: segmento.trim(),
-                    sede: sede.trim(),
-                    descricao: descricao.trim()
-                };
-            });
-            
-            linhasProcessadas++;
-            
-        } catch (err) {
-            console.error('❌ Erro ao processar linha:', err, linha.substring(0, 100));
-            linhasComErro++;
+        const cols = parseCSVLine(linha);
+        
+        // VALIDAÇÃO: Deve ter exatamente 7 campos
+        if (cols.length !== 7) {
+            console.warn(`⚠️ Linha ignorada (${cols.length} campos):`, linha.substring(0, 80));
+            continue;
         }
+        
+        const tickerRaw = cols[IDX_TICKER];
+        if (!tickerRaw) continue;
+        
+        // Processa múltiplos tickers separados por ; ou ,
+        const tickers = tickerRaw
+            .split(/[;,]/)
+            .map(t => t.trim().toUpperCase())
+            .filter(t => t.length > 0);
+        
+        const dadosEmpresa = {
+            ticker: tickers[0], // Ticker principal
+            empresa: cols[IDX_EMPRESA].trim(),
+            cnpj: cols[IDX_CNPJ].trim(),
+            setor: cols[IDX_SETOR].trim(),
+            segmento: cols[IDX_SEGMENTO].trim(),
+            sede: cols[IDX_SEDE].trim(),
+            descricao: cols[IDX_DESCRICAO].trim()
+        };
+        
+        // Mapeia todos os tickers para os mesmos dados
+        tickers.forEach(ticker => {
+            mapa[ticker] = { ...dadosEmpresa, ticker };
+        });
+        
+        linhasProcessadas++;
     }
     
     console.log(`✅ Mapeamento B3 carregado:`);
-    console.log(`   - ${linhasProcessadas} empresas processadas`);
-    console.log(`   - ${Object.keys(mapa).length} tickers mapeados`);
-    console.log(`   - ${linhasComErro} linhas com erro`);
+    console.log(`   Empresas: ${linhasProcessadas}`);
+    console.log(`   Tickers: ${Object.keys(mapa).length}`);
     
     return mapa;
 }
 
 
+
 /**
- * Valida dados carregados do mapeamento
+ * Valida estrutura do mapeamento
  */
 function validarMapeamentoB3(mapa) {
     if (!mapa || Object.keys(mapa).length === 0) {
@@ -665,43 +654,48 @@ function validarMapeamentoB3(mapa) {
         return false;
     }
     
-    // Testa BEEF3 (deve existir)
-    const beef3 = mapa['BEEF3'];
-    if (!beef3) {
-        console.error('❌ BEEF3 não encontrado!');
+    // Testa PETR3/PETR4
+    const petr4 = mapa['PETR4'];
+    if (!petr4) {
+        console.error('❌ PETR4 não encontrado!');
         return false;
     }
     
-    console.log('🧪 TESTE BEEF3:');
-    console.log('   Empresa:', beef3.empresa);
-    console.log('   CNPJ:', beef3.cnpj);
-    console.log('   Setor:', beef3.setor);
-    console.log('   Segmento:', beef3.segmento);
-    console.log('   Sede:', beef3.sede.substring(0, 60) + '...');
-    console.log('   Descrição:', beef3.descricao.substring(0, 80) + '...');
+    console.log('🧪 TESTE PETR4:');
+    console.log('   Empresa:', petr4.empresa);
+    console.log('   CNPJ:', petr4.cnpj);
+    console.log('   Setor:', petr4.setor);
+    console.log('   Segmento:', petr4.segmento);
+    console.log('   Sede:', petr4.sede.substring(0, 50) + '...');
+    console.log('   Descrição:', petr4.descricao.substring(0, 60) + '...');
     
-    // Validações críticas
-    if (beef3.setor !== 'Alimentos Processados') {
-        console.error('❌ Setor incorreto! Esperado: "Alimentos Processados", Recebido:', beef3.setor);
+    // VALIDAÇÕES CRÍTICAS
+    const camposObrigatorios = ['ticker', 'empresa', 'cnpj', 'setor', 'segmento', 'sede', 'descricao'];
+    const camposFaltando = camposObrigatorios.filter(campo => !(campo in petr4));
+    
+    if (camposFaltando.length > 0) {
+        console.error('❌ Campos faltando:', camposFaltando);
         return false;
     }
     
-    if (beef3.segmento !== 'Carnes e Derivados') {
-        console.error('❌ Segmento incorreto! Esperado: "Carnes e Derivados", Recebido:', beef3.segmento);
+    // NÃO deve ter codigo_cvm
+    if ('codigo_cvm' in petr4) {
+        console.error('❌ Campo "codigo_cvm" não deveria existir!');
         return false;
     }
     
-    if (!beef3.sede.includes('Antonio Manco Bernardes')) {
-        console.error('❌ Sede incorreta! Não contém "Antonio Manco Bernardes"');
+    // Validação específica de PETR4
+    if (petr4.setor !== 'Gás e Biocombustíveis') {
+        console.error('❌ Setor incorreto! Esperado: "Gás e Biocombustíveis", Recebido:', petr4.setor);
         return false;
     }
     
-    if (!beef3.descricao.includes('Minerva')) {
-        console.error('❌ Descrição incorreta! Não contém "Minerva"');
+    if (!petr4.sede.includes('Av. Republica do Chile') && !petr4.sede.includes('Rio de Janeiro')) {
+        console.error('❌ Sede incorreta! Esperado endereço no RJ');
         return false;
     }
     
-    console.log('✅ Validação BEEF3 passou!');
+    console.log('✅ Validação PETR4 passou com sucesso!');
     return true;
 }
 
@@ -718,18 +712,18 @@ async function carregarMapeamentoB3() {
         
         MAPA_EMPRESAS_B3 = parseMapeamentoB3(csvText);
         
-        // VALIDAÇÃO CRÍTICA
         if (!validarMapeamentoB3(MAPA_EMPRESAS_B3)) {
-            throw new Error('❌ Dados do mapeamento inválidos!');
+            throw new Error('Estrutura de dados inválida!');
         }
         
-        console.log('✅ Mapeamento B3 validado e carregado com sucesso!');
+        console.log('✅ Mapeamento validado!');
         
     } catch (err) {
-        console.error('❌ Erro fatal ao carregar mapeamento:', err);
-        alert('⚠️ Erro ao carregar dados das empresas. Por favor, recarregue a página.');
+        console.error('❌ Erro fatal:', err);
+        alert('⚠️ Erro ao carregar dados. Recarregue a página.');
     }
 }
+
 
 
 /**
