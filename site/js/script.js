@@ -1580,6 +1580,33 @@ let acaoChart = null;
 let ibovEnabled = false;
 let periodoAtual = 365;
 
+
+// =========================== UTIL: TICKER NORMALIZAÇÃO & PASTA ===========================
+/**
+ * Normaliza ticker (trim + UPPER).
+ */
+function normalizarTicker(t) {
+    return String(t || '').trim().toUpperCase();
+}
+
+/**
+ * Retorna o ticker da PASTA (balancos/<TICKER_PASTA>/) para um ticker selecionado.
+ * - Para empresas com múltiplas classes (3/4/11 etc), usamos o primeiro ticker da linha do CSV (ticker_pasta).
+ * - Mantém compatibilidade com a base antiga usando todosTickersStr quando ticker_pasta não existir.
+ */
+function obterTickerPasta(ticker) {
+    const t = normalizarTicker(ticker);
+    if (!Array.isArray(mapeamentoB3) || !mapeamentoB3.length) return t;
+
+    const info = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === t);
+    if (!info) return t;
+
+    const fallback = info.todosTickersStr ? String(info.todosTickersStr).split(/[;\/ ,]+/)[0] : '';
+    const pasta = normalizarTicker(info.ticker_pasta || fallback || t);
+    return pasta || t;
+}
+
+
 /**
  * Carrega dados de dividendos
  */
@@ -2089,47 +2116,54 @@ async function loadMapeamentoB3() {
         const hasCodigoCvm = header.includes('codigo_cvm') || header.includes('código_cvm');
         
         // Remove header e linhas vazias
+        // CSV (7 colunas): ticker;empresa;cnpj;setor;segmento;sede;descricao
         const rawData = rows.slice(1)
-          .filter(row => row.length >= 2 && row[0] && row[1])
-          .map(row => ({
-              ticker: row[0] || '',
-              empresa: row[1] || '',
-              cnpj: row[2] || '',
-              setor: row[3] || '',
-              segmento: row[4] || '',
-              sede: row[5] || '',
-              descricao: row[6] || ''
-          }));
-        
-        console.log(`📊 Empresas carregadas: ${rawData.length}`);
+            .filter(row => row.length >= 2 && row[0] && row[1])
+            .map(row => ({
+                ticker: row[0] || '',
+                empresa: row[1] || '',
+                cnpj: row[2] || '',
+                codigo_cvm: '', // mantido por compatibilidade (CSV atual não possui essa coluna)
+                setor: row[3] || '',
+                segmento: row[4] || '',
+                sede: row[5] || '',
+                descricao: row[6] || ''
+            }));
 
         
+        console.log(`📊 Empresas carregadas: ${rawData.length}`);
 
         // Expande empresas com múltiplos tickers
         mapeamentoB3 = [];
         rawData.forEach(item => {
             const tickers = String(item.ticker || '')
-                .split(/[;\/,]/) // aceita ; ou / ou ,
+                .split(/[;\/ ,]+/) // aceita ; , / e espaços como separador
                 .map(t => t.trim().toUpperCase())
                 .filter(Boolean);
         
+            if (!tickers.length) return;
+        
+            // String padrão para exibição/lookup (sempre com ';')
             const todosTickersStr = tickers.join(';');
-            const ticker_pasta = tickers[0] || '';
+            // Pasta principal: 1º ticker da linha do CSV
+            const ticker_pasta = tickers[0];
         
             tickers.forEach(ticker => {
                 mapeamentoB3.push({
-                    ticker,
+                    ticker: ticker,
+                    ticker_pasta: ticker_pasta,
                     empresa: item.empresa,
                     cnpj: item.cnpj,
+                    codigo_cvm: item.codigo_cvm || '',
                     setor: item.setor,
                     segmento: item.segmento,
                     sede: item.sede,
                     descricao: item.descricao,
-                    todosTickersStr,
-                    ticker_pasta
+                    todosTickersStr: todosTickersStr
                 });
             });
         });
+
 
         
         console.log(`✅ Mapeamento B3 carregado: ${mapeamentoB3.length} entradas (tickers expandidos)`);
@@ -2491,11 +2525,15 @@ async function loadMultiplosData(ticker) {
     try {
         console.log(`📊 Carregando múltiplos de ${ticker}...`);
         
-        // Busca info no mapeamento para pegar o ticker correto da pasta
-        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
-        const tickerPasta = empresaInfo && empresaInfo.todosTickersStr 
-            ? empresaInfo.todosTickersStr.split(';')[0].trim()
-            : ticker;
+        const tickerNorm = normalizarTicker(ticker);
+        
+        // Busca info da empresa no mapeamento (comparação normalizada)
+        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === tickerNorm);
+        
+        if (!empresaInfo) {
+            throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
+        }
+        const tickerPasta = obterTickerPasta(ticker);
         
         const timestamp = new Date().getTime();
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
@@ -2529,11 +2567,15 @@ async function loadAcionistasData(ticker) {
     try {
         console.log(`📊 Carregando composição acionária de ${ticker}...`);
         
-        // Busca info no mapeamento para pegar o ticker correto da pasta
-        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
-        const tickerPasta = empresaInfo && empresaInfo.todosTickersStr 
-            ? empresaInfo.todosTickersStr.split(';')[0].trim()
-            : ticker;
+        const tickerNorm = normalizarTicker(ticker);
+        
+        // Busca info da empresa no mapeamento (comparação normalizada)
+        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === tickerNorm);
+        
+        if (!empresaInfo) {
+            throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
+        }
+        const tickerPasta = obterTickerPasta(ticker);
         
         const timestamp = new Date().getTime();
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/acionistas.json?t=${timestamp}`);
@@ -2566,11 +2608,15 @@ async function loadAnaliseBalancos(ticker) {
     try {
         console.log(`🤖 Carregando análise I.A de ${ticker}...`);
         
-        // Busca info no mapeamento para pegar o ticker correto da pasta
-        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
-        const tickerPasta = empresaInfo && empresaInfo.todosTickersStr 
-            ? empresaInfo.todosTickersStr.split(';')[0].trim()
-            : ticker;
+        const tickerNorm = normalizarTicker(ticker);
+        
+        // Busca info da empresa no mapeamento (comparação normalizada)
+        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === tickerNorm);
+        
+        if (!empresaInfo) {
+            throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
+        }
+        const tickerPasta = obterTickerPasta(ticker);
         
         const timestamp = new Date().getTime();
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/analise_balancos.json?t=${timestamp}`);
@@ -2955,6 +3001,39 @@ loadAcaoData = async function(ticker) {
     await loadAcionistasData(ticker);
 };
 
+
+// ================================================================
+// DETECTOR DE SETOR FINANCEIRO
+// Verifica se empresa é intermediário financeiro para ajustar múltiplos
+// ================================================================
+function isIntermediarioFinanceiro(ticker) {
+    if (!MAPA_EMPRESAS_B3 || !ticker) return false;
+    
+    const tickerUpper = ticker.toUpperCase();
+    const empresaInfo = MAPA_EMPRESAS_B3[tickerUpper];
+    
+    if (!empresaInfo) return false;
+    
+    // Lista de setores considerados intermediários financeiros
+    const setoresFinanceiros = [
+        'INTERMEDIÁRIOS FINANCEIROS',
+        'INTERMEDIARIOS FINANCEIROS',
+        'BANCOS',
+        'SERVIÇOS FINANCEIROS',
+        'SERVICOS FINANCEIROS',
+        'SEGURADORAS',
+        'PREVIDÊNCIA',
+        'PREVIDENCIA'
+    ];
+    
+    const setorNormalizado = (empresaInfo.setor || '').toUpperCase().trim();
+    
+    return setoresFinanceiros.some(sf => setorNormalizado.includes(sf));
+}
+
+
+
+
 /**
  * Renderiza seção completa de múltiplos
  */
@@ -2965,18 +3044,49 @@ function renderMultiplosSection() {
     const ltm = multiplosData.ltm;
     const metadata = multiplosData.metadata;
     
+    // ================================================================
+    // CORREÇÃO: Detecta se é intermediário financeiro
+    // ================================================================
+    const ehFinanceira = isIntermediarioFinanceiro(acaoAtualData.ticker);
+    
+    console.log(`🏦 Empresa ${acaoAtualData.ticker} é financeira? ${ehFinanceira}`);
+    
     // Agrupa múltiplos por categoria
     const categorias = {
         'Valuation': [],
         'Rentabilidade': [],
         'Endividamento': [],
         'Liquidez': [],
-        'Eficiência': []
+        'Eficiência': [],
+        'Estrutura': [] 
     };
     
     for (const [codigo, meta] of Object.entries(metadata)) {
         const valor = ltm.multiplos[codigo];
         if (valor !== undefined && valor !== null) {
+            
+            // ================================================================
+            // FILTRO ESPECÍFICO PARA INTERMEDIÁRIOS FINANCEIROS
+            // ================================================================
+            if (ehFinanceira) {
+                // ❌ REMOVE "Margem Líquida" para financeiras
+                if (codigo === 'MARGEM_LIQUIDA') {
+                    console.log(`⚠️ Ignorando ${codigo} - não aplicável para financeiras`);
+                    continue; // Pula este múltiplo
+                }
+                
+                // ✅ ADICIONA "PL/Ativos" para financeiras
+                if (codigo === 'PL_ATIVOS') {
+                    console.log(`✅ Incluindo ${codigo} - específico para financeiras`);
+                }
+            } else {
+                // ❌ REMOVE "PL/Ativos" para NÃO-financeiras
+                if (codigo === 'PL_ATIVOS') {
+                    console.log(`⚠️ Ignorando ${codigo} - apenas para financeiras`);
+                    continue; // Pula este múltiplo
+                }
+            }
+            
             categorias[meta.categoria].push({
                 codigo: codigo,
                 nome: meta.nome,
@@ -2986,6 +3096,7 @@ function renderMultiplosSection() {
             });
         }
     }
+
     
     // Gera HTML
     let html = `
@@ -3010,7 +3121,8 @@ function renderMultiplosSection() {
         'Rentabilidade': 'fa-chart-line',
         'Endividamento': 'fa-balance-scale',
         'Liquidez': 'fa-tint',
-        'Eficiência': 'fa-cogs'
+        'Eficiência': 'fa-cogs',
+        'Estrutura': 'fa-building' // ✅ NOVO: Ícone para PL/Ativos
     };
     
     for (const [categoria, multiplos] of Object.entries(categorias)) {
@@ -3073,10 +3185,15 @@ let currentDividendosPeriod = 5; // 5 ou 10 anos
  */
 async function carregarDYAtual(ticker) {
     try {
-        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
-        const tickerPasta = empresaInfo && empresaInfo.todosTickersStr 
-            ? empresaInfo.todosTickersStr.split(';')[0].trim()
-            : ticker;
+        const tickerNorm = normalizarTicker(ticker);
+        
+        // Busca info da empresa no mapeamento (comparação normalizada)
+        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === tickerNorm);
+        
+        if (!empresaInfo) {
+            throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
+        }
+        const tickerPasta = obterTickerPasta(ticker);
         
         console.log(`🔍 Buscando DY em multiplos.json (ticker: ${tickerPasta})...`);
         
@@ -3126,10 +3243,15 @@ async function carregarDYAtual(ticker) {
  */
 async function carregarDYHistorico(ticker) {
     try {
-        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
-        const tickerPasta = empresaInfo && empresaInfo.todosTickersStr 
-            ? empresaInfo.todosTickersStr.split(';')[0].trim()
-            : ticker;
+        const tickerNorm = normalizarTicker(ticker);
+        
+        // Busca info da empresa no mapeamento (comparação normalizada)
+        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === tickerNorm);
+        
+        if (!empresaInfo) {
+            throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
+        }
+        const tickerPasta = obterTickerPasta(ticker);
         
         console.log(`📈 Buscando DY histórico em multiplos.json (ticker: ${tickerPasta})...`);
         
@@ -3965,6 +4087,11 @@ function updateEmpresaInfo(ticker) {
     // 4) Preenche CNPJ
     if (cnpjEl) {
         cnpjEl.textContent = (empresaInfo.cnpj || '').trim() || '-';
+        // Garante padrão visual (evita letter-spacing / fonte diferente apenas no CNPJ)
+        cnpjEl.style.fontFamily = 'inherit';
+        cnpjEl.style.letterSpacing = 'normal';
+        cnpjEl.style.wordSpacing = 'normal';
+        cnpjEl.style.fontVariantNumeric = 'normal';
     }
 
     // 5) Preenche setor / segmento
