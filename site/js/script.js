@@ -682,11 +682,12 @@ function validarMapeamentoB3(mapa) {
         return false;
     }
     
-    // Valida dados específicos
-    if (petr4.setor !== 'Gás e Biocombustíveis') {
-        console.error('❌ Setor incorreto:', petr4.setor);
+    // Setor/Segmento podem variar conforme seu CSV (não travar por valor fixo)
+    if (!petr4.setor || !petr4.segmento) {
+        console.error('❌ PETR4 sem setor/segmento:', petr4.setor, petr4.segmento);
         return false;
     }
+
     
     console.log('✅ Validação PETR4 OK!');
     return true;
@@ -2090,62 +2091,46 @@ async function loadMapeamentoB3() {
         // Remove header e linhas vazias
         const rawData = rows.slice(1)
           .filter(row => row.length >= 2 && row[0] && row[1])
-          .map(row => {
-            // CSV atual (7 colunas): ticker;empresa;cnpj;setor;segmento;sede;descricao
-            if (!hasCodigoCvm) {
-              return {
-                ticker: row[0] || '',
-                empresa: row[1] || '',
-                cnpj: row[2] || '',
-                codigo_cvm: '',          // mantém a chave sem deslocar índices
-                setor: row[3] || '',
-                segmento: row[4] || '',
-                sede: row[5] || '',
-                descricao: row[6] || ''
-              };
-            }
-        
-            // Caso exista (8 colunas): ticker;empresa;cnpj;codigo_cvm;setor;segmento;sede;descricao
-            return {
+          .map(row => ({
               ticker: row[0] || '',
               empresa: row[1] || '',
               cnpj: row[2] || '',
-              codigo_cvm: row[3] || '',
-              setor: row[4] || '',
-              segmento: row[5] || '',
-              sede: row[6] || '',
-              descricao: row[7] || ''
-            };
-          });
+              setor: row[3] || '',
+              segmento: row[4] || '',
+              sede: row[5] || '',
+              descricao: row[6] || ''
+          }));
         
         console.log(`📊 Empresas carregadas: ${rawData.length}`);
 
         
+
         // Expande empresas com múltiplos tickers
         mapeamentoB3 = [];
         rawData.forEach(item => {
-            //const tickers = item.ticker.split(';').map(t => t.trim()).filter(t => t);
-            const tickers = String(item.ticker)
-              .split(/[;,\/]/)          // aceita ";", "," ou "/"
-              .map(t => t.trim())
-              .filter(Boolean);
-            
-            const todosTickersStr = tickers.join(' / ');
-            
+            const tickers = String(item.ticker || '')
+                .split(/[;\/,]/) // aceita ; ou / ou ,
+                .map(t => t.trim().toUpperCase())
+                .filter(Boolean);
+        
+            const todosTickersStr = tickers.join(';');
+            const ticker_pasta = tickers[0] || '';
+        
             tickers.forEach(ticker => {
                 mapeamentoB3.push({
-                    ticker: ticker,
+                    ticker,
                     empresa: item.empresa,
                     cnpj: item.cnpj,
-                    codigo_cvm: item.codigo_cvm,
                     setor: item.setor,
                     segmento: item.segmento,
                     sede: item.sede,
                     descricao: item.descricao,
-                    todosTickersStr: todosTickersStr
+                    todosTickersStr,
+                    ticker_pasta
                 });
             });
         });
+
         
         console.log(`✅ Mapeamento B3 carregado: ${mapeamentoB3.length} entradas (tickers expandidos)`);
         
@@ -2428,19 +2413,22 @@ async function loadAcaoData(ticker) {
     try {
         console.log(`🔍 Carregando dados de ${ticker}...`);
         
-        // Busca info da empresa no mapeamento
-        const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
+        // Normaliza ticker recebido
+        const t = String(ticker || '').trim().toUpperCase();
+        
+        // Busca info da empresa no mapeamento (comparação normalizada)
+        const empresaInfo = mapeamentoB3.find(item => String(item.ticker || '').trim().toUpperCase() === t);
         
         if (!empresaInfo) {
-            throw new Error(`Ticker ${ticker} não encontrado no mapeamento B3`);
+            throw new Error(`Ticker ${t} não encontrado no mapeamento B3`);
         }
         
         console.log('✅ Empresa encontrada:', empresaInfo.empresa);
         
-        // Usa o primeiro ticker como pasta
-        const tickerPasta = empresaInfo.todosTickersStr 
-            ? empresaInfo.todosTickersStr.split(';')[0].trim()
-            : ticker;
+        // Usa SEMPRE a pasta principal calculada no mapeamento
+        const tickerPasta = (empresaInfo.ticker_pasta && empresaInfo.ticker_pasta.trim())
+            ? empresaInfo.ticker_pasta.trim().toUpperCase()
+            : t;
         
         console.log(`📂 Usando pasta: balancos/${tickerPasta}/`);
         
