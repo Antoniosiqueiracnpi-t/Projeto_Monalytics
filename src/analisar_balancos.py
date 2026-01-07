@@ -289,6 +289,101 @@ def calcular_variacao_periodo(valores: pd.Series) -> Optional[float]:
     except ZeroDivisionError:
         return None
 
+# ======================================================================================
+# MAPEAMENTO DE CONTAS POR TIPO DE EMPRESA
+# ======================================================================================
+
+def obter_mapeamento_contas(tipo: str) -> Dict[str, List[str]]:
+    """
+    Retorna mapeamento de contas contábeis conforme tipo de empresa.
+    
+    Args:
+        tipo: 'financeira' ou 'nao_financeira'
+    
+    Returns:
+        Dicionário com aliases de busca para cada métrica
+        
+    CORREÇÃO: Bancos têm nomenclatura diferente na DRE
+    """
+    if tipo == 'financeira':
+        return {
+            'receita': [
+                'Receitas de Intermediação Financeira',
+                'Receitas da Intermediação Financeira',
+                'Receita de Intermediação'
+            ],
+            'resultado_bruto': [
+                'Resultado Bruto de Intermediação Financeira',
+                'Resultado Bruto da Intermediação Financeira',
+                'Margem Financeira Bruta'
+            ],
+            'resultado_operacional': [
+                'Resultado antes dos Tributos sobre o Lucro',
+                'Resultado Antes dos Tributos',
+                'Lucro Antes dos Tributos'
+            ],
+            'lucro_liquido': [
+                'Lucro ou Prejuízo Líquido Consolidado do Período',
+                'Lucro Líquido Consolidado',
+                'Resultado Líquido'
+            ]
+        }
+    else:  # nao_financeira
+        return {
+            'receita': [
+                'Receita de Venda',
+                'Receita Líquida',
+                'Receita de Vendas e Serviços'
+            ],
+            'resultado_bruto': [
+                'Resultado Bruto',
+                'Lucro Bruto',
+                'Resultado Operacional Bruto'
+            ],
+            'resultado_operacional': [
+                'Resultado Antes do Resultado Financeiro',
+                'Resultado Operacional',
+                'EBIT'
+            ],
+            'lucro_liquido': [
+                'Lucro/Prejuízo Consolidado',
+                'Lucro Líquido Consolidado',
+                'Resultado Líquido'
+            ]
+        }
+
+
+def extrair_series_por_tipo(df: pd.DataFrame, metrica: str, tipo: str) -> pd.Series:
+    """
+    Extrai série temporal buscando por aliases específicos do tipo de empresa.
+    
+    Args:
+        df: DataFrame DRE
+        metrica: 'receita' | 'resultado_bruto' | 'resultado_operacional' | 'lucro_liquido'
+        tipo: 'financeira' | 'nao_financeira'
+    
+    Returns:
+        Series temporal com valores da conta
+    
+    CORREÇÃO: Tenta múltiplos aliases até encontrar a conta
+    """
+    if df is None or len(df) == 0:
+        return pd.Series(dtype=float)
+    
+    mapeamento = obter_mapeamento_contas(tipo)
+    aliases = mapeamento.get(metrica, [])
+    
+    # Tenta cada alias até encontrar dados
+    for alias in aliases:
+        series = extrair_series_temporal(df, alias)
+        if len(series) > 0:
+            print(f"✅ {metrica.upper()}: Encontrado como '{alias}'")
+            return series
+    
+    print(f"⚠️ {metrica.upper()}: Não encontrado (aliases tentados: {len(aliases)})")
+    return pd.Series(dtype=float)
+
+
 
 
 # ======================================================================================
@@ -325,32 +420,68 @@ def analisar_empresa(ticker: str, tipo: str, pasta: Path) -> Dict:
     periodo_fim = colunas_periodo[-1]
     total_trimestres = len(colunas_periodo)
     
+    # ================================================================
+    # CORREÇÃO: Usar mapeamento específico por tipo de empresa
+    # ================================================================
+    print(f"\n{'='*70}")
+    print(f"🔍 EXTRAÇÃO DE MÉTRICAS - {ticker} ({tipo.upper()})")
+    print(f"{'='*70}")
+    
     # === MÉTRICAS DE RECEITA ===
-    receita = extrair_series_temporal(dre, "Receita de Venda")
+    receita = extrair_series_por_tipo(dre, 'receita', tipo)
     receita_cagr = calcular_cagr(receita) if len(receita) > 0 else None
     receita_var = calcular_variacao_periodo(receita) if len(receita) > 0 else None
     
-    # === MÉTRICAS DE RENTABILIDADE ===
-    lucro_bruto = extrair_series_temporal(dre, "Resultado Bruto")
-    lucro_operacional = extrair_series_temporal(dre, "Resultado Antes do Resultado Financeiro")
-    lucro_liquido = extrair_series_temporal(dre, "Lucro/Prejuízo Consolidado")
+    print(f"  📊 Receita: {len(receita)} trimestres | CAGR: {receita_cagr}%")
     
-    # Margens médias do período
+    # === MÉTRICAS DE RENTABILIDADE ===
+    lucro_bruto = extrair_series_por_tipo(dre, 'resultado_bruto', tipo)
+    lucro_operacional = extrair_series_por_tipo(dre, 'resultado_operacional', tipo)
+    lucro_liquido = extrair_series_por_tipo(dre, 'lucro_liquido', tipo)
+    
+    print(f"  💰 Lucro Líquido: {len(lucro_liquido)} trimestres")
+    print(f"{'='*70}\n")
+
+    
+    # ================================================================
+    # MARGENS: Calculadas com alinhamento de índices
+    # ================================================================
     margem_bruta = None
     margem_operacional = None
     margem_liquida = None
     
+    # Margem Bruta
     if len(receita) > 0 and len(lucro_bruto) > 0:
-        margens_brutas = (lucro_bruto / receita.loc[lucro_bruto.index]) * 100
-        margem_bruta = round(margens_brutas.mean(), 2)
+        # Alinha índices (intersecção de períodos disponíveis)
+        idx_comum = receita.index.intersection(lucro_bruto.index)
+        if len(idx_comum) > 0:
+            margens_brutas = (lucro_bruto.loc[idx_comum] / receita.loc[idx_comum]) * 100
+            # Filtra valores válidos (não-inf, não-nan)
+            margens_brutas = margens_brutas[margens_brutas.notna() & np.isfinite(margens_brutas)]
+            if len(margens_brutas) > 0:
+                margem_bruta = round(margens_brutas.mean(), 2)
+                print(f"  📈 Margem Bruta Média: {margem_bruta}%")
     
+    # Margem Operacional
     if len(receita) > 0 and len(lucro_operacional) > 0:
-        margens_op = (lucro_operacional / receita.loc[lucro_operacional.index]) * 100
-        margem_operacional = round(margens_op.mean(), 2)
+        idx_comum = receita.index.intersection(lucro_operacional.index)
+        if len(idx_comum) > 0:
+            margens_op = (lucro_operacional.loc[idx_comum] / receita.loc[idx_comum]) * 100
+            margens_op = margens_op[margens_op.notna() & np.isfinite(margens_op)]
+            if len(margens_op) > 0:
+                margem_operacional = round(margens_op.mean(), 2)
+                print(f"  📈 Margem Operacional Média: {margem_operacional}%")
     
+    # Margem Líquida (MAIS IMPORTANTE)
     if len(receita) > 0 and len(lucro_liquido) > 0:
-        margens_liq = (lucro_liquido / receita.loc[lucro_liquido.index]) * 100
-        margem_liquida = round(margens_liq.mean(), 2)
+        idx_comum = receita.index.intersection(lucro_liquido.index)
+        if len(idx_comum) > 0:
+            margens_liq = (lucro_liquido.loc[idx_comum] / receita.loc[idx_comum]) * 100
+            margens_liq = margens_liq[margens_liq.notna() & np.isfinite(margens_liq)]
+            if len(margens_liq) > 0:
+                margem_liquida = round(margens_liq.mean(), 2)
+                print(f"  💎 Margem Líquida Média: {margem_liquida}%")
+
     
     # === MÉTRICAS DE CAIXA (apenas não financeiras) ===
     caixa_operacional = None
