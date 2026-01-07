@@ -515,132 +515,205 @@ let MAPA_EMPRESAS_B3 = null;
  * Espera colunas: ticker;empresa;cnpj;codigo_cvm;setor;segmento;sede;descricao
  */
 function parseMapeamentoB3(csvText) {
-  const linhas = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
-  if (linhas.length === 0) return {};
-
-  const header = linhas.shift().split(';').map(s => s.trim().toLowerCase());
-
-  const idxTicker   = header.indexOf('ticker');
-  const idxEmpresa  = header.indexOf('empresa');
-  const idxCnpj     = header.indexOf('cnpj');
-  const idxSetor    = header.indexOf('setor');
-  const idxSegmento = header.indexOf('segmento');
-  const idxSede     = header.indexOf('sede');
-  const idxDesc     = header.indexOf('descricao');
-
-  const mapa = {};
-
-  for (const linha of linhas) {
-    if (!linha.trim()) continue;
-    const cols = linha.split(';');
-
-    if (idxTicker < 0 || !cols[idxTicker]) continue;
-
-    // Pode vir "FESA3;FESA4" ou "DTCY3;DTCY4" etc.
-    const tickersBrutos = cols[idxTicker].replace(/"/g, '').split(',');
-    const tickers = tickersBrutos
-      .flatMap(t => t.split(/[\s;]/))
-      .map(t => t.trim().toUpperCase())
-      .filter(t => t);
-
-    const empresa  = (idxEmpresa  >= 0 && cols[idxEmpresa]  ? cols[idxEmpresa]  : '').trim();
-    const cnpj     = (idxCnpj     >= 0 && cols[idxCnpj]     ? cols[idxCnpj]     : '').trim();
-    const setor    = (idxSetor    >= 0 && cols[idxSetor]    ? cols[idxSetor]    : '').trim();
-    const segmento = (idxSegmento >= 0 && cols[idxSegmento] ? cols[idxSegmento] : '').trim();
-    const sede     = (idxSede     >= 0 && cols[idxSede]     ? cols[idxSede]     : '').trim();
-    const desc     = (idxDesc     >= 0 && cols[idxDesc]     ? cols[idxDesc]     : '').trim();
-
-    tickers.forEach(t => {
-      mapa[t] = { ticker: t, empresa, cnpj, setor, segmento, sede, descricao: desc };
-    });
-  }
-
-  return mapa;
+    const linhas = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
+    if (linhas.length === 0) return {};
+    
+    // Remove BOM UTF-8 se existir
+    linhas[0] = linhas[0].replace(/^\uFEFF/, '');
+    
+    // Função para parsear linha CSV com aspas
+    function parseCSVLine(linha) {
+        const campos = [];
+        let campoAtual = '';
+        let dentroDeAspas = false;
+        
+        for (let i = 0; i < linha.length; i++) {
+            const char = linha[i];
+            const proximoChar = linha[i + 1];
+            
+            if (char === '"') {
+                if (dentroDeAspas && proximoChar === '"') {
+                    // Aspas duplas escapadas
+                    campoAtual += '"';
+                    i++; // Pula próximo caractere
+                } else {
+                    // Alterna estado de aspas
+                    dentroDeAspas = !dentroDeAspas;
+                }
+            } else if (char === ';' && !dentroDeAspas) {
+                // Fim do campo
+                campos.push(campoAtual.trim());
+                campoAtual = '';
+            } else {
+                campoAtual += char;
+            }
+        }
+        // Adiciona último campo
+        campos.push(campoAtual.trim());
+        
+        return campos;
+    }
+    
+    // Processa header
+    const header = parseCSVLine(linhas.shift()).map(s => s.toLowerCase());
+    
+    const idxTicker = header.indexOf('ticker');
+    const idxEmpresa = header.indexOf('empresa');
+    const idxCnpj = header.indexOf('cnpj');
+    const idxSetor = header.indexOf('setor');
+    const idxSegmento = header.indexOf('segmento');
+    const idxSede = header.indexOf('sede');
+    const idxDesc = header.indexOf('descricao');
+    
+    if (idxTicker < 0) {
+        console.error('❌ Coluna "ticker" não encontrada no CSV');
+        return {};
+    }
+    
+    const mapa = {};
+    let linhasProcessadas = 0;
+    
+    for (const linha of linhas) {
+        if (!linha.trim()) continue;
+        
+        const cols = parseCSVLine(linha);
+        
+        if (!cols[idxTicker]) continue;
+        
+        // Processa tickers (pode ter múltiplos separados por vírgula, espaço ou ponto-e-vírgula)
+        const tickersBrutos = cols[idxTicker].replace(/"/g, '').split(',');
+        const tickers = tickersBrutos
+            .flatMap(t => t.split(/[\s;]/))
+            .map(t => t.trim().toUpperCase())
+            .filter(t => t);
+        
+        const empresa = (idxEmpresa >= 0 && cols[idxEmpresa] ? cols[idxEmpresa] : '').trim();
+        const cnpj = (idxCnpj >= 0 && cols[idxCnpj] ? cols[idxCnpj] : '').trim();
+        const setor = (idxSetor >= 0 && cols[idxSetor] ? cols[idxSetor] : '').trim();
+        const segmento = (idxSegmento >= 0 && cols[idxSegmento] ? cols[idxSegmento] : '').trim();
+        const sede = (idxSede >= 0 && cols[idxSede] ? cols[idxSede] : '').trim();
+        const descricao = (idxDesc >= 0 && cols[idxDesc] ? cols[idxDesc] : '').trim();
+        
+        tickers.forEach(t => {
+            mapa[t] = {
+                ticker: t,
+                empresa,
+                cnpj,
+                setor,
+                segmento,
+                sede,
+                descricao
+            };
+        });
+        
+        linhasProcessadas++;
+    }
+    
+    console.log(`✅ Mapeamento B3 carregado: ${linhasProcessadas} empresas, ${Object.keys(mapa).length} tickers`);
+    
+    return mapa;
 }
+
 
 /**
  * Carrega o CSV do mapeamento B3 a partir do GitHub
  * e inicializa o mapa global.
  */
 async function carregarMapeamentoB3() {
-  try {
-    const csvText = await fetchFromGitHub(MAPEAMENTO_B3_PATH);
-    MAPA_EMPRESAS_B3 = parseMapeamentoB3(csvText);
-  } catch (err) {
-    console.error('Erro ao carregar mapeamento B3:', err);
-  }
+    try {
+        const csvText = await fetchFromGitHub(MAPEAMENTO_B3_PATH);
+        MAPA_EMPRESAS_B3 = parseMapeamentoB3(csvText);
+        
+        // Debug (pode remover depois)
+        console.log('📊 Tickers disponíveis (amostra):', Object.keys(MAPA_EMPRESAS_B3).slice(0, 10));
+        
+        if (MAPA_EMPRESAS_B3['SMTO3']) {
+            console.log('✅ SMTO3 encontrado:', MAPA_EMPRESAS_B3['SMTO3']);
+        }
+    } catch (err) {
+        console.error('❌ Erro ao carregar mapeamento B3:', err);
+    }
 }
 
 /**
  * Atualiza o card de informações da empresa a partir do ticker selecionado.
  * tickerSelecionado: string, ex: "BEEF3"
  */
+
 function atualizarCardEmpresa(tickerSelecionado) {
-  if (!MAPA_EMPRESAS_B3 || !tickerSelecionado) return;
-
-  const ticker = tickerSelecionado.toUpperCase();
-  const info = MAPA_EMPRESAS_B3[ticker];
-  if (!info) return;
-
-  // 1. Razão social
-  const razaoEl = document.getElementById('empresaRazaoSocial');
-  if (razaoEl) razaoEl.textContent = info.empresa || '-';
-
-  // 2. CNPJ
-  const cnpjEl = document.getElementById('empresaCNPJ');
-  if (cnpjEl) cnpjEl.textContent = info.cnpj || '-';
-
-  // 3. Setor / Segmento
-  const setorSegEl = document.getElementById('empresaSetorSegmento');
-  if (setorSegEl) {
-    const setor    = info.setor    || '';
-    const segmento = info.segmento || '';
-    setorSegEl.textContent =
-      (setor && segmento) ? `${setor} / ${segmento}` : (setor || segmento || '-');
-  }
-
-  // 4. Tickers de negociação
-  const tickersEl = document.getElementById('empresaTickers');
-  if (tickersEl) {
-    tickersEl.textContent = info.ticker || ticker;
-  }
-
-  // 5. Endereço da sede
-  const sedeEl = document.getElementById('empresaSede');
-  if (sedeEl) {
-    const endereco = (info.sede || '').replace(/\s{2,}/g, ' ');
-    sedeEl.textContent = endereco || '-';
-  }
-
-  // 6. Descrição
-  const descEl = document.getElementById('empresaDescricao');
-  if (descEl) descEl.textContent = info.descricao || '-';
-
-  // 7. Empresas do mesmo setor
-  const mesmoSetorEl = document.getElementById('empresasMesmoSetor');
-  if (mesmoSetorEl) {
-    mesmoSetorEl.innerHTML = '';
-
-    const setorRef = info.setor;
-    if (setorRef) {
-      Object.values(MAPA_EMPRESAS_B3)
-        .filter(e => e.setor === setorRef && e.ticker !== ticker)
-        .slice(0, 12)
-        .forEach(e => {
-          const a = document.createElement('a');
-          a.href = '#analise-acoes';
-          a.className = 'ticker-similar';
-          a.textContent = e.ticker;
-          a.addEventListener('click', evt => {
-              evt.preventDefault();
-              loadAcaoData(e.ticker);
-          });
-
-          mesmoSetorEl.appendChild(a);
-        });
+    if (!MAPA_EMPRESAS_B3 || !tickerSelecionado) return;
+    
+    const ticker = tickerSelecionado.toUpperCase();
+    const info = MAPA_EMPRESAS_B3[ticker];
+    
+    if (!info) {
+        console.warn(`⚠️ Ticker ${ticker} não encontrado no mapeamento`);
+        return;
     }
-  }
+    
+    // 1. Razão social
+    const razaoEl = document.getElementById('empresaRazaoSocial');
+    if (razaoEl) razaoEl.textContent = info.empresa || '-';
+    
+    // 2. CNPJ
+    const cnpjEl = document.getElementById('empresaCNPJ');
+    if (cnpjEl) cnpjEl.textContent = info.cnpj || '-';
+    
+    // 3. Setor / Segmento
+    const setorSegEl = document.getElementById('empresaSetorSegmento');
+    if (setorSegEl) {
+        const setor = info.setor || '';
+        const segmento = info.segmento || '';
+        setorSegEl.textContent = (setor && segmento) 
+            ? `${setor} / ${segmento}` 
+            : (setor || segmento || '-');
+    }
+    
+    // 4. Tickers de negociação
+    const tickersEl = document.getElementById('empresaTickers');
+    if (tickersEl) {
+        tickersEl.textContent = info.ticker || ticker;
+    }
+    
+    // 5. Endereço da sede
+    const sedeEl = document.getElementById('empresaSede');
+    if (sedeEl) {
+        sedeEl.textContent = info.sede || '-';
+    }
+    
+    // 6. Descrição
+    const descEl = document.getElementById('empresaDescricao');
+    if (descEl) descEl.textContent = info.descricao || '-';
+    
+    // 7. Empresas do mesmo setor
+    const mesmoSetorEl = document.getElementById('empresasMesmoSetor');
+    if (mesmoSetorEl) {
+        mesmoSetorEl.innerHTML = '';
+        const setorRef = info.setor;
+        
+        if (setorRef) {
+            Object.values(MAPA_EMPRESAS_B3)
+                .filter(e => e.setor === setorRef && e.ticker !== ticker)
+                .slice(0, 12)
+                .forEach(e => {
+                    const a = document.createElement('a');
+                    a.href = '#analise-acoes';
+                    a.className = 'ticker-similar';
+                    a.textContent = e.ticker;
+                    a.addEventListener('click', evt => {
+                        evt.preventDefault();
+                        if (typeof selecionarTicker === 'function') {
+                            selecionarTicker(e.ticker);
+                        }
+                    });
+                    mesmoSetorEl.appendChild(a);
+                });
+        }
+    }
+    
+    console.log(`✅ Card atualizado para ${ticker}:`, info);
 }
+
 
 
 // ================================================================
