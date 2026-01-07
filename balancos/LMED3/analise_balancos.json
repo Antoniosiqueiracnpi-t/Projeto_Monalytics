@@ -1,0 +1,40 @@
+{
+  "ticker": "LMED3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T23:13:00.469327",
+  "periodo_analisado": {
+    "inicio": "2019T1",
+    "fim": "2025T3",
+    "total_trimestres": 27,
+    "anos": 6.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.0,
+      "variacao_total": 64.95,
+      "ultimo_valor": 31.79
+    },
+    "margens": {
+      "bruta": 47.94,
+      "operacional": 15.62,
+      "liquida": 18.67
+    },
+    "rentabilidade": {
+      "roe_medio": 22.17
+    },
+    "caixa": {
+      "media": 13.06,
+      "ultimo": 36.71
+    },
+    "balanco": {
+      "ativo_total": 303.22,
+      "patrimonio": 134.72
+    }
+  },
+  "analise_critica": "LMED3 mantém receita relativamente estável no período. Apresenta rentabilidade saudável com margem líquida de 18.67%. Gera excelente retorno sobre o patrimônio (ROE médio de 22.17%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (18.67%)",
+    "Excelente retorno sobre patrimônio (ROE: 22.17%)"
+  ],
+  "pontos_atencao": []
+}

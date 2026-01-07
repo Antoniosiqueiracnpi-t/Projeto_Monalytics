@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "02.357.251/0001-53",
+    "nome": "",
+    "ticker": "LMED3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "Lifemed Administração e Participações Ltda.",
+      "cpf_cnpj": "08.630.521/0001-34",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1065600,
+      "percentual_total": 41.359,
+      "acoes_ordinarias": 1065600,
+      "percentual_ordinarias": 41.359,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Fundo BBI Financial I",
+      "cpf_cnpj": "12.907.124/0001-34",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 602288,
+      "percentual_total": 23.377,
+      "acoes_ordinarias": 602288,
+      "percentual_ordinarias": 23.377,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "BNDES Participações S.A.",
+      "cpf_cnpj": "00.383.281/0001-09",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 552503,
+      "percentual_total": 21.444,
+      "acoes_ordinarias": 552503,
+      "percentual_ordinarias": 21.444,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "Kumla SP Participações S.A.",
+      "cpf_cnpj": "20.918.377/0001-31",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 356047,
+      "percentual_total": 13.819,
+      "acoes_ordinarias": 356047,
+      "percentual_ordinarias": 13.819,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    }
+  ]
+}

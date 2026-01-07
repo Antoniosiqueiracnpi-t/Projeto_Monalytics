@@ -1,0 +1,51 @@
+{
+  "empresa": {
+    "cnpj": "61.374.161/0001-30",
+    "nome": "",
+    "ticker": "BALM3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 3,
+  "acionistas": [
+    {
+      "nome": "Condustil Participações S/A",
+      "cpf_cnpj": "06.099.371/0001-59",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2536710,
+      "percentual_total": 25.884,
+      "acoes_ordinarias": 2470710,
+      "percentual_ordinarias": 50.42,
+      "acoes_preferenciais": 66000,
+      "percentual_preferenciais": 1.347,
+      "posicao": 1
+    },
+    {
+      "nome": "RUY SALVARI BAUMER",
+      "cpf_cnpj": "003.881.608-37",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1984705,
+      "percentual_total": 20.252,
+      "acoes_ordinarias": 1612410,
+      "percentual_ordinarias": 32.905,
+      "acoes_preferenciais": 372295,
+      "percentual_preferenciais": 7.598,
+      "posicao": 2
+    },
+    {
+      "nome": "MONICA SALVARI BAUMER",
+      "cpf_cnpj": "996.972.208-59",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1778179,
+      "percentual_total": 18.144,
+      "acoes_ordinarias": 288810,
+      "percentual_ordinarias": 5.894,
+      "acoes_preferenciais": 1489369,
+      "percentual_preferenciais": 30.395,
+      "posicao": 3
+    }
+  ]
+}
