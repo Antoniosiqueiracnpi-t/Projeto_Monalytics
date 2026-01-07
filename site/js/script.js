@@ -2837,17 +2837,6 @@ function renderIAAnalisa() {
 }
 
 /**
- * HOOK: Adiciona carregamento de análise I.A ao carregar ação
- */
-const originalLoadAcaoDataWithIA = loadAcaoData;
-loadAcaoData = async function(ticker) {
-    await originalLoadAcaoDataWithIA.call(this, ticker);
-    
-    // Carrega análise I.A após carregar a ação
-    await loadAnaliseBalancos(ticker);
-};
-
-/**
  * Renderiza card de composição acionária
  */
 function renderComposicaoAcionaria() {
