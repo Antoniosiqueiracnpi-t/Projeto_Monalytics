@@ -503,6 +503,147 @@ async function loadAllData() {
     ]);
 }
 
+// =========================== MAPEAMENTO B3 → CARD DA EMPRESA ===========================
+
+// Caminho já definido no topo:
+// const MAPEAMENTO_B3_PATH = 'mapeamento_b3_consolidado.csv';
+
+let MAPA_EMPRESAS_B3 = null;
+
+/**
+ * Constrói um índice por ticker a partir do mapeamento B3.
+ * Espera colunas: ticker;empresa;cnpj;codigo_cvm;setor;segmento;sede;descricao
+ */
+function parseMapeamentoB3(csvText) {
+  const linhas = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
+  if (linhas.length === 0) return {};
+
+  const header = linhas.shift().split(';').map(s => s.trim().toLowerCase());
+
+  const idxTicker   = header.indexOf('ticker');
+  const idxEmpresa  = header.indexOf('empresa');
+  const idxCnpj     = header.indexOf('cnpj');
+  const idxSetor    = header.indexOf('setor');
+  const idxSegmento = header.indexOf('segmento');
+  const idxSede     = header.indexOf('sede');
+  const idxDesc     = header.indexOf('descricao');
+
+  const mapa = {};
+
+  for (const linha of linhas) {
+    if (!linha.trim()) continue;
+    const cols = linha.split(';');
+
+    if (idxTicker < 0 || !cols[idxTicker]) continue;
+
+    // Pode vir "FESA3;FESA4" ou "DTCY3;DTCY4" etc.
+    const tickersBrutos = cols[idxTicker].replace(/"/g, '').split(',');
+    const tickers = tickersBrutos
+      .flatMap(t => t.split(/[\s;]/))
+      .map(t => t.trim().toUpperCase())
+      .filter(t => t);
+
+    const empresa  = (idxEmpresa  >= 0 && cols[idxEmpresa]  ? cols[idxEmpresa]  : '').trim();
+    const cnpj     = (idxCnpj     >= 0 && cols[idxCnpj]     ? cols[idxCnpj]     : '').trim();
+    const setor    = (idxSetor    >= 0 && cols[idxSetor]    ? cols[idxSetor]    : '').trim();
+    const segmento = (idxSegmento >= 0 && cols[idxSegmento] ? cols[idxSegmento] : '').trim();
+    const sede     = (idxSede     >= 0 && cols[idxSede]     ? cols[idxSede]     : '').trim();
+    const desc     = (idxDesc     >= 0 && cols[idxDesc]     ? cols[idxDesc]     : '').trim();
+
+    tickers.forEach(t => {
+      mapa[t] = { ticker: t, empresa, cnpj, setor, segmento, sede, descricao: desc };
+    });
+  }
+
+  return mapa;
+}
+
+/**
+ * Carrega o CSV do mapeamento B3 a partir do GitHub
+ * e inicializa o mapa global.
+ */
+async function carregarMapeamentoB3() {
+  try {
+    const csvText = await fetchFromGitHub(MAPEAMENTO_B3_PATH);
+    MAPA_EMPRESAS_B3 = parseMapeamentoB3(csvText);
+  } catch (err) {
+    console.error('Erro ao carregar mapeamento B3:', err);
+  }
+}
+
+/**
+ * Atualiza o card de informações da empresa a partir do ticker selecionado.
+ * tickerSelecionado: string, ex: "BEEF3"
+ */
+function atualizarCardEmpresa(tickerSelecionado) {
+  if (!MAPA_EMPRESAS_B3 || !tickerSelecionado) return;
+
+  const ticker = tickerSelecionado.toUpperCase();
+  const info = MAPA_EMPRESAS_B3[ticker];
+  if (!info) return;
+
+  // 1. Razão social
+  const razaoEl = document.getElementById('empresaRazaoSocial');
+  if (razaoEl) razaoEl.textContent = info.empresa || '-';
+
+  // 2. CNPJ
+  const cnpjEl = document.getElementById('empresaCNPJ');
+  if (cnpjEl) cnpjEl.textContent = info.cnpj || '-';
+
+  // 3. Setor / Segmento
+  const setorSegEl = document.getElementById('empresaSetorSegmento');
+  if (setorSegEl) {
+    const setor    = info.setor    || '';
+    const segmento = info.segmento || '';
+    setorSegEl.textContent =
+      (setor && segmento) ? `${setor} / ${segmento}` : (setor || segmento || '-');
+  }
+
+  // 4. Tickers de negociação
+  const tickersEl = document.getElementById('empresaTickers');
+  if (tickersEl) {
+    tickersEl.textContent = info.ticker || ticker;
+  }
+
+  // 5. Endereço da sede
+  const sedeEl = document.getElementById('empresaSede');
+  if (sedeEl) {
+    const endereco = (info.sede || '').replace(/\s{2,}/g, ' ');
+    sedeEl.textContent = endereco || '-';
+  }
+
+  // 6. Descrição
+  const descEl = document.getElementById('empresaDescricao');
+  if (descEl) descEl.textContent = info.descricao || '-';
+
+  // 7. Empresas do mesmo setor
+  const mesmoSetorEl = document.getElementById('empresasMesmoSetor');
+  if (mesmoSetorEl) {
+    mesmoSetorEl.innerHTML = '';
+
+    const setorRef = info.setor;
+    if (setorRef) {
+      Object.values(MAPA_EMPRESAS_B3)
+        .filter(e => e.setor === setorRef && e.ticker !== ticker)
+        .slice(0, 12)
+        .forEach(e => {
+          const a = document.createElement('a');
+          a.href = '#analise-acoes';
+          a.className = 'ticker-similar';
+          a.textContent = e.ticker;
+          a.addEventListener('click', evt => {
+            evt.preventDefault();
+            if (typeof selecionarTicker === 'function') {
+              selecionarTicker(e.ticker);
+            }
+          });
+          mesmoSetorEl.appendChild(a);
+        });
+    }
+  }
+}
+
+
 // ================================================================
 // MONALYTICS - SISTEMA DE CARREGAMENTO SEGURO DE DADOS
 // Versão: 2.0 - Máxima Segurança
@@ -1691,6 +1832,7 @@ function showError(loadingId, message) {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🎪 Inicializando Carrossel de Destaques...');
     
+    carregarMapeamentoB3();
     // Inicializa carrossel
     initCarousel();
     
@@ -3579,76 +3721,134 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Atualiza informações da empresa
+// ========================================
+// CARD DE INFORMAÇÕES DA EMPRESA (MAPEAMENTO B3)
+// ========================================
+
+// mapeamentoB3 já é carregado antes (array com objetos do CSV):
+// cada item: { ticker, todosTickersStr, empresa, cnpj, setor, segmento, sede, descricao, ... }
+
 function updateEmpresaInfo(ticker) {
-    const empresaInfo = mapeamentoB3.find(item => item.ticker === ticker);
-    
+    if (!mapeamentoB3 || !Array.isArray(mapeamentoB3)) return;
+
+    const tickerUpper = ticker.toUpperCase();
+
+    // 1) Encontra linha da empresa no mapeamento (ticker principal ou entre todosTickersStr)
+    const empresaInfo = mapeamentoB3.find(item => {
+        if (!item) return false;
+
+        const tBase = (item.ticker || '').toUpperCase();
+
+        if (tBase === tickerUpper) return true;
+
+        if (item.todosTickersStr) {
+            return item.todosTickersStr
+                .split(';')
+                .map(t => t.trim().toUpperCase())
+                .includes(tickerUpper);
+        }
+
+        return false;
+    });
+
     if (!empresaInfo) {
-        console.warn('⚠️ Empresa não encontrada para ticker:', ticker);
-        document.getElementById('empresaRazaoSocial').textContent = 'Não disponível';
-        document.getElementById('empresaCNPJ').textContent = 'Não disponível';
-        document.getElementById('empresaSetorSegmento').textContent = 'Não disponível';
-        document.getElementById('empresaTickers').textContent = ticker;
-        document.getElementById('empresaSede').textContent = 'Não disponível';
-        document.getElementById('empresaDescricao').textContent = 'Informações não disponíveis.';
-        document.getElementById('empresasMesmoSetor').textContent = 'Não disponível';
+        console.warn(`Ticker ${ticker} não encontrado no mapeamento B3 para o card de empresa.`);
         return;
     }
-    
-    console.log('📋 Atualizando informações da empresa:', empresaInfo.empresa);
-    
-    // Preenche os campos
-    document.getElementById('empresaRazaoSocial').textContent = empresaInfo.empresa || 'Não disponível';
-    document.getElementById('empresaCNPJ').textContent = empresaInfo.cnpj || 'Não disponível';
-    
-    const setorSegmento = `${empresaInfo.setor || 'N/D'} / ${empresaInfo.segmento || 'N/D'}`;
-    document.getElementById('empresaSetorSegmento').textContent = setorSegmento;
-    
-    // Mostra TODOS os tickers
-    const todosTickersExibicao = empresaInfo.todosTickersStr || ticker;
-    document.getElementById('empresaTickers').textContent = todosTickersExibicao;
-    console.log('✅ Tickers exibidos:', todosTickersExibicao);
-    
-    document.getElementById('empresaSede').textContent = empresaInfo.sede || 'Não disponível';
-    document.getElementById('empresaDescricao').textContent = empresaInfo.descricao || 'Descrição não disponível.';
-    
-    // Empresas do mesmo setor (sem duplicatas)
-    const empresasUnicas = new Map();
-    
-    mapeamentoB3.forEach(item => {
-        // Condições:
-        // 1. Setor deve ser igual (trim e case-insensitive)
-        // 2. Empresa deve ser diferente (para não incluir a mesma)
-        // 3. Setor não pode estar vazio
-        const setorA = (empresaInfo.setor || '').trim().toLowerCase();
-        const setorB = (item.setor || '').trim().toLowerCase();
-        
-        if (
-            setorA && 
-            setorB && 
-            setorA === setorB && 
-            item.empresa !== empresaInfo.empresa
-        ) {
-            if (!empresasUnicas.has(item.empresa)) {
-                empresasUnicas.set(item.empresa, item);
-            }
+
+    // 2) Campos básicos
+    const razaoSocialEl      = document.getElementById('empresaRazaoSocial');
+    const cnpjEl             = document.getElementById('empresaCNPJ');
+    const setorSegmentoEl    = document.getElementById('empresaSetorSegmento');
+    const tickersEl          = document.getElementById('empresaTickers');
+    const sedeEl             = document.getElementById('empresaSede');
+    const descricaoEl        = document.getElementById('empresaDescricao');
+    const mesmoSetorContainer = document.getElementById('empresasMesmoSetor');
+
+    // 3) Preenche razão social
+    if (razaoSocialEl) {
+        razaoSocialEl.textContent = (empresaInfo.empresa || '').trim() || '-';
+    }
+
+    // 4) Preenche CNPJ
+    if (cnpjEl) {
+        cnpjEl.textContent = (empresaInfo.cnpj || '').trim() || '-';
+    }
+
+    // 5) Preenche setor / segmento
+    if (setorSegmentoEl) {
+        const setor    = (empresaInfo.setor || '').trim();
+        const segmento = (empresaInfo.segmento || '').trim();
+
+        if (setor && segmento) {
+            setorSegmentoEl.textContent = `${setor} / ${segmento}`;
+        } else if (setor || segmento) {
+            setorSegmentoEl.textContent = setor || segmento;
+        } else {
+            setorSegmentoEl.textContent = '-';
         }
-    });
-    
-    console.log(`   🔍 Empresas encontradas no setor: ${empresasUnicas.size}`);
-    
-    const mesmoSetor = Array.from(empresasUnicas.values())
-        .slice(0, 15)  
-        .map(item => {
-            const primeiroTicker = item.todosTickersStr 
-                ? item.todosTickersStr.split(';')[0].trim()
-                : item.ticker;
-            return `<span class="ticker-similar" onclick="loadAcaoData('${primeiroTicker}')" style="cursor: pointer; color: #4f46e5; font-weight: 600; margin-right: 10px; text-decoration: underline;">${primeiroTicker}</span>`;
-        })
-        .join('');
-    
-    document.getElementById('empresasMesmoSetor').innerHTML = mesmoSetor || 'Nenhuma empresa encontrada';
+    }
+
+    // 6) Preenche todos os tickers de negociação da linha
+    if (tickersEl) {
+        let todosTickers = [];
+
+        if (empresaInfo.todosTickersStr) {
+            todosTickers = empresaInfo.todosTickersStr
+                .split(';')
+                .map(t => t.trim())
+                .filter(Boolean);
+        }
+
+        if (!todosTickers.length && empresaInfo.ticker) {
+            todosTickers = [empresaInfo.ticker];
+        }
+
+        tickersEl.textContent = todosTickers.join(' / ') || tickerUpper;
+    }
+
+    // 7) Endereço da sede (normaliza espaços para ajudar a quebra no CSS)
+    if (sedeEl) {
+        const enderecoBruto = (empresaInfo.sede || '').trim();
+        const endereco = enderecoBruto.replace(/\s{2,}/g, ' ');
+        sedeEl.textContent = endereco || '-';
+    }
+
+    // 8) Descrição
+    if (descricaoEl) {
+        const desc = (empresaInfo.descricao || '').trim();
+        descricaoEl.textContent = desc || '-';
+    }
+
+    // 9) Empresas do mesmo setor (lista de tickers)
+    if (mesmoSetorContainer) {
+        mesmoSetorContainer.innerHTML = '';
+
+        const setorRef = (empresaInfo.setor || '').trim();
+        if (setorRef) {
+            const similares = mapeamentoB3
+                .filter(item =>
+                    item &&
+                    (item.setor || '').trim() === setorRef &&
+                    (item.ticker || '').toUpperCase() !== tickerUpper
+                )
+                .slice(0, 12); // limita quantidade para não estourar o layout
+
+            similares.forEach(item => {
+                const a = document.createElement('a');
+                a.href = '#analise-acoes';
+                a.className = 'ticker-similar';
+                a.textContent = (item.ticker || '').toUpperCase();
+                a.addEventListener('click', evt => {
+                    evt.preventDefault();
+                    loadAcaoData(item.ticker);
+                });
+                mesmoSetorContainer.appendChild(a);
+            });
+        }
+    }
 }
+
 
 // Atualiza indicadores
 function updateIndicadores() {
