@@ -4326,6 +4326,452 @@ textarea:focus {
   white-space: nowrap;
 }
 
+/* ========================================================================== */
+/* COMPARADOR DE AÇÕES POR SETOR
+/* ========================================================================== */
+
+.comparador-acoes-section {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Header do Comparador */
+.comparador-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.comparador-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.comparador-title-group i {
+    font-size: 1.75rem;
+    color: #4f46e5;
+    margin-bottom: 0.25rem;
+}
+
+.comparador-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+}
+
+.comparador-subtitle {
+    font-size: 0.95rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Loading State */
+.comparador-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    gap: 1rem;
+}
+
+.comparador-loading i {
+    font-size: 2.5rem;
+    color: #4f46e5;
+}
+
+.comparador-loading span {
+    font-size: 1rem;
+    color: #6b7280;
+}
+
+/* Empty State */
+.comparador-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1rem;
+    gap: 1rem;
+}
+
+.comparador-empty i {
+    font-size: 3rem;
+    color: #9ca3af;
+}
+
+.comparador-empty p {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Tabs de Indicadores */
+.comparador-indicators-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
+    background: #f9fafb;
+    border-radius: 12px;
+}
+
+.indicator-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator-tab:hover {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.indicator-tab.active {
+    background: white;
+    color: #4f46e5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.indicator-tab i {
+    font-size: 1rem;
+}
+
+/* Tabela de Comparação */
+.comparador-table-wrapper {
+    margin-top: 1rem;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.comparador-table-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+.comparador-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    background: white;
+}
+
+.comparador-table thead {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.comparador-table thead th {
+    padding: 1rem 0.75rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.comparador-table thead th:first-child {
+    text-align: left;
+    padding-left: 1.5rem;
+}
+
+.comparador-table tbody tr {
+    border-bottom: 1px solid #f3f4f6;
+    transition: background 0.2s ease;
+}
+
+.comparador-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.comparador-table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.comparador-table tbody tr:nth-child(even):hover {
+    background: #f3f4f6;
+}
+
+.comparador-table tbody td {
+    padding: 1rem 0.75rem;
+    text-align: center;
+    color: #374151;
+    font-weight: 500;
+}
+
+.comparador-table tbody td:first-child {
+    text-align: left;
+    font-weight: 600;
+}
+
+/* Célula da Empresa (Logo + Ticker) */
+.empresa-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-left: 1rem;
+}
+
+.empresa-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    object-fit: contain;
+    background: white;
+    border: 1px solid #e5e7eb;
+    flex-shrink: 0;
+}
+
+.empresa-logo-fallback {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+.empresa-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.empresa-ticker {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.empresa-nome {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Células de Valores */
+.valor-cell {
+    position: relative;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.valor-cell.positive {
+    color: #10b981;
+}
+
+.valor-cell.negative {
+    color: #ef4444;
+}
+
+.valor-cell.destaque {
+    color: #4f46e5;
+    font-weight: 700;
+}
+
+/* Estrela de Melhor Indicador */
+.star-indicator {
+    position: absolute;
+    top: 50%;
+    right: 0.25rem;
+    transform: translateY(-50%);
+    color: #f59e0b;
+    font-size: 1rem;
+    animation: starPulse 2s ease-in-out infinite;
+}
+
+@keyframes starPulse {
+    0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
+    50% { opacity: 0.7; transform: translateY(-50%) scale(1.15); }
+}
+
+/* Rodapé do Comparador */
+.comparador-footer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.comparador-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.legend-item i {
+    font-size: 0.9rem;
+}
+
+/* ========================================================================== */
+/* RESPONSIVIDADE - COMPARADOR
+/* ========================================================================== */
+
+@media screen and (max-width: 968px) {
+    .comparador-acoes-section {
+        padding: 1.5rem;
+    }
+
+    .comparador-title {
+        font-size: 1.3rem;
+    }
+
+    .comparador-table {
+        font-size: 0.85rem;
+    }
+
+    .comparador-table thead th,
+    .comparador-table tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .empresa-logo,
+    .empresa-logo-fallback {
+        width: 28px;
+        height: 28px;
+    }
+
+    .empresa-ticker {
+        font-size: 0.9rem;
+    }
+
+    .empresa-nome {
+        font-size: 0.7rem;
+        max-width: 120px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .comparador-acoes-section {
+        padding: 1.25rem;
+        margin-top: 1.5rem;
+    }
+
+    .comparador-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .comparador-indicators-tabs {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .indicator-tab {
+        width: 100%;
+    }
+
+    .comparador-table {
+        font-size: 0.8rem;
+    }
+
+    .comparador-table thead th,
+    .comparador-table tbody td {
+        padding: 0.65rem 0.4rem;
+    }
+
+    .empresa-cell {
+        gap: 0.5rem;
+        padding-left: 0.5rem;
+    }
+
+    .empresa-logo,
+    .empresa-logo-fallback {
+        width: 24px;
+        height: 24px;
+    }
+
+    .empresa-ticker {
+        font-size: 0.85rem;
+    }
+
+    .empresa-nome {
+        display: none; /* Oculta nome em mobile */
+    }
+
+    .star-indicator {
+        font-size: 0.85rem;
+        right: 0.15rem;
+    }
+
+    .comparador-legend {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .comparador-acoes-section {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+
+    .comparador-title {
+        font-size: 1.1rem;
+    }
+
+    .comparador-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .comparador-table {
+        font-size: 0.75rem;
+    }
+
+    .comparador-table thead th {
+        font-size: 0.7rem;
+        padding: 0.5rem 0.3rem;
+    }
+
+    .comparador-table tbody td {
+        padding: 0.5rem 0.3rem;
+    }
+
+    /* Simplifica tabela em telas muito pequenas */
+    .comparador-table-scroll {
+        -webkit-overflow-scrolling: touch;
+    }
+}
 
     
 }
