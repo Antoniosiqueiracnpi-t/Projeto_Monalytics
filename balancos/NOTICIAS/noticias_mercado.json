@@ -1,164 +1,198 @@
 {
-  "ultima_atualizacao": "2026-01-07T17:18:15.274790-03:00",
+  "ultima_atualizacao": "2026-01-07T17:46:23.716766-03:00",
   "total_noticias": 17,
   "portais": {
     "Investing.com": [
       {
-        "id": "032e95013b66",
-        "titulo": "Dólar à vista fecha em alta de 0,09%, a R$5,3869 na venda",
-        "link": "https://br.investing.com/news/forex-news/dolar-a-vista-fecha-em-alta-de-009-a-r53869-na-venda-1793085",
-        "horario": "17:07",
-        "imagem": "https://i-invdn-com.investing.com/trkd-images/LYNXMPEM06138_L.jpg",
-        "categoria": "Mercados",
+        "id": "daf9ca3ef5e3",
+        "titulo": "CEO da Synaptics, Patel Rahul G., vende ações no valor de US$ 193.970",
+        "link": "https://br.investing.com/news/insider-trading-news/ceo-da-synaptics-patel-rahul-g-vende-acoes-no-valor-de-us-193970-93CH-1793096",
+        "horario": "17:19",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "CEO da Synaptics, Patel Rahul G., vende ações no valor de US$...",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "1d556c930c3b",
+        "titulo": "Diretor da Sun Country Airlines vende US$ 23.608 em ações",
+        "link": "https://br.investing.com/news/insider-trading-news/diretor-da-sun-country-airlines-vende-us-23608-em-acoes-93CH-1793095",
+        "horario": "17:19",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Diretor da Sun Country Airlines vende US$ 23.608 em ações",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "4ca3beac0835",
+        "titulo": "SVP da Sun Country Airlines vende ações no valor de US$ 30.956",
+        "link": "https://br.investing.com/news/insider-trading-news/svp-da-sun-country-airlines-vende-acoes-no-valor-de-us-30956-93CH-1793094",
+        "horario": "17:19",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "SVP da Sun Country Airlines vende ações no valor de US$ 30.956",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "ffe97bc1b38b",
+        "titulo": "Brasil mantém prontidão na fronteira com a Venezuela, diz Padilha",
+        "link": "https://br.investing.com/news/politics-news/brasil-mantem-prontidao-na-fronteira-com-a-venezuela-diz-padilha-1793088",
+        "horario": "17:10",
+        "imagem": "",
+        "categoria": "Internacional",
         "tags": [
-          "Dólar"
+          "Venezuela"
         ],
-        "resumo": "Dólar à vista fecha em alta de 0,09%, a R$5,3869 na venda",
+        "resumo": "Brasil mantém prontidão na fronteira com a Venezuela, diz Padilha",
         "fonte": "Investing.com"
       },
       {
-        "id": "8dbe56a143e0",
-        "titulo": "Ações da Revolution Medicines disparam mais de 20% com possível aquisição pela AbbVie",
-        "link": "https://br.investing.com/news/stock-market-news/acoes-da-revolution-medicines-disparam-mais-de-20-com-possivel-aquisicao-pela-abbvie-1793084",
-        "horario": "17:03",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Ações da Revolution Medicines disparam mais de 20% com possível aquisição pela...",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "7023b74e4dfb",
-        "titulo": "Ações da Oaktree Specialty Lending atingem mínima de 52 semanas a US$ 12,43",
-        "link": "https://br.investing.com/news/company-news/acoes-da-oaktree-specialty-lending-atingem-minima-de-52-semanas-a-us-1243-93CH-1793082",
-        "horario": "17:03",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Ações da Oaktree Specialty Lending atingem mínima de 52 semanas a US$...",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "495ec934be66",
-        "titulo": "Ações da Alamos Gold atingem máxima histórica de US$ 40,98",
-        "link": "https://br.investing.com/news/company-news/acoes-da-alamos-gold-atingem-maxima-historica-de-us-4098-93CH-1793081",
-        "horario": "17:02",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Ações da Alamos Gold atingem máxima histórica de US$ 40,98",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "249bc650f998",
-        "titulo": "Ações da Royalty Pharma atingem máxima de 52 semanas a US$ 41,26",
-        "link": "https://br.investing.com/news/company-news/acoes-da-royalty-pharma-atingem-maxima-de-52-semanas-a-us-4126-93CH-1793080",
-        "horario": "17:00",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Ações da Royalty Pharma atingem máxima de 52 semanas a US$ 41,26",
+        "id": "aed002198223",
+        "titulo": "Bitcoin recua e testa força do rali de janeiro em meio à cautela global",
+        "link": "https://br.investing.com/news/cryptocurrency-news/bitcoin-recua-e-testa-forca-do-rali-de-janeiro-em-meio-a-cautela-global-1793086",
+        "horario": "17:08",
+        "imagem": "https://i-invdn-com.investing.com/news/LYNXNPEC6413U_M.jpg",
+        "categoria": "Criptomoedas",
+        "tags": [
+          "Bitcoin",
+          "Cripto"
+        ],
+        "resumo": "Bitcoin recua e testa força do rali de janeiro em meio à...",
         "fonte": "Investing.com"
       }
     ],
     "Valor Econômico": [
       {
-        "id": "bb7f6f469b5c",
-        "titulo": "Análise: Trump faz de rede social o reino da intimidação",
-        "link": "https://valor.globo.com/mundo/noticia/2026/01/07/analise-trump-faz-de-rede-social-o-reino-da-intimidacao.ghtml",
-        "horario": "17:13",
-        "imagem": "https://s2-valor.glbimg.com/j3sHF0MBeTZ3o7jZoaSwMU7Ym-k=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/M/r/n9JUD9TpihBE0MAAYaoQ/2026-01-03t183233z-2141869466-rc2utiai7wi3-rtrmadp-3-usa-venezuela.jpg",
+        "id": "6f4e0bc2069f",
+        "titulo": "Tecnologia de monitoramento diário passa a apoiar e reduzir o risco de infecções hospitalares",
+        "link": "https://valor.globo.com/patrocinado/pulse-brand/noticia/2026/01/07/tecnologia-de-monitoramento-diario-passa-a-apoiar-e-reduzir-o-risco-de-infeccoes-hospitalares-1.ghtml",
+        "horario": "17:37",
+        "imagem": "https://s2-valor.glbimg.com/l1NjmgQZzh80oSUsqZFFhbj6Iok=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/1/7/mAO65uT8iK9BDFj2KikQ/publicador-api-valor-pulse-brand-100-7a008c3a-528b-4424-adae-787447252984-20260107173733.jpeg",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Tecnologia de monitoramento diário passa a apoiar e reduzir o risco de...",
+        "fonte": "Valor Econômico"
+      },
+      {
+        "id": "0fdf886b53c3",
+        "titulo": "Petróleo cai após Trump dizer que Venezuela enviará milhões de barris aos EUA",
+        "link": "https://valor.globo.com/financas/noticia/2026/01/07/petroleo-cai-apos-trump-dizer-que-venezuela-enviara-milhoes-de-barris-aos-eua.ghtml",
+        "horario": "17:36",
+        "imagem": "https://s2-valor.glbimg.com/-sFXHGmihnetadXo8MT6RhhuF4w=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2023/T/N/Ah1VaDRmmCquuxyV76EA/401397379.jpg",
+        "categoria": "Internacional",
+        "tags": [
+          "Venezuela",
+          "Petróleo",
+          "EUA"
+        ],
+        "resumo": "Petróleo cai após Trump dizer que Venezuela enviará milhões de barris aos...",
+        "fonte": "Valor Econômico"
+      },
+      {
+        "id": "fe63038d8528",
+        "titulo": "Instituto Empresa diz que nomeação política põe em risco autonomia da CVM",
+        "link": "https://valor.globo.com/financas/noticia/2026/01/07/instituto-empresa-diz-que-nomeao-poltica-pe-em-risco-autonomia-da-cvm.ghtml",
+        "horario": "17:33",
+        "imagem": "https://s2-valor.glbimg.com/sgtldU05TBNs474BwaGpPaAg-Bs=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2024/B/h/nsbCBkSvAkqyeBnNdgkA/brazao-ad-cvm-div.webp",
         "categoria": "Empresas",
         "tags": [],
-        "resumo": "Análise: Trump faz de rede social o reino da intimidação",
+        "resumo": "Instituto Empresa diz que nomeação política põe em risco autonomia da CVM",
         "fonte": "Valor Econômico"
       },
       {
-        "id": "ba63bbe39ab0",
-        "titulo": "MPF pede esclarecimentos à Petrobras e ao Ibama sobre vazamento na Foz do Amazonas",
-        "link": "https://valor.globo.com/empresas/noticia/2026/01/07/mpf-pede-esclarecimentos-a-petrobras-e-ao-ibama-sobre-vazamento-na-foz-do-amazonas.ghtml",
-        "horario": "17:11",
-        "imagem": "https://s2-valor.glbimg.com/_uIdpXbAdQuV21bI8gmW9bBTax0=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/W/3/voM2RMTNuVHJYKi3G2oA/sonda-3.jpeg",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "MPF pede esclarecimentos à Petrobras e ao Ibama sobre vazamento na Foz...",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "3a6157cd34f0",
-        "titulo": "Samsung alerta para aumentos de preços devido à alta dos custos de chips de memória",
-        "link": "https://valor.globo.com/empresas/tecnologia/noticia/2026/01/07/samsung-alerta-para-aumentos-de-precos-devido-a-alta-dos-custos-de-chips-de-memoria.ghtml",
-        "horario": "17:10",
-        "imagem": "https://s2-valor.glbimg.com/SMHFBrleXjN0CbrDK44OSAVxcNE=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2024/B/0/xjEmXDQT2PanaC5hrNVg/409853225.jpg",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Samsung alerta para aumentos de preços devido à alta dos custos de...",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "1a4d90602db4",
-        "titulo": "Conselho Federal de Medicina manda apurar denúncias sobre falta de assistência a Bolsonaro na prisão",
-        "link": "https://valor.globo.com/politica/noticia/2026/01/07/conselho-federal-de-medicina-manda-apurar-denuncias-sobre-falta-de-assistencia-a-bolsonaro-na-prisao.ghtml",
-        "horario": "17:09",
-        "imagem": "https://s2-valor.glbimg.com/4NczzhWxxkTS5JDD6aaSScLcJPI=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/d/X/xMkY9MRBmAUJcIv8Cybw/2025-07-18t141801z-1754403061-rc21pfalmx15-rtrmadp-3-brazil-bolsonaro.jpg",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Conselho Federal de Medicina manda apurar denúncias sobre falta de assistência a...",
+        "id": "1d0e869c5dce",
+        "titulo": "Agente de imigração dos EUA mata mulher a tiros em Minneapolis",
+        "link": "https://valor.globo.com/mundo/noticia/2026/01/07/agente-de-imigracao-dos-eua-mata-mulher-a-tiros-em-minneapolis.ghtml",
+        "horario": "17:26",
+        "imagem": "",
+        "categoria": "Internacional",
+        "tags": [
+          "EUA"
+        ],
+        "resumo": "Agente de imigração dos EUA mata mulher a tiros em Minneapolis",
         "fonte": "Valor Econômico"
       }
     ],
     "InfoMoney": [
       {
-        "id": "a212185643c2",
-        "titulo": "Putin encontra gato e cachorro falantes em popular desenho animado russo",
-        "link": "https://www.infomoney.com.br/mundo/putin-encontra-gato-e-cachorro-falantes-em-popular-desenho-animado-russo/",
-        "horario": "17:09",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/2026-01-07T113145Z_1469660746_RC2BWIA47QMT_RTRMADP_3_RUSSIA-PUTIN-CARTOON.jpg?fit=300%2C169&amp;quality=70&amp;strip=all",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Putin encontra gato e cachorro falantes em popular desenho animado russo",
-        "fonte": "InfoMoney"
-      },
-      {
-        "id": "1af441d0a407",
-        "titulo": "Ouro e prata fecham em queda, em correção de ganhos e após dados dos EUA",
-        "link": "https://www.infomoney.com.br/mercados/ouro-e-prata-fecham-em-queda-em-correcao-de-ganhos-e-apos-dados-dos-eua/",
-        "horario": "17:08",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/12/446064166.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "id": "3c6150366927",
+        "titulo": "Trump diz que não permitirá mais dividendo ou recompra para empresa de defesa nos EUA",
+        "link": "https://www.infomoney.com.br/mercados/trump-diz-que-nao-permitira-mais-dividendo-ou-recompra-para-empresa-de-defesa-nos-eua/",
+        "horario": "17:44",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/2026-01-06T211121Z_1_LYNXMPEM0512E_RTROPTP_4_USA-TRUMP-DRUGPRICING_52bcbf.jpg?fit=300%2C202&amp;quality=70&amp;strip=all",
         "categoria": "Internacional",
         "tags": [
           "EUA"
         ],
-        "resumo": "Ouro e prata fecham em queda, em correção de ganhos e após...",
+        "resumo": "Trump diz que não permitirá mais dividendo ou recompra para empresa de...",
         "fonte": "InfoMoney"
       },
       {
-        "id": "e0e4d80ef9c5",
-        "titulo": "Taxas de DIs curtas fecham estáveis e longas têm altas leves no Brasil",
-        "link": "https://www.infomoney.com.br/mercados/taxas-de-dis-curtas-fecham-estaveis-e-longas-tem-altas-leves-no-brasil/",
-        "horario": "17:05",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/11/dinheiro-decimo-terceiro-salario.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "id": "c942757a0db3",
+        "titulo": "Cartórios lançam ferramentas para validar conteúdos digitais com respaldo jurídico",
+        "link": "https://www.infomoney.com.br/minhas-financas/cartorios-lancam-ferramentas-para-validar-conteudos-digitais-com-respaldo-juridico/",
+        "horario": "17:35",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2024/07/gavel-2492011_640.jpg?fit=300%2C167&amp;quality=70&amp;strip=all",
         "categoria": "Geral",
         "tags": [],
-        "resumo": "Taxas de DIs curtas fecham estáveis e longas têm altas leves no...",
+        "resumo": "Cartórios lançam ferramentas para validar conteúdos digitais com respaldo jurídico",
         "fonte": "InfoMoney"
       },
       {
-        "id": "a74a4c924351",
-        "titulo": "EUA falam em “plano de 3 etapas” para reestruturar Venezuela após captura de Maduro",
-        "link": "https://www.infomoney.com.br/mundo/eua-falam-em-plano-de-3-etapas-para-reestruturar-venezuela-apos-captura-de-maduro/",
-        "horario": "17:00",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/2026-01-03T172654Z_1297765871_RC2TTIAQ5QWM_RTRMADP_3_USA-VENEZUELA.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
-        "categoria": "Internacional",
+        "id": "6468c96412a2",
+        "titulo": "Dólar hoje fecha em leve alta, a R$ 5,386, e interrompe sequência de 4 baixas",
+        "link": "https://www.infomoney.com.br/mercados/dolar-hoje-abertura-fechamento-comercial-turismo-07012026/",
+        "horario": "17:26",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/11/443680853.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "categoria": "Mercados",
         "tags": [
-          "EUA",
-          "Venezuela"
+          "Dólar"
         ],
-        "resumo": "EUA falam em “plano de 3 etapas” para reestruturar Venezuela após captura...",
+        "resumo": "Dólar hoje fecha em leve alta, a R$ 5,386, e interrompe sequência...",
+        "fonte": "InfoMoney"
+      },
+      {
+        "id": "d8650d55f6fa",
+        "titulo": "Petróleo fecha em queda com foco em oferta e noticiário geopolítico global",
+        "link": "https://www.infomoney.com.br/mercados/petroleo-fecha-em-queda-com-foco-em-oferta-e-noticiario-geopolitico-global/",
+        "horario": "17:26",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/10/9421.jpg?fit=300%2C196&amp;quality=70&amp;strip=all",
+        "categoria": "Commodities",
+        "tags": [
+          "Petróleo"
+        ],
+        "resumo": "Petróleo fecha em queda com foco em oferta e noticiário geopolítico global",
         "fonte": "InfoMoney"
       }
     ],
     "Money Times": [
+      {
+        "id": "91a8c22fa919",
+        "titulo": "Concorrência dos EUA reduzirá embarques de soja do Brasil à China em 2026, diz Anec",
+        "link": "https://www.moneytimes.com.br/concorrencia-dos-eua-reduzira-embarques-de-soja-do-brasil-a-china-em-2026-diz-anec-pads/",
+        "horario": "17:29",
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Internacional",
+        "tags": [
+          "EUA"
+        ],
+        "resumo": "Concorrência dos EUA reduzirá embarques de soja do Brasil à China em...",
+        "fonte": "Money Times"
+      },
+      {
+        "id": "bd409bb81fa8",
+        "titulo": "União Europeia pode reduzir impostos sobre fertilizantes para promover acordo com Mercosul",
+        "link": "https://www.moneytimes.com.br/uniao-europeia-pode-reduzir-impostos-sobre-fertilizantes-para-promover-acordo-com-mercosul-pads/",
+        "horario": "17:23",
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "União Europeia pode reduzir impostos sobre fertilizantes para promover acordo com Mercosul",
+        "fonte": "Money Times"
+      },
       {
         "id": "3a87ba9c59c4",
         "titulo": "Dólar avança e fecha a R$ 5,38 após dados de emprego adiarem apostas de corte nos juros dos EUA",
@@ -168,8 +202,8 @@
         "categoria": "Internacional",
         "tags": [
           "EUA",
-          "Juros",
-          "Dólar"
+          "Dólar",
+          "Juros"
         ],
         "resumo": "Dólar avança e fecha a R$ 5,38 após dados de emprego adiarem...",
         "fonte": "Money Times"
@@ -183,34 +217,6 @@
         "categoria": "Empresas",
         "tags": [],
         "resumo": "10 ações para ter na carteira de janeiro e buscar lucros com...",
-        "fonte": "Money Times"
-      },
-      {
-        "id": "0d35276d9824",
-        "titulo": "Dinheiro da venda do petróleo venezuelano será mantido em contas bancárias dos EUA, diz Departamento de Energia",
-        "link": "https://www.moneytimes.com.br/dinheiro-da-venda-do-petroleo-venezuelano-sera-mantido-em-contas-bancarias-dos-eua-diz-departamento-de-energia/",
-        "horario": "16:33",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Internacional",
-        "tags": [
-          "Petróleo",
-          "EUA",
-          "Venezuela"
-        ],
-        "resumo": "Dinheiro da venda do petróleo venezuelano será mantido em contas bancárias dos...",
-        "fonte": "Money Times"
-      },
-      {
-        "id": "e9051731af4c",
-        "titulo": "Lula indica Otto Lobo como presidente da CVM",
-        "link": "https://www.moneytimes.com.br/lula-indica-otto-lobo-como-presidente-da-cvm-gll/",
-        "horario": "16:28",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Política",
-        "tags": [
-          "Lula"
-        ],
-        "resumo": "Lula indica Otto Lobo como presidente da CVM",
         "fonte": "Money Times"
       }
     ]
