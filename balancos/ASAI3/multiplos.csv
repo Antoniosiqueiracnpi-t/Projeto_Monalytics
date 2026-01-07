@@ -1,10 +1,10 @@
 codigo,nome,categoria,unidade,2020,2021,LTM
-P_L,P/L,Valuation,x,1.4934,2.9447,1.2638
-P_VPA,P/VPA,Valuation,x,,10.1798,4.3692
-EV_EBITDA,EV/EBITDA,Valuation,x,,6.2374,3.3096
-EV_EBIT,EV/EBIT,Valuation,x,,9.3006,4.9349
-EV_RECEITA,EV/Receita,Valuation,x,,0.5739,0.3045
-DY,Dividend Yield,Valuation,%,,1.7438,4.0629
+P_L,P/L,Valuation,x,1.4013,2.9447,1.186
+P_VPA,P/VPA,Valuation,x,,10.1798,4.1
+EV_EBITDA,EV/EBITDA,Valuation,x,,6.2374,3.1739
+EV_EBIT,EV/EBIT,Valuation,x,,9.3006,4.7326
+EV_RECEITA,EV/Receita,Valuation,x,,0.5739,0.292
+DY,Dividend Yield,Valuation,%,,1.7438,4.3297
 PAYOUT,Payout,Valuation,%,,19.7587,19.7587
 ROE,ROE,Rentabilidade,%,110.3546,28.5828,28.5828
 ROA,ROA,Rentabilidade,%,8.2674,7.1055,7.1055
@@ -13,7 +13,7 @@ MARGEM_EBITDA,Margem EBITDA,Rentabilidade,%,12.818,9.2004,9.2004
 MARGEM_LIQUIDA,Margem Líquida,Rentabilidade,%,4.3171,4.165,4.165
 DIV_LIQ_EBITDA,Dív.Líq/EBITDA,Endividamento,x,0.9305,1.108,1.108
 DIV_LIQ_PL,Dív.Líq/PL,Endividamento,x,3.0489,2.199,2.199
-ICJ,ICJ,Endividamento,x,4.6682,4.8513,4.8513
+ICJ,ICJ,Endividamento,x,,7.4005,7.4005
 COMPOSICAO_DIVIDA,Composição Dívida,Endividamento,%,27.0719,29.1437,29.1437
 LIQ_CORRENTE,Liquidez Corrente,Liquidez,x,0.9571,0.9688,0.9688
 LIQ_SECA,Liquidez Seca,Liquidez,x,0.5285,0.4823,0.4823
