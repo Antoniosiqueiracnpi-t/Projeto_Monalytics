@@ -1,0 +1,51 @@
+{
+  "empresa": {
+    "cnpj": "92.791.243/0001-03",
+    "nome": "",
+    "ticker": "RANI3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 3,
+  "acionistas": [
+    {
+      "nome": "IRANI PARTICIPAÇÕES S.A",
+      "cpf_cnpj": "86.861.515/0001-00",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 112643764,
+      "percentual_total": 48.869,
+      "acoes_ordinarias": 112643764,
+      "percentual_ordinarias": 48.869,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Habitasul Desenvolvimentos Imobiliários S.A.",
+      "cpf_cnpj": "03.078.261/0001-12",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 15071816,
+      "percentual_total": 6.539,
+      "acoes_ordinarias": 15071816,
+      "percentual_ordinarias": 6.539,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "Companhia Habitasul de Participações",
+      "cpf_cnpj": "87.762.563/0001-03",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2348867,
+      "percentual_total": 1.019,
+      "acoes_ordinarias": 2348867,
+      "percentual_ordinarias": 1.019,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    }
+  ]
+}
