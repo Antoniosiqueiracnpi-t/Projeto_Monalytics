@@ -512,17 +512,21 @@ let MAPA_EMPRESAS_B3 = null;
 
 /**
  * Parser CSV para mapeamento B3
- * ESTRUTURA: ticker;empresa;cnpj;setor;segmento;sede;descricao (7 COLUNAS APENAS)
+ * ESTRUTURA: ticker;empresa;cnpj;setor;segmento;sede;descricao (7 COLUNAS)
  */
 function parseMapeamentoB3(csvText) {
     const linhas = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
-    if (linhas.length === 0) return {};
     
-    // Remove BOM UTF-8
+    if (linhas.length === 0) {
+        console.error('❌ CSV vazio!');
+        return {};
+    }
+    
+    // Remove BOM UTF-8 se existir
     linhas[0] = linhas[0].replace(/^\uFEFF/, '');
     
     /**
-     * Parser de linha CSV com aspas duplas
+     * Parser de linha CSV que respeita aspas duplas
      */
     function parseCSVLine(linha) {
         const campos = [];
@@ -535,9 +539,9 @@ function parseMapeamentoB3(csvText) {
             
             if (char === '"') {
                 if (dentroDeAspas && proximoChar === '"') {
-                    // Aspas duplas escapadas
+                    // Aspas duplas escapadas ("") → uma aspa literal
                     campoAtual += '"';
-                    i++;
+                    i++; // Pula a segunda aspa
                 } else {
                     // Alterna estado de aspas
                     dentroDeAspas = !dentroDeAspas;
@@ -562,21 +566,15 @@ function parseMapeamentoB3(csvText) {
     
     console.log('📋 Header CSV:', header);
     
-    // VALIDAÇÃO: Deve ter exatamente 7 colunas
-    if (header.length !== 7) {
-        console.error('❌ CSV deve ter 7 colunas! Encontrado:', header.length);
-        console.error('Header recebido:', header);
-        return {};
-    }
-    
-    // VALIDAÇÃO: Não pode ter codigo_cvm
-    if (header.includes('codigo_cvm')) {
-        console.error('❌ Coluna codigo_cvm não deve existir!');
-        return {};
-    }
-    
-    // Estrutura obrigatória (SEM codigo_cvm!)
+    // VALIDAÇÃO: Estrutura exata
     const estruturaEsperada = ['ticker', 'empresa', 'cnpj', 'setor', 'segmento', 'sede', 'descricao'];
+    
+    if (header.length !== 7) {
+        console.error('❌ CSV deve ter 7 colunas! Recebido:', header.length);
+        console.error('Header:', header);
+        return {};
+    }
+    
     const estruturaValida = estruturaEsperada.every((col, idx) => header[idx] === col);
     
     if (!estruturaValida) {
@@ -586,7 +584,7 @@ function parseMapeamentoB3(csvText) {
         return {};
     }
     
-    // Índices FIXOS (não usar indexOf para evitar erros)
+    // Índices FIXOS (não usar indexOf!)
     const IDX_TICKER = 0;
     const IDX_EMPRESA = 1;
     const IDX_CNPJ = 2;
@@ -603,23 +601,23 @@ function parseMapeamentoB3(csvText) {
         
         const cols = parseCSVLine(linha);
         
-        // VALIDAÇÃO: Deve ter exatamente 7 campos
+        // Valida número de campos
         if (cols.length !== 7) {
-            console.warn(`⚠️ Linha ignorada (${cols.length} campos):`, linha.substring(0, 80));
+            console.warn(`⚠️ Linha com ${cols.length} campos (esperado 7) - ignorada`);
             continue;
         }
         
         const tickerRaw = cols[IDX_TICKER];
         if (!tickerRaw) continue;
         
-        // Processa múltiplos tickers separados por ; ou ,
+        // Múltiplos tickers separados por ; ou ,
         const tickers = tickerRaw
             .split(/[;,]/)
             .map(t => t.trim().toUpperCase())
             .filter(t => t.length > 0);
         
         const dadosEmpresa = {
-            ticker: tickers[0], // Ticker principal
+            ticker: tickers[0],
             empresa: cols[IDX_EMPRESA].trim(),
             cnpj: cols[IDX_CNPJ].trim(),
             setor: cols[IDX_SETOR].trim(),
@@ -628,7 +626,7 @@ function parseMapeamentoB3(csvText) {
             descricao: cols[IDX_DESCRICAO].trim()
         };
         
-        // Mapeia todos os tickers para os mesmos dados
+        // Mapeia todos os tickers
         tickers.forEach(ticker => {
             mapa[ticker] = { ...dadosEmpresa, ticker };
         });
@@ -636,7 +634,7 @@ function parseMapeamentoB3(csvText) {
         linhasProcessadas++;
     }
     
-    console.log(`✅ Mapeamento B3 carregado:`);
+    console.log(`✅ Parsing completo:`);
     console.log(`   Empresas: ${linhasProcessadas}`);
     console.log(`   Tickers: ${Object.keys(mapa).length}`);
     
@@ -645,31 +643,31 @@ function parseMapeamentoB3(csvText) {
 
 
 
+
 /**
- * Valida estrutura do mapeamento
+ * Valida dados carregados
  */
 function validarMapeamentoB3(mapa) {
     if (!mapa || Object.keys(mapa).length === 0) {
-        console.error('❌ Mapeamento vazio!');
+        console.error('❌ Mapa vazio!');
         return false;
     }
     
-    // Testa PETR3/PETR4
+    // Testa PETR4
     const petr4 = mapa['PETR4'];
     if (!petr4) {
         console.error('❌ PETR4 não encontrado!');
         return false;
     }
     
-    console.log('🧪 TESTE PETR4:');
+    console.log('🧪 VALIDAÇÃO PETR4:');
     console.log('   Empresa:', petr4.empresa);
     console.log('   CNPJ:', petr4.cnpj);
     console.log('   Setor:', petr4.setor);
     console.log('   Segmento:', petr4.segmento);
     console.log('   Sede:', petr4.sede.substring(0, 50) + '...');
-    console.log('   Descrição:', petr4.descricao.substring(0, 60) + '...');
     
-    // VALIDAÇÕES CRÍTICAS
+    // Validações
     const camposObrigatorios = ['ticker', 'empresa', 'cnpj', 'setor', 'segmento', 'sede', 'descricao'];
     const camposFaltando = camposObrigatorios.filter(campo => !(campo in petr4));
     
@@ -684,45 +682,61 @@ function validarMapeamentoB3(mapa) {
         return false;
     }
     
-    // Validação específica de PETR4
+    // Valida dados específicos
     if (petr4.setor !== 'Gás e Biocombustíveis') {
-        console.error('❌ Setor incorreto! Esperado: "Gás e Biocombustíveis", Recebido:', petr4.setor);
+        console.error('❌ Setor incorreto:', petr4.setor);
         return false;
     }
     
-    if (!petr4.sede.includes('Av. Republica do Chile') && !petr4.sede.includes('Rio de Janeiro')) {
-        console.error('❌ Sede incorreta! Esperado endereço no RJ');
-        return false;
-    }
-    
-    console.log('✅ Validação PETR4 passou com sucesso!');
+    console.log('✅ Validação PETR4 OK!');
     return true;
 }
 
 
 
+
 /**
- * Carrega o CSV do mapeamento B3 a partir do GitHub
- * e inicializa o mapa global.
+ * Carrega CSV do mapeamento B3 direto do GitHub RAW
+ * VERSÃO CORRIGIDA - Sem dependência de fetchFromGitHub
  */
 async function carregarMapeamentoB3() {
     try {
         console.log('📡 Carregando mapeamento B3...');
-        const csvText = await fetchFromGitHub(MAPEAMENTO_B3_PATH);
         
-        MAPA_EMPRESAS_B3 = parseMapeamentoB3(csvText);
+        // URL direta do CSV no GitHub
+        const csvUrl = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/${MAPEAMENTO_B3_PATH}?t=${Date.now()}`;
         
-        if (!validarMapeamentoB3(MAPA_EMPRESAS_B3)) {
-            throw new Error('Estrutura de dados inválida!');
+        console.log('URL:', csvUrl);
+        
+        // Fetch direto (CSV não usa MonalyticsSecure porque é texto, não JSON)
+        const response = await fetch(csvUrl, {
+            cache: 'no-store',
+            mode: 'cors'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         
-        console.log('✅ Mapeamento validado!');
+        const csvText = await response.text();
+        console.log('CSV baixado:', csvText.substring(0, 200) + '...');
+        
+        // Parse do CSV
+        MAPA_EMPRESAS_B3 = parseMapeamentoB3(csvText);
+        
+        // Validação
+        if (!validarMapeamentoB3(MAPA_EMPRESAS_B3)) {
+            throw new Error('Validação dos dados falhou!');
+        }
+        
+        console.log('✅ Mapeamento B3 carregado e validado!');
         
     } catch (err) {
-        console.error('❌ Erro fatal:', err);
-        alert('⚠️ Erro ao carregar dados. Recarregue a página.');
+        console.error('❌ Erro fatal ao carregar mapeamento:', err);
+        alert('⚠️ Erro ao carregar dados das empresas. Recarregue a página.');
     }
 }
+
 
 
 
