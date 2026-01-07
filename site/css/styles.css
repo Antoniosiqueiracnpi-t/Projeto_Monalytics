@@ -4469,7 +4469,8 @@ textarea:focus {
 }
 
 .comparador-table {
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
     background: white;
@@ -4774,4 +4775,131 @@ textarea:focus {
 }
 
     
+}
+
+
+
+/* ===================== COMPARADOR: melhorias mobile + rolagem horizontal ===================== */
+.comparador-table-scroll {
+    -webkit-overflow-scrolling: touch;
+}
+
+.comparador-table thead th,
+.comparador-table tbody td {
+    min-width: 110px;
+}
+
+.comparador-table thead th:first-child,
+.comparador-table tbody td:first-child {
+    min-width: 320px;
+}
+
+@media (max-width: 768px) {
+    .comparador-indicators-tabs {
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+    .indicator-tab {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+    .comparador-table thead th {
+        padding: 0.85rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    .comparador-table tbody td {
+        padding: 0.85rem 0.6rem;
+    }
+    .comparador-table thead th:first-child,
+    .comparador-table tbody td:first-child {
+        min-width: 250px;
+    }
+    .comparador-table thead th,
+    .comparador-table tbody td {
+        min-width: 95px;
+    }
+}
+
+/* ===================== MODAL: Seleção de indicadores (+4) do Comparador ===================== */
+#comparadorIndicadoresModal .comparador-indicadores-modal-content {
+    max-width: 720px;
+}
+
+.comparador-indicadores-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.comparador-indicadores-counter {
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.comparador-indicadores-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+@media (max-width: 640px) {
+    .comparador-indicadores-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+.comparador-indicadores-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.comparador-indicadores-item:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.comparador-indicadores-item input[type="checkbox"] {
+    margin-top: 3px;
+}
+
+.comparador-indicadores-item .title {
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.1;
+}
+
+.comparador-indicadores-item .meta {
+    margin-top: 2px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
+.comparador-indicadores-item.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.comparador-indicadores-footer {
+    padding: 18px 30px 26px;
+    border-top: 1px solid #f3f4f6;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    background: white;
+}
+
+.comparador-indicadores-footer-actions {
+    display: flex;
+    gap: 10px;
 }
