@@ -2586,31 +2586,32 @@ async function loadMultiplosData(ticker) {
         console.log(`📊 Carregando múltiplos de ${ticker}...`);
         
         const tickerNorm = normalizarTicker(ticker);
-        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item.ticker) === tickerNorm);
+        
+        // Busca info da empresa no mapeamento (comparação normalizada)
+        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === tickerNorm);
         
         if (!empresaInfo) {
             throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
         }
-        
         const tickerPasta = obterTickerPasta(ticker);
+        
         const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueira/cnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
         
         if (!response.ok) {
             throw new Error(`Múltiplos não encontrados para ${ticker}`);
         }
         
         multiplosData = await response.json();
-        console.log(`✅ Múltiplos carregados: ${Object.keys(multiplosData.ltm.multiplos).length}`);
+        console.log('✅ Múltiplos carregados:', Object.keys(multiplosData.ltm.multiplos).length);
+        
         renderMultiplosSection();
         
     } catch (error) {
-        console.error('Erro ao carregar múltiplos:', error);
+        console.error('❌ Erro ao carregar múltiplos:', error);
         document.getElementById('multiplosSection').style.display = 'none';
     }
 }
-
-
 
 /* ========================================
    COMPOSIÇÃO ACIONÁRIA
@@ -3042,62 +3043,37 @@ function formatDataReferencia(dataStr) {
 // DETECTOR DE SETOR FINANCEIRO
 // Verifica se empresa é intermediário financeiro para ajustar múltiplos
 // ================================================================
-/**
- * Verifica se empresa é intermediário financeiro para ajustar múltiplos
- */
 function isIntermediarioFinanceiro(ticker) {
-    if (!MAPAEMPRESASB3 || !ticker) return false;
+    if (!MAPA_EMPRESAS_B3 || !ticker) return false;
     
     const tickerUpper = ticker.toUpperCase();
-    const empresaInfo = MAPAEMPRESASB3[tickerUpper];
+    const empresaInfo = MAPA_EMPRESAS_B3[tickerUpper];
     
     if (!empresaInfo) return false;
     
+    // Lista de setores considerados intermediários financeiros
     const setoresFinanceiros = [
         'INTERMEDIÁRIOS FINANCEIROS',
+        'INTERMEDIARIOS FINANCEIROS',
         'BANCOS',
-        'SERVIÇOS FINANCEIROS'
+        'SERVIÇOS FINANCEIROS',
+        'SERVICOS FINANCEIROS',
+        'SEGURADORAS',
+        'PREVIDÊNCIA',
+        'PREVIDENCIA'
     ];
     
-    return setoresFinanceiros.some(setor => 
-        empresaInfo.setor.toUpperCase().includes(setor)
-    );
+    const setorNormalizado = (empresaInfo.setor || '').toUpperCase().trim();
+    
+    return setoresFinanceiros.some(sf => setorNormalizado.includes(sf));
 }
 
 
-async function loadMultiplosData(ticker) {
-    try {
-        console.log(`📊 Carregando múltiplos de ${ticker}...`);
-        
-        const tickerNorm = normalizarTicker(ticker);
-        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item.ticker) === tickerNorm);
-        
-        if (!empresaInfo) {
-            throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
-        }
-        
-        const tickerPasta = obterTickerPasta(ticker);
-        const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
-        
-        if (!response.ok) {
-            // ✅ NOVO: Se não encontrar multiplos.json, avisa mas não quebra
-            console.warn(`⚠️ Múltiplos não encontrados para ${ticker} (HTTP ${response.status})`);
-            document.getElementById('multiplosSection').style.display = 'none';
-            return;  // ✅ Retorna sem quebrar o fluxo
-        }
-        
-        multiplosData = await response.json();
-        console.log(`✅ Múltiplos carregados: ${Object.keys(multiplosData.ltm.multiplos).length}`);
-        renderMultiplosSection();
-        
-    } catch (error) {
-        console.error('Erro ao carregar múltiplos:', error);
-        document.getElementById('multiplosSection').style.display = 'none';
-    }
-}
 
 
+/**
+ * Renderiza seção completa de múltiplos
+ */
 function renderMultiplosSection() {
     const section = document.getElementById('multiplosSection');
     if (!section || !multiplosData) return;
@@ -3105,8 +3081,11 @@ function renderMultiplosSection() {
     const ltm = multiplosData.ltm;
     const metadata = multiplosData.metadata;
     
-    // Detecta se é financeira
+    // ================================================================
+    // CORREÇÃO: Detecta se é intermediário financeiro
+    // ================================================================
     const ehFinanceira = isIntermediarioFinanceiro(acaoAtualData.ticker);
+    
     console.log(`🏦 Empresa ${acaoAtualData.ticker} é financeira? ${ehFinanceira}`);
     
     // Agrupa múltiplos por categoria
@@ -3116,17 +3095,33 @@ function renderMultiplosSection() {
         'Endividamento': [],
         'Liquidez': [],
         'Eficiência': [],
-        'Estrutura': []
+        'Estrutura': [] 
     };
     
     for (const [codigo, meta] of Object.entries(metadata)) {
         const valor = ltm.multiplos[codigo];
-        
         if (valor !== undefined && valor !== null) {
-            // Ignora PL_ATIVOS para não-financeiras
-            if (!ehFinanceira && codigo === 'PL_ATIVOS') {
-                console.log(`⚠️ Ignorando ${codigo} - apenas para financeiras`);
-                continue;
+            
+            // ================================================================
+            // FILTRO ESPECÍFICO PARA INTERMEDIÁRIOS FINANCEIROS
+            // ================================================================
+            if (ehFinanceira) {
+                // ❌ REMOVE "Margem Líquida" para financeiras
+                if (codigo === 'MARGEM_LIQUIDA') {
+                    console.log(`⚠️ Ignorando ${codigo} - não aplicável para financeiras`);
+                    continue; // Pula este múltiplo
+                }
+                
+                // ✅ ADICIONA "PL/Ativos" para financeiras
+                if (codigo === 'PL_ATIVOS') {
+                    console.log(`✅ Incluindo ${codigo} - específico para financeiras`);
+                }
+            } else {
+                // ❌ REMOVE "PL/Ativos" para NÃO-financeiras
+                if (codigo === 'PL_ATIVOS') {
+                    console.log(`⚠️ Ignorando ${codigo} - apenas para financeiras`);
+                    continue; // Pula este múltiplo
+                }
             }
             
             categorias[meta.categoria].push({
@@ -3138,24 +3133,63 @@ function renderMultiplosSection() {
             });
         }
     }
+
     
-    // Renderiza HTML (mantém o código de renderização existente)
-    let html = `<div class="multiplos-content">`;
+    // Gera HTML
+    let html = `
+        <div class="multiplos-header">
+            <div class="multiplos-header-icon">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <div class="multiplos-header-text">
+                <h3>Múltiplos Financeiros</h3>
+                <p>Análise fundamentalista baseada em ${ltm.periodo_referencia}</p>
+            </div>
+            <div class="multiplos-timestamp">
+                <i class="fas fa-clock"></i>
+                Preço: R$ ${ltm.preco_utilizado.toFixed(2)} (${ltm.periodo_preco})
+            </div>
+        </div>
+    `;
+    
+    // Renderiza cada categoria
+    const iconesCategoria = {
+        'Valuation': 'fa-dollar-sign',
+        'Rentabilidade': 'fa-chart-line',
+        'Endividamento': 'fa-balance-scale',
+        'Liquidez': 'fa-tint',
+        'Eficiência': 'fa-cogs',
+        'Estrutura': 'fa-building' // ✅ NOVO: Ícone para PL/Ativos
+    };
     
     for (const [categoria, multiplos] of Object.entries(categorias)) {
         if (multiplos.length === 0) continue;
         
+        const categoriaClass = categoria.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        
         html += `
             <div class="multiplos-categoria">
-                <h4>${categoria}</h4>
-                <div class="multiplos-grid">
+                <div class="categoria-header">
+                    <div class="categoria-icon ${categoriaClass}">
+                        <i class="fas ${iconesCategoria[categoria]}"></i>
+                    </div>
+                    <h4 class="categoria-titulo">${categoria}</h4>
+                </div>
+                <div class="categoria-grid">
         `;
         
-        multiplos.forEach(m => {
-            const valorFormatado = formatarMultiplo(m.valor, m.unidade);
+        multiplos.forEach(mult => {
+            const valorFormatado = formatMultiploValor(mult.valor, mult.unidade);
+            
             html += `
-                <div class="multiplo-item" title="${m.formula}">
-                    <div class="multiplo-label">${m.nome}</div>
+                <div class="multiplo-card">
+                    <div class="multiplo-card-header">
+                        <div class="multiplo-nome">${mult.nome}</div>
+                        <button class="btn-historico" onclick="openMultiploModal('${mult.codigo}')">
+                            <i class="fas fa-chart-area"></i>
+                            Histórico
+                        </button>
+                    </div>
                     <div class="multiplo-valor">${valorFormatado}</div>
                 </div>
             `;
@@ -3167,33 +3201,12 @@ function renderMultiplosSection() {
         `;
     }
     
-    html += `</div>`;
     section.innerHTML = html;
     section.style.display = 'block';
-}
-
-// Função auxiliar para formatar valores
-function formatarMultiplo(valor, unidade) {
-    if (valor === null || valor === undefined) return '-';
     
-    const num = Number(valor);
-    if (isNaN(num)) return '-';
-    
-    if (unidade === '%') {
-        return `${num.toFixed(2)}%`;
-    } else if (unidade === 'x') {
-        return `${num.toFixed(2)}x`;
-    } else if (unidade === 'dias') {
-        return `${Math.round(num)} dias`;
-    }
-    return num.toFixed(2);
+    // Cria modal (se não existe)
+    createMultiploModal();
 }
-
-
-
-
-
-
 
 /* ========================================
    HISTÓRICO DE DIVIDENDOS
@@ -4442,41 +4455,39 @@ function initToggleIbov() {
 /* COMPARADOR DE AÇÕES POR SETOR - VERSÃO CORRIGIDA
 /* ========================================================================== */
 
+// Configuração de indicadores
 const INDICADORES_CONFIG = {
     // Empresas Não-Financeiras
-    NAOFINANCEIRAS: {
+    'NAO_FINANCEIRAS': {
         main: [
-            { code: 'PL', label: 'P/L', type: 'menormelhor', format: 'x', allowNegative: false },
-            { code: 'PVPA', label: 'P/VPA', type: 'menormelhor', format: 'x', allowNegative: true },
-            { code: 'ROE', label: 'ROE', type: 'maiormelhor', format: '%', allowNegative: true },
-            { code: 'DY', label: 'DY', type: 'maiormelhor', format: '%', allowNegative: true }
+            { code: 'P_L', label: 'P/L', type: 'menor_melhor', format: 'x', allowNegative: false },
+            { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: true },
+            { code: 'ROE', label: 'ROE', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'DY', label: 'DY', type: 'maior_melhor', format: '%', allowNegative: true }
         ],
         extra: [
-            { code: 'MARGEM_LIQUIDA', label: 'MARGEM LÍQUIDA', type: 'maiormelhor', format: '%', allowNegative: true },
-            { code: 'ROA', label: 'ROA', type: 'maiormelhor', format: '%', allowNegative: true },
-            { code: 'DIVIDALIQUIDAPL', label: 'DÍV. LÍQ./PL', type: 'menormelhor', format: 'x', allowNegative: true },
+            { code: 'MARGEM_LIQUIDA', label: 'MARGEM LÍQUIDA', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'ROA', label: 'ROA', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'DIVIDA_LIQUIDA_PL', label: 'DÍV. LÍQ./PL', type: 'menor_melhor', format: 'x', allowNegative: true },
             { code: 'PAYOUT', label: 'PAYOUT', type: 'equilibrio', format: '%', allowNegative: true }
         ]
     },
-    
     // Bancos e Instituições Financeiras
-    FINANCEIRAS: {
+    'FINANCEIRAS': {
         main: [
-            { code: 'PL', label: 'P/L', type: 'menormelhor', format: 'x', allowNegative: false },
-            { code: 'PVPA', label: 'P/VPA', type: 'menormelhor', format: 'x', allowNegative: true },
-            { code: 'ROE', label: 'ROE', type: 'maiormelhor', format: '%', allowNegative: true },
-            { code: 'DY', label: 'DY', type: 'maiormelhor', format: '%', allowNegative: true }
+            { code: 'P_L', label: 'P/L', type: 'menor_melhor', format: 'x', allowNegative: false },
+            { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: true },
+            { code: 'ROE', label: 'ROE', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'DY', label: 'DY', type: 'maior_melhor', format: '%', allowNegative: true }
         ],
         extra: [
-            { code: 'PL_ATIVOS', label: 'PL/ATIVOS', type: 'maiormelhor', format: '%', allowNegative: false },
-            { code: 'ROA', label: 'ROA', type: 'maiormelhor', format: '%', allowNegative: true },
-            { code: 'INDICE_BASILEIA', label: 'ÍNDICE BASILEIA', type: 'maiormelhor', format: '%', allowNegative: false },
-            { code: 'INDICE_COBERTURA', label: 'ÍNDICE COBERTURA', type: 'maiormelhor', format: '%', allowNegative: false }
+            { code: 'MARGEM_LIQUIDA', label: 'MARGEM LÍQUIDA', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'ROA', label: 'ROA', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'INDICE_BASILEIA', label: 'BASILEIA', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'INDICE_COBERTURA', label: 'COBERTURA', type: 'maior_melhor', format: '%', allowNegative: true }
         ]
     }
 };
-
-
 
 // Setores Financeiros
 const SETORES_FINANCEIROS = [
@@ -4596,7 +4607,7 @@ async function buscarMultiplosEmpresa(ticker) {
         const empresaInfo = mapeamentoB3?.find(e => normalizarTicker(e.ticker) === tickerNorm);
         
         // Extrai múltiplos do LTM
-        const multiplos = data?.ltm?.multiplos;
+        const multiplos = data?.ltm?.multiplos || {};
         
         console.log(`✅ Múltiplos carregados para ${tickerNorm}`);
         
@@ -4605,20 +4616,20 @@ async function buscarMultiplosEmpresa(ticker) {
             empresa: empresaInfo?.empresa || tickerNorm,
             logo: `https://raw.githubusercontent.com/Antoniosiqueira/cnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/logo.png`,
             multiplos: {
-                PL: multiplos?.PL || null,
-                PVPA: multiplos?.PVPA || null,
-                ROE: multiplos?.ROE || null,
-                ROA: multiplos?.ROA || null,
-                DY: multiplos?.DY || null,
-                MARGEM_LIQUIDA: multiplos?.MARGEM_LIQUIDA || null,
-                PAYOUT: multiplos?.PAYOUT || null,
-                DIVIDA_LIQUIDAPL: multiplos?.DIVIDA_LIQUIDAPL || null,
-                INDICE_BASILEIA: multiplos?.INDICE_BASILEIA || null,
-                INDICE_COBERTURA: multiplos?.INDICE_COBERTURA || null
+                P_L: multiplos.P_L || null,
+                P_VPA: multiplos.P_VPA || null,
+                ROE: multiplos.ROE || null,
+                ROA: multiplos.ROA || null,
+                DY: multiplos.DY || null,
+                MARGEM_LIQUIDA: multiplos.MARGEM_LIQUIDA || null,
+                PAYOUT: multiplos.PAYOUT || null,
+                DIVIDA_LIQUIDA_PL: multiplos.DIVIDA_LIQUIDA_PL || null,
+                INDICE_BASILEIA: multiplos.INDICE_BASILEIA || null,
+                INDICE_COBERTURA: multiplos.INDICE_COBERTURA || null
             }
         };
-        
     } catch (error) {
+        // Se foi timeout ou erro de rede, não loga como erro
         if (error.name === 'AbortError') {
             console.warn(`⏱️ Timeout ao buscar ${ticker}`);
         } else {
@@ -4627,8 +4638,6 @@ async function buscarMultiplosEmpresa(ticker) {
         return null;
     }
 }
-
-
 
 
 /**
