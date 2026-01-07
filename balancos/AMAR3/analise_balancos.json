@@ -1,0 +1,42 @@
+{
+  "ticker": "AMAR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T08:34:07.254069",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -6.58,
+      "variacao_total": -51.06,
+      "ultimo_valor": 332.75
+    },
+    "margens": {
+      "bruta": 46.23,
+      "operacional": -2.49,
+      "liquida": 11.99
+    },
+    "rentabilidade": {
+      "roe_medio": 2381.94
+    },
+    "caixa": {
+      "media": 42.23,
+      "ultimo": -81.11
+    },
+    "balanco": {
+      "ativo_total": 2130.54,
+      "patrimonio": 295.43
+    }
+  },
+  "analise_critica": "AMAR3 enfrenta desafios no crescimento, com receita em tendência de queda. Apresenta rentabilidade saudável com margem líquida de 11.99%. Gera excelente retorno sobre o patrimônio (ROE médio de 2381.94%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Excelente retorno sobre patrimônio (ROE: 2381.94%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -6.58%)",
+    "Queima de caixa operacional"
+  ]
+}

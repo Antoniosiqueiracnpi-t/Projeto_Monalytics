@@ -1,0 +1,42 @@
+{
+  "ticker": "PETZ3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T08:34:07.482153",
+  "periodo_analisado": {
+    "inicio": "2021T3",
+    "fim": "2025T3",
+    "total_trimestres": 16,
+    "anos": 4.0
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 14.58,
+      "variacao_total": 66.6,
+      "ultimo_valor": 908.54
+    },
+    "margens": {
+      "bruta": 47.13,
+      "operacional": 4.21,
+      "liquida": 1.52
+    },
+    "rentabilidade": {
+      "roe_medio": 3.32
+    },
+    "caixa": {
+      "media": 118.8,
+      "ultimo": 419.08
+    },
+    "balanco": {
+      "ativo_total": 3944.59,
+      "patrimonio": 1716.26
+    }
+  },
+  "analise_critica": "PETZ3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 1.52%). Retorno sobre patrimônio abaixo do esperado (ROE de 3.32%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 14.58%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (1.52%)",
+    "Retorno sobre patrimônio baixo (ROE: 3.32%)"
+  ]
+}

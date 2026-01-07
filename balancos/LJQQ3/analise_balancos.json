@@ -1,0 +1,41 @@
+{
+  "ticker": "LJQQ3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T08:34:07.421366",
+  "periodo_analisado": {
+    "inicio": "2020T1",
+    "fim": "2025T3",
+    "total_trimestres": 23,
+    "anos": 5.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 15.51,
+      "variacao_total": 120.96,
+      "ultimo_valor": 695.35
+    },
+    "margens": {
+      "bruta": 36.03,
+      "operacional": 5.05,
+      "liquida": 2.42
+    },
+    "rentabilidade": {
+      "roe_medio": 10.58
+    },
+    "caixa": {
+      "media": 37.59,
+      "ultimo": 46.51
+    },
+    "balanco": {
+      "ativo_total": 3666.74,
+      "patrimonio": 448.15
+    }
+  },
+  "analise_critica": "LJQQ3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 2.42%). Retorno sobre patrimônio adequado (ROE de 10.58%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 15.51%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (2.42%)"
+  ]
+}

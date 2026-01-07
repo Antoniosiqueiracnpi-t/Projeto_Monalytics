@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "92.012.467/0001-70",
+    "nome": "",
+    "ticker": "CGRA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "V.R. Grazziotin S.A",
+      "cpf_cnpj": "87.607.263/0001-41",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 8301869,
+      "percentual_total": 40.328,
+      "acoes_ordinarias": 6025486,
+      "percentual_ordinarias": 70.068,
+      "acoes_preferenciais": 2276383,
+      "percentual_preferenciais": 18.992,
+      "posicao": 1
+    },
+    {
+      "nome": "Clique Master Fundo de Investimento em Ações",
+      "cpf_cnpj": "26.840.592/0001-43",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2188415,
+      "percentual_total": 10.631,
+      "acoes_ordinarias": 518150,
+      "percentual_ordinarias": 6.025,
+      "acoes_preferenciais": 1670265,
+      "percentual_preferenciais": 13.935,
+      "posicao": 2
+    }
+  ]
+}

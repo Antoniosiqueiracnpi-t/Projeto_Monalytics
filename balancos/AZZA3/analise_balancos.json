@@ -1,0 +1,40 @@
+{
+  "ticker": "AZZA3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T08:34:07.294681",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 27.22,
+      "variacao_total": 1152.19,
+      "ultimo_valor": 2958.19
+    },
+    "margens": {
+      "bruta": 49.06,
+      "operacional": 10.58,
+      "liquida": 9.9
+    },
+    "rentabilidade": {
+      "roe_medio": 17.63
+    },
+    "caixa": {
+      "media": 48.16,
+      "ultimo": 125.14
+    },
+    "balanco": {
+      "ativo_total": 15516.28,
+      "patrimonio": 8347.71
+    }
+  },
+  "analise_critica": "AZZA3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 9.9%). Gera excelente retorno sobre o patrimônio (ROE médio de 17.63%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 27.22%)",
+    "Excelente retorno sobre patrimônio (ROE: 17.63%)"
+  ],
+  "pontos_atencao": []
+}

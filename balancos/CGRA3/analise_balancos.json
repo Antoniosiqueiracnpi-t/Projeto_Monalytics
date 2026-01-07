@@ -1,0 +1,39 @@
+{
+  "ticker": "CGRA4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T08:34:07.380634",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 7.23,
+      "variacao_total": 108.15,
+      "ultimo_valor": 164.94
+    },
+    "margens": {
+      "bruta": 52.67,
+      "operacional": 12.44,
+      "liquida": 15.72
+    },
+    "rentabilidade": {
+      "roe_medio": 13.89
+    },
+    "caixa": {
+      "media": 28.11,
+      "ultimo": 115.24
+    },
+    "balanco": {
+      "ativo_total": 1313.24,
+      "patrimonio": 957.43
+    }
+  },
+  "analise_critica": "CGRA4 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 15.72%. Retorno sobre patrimônio adequado (ROE de 13.89%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (15.72%)"
+  ],
+  "pontos_atencao": []
+}

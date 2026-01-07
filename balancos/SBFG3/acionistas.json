@@ -1,0 +1,129 @@
+{
+  "empresa": {
+    "cnpj": "13.217.485/0001-11",
+    "nome": "",
+    "ticker": "SBFG3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 9,
+  "acionistas": [
+    {
+      "nome": "Pacipar Participações S.A.",
+      "cpf_cnpj": "07.636.258/0001-28",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 80000000,
+      "percentual_total": 32.712,
+      "acoes_ordinarias": 80000000,
+      "percentual_ordinarias": 32.712,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Nefele Investments, LLC.",
+      "cpf_cnpj": "17.174.128/0001-74",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 23807124,
+      "percentual_total": 9.735,
+      "acoes_ordinarias": 23807124,
+      "percentual_ordinarias": 9.735,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "SEBASTIÃO VICENTE BOMFIM FILHO",
+      "cpf_cnpj": "198.909.316-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 16946436,
+      "percentual_total": 6.929,
+      "acoes_ordinarias": 16946436,
+      "percentual_ordinarias": 6.929,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "XP INVESTIMENTOS CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+      "cpf_cnpj": "02.332.886/0001-04",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 15510124,
+      "percentual_total": 6.342,
+      "acoes_ordinarias": 15510124,
+      "percentual_ordinarias": 6.342,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "Tordesilhas Capital Gestora de Recursos Ltda",
+      "cpf_cnpj": "30.791.155/0001-54",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 12599100,
+      "percentual_total": 5.152,
+      "acoes_ordinarias": 12599100,
+      "percentual_ordinarias": 5.152,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "LARISSA FURLETTI BOMFIM",
+      "cpf_cnpj": "084.165.236-81",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1370420,
+      "percentual_total": 0.56,
+      "acoes_ordinarias": 1370420,
+      "percentual_ordinarias": 0.56,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "LUCAS MOTA BOMFIM",
+      "cpf_cnpj": "109.084.566-97",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 818000,
+      "percentual_total": 0.334,
+      "acoes_ordinarias": 818000,
+      "percentual_ordinarias": 0.334,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    },
+    {
+      "nome": "RIZZA FURLETTI BOMFIM",
+      "cpf_cnpj": "080.844.366-60",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 808000,
+      "percentual_total": 0.33,
+      "acoes_ordinarias": 808000,
+      "percentual_ordinarias": 0.33,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 8
+    },
+    {
+      "nome": "GPCP5 I - Fundo de Investimento em Participações Multiestratégia",
+      "cpf_cnpj": "09.664.870/0001-30",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 582214,
+      "percentual_total": 0.238,
+      "acoes_ordinarias": 582214,
+      "percentual_ordinarias": 0.238,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 9
+    }
+  ]
+}
