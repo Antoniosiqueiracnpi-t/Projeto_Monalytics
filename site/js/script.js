@@ -2511,6 +2511,66 @@ async function loadAcaoData(ticker) {
     }
 }
 
+
+// ============================================================================
+// HOOKS DE CARREGAMENTO SEQUENCIAL - ORDEM CRÍTICA!
+// ============================================================================
+
+// HOOK 1: Acionistas
+const originalLoadAcaoDataWithAcionistas = loadAcaoData;
+loadAcaoData = async function(ticker) {
+    await originalLoadAcaoDataWithAcionistas.call(this, ticker);
+    
+    // Carrega composição acionária
+    await loadAcionistasData(ticker);
+};
+
+// HOOK 2: Múltiplos (DEVE VIR ANTES DO COMPARADOR!)
+const originalLoadAcaoDataWithMultiplos = loadAcaoData;
+loadAcaoData = async function(ticker) {
+    await originalLoadAcaoDataWithMultiplos.call(this, ticker);
+    
+    // Carrega múltiplos financeiros
+    await loadMultiplosData(ticker);
+};
+
+// HOOK 3: Dividendos
+const originalLoadAcaoDataWithDividendos = loadAcaoData;
+loadAcaoData = async function(ticker) {
+    await originalLoadAcaoDataWithDividendos.call(this, ticker);
+    
+    // Carrega histórico de dividendos
+    await loadDividendosHistorico(ticker);
+};
+
+// HOOK 4: Análise I.A
+const originalLoadAcaoDataWithIA = loadAcaoData;
+loadAcaoData = async function(ticker) {
+    await originalLoadAcaoDataWithIA.call(this, ticker);
+    
+    // Carrega análise automática
+    await loadAnaliseBalancos(ticker);
+};
+
+// HOOK 5: Comparador (POR ÚLTIMO!)
+const originalLoadAcaoDataWithComparador = loadAcaoData;
+loadAcaoData = async function(ticker) {
+    await originalLoadAcaoDataWithComparador.call(this, ticker);
+    
+    // Aguarda 500ms para garantir que multiplosData foi processada
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Carrega comparador de ações
+    await carregarComparador(ticker);
+};
+
+console.log('✅ Hooks de carregamento inicializados na ordem correta');
+
+
+
+
+
+
 /* ========================================
    SISTEMA DE MÚLTIPLOS DA EMPRESA
    ======================================== */
@@ -3775,28 +3835,11 @@ function toggleDividendosView(view) {
 }
 
 
-/**
- * HOOK: Adiciona carregamento de dividendos ao carregar ação
- */
-const originalLoadAcaoDataWithDividendos = loadAcaoData;
-loadAcaoData = async function(ticker) {
-    await originalLoadAcaoDataWithDividendos.call(this, ticker);
-    
-    // Carrega histórico de dividendos após carregar a ação
-    await loadDividendosHistorico(ticker);
-};
 
-// HOOK Adiciona comparador (POR ÚLTIMO - após múltiplos e dividendos)
-const originalLoadAcaoDataWithComparador = loadAcaoData;
-loadAcaoData = async function(ticker) {
-    await originalLoadAcaoDataWithComparador.call(this, ticker);
-    
-    // Aguarda 300ms para garantir que multiplosData foi carregada
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    // Carrega comparador de ações
-    await carregarComparador(ticker);
-};
+
+
+
+
 
 
 /**
