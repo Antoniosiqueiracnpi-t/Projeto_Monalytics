@@ -4766,7 +4766,7 @@ function renderizarComparador(empresasComDados, indicadores, melhores) {
 }
 
 /**
- * Carrega e exibe comparador - VERSÃO OTIMIZADA
+ * Carrega e exibe comparador - VERSÃO INDEPENDENTE
  */
 async function carregarComparador(ticker) {
     console.log('🚀 Iniciando carregamento do comparador para:', ticker);
@@ -4805,18 +4805,6 @@ async function carregarComparador(ticker) {
             throw new Error('Mapeamento B3 não carregado após timeout');
         }
         
-        // Aguarda múltiplos da empresa atual estarem carregados (máximo 3 segundos)
-        tentativas = 0;
-        while (!multiplosData && tentativas < 30) {
-            console.log('⏳ Aguardando múltiplos da empresa atual... tentativa', tentativas + 1);
-            await new Promise(resolve => setTimeout(resolve, 100));
-            tentativas++;
-        }
-        
-        if (!multiplosData) {
-            throw new Error('Múltiplos da empresa atual não carregados');
-        }
-        
         // Busca empresas do setor
         const { empresaAtual, empresasSetor, tipoSetor } = buscarEmpresasDoSetor(ticker);
         
@@ -4840,46 +4828,21 @@ async function carregarComparador(ticker) {
         comparadorState.tipoSetor = tipoSetor;
         subtitle.textContent = `Empresas do setor: ${empresaAtual.setor}`;
         
-        console.log(`📊 Preparando comparação com ${empresasSetor.length} empresas do setor...`);
+        console.log(`📊 Buscando múltiplos de todas as empresas (incluindo ${ticker})...`);
         
-        // ===== MONTA DADOS DA EMPRESA ATUAL (já carregados) =====
-        const tickerNorm = normalizarTicker(ticker);
-        const tickerPasta = obterTickerPasta(tickerNorm);
-        
-        const empresasComDados = [{
-            ticker: tickerNorm,
-            empresa: empresaAtual.empresa,
-            logo: `https://raw.githubusercontent.com/Antoniosiqueira/cnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/logo.png`,
-            multiplos: {
-                P_L: multiplosData?.ltm?.multiplos?.P_L || null,
-                P_VPA: multiplosData?.ltm?.multiplos?.P_VPA || null,
-                ROE: multiplosData?.ltm?.multiplos?.ROE || null,
-                ROA: multiplosData?.ltm?.multiplos?.ROA || null,
-                DY: multiplosData?.ltm?.multiplos?.DY || null,
-                MARGEM_LIQUIDA: multiplosData?.ltm?.multiplos?.MARGEM_LIQUIDA || null,
-                PAYOUT: multiplosData?.ltm?.multiplos?.PAYOUT || null,
-                DIVIDA_LIQUIDA_PL: multiplosData?.ltm?.multiplos?.DIVIDA_LIQUIDA_PL || null,
-                INDICE_BASILEIA: multiplosData?.ltm?.multiplos?.INDICE_BASILEIA || null,
-                INDICE_COBERTURA: multiplosData?.ltm?.multiplos?.INDICE_COBERTURA || null
-            }
-        }];
-        
-        console.log('✅ Empresa atual (múltiplos já carregados):', tickerNorm);
-        
-        // ===== BUSCA MÚLTIPLOS DAS OUTRAS EMPRESAS =====
-        const tickersParaComparar = empresasSetor.slice(0, 9).map(e => e.ticker);
-        console.log(`🔍 Buscando múltiplos de ${tickersParaComparar.length} empresas adicionais...`);
+        // ===== BUSCA MÚLTIPLOS DE TODAS AS EMPRESAS (incluindo a atual) =====
+        const tickersParaComparar = [ticker, ...empresasSetor.slice(0, 9).map(e => e.ticker)];
+        console.log(`🔍 Total de empresas para comparar: ${tickersParaComparar.length}`);
         
         const promessas = tickersParaComparar.map(t => buscarMultiplosEmpresa(t));
         const resultados = await Promise.all(promessas);
         
-        // Adiciona empresas que retornaram dados válidos
-        const empresasAdicionais = resultados.filter(r => r !== null);
-        empresasComDados.push(...empresasAdicionais);
+        // Filtra empresas com dados válidos
+        const empresasComDados = resultados.filter(r => r !== null);
         
         console.log(`✅ Total de empresas com dados: ${empresasComDados.length}`);
         
-        // Precisa de pelo menos a empresa atual para mostrar
+        // Precisa de pelo menos 1 empresa
         if (empresasComDados.length < 1) {
             console.warn('⚠️ Nenhum dado disponível');
             loading.style.display = 'none';
@@ -4887,7 +4850,7 @@ async function carregarComparador(ticker) {
             return;
         }
         
-        // Se tem apenas a empresa atual, avisa mas mostra mesmo assim
+        // Se tem apenas a empresa atual, avisa
         if (empresasComDados.length === 1) {
             console.warn('⚠️ Mostrando apenas empresa atual (sem comparação)');
             subtitle.textContent = `${empresaAtual.setor} (dados limitados)`;
