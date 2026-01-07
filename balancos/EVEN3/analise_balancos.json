@@ -1,0 +1,37 @@
+{
+  "ticker": "EVEN3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T22:58:23.316147",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 1.18,
+      "variacao_total": 13.08,
+      "ultimo_valor": 528.82
+    },
+    "margens": {
+      "bruta": 22.78,
+      "operacional": 2.51,
+      "liquida": 8.66
+    },
+    "rentabilidade": {
+      "roe_medio": 8.15
+    },
+    "caixa": {
+      "media": 25.23,
+      "ultimo": 172.49
+    },
+    "balanco": {
+      "ativo_total": 5008.87,
+      "patrimonio": 2272.92
+    }
+  },
+  "analise_critica": "EVEN3 enfrenta desafios no crescimento, com receita em tendência de queda. Opera com margens comprimidas (margem líquida de 8.66%). Retorno sobre patrimônio abaixo do esperado (ROE de 8.15%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": []
+}

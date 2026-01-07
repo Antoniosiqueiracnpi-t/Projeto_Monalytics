@@ -1,0 +1,41 @@
+{
+  "ticker": "KLAS3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T22:58:23.479176",
+  "periodo_analisado": {
+    "inicio": "2020T1",
+    "fim": "2025T3",
+    "total_trimestres": 19,
+    "anos": 4.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 22.77,
+      "variacao_total": 151.71,
+      "ultimo_valor": 219.4
+    },
+    "margens": {
+      "bruta": 26.13,
+      "operacional": 7.49,
+      "liquida": 9.26
+    },
+    "rentabilidade": {
+      "roe_medio": 8.83
+    },
+    "caixa": {
+      "media": -16.71,
+      "ultimo": -44.69
+    },
+    "balanco": {
+      "ativo_total": 1983.76,
+      "patrimonio": 893.15
+    }
+  },
+  "analise_critica": "KLAS3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 9.26%). Retorno sobre patrimônio abaixo do esperado (ROE de 8.83%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 22.77%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

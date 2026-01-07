@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "08.294.224/0001-65",
+    "nome": "",
+    "ticker": "JHSF3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "JHSF PAR S.A.",
+      "cpf_cnpj": "66.727.132/0001-28",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 271742797,
+      "percentual_total": 39.885,
+      "acoes_ordinarias": 271742797,
+      "percentual_ordinarias": 39.885,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "JHSF UK LIMITED",
+      "cpf_cnpj": "51.785.955/0001-32",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Grã-Bretanha (Reino Unido, UK)",
+      "acoes_total": 82831424,
+      "percentual_total": 12.157,
+      "acoes_ordinarias": 82831424,
+      "percentual_ordinarias": 12.157,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "JOSÉ AURIEMO NETO",
+      "cpf_cnpj": "256.393.178-92",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 20396375,
+      "percentual_total": 2.994,
+      "acoes_ordinarias": 20396375,
+      "percentual_ordinarias": 2.994,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "Flatly Global Ltd.",
+      "cpf_cnpj": "22.079.659/0001-18",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Bahamas",
+      "acoes_total": 1710465,
+      "percentual_total": 0.251,
+      "acoes_ordinarias": 1710465,
+      "percentual_ordinarias": 0.251,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    }
+  ]
+}

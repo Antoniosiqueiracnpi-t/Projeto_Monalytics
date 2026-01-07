@@ -1,0 +1,88 @@
+{
+  "ticker": "GFSA3",
+  "total_dividendos": 1.3004,
+  "periodo": "2007-2016",
+  "quantidade_pagamentos": 8,
+  "dividendos": [
+    {
+      "data_com": "2007-02-14",
+      "valor": 0.1,
+      "tipo": "DIVIDENDO",
+      "ano": 2007,
+      "mes": 2,
+      "dia": 14,
+      "trimestre": "T1",
+      "data_pagamento": "2007-02-09"
+    },
+    {
+      "data_com": "2008-04-04",
+      "valor": 0.2084,
+      "tipo": "DIVIDENDO",
+      "ano": 2008,
+      "mes": 4,
+      "dia": 4,
+      "trimestre": "T2",
+      "data_pagamento": "2008-04-04"
+    },
+    {
+      "data_com": "2009-04-30",
+      "valor": 0.2009,
+      "tipo": "DIVIDENDO",
+      "ano": 2009,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2009-04-30"
+    },
+    {
+      "data_com": "2010-04-27",
+      "valor": 0.12112,
+      "tipo": "DIVIDENDO",
+      "ano": 2010,
+      "mes": 4,
+      "dia": 27,
+      "trimestre": "T2",
+      "data_pagamento": "2010-04-27"
+    },
+    {
+      "data_com": "2011-04-29",
+      "valor": 0.229058,
+      "tipo": "DIVIDENDO",
+      "ano": 2011,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2011-04-29"
+    },
+    {
+      "data_com": "2013-12-27",
+      "valor": 0.311122,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2013,
+      "mes": 12,
+      "dia": 27,
+      "trimestre": "T4",
+      "data_pagamento": "2013-12-20"
+    },
+    {
+      "data_com": "2014-04-25",
+      "valor": 0.081668,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 4,
+      "dia": 25,
+      "trimestre": "T2",
+      "data_pagamento": "2014-04-25"
+    },
+    {
+      "data_com": "2016-04-25",
+      "valor": 0.048116,
+      "tipo": "DIVIDENDO",
+      "ano": 2016,
+      "mes": 4,
+      "dia": 25,
+      "trimestre": "T2",
+      "data_pagamento": "2016-04-25"
+    }
+  ]
+}

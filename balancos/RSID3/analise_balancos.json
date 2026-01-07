@@ -1,0 +1,42 @@
+{
+  "ticker": "RSID3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T22:58:23.667690",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2024T3",
+    "total_trimestres": 39,
+    "anos": 9.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -18.99,
+      "variacao_total": -86.48,
+      "ultimo_valor": 33.4
+    },
+    "margens": {
+      "bruta": 409.86,
+      "operacional": -1439.28,
+      "liquida": 2201.39
+    },
+    "rentabilidade": {
+      "roe_medio": 93.43
+    },
+    "caixa": {
+      "media": 7.25,
+      "ultimo": 17.56
+    },
+    "balanco": {
+      "ativo_total": 503.14,
+      "patrimonio": -973.07
+    }
+  },
+  "analise_critica": "RSID3 enfrenta desafios no crescimento, com receita em tendência de queda. Destaca-se pela alta rentabilidade, com margem líquida média de 2201.39%. Gera excelente retorno sobre o patrimônio (ROE médio de 93.43%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (2201.39%)",
+    "Excelente retorno sobre patrimônio (ROE: 93.43%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -18.99%)"
+  ]
+}

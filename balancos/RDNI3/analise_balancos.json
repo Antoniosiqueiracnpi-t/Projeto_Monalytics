@@ -1,0 +1,43 @@
+{
+  "ticker": "RDNI3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T22:58:23.647246",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 41,
+    "anos": 10.2
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -0.54,
+      "variacao_total": -5.25,
+      "ultimo_valor": 123.13
+    },
+    "margens": {
+      "bruta": -10.81,
+      "operacional": -73.53,
+      "liquida": 93.04
+    },
+    "rentabilidade": {
+      "roe_medio": 15.92
+    },
+    "caixa": {
+      "media": -17.08,
+      "ultimo": -40.72
+    },
+    "balanco": {
+      "ativo_total": 1178.14,
+      "patrimonio": 191.05
+    }
+  },
+  "analise_critica": "RDNI3 enfrenta desafios no crescimento, com receita em tendência de queda. Destaca-se pela alta rentabilidade, com margem líquida média de 93.04%. Gera excelente retorno sobre o patrimônio (ROE médio de 15.92%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (93.04%)",
+    "Excelente retorno sobre patrimônio (ROE: 15.92%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -0.54%)",
+    "Queima de caixa operacional"
+  ]
+}

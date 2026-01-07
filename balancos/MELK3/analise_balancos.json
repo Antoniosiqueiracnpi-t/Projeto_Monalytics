@@ -1,0 +1,41 @@
+{
+  "ticker": "MELK3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T22:58:23.544905",
+  "periodo_analisado": {
+    "inicio": "2020T1",
+    "fim": "2025T3",
+    "total_trimestres": 23,
+    "anos": 5.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 11.44,
+      "variacao_total": 81.48,
+      "ultimo_valor": 243.57
+    },
+    "margens": {
+      "bruta": 22.24,
+      "operacional": 6.89,
+      "liquida": 12.13
+    },
+    "rentabilidade": {
+      "roe_medio": 9.64
+    },
+    "caixa": {
+      "media": 6.5,
+      "ultimo": -2.34
+    },
+    "balanco": {
+      "ativo_total": 2692.11,
+      "patrimonio": 1245.43
+    }
+  },
+  "analise_critica": "MELK3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 12.13%. Retorno sobre patrimônio abaixo do esperado (ROE de 9.64%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 11.44%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

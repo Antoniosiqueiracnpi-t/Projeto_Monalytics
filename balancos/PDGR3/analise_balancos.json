@@ -1,0 +1,43 @@
+{
+  "ticker": "PDGR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T22:58:23.606089",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -23.87,
+      "variacao_total": -94.29,
+      "ultimo_valor": 37.71
+    },
+    "margens": {
+      "bruta": 15.16,
+      "operacional": -1224.1,
+      "liquida": 1534.04
+    },
+    "rentabilidade": {
+      "roe_medio": 103.18
+    },
+    "caixa": {
+      "media": 22.66,
+      "ultimo": -8.52
+    },
+    "balanco": {
+      "ativo_total": 504.07,
+      "patrimonio": -3480.72
+    }
+  },
+  "analise_critica": "PDGR3 enfrenta desafios no crescimento, com receita em tendência de queda. Destaca-se pela alta rentabilidade, com margem líquida média de 1534.04%. Gera excelente retorno sobre o patrimônio (ROE médio de 103.18%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (1534.04%)",
+    "Excelente retorno sobre patrimônio (ROE: 103.18%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -23.87%)",
+    "Queima de caixa operacional"
+  ]
+}

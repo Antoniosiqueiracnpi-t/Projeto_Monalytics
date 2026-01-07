@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "12.181.987/0001-77",
+    "nome": "",
+    "ticker": "MELK3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "MELPAR INVEST LTDA",
+      "cpf_cnpj": "52.803.255/0001-96",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 100721687,
+      "percentual_total": 48.83,
+      "acoes_ordinarias": 100721687,
+      "percentual_ordinarias": 48.83,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Real Investor Gestão de Recursos LTDA",
+      "cpf_cnpj": "11.570.951/0001-12",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 38295090,
+      "percentual_total": 18.566,
+      "acoes_ordinarias": 38295090,
+      "percentual_ordinarias": 18.566,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    }
+  ]
+}

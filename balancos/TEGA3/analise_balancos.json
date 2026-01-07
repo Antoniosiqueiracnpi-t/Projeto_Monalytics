@@ -1,0 +1,40 @@
+{
+  "ticker": "TEGA3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T22:58:23.707307",
+  "periodo_analisado": {
+    "inicio": "2021T1",
+    "fim": "2025T3",
+    "total_trimestres": 19,
+    "anos": 4.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 1.53,
+      "variacao_total": 7.07,
+      "ultimo_valor": 316.34
+    },
+    "margens": {
+      "bruta": 26.91,
+      "operacional": 5.17,
+      "liquida": 8.54
+    },
+    "rentabilidade": {
+      "roe_medio": 4.58
+    },
+    "caixa": {
+      "media": -13.79,
+      "ultimo": -91.58
+    },
+    "balanco": {
+      "ativo_total": 4171.33,
+      "patrimonio": 2644.56
+    }
+  },
+  "analise_critica": "TEGA3 enfrenta desafios no crescimento, com receita em tendência de queda. Opera com margens comprimidas (margem líquida de 8.54%). Retorno sobre patrimônio abaixo do esperado (ROE de 4.58%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Retorno sobre patrimônio baixo (ROE: 4.58%)",
+    "Queima de caixa operacional"
+  ]
+}
