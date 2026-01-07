@@ -2009,7 +2009,7 @@ function showError(loadingId, message) {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🎪 Inicializando Carrossel de Destaques...');
     
-    carregarMapeamentoB3();
+    //carregarMapeamentoB3();
     // Inicializa carrossel
     initCarousel();
     
@@ -2083,27 +2083,54 @@ async function loadMapeamentoB3() {
         // Parse CSV usando função robusta
         const rows = parseCSVLine(csvText);
         
+        // Detecta header para suportar 7 ou 8 colunas
+        const header = (rows[0] || []).map(h => String(h).toLowerCase().trim());
+        const hasCodigoCvm = header.includes('codigo_cvm') || header.includes('código_cvm');
+        
         // Remove header e linhas vazias
         const rawData = rows.slice(1)
-            .filter(row => row.length >= 2 && row[0] && row[1])
-            .map(row => ({
+          .filter(row => row.length >= 2 && row[0] && row[1])
+          .map(row => {
+            // CSV atual (7 colunas): ticker;empresa;cnpj;setor;segmento;sede;descricao
+            if (!hasCodigoCvm) {
+              return {
                 ticker: row[0] || '',
                 empresa: row[1] || '',
                 cnpj: row[2] || '',
-                codigo_cvm: row[3] || '',
-                setor: row[4] || '',
-                segmento: row[5] || '',
-                sede: row[6] || '',
-                descricao: row[7] || ''
-            }));
+                codigo_cvm: '',          // mantém a chave sem deslocar índices
+                setor: row[3] || '',
+                segmento: row[4] || '',
+                sede: row[5] || '',
+                descricao: row[6] || ''
+              };
+            }
+        
+            // Caso exista (8 colunas): ticker;empresa;cnpj;codigo_cvm;setor;segmento;sede;descricao
+            return {
+              ticker: row[0] || '',
+              empresa: row[1] || '',
+              cnpj: row[2] || '',
+              codigo_cvm: row[3] || '',
+              setor: row[4] || '',
+              segmento: row[5] || '',
+              sede: row[6] || '',
+              descricao: row[7] || ''
+            };
+          });
         
         console.log(`📊 Empresas carregadas: ${rawData.length}`);
+
         
         // Expande empresas com múltiplos tickers
         mapeamentoB3 = [];
         rawData.forEach(item => {
-            const tickers = item.ticker.split(';').map(t => t.trim()).filter(t => t);
-            const todosTickersStr = item.ticker;
+            //const tickers = item.ticker.split(';').map(t => t.trim()).filter(t => t);
+            const tickers = String(item.ticker)
+              .split(/[;,\/]/)          // aceita ";", "," ou "/"
+              .map(t => t.trim())
+              .filter(Boolean);
+            
+            const todosTickersStr = tickers.join(' / ');
             
             tickers.forEach(ticker => {
                 mapeamentoB3.push({
