@@ -1,33 +1,11 @@
 {
   "ticker": "CALI3",
-  "ultima_atualizacao": "2026-01-05T23:02:27.020077",
+  "ultima_atualizacao": "2026-01-07T20:13:29.635702",
   "periodo": {
-    "inicio": "2020-12-07",
-    "fim": "2026-01-02"
+    "inicio": "2020-12-09",
+    "fim": "2026-01-06"
   },
   "dados": [
-    {
-      "data": "2020-12-07",
-      "abertura": 11.03,
-      "maxima": 11.03,
-      "minima": 11.03,
-      "fechamento": 11.03,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
-    {
-      "data": "2020-12-08",
-      "abertura": 11.03,
-      "maxima": 11.03,
-      "minima": 11.03,
-      "fechamento": 11.03,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-09",
       "abertura": 11.03,
@@ -222,7 +200,7 @@
       "minima": 11.03,
       "fechamento": 11.03,
       "volume": 0,
-      "mm20": 11.03,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -233,7 +211,7 @@
       "minima": 11.03,
       "fechamento": 11.03,
       "volume": 0,
-      "mm20": 11.03,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +531,7 @@
       "fechamento": 11.03,
       "volume": 0,
       "mm20": 11.03,
-      "mm50": 11.03,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -564,7 +542,7 @@
       "fechamento": 11.03,
       "volume": 0,
       "mm20": 11.03,
-      "mm50": 11.03,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2182,7 @@
       "volume": 0,
       "mm20": 11.03,
       "mm50": 11.03,
-      "mm200": 11.03
+      "mm200": null
     },
     {
       "data": "2021-09-29",
@@ -2215,7 +2193,7 @@
       "volume": 0,
       "mm20": 11.03,
       "mm50": 11.03,
-      "mm200": 11.03
+      "mm200": null
     },
     {
       "data": "2021-09-30",
@@ -13898,6 +13876,28 @@
       "mm20": 17.71,
       "mm50": 17.04,
       "mm200": 21.52
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 16.05,
+      "maxima": 16.05,
+      "minima": 16.05,
+      "fechamento": 16.05,
+      "volume": 0,
+      "mm20": 17.61,
+      "mm50": 17.04,
+      "mm200": 21.48
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 16.05,
+      "maxima": 16.05,
+      "minima": 16.05,
+      "fechamento": 16.05,
+      "volume": 0,
+      "mm20": 17.51,
+      "mm50": 17.03,
+      "mm200": 21.43
     }
   ],
   "estatisticas": {
