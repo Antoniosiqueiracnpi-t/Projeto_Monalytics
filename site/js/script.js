@@ -3094,7 +3094,7 @@ async function loadMultiplosData(ticker) {
         
         const tickerPasta = obterTickerPasta(ticker);
         const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueira/cnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
         
         if (!response.ok) {
             // ✅ NOVO: Se não encontrar multiplos.json, avisa mas não quebra
@@ -4627,7 +4627,7 @@ async function buscarMultiplosEmpresa(ticker) {
         console.log(`📈 Buscando múltiplos de ${tickerNorm} (pasta: ${tickerPasta})`);
         
         const timestamp = new Date().getTime();
-        const url = `https://raw.githubusercontent.com/Antoniosiqueira/cnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`;
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`;
         
         // ✅ Timeout de 3 segundos
         const controller = new AbortController();
@@ -4654,7 +4654,7 @@ async function buscarMultiplosEmpresa(ticker) {
         return {
             ticker: tickerNorm,
             empresa: empresaInfo?.empresa || tickerNorm,
-            logo: `https://raw.githubusercontent.com/Antoniosiqueira/cnpi-t/ProjetoMonalytics/main/balancos/${tickerPasta}/logo.png`,
+            logo: `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/logo.png`,
             multiplos: {
                 PL: multiplos?.PL || null,
                 PVPA: multiplos?.PVPA || null,
