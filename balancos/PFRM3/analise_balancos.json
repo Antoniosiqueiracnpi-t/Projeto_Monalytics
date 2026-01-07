@@ -1,0 +1,42 @@
+{
+  "ticker": "PFRM3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T09:53:44.064720",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 12.55,
+      "variacao_total": 246.01,
+      "ultimo_valor": 2850.07
+    },
+    "margens": {
+      "bruta": 14.96,
+      "operacional": 1.99,
+      "liquida": 1.05
+    },
+    "rentabilidade": {
+      "roe_medio": 5.53
+    },
+    "caixa": {
+      "media": 30.44,
+      "ultimo": 372.72
+    },
+    "balanco": {
+      "ativo_total": 5636.17,
+      "patrimonio": 1672.42
+    }
+  },
+  "analise_critica": "PFRM3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 1.05%). Retorno sobre patrimônio abaixo do esperado (ROE de 5.53%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 12.55%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (1.05%)",
+    "Retorno sobre patrimônio baixo (ROE: 5.53%)"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "ticker": "VVEO3",
+  "total_dividendos": 0.8194,
+  "periodo": "2021-2024",
+  "quantidade_pagamentos": 4,
+  "dividendos": [
+    {
+      "data_com": "2021-12-28",
+      "valor": 0.248605,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2021,
+      "mes": 12,
+      "dia": 28,
+      "trimestre": "T4",
+      "data_pagamento": "2021-12-22"
+    },
+    {
+      "data_com": "2022-04-29",
+      "valor": 0.157441,
+      "tipo": "DIVIDENDO",
+      "ano": 2022,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2022-04-29"
+    },
+    {
+      "data_com": "2022-12-26",
+      "valor": 0.276873,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2022,
+      "mes": 12,
+      "dia": 26,
+      "trimestre": "T4",
+      "data_pagamento": "2022-12-21"
+    },
+    {
+      "data_com": "2024-04-30",
+      "valor": 0.136522,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2024-04-30"
+    }
+  ]
+}

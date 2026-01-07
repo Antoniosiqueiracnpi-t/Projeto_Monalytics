@@ -1,0 +1,42 @@
+{
+  "ticker": "PCAR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T09:53:44.044461",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -11.89,
+      "variacao_total": -73.53,
+      "ultimo_valor": 4556.0
+    },
+    "margens": {
+      "bruta": 22.31,
+      "operacional": 5.04,
+      "liquida": -58.55
+    },
+    "rentabilidade": {
+      "roe_medio": 16.27
+    },
+    "caixa": {
+      "media": 414.23,
+      "ultimo": 260.0
+    },
+    "balanco": {
+      "ativo_total": 18148.0,
+      "patrimonio": 2703.0
+    }
+  },
+  "analise_critica": "PCAR3 enfrenta desafios no crescimento, com receita em tendência de queda. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Gera excelente retorno sobre o patrimônio (ROE médio de 16.27%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Excelente retorno sobre patrimônio (ROE: 16.27%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -11.89%)",
+    "Margem líquida comprimida (-58.55%)"
+  ]
+}

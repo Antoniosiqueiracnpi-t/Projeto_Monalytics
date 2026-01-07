@@ -1,0 +1,42 @@
+{
+  "ticker": "PGMN3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T09:53:44.082817",
+  "periodo_analisado": {
+    "inicio": "2022T3",
+    "fim": "2025T3",
+    "total_trimestres": 12,
+    "anos": 3.0
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 17.2,
+      "variacao_total": 54.74,
+      "ultimo_valor": 3853.22
+    },
+    "margens": {
+      "bruta": 31.77,
+      "operacional": 4.87,
+      "liquida": 0.88
+    },
+    "rentabilidade": {
+      "roe_medio": 4.36
+    },
+    "caixa": {
+      "media": 100.77,
+      "ultimo": 13.81
+    },
+    "balanco": {
+      "ativo_total": 9267.61,
+      "patrimonio": 2859.8
+    }
+  },
+  "analise_critica": "PGMN3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 0.88%). Retorno sobre patrimônio abaixo do esperado (ROE de 4.36%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 17.2%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (0.88%)",
+    "Retorno sobre patrimônio baixo (ROE: 4.36%)"
+  ]
+}

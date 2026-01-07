@@ -1,0 +1,77 @@
+{
+  "empresa": {
+    "cnpj": "24.990.777/0001-09",
+    "nome": "",
+    "ticker": "GMAT3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 5,
+  "acionistas": [
+    {
+      "nome": "ILSON MATEUS RODRIGUES",
+      "cpf_cnpj": "225.840.133-04",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 936082579,
+      "percentual_total": 41.632,
+      "acoes_ordinarias": 936082579,
+      "percentual_ordinarias": 41.632,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "MARIA BARROS PINHEIRO",
+      "cpf_cnpj": "453.024.723-68",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 343439348,
+      "percentual_total": 15.274,
+      "acoes_ordinarias": 343439348,
+      "percentual_ordinarias": 15.274,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "DENÍLSON PINHEIRO RODRIGUES",
+      "cpf_cnpj": "623.427.623-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 249836039,
+      "percentual_total": 11.111,
+      "acoes_ordinarias": 249836039,
+      "percentual_ordinarias": 11.111,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "ILSON MATEUS RODRIGUES JUNIOR",
+      "cpf_cnpj": "623.427.893-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 223476295,
+      "percentual_total": 9.939,
+      "acoes_ordinarias": 223476295,
+      "percentual_ordinarias": 9.939,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "RADIX HOLDING LTDA",
+      "cpf_cnpj": "50.341.611/0001-71",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 24923255,
+      "percentual_total": 1.108,
+      "acoes_ordinarias": 24923255,
+      "percentual_ordinarias": 1.108,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    }
+  ]
+}
