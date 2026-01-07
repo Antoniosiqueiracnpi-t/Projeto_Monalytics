@@ -3039,18 +3039,6 @@ function formatDataReferencia(dataStr) {
     return `${dia} de ${mesNome} de ${ano}`;
 }
 
-/**
- * HOOK: Adiciona carregamento de acionistas ao carregar ação
- */
-const originalLoadAcaoDataWithAcionistas = loadAcaoData;
-loadAcaoData = async function(ticker) {
-    await originalLoadAcaoDataWithAcionistas.call(this, ticker);
-    
-    // Carrega composição acionária após carregar a ação
-    await loadAcionistasData(ticker);
-};
-
-
 // ================================================================
 // DETECTOR DE SETOR FINANCEIRO
 // Verifica se empresa é intermediário financeiro para ajustar múltiplos
