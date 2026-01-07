@@ -632,11 +632,10 @@ function atualizarCardEmpresa(tickerSelecionado) {
           a.className = 'ticker-similar';
           a.textContent = e.ticker;
           a.addEventListener('click', evt => {
-            evt.preventDefault();
-            if (typeof selecionarTicker === 'function') {
-              selecionarTicker(e.ticker);
-            }
+              evt.preventDefault();
+              loadAcaoData(e.ticker);
           });
+
           mesmoSetorEl.appendChild(a);
         });
     }
