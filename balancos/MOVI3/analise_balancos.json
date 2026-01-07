@@ -1,0 +1,40 @@
+{
+  "ticker": "MOVI3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T22:33:42.733523",
+  "periodo_analisado": {
+    "inicio": "2015T2",
+    "fim": "2025T3",
+    "total_trimestres": 39,
+    "anos": 9.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 30.48,
+      "variacao_total": 1152.35,
+      "ultimo_valor": 3765.84
+    },
+    "margens": {
+      "bruta": 29.48,
+      "operacional": 16.44,
+      "liquida": 5.22
+    },
+    "rentabilidade": {
+      "roe_medio": 12.92
+    },
+    "caixa": {
+      "media": -305.98,
+      "ultimo": 1642.75
+    },
+    "balanco": {
+      "ativo_total": 29641.56,
+      "patrimonio": 2788.63
+    }
+  },
+  "analise_critica": "MOVI3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 5.22%). Retorno sobre patrimônio adequado (ROE de 12.92%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 30.48%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

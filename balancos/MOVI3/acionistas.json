@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "21.314.559/0001-66",
+    "nome": "",
+    "ticker": "MOVI3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "SIMPAR S.A.",
+      "cpf_cnpj": "07.415.333/0001-20",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 206657246,
+      "percentual_total": 59.396,
+      "acoes_ordinarias": 206657246,
+      "percentual_ordinarias": 59.396,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    }
+  ]
+}

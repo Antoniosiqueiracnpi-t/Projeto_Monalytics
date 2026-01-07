@@ -1,33 +1,11 @@
 {
   "ticker": "SEER3",
-  "ultima_atualizacao": "2026-01-05T23:02:47.282202",
+  "ultima_atualizacao": "2026-01-07T22:32:06.768185",
   "periodo": {
-    "inicio": "2020-12-07",
-    "fim": "2026-01-02"
+    "inicio": "2020-12-09",
+    "fim": "2026-01-06"
   },
   "dados": [
-    {
-      "data": "2020-12-07",
-      "abertura": 14.37,
-      "maxima": 14.71,
-      "minima": 14.19,
-      "fechamento": 14.29,
-      "volume": 967000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
-    {
-      "data": "2020-12-08",
-      "abertura": 14.28,
-      "maxima": 14.5,
-      "minima": 14.12,
-      "fechamento": 14.31,
-      "volume": 763600,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-09",
       "abertura": 14.32,
@@ -222,7 +200,7 @@
       "minima": 13.58,
       "fechamento": 13.79,
       "volume": 690000,
-      "mm20": 14.62,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -233,7 +211,7 @@
       "minima": 13.83,
       "fechamento": 14.09,
       "volume": 660200,
-      "mm20": 14.61,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +531,7 @@
       "fechamento": 12.77,
       "volume": 656000,
       "mm20": 13.95,
-      "mm50": 14.37,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -564,7 +542,7 @@
       "fechamento": 12.53,
       "volume": 749800,
       "mm20": 13.86,
-      "mm50": 14.34,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2182,7 @@
       "volume": 732700,
       "mm20": 12.1,
       "mm50": 13.71,
-      "mm200": 13.99
+      "mm200": null
     },
     {
       "data": "2021-09-29",
@@ -2215,7 +2193,7 @@
       "volume": 438800,
       "mm20": 12.03,
       "mm50": 13.6,
-      "mm200": 13.97
+      "mm200": null
     },
     {
       "data": "2021-09-30",
@@ -13898,16 +13876,38 @@
       "mm20": 9.38,
       "mm50": 9.76,
       "mm200": 8.83
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 9.68,
+      "maxima": 9.69,
+      "minima": 9.36,
+      "fechamento": 9.52,
+      "volume": 1347500,
+      "mm20": 9.38,
+      "mm50": 9.74,
+      "mm200": 8.85
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 9.59,
+      "maxima": 9.8,
+      "minima": 9.48,
+      "fechamento": 9.6,
+      "volume": 1213400,
+      "mm20": 9.38,
+      "mm50": 9.73,
+      "mm200": 8.88
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 14.29,
-    "preco_atual": 9.61,
-    "variacao_periodo": -32.74,
+    "preco_inicial": 14.03,
+    "preco_atual": 9.6,
+    "variacao_periodo": -31.59,
     "maxima_periodo": 18.47,
     "minima_periodo": 2.74,
-    "volume_medio": 822103,
+    "volume_medio": 822761,
     "tendencia": "indefinida"
   }
 }

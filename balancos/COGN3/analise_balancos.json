@@ -1,0 +1,39 @@
+{
+  "ticker": "COGN3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T22:33:42.673698",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 1.61,
+      "variacao_total": 18.29,
+      "ultimo_valor": 1523.37
+    },
+    "margens": {
+      "bruta": 61.95,
+      "operacional": 9.16,
+      "liquida": 28.45
+    },
+    "rentabilidade": {
+      "roe_medio": 10.06
+    },
+    "caixa": {
+      "media": 241.18,
+      "ultimo": 995.2
+    },
+    "balanco": {
+      "ativo_total": 23822.53,
+      "patrimonio": 13885.8
+    }
+  },
+  "analise_critica": "COGN3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 28.45%. Retorno sobre patrimônio adequado (ROE de 10.06%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (28.45%)"
+  ],
+  "pontos_atencao": []
+}

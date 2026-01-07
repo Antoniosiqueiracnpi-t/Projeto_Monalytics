@@ -1,0 +1,42 @@
+{
+  "ticker": "DOTZ3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T22:33:42.712626",
+  "periodo_analisado": {
+    "inicio": "2021T1",
+    "fim": "2025T3",
+    "total_trimestres": 19,
+    "anos": 4.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 17.13,
+      "variacao_total": 103.7,
+      "ultimo_valor": 51.74
+    },
+    "margens": {
+      "bruta": 85.88,
+      "operacional": -36.89,
+      "liquida": 41.55
+    },
+    "rentabilidade": {
+      "roe_medio": null
+    },
+    "caixa": {
+      "media": -13.23,
+      "ultimo": -11.47
+    },
+    "balanco": {
+      "ativo_total": 223.85,
+      "patrimonio": -248.75
+    }
+  },
+  "analise_critica": "DOTZ3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 41.55%. Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 17.13%)",
+    "Alta margem de lucro líquido (41.55%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}
