@@ -1,0 +1,39 @@
+{
+  "ticker": "POSI3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T07:43:22.660557",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 5.66,
+      "variacao_total": 78.24,
+      "ultimo_valor": 805.64
+    },
+    "margens": {
+      "bruta": 24.55,
+      "operacional": 6.5,
+      "liquida": 3.25
+    },
+    "rentabilidade": {
+      "roe_medio": 10.29
+    },
+    "caixa": {
+      "media": 24.59,
+      "ultimo": 331.2
+    },
+    "balanco": {
+      "ativo_total": 4446.01,
+      "patrimonio": 1608.41
+    }
+  },
+  "analise_critica": "POSI3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 3.25%). Retorno sobre patrimônio adequado (ROE de 10.29%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Margem líquida comprimida (3.25%)"
+  ]
+}

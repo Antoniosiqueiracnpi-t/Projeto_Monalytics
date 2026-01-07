@@ -1,9 +1,9 @@
 {
   "ticker": "INTB3",
-  "ultima_atualizacao": "2026-01-05T23:02:25.382922",
+  "ultima_atualizacao": "2026-01-07T07:42:52.962399",
   "periodo": {
     "inicio": "2021-02-08",
-    "fim": "2026-01-02"
+    "fim": "2026-01-06"
   },
   "dados": [
     {
@@ -4029,7 +4029,7 @@
       "fechamento": 23.37,
       "volume": 1671400,
       "mm20": 21.24,
-      "mm50": 21.74,
+      "mm50": 21.73,
       "mm200": 23.8
     },
     {
@@ -13458,16 +13458,38 @@
       "mm20": 12.0,
       "mm50": 11.66,
       "mm200": 12.2
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 11.64,
+      "maxima": 11.88,
+      "minima": 11.58,
+      "fechamento": 11.74,
+      "volume": 994300,
+      "mm20": 11.98,
+      "mm50": 11.69,
+      "mm200": 12.21
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 11.74,
+      "maxima": 11.98,
+      "minima": 11.74,
+      "fechamento": 11.83,
+      "volume": 1572400,
+      "mm20": 11.96,
+      "mm50": 11.71,
+      "mm200": 12.21
     }
   ],
   "estatisticas": {
-    "total_dias": 1223,
+    "total_dias": 1225,
     "preco_inicial": 16.15,
-    "preco_atual": 11.6,
-    "variacao_periodo": -28.15,
+    "preco_atual": 11.83,
+    "variacao_periodo": -26.73,
     "maxima_periodo": 31.13,
     "minima_periodo": 10.15,
-    "volume_medio": 1560718,
+    "volume_medio": 1560265,
     "tendencia": "indefinida"
   }
 }

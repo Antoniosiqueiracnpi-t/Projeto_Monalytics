@@ -1,22 +1,11 @@
 {
   "ticker": "IBOV",
-  "ultima_atualizacao": "2026-01-06T22:34:39.340263",
+  "ultima_atualizacao": "2026-01-07T07:42:52.375324",
   "periodo": {
-    "inicio": "2020-12-08",
-    "fim": "2026-01-05"
+    "inicio": "2020-12-09",
+    "fim": "2026-01-06"
   },
   "dados": [
-    {
-      "data": "2020-12-08",
-      "abertura": 113590.0,
-      "maxima": 114381.0,
-      "minima": 112820.0,
-      "fechamento": 113571.0,
-      "volume": 8810900,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-09",
       "abertura": 113799.0,
@@ -222,7 +211,7 @@
       "minima": 122386.0,
       "fechamento": 125077.0,
       "volume": 11085800,
-      "mm20": 117711.5,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 115668.0,
       "volume": 11399300,
       "mm20": 117987.25,
-      "mm50": 118480.82,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 11372600,
       "mm20": 114017.65,
       "mm50": 118574.76,
-      "mm200": 119998.17
+      "mm200": null
     },
     {
       "data": "2021-09-30",
@@ -13898,16 +13887,27 @@
       "mm20": 159854.0,
       "mm50": 155943.06,
       "mm200": 141875.89
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 161870.0,
+      "maxima": 164135.0,
+      "minima": 161870.0,
+      "fechamento": 163664.0,
+      "volume": 8412600,
+      "mm20": 159949.45,
+      "mm50": 156334.64,
+      "mm200": 142031.67
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 113571.0,
-    "preco_atual": 161870.0,
-    "variacao_periodo": 42.53,
+    "preco_inicial": 112722.0,
+    "preco_atual": 163664.0,
+    "variacao_periodo": 45.19,
     "maxima_periodo": 164456.0,
     "minima_periodo": 96121.0,
-    "volume_medio": 10635500,
+    "volume_medio": 10635184,
     "tendencia": "alta"
   }
 }
