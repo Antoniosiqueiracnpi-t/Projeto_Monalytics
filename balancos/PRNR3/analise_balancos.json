@@ -1,0 +1,41 @@
+{
+  "ticker": "PRNR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-07T21:59:45.811458",
+  "periodo_analisado": {
+    "inicio": "2017T1",
+    "fim": "2025T3",
+    "total_trimestres": 35,
+    "anos": 8.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 25.44,
+      "variacao_total": 586.79,
+      "ultimo_valor": 359.13
+    },
+    "margens": {
+      "bruta": 17.27,
+      "operacional": 4.2,
+      "liquida": 3.19
+    },
+    "rentabilidade": {
+      "roe_medio": 10.24
+    },
+    "caixa": {
+      "media": 6.51,
+      "ultimo": 27.46
+    },
+    "balanco": {
+      "ativo_total": 1555.69,
+      "patrimonio": 515.06
+    }
+  },
+  "analise_critica": "PRNR3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 3.19%). Retorno sobre patrimônio adequado (ROE de 10.24%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 25.44%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (3.19%)"
+  ]
+}

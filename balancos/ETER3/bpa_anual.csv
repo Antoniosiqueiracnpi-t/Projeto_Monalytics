@@ -1,0 +1,683 @@
+﻿data_fim,trimestre,cd_conta,ds_conta,valor_mil
+2015-12-31,T4,1,Ativo Total,933194.0
+2015-12-31,T4,1.01,Ativo Circulante,412320.0
+2015-12-31,T4,1.01.01,Caixa e Equivalentes de Caixa,5578.0
+2015-12-31,T4,1.01.02,Aplicações Financeiras,16734.0
+2015-12-31,T4,1.01.02.01,Aplicações Financeiras Avaliadas a Valor Justo,0.0
+2015-12-31,T4,1.01.02.01.01,Títulos para Negociação,0.0
+2015-12-31,T4,1.01.02.01.02,Títulos Disponíveis para Venda,0.0
+2015-12-31,T4,1.01.02.02,Aplicações Financeiras Avaliadas ao Custo Amortizado,16734.0
+2015-12-31,T4,1.01.02.02.01,Títulos Mantidos até o Vencimento,16734.0
+2015-12-31,T4,1.01.03,Contas a Receber,172342.0
+2015-12-31,T4,1.01.03.01,Clientes,172342.0
+2015-12-31,T4,1.01.03.02,Outras Contas a Receber,0.0
+2015-12-31,T4,1.01.04,Estoques,184383.0
+2015-12-31,T4,1.01.05,Ativos Biológicos,0.0
+2015-12-31,T4,1.01.06,Tributos a Recuperar,15083.0
+2015-12-31,T4,1.01.06.01,Tributos Correntes a Recuperar,15083.0
+2015-12-31,T4,1.01.07,Despesas Antecipadas,4215.0
+2015-12-31,T4,1.01.08,Outros Ativos Circulantes,13985.0
+2015-12-31,T4,1.01.08.01,Ativos Não-Correntes a Venda,0.0
+2015-12-31,T4,1.01.08.02,Ativos de Operações Descontinuadas,0.0
+2015-12-31,T4,1.01.08.03,Outros,13985.0
+2015-12-31,T4,1.01.08.03.01,Partes Relacionadas,2818.0
+2015-12-31,T4,1.01.08.03.02,Outros,11167.0
+2015-12-31,T4,1.02,Ativo Não Circulante,520874.0
+2015-12-31,T4,1.02.01,Ativo Realizável a Longo Prazo,110398.0
+2015-12-31,T4,1.02.01.01,Aplicações Financeiras Avaliadas a Valor Justo,0.0
+2015-12-31,T4,1.02.01.01.01,Títulos para Negociação,0.0
+2015-12-31,T4,1.02.01.01.02,Títulos Disponíveis para Venda,0.0
+2015-12-31,T4,1.02.01.02,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2015-12-31,T4,1.02.01.02.01,Títulos Mantidos até o Vencimento,0.0
+2015-12-31,T4,1.02.01.03,Contas a Receber,2807.0
+2015-12-31,T4,1.02.01.03.01,Clientes,0.0
+2015-12-31,T4,1.02.01.03.02,Outras Contas a Receber,2807.0
+2015-12-31,T4,1.02.01.04,Estoques,0.0
+2015-12-31,T4,1.02.01.05,Ativos Biológicos,0.0
+2015-12-31,T4,1.02.01.06,Tributos Diferidos,63823.0
+2015-12-31,T4,1.02.01.06.01,Imposto de Renda e Contribuição Social Diferidos,63823.0
+2015-12-31,T4,1.02.01.07,Despesas Antecipadas,0.0
+2015-12-31,T4,1.02.01.08,Créditos com Partes Relacionadas,0.0
+2015-12-31,T4,1.02.01.08.01,Créditos com Coligadas,0.0
+2015-12-31,T4,1.02.01.08.03,Créditos com Controladores,0.0
+2015-12-31,T4,1.02.01.08.04,Créditos com Outras Partes Relacionadas,0.0
+2015-12-31,T4,1.02.01.09,Outros Ativos Não Circulantes,43768.0
+2015-12-31,T4,1.02.01.09.01,Ativos Não-Correntes a Venda,0.0
+2015-12-31,T4,1.02.01.09.02,Ativos de Operações Descontinuadas,0.0
+2015-12-31,T4,1.02.01.09.03,Impostos a Recuperar,24765.0
+2015-12-31,T4,1.02.01.09.04,Depósitos Judiciais e Incentivos Fiscais,19003.0
+2015-12-31,T4,1.02.02,Investimentos,24782.0
+2015-12-31,T4,1.02.02.01,Participações Societárias,24782.0
+2015-12-31,T4,1.02.02.01.01,Participações em Coligadas,24782.0
+2015-12-31,T4,1.02.02.01.04,Outras Participações Societárias,0.0
+2015-12-31,T4,1.02.02.02,Propriedades para Investimento,0.0
+2015-12-31,T4,1.02.03,Imobilizado,354047.0
+2015-12-31,T4,1.02.03.01,Imobilizado em Operação,341215.0
+2015-12-31,T4,1.02.03.01.01,Imobilizado em Operação,345104.0
+2015-12-31,T4,1.02.03.01.02,Provisão para Perda com Imobilizado,-3889.0
+2015-12-31,T4,1.02.03.02,Imobilizado Arrendado,0.0
+2015-12-31,T4,1.02.03.03,Imobilizado em Andamento,12832.0
+2015-12-31,T4,1.02.04,Intangível,31647.0
+2015-12-31,T4,1.02.04.01,Intangíveis,11652.0
+2015-12-31,T4,1.02.04.01.01,Contrato de Concessão,0.0
+2015-12-31,T4,1.02.04.01.02,Software,8469.0
+2015-12-31,T4,1.02.04.01.03,Outros Intangíveis,3183.0
+2015-12-31,T4,1.02.04.02,Goodwill,19995.0
+2016-12-31,T4,1,Ativo Total,842448.0
+2016-12-31,T4,1.01,Ativo Circulante,356975.0
+2016-12-31,T4,1.01.01,Caixa e Equivalentes de Caixa,5143.0
+2016-12-31,T4,1.01.02,Aplicações Financeiras,2708.0
+2016-12-31,T4,1.01.02.01,Aplicações Financeiras Avaliadas a Valor Justo,0.0
+2016-12-31,T4,1.01.02.01.01,Títulos para Negociação,0.0
+2016-12-31,T4,1.01.02.01.02,Títulos Disponíveis para Venda,0.0
+2016-12-31,T4,1.01.02.02,Aplicações Financeiras Avaliadas ao Custo Amortizado,2708.0
+2016-12-31,T4,1.01.02.02.01,Títulos Mantidos até o Vencimento,2708.0
+2016-12-31,T4,1.01.03,Contas a Receber,158663.0
+2016-12-31,T4,1.01.03.01,Clientes,158663.0
+2016-12-31,T4,1.01.03.02,Outras Contas a Receber,0.0
+2016-12-31,T4,1.01.04,Estoques,160867.0
+2016-12-31,T4,1.01.05,Ativos Biológicos,0.0
+2016-12-31,T4,1.01.06,Tributos a Recuperar,17861.0
+2016-12-31,T4,1.01.06.01,Tributos Correntes a Recuperar,17861.0
+2016-12-31,T4,1.01.07,Despesas Antecipadas,680.0
+2016-12-31,T4,1.01.08,Outros Ativos Circulantes,11053.0
+2016-12-31,T4,1.01.08.01,Ativos Não-Correntes a Venda,5291.0
+2016-12-31,T4,1.01.08.02,Ativos de Operações Descontinuadas,0.0
+2016-12-31,T4,1.01.08.03,Outros,5762.0
+2016-12-31,T4,1.01.08.03.01,Partes Relacionadas,718.0
+2016-12-31,T4,1.01.08.03.02,Outros,5044.0
+2016-12-31,T4,1.02,Ativo Não Circulante,485473.0
+2016-12-31,T4,1.02.01,Ativo Realizável a Longo Prazo,138195.0
+2016-12-31,T4,1.02.01.01,Aplicações Financeiras Avaliadas a Valor Justo,0.0
+2016-12-31,T4,1.02.01.01.01,Títulos para Negociação,0.0
+2016-12-31,T4,1.02.01.01.02,Títulos Disponíveis para Venda,0.0
+2016-12-31,T4,1.02.01.02,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2016-12-31,T4,1.02.01.02.01,Títulos Mantidos até o Vencimento,0.0
+2016-12-31,T4,1.02.01.03,Contas a Receber,2545.0
+2016-12-31,T4,1.02.01.03.01,Clientes,0.0
+2016-12-31,T4,1.02.01.03.02,Outras Contas a Receber,2545.0
+2016-12-31,T4,1.02.01.04,Estoques,0.0
+2016-12-31,T4,1.02.01.05,Ativos Biológicos,0.0
+2016-12-31,T4,1.02.01.06,Tributos Diferidos,72655.0
+2016-12-31,T4,1.02.01.06.01,Imposto de Renda e Contribuição Social Diferidos,72655.0
+2016-12-31,T4,1.02.01.07,Despesas Antecipadas,0.0
+2016-12-31,T4,1.02.01.08,Créditos com Partes Relacionadas,15985.0
+2016-12-31,T4,1.02.01.08.01,Créditos com Coligadas,0.0
+2016-12-31,T4,1.02.01.08.03,Créditos com Controladores,0.0
+2016-12-31,T4,1.02.01.08.04,Créditos com Outras Partes Relacionadas,15985.0
+2016-12-31,T4,1.02.01.09,Outros Ativos Não Circulantes,47010.0
+2016-12-31,T4,1.02.01.09.01,Ativos Não-Correntes a Venda,0.0
+2016-12-31,T4,1.02.01.09.02,Ativos de Operações Descontinuadas,0.0
+2016-12-31,T4,1.02.01.09.03,Impostos a Recuperar,24746.0
+2016-12-31,T4,1.02.01.09.04,Depósitos Judiciais e Incentivos Fiscais,22264.0
+2016-12-31,T4,1.02.02,Investimentos,3546.0
+2016-12-31,T4,1.02.02.01,Participações Societárias,3546.0
+2016-12-31,T4,1.02.02.01.01,Participações em Coligadas,3546.0
+2016-12-31,T4,1.02.02.01.04,Outras Participações Societárias,0.0
+2016-12-31,T4,1.02.02.02,Propriedades para Investimento,0.0
+2016-12-31,T4,1.02.03,Imobilizado,317716.0
+2016-12-31,T4,1.02.03.01,Imobilizado em Operação,315985.0
+2016-12-31,T4,1.02.03.01.01,Imobilizado em Operação,319723.0
+2016-12-31,T4,1.02.03.01.02,Perda Estimada por Redução ao Valor Recuperável do Imobilizado,-3738.0
+2016-12-31,T4,1.02.03.02,Imobilizado Arrendado,0.0
+2016-12-31,T4,1.02.03.03,Imobilizado em Andamento,1731.0
+2016-12-31,T4,1.02.04,Intangível,26016.0
+2016-12-31,T4,1.02.04.01,Intangíveis,9458.0
+2016-12-31,T4,1.02.04.01.01,Contrato de Concessão,0.0
+2016-12-31,T4,1.02.04.01.02,Software,8066.0
+2016-12-31,T4,1.02.04.01.03,Outros Intangíveis,1392.0
+2016-12-31,T4,1.02.04.02,Goodwill,16558.0
+2017-12-31,T4,1,Ativo Total,563622.0
+2017-12-31,T4,1.01,Ativo Circulante,297457.0
+2017-12-31,T4,1.01.01,Caixa e Equivalentes de Caixa,6957.0
+2017-12-31,T4,1.01.02,Aplicações Financeiras,21805.0
+2017-12-31,T4,1.01.02.01,Aplicações Financeiras Avaliadas a Valor Justo,0.0
+2017-12-31,T4,1.01.02.01.01,Títulos para Negociação,0.0
+2017-12-31,T4,1.01.02.01.02,Títulos Disponíveis para Venda,0.0
+2017-12-31,T4,1.01.02.02,Aplicações Financeiras Avaliadas ao Custo Amortizado,21805.0
+2017-12-31,T4,1.01.02.02.01,Títulos Mantidos até o Vencimento,21805.0
+2017-12-31,T4,1.01.03,Contas a Receber,141897.0
+2017-12-31,T4,1.01.03.01,Clientes,141897.0
+2017-12-31,T4,1.01.03.02,Outras Contas a Receber,0.0
+2017-12-31,T4,1.01.04,Estoques,99001.0
+2017-12-31,T4,1.01.05,Ativos Biológicos,0.0
+2017-12-31,T4,1.01.06,Tributos a Recuperar,12637.0
+2017-12-31,T4,1.01.06.01,Tributos Correntes a Recuperar,12637.0
+2017-12-31,T4,1.01.07,Despesas Antecipadas,4487.0
+2017-12-31,T4,1.01.08,Outros Ativos Circulantes,10673.0
+2017-12-31,T4,1.01.08.01,Ativos Não-Correntes a Venda,7306.0
+2017-12-31,T4,1.01.08.02,Ativos de Operações Descontinuadas,0.0
+2017-12-31,T4,1.01.08.03,Outros,3367.0
+2017-12-31,T4,1.01.08.03.01,Partes Relacionadas,0.0
+2017-12-31,T4,1.01.08.03.02,Outros,3367.0
+2017-12-31,T4,1.02,Ativo Não Circulante,266165.0
+2017-12-31,T4,1.02.01,Ativo Realizável a Longo Prazo,107796.0
+2017-12-31,T4,1.02.01.01,Aplicações Financeiras Avaliadas a Valor Justo,0.0
+2017-12-31,T4,1.02.01.01.01,Títulos para Negociação,0.0
+2017-12-31,T4,1.02.01.01.02,Títulos Disponíveis para Venda,0.0
+2017-12-31,T4,1.02.01.02,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2017-12-31,T4,1.02.01.02.01,Títulos Mantidos até o Vencimento,0.0
+2017-12-31,T4,1.02.01.03,Contas a Receber,1617.0
+2017-12-31,T4,1.02.01.03.01,Clientes,0.0
+2017-12-31,T4,1.02.01.03.02,Outras Contas a Receber,1617.0
+2017-12-31,T4,1.02.01.04,Estoques,0.0
+2017-12-31,T4,1.02.01.05,Ativos Biológicos,0.0
+2017-12-31,T4,1.02.01.06,Tributos Diferidos,45525.0
+2017-12-31,T4,1.02.01.06.01,Imposto de Renda e Contribuição Social Diferidos,45525.0
+2017-12-31,T4,1.02.01.07,Despesas Antecipadas,0.0
+2017-12-31,T4,1.02.01.08,Créditos com Partes Relacionadas,9202.0
+2017-12-31,T4,1.02.01.08.01,Créditos com Coligadas,0.0
+2017-12-31,T4,1.02.01.08.03,Créditos com Controladores,0.0
+2017-12-31,T4,1.02.01.08.04,Créditos com Outras Partes Relacionadas,0.0
+2017-12-31,T4,1.02.01.09,Outros Ativos Não Circulantes,51452.0
+2017-12-31,T4,1.02.01.09.01,Ativos Não-Correntes a Venda,0.0
+2017-12-31,T4,1.02.01.09.02,Ativos de Operações Descontinuadas,0.0
+2017-12-31,T4,1.02.01.09.03,Impostos a Recuperar,34846.0
+2017-12-31,T4,1.02.01.09.04,Depósitos Judiciais e Incentivos Fiscais,16606.0
+2017-12-31,T4,1.02.02,Investimentos,0.0
+2017-12-31,T4,1.02.02.01,Participações Societárias,0.0
+2017-12-31,T4,1.02.02.01.01,Participações em Coligadas,0.0
+2017-12-31,T4,1.02.02.01.04,Outras Participações Societárias,0.0
+2017-12-31,T4,1.02.02.02,Propriedades para Investimento,0.0
+2017-12-31,T4,1.02.03,Imobilizado,155617.0
+2017-12-31,T4,1.02.03.01,Imobilizado em Operação,155617.0
+2017-12-31,T4,1.02.03.01.01,Imobilizado em Operação,280769.0
+2017-12-31,T4,1.02.03.01.02,Perda Estimada por Redução ao Valor Recuperável do Imobilizado,-125152.0
+2017-12-31,T4,1.02.03.02,Imobilizado Arrendado,0.0
+2017-12-31,T4,1.02.03.03,Imobilizado em Andamento,0.0
+2017-12-31,T4,1.02.04,Intangível,2752.0
+2017-12-31,T4,1.02.04.01,Intangíveis,2752.0
+2017-12-31,T4,1.02.04.01.01,Contrato de Concessão,0.0
+2017-12-31,T4,1.02.04.01.02,Software,2549.0
+2017-12-31,T4,1.02.04.01.03,Outros Intangíveis,203.0
+2017-12-31,T4,1.02.04.02,Goodwill,0.0
+2018-12-31,T4,1,Ativo Total,569136.0
+2018-12-31,T4,1.01,Ativo Circulante,270001.0
+2018-12-31,T4,1.01.01,Caixa e Equivalentes de Caixa,9181.0
+2018-12-31,T4,1.01.02,Aplicações Financeiras,0.0
+2018-12-31,T4,1.01.02.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2018-12-31,T4,1.01.02.01.01,Títulos para Negociação,0.0
+2018-12-31,T4,1.01.02.01.02,Títulos Designados a Valor Justo,0.0
+2018-12-31,T4,1.01.02.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2018-12-31,T4,1.01.02.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2018-12-31,T4,1.01.03,Contas a Receber,125247.0
+2018-12-31,T4,1.01.03.01,Clientes,125247.0
+2018-12-31,T4,1.01.03.02,Outras Contas a Receber,0.0
+2018-12-31,T4,1.01.04,Estoques,90566.0
+2018-12-31,T4,1.01.05,Ativos Biológicos,0.0
+2018-12-31,T4,1.01.06,Tributos a Recuperar,14026.0
+2018-12-31,T4,1.01.06.01,Tributos Correntes a Recuperar,14026.0
+2018-12-31,T4,1.01.07,Despesas Antecipadas,0.0
+2018-12-31,T4,1.01.08,Outros Ativos Circulantes,30981.0
+2018-12-31,T4,1.01.08.01,Ativos Não-Correntes a Venda,7306.0
+2018-12-31,T4,1.01.08.02,Ativos de Operações Descontinuadas,0.0
+2018-12-31,T4,1.01.08.03,Outros,23675.0
+2018-12-31,T4,1.01.08.03.01,Partes Relacionadas,1764.0
+2018-12-31,T4,1.01.08.03.02,Outros,21911.0
+2018-12-31,T4,1.02,Ativo Não Circulante,299135.0
+2018-12-31,T4,1.02.01,Ativo Realizável a Longo Prazo,114151.0
+2018-12-31,T4,1.02.01.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2018-12-31,T4,1.02.01.01.01,Títulos Designados a Valor Justo,0.0
+2018-12-31,T4,1.02.01.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2018-12-31,T4,1.02.01.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2018-12-31,T4,1.02.01.03.01,Clientes,0.0
+2018-12-31,T4,1.02.01.03.02,Outras Contas a Receber,0.0
+2018-12-31,T4,1.02.01.04,Contas a Receber,1638.0
+2018-12-31,T4,1.02.01.04.01,Clientes,0.0
+2018-12-31,T4,1.02.01.04.02,Outras Contas a Receber,1638.0
+2018-12-31,T4,1.02.01.05,Estoques,0.0
+2018-12-31,T4,1.02.01.06,Ativos Biológicos,0.0
+2018-12-31,T4,1.02.01.07,Tributos Diferidos,40095.0
+2018-12-31,T4,1.02.01.07.01,Imposto de Renda e Contribuição Social Diferidos,40095.0
+2018-12-31,T4,1.02.01.08,Despesas Antecipadas,0.0
+2018-12-31,T4,1.02.01.09,Créditos com Partes Relacionadas,16945.0
+2018-12-31,T4,1.02.01.09.01,Créditos com Coligadas,16945.0
+2018-12-31,T4,1.02.01.09.03,Créditos com Controladores,0.0
+2018-12-31,T4,1.02.01.09.04,Créditos com Outras Partes Relacionadas,0.0
+2018-12-31,T4,1.02.01.10,Outros Ativos Não Circulantes,55473.0
+2018-12-31,T4,1.02.01.10.01,Ativos Não-Correntes a Venda,0.0
+2018-12-31,T4,1.02.01.10.02,Ativos de Operações Descontinuadas,0.0
+2018-12-31,T4,1.02.01.10.03,Impostos a Recuperar,39650.0
+2018-12-31,T4,1.02.01.10.04,Depósitos Judiciais e Incentivos Fiscais,15823.0
+2018-12-31,T4,1.02.02,Investimentos,57187.0
+2018-12-31,T4,1.02.02.01,Participações Societárias,57187.0
+2018-12-31,T4,1.02.02.01.01,Participações em Coligadas,57187.0
+2018-12-31,T4,1.02.02.01.04,Participações em Controladas em Conjunto,0.0
+2018-12-31,T4,1.02.02.01.05,Outros Investimentos,0.0
+2018-12-31,T4,1.02.02.02,Propriedades para Investimento,0.0
+2018-12-31,T4,1.02.03,Imobilizado,126954.0
+2018-12-31,T4,1.02.03.01,Imobilizado em Operação,125802.0
+2018-12-31,T4,1.02.03.01.01,Imobilizado em Operação,257472.0
+2018-12-31,T4,1.02.03.01.02,Perda Estimada por Redução ao Valor Recuperável do Imobilizado,-131670.0
+2018-12-31,T4,1.02.03.02,Direito de Uso em Arrendamento,0.0
+2018-12-31,T4,1.02.03.03,Imobilizado em Andamento,1152.0
+2018-12-31,T4,1.02.04,Intangível,843.0
+2018-12-31,T4,1.02.04.01,Intangíveis,843.0
+2018-12-31,T4,1.02.04.01.01,Contrato de Concessão,0.0
+2018-12-31,T4,1.02.04.01.02,Software,4188.0
+2018-12-31,T4,1.02.04.01.03,Outros Intangíveis,353.0
+2018-12-31,T4,1.02.04.01.05,Intangível em Andamento,0.0
+2018-12-31,T4,1.02.04.01.06,Perda Estimada por Redução ao Valor Recuperável do Intangível,-3698.0
+2018-12-31,T4,1.02.04.02,Goodwill,0.0
+2019-12-31,T4,1,Ativo Total,545587.0
+2019-12-31,T4,1.01,Ativo Circulante,232558.0
+2019-12-31,T4,1.01.01,Caixa e Equivalentes de Caixa,9032.0
+2019-12-31,T4,1.01.02,Aplicações Financeiras,326.0
+2019-12-31,T4,1.01.02.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2019-12-31,T4,1.01.02.01.01,Títulos para Negociação,0.0
+2019-12-31,T4,1.01.02.01.02,Títulos Designados a Valor Justo,0.0
+2019-12-31,T4,1.01.02.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2019-12-31,T4,1.01.02.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,326.0
+2019-12-31,T4,1.01.03,Contas a Receber,56738.0
+2019-12-31,T4,1.01.03.01,Clientes,56738.0
+2019-12-31,T4,1.01.03.02,Outras Contas a Receber,0.0
+2019-12-31,T4,1.01.04,Estoques,104921.0
+2019-12-31,T4,1.01.05,Ativos Biológicos,0.0
+2019-12-31,T4,1.01.06,Tributos a Recuperar,23496.0
+2019-12-31,T4,1.01.06.01,Tributos Correntes a Recuperar,23496.0
+2019-12-31,T4,1.01.07,Despesas Antecipadas,0.0
+2019-12-31,T4,1.01.08,Outros Ativos Circulantes,38045.0
+2019-12-31,T4,1.01.08.01,Ativos Não-Correntes a Venda,8415.0
+2019-12-31,T4,1.01.08.02,Ativos de Operações Descontinuadas,0.0
+2019-12-31,T4,1.01.08.03,Outros,29630.0
+2019-12-31,T4,1.01.08.03.01,Partes Relacionadas,0.0
+2019-12-31,T4,1.01.08.03.02,Outros,29630.0
+2019-12-31,T4,1.02,Ativo Não Circulante,313029.0
+2019-12-31,T4,1.02.01,Ativo Realizável a Longo Prazo,73656.0
+2019-12-31,T4,1.02.01.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2019-12-31,T4,1.02.01.01.01,Títulos Designados a Valor Justo,0.0
+2019-12-31,T4,1.02.01.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2019-12-31,T4,1.02.01.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2019-12-31,T4,1.02.01.03.01,Clientes,0.0
+2019-12-31,T4,1.02.01.03.02,Outras Contas a Receber,0.0
+2019-12-31,T4,1.02.01.04,Contas a Receber,2250.0
+2019-12-31,T4,1.02.01.04.01,Clientes,0.0
+2019-12-31,T4,1.02.01.04.02,Outras Contas a Receber,2250.0
+2019-12-31,T4,1.02.01.05,Estoques,0.0
+2019-12-31,T4,1.02.01.06,Ativos Biológicos,0.0
+2019-12-31,T4,1.02.01.07,Tributos Diferidos,0.0
+2019-12-31,T4,1.02.01.07.01,Imposto de Renda e Contribuição Social Diferidos,0.0
+2019-12-31,T4,1.02.01.08,Despesas Antecipadas,0.0
+2019-12-31,T4,1.02.01.09,Créditos com Partes Relacionadas,0.0
+2019-12-31,T4,1.02.01.09.01,Créditos com Coligadas,0.0
+2019-12-31,T4,1.02.01.09.03,Créditos com Controladores,0.0
+2019-12-31,T4,1.02.01.09.04,Créditos com Outras Partes Relacionadas,0.0
+2019-12-31,T4,1.02.01.10,Outros Ativos Não Circulantes,71406.0
+2019-12-31,T4,1.02.01.10.01,Ativos Não-Correntes a Venda,0.0
+2019-12-31,T4,1.02.01.10.02,Ativos de Operações Descontinuadas,0.0
+2019-12-31,T4,1.02.01.10.03,Impostos a Recuperar,40834.0
+2019-12-31,T4,1.02.01.10.04,Depósitos Judiciais e Incentivos Fiscais,19362.0
+2019-12-31,T4,1.02.01.10.05,Ativo de direito uso,11210.0
+2019-12-31,T4,1.02.02,Investimentos,0.0
+2019-12-31,T4,1.02.02.01,Participações Societárias,0.0
+2019-12-31,T4,1.02.02.01.01,Participações em Coligadas,0.0
+2019-12-31,T4,1.02.02.01.04,Participações em Controladas em Conjunto,0.0
+2019-12-31,T4,1.02.02.01.05,Outros Investimentos,0.0
+2019-12-31,T4,1.02.02.02,Propriedades para Investimento,0.0
+2019-12-31,T4,1.02.03,Imobilizado,238789.0
+2019-12-31,T4,1.02.03.01,Imobilizado em Operação,233932.0
+2019-12-31,T4,1.02.03.01.01,Imobilizado em Operação,347880.0
+2019-12-31,T4,1.02.03.01.02,Perda Estimada por Redução ao Valor Recuperável do Imobilizado,-113948.0
+2019-12-31,T4,1.02.03.02,Direito de Uso em Arrendamento,0.0
+2019-12-31,T4,1.02.03.03,Imobilizado em Andamento,4857.0
+2019-12-31,T4,1.02.04,Intangível,584.0
+2019-12-31,T4,1.02.04.01,Intangíveis,-15954.0
+2019-12-31,T4,1.02.04.01.01,Contrato de Concessão,0.0
+2019-12-31,T4,1.02.04.01.02,Software,3033.0
+2019-12-31,T4,1.02.04.01.03,Outros Intangíveis,956.0
+2019-12-31,T4,1.02.04.01.05,Intangível em Andamento,0.0
+2019-12-31,T4,1.02.04.01.06,Perda Estimada por Redução ao Valor Recuperável do Intangível,-19943.0
+2019-12-31,T4,1.02.04.02,Goodwill,16538.0
+2020-12-31,T4,1,Ativo Total,745268.0
+2020-12-31,T4,1.01,Ativo Circulante,486081.0
+2020-12-31,T4,1.01.01,Caixa e Equivalentes de Caixa,81175.0
+2020-12-31,T4,1.01.02,Aplicações Financeiras,0.0
+2020-12-31,T4,1.01.02.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2020-12-31,T4,1.01.02.01.01,Títulos para Negociação,0.0
+2020-12-31,T4,1.01.02.01.02,Títulos Designados a Valor Justo,0.0
+2020-12-31,T4,1.01.02.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2020-12-31,T4,1.01.02.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2020-12-31,T4,1.01.03,Contas a Receber,89938.0
+2020-12-31,T4,1.01.03.01,Clientes,89938.0
+2020-12-31,T4,1.01.03.02,Outras Contas a Receber,0.0
+2020-12-31,T4,1.01.04,Estoques,73470.0
+2020-12-31,T4,1.01.05,Ativos Biológicos,0.0
+2020-12-31,T4,1.01.06,Tributos a Recuperar,88986.0
+2020-12-31,T4,1.01.06.01,Tributos Correntes a Recuperar,88986.0
+2020-12-31,T4,1.01.07,Despesas Antecipadas,0.0
+2020-12-31,T4,1.01.08,Outros Ativos Circulantes,152512.0
+2020-12-31,T4,1.01.08.01,Ativos Não-Correntes a Venda,109339.0
+2020-12-31,T4,1.01.08.02,Ativos de Operações Descontinuadas,0.0
+2020-12-31,T4,1.01.08.03,Outros,43173.0
+2020-12-31,T4,1.01.08.03.01,Partes Relacionadas,0.0
+2020-12-31,T4,1.01.08.03.02,Outros,43173.0
+2020-12-31,T4,1.02,Ativo Não Circulante,259187.0
+2020-12-31,T4,1.02.01,Ativo Realizável a Longo Prazo,58315.0
+2020-12-31,T4,1.02.01.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2020-12-31,T4,1.02.01.01.01,Títulos Designados a Valor Justo,0.0
+2020-12-31,T4,1.02.01.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2020-12-31,T4,1.02.01.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2020-12-31,T4,1.02.01.03.01,Clientes,0.0
+2020-12-31,T4,1.02.01.03.02,Outras Contas a Receber,0.0
+2020-12-31,T4,1.02.01.04,Contas a Receber,2270.0
+2020-12-31,T4,1.02.01.04.01,Clientes,0.0
+2020-12-31,T4,1.02.01.04.02,Outras Contas a Receber,2270.0
+2020-12-31,T4,1.02.01.05,Estoques,0.0
+2020-12-31,T4,1.02.01.06,Ativos Biológicos,0.0
+2020-12-31,T4,1.02.01.07,Tributos Diferidos,0.0
+2020-12-31,T4,1.02.01.07.01,Imposto de Renda e Contribuição Social Diferidos,0.0
+2020-12-31,T4,1.02.01.08,Despesas Antecipadas,0.0
+2020-12-31,T4,1.02.01.09,Créditos com Partes Relacionadas,0.0
+2020-12-31,T4,1.02.01.09.01,Créditos com Coligadas,0.0
+2020-12-31,T4,1.02.01.09.03,Créditos com Controladores,0.0
+2020-12-31,T4,1.02.01.09.04,Créditos com Outras Partes Relacionadas,0.0
+2020-12-31,T4,1.02.01.10,Outros Ativos Não Circulantes,56045.0
+2020-12-31,T4,1.02.01.10.01,Ativos Não-Correntes a Venda,0.0
+2020-12-31,T4,1.02.01.10.02,Ativos de Operações Descontinuadas,0.0
+2020-12-31,T4,1.02.01.10.03,Impostos a Recuperar,34694.0
+2020-12-31,T4,1.02.01.10.04,Depósitos Judiciais e Incentivos Fiscais,12202.0
+2020-12-31,T4,1.02.01.10.05,Ativo de direito uso,9149.0
+2020-12-31,T4,1.02.02,Investimentos,0.0
+2020-12-31,T4,1.02.02.01,Participações Societárias,0.0
+2020-12-31,T4,1.02.02.01.01,Participações em Coligadas,0.0
+2020-12-31,T4,1.02.02.01.04,Participações em Controladas em Conjunto,0.0
+2020-12-31,T4,1.02.02.01.05,Outros Investimentos,0.0
+2020-12-31,T4,1.02.02.02,Propriedades para Investimento,0.0
+2020-12-31,T4,1.02.03,Imobilizado,199730.0
+2020-12-31,T4,1.02.03.01,Imobilizado em Operação,194603.0
+2020-12-31,T4,1.02.03.01.01,Imobilizado em Operação,231178.0
+2020-12-31,T4,1.02.03.01.02,Perda Estimada por Redução ao Valor Recuperável do Imobilizado,-36575.0
+2020-12-31,T4,1.02.03.02,Direito de Uso em Arrendamento,0.0
+2020-12-31,T4,1.02.03.03,Imobilizado em Andamento,5127.0
+2020-12-31,T4,1.02.04,Intangível,1142.0
+2020-12-31,T4,1.02.04.01,Intangíveis,-15396.0
+2020-12-31,T4,1.02.04.01.01,Contrato de Concessão,0.0
+2020-12-31,T4,1.02.04.01.02,Software,1359.0
+2020-12-31,T4,1.02.04.01.03,Outros Intangíveis,957.0
+2020-12-31,T4,1.02.04.01.05,Intangível em Andamento,0.0
+2020-12-31,T4,1.02.04.01.06,Perda Estimada por Redução ao Valor Recuperável do Intangível,-17712.0
+2020-12-31,T4,1.02.04.02,Goodwill,16538.0
+2021-12-31,T4,1,Ativo Total,1011931.0
+2021-12-31,T4,1.01,Ativo Circulante,740202.0
+2021-12-31,T4,1.01.01,Caixa e Equivalentes de Caixa,218864.0
+2021-12-31,T4,1.01.02,Aplicações Financeiras,0.0
+2021-12-31,T4,1.01.02.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2021-12-31,T4,1.01.02.01.01,Títulos para Negociação,0.0
+2021-12-31,T4,1.01.02.01.02,Títulos Designados a Valor Justo,0.0
+2021-12-31,T4,1.01.02.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2021-12-31,T4,1.01.02.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2021-12-31,T4,1.01.03,Contas a Receber,153229.0
+2021-12-31,T4,1.01.03.01,Clientes,153229.0
+2021-12-31,T4,1.01.03.02,Outras Contas a Receber,0.0
+2021-12-31,T4,1.01.04,Estoques,185268.0
+2021-12-31,T4,1.01.05,Ativos Biológicos,0.0
+2021-12-31,T4,1.01.06,Tributos a Recuperar,126392.0
+2021-12-31,T4,1.01.06.01,Tributos Correntes a Recuperar,126392.0
+2021-12-31,T4,1.01.07,Despesas Antecipadas,0.0
+2021-12-31,T4,1.01.08,Outros Ativos Circulantes,56449.0
+2021-12-31,T4,1.01.08.01,Ativos Não-Correntes a Venda,4845.0
+2021-12-31,T4,1.01.08.02,Ativos de Operações Descontinuadas,0.0
+2021-12-31,T4,1.01.08.03,Outros,51604.0
+2021-12-31,T4,1.01.08.03.01,Partes Relacionadas,0.0
+2021-12-31,T4,1.01.08.03.02,Outros,51604.0
+2021-12-31,T4,1.02,Ativo Não Circulante,271729.0
+2021-12-31,T4,1.02.01,Ativo Realizável a Longo Prazo,30482.0
+2021-12-31,T4,1.02.01.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2021-12-31,T4,1.02.01.01.01,Títulos Designados a Valor Justo,0.0
+2021-12-31,T4,1.02.01.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2021-12-31,T4,1.02.01.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2021-12-31,T4,1.02.01.03.01,Clientes,0.0
+2021-12-31,T4,1.02.01.03.02,Outras Contas a Receber,0.0
+2021-12-31,T4,1.02.01.04,Contas a Receber,1595.0
+2021-12-31,T4,1.02.01.04.01,Clientes,0.0
+2021-12-31,T4,1.02.01.04.02,Outras Contas a Receber,1595.0
+2021-12-31,T4,1.02.01.05,Estoques,0.0
+2021-12-31,T4,1.02.01.06,Ativos Biológicos,0.0
+2021-12-31,T4,1.02.01.07,Tributos Diferidos,0.0
+2021-12-31,T4,1.02.01.07.01,Imposto de Renda e Contribuição Social Diferidos,0.0
+2021-12-31,T4,1.02.01.08,Despesas Antecipadas,0.0
+2021-12-31,T4,1.02.01.09,Créditos com Partes Relacionadas,0.0
+2021-12-31,T4,1.02.01.09.01,Créditos com Coligadas,0.0
+2021-12-31,T4,1.02.01.09.03,Créditos com Controladores,0.0
+2021-12-31,T4,1.02.01.09.04,Créditos com Outras Partes Relacionadas,0.0
+2021-12-31,T4,1.02.01.10,Outros Ativos Não Circulantes,28887.0
+2021-12-31,T4,1.02.01.10.01,Ativos Não-Correntes a Venda,0.0
+2021-12-31,T4,1.02.01.10.02,Ativos de Operações Descontinuadas,0.0
+2021-12-31,T4,1.02.01.10.03,Impostos a Recuperar,10629.0
+2021-12-31,T4,1.02.01.10.04,Depósitos Judiciais e Incentivos Fiscais,10500.0
+2021-12-31,T4,1.02.01.10.05,Ativo de direito uso,7758.0
+2021-12-31,T4,1.02.02,Investimentos,0.0
+2021-12-31,T4,1.02.02.01,Participações Societárias,0.0
+2021-12-31,T4,1.02.02.01.01,Participações em Coligadas,0.0
+2021-12-31,T4,1.02.02.01.04,Participações em Controladas em Conjunto,0.0
+2021-12-31,T4,1.02.02.01.05,Outros Investimentos,0.0
+2021-12-31,T4,1.02.02.02,Propriedades para Investimento,0.0
+2021-12-31,T4,1.02.03,Imobilizado,240643.0
+2021-12-31,T4,1.02.03.01,Imobilizado em Operação,196122.0
+2021-12-31,T4,1.02.03.01.01,Imobilizado em Operação,227864.0
+2021-12-31,T4,1.02.03.01.02,Perda Estimada por Redução ao Valor Recuperável do Imobilizado,-31742.0
+2021-12-31,T4,1.02.03.02,Direito de Uso em Arrendamento,0.0
+2021-12-31,T4,1.02.03.03,Imobilizado em Andamento,44521.0
+2021-12-31,T4,1.02.04,Intangível,604.0
+2021-12-31,T4,1.02.04.01,Intangíveis,-15934.0
+2021-12-31,T4,1.02.04.01.01,Contrato de Concessão,0.0
+2021-12-31,T4,1.02.04.01.02,Software,720.0
+2021-12-31,T4,1.02.04.01.03,Outros Intangíveis,957.0
+2021-12-31,T4,1.02.04.01.05,Intangível em Andamento,0.0
+2021-12-31,T4,1.02.04.01.06,Perda Estimada por Redução ao Valor Recuperável do Intangível,-17611.0
+2021-12-31,T4,1.02.04.02,Goodwill,16538.0
+2022-12-31,T4,1,Ativo Total,1222267.0
+2022-12-31,T4,1.01,Ativo Circulante,715330.0
+2022-12-31,T4,1.01.01,Caixa e Equivalentes de Caixa,36852.0
+2022-12-31,T4,1.01.02,Aplicações Financeiras,75617.0
+2022-12-31,T4,1.01.02.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2022-12-31,T4,1.01.02.01.01,Títulos para Negociação,0.0
+2022-12-31,T4,1.01.02.01.02,Títulos Designados a Valor Justo,0.0
+2022-12-31,T4,1.01.02.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2022-12-31,T4,1.01.02.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,75617.0
+2022-12-31,T4,1.01.03,Contas a Receber,227705.0
+2022-12-31,T4,1.01.03.01,Clientes,227705.0
+2022-12-31,T4,1.01.03.02,Outras Contas a Receber,0.0
+2022-12-31,T4,1.01.04,Estoques,209822.0
+2022-12-31,T4,1.01.05,Ativos Biológicos,0.0
+2022-12-31,T4,1.01.06,Tributos a Recuperar,107735.0
+2022-12-31,T4,1.01.06.01,Tributos Correntes a Recuperar,107735.0
+2022-12-31,T4,1.01.07,Despesas Antecipadas,0.0
+2022-12-31,T4,1.01.08,Outros Ativos Circulantes,57599.0
+2022-12-31,T4,1.01.08.01,Ativos Não-Correntes a Venda,1023.0
+2022-12-31,T4,1.01.08.02,Ativos de Operações Descontinuadas,0.0
+2022-12-31,T4,1.01.08.03,Outros,56576.0
+2022-12-31,T4,1.01.08.03.01,Partes Relacionadas,0.0
+2022-12-31,T4,1.01.08.03.02,Outros,56576.0
+2022-12-31,T4,1.02,Ativo Não Circulante,506937.0
+2022-12-31,T4,1.02.01,Ativo Realizável a Longo Prazo,67662.0
+2022-12-31,T4,1.02.01.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2022-12-31,T4,1.02.01.01.01,Títulos Designados a Valor Justo,0.0
+2022-12-31,T4,1.02.01.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2022-12-31,T4,1.02.01.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2022-12-31,T4,1.02.01.03.01,Clientes,0.0
+2022-12-31,T4,1.02.01.03.02,Outras Contas a Receber,0.0
+2022-12-31,T4,1.02.01.04,Contas a Receber,1595.0
+2022-12-31,T4,1.02.01.04.01,Clientes,0.0
+2022-12-31,T4,1.02.01.04.02,Outras Contas a Receber,1595.0
+2022-12-31,T4,1.02.01.05,Estoques,0.0
+2022-12-31,T4,1.02.01.06,Ativos Biológicos,0.0
+2022-12-31,T4,1.02.01.07,Tributos Diferidos,0.0
+2022-12-31,T4,1.02.01.07.01,Imposto de Renda e Contribuição Social Diferidos,0.0
+2022-12-31,T4,1.02.01.08,Despesas Antecipadas,0.0
+2022-12-31,T4,1.02.01.09,Créditos com Partes Relacionadas,0.0
+2022-12-31,T4,1.02.01.09.01,Créditos com Coligadas,0.0
+2022-12-31,T4,1.02.01.09.03,Créditos com Controladores,0.0
+2022-12-31,T4,1.02.01.09.04,Créditos com Outras Partes Relacionadas,0.0
+2022-12-31,T4,1.02.01.10,Outros Ativos Não Circulantes,66067.0
+2022-12-31,T4,1.02.01.10.01,Ativos Não-Correntes a Venda,0.0
+2022-12-31,T4,1.02.01.10.02,Ativos de Operações Descontinuadas,0.0
+2022-12-31,T4,1.02.01.10.03,Impostos a Recuperar,37268.0
+2022-12-31,T4,1.02.01.10.04,Depósitos Judiciais e Incentivos Fiscais,12879.0
+2022-12-31,T4,1.02.01.10.05,Ativo de direito uso,15920.0
+2022-12-31,T4,1.02.02,Investimentos,0.0
+2022-12-31,T4,1.02.02.01,Participações Societárias,0.0
+2022-12-31,T4,1.02.02.01.01,Participações em Coligadas,0.0
+2022-12-31,T4,1.02.02.01.04,Participações em Controladas em Conjunto,0.0
+2022-12-31,T4,1.02.02.01.05,Outros Investimentos,0.0
+2022-12-31,T4,1.02.02.02,Propriedades para Investimento,0.0
+2022-12-31,T4,1.02.03,Imobilizado,355959.0
+2022-12-31,T4,1.02.03.01,Imobilizado em Operação,238828.0
+2022-12-31,T4,1.02.03.01.01,Imobilizado em Operação,268010.0
+2022-12-31,T4,1.02.03.01.02,Perda Estimada por Redução ao Valor Recuperável do Imobilizado,-29182.0
+2022-12-31,T4,1.02.03.02,Direito de Uso em Arrendamento,0.0
+2022-12-31,T4,1.02.03.03,Imobilizado em Andamento,117131.0
+2022-12-31,T4,1.02.04,Intangível,83316.0
+2022-12-31,T4,1.02.04.01,Intangíveis,-16001.0
+2022-12-31,T4,1.02.04.01.01,Contrato de Concessão,0.0
+2022-12-31,T4,1.02.04.01.02,Software,462.0
+2022-12-31,T4,1.02.04.01.03,Outros Intangíveis,957.0
+2022-12-31,T4,1.02.04.01.05,Intangível em Andamento,0.0
+2022-12-31,T4,1.02.04.01.06,Perda Estimada por Redução ao Valor Recuperável do Intangível,-17420.0
+2022-12-31,T4,1.02.04.02,Goodwill,99317.0
+2022-12-31,T4,1.02.04.02.01,Mais valia de carteira de clientes,26800.0
+2022-12-31,T4,1.02.04.02.03,Goodwill,72517.0
+2023-12-31,T4,1,Ativo Total,1300366.0
+2023-12-31,T4,1.01,Ativo Circulante,568035.0
+2023-12-31,T4,1.01.01,Caixa e Equivalentes de Caixa,11131.0
+2023-12-31,T4,1.01.02,Aplicações Financeiras,5408.0
+2023-12-31,T4,1.01.02.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2023-12-31,T4,1.01.02.01.01,Títulos para Negociação,0.0
+2023-12-31,T4,1.01.02.01.02,Títulos Designados a Valor Justo,0.0
+2023-12-31,T4,1.01.02.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2023-12-31,T4,1.01.02.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,5408.0
+2023-12-31,T4,1.01.03,Contas a Receber,179857.0
+2023-12-31,T4,1.01.03.01,Clientes,179857.0
+2023-12-31,T4,1.01.03.02,Outras Contas a Receber,0.0
+2023-12-31,T4,1.01.04,Estoques,168259.0
+2023-12-31,T4,1.01.05,Ativos Biológicos,0.0
+2023-12-31,T4,1.01.06,Tributos a Recuperar,140904.0
+2023-12-31,T4,1.01.06.01,Tributos Correntes a Recuperar,140904.0
+2023-12-31,T4,1.01.07,Despesas Antecipadas,0.0
+2023-12-31,T4,1.01.08,Outros Ativos Circulantes,62476.0
+2023-12-31,T4,1.01.08.01,Ativos Não-Correntes a Venda,0.0
+2023-12-31,T4,1.01.08.02,Ativos de Operações Descontinuadas,0.0
+2023-12-31,T4,1.01.08.03,Outros,62476.0
+2023-12-31,T4,1.01.08.03.01,Partes Relacionadas,0.0
+2023-12-31,T4,1.01.08.03.02,Outros,60626.0
+2023-12-31,T4,1.01.08.03.03,Imposto de Renda e Contribuição Social Diferidos,1850.0
+2023-12-31,T4,1.02,Ativo Não Circulante,732331.0
+2023-12-31,T4,1.02.01,Ativo Realizável a Longo Prazo,118000.0
+2023-12-31,T4,1.02.01.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2023-12-31,T4,1.02.01.01.01,Títulos Designados a Valor Justo,0.0
+2023-12-31,T4,1.02.01.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2023-12-31,T4,1.02.01.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2023-12-31,T4,1.02.01.03.01,Clientes,0.0
+2023-12-31,T4,1.02.01.03.02,Outras Contas a Receber,0.0
+2023-12-31,T4,1.02.01.04,Contas a Receber,1844.0
+2023-12-31,T4,1.02.01.04.01,Clientes,0.0
+2023-12-31,T4,1.02.01.04.02,Outras Contas a Receber,1844.0
+2023-12-31,T4,1.02.01.05,Estoques,0.0
+2023-12-31,T4,1.02.01.06,Ativos Biológicos,0.0
+2023-12-31,T4,1.02.01.07,Tributos Diferidos,64712.0
+2023-12-31,T4,1.02.01.07.01,Imposto de Renda e Contribuição Social Diferidos,64712.0
+2023-12-31,T4,1.02.01.08,Despesas Antecipadas,0.0
+2023-12-31,T4,1.02.01.09,Créditos com Partes Relacionadas,0.0
+2023-12-31,T4,1.02.01.09.01,Créditos com Coligadas,0.0
+2023-12-31,T4,1.02.01.09.03,Créditos com Controladores,0.0
+2023-12-31,T4,1.02.01.09.04,Créditos com Outras Partes Relacionadas,0.0
+2023-12-31,T4,1.02.01.10,Outros Ativos Não Circulantes,51444.0
+2023-12-31,T4,1.02.01.10.01,Ativos Não-Correntes a Venda,0.0
+2023-12-31,T4,1.02.01.10.02,Ativos de Operações Descontinuadas,0.0
+2023-12-31,T4,1.02.01.10.03,Impostos a Recuperar,22597.0
+2023-12-31,T4,1.02.01.10.04,Depósitos Judiciais e Incentivos Fiscais,12778.0
+2023-12-31,T4,1.02.01.10.05,Ativo de direito uso,16069.0
+2023-12-31,T4,1.02.02,Investimentos,0.0
+2023-12-31,T4,1.02.02.01,Participações Societárias,0.0
+2023-12-31,T4,1.02.02.01.01,Participações em Coligadas,0.0
+2023-12-31,T4,1.02.02.01.04,Participações em Controladas em Conjunto,0.0
+2023-12-31,T4,1.02.02.01.05,Outros Investimentos,0.0
+2023-12-31,T4,1.02.02.02,Propriedades para Investimento,0.0
+2023-12-31,T4,1.02.03,Imobilizado,535283.0
+2023-12-31,T4,1.02.03.01,Imobilizado em Operação,275141.0
+2023-12-31,T4,1.02.03.01.01,Imobilizado em Operação,300194.0
+2023-12-31,T4,1.02.03.01.02,Perda Estimada por Redução ao Valor Recuperável do Imobilizado,-25053.0
+2023-12-31,T4,1.02.03.02,Direito de Uso em Arrendamento,0.0
+2023-12-31,T4,1.02.03.03,Imobilizado em Andamento,260142.0
+2023-12-31,T4,1.02.04,Intangível,79048.0
+2023-12-31,T4,1.02.04.01,Intangíveis,-15488.0
+2023-12-31,T4,1.02.04.01.01,Contrato de Concessão,0.0
+2023-12-31,T4,1.02.04.01.02,Software,449.0
+2023-12-31,T4,1.02.04.01.03,Outros Intangíveis,957.0
+2023-12-31,T4,1.02.04.01.05,Intangível em Andamento,0.0
+2023-12-31,T4,1.02.04.01.06,Perda Estimada por Redução ao Valor Recuperável do Intangível,-16894.0
+2023-12-31,T4,1.02.04.02,Goodwill,94536.0
+2023-12-31,T4,1.02.04.02.01,Mais valia de carteira de clientes,26888.0
+2023-12-31,T4,1.02.04.02.03,Goodwill,67648.0
+2024-12-31,T4,1,Ativo Total,1306516.0
+2024-12-31,T4,1.01,Ativo Circulante,537741.0
+2024-12-31,T4,1.01.01,Caixa e Equivalentes de Caixa,16132.0
+2024-12-31,T4,1.01.02,Aplicações Financeiras,58.0
+2024-12-31,T4,1.01.02.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2024-12-31,T4,1.01.02.01.01,Títulos para Negociação,0.0
+2024-12-31,T4,1.01.02.01.02,Títulos Designados a Valor Justo,0.0
+2024-12-31,T4,1.01.02.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2024-12-31,T4,1.01.02.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,58.0
+2024-12-31,T4,1.01.03,Contas a Receber,154475.0
+2024-12-31,T4,1.01.03.01,Clientes,154475.0
+2024-12-31,T4,1.01.03.02,Outras Contas a Receber,0.0
+2024-12-31,T4,1.01.04,Estoques,196527.0
+2024-12-31,T4,1.01.05,Ativos Biológicos,0.0
+2024-12-31,T4,1.01.06,Tributos a Recuperar,90903.0
+2024-12-31,T4,1.01.06.01,Tributos Correntes a Recuperar,90903.0
+2024-12-31,T4,1.01.07,Despesas Antecipadas,0.0
+2024-12-31,T4,1.01.08,Outros Ativos Circulantes,79646.0
+2024-12-31,T4,1.01.08.01,Ativos Não-Correntes a Venda,0.0
+2024-12-31,T4,1.01.08.02,Ativos de Operações Descontinuadas,0.0
+2024-12-31,T4,1.01.08.03,Outros,79646.0
+2024-12-31,T4,1.01.08.03.01,Partes Relacionadas,0.0
+2024-12-31,T4,1.01.08.03.02,Outros,79646.0
+2024-12-31,T4,1.01.08.03.03,Imposto de Renda e Contribuição Social Diferidos,0.0
+2024-12-31,T4,1.02,Ativo Não Circulante,768775.0
+2024-12-31,T4,1.02.01,Ativo Realizável a Longo Prazo,145265.0
+2024-12-31,T4,1.02.01.01,Aplicações Financeiras Avaliadas a Valor Justo através do Resultado,0.0
+2024-12-31,T4,1.02.01.01.01,Títulos Designados a Valor Justo,0.0
+2024-12-31,T4,1.02.01.02,Aplicações Financeiras Avaliadas a Valor Justo através de Outros Resultados Abrangentes,0.0
+2024-12-31,T4,1.02.01.03,Aplicações Financeiras Avaliadas ao Custo Amortizado,0.0
+2024-12-31,T4,1.02.01.03.01,Clientes,0.0
+2024-12-31,T4,1.02.01.03.02,Outras Contas a Receber,0.0
+2024-12-31,T4,1.02.01.04,Contas a Receber,1830.0
+2024-12-31,T4,1.02.01.04.01,Clientes,0.0
+2024-12-31,T4,1.02.01.04.02,Outras Contas a Receber,1830.0
+2024-12-31,T4,1.02.01.05,Estoques,0.0
+2024-12-31,T4,1.02.01.06,Ativos Biológicos,0.0
+2024-12-31,T4,1.02.01.07,Tributos Diferidos,109842.0
+2024-12-31,T4,1.02.01.07.01,Imposto de Renda e Contribuição Social Diferidos,109842.0
+2024-12-31,T4,1.02.01.08,Despesas Antecipadas,0.0
+2024-12-31,T4,1.02.01.09,Créditos com Partes Relacionadas,0.0
+2024-12-31,T4,1.02.01.09.01,Créditos com Coligadas,0.0
+2024-12-31,T4,1.02.01.09.03,Créditos com Controladores,0.0
+2024-12-31,T4,1.02.01.09.04,Créditos com Outras Partes Relacionadas,0.0
+2024-12-31,T4,1.02.01.10,Outros Ativos Não Circulantes,33593.0
+2024-12-31,T4,1.02.01.10.01,Ativos Não-Correntes a Venda,0.0
+2024-12-31,T4,1.02.01.10.02,Ativos de Operações Descontinuadas,0.0
+2024-12-31,T4,1.02.01.10.03,Impostos a Recuperar,3373.0
+2024-12-31,T4,1.02.01.10.04,Depósitos Judiciais e Incentivos Fiscais,14197.0
+2024-12-31,T4,1.02.01.10.05,Ativo de direito uso,16023.0
+2024-12-31,T4,1.02.02,Investimentos,0.0
+2024-12-31,T4,1.02.02.01,Participações Societárias,0.0
+2024-12-31,T4,1.02.02.01.01,Participações em Coligadas,0.0
+2024-12-31,T4,1.02.02.01.04,Participações em Controladas em Conjunto,0.0
+2024-12-31,T4,1.02.02.01.05,Outros Investimentos,0.0
+2024-12-31,T4,1.02.02.02,Propriedades para Investimento,0.0
+2024-12-31,T4,1.02.03,Imobilizado,549086.0
+2024-12-31,T4,1.02.03.01,Imobilizado em Operação,537931.0
+2024-12-31,T4,1.02.03.01.01,Imobilizado em Operação,569714.0
+2024-12-31,T4,1.02.03.01.02,Perda Estimada por Redução ao Valor Recuperável do Imobilizado,-31783.0
+2024-12-31,T4,1.02.03.02,Direito de Uso em Arrendamento,0.0
+2024-12-31,T4,1.02.03.03,Imobilizado em Andamento,11155.0
+2024-12-31,T4,1.02.04,Intangível,74424.0
+2024-12-31,T4,1.02.04.01,Intangíveis,-13390.0
+2024-12-31,T4,1.02.04.01.01,Contrato de Concessão,0.0
+2024-12-31,T4,1.02.04.01.02,Software,2940.0
+2024-12-31,T4,1.02.04.01.03,Outros Intangíveis,1189.0
+2024-12-31,T4,1.02.04.01.05,Intangível em Andamento,0.0
+2024-12-31,T4,1.02.04.01.06,Perda Estimada por Redução ao Valor Recuperável do Intangível,-17519.0
+2024-12-31,T4,1.02.04.02,Goodwill,87814.0
+2024-12-31,T4,1.02.04.02.01,Mais valia de carteira de clientes,20166.0
+2024-12-31,T4,1.02.04.02.03,Goodwill,67648.0
