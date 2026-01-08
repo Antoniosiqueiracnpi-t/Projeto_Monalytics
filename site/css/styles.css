@@ -4880,7 +4880,7 @@ textarea:focus {
 
 .comparador-table thead th:first-child,
 .comparador-table tbody td:first-child {
-    min-width: 240px;
+    min-width: 230px;
 }
 
 @media (max-width: 768px) {
@@ -4901,7 +4901,7 @@ textarea:focus {
     }
     .comparador-table thead th:first-child,
     .comparador-table tbody td:first-child {
-        min-width: 190px;
+        min-width: 180px;
     }
     .comparador-table thead th,
     .comparador-table tbody td {
@@ -4912,7 +4912,7 @@ textarea:focus {
 @media (max-width: 480px) {
     .comparador-table thead th:first-child,
     .comparador-table tbody td:first-child {
-        min-width: 170px;
+        min-width: 160px;
     }
 }
 
