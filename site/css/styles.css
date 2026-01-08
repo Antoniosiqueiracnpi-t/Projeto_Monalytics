@@ -5330,29 +5330,39 @@ textarea:focus {
 }
 
 /* Cabeçalhos de Grupo (DRE, BPA, BPP, DFC) - FIXOS AO ROLAR */
-.analise-balancos-table tbody tr td.grupo-header {
+.analise-balancos-table tbody tr.grupo-row td.grupo-header {
     position: sticky !important;
     left: 0 !important;
     z-index: 20 !important;
-    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%) !important;
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
     font-weight: 700 !important;
-    font-size: 0.95rem !important;
-    color: #1f2937 !important;
+    font-size: 1rem !important;
+    color: white !important;
     text-align: left !important;
     padding: 1rem 0.75rem !important;
     padding-left: 1.5rem !important;
-    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.08) !important;
-    border-bottom: 2px solid #d1d5db !important;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1) !important;
+    border-bottom: 2px solid #4338ca !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 280px !important;
+}
+
+/* Células vazias do cabeçalho de grupo (não sticky) */
+.analise-balancos-table tbody tr.grupo-row td.grupo-header-empty {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
+    border-bottom: 2px solid #4338ca !important;
+    padding: 1rem 0.75rem !important;
 }
 
 /* Hover nos cabeçalhos de grupo */
-.analise-balancos-table tbody tr:hover td.grupo-header {
-    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%) !important;
+.analise-balancos-table tbody tr.grupo-row:hover td.grupo-header-empty {
+    background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%) !important;
 }
 
 /* Espaçamento adicional após grupos */
 .analise-balancos-table tbody tr.grupo-row {
-    border-bottom: 2px solid #d1d5db;
+    border-bottom: 2px solid #4338ca;
 }
 
 /* Container do Gráfico */
@@ -5608,26 +5618,41 @@ textarea:focus {
 
 /* Responsividade para cabeçalhos de grupo */
 @media screen and (max-width: 968px) {
-    .analise-balancos-table tbody tr td.grupo-header {
-        font-size: 0.85rem !important;
-        padding: 0.65rem 0.5rem !important;
+    .analise-balancos-table tbody tr.grupo-row td.grupo-header {
+        font-size: 0.9rem !important;
+        padding: 0.75rem 0.5rem !important;
         padding-left: 0.75rem !important;
+        min-width: 180px !important;
+    }
+    
+    .analise-balancos-table tbody tr.grupo-row td.grupo-header-empty {
+        padding: 0.75rem 0.5rem !important;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .analise-balancos-table tbody tr td.grupo-header {
-        font-size: 0.8rem !important;
-        padding: 0.6rem 0.4rem !important;
+    .analise-balancos-table tbody tr.grupo-row td.grupo-header {
+        font-size: 0.85rem !important;
+        padding: 0.65rem 0.4rem !important;
         padding-left: 0.5rem !important;
+        min-width: 160px !important;
+    }
+    
+    .analise-balancos-table tbody tr.grupo-row td.grupo-header-empty {
+        padding: 0.65rem 0.4rem !important;
     }
 }
 
 @media screen and (max-width: 480px) {
-    .analise-balancos-table tbody tr td.grupo-header {
-        font-size: 0.75rem !important;
+    .analise-balancos-table tbody tr.grupo-row td.grupo-header {
+        font-size: 0.8rem !important;
         padding: 0.5rem 0.3rem !important;
         padding-left: 0.5rem !important;
+        min-width: 140px !important;
+    }
+    
+    .analise-balancos-table tbody tr.grupo-row td.grupo-header-empty {
+        padding: 0.5rem 0.3rem !important;
     }
 }
 
