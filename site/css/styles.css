@@ -2874,13 +2874,19 @@ textarea:focus {
 
     .acionista-header {
         margin-bottom: 6px;
+        justify-content: flex-start;  /* em vez de depender do space-between */
+        gap: 10px;                   /* espaço mínimo garantido */
     }
-
+    
+    .acionista-percentual {
+        margin-left: auto;           /* empurra o % para a direita */
+    }
+    
     .acionista-nome {
         font-size: 0.92rem;
         line-height: 1.15;
-        padding: 0 10px;
-        word-break: break-word; /* evita cortar nomes grandes */
+        padding: 0;                  /* o gap já garante o espaçamento */
+        word-break: break-word;
     }
 
     .acionista-percentual {
@@ -4450,10 +4456,24 @@ textarea:focus {
     flex-wrap: wrap; 
 }
 
-/* Garante que o botão +4 nunca seja ocultado por regras externas */
+/* Garante que o botão +4 nunca seja ocultado por regras externas + deixa mais visível */
 #comparadorAddIndicatorsBtn {
     display: flex !important;
+    background: rgba(79, 70, 229, 0.10);
+    color: #4f46e5;
+    border: 1px dashed rgba(79, 70, 229, 0.35);
+    box-shadow: 0 2px 10px rgba(79, 70, 229, 0.10);
+
+    /* evita “sumir”/encolher em layouts flex no desktop */
+    flex: 0 0 auto;
+    min-width: 180px;
+    white-space: nowrap;
 }
+
+#comparadorAddIndicatorsBtn:hover {
+    background: rgba(79, 70, 229, 0.16);
+}
+
 
 
 .indicator-tab {
@@ -4860,7 +4880,7 @@ textarea:focus {
 
 .comparador-table thead th:first-child,
 .comparador-table tbody td:first-child {
-    min-width: 320px;
+    min-width: 240px;
 }
 
 @media (max-width: 768px) {
@@ -4881,13 +4901,21 @@ textarea:focus {
     }
     .comparador-table thead th:first-child,
     .comparador-table tbody td:first-child {
-        min-width: 250px;
+        min-width: 190px;
     }
     .comparador-table thead th,
     .comparador-table tbody td {
         min-width: 95px;
     }
 }
+
+@media (max-width: 480px) {
+    .comparador-table thead th:first-child,
+    .comparador-table tbody td:first-child {
+        min-width: 170px;
+    }
+}
+
 
 /* ===================== MODAL: Seleção de indicadores (+4) do Comparador ===================== */
 #comparadorIndicadoresModal .comparador-indicadores-modal-content {
