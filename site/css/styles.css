@@ -3203,6 +3203,52 @@ textarea:focus {
     max-height: calc(85vh - 140px);
 }
 
+/* ================================
+   MODAL (Comparador): Footer com botão "Aplicar"
+   Mantém o botão SEMPRE visível no desktop
+   ================================ */
+
+/* O modal vira coluna (header / body / footer) sem afetar outros layouts */
+.modal-content {
+    display: flex;
+    flex-direction: column;
+}
+
+/* O body passa a ocupar o espaço disponível e rolar */
+.modal-body {
+    flex: 1;
+    max-height: none; /* o flex controla */
+}
+
+/* Footer fixo no final */
+.modal-footer.comparador-indicadores-footer {
+    padding: 18px 30px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    border-top: 1px solid #e5e7eb;
+    background: #fff;
+}
+
+/* Botões mais “compactos” no modal */
+.modal-footer.comparador-indicadores-footer .btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+}
+
+/* Mobile: botões ocupam largura melhor */
+@media (max-width: 768px) {
+    .modal-footer.comparador-indicadores-footer {
+        padding: 14px 16px;
+        justify-content: stretch;
+    }
+    .modal-footer.comparador-indicadores-footer .btn {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+
 .modal-info {
     background: var(--secondary-bg);
     border-radius: 12px;
