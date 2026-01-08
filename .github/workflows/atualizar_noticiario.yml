@@ -59,17 +59,34 @@ jobs:
     - name: Buscar lista de tickers
       id: get-tickers
       run: |
-        if [ ! -f "mapeamento_b3.json" ]; then
+        if [ ! -f "mapeamento_b3_consolidado.csv" ]; then
+          echo "❌ Arquivo mapeamento_b3_consolidado.csv não encontrado"
           echo "TICKERS=" >> $GITHUB_OUTPUT
           exit 0
         fi
         
+        # Extrai lista completa de tickers do CSV (usa ; como delimitador)
         TODOS_TICKERS=$(python3 -c "
-        import json
-        with open('mapeamento_b3.json', 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            tickers = [item['ticker'] for item in data]
-            print(' '.join(tickers))
+        import csv
+        tickers = []
+        with open('mapeamento_b3_consolidado.csv', 'r', encoding='utf-8') as f:
+            # Remove BOM se existir e usa ; como delimitador
+            content = f.read()
+            if content.startswith('\ufeff'):
+                content = content[1:]
+            lines = content.splitlines()
+            reader = csv.DictReader(lines, delimiter=';')
+            for row in reader:
+                ticker_str = row.get('ticker', '').strip()
+                if ticker_str:
+                    # Separa múltiplos tickers (ex: ALUP11;ALUP3;ALUP4)
+                    for ticker in ticker_str.split(';'):
+                        ticker = ticker.strip()
+                        if ticker:
+                            tickers.append(ticker)
+        # Remove duplicatas e imprime
+        tickers = list(dict.fromkeys(tickers))
+        print(' '.join(tickers))
         ")
         
         MODO="${{ github.event.inputs.modo }}"
@@ -79,6 +96,7 @@ jobs:
           if [ -n "$TICKER_INPUT" ]; then
             TICKERS_SELECIONADOS="$TICKER_INPUT"
           else
+            echo "❌ Ticker não fornecido no modo ticker"
             echo "TICKERS=" >> $GITHUB_OUTPUT
             exit 1
           fi
@@ -88,6 +106,7 @@ jobs:
           if [ -n "$LISTA_INPUT" ]; then
             TICKERS_SELECIONADOS=$(echo "$LISTA_INPUT" | tr ',' ' ')
           else
+            echo "❌ Lista de tickers não fornecida no modo lista"
             echo "TICKERS=" >> $GITHUB_OUTPUT
             exit 1
           fi
@@ -99,6 +118,7 @@ jobs:
             FIM=$(echo "$FAIXA_INPUT" | cut -d'-' -f2)
             TICKERS_SELECIONADOS=$(echo "$TODOS_TICKERS" | tr ' ' '\n' | sed -n "${INICIO},${FIM}p" | tr '\n' ' ')
           else
+            echo "❌ Faixa não fornecida no modo faixa"
             echo "TICKERS=" >> $GITHUB_OUTPUT
             exit 1
           fi
@@ -116,6 +136,7 @@ jobs:
           fi
         
         else
+          # Execução agendada (cron) - processa tickers que já têm pasta
           if [ -d "balancos" ]; then
             TICKERS_SELECIONADOS=$(ls -d balancos/*/ 2>/dev/null | xargs -n 1 basename | tr '\n' ' ')
           else
@@ -124,10 +145,14 @@ jobs:
         fi
         
         if [ -z "$TICKERS_SELECIONADOS" ]; then
+          echo "⚠️ Nenhum ticker selecionado"
           echo "TICKERS=" >> $GITHUB_OUTPUT
         else
           echo "TICKERS=${TICKERS_SELECIONADOS}" >> $GITHUB_OUTPUT
+          TOTAL=$(echo "$TICKERS_SELECIONADOS" | wc -w)
+          echo "✅ $TOTAL ticker(s) selecionado(s)"
         fi
+
     
     - name: Atualizar noticiário
       run: |
