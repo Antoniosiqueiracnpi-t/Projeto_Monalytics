@@ -1,9 +1,9 @@
 {
   "ticker": "CBAV3",
-  "ultima_atualizacao": "2026-01-05T23:04:04.917588",
+  "ultima_atualizacao": "2026-01-08T09:08:21.049240",
   "periodo": {
     "inicio": "2021-07-16",
-    "fim": "2026-01-02"
+    "fim": "2026-01-07"
   },
   "dados": [
     {
@@ -12270,16 +12270,49 @@
       "mm20": 6.51,
       "mm50": 5.72,
       "mm200": 4.62
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 7.06,
+      "maxima": 7.56,
+      "minima": 7.06,
+      "fechamento": 7.47,
+      "volume": 6039800,
+      "mm20": 6.59,
+      "mm50": 5.77,
+      "mm200": 4.63
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 7.54,
+      "maxima": 7.79,
+      "minima": 7.45,
+      "fechamento": 7.73,
+      "volume": 5304400,
+      "mm20": 6.67,
+      "mm50": 5.82,
+      "mm200": 4.65
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 7.73,
+      "maxima": 8.03,
+      "minima": 7.56,
+      "fechamento": 7.97,
+      "volume": 7248200,
+      "mm20": 6.76,
+      "mm50": 5.88,
+      "mm200": 4.66
     }
   ],
   "estatisticas": {
-    "total_dias": 1115,
+    "total_dias": 1118,
     "preco_inicial": 10.84,
-    "preco_atual": 7.04,
-    "variacao_periodo": -35.03,
+    "preco_atual": 7.97,
+    "variacao_periodo": -26.45,
     "maxima_periodo": 21.37,
     "minima_periodo": 2.84,
-    "volume_medio": 4296782,
+    "volume_medio": 4301882,
     "tendencia": "alta"
   }
 }

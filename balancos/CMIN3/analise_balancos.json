@@ -1,0 +1,42 @@
+{
+  "ticker": "CMIN3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T09:08:46.490843",
+  "periodo_analisado": {
+    "inicio": "2020T1",
+    "fim": "2025T3",
+    "total_trimestres": 23,
+    "anos": 5.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 20.78,
+      "variacao_total": 182.52,
+      "ultimo_valor": 5146.07
+    },
+    "margens": {
+      "bruta": 49.79,
+      "operacional": 35.27,
+      "liquida": 23.23
+    },
+    "rentabilidade": {
+      "roe_medio": 33.4
+    },
+    "caixa": {
+      "media": 1517.58,
+      "ultimo": 1243.82
+    },
+    "balanco": {
+      "ativo_total": 36313.11,
+      "patrimonio": 10098.29
+    }
+  },
+  "analise_critica": "CMIN3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 23.23%. Gera excelente retorno sobre o patrimônio (ROE médio de 33.4%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 20.78%)",
+    "Alta margem de lucro líquido (23.23%)",
+    "Excelente retorno sobre patrimônio (ROE: 33.4%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

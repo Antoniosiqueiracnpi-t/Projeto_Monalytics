@@ -1,0 +1,37 @@
+{
+  "ticker": "CBAV3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T09:08:46.472081",
+  "periodo_analisado": {
+    "inicio": "2021T1",
+    "fim": "2025T3",
+    "total_trimestres": 19,
+    "anos": 4.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 5.2,
+      "variacao_total": 25.61,
+      "ultimo_valor": 2251.95
+    },
+    "margens": {
+      "bruta": 11.81,
+      "operacional": 6.57,
+      "liquida": 7.97
+    },
+    "rentabilidade": {
+      "roe_medio": 14.53
+    },
+    "caixa": {
+      "media": 162.32,
+      "ultimo": 370.1
+    },
+    "balanco": {
+      "ativo_total": 13876.75,
+      "patrimonio": 4729.06
+    }
+  },
+  "analise_critica": "CBAV3 mantém receita relativamente estável no período. Opera com margens comprimidas (margem líquida de 7.97%). Retorno sobre patrimônio adequado (ROE de 14.53%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": []
+}

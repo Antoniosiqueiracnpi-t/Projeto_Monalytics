@@ -1,0 +1,77 @@
+{
+  "empresa": {
+    "cnpj": "08.902.291/0001-15",
+    "nome": "",
+    "ticker": "CMIN3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 5,
+  "acionistas": [
+    {
+      "nome": "COMPANHIA SIDERURGICA NACIONAL - CSN",
+      "cpf_cnpj": "33.042.730/0001-04",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 3785474692,
+      "percentual_total": 69.011,
+      "acoes_ordinarias": 3785474692,
+      "percentual_ordinarias": 69.011,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Itochu Corporation",
+      "cpf_cnpj": "05.488.866/0001-07",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Japão",
+      "acoes_total": 589304801,
+      "percentual_total": 10.743,
+      "acoes_ordinarias": 589304801,
+      "percentual_ordinarias": 10.743,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "Japão Brasil Minério de Ferro Participações Ltda.",
+      "cpf_cnpj": "23.460.425/0001-89",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 507762966,
+      "percentual_total": 9.257,
+      "acoes_ordinarias": 507762966,
+      "percentual_ordinarias": 9.257,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "POSCO",
+      "cpf_cnpj": "05.732.776/0001-10",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Coréia do Sul",
+      "acoes_total": 102186675,
+      "percentual_total": 1.863,
+      "acoes_ordinarias": 102186675,
+      "percentual_ordinarias": 1.863,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "China Steel Corporation",
+      "cpf_cnpj": "14.745.878/0001-60",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Taiwan",
+      "acoes_total": 22366860,
+      "percentual_total": 0.408,
+      "acoes_ordinarias": 22366860,
+      "percentual_ordinarias": 0.408,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    }
+  ]
+}

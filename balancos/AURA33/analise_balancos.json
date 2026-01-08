@@ -1,0 +1,43 @@
+{
+  "ticker": "AURA33",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T09:08:46.409839",
+  "periodo_analisado": {
+    "inicio": "2020T1",
+    "fim": "2025T3",
+    "total_trimestres": 23,
+    "anos": 5.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 39.48,
+      "variacao_total": 523.58,
+      "ultimo_valor": 1350.4
+    },
+    "margens": {
+      "bruta": 45.98,
+      "operacional": 44.16,
+      "liquida": -17.08
+    },
+    "rentabilidade": {
+      "roe_medio": 26.07
+    },
+    "caixa": {
+      "media": 495.9,
+      "ultimo": 1201.21
+    },
+    "balanco": {
+      "ativo_total": 7599.55,
+      "patrimonio": 1714.89
+    }
+  },
+  "analise_critica": "AURA33 apresenta trajetória consistente de crescimento de receita no período analisado. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Gera excelente retorno sobre o patrimônio (ROE médio de 26.07%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 39.48%)",
+    "Excelente retorno sobre patrimônio (ROE: 26.07%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (-17.08%)"
+  ]
+}
