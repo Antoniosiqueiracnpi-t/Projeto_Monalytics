@@ -837,7 +837,47 @@
                         </div>
                     </div>
                     
+                    <!-- Comunicados da Empresa -->
+                    <section class="comunicados-empresa-section" id="comunicadosEmpresaSection" style="display: none;">
+                        <div class="comunicados-empresa-header">
+                            <div class="comunicados-empresa-title-group">
+                                <i class="fas fa-bullhorn"></i>
+                                <div>
+                                    <h2 class="comunicados-empresa-title">Comunicados da Empresa</h2>
+                                    <p class="comunicados-empresa-subtitle" id="comunicadosEmpresaSubtitle">Carregando...</p>
+                                </div>
+                            </div>
+                        </div>
                     
+                        <!-- Loading -->
+                        <div class="comunicados-empresa-loading" id="comunicadosEmpresaLoading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Carregando comunicados...</span>
+                        </div>
+                    
+                        <!-- Conteúdo -->
+                        <div class="comunicados-empresa-content" id="comunicadosEmpresaContent" style="display: none;">
+                            <!-- Comunicados Recentes (3 primeiros) -->
+                            <div class="comunicados-recentes" id="comunicadosRecentes"></div>
+                    
+                            <!-- Botão Ver Mais -->
+                            <div class="comunicados-ver-mais-container" id="comunicadosVerMaisContainer" style="display: none;">
+                                <button class="comunicados-ver-mais-btn" id="comunicadosVerMaisBtn">
+                                    <i class="fas fa-chevron-down"></i>
+                                    <span>Ver comunicados anteriores</span>
+                                </button>
+                            </div>
+                    
+                            <!-- Comunicados Antigos (expandível por mês/ano) -->
+                            <div class="comunicados-antigos" id="comunicadosAntigos" style="display: none;"></div>
+                        </div>
+                    
+                        <!-- Empty State -->
+                        <div class="comunicados-empresa-empty" id="comunicadosEmpresaEmpty" style="display: none;">
+                            <i class="fas fa-inbox"></i>
+                            <p>Nenhum comunicado disponível</p>
+                        </div>
+                    </section>                  
                     
                 </div>
            
