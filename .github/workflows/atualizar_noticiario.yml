@@ -185,12 +185,18 @@ jobs:
     - name: Verificar mudanças
       id: check-changes
       run: |
-        if git diff --quiet balancos/*/noticiario.json 2>/dev/null; then
+        # Adiciona arquivos novos ao stage
+        git add balancos/*/noticiario.json 2>/dev/null || true
+        
+        # Verifica se há mudanças (arquivos novos ou modificados)
+        if git diff --cached --quiet; then
           echo "HAS_CHANGES=false" >> $GITHUB_OUTPUT
+          echo "⚠️ Nenhuma mudança detectada"
         else
           echo "HAS_CHANGES=true" >> $GITHUB_OUTPUT
-          ARQUIVOS_MODIFICADOS=$(git diff --name-only balancos/*/noticiario.json 2>/dev/null | wc -l)
+          ARQUIVOS_MODIFICADOS=$(git diff --cached --name-only | wc -l)
           echo "ARQUIVOS_MODIFICADOS=$ARQUIVOS_MODIFICADOS" >> $GITHUB_OUTPUT
+          echo "✅ $ARQUIVOS_MODIFICADOS arquivo(s) com mudanças"
         fi
     
     - name: Commit e Push
@@ -200,7 +206,6 @@ jobs:
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "GitHub Actions Bot"
-        git add balancos/*/noticiario.json
         DATA_ATUAL=$(TZ='America/Sao_Paulo' date +'%d/%m/%Y %H:%M')
         MODO="${{ github.event.inputs.modo }}"
         ARQUIVOS="${{ steps.check-changes.outputs.ARQUIVOS_MODIFICADOS }}"
