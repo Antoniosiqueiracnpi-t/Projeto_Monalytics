@@ -5740,5 +5740,243 @@ console.log('✅ Análise dos Balanços (Demonstrações Financeiras) inicializa
 
 
 
+/* ========================================
+   COMUNICADOS DA EMPRESA
+   ======================================== */
+
+let comunicadosEmpresaData = null;
+
+// Hook de carregamento no loadAcaoData
+const originalLoadAcaoDataComunicados = loadAcaoData;
+loadAcaoData = async function(ticker) {
+    await originalLoadAcaoDataComunicados.call(this, ticker);
+    await loadComunicadosEmpresa(ticker);
+};
+
+// Carrega comunicados da empresa
+async function loadComunicadosEmpresa(ticker) {
+    try {
+        console.log('Carregando comunicados da empresa de', ticker, '...');
+
+        const tickerPasta = obterTickerPasta(ticker);
+        const timestamp = new Date().getTime();
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/noticias.json?t=${timestamp}`;
+
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error('Arquivo de comunicados não encontrado');
+        }
+
+        const data = await response.json();
+        
+        // Ordena por data (mais recente primeiro)
+        data.sort((a, b) => {
+            const dataA = parseDataComunicado(a.data_referencia);
+            const dataB = parseDataComunicado(b.data_referencia);
+            return dataB - dataA;
+        });
+
+        comunicadosEmpresaData = {
+            ticker: ticker,
+            comunicados: data
+        };
+
+        console.log(`${data.length} comunicados carregados`);
+
+        renderComunicadosEmpresa();
+
+    } catch (error) {
+        console.error('Erro ao carregar comunicados:', error);
+        document.getElementById('comunicadosEmpresaSection').style.display = 'none';
+    }
+}
+
+// Parse data do formato DD/MM/YYYY
+function parseDataComunicado(dataStr) {
+    const partes = dataStr.split('/');
+    return new Date(partes[2], partes[1] - 1, partes[0]);
+}
+
+// Formata data para exibição
+function formatarDataComunicado(dataStr) {
+    const data = parseDataComunicado(dataStr);
+    const opcoes = { day: '2-digit', month: 'short', year: 'numeric' };
+    return data.toLocaleDateString('pt-BR', opcoes);
+}
+
+// Verifica se comunicado é novo (últimos 7 dias)
+function comunicadoEhNovo(dataStr) {
+    const data = parseDataComunicado(dataStr);
+    const hoje = new Date();
+    const diasDiferenca = (hoje - data) / (1000 * 60 * 60 * 24);
+    return diasDiferenca <= 7;
+}
+
+// Agrupa comunicados por mês/ano
+function agruparComunicadosPorMes(comunicados) {
+    const grupos = {};
+    
+    comunicados.forEach(com => {
+        const data = parseDataComunicado(com.data_referencia);
+        const mesAno = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+        
+        if (!grupos[mesAno]) {
+            grupos[mesAno] = {
+                titulo: data.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }),
+                comunicados: []
+            };
+        }
+        
+        grupos[mesAno].comunicados.push(com);
+    });
+    
+    return grupos;
+}
+
+// Renderiza card de comunicado
+function renderComunicadoCard(comunicado) {
+    const ehNovo = comunicadoEhNovo(comunicado.data_referencia);
+    const dataFormatada = formatarDataComunicado(comunicado.data_referencia);
+    
+    return `
+        <div class="comunicado-card">
+            <div class="comunicado-card-header">
+                <div class="comunicado-data">
+                    <i class="far fa-calendar"></i>
+                    <span>${dataFormatada}</span>
+                </div>
+                ${ehNovo ? `
+                    <div class="comunicado-badge novo">
+                        <i class="fas fa-star"></i>
+                        <span>Novo</span>
+                    </div>
+                ` : ''}
+            </div>
+            
+            <h3 class="comunicado-titulo">${comunicado.titulo}</h3>
+            <p class="comunicado-assunto">${comunicado.assunto}</p>
+            
+            <div class="comunicado-footer">
+                <div class="comunicado-protocolo">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Protocolo: ${comunicado.protocolo}</span>
+                </div>
+                <a href="${comunicado.link_pdf}" target="_blank" rel="noopener noreferrer" class="comunicado-link">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Abrir PDF</span>
+                </a>
+            </div>
+        </div>
+    `;
+}
+
+// Renderiza seção de comunicados
+function renderComunicadosEmpresa() {
+    const section = document.getElementById('comunicadosEmpresaSection');
+    const loading = document.getElementById('comunicadosEmpresaLoading');
+    const content = document.getElementById('comunicadosEmpresaContent');
+    const empty = document.getElementById('comunicadosEmpresaEmpty');
+    const subtitle = document.getElementById('comunicadosEmpresaSubtitle');
+    const recentes = document.getElementById('comunicadosRecentes');
+    const verMaisContainer = document.getElementById('comunicadosVerMaisContainer');
+    const antigos = document.getElementById('comunicadosAntigos');
+
+    if (!comunicadosEmpresaData || comunicadosEmpresaData.comunicados.length === 0) {
+        loading.style.display = 'none';
+        empty.style.display = 'flex';
+        section.style.display = 'block';
+        return;
+    }
+
+    const totalComunicados = comunicadosEmpresaData.comunicados.length;
+    
+    loading.style.display = 'none';
+    content.style.display = 'block';
+    section.style.display = 'block';
+    
+    subtitle.textContent = `${totalComunicados} comunicado${totalComunicados !== 1 ? 's' : ''} disponível${totalComunicados !== 1 ? 'is' : ''}`;
+
+    // Renderiza 3 comunicados mais recentes
+    const comunicadosRecentes = comunicadosEmpresaData.comunicados.slice(0, 3);
+    recentes.innerHTML = comunicadosRecentes.map(com => renderComunicadoCard(com)).join('');
+
+    // Se houver mais de 3, mostra botão "Ver Mais"
+    if (totalComunicados > 3) {
+        verMaisContainer.style.display = 'block';
+        
+        // Agrupa comunicados antigos por mês
+        const comunicadosAntigos = comunicadosEmpresaData.comunicados.slice(3);
+        const gruposPorMes = agruparComunicadosPorMes(comunicadosAntigos);
+        
+        let antigosHTML = '';
+        
+        Object.keys(gruposPorMes).sort().reverse().forEach(mesAno => {
+            const grupo = gruposPorMes[mesAno];
+            const grupoId = `mes-${mesAno}`;
+            
+            antigosHTML += `
+                <div class="comunicados-mes-grupo">
+                    <div class="comunicados-mes-header" onclick="toggleMesComunicados('${grupoId}')">
+                        <i class="far fa-calendar-alt"></i>
+                        <h3 class="comunicados-mes-titulo">${grupo.titulo}</h3>
+                        <span class="comunicados-mes-count">${grupo.comunicados.length}</span>
+                        <i class="fas fa-chevron-down comunicados-mes-toggle"></i>
+                    </div>
+                    <div class="comunicados-mes-conteudo" id="${grupoId}">
+                        ${grupo.comunicados.map(com => renderComunicadoCard(com)).join('')}
+                    </div>
+                </div>
+            `;
+        });
+        
+        antigos.innerHTML = antigosHTML;
+    }
+
+    // Inicializa botão Ver Mais
+    initComunicadosVerMais();
+}
+
+// Inicializa botão Ver Mais
+function initComunicadosVerMais() {
+    const btn = document.getElementById('comunicadosVerMaisBtn');
+    const antigos = document.getElementById('comunicadosAntigos');
+    
+    if (!btn) return;
+    
+    // Remove event listeners anteriores
+    const novoBotao = btn.cloneNode(true);
+    btn.parentNode.replaceChild(novoBotao, btn);
+    
+    novoBotao.addEventListener('click', () => {
+        const isExpanded = antigos.style.display === 'block';
+        
+        if (isExpanded) {
+            antigos.style.display = 'none';
+            novoBotao.classList.remove('expanded');
+            novoBotao.querySelector('span').textContent = 'Ver comunicados anteriores';
+        } else {
+            antigos.style.display = 'block';
+            novoBotao.classList.add('expanded');
+            novoBotao.querySelector('span').textContent = 'Ocultar comunicados anteriores';
+        }
+    });
+}
+
+// Toggle expansão de mês
+function toggleMesComunicados(grupoId) {
+    const header = event.currentTarget;
+    const conteudo = document.getElementById(grupoId);
+    
+    if (conteudo.classList.contains('expanded')) {
+        conteudo.classList.remove('expanded');
+        header.classList.remove('expanded');
+    } else {
+        conteudo.classList.add('expanded');
+        header.classList.add('expanded');
+    }
+}
+
+console.log('✅ Comunicados da Empresa inicializado');
 
 
