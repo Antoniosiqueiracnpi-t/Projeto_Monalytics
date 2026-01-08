@@ -5,22 +5,25 @@
 CAPTURADOR DE DIVIDENDOS FUTUROS (OFICIAL B3 LISTADOS) + JANELA DESLIZANTE + DEDUP
 =================================================================================
 
-✅ Fonte oficial:
-- B3 Listados (sistemaswebb3-listados.b3.com.br) via endpoints proxy JSON.
+Fonte oficial:
+- B3 Listados (sistemaswebb3-listados.b3.com.br) via endpoints proxy JSON:
+  - GetInitialCompanies (resolve tradingName)
+  - GetListedCashDividends (proventos em dinheiro)
 
-✅ Por que essa versão funciona melhor do que o caminho Plantão/CVM RAD:
-- Resolve o tradingName CANÔNICO via GetInitialCompanies (fluxo usado pela própria tela oficial)
-- Evita GetDetail via codeCVM (que estava sendo chamado errado e gerando 403)
+IMPORTANTE:
+- O tradingName deve ser obtido por GetInitialCompanies e, conforme o fluxo,
+  remover APENAS '/' e '.' (não remover espaços). :contentReference[oaicite:3]{index=3}
 
 Fluxo:
 1) Carrega mapeamento_tradingname_b3.csv
 2) Para cada ticker:
+   - Dedup: lê balancos/{TICKER}/dividendos_futuros.json existente
    - Resolve tradingName canônico via GetInitialCompanies (B3)
-   - Busca proventos em dinheiro via GetListedCashDividends (B3)
-   - Janela deslizante --dias (filtra por data-com/ex/evento quando houver)
-   - Dedup: lê balancos/{TICKER}/dividendos_futuros.json existente e só adiciona novos
+   - Busca proventos via GetListedCashDividends (B3)
+   - Aplica janela --dias (filtra por data-com/ex/evento quando houver)
+   - Só adiciona proventos NÃO DUPLICADOS
 3) Salva por ticker: balancos/{TICKER}/dividendos_futuros.json
-4) Salva agregado diário (SOMENTE novos desta execução): balancos/dividendos_anunciados.json
+4) Salva agregado diário (SOMENTE novos da execução): balancos/dividendos_anunciados.json
 
 Dependências:
 pip install requests pandas
@@ -31,21 +34,19 @@ Exemplos:
 """
 
 import argparse
-import base64
 import json
 import logging
 import re
 import sys
 import time
+from base64 import b64encode
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Set
-from urllib.parse import quote
 
 import pandas as pd
 import requests
-from requests import Response
 
 
 # ---------------- LOGGING ----------------
@@ -58,17 +59,11 @@ logger = logging.getLogger(__name__)
 class Empresa:
     ticker: str
     trading_name: str
-    codigo: str  # pode ser código CVM numérico ou outro campo do seu CSV
+    codigo: str
 
 
 # ---------------- HELPERS ----------------
 def _parse_any_date(value) -> Optional[date]:
-    """
-    Parse tolerante:
-      - dd/mm/yyyy
-      - dd/mm/yyyy hh:mm:ss
-      - yyyy-mm-dd
-    """
     if value is None:
         return None
     s = str(value).strip()
@@ -101,11 +96,8 @@ def _parse_money(value) -> float:
     if not s or s.lower() in ("nan", "none", "null"):
         return 0.0
 
-    # mantém dígitos, . , e -
-    s = re.sub(r"[^\d,.\-]", "", s)
-
-    # pt-br: 1.234,56 -> 1234.56
-    s = s.replace(".", "").replace(",", ".")
+    s = re.sub(r"[^\d,.\-]", "", s)        # mantém dígitos, separadores e sinal
+    s = s.replace(".", "").replace(",", ".")  # pt-br -> float
     try:
         return float(s)
     except Exception:
@@ -114,11 +106,11 @@ def _parse_money(value) -> float:
 
 def _b64_str_dict(params: Dict) -> str:
     """
-    A B3 Listados (proxy) usa base64 de str(dict) (com aspas simples) em vários endpoints.
-    Mantemos esse formato.
+    Conforme o fluxo prático usado pela página, a B3 codifica base64 de str(dict).
+    :contentReference[oaicite:4]{index=4}
     """
-    raw = str(params).encode("ascii", errors="ignore")
-    return base64.b64encode(raw).decode("ascii")
+    b = bytes(str(params), encoding="ascii")
+    return b64encode(b).decode("ascii")
 
 
 # ---------------- CAPTURADOR ----------------
@@ -145,7 +137,9 @@ class CapturadorDividendosFuturos:
 
         self.dias_janela = int(dias) if dias and dias > 0 else 30
         self.total_novos = 0
-        self.dividendos_anunciados: List[Dict] = []  # SOMENTE novos desta execução
+
+        # agregado diário: SOMENTE novos desta execução
+        self.dividendos_anunciados: List[Dict] = []
 
     # -------------- PUBLIC --------------
     def executar(
@@ -215,6 +209,7 @@ class CapturadorDividendosFuturos:
     # -------------- CORE --------------
     def _processar_empresa(self, empresa: Empresa, idx: int, total: int):
         ticker = empresa.ticker
+
         print(f"\n{'='*90}")
         print(f"({idx}/{total}) 🔮 {ticker} | trading_name(CSV)={empresa.trading_name} | codigo={empresa.codigo}")
         print(f"{'='*90}")
@@ -222,7 +217,7 @@ class CapturadorDividendosFuturos:
         existentes = self._carregar_proventos_existentes(ticker)
         logger.info(f"📌 Já capturados: {len(existentes)} itens (dedup)")
 
-        # ✅ Resolve tradingName canônico pelo fluxo oficial
+        # ✅ Resolve tradingName canônico (fluxo oficial)
         trading_name_b3 = self._b3_get_trading_name_por_ticker(ticker)
         if not trading_name_b3:
             logger.warning(f"⚠️  TradingName não resolvido via B3 Listados para {ticker} (root={self._ticker_root(ticker)})")
@@ -231,10 +226,12 @@ class CapturadorDividendosFuturos:
 
         logger.info(f"✅ tradingName(B3): {trading_name_b3}")
 
-        # Busca proventos em dinheiro
+        # Busca proventos
         itens_raw = self._b3_get_listed_cash_dividends(trading_name_b3)
+        if not itens_raw:
+            logger.info("✅ Sem registros retornados pela B3 para este tradingName")
+            return
 
-        # Janela
         data_inicio = self.hoje - timedelta(days=self.dias_janela)
 
         novos: List[Dict] = []
@@ -246,12 +243,11 @@ class CapturadorDividendosFuturos:
             if not dt_pag or dt_pag < self.hoje:
                 continue
 
-            # janela: usa data_com/ex/evento se existirem
+            # janela (se existir alguma data de referência)
             dt_com = _parse_any_date(norm.get("data_com"))
             dt_ex = _parse_any_date(norm.get("data_ex"))
             dt_evt = _parse_any_date(norm.get("data_evento"))
 
-            # se tiver alguma data de referência, aplica janela
             if dt_com or dt_ex or dt_evt:
                 dentro = False
                 for dtx in (dt_com, dt_ex, dt_evt):
@@ -266,17 +262,15 @@ class CapturadorDividendosFuturos:
                 continue
 
             novos.append(norm)
-            existentes.add(chave)  # evita duplicar nesta execução
+            existentes.add(chave)
 
         if not novos:
             logger.info("✅ Sem novos dividendos nesta janela")
             return
 
-        # salva incremental
         self._salvar_dividendos_incremental(ticker, novos)
         self.total_novos += len(novos)
 
-        # agregado diário: somente novos
         for d in novos:
             item = dict(d)
             item["ticker"] = ticker
@@ -308,85 +302,46 @@ class CapturadorDividendosFuturos:
 
     # -------------- B3 (OFICIAL) --------------
     def _ticker_root(self, ticker: str) -> str:
-        """
-        'ASAI3' -> 'ASAI', 'BMGB4' -> 'BMGB', 'BPAC11' -> 'BPAC'
-        """
         t = (ticker or "").strip().upper()
         m = re.match(r"^([A-Z]{4,6})", t)
         return m.group(1) if m else t
 
     def _normalizar_trading_name_b3(self, trading_name: str) -> str:
         """
-        Mantém somente A-Z0-9 (remove espaços, /, ., etc.)
+        CRÍTICO:
+        Conforme o fluxo, remover apenas '/' e '.' do tradingName retornado. :contentReference[oaicite:5]{index=5}
+        NÃO remover espaços.
         """
-        s = (trading_name or "").upper()
-        return re.sub(r"[^A-Z0-9]", "", s)
-
-    def _safe_get(self, url: str, timeout: int = 25) -> Response:
-        """
-        GET robusto:
-        - Primeiro com verify=True
-        - Se SSL falhar, tenta verify=False
-        - Se 403, tenta uma vez com headers reforçados (sem mascarar como erro de SSL)
-        """
-        try:
-            r = self.session.get(url, timeout=timeout, verify=True)
-            r.raise_for_status()
-            return r
-        except requests.exceptions.SSLError:
-            logger.warning("⚠️  SSLError (verify=True). Tentando verify=False...")
-            r = self.session.get(url, timeout=timeout, verify=False)
-            r.raise_for_status()
-            return r
-        except requests.HTTPError as e:
-            status = getattr(e.response, "status_code", None)
-            if status == 403:
-                # tenta uma vez com header reforçado
-                logger.warning("⚠️  403 Forbidden. Reforçando headers e tentando novamente...")
-                self.session.headers.update(
-                    {
-                        "X-Requested-With": "XMLHttpRequest",
-                        "Connection": "keep-alive",
-                    }
-                )
-                r2 = self.session.get(url, timeout=timeout, verify=True)
-                if r2.status_code == 403:
-                    # última tentativa sem verify (não por SSL, mas por compatibilidade ambiente)
-                    r2 = self.session.get(url, timeout=timeout, verify=False)
-                r2.raise_for_status()
-                return r2
-            raise
+        s = (trading_name or "").strip().upper()
+        s = s.replace("/", "").replace(".", "")
+        return s
 
     def _b3_get_trading_name_por_ticker(self, ticker: str) -> Optional[str]:
-        """
-        ✅ Fluxo oficial: GetInitialCompanies -> achar issuingCompany == root(ticker) -> pegar tradingName
-        """
         issuing = self._ticker_root(ticker)
 
         params = {"language": "pt-br", "pageNumber": 1, "pageSize": 50, "company": issuing}
         b64 = _b64_str_dict(params)
-        url = f"{self.BASE}/listedCompaniesProxy/CompanyCall/GetInitialCompanies/{quote(b64)}"
+
+        # importante: o exemplo prático usa verify=False. :contentReference[oaicite:6]{index=6}
+        url = f"{self.BASE}/listedCompaniesProxy/CompanyCall/GetInitialCompanies/{b64}"
 
         try:
-            r = self._safe_get(url, timeout=25)
+            r = self.session.get(url, timeout=25, verify=False)
+            r.raise_for_status()
             js = r.json() or {}
             results = js.get("results") or []
+
             for it in results:
                 if str(it.get("issuingCompany", "")).strip().upper() == issuing:
                     tn = str(it.get("tradingName", "")).strip()
                     return self._normalizar_trading_name_b3(tn) if tn else None
+
             return None
         except Exception as e:
             logger.warning(f"⚠️  Falha ao resolver tradingName para {ticker} (issuing={issuing}): {e}")
             return None
 
     def _b3_get_listed_cash_dividends(self, trading_name_b3: str) -> List[Dict]:
-        """
-        Endpoint oficial:
-          /listedCompaniesProxy/CompanyCall/GetListedCashDividends/{base64}
-
-        Paginação por pageNumber/pageSize.
-        """
         resultados: List[Dict] = []
         page = 1
         page_size = 120
@@ -399,10 +354,11 @@ class CapturadorDividendosFuturos:
                 "tradingName": trading_name_b3,
             }
             b64 = _b64_str_dict(params)
-            url = f"{self.BASE}/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{quote(b64)}"
+            url = f"{self.BASE}/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{b64}"
 
             try:
-                r = self._safe_get(url, timeout=30)
+                r = self.session.get(url, timeout=30, verify=False)
+                r.raise_for_status()
                 js = r.json() or {}
                 batch = js.get("results") or []
                 if not batch:
@@ -411,7 +367,7 @@ class CapturadorDividendosFuturos:
                 resultados.extend(batch)
                 page += 1
 
-                if page > 60:  # proteção
+                if page > 60:
                     break
 
                 time.sleep(0.35)
@@ -423,17 +379,6 @@ class CapturadorDividendosFuturos:
 
     # -------------- NORMALIZAÇÃO --------------
     def _normalizar_item_b3(self, item: Dict) -> Dict:
-        """
-        Normaliza para o seu formato padrão.
-
-        Campos mais comuns observados na B3:
-        - paymentDate
-        - lastDatePrior (muitas vezes o "com"/record date)
-        - lastDate (muitas vezes ex-date)
-        - rate (valor)
-        - corporateActionType (DIV/JCP etc)
-        - approvedOn / approvalDate (às vezes)
-        """
         def pick(*keys):
             for k in keys:
                 if k in item and item.get(k) not in (None, ""):
@@ -459,7 +404,7 @@ class CapturadorDividendosFuturos:
             "data_ex": dt_ex.isoformat() if dt_ex else None,
             "data_evento": dt_evt.isoformat() if dt_evt else None,
             "fonte": "B3_LISTADOS",
-            "raw": item,  # auditoria (mantém)
+            "raw": item,
         }
 
     # -------------- SAVE --------------
@@ -479,7 +424,6 @@ class CapturadorDividendosFuturos:
 
         merged = antigos + novos
 
-        # dedup final
         seen: Set[str] = set()
         final: List[Dict] = []
         for d in merged:
