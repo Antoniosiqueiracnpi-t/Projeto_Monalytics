@@ -5198,6 +5198,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
 /* ========================================
    ANÁLISE DOS BALANÇOS - DEMONSTRAÇÕES FINANCEIRAS
    ======================================== */
@@ -5208,51 +5209,51 @@ let demonstracoesViewType = 'anual'; // 'anual' ou 'trimestral'
 let demonstracoesDisplayMode = 'tabela'; // 'tabela' ou 'grafico'
 let demonstracaoTipoAtivo = 'DRE'; // 'DRE', 'BPA', 'BPP', 'DFC'
 
-// Configuração de contas por tipo de empresa
+// Configuração de contas por tipo de empresa com NOMES ABREVIADOS
 const CONTAS_BALANCOS = {
     NAOFINANCEIRAS: {
         DRE: [
-            { codigo: '3.01', nome: 'Receita de Venda de Bens e/ou Serviços' },
-            { codigo: '3.05', nome: 'EBIT (Resultado Antes do Resultado Financeiro e dos Tributos)' },
-            { codigo: '3.07', nome: 'Resultado Antes dos Tributos sobre o Lucro' },
-            { codigo: '3.11', nome: 'Lucro/Prejuízo Consolidado do Período' }
+            { codigo: '3.01', nome: 'Receita', nomeCompleto: 'Receita de Venda de Bens e/ou Serviços' },
+            { codigo: '3.05', nome: 'EBIT', nomeCompleto: 'EBIT (Resultado Antes do Resultado Financeiro e dos Tributos)' },
+            { codigo: '3.07', nome: 'Resultado antes do Lucro', nomeCompleto: 'Resultado Antes dos Tributos sobre o Lucro' },
+            { codigo: '3.11', nome: 'Lucro/Prejuízo', nomeCompleto: 'Lucro/Prejuízo Consolidado do Período' }
         ],
         BPA: [
-            { codigo: '1.01', nome: 'Ativo Circulante' },
-            { codigo: '1.01.01', nome: 'Caixa e Equivalentes de Caixa' },
-            { codigo: '1.01.03', nome: 'Contas a Receber' },
-            { codigo: '1.01.04', nome: 'Estoques' },
-            { codigo: '1.02', nome: 'Ativo Não Circulante' }
+            { codigo: '1.01', nome: 'Ativo Circulante', nomeCompleto: 'Ativo Circulante' },
+            { codigo: '1.01.01', nome: 'Caixa e Equivalentes', nomeCompleto: 'Caixa e Equivalentes de Caixa' },
+            { codigo: '1.01.03', nome: 'Contas a Receber', nomeCompleto: 'Contas a Receber' },
+            { codigo: '1.01.04', nome: 'Estoques', nomeCompleto: 'Estoques' },
+            { codigo: '1.02', nome: 'Ativo Não Circulante', nomeCompleto: 'Ativo Não Circulante' }
         ],
         BPP: [
-            { codigo: '2.01', nome: 'Passivo Circulante' },
-            { codigo: '2.02', nome: 'Passivo Não Circulante' },
-            { codigo: '2.03', nome: 'Patrimônio Líquido Consolidado' }
+            { codigo: '2.01', nome: 'Passivo Circulante', nomeCompleto: 'Passivo Circulante' },
+            { codigo: '2.02', nome: 'Passivo Não Circulante', nomeCompleto: 'Passivo Não Circulante' },
+            { codigo: '2.03', nome: 'Patrimônio Líquido', nomeCompleto: 'Patrimônio Líquido Consolidado' }
         ],
         DFC: [
-            { codigo: '6.01', nome: 'Caixa Líquido das Atividades Operacionais' },
-            { codigo: '6.02', nome: 'Caixa Líquido Atividades de Investimento' },
-            { codigo: '6.03', nome: 'Caixa Líquido Atividades de Financiamento' }
+            { codigo: '6.01', nome: 'Caixa Operacional', nomeCompleto: 'Caixa Líquido das Atividades Operacionais' },
+            { codigo: '6.02', nome: 'Caixa Investimento', nomeCompleto: 'Caixa Líquido Atividades de Investimento' },
+            { codigo: '6.03', nome: 'Caixa Financiamento', nomeCompleto: 'Caixa Líquido Atividades de Financiamento' }
         ]
     },
     FINANCEIRAS: {
         DRE: [
-            { codigo: '3.01', nome: 'Receitas de Intermediação Financeira' },
-            { codigo: '3.03', nome: 'Resultado Bruto de Intermediação Financeira' },
-            { codigo: '3.11', nome: 'Lucro ou Prejuízo Líquido Consolidado do Período' }
+            { codigo: '3.01', nome: 'Receitas Intermediação', nomeCompleto: 'Receitas de Intermediação Financeira' },
+            { codigo: '3.03', nome: 'Resultado Bruto', nomeCompleto: 'Resultado Bruto de Intermediação Financeira' },
+            { codigo: '3.11', nome: 'Lucro/Prejuízo', nomeCompleto: 'Lucro ou Prejuízo Líquido Consolidado do Período' }
         ],
         BPA: [
-            { codigo: '1.02', nome: 'Ativos Financeiros' },
-            { codigo: '1.05', nome: 'Investimentos' },
-            { codigo: '1.06', nome: 'Imobilizado' },
-            { codigo: '1.07', nome: 'Intangível' }
+            { codigo: '1.02', nome: 'Ativos Financeiros', nomeCompleto: 'Ativos Financeiros' },
+            { codigo: '1.05', nome: 'Investimentos', nomeCompleto: 'Investimentos' },
+            { codigo: '1.06', nome: 'Imobilizado', nomeCompleto: 'Imobilizado' },
+            { codigo: '1.07', nome: 'Intangível', nomeCompleto: 'Intangível' }
         ],
         BPP: [
-            { codigo: '2.01', nome: 'Passivos Financeiros ao Valor Justo através do Resultado' },
-            { codigo: '2.02', nome: 'Passivos Financeiros ao Custo Amortizado' },
-            { codigo: '2.08', nome: 'Patrimônio Líquido Consolidado' }
+            { codigo: '2.01', nome: 'Passivos Valor Justo', nomeCompleto: 'Passivos Financeiros ao Valor Justo através do Resultado' },
+            { codigo: '2.02', nome: 'Passivos Custo Amortizado', nomeCompleto: 'Passivos Financeiros ao Custo Amortizado' },
+            { codigo: '2.08', nome: 'Patrimônio Líquido', nomeCompleto: 'Patrimônio Líquido Consolidado' }
         ],
-        DFC: [] // Bancos geralmente não têm DFC padronizado
+        DFC: []
     }
 };
 
@@ -5260,7 +5261,6 @@ const CONTAS_BALANCOS = {
 const originalLoadAcaoDataDemonstra = loadAcaoData;
 loadAcaoData = async function(ticker) {
     await originalLoadAcaoDataDemonstra.call(this, ticker);
-    // Carrega análise de balanços
     await loadDemonstracoesFinanceirasData(ticker);
 };
 
@@ -5280,7 +5280,6 @@ async function loadDemonstracoesFinanceirasData(ticker) {
         const ehFinanceira = isSetorFinanceiro(empresaInfo.setor);
         const timestamp = new Date().getTime();
 
-        // Carrega arquivos necessários
         const arquivos = ehFinanceira 
             ? ['bpa_padronizado', 'bpp_padronizado', 'dre_padronizado']
             : ['bpa_padronizado', 'bpp_padronizado', 'dre_padronizado', 'dfc_padronizado'];
@@ -5295,7 +5294,6 @@ async function loadDemonstracoesFinanceirasData(ticker) {
 
         const resultados = await Promise.all(promessas);
 
-        // Monta estrutura de dados
         demonstracoesFinanceirasData = {
             ticker: ticker,
             empresa: empresaInfo.empresa,
@@ -5309,7 +5307,6 @@ async function loadDemonstracoesFinanceirasData(ticker) {
 
         console.log('Demonstrações carregadas:', Object.keys(demonstracoesFinanceirasData.balancos));
 
-        // Renderiza seção
         renderDemonstracoesFinanceirasSection();
 
     } catch (error) {
@@ -5326,8 +5323,10 @@ function parseDemonstracoesCSV(csvText) {
     const dados = {};
     for (let i = 1; i < linhas.length; i++) {
         const valores = linhas[i].split(',');
-        const cdConta = valores[0];
-        const conta = valores[1];
+        const cdConta = valores[0]?.trim();
+        const conta = valores[1]?.trim();
+        
+        if (!cdConta) continue;
         
         dados[cdConta] = {
             conta: conta,
@@ -5359,24 +5358,16 @@ function renderDemonstracoesFinanceirasSection() {
 
     subtitle.textContent = `${demonstracoesFinanceirasData.empresa} - ${demonstracoesFinanceirasData.ehFinanceira ? 'Instituição Financeira' : 'Empresa Não Financeira'}`;
 
-    // Inicializa eventos
     initDemonstracoesFinanceirasControls();
-
-    // Renderiza tabela inicial
     renderDemonstracoesFinanceirasTabela();
 }
 
 // Inicializa controles de visualização
 function initDemonstracoesFinanceirasControls() {
-    // Botões de Anual/Trimestral
     document.getElementById('viewAnualBtn').addEventListener('click', () => alternarDemonstracoesViewType('anual'));
     document.getElementById('viewTrimestralBtn').addEventListener('click', () => alternarDemonstracoesViewType('trimestral'));
-
-    // Botões de Tabela/Gráfico
     document.getElementById('displayTabelaBtn').addEventListener('click', () => alternarDemonstracoesDisplayMode('tabela'));
     document.getElementById('displayGraficoBtn').addEventListener('click', () => alternarDemonstracoesDisplayMode('grafico'));
-
-    // Botões de Tipo de Demonstração (DRE, BPA, BPP, DFC)
     document.getElementById('tipoDREBtn')?.addEventListener('click', () => alternarDemonstracaoTipo('DRE'));
     document.getElementById('tipoBPABtn')?.addEventListener('click', () => alternarDemonstracaoTipo('BPA'));
     document.getElementById('tipoBPPBtn')?.addEventListener('click', () => alternarDemonstracaoTipo('BPP'));
@@ -5386,12 +5377,9 @@ function initDemonstracoesFinanceirasControls() {
 // Alterna entre anual e trimestral
 function alternarDemonstracoesViewType(tipo) {
     demonstracoesViewType = tipo;
-    
-    // Atualiza botões
     document.querySelectorAll('.view-type-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-view="${tipo}"]`).classList.add('active');
 
-    // Re-renderiza
     if (demonstracoesDisplayMode === 'tabela') {
         renderDemonstracoesFinanceirasTabela();
     } else {
@@ -5403,7 +5391,6 @@ function alternarDemonstracoesViewType(tipo) {
 function alternarDemonstracoesDisplayMode(modo) {
     demonstracoesDisplayMode = modo;
     
-    // Atualiza botões
     document.querySelectorAll('.chart-table-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-display="${modo}"]`).classList.add('active');
 
@@ -5422,7 +5409,6 @@ function alternarDemonstracoesDisplayMode(modo) {
         chartWrapper.style.display = 'block';
         tipoControls.style.display = 'flex';
         
-        // Mostra/oculta botão DFC para não financeiras
         const dfcBtn = document.getElementById('tipoDFCBtn');
         if (dfcBtn) {
             dfcBtn.style.display = demonstracoesFinanceirasData.ehFinanceira ? 'none' : 'flex';
@@ -5437,19 +5423,14 @@ function alternarDemonstracoesDisplayMode(modo) {
 // Alterna tipo de demonstração (DRE, BPA, BPP, DFC)
 function alternarDemonstracaoTipo(tipo) {
     demonstracaoTipoAtivo = tipo;
-    
-    // Atualiza botões
     document.querySelectorAll('.demonstracao-tipo-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-tipo="${tipo}"]`)?.classList.add('active');
-
-    // Re-renderiza gráfico
     renderDemonstracoesFinanceirasGrafico();
 }
 
 // Formata período para exibição (remove T4/T3 quando anual)
 function formatarPeriodoExibicao(periodo, viewType) {
     if (viewType === 'anual') {
-        // Remove o T4, T3, etc e deixa apenas o ano
         return periodo.replace(/T\d/, '');
     }
     return periodo;
@@ -5468,10 +5449,8 @@ function renderDemonstracoesFinanceirasTabela() {
     const primeiroItem = Object.values(primeiroArquivo)[0];
     const todosPeriodos = Object.keys(primeiroItem.valores);
 
-    // Filtra períodos baseado na visualização
     let periodosExibir;
     if (demonstracoesViewType === 'anual') {
-        // Pega apenas último trimestre disponível de cada ano
         const anos = {};
         todosPeriodos.forEach(p => {
             const match = p.match(/(\d{4})T(\d)/);
@@ -5485,7 +5464,6 @@ function renderDemonstracoesFinanceirasTabela() {
         });
         periodosExibir = Object.values(anos).sort();
     } else {
-        // Trimestral: pega todos
         periodosExibir = todosPeriodos.sort();
     }
 
@@ -5504,8 +5482,8 @@ function renderDemonstracoesFinanceirasTabela() {
     for (const [grupoNome, contas] of Object.entries(config)) {
         if (contas.length === 0) continue;
 
-        // Cabeçalho do grupo
-        bodyHTML += `<tr><td colspan="${periodosExibir.slice(-8).length + 1}" class="grupo-header">${grupoNome}</td></tr>`;
+        // Cabeçalho do grupo - marca com classe especial
+        bodyHTML += `<tr class="grupo-row"><td colspan="${periodosExibir.slice(-8).length + 1}" class="grupo-header">${grupoNome}</td></tr>`;
 
         // Contas do grupo
         contas.forEach(contaConfig => {
@@ -5513,7 +5491,8 @@ function renderDemonstracoesFinanceirasTabela() {
             
             if (!dadosConta) return;
 
-            bodyHTML += `<tr><td>${contaConfig.nome}</td>`;
+            // Usa nome abreviado para exibição
+            bodyHTML += `<tr><td title="${contaConfig.nomeCompleto}">${contaConfig.nome}</td>`;
 
             periodosExibir.slice(-8).forEach(periodo => {
                 let valor = dadosConta.valores[periodo];
@@ -5556,7 +5535,6 @@ function renderDemonstracoesFinanceirasGrafico() {
     const ctx = document.getElementById('analiseBalancosChart');
     if (!ctx || !demonstracoesFinanceirasData) return;
 
-    // Destroi gráfico anterior
     if (demonstracoesFinanceirasChart) {
         demonstracoesFinanceirasChart.destroy();
     }
@@ -5566,7 +5544,6 @@ function renderDemonstracoesFinanceirasGrafico() {
     const primeiroItem = Object.values(primeiroArquivo)[0];
     const todosPeriodos = Object.keys(primeiroItem.valores);
 
-    // Filtra períodos
     let periodosExibir;
     if (demonstracoesViewType === 'anual') {
         const anos = {};
@@ -5587,7 +5564,6 @@ function renderDemonstracoesFinanceirasGrafico() {
 
     const labels = periodosExibir.slice(-12).map(p => formatarPeriodoExibicao(p, demonstracoesViewType));
 
-    // Pega contas do tipo selecionado
     const contasSelecionadas = config[demonstracaoTipoAtivo];
     
     if (!contasSelecionadas || contasSelecionadas.length === 0) {
@@ -5597,7 +5573,11 @@ function renderDemonstracoesFinanceirasGrafico() {
 
     // Datasets
     const datasets = [];
-    const cores = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+    // Cores mais fortes para gráfico de barras
+    const coresLinha = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+    const coresBarra = ['#6366f1', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#f472b6'];
+    const coresUsar = demonstracaoTipoAtivo === 'DFC' ? coresBarra : coresLinha;
+    
     let corIndex = 0;
 
     contasSelecionadas.forEach(contaConfig => {
@@ -5607,7 +5587,6 @@ function renderDemonstracoesFinanceirasGrafico() {
         const dados = periodosExibir.slice(-12).map(periodo => {
             let valor = dadosConta.valores[periodo];
 
-            // Acumula se for anual e DRE/DFC
             if (demonstracoesViewType === 'anual' && (demonstracaoTipoAtivo === 'DRE' || demonstracaoTipoAtivo === 'DFC')) {
                 const ano = periodo.match(/(\d{4})/)[1];
                 const trimestre = parseInt(periodo.match(/T(\d)/)[1]);
@@ -5622,15 +5601,17 @@ function renderDemonstracoesFinanceirasGrafico() {
                 }
             }
 
-            return valor ? valor / 1000000 : null; // Converte para milhões
+            return valor ? valor / 1000000 : null;
         });
 
         datasets.push({
-            label: contaConfig.nome,
+            label: contaConfig.nome, // Usa nome abreviado
             data: dados,
-            borderColor: cores[corIndex % cores.length],
-            backgroundColor: cores[corIndex % cores.length] + '20',
-            borderWidth: demonstracaoTipoAtivo === 'DFC' ? 0 : 2,
+            borderColor: coresUsar[corIndex % coresUsar.length],
+            backgroundColor: demonstracaoTipoAtivo === 'DFC' 
+                ? coresUsar[corIndex % coresUsar.length] 
+                : coresUsar[corIndex % coresUsar.length] + '20',
+            borderWidth: demonstracaoTipoAtivo === 'DFC' ? 0 : 3,
             tension: 0.4,
             fill: demonstracaoTipoAtivo !== 'DFC'
         });
@@ -5638,7 +5619,6 @@ function renderDemonstracoesFinanceirasGrafico() {
         corIndex++;
     });
 
-    // Define tipo de gráfico (barra para DFC, linha para outros)
     const tipoGrafico = demonstracaoTipoAtivo === 'DFC' ? 'bar' : 'line';
 
     demonstracoesFinanceirasChart = new Chart(ctx, {
@@ -5653,11 +5633,32 @@ function renderDemonstracoesFinanceirasGrafico() {
             plugins: {
                 legend: {
                     display: true,
-                    position: 'top'
+                    position: 'top',
+                    align: 'start',
+                    labels: {
+                        boxWidth: 12,
+                        boxHeight: 12,
+                        padding: 10,
+                        font: {
+                            size: 11,
+                            family: "'Inter', sans-serif"
+                        },
+                        usePointStyle: true,
+                        pointStyle: 'circle'
+                    }
                 },
                 tooltip: {
                     mode: 'index',
                     intersect: false,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    titleFont: {
+                        size: 13,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 12
+                    },
                     callbacks: {
                         label: function(context) {
                             const label = context.dataset.label || '';
@@ -5673,7 +5674,23 @@ function renderDemonstracoesFinanceirasGrafico() {
                     ticks: {
                         callback: function(value) {
                             return 'R$ ' + value.toFixed(0) + 'mi';
+                        },
+                        font: {
+                            size: 11
                         }
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: {
+                            size: 10
+                        }
+                    },
+                    grid: {
+                        display: false
                     }
                 }
             },
@@ -5704,6 +5721,7 @@ function formatarValorDemonstracoes(valor) {
 }
 
 console.log('✅ Análise dos Balanços (Demonstrações Financeiras) inicializada');
+
 
 
 
