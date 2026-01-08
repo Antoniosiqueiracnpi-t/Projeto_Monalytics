@@ -1,213 +1,217 @@
 {
-  "ultima_atualizacao": "2026-01-08T09:32:43.035181-03:00",
+  "ultima_atualizacao": "2026-01-08T10:36:49.679647-03:00",
   "total_noticias": 17,
   "portais": {
     "Investing.com": [
       {
-        "id": "30c74c454222",
-        "titulo": "Ações da Nestlé caem após China pedir recall de fórmula infantil",
-        "link": "https://br.investing.com/news/stock-market-news/acoes-da-nestle-caem-apos-china-pedir-recall-de-formula-infantil-93CH-1793882",
-        "horario": "09:26",
+        "id": "faf222aa9d72",
+        "titulo": "Presidente da Alemanha diz que EUA estão destruindo ordem mundial",
+        "link": "https://br.investing.com/news/world-news/presidente-da-alemanha-diz-que-eua-estao-destruindo-ordem-mundial-1794014",
+        "horario": "10:28",
+        "imagem": "https://i-invdn-com.investing.com/trkd-images/LYNXMPEM070Q9_L.jpg",
+        "categoria": "Internacional",
+        "tags": [
+          "EUA"
+        ],
+        "resumo": "Presidente da Alemanha diz que EUA estão destruindo ordem mundial",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "8c6d511696b4",
+        "titulo": "Goldman Sachs revela posição mínima na Permanent TSB",
+        "link": "https://br.investing.com/news/company-news/goldman-sachs-revela-posicao-minima-na-permanent-tsb-93CH-1794012",
+        "horario": "10:27",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Goldman Sachs revela posição mínima na Permanent TSB",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "9cf33d623cfa",
+        "titulo": "Raymond James analisa o estado da inflação nos EUA antes da avalanche de dados",
+        "link": "https://br.investing.com/news/economy-news/raymond-james-analisa-o-estado-da-inflacao-nos-eua-antes-da-avalanche-de-dados-1794015",
+        "horario": "10:27",
         "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
         "categoria": "Internacional",
-        "tags": [],
-        "resumo": "Ações da Nestlé caem após China pedir recall de fórmula infantil",
+        "tags": [
+          "EUA",
+          "Inflação"
+        ],
+        "resumo": "Raymond James analisa o estado da inflação nos EUA antes da avalanche...",
         "fonte": "Investing.com"
       },
       {
-        "id": "4978b903e154",
-        "titulo": "Commercial Metals sobe mais de 2% com forte superação de lucros no 1º tri e crescimento de receita",
-        "link": "https://br.investing.com/news/earnings/commercial-metals-sobe-mais-de-2-com-forte-superacao-de-lucros-no-1o-tri-e-crescimento-de-receita-93CH-1793881",
-        "horario": "09:26",
+        "id": "b89302fbe875",
+        "titulo": "3 melhores ações de mineração para o rally de metais preciosos de 2026: as principais escolhas da Bernstein",
+        "link": "https://br.investing.com/news/stock-market-news/3-melhores-acoes-de-mineracao-para-o-rally-de-metais-preciosos-de-2026-as-principais-escolhas-da-bernstein-93CH-1794011",
+        "horario": "10:27",
         "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
         "categoria": "Empresas",
         "tags": [],
-        "resumo": "Commercial Metals sobe mais de 2% com forte superação de lucros no...",
+        "resumo": "3 melhores ações de mineração para o rally de metais preciosos de...",
         "fonte": "Investing.com"
       },
       {
-        "id": "3d74d4408640",
-        "titulo": "Janus Henderson revela participação de 1,87% na Avadel Pharmaceuticals",
-        "link": "https://br.investing.com/news/company-news/janus-henderson-revela-participacao-de-187-na-avadel-pharmaceuticals-93CH-1793880",
-        "horario": "09:26",
+        "id": "b4614d5acfc5",
+        "titulo": "InflaRx prioriza desenvolvimento do izicopan e reduz força de trabalho em 30%",
+        "link": "https://br.investing.com/news/company-news/inflarx-prioriza-desenvolvimento-do-izicopan-e-reduz-forca-de-trabalho-em-30-93CH-1794010",
+        "horario": "10:27",
         "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
+        "categoria": "Geral",
         "tags": [],
-        "resumo": "Janus Henderson revela participação de 1,87% na Avadel Pharmaceuticals",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "3ff8e08a9d1d",
-        "titulo": "Cantor Fitzgerald reitera classificação acima da média para ações da SoundHound AI",
-        "link": "https://br.investing.com/news/analyst-ratings/cantor-fitzgerald-reitera-classificacao-acima-da-media-para-acoes-da-soundhound-ai-93CH-1793879",
-        "horario": "09:25",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Cantor Fitzgerald reitera classificação acima da média para ações da SoundHound AI",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "351dc9408b92",
-        "titulo": "Ações da SoundHound AI mantêm classificação \"Perform\" na Oppenheimer após demonstrações na CES",
-        "link": "https://br.investing.com/news/analyst-ratings/acoes-da-soundhound-ai-mantem-classificacao-perform-na-oppenheimer-apos-demonstracoes-na-ces-93CH-1793878",
-        "horario": "09:25",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Ações da SoundHound AI mantêm classificação \"Perform\" na Oppenheimer após demonstrações na...",
+        "resumo": "InflaRx prioriza desenvolvimento do izicopan e reduz força de trabalho em 30%",
         "fonte": "Investing.com"
       }
     ],
     "Valor Econômico": [
       {
-        "id": "18d8b610dc5f",
-        "titulo": "Dólar e juros futuros abrem em leve alta com dados do Brasil e nos EUA no radar",
+        "id": "d4fb1f0e1bb9",
+        "titulo": "Segmentos farmoquímicos e farmacêuticos ajudam a manter estabilidade da indústria em novembro",
+        "link": "https://valor.globo.com/politica/noticia/2026/01/08/segmentos-farmoquimicos-e-farmaceuticos-ajudam-a-manter-estabilidade-da-industria-em-novembro.ghtml",
+        "horario": "10:25",
+        "imagem": "https://s2-valor.glbimg.com/Rg-0PtBUfVwMwQIOA-UkiPtkCS0=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2022/e/p/6goAPkR6WTTXhb3ilU0A/pexels-chokniti-khongchum-2280571.jpg",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Segmentos farmoquímicos e farmacêuticos ajudam a manter estabilidade da indústria em novembro",
+        "fonte": "Valor Econômico"
+      },
+      {
+        "id": "ec52b7a38ce7",
+        "titulo": "Bitcoin aprofunda queda do dia anterior e perde os US$ 90 mil",
+        "link": "https://valor.globo.com/financas/criptomoedas/noticia/2026/01/08/bitcoin-aprofunda-queda-do-dia-anterior-e-perde-os-us-90-mil.ghtml",
+        "horario": "10:25",
+        "imagem": "https://s2-valor.glbimg.com/77req8WW8bAzS-s9vUO5G7Z9zc8=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/1/s/5P0WXqQbWZYqAen1i4xw/bitcoin-tres.jpg",
+        "categoria": "Criptomoedas",
+        "tags": [
+          "Bitcoin",
+          "Cripto"
+        ],
+        "resumo": "Bitcoin aprofunda queda do dia anterior e perde os US$ 90 mil",
+        "fonte": "Valor Econômico"
+      },
+      {
+        "id": "3e55577495f2",
+        "titulo": "Ibovespa e dólar rondam a estabilidade com dados dos EUA e do Brasil no foco",
         "link": "https://valor.globo.com/financas/ao-vivo/2023/06/16/dolar-avanca-e-ibovespa-recua-em-dia-de-correcao-siga-os-mercados.ghtml",
-        "horario": "09:24",
+        "horario": "10:18",
         "imagem": "https://s2-valor.glbimg.com/3EaBcz9YXlmLF6CFFgsHxPZRAVk=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2024/9/M/T1tP0lQCW0zPkl6H9VKQ/23opin-200-col-op1-a14-img01.jpg",
         "categoria": "Internacional",
         "tags": [
-          "Dólar",
-          "Juros",
-          "EUA"
+          "EUA",
+          "Ibovespa",
+          "Dólar"
         ],
-        "resumo": "Dólar e juros futuros abrem em leve alta com dados do Brasil...",
+        "resumo": "Ibovespa e dólar rondam a estabilidade com dados dos EUA e do...",
         "fonte": "Valor Econômico"
       },
       {
-        "id": "ef3451761df6",
-        "titulo": "Beauty Tech Group prevê desempenho acima das expectativas do mercado em 2025",
-        "link": "https://valor.globo.com/empresas/noticia/2026/01/08/beauty-tech-group-prev-desempenho-acima-das-expectativas-do-mercado-em-2025.ghtml",
-        "horario": "09:23",
-        "imagem": "https://s2-valor.glbimg.com/m2_ZobHs85X8yy__dYXspr-L2KA=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/0/f/ZgkSa8QMe5lfYUBvwDSw/captura-de-tela-2026-01-08-as-09.22.07.png",
-        "categoria": "Mercados",
+        "id": "0b2dc64f8d63",
+        "titulo": "Decisão da Caixa gera alerta sobre metas do governo",
+        "link": "https://valor.globo.com/patrocinado/dino/noticia/2026/01/08/decisao-da-caixa-gera-alerta-sobre-metas-do-governo-1.ghtml",
+        "horario": "09:56",
+        "imagem": "https://s2-valor.glbimg.com/YEIOF2BlJYIaWwdcPW4-kMnt_LY=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/m/e/XdWrj5Qfy99XHO2TW4zw/publicador-api-valor-dino-100-cb691e48-7d03-4c19-a283-12639edf0d90.png",
+        "categoria": "Política",
         "tags": [],
-        "resumo": "Beauty Tech Group prevê desempenho acima das expectativas do mercado em 2025",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "237b87d56f2a",
-        "titulo": "Juros futuros têm leve alta antes de leilão de prefixados",
-        "link": "https://valor.globo.com/financas/noticia/2026/01/08/juros-futuros-tem-leve-alta-antes-de-leilao-de-prefixados.ghtml",
-        "horario": "09:22",
-        "imagem": "https://s2-valor.glbimg.com/-v2ZvUR1JRbJWl4hkKnVd6lcnkU=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2024/X/K/Q53VSAQVSS6cTUFxNViA/ray-reyes-3xwrg7vv6ts-unsplash.jpg",
-        "categoria": "Economia",
-        "tags": [
-          "Juros"
-        ],
-        "resumo": "Juros futuros têm leve alta antes de leilão de prefixados",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "874dcaf2d446",
-        "titulo": "Petróleo é negociado em alta apesar de reduções nas sanções para Venezuela",
-        "link": "https://valor.globo.com/financas/noticia/2026/01/08/petroleo-e-negociado-em-alta-apesar-de-reducoes-nas-sancoes-para-venezuela.ghtml",
-        "horario": "09:20",
-        "imagem": "https://s2-valor.glbimg.com/Qapi6RVM2NkgB3qhW-4Y3BFXkS8=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/2/g/RhGi7HR4AYPX4I06ekLg/foto02emp-111-petroleo-b1.jpg",
-        "categoria": "Internacional",
-        "tags": [
-          "Venezuela",
-          "Petróleo"
-        ],
-        "resumo": "Petróleo é negociado em alta apesar de reduções nas sanções para Venezuela",
+        "resumo": "Decisão da Caixa gera alerta sobre metas do governo",
         "fonte": "Valor Econômico"
       }
     ],
     "InfoMoney": [
       {
-        "id": "b04d1efd83e7",
-        "titulo": "“Vi ele pedindo para Deus levá-lo”, diz Michelle sobre Bolsonaro",
-        "link": "https://www.infomoney.com.br/politica/vi-ele-pedindo-para-deus-leva-lo-diz-michelle-sobre-bolsonaro/",
-        "horario": "09:24",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/michelle.jpeg?fit=300%2C175&amp;quality=70&amp;strip=all",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "“Vi ele pedindo para Deus levá-lo”, diz Michelle sobre Bolsonaro",
-        "fonte": "InfoMoney"
-      },
-      {
-        "id": "98b6d0578e9e",
-        "titulo": "Violência lidera preocupação dos brasileiros às vésperas do ano eleitoral, diz Ipsos",
-        "link": "https://www.infomoney.com.br/politica/violencia-lidera-preocupacao-dos-brasileiros-as-vesperas-do-ano-eleitoral-diz-ipsos/",
-        "horario": "09:20",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/10/2025-10-28T154814Z_983151490_RC23LHA1WOCZ_RTRMADP_3_BRAZIL-VIOLENCE.jpeg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "id": "ca588651a097",
+        "titulo": "WEG (WEGE3): depois de um 2025 turbulento, o que esperar para ações em 2026?",
+        "link": "https://www.infomoney.com.br/mercados/weg-wege3-depois-de-um-2025-turbulento-o-que-esperar-para-acoes-em-2026/",
+        "horario": "10:33",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/08/weg.jpeg?fit=300%2C200&amp;quality=70&amp;strip=all",
         "categoria": "Empresas",
         "tags": [],
-        "resumo": "Violência lidera preocupação dos brasileiros às vésperas do ano eleitoral, diz Ipsos",
+        "resumo": "WEG (WEGE3): depois de um 2025 turbulento, o que esperar para ações...",
         "fonte": "InfoMoney"
       },
       {
-        "id": "607ed1708a8f",
-        "titulo": "Trump pede orçamento militar de US$ 1,5 tri em 2027, acima dos US$ 901 bi em 2026",
-        "link": "https://www.infomoney.com.br/mundo/trump-pede-orcamento-militar-de-us-15-tri-em-2027-acima-dos-us-901-bi-em-2026/",
-        "horario": "09:20",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/2026-01-08T115525Z_1_LYNXMPEM070N3_RTROPTP_4_USA-TRUMP.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "id": "7c5c9fd38750",
+        "titulo": "STF manda soltar filho de ex-presidente da Bolívia preso em Brasília",
+        "link": "https://www.infomoney.com.br/politica/stf-manda-soltar-filho-de-ex-presidente-da-bolivia-preso-em-brasilia/",
+        "horario": "10:25",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/LUIS-ARCE-MOSQUEIRA.jpeg?fit=300%2C188&amp;quality=70&amp;strip=all",
         "categoria": "Geral",
         "tags": [],
-        "resumo": "Trump pede orçamento militar de US$ 1,5 tri em 2027, acima dos...",
+        "resumo": "STF manda soltar filho de ex-presidente da Bolívia preso em Brasília",
         "fonte": "InfoMoney"
       },
       {
-        "id": "434500d4ef1c",
-        "titulo": "Dólar hoje tem leve alta com exterior em foco",
-        "link": "https://www.infomoney.com.br/mercados/dolar-hoje-abertura-fechamento-comercial-turismo-08012026/",
-        "horario": "09:16",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/09/money-1273908_1280.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
-        "categoria": "Mercados",
+        "id": "8100dda84748",
+        "titulo": "A longa crise econômica de Cuba agora enfrenta uma “queda livre”",
+        "link": "https://www.infomoney.com.br/business/global/a-longa-crise-economica-de-cuba-agora-enfrenta-uma-queda-livre/",
+        "horario": "10:25",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/alexander-kunze-uLh71gTmZ4g-unsplash-red.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "A longa crise econômica de Cuba agora enfrenta uma “queda livre”",
+        "fonte": "InfoMoney"
+      },
+      {
+        "id": "03b654a4377c",
+        "titulo": "Mais que Trump: o século de tentativas dos EUA para controlar a Groenlândia",
+        "link": "https://www.infomoney.com.br/mundo/mais-que-trump-o-seculo-de-tentativas-dos-eua-para-controlar-a-groenlandia/",
+        "horario": "10:23",
+        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/01/2025-01-27T135550Z_1853765813_RC2DICA4CARY_RTRMADP_3_USA-TRUMP-GREENLAND.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+        "categoria": "Internacional",
         "tags": [
-          "Dólar"
+          "EUA"
         ],
-        "resumo": "Dólar hoje tem leve alta com exterior em foco",
+        "resumo": "Mais que Trump: o século de tentativas dos EUA para controlar a...",
         "fonte": "InfoMoney"
       }
     ],
     "Money Times": [
       {
-        "id": "9dcb6def8908",
-        "titulo": "IGP-DI sobe menos que o esperado em dezembro e fecha 2025 com deflação de 1,20%, diz FGV",
-        "link": "https://www.moneytimes.com.br/igp-di-sobe-menos-que-o-esperado-em-dezembro-e-fecha-2025-com-deflacao-de-120-diz-fgv-gll/",
-        "horario": "09:26",
+        "id": "dd4ef2aa1bd6",
+        "titulo": "Radar do trader: Mini índice sobe e dólar recua, em linha com projeções do BTG; Veja apostas em swing trade",
+        "link": "https://www.moneytimes.com.br/radar-do-trader-mini-indice-sobe-e-dolar-recua-em-linha-com-projecoes-do-btg-veja-apostas-em-swing-trade-ceci/",
+        "horario": "10:25",
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Mercados",
+        "tags": [
+          "Dólar"
+        ],
+        "resumo": "Radar do trader: Mini índice sobe e dólar recua, em linha com...",
+        "fonte": "Money Times"
+      },
+      {
+        "id": "068e5a0a5b95",
+        "titulo": "Tesouro Direto: Taxas do IPCA+ e prefixados mantêm trajetória de alta nesta quinta-feira (8)",
+        "link": "https://www.moneytimes.com.br/tesouro-direto-taxas-do-ipca-e-prefixados-mantem-trajetoria-de-alta-quinta-feira-08-01-2026-gll/",
+        "horario": "10:19",
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Commodities",
+        "tags": [],
+        "resumo": "Tesouro Direto: Taxas do IPCA+ e prefixados mantêm trajetória de alta nesta...",
+        "fonte": "Money Times"
+      },
+      {
+        "id": "76991a1025e6",
+        "titulo": "Última chance: termina hoje o prazo para garantir 15% de desconto no pagamento do IPVA 2026",
+        "link": "https://www.moneytimes.com.br/ultima-chance-termina-hoje-o-prazo-para-garantir-15-de-desconto-no-pagamento-do-ipva-2026-otrp/",
+        "horario": "10:13",
+        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Última chance: termina hoje o prazo para garantir 15% de desconto no...",
+        "fonte": "Money Times"
+      },
+      {
+        "id": "2ea65e36253a",
+        "titulo": "Ibovespa (IBOV) ensaia recuperação e retoma os 162 mil pontos; 5 coisas para saber antes de investir hoje (8)",
+        "link": "https://www.moneytimes.com.br/ibovespa-ibov-5-coisas-8-1-26-lils/",
+        "horario": "10:10",
         "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
         "categoria": "Empresas",
-        "tags": [],
-        "resumo": "IGP-DI sobe menos que o esperado em dezembro e fecha 2025 com...",
-        "fonte": "Money Times"
-      },
-      {
-        "id": "a458a705d50a",
-        "titulo": "World Liberty Financial, ligada a Donald Trump, busca licença bancária focada em stablecoins nos Estados Unidos",
-        "link": "https://www.moneytimes.com.br/world-liberty-financial-ligada-a-donald-trump-busca-licenca-bancaria-focada-em-stablecoins-nos-estados-unidos-rens/",
-        "horario": "09:23",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "World Liberty Financial, ligada a Donald Trump, busca licença bancária focada em...",
-        "fonte": "Money Times"
-      },
-      {
-        "id": "fd6de6bc7c9f",
-        "titulo": "FII de shopping quer levantar R$ 650 milhões com nova emissão de cotas; veja os detalhes",
-        "link": "https://www.moneytimes.com.br/fii-de-shopping-quer-levantar-r-650-milhoes-com-nova-emissao-de-cotas-veja-os-detalhes-igdl/",
-        "horario": "08:54",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "FII de shopping quer levantar R$ 650 milhões com nova emissão de...",
-        "fonte": "Money Times"
-      },
-      {
-        "id": "72871cd3dd66",
-        "titulo": "Bitcoin (BTC) cai, mas analistas apontam ‘ponto de compra’; veja preços das criptomoedas nesta quinta-feira (8)",
-        "link": "https://www.moneytimes.com.br/bitcoin-btc-criptomoedas-preco-ponto-de-compra-rens-080126/",
-        "horario": "08:51",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Criptomoedas",
         "tags": [
-          "Cripto",
-          "Bitcoin"
+          "Ibovespa"
         ],
-        "resumo": "Bitcoin (BTC) cai, mas analistas apontam ‘ponto de compra’; veja preços das...",
+        "resumo": "Ibovespa (IBOV) ensaia recuperação e retoma os 162 mil pontos; 5 coisas...",
         "fonte": "Money Times"
       }
     ]
