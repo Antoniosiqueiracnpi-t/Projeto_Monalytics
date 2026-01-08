@@ -1,0 +1,257 @@
+name: Atualizar Noticiário Empresarial
+
+on:
+  schedule:
+    # Executa todos os dias às 12:00 UTC (09:00 Brasília)
+    - cron: '0 12 * * *'
+  
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'Modo de seleção'
+        required: true
+        type: choice
+        options:
+          - 'quantidade'
+          - 'ticker'
+          - 'lista'
+          - 'faixa'
+        default: 'quantidade'
+
+      quantidade:
+        description: 'Quantidade (modo quantidade): 10, 50, 308=todas'
+        required: false
+        default: '10'
+
+      ticker:
+        description: 'Ticker único (modo ticker): ex: PETR4'
+        required: false
+        default: ''
+
+      lista:
+        description: 'Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4'
+        required: false
+        default: ''
+
+      faixa:
+        description: 'Faixa (modo faixa): ex: 1-50, 51-150, 151-308'
+        required: false
+        default: '1-50'
+
+jobs:
+  atualizar-noticiario:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout do repositório
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Instalar dependências
+      run: |
+        pip install requests beautifulsoup4 lxml
+    
+    - name: Buscar lista de tickers
+      id: get-tickers
+      run: |
+        # Verifica se existe arquivo mapeamento_b3.json
+        if [ ! -f "mapeamento_b3.json" ]; then
+          echo "❌ Arquivo mapeamento_b3.json não encontrado"
+          echo "TICKERS=" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        
+        # Extrai lista completa de tickers do mapeamento_b3.json
+        TODOS_TICKERS=$(python3 -c "
+        import json
+        with open('mapeamento_b3.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            tickers = [item['ticker'] for item in data]
+            print(' '.join(tickers))
+        ")
+        
+        # Define tickers baseado no modo
+        MODO="${{ github.event.inputs.modo }}"
+        
+        if [ "$MODO" == "ticker" ]; then
+          TICKER_INPUT="${{ github.event.inputs.ticker }}"
+          if [ -n "$TICKER_INPUT" ]; then
+            TICKERS_SELECIONADOS="$TICKER_INPUT"
+          else
+            echo "❌ Ticker não fornecido no modo ticker"
+            exit 1
+          fi
+        
+        elif [ "$MODO" == "lista" ]; then
+          LISTA_INPUT="${{ github.event.inputs.lista }}"
+          if [ -n "$LISTA_INPUT" ]; then
+            TICKERS_SELECIONADOS=$(echo "$LISTA_INPUT" | tr ',' ' ')
+          else
+            echo "❌ Lista de tickers não fornecida no modo lista"
+            exit 1
+          fi
+        
+        elif [ "$MODO" == "faixa" ]; then
+          FAIXA_INPUT="${{ github.event.inputs.faixa }}"
+          if [ -n "$FAIXA_INPUT" ]; then
+            INICIO=$(echo "$FAIXA_INPUT" | cut -d'-' -f1)
+            FIM=$(echo "$FAIXA_INPUT" | cut -d'-' -f2)
+            
+            TICKERS_SELECIONADOS=$(echo "$TODOS_TICKERS" | tr ' ' '\n' | sed -n "${INICIO},${FIM}p" | tr '\n' ' ')
+          else
+            echo "❌ Faixa não fornecida no modo faixa"
+            exit 1
+          fi
+        
+        elif [ "$MODO" == "quantidade" ] || [ -z "$MODO" ]; then
+          QTD_INPUT="${{ github.event.inputs.quantidade }}"
+          
+          if [ -z "$QTD_INPUT" ]; then
+            QTD_INPUT="10"
+          fi
+          
+          TOTAL_TICKERS=$(echo "$TODOS_TICKERS" | wc -w)
+          
+          if [ "$QTD_INPUT" -ge "$TOTAL_TICKERS" ]; then
+            TICKERS_SELECIONADOS="$TODOS_TICKERS"
+          else
+            TICKERS_SELECIONADOS=$(echo "$TODOS_TICKERS" | tr ' ' '\n' | head -n "$QTD_INPUT" | tr '\n' ' ')
+          fi
+        
+        else
+          # Execução agendada (cron) - processa tickers que já têm pasta
+          if [ -d "balancos" ]; then
+            TICKERS_SELECIONADOS=$(ls -d balancos/*/ 2>/dev/null | xargs -n 1 basename | tr '\n' ' ')
+          else
+            TICKERS_SELECIONADOS=""
+          fi
+        fi
+        
+        if [ -z "$TICKERS_SELECIONADOS" ]; then
+          echo "⚠️ Nenhum ticker selecionado"
+          echo "TICKERS=" >> $GITHUB_OUTPUT
+        else
+          echo "TICKERS=${TICKERS_SELECIONADOS}" >> $GITHUB_OUTPUT
+          TOTAL=$(echo "$TICKERS_SELECIONADOS" | wc -w)
+          echo "✅ $TOTAL ticker(s) selecionado(s)"
+        fi
+    
+    - name: Atualizar noticiário
+      run: |
+        TICKERS="${{ steps.get-tickers.outputs.TICKERS }}"
+        
+        if [ -z "$TICKERS" ]; then
+          echo "❌ Nenhum ticker para processar"
+          exit 0
+        fi
+        
+        TOTAL=$(echo "$TICKERS" | wc -w)
+        CONTADOR=0
+        SUCESSO=0
+        ERRO=0
+        
+        echo "📰 Iniciando atualização de noticiário empresarial"
+        echo "📊 Total de tickers: $TOTAL"
+        echo ""
+        echo "═══════════════════════════════════════════════════════════"
+        echo ""
+        
+        for TICKER in $TICKERS; do
+          CONTADOR=$((CONTADOR + 1))
+          
+          echo "[$CONTADOR/$TOTAL] 🔄 Processando $TICKER..."
+          
+          if python capturar_noticiario_empresarial.py "$TICKER"; then
+            SUCESSO=$((SUCESSO + 1))
+            echo "[$CONTADOR/$TOTAL] ✅ $TICKER processado com sucesso"
+          else
+            ERRO=$((ERRO + 1))
+            echo "[$CONTADOR/$TOTAL] ⚠️ Erro ao processar $TICKER"
+          fi
+          
+          echo ""
+          
+          # Pausa de 3 segundos entre requisições (Google tem rate limit)
+          if [ $CONTADOR -lt $TOTAL ]; then
+            sleep 3
+          fi
+        done
+        
+        echo "═══════════════════════════════════════════════════════════"
+        echo ""
+        echo "📊 RESUMO DA EXECUÇÃO"
+        echo "   Total processados: $TOTAL"
+        echo "   ✅ Sucesso: $SUCESSO"
+        echo "   ⚠️ Erros: $ERRO"
+        echo ""
+    
+    - name: Verificar mudanças
+      id: check-changes
+      run: |
+        if git diff --quiet balancos/*/noticiario.json 2>/dev/null; then
+          echo "HAS_CHANGES=false" >> $GITHUB_OUTPUT
+          echo "ℹ️ Nenhuma mudança detectada nos arquivos de noticiário"
+        else
+          echo "HAS_CHANGES=true" >> $GITHUB_OUTPUT
+          
+          ARQUIVOS_MODIFICADOS=$(git diff --name-only balancos/*/noticiario.json 2>/dev/null | wc -l)
+          echo "ARQUIVOS_MODIFICADOS=$ARQUIVOS_MODIFICADOS" >> $GITHUB_OUTPUT
+          echo "✅ $ARQUIVOS_MODIFICADOS arquivo(s) de noticiário modificado(s)"
+        fi
+    
+    - name: Commit e Push
+      if: steps.check-changes.outputs.HAS_CHANGES == 'true'
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "GitHub Actions Bot"
+        
+        git add balancos/*/noticiario.json
+        
+        DATA_ATUAL=$(TZ='America/Sao_Paulo' date +'%d/%m/%Y %H:%M')
+        MODO="${{ github.event.inputs.modo }}"
+        ARQUIVOS="${{ steps.check-changes.outputs.ARQUIVOS_MODIFICADOS }}"
+        
+        if [ -z "$MODO" ]; then
+          COMMIT_MSG="🤖 Atualização automática de noticiário empresarial - $DATA_ATUAL"
+        else
+          COMMIT_MSG="🤖 Atualização de noticiário (modo: $MODO) - $DATA_ATUAL"
+        fi
+        
+        COMMIT_MSG="$COMMIT_MSG
+
+📊 Resumo:
+   - $ARQUIVOS arquivo(s) atualizado(s)
+   - Modo: ${MODO:-agendado}
+   - Fonte: Google News
+   - Data: $DATA_ATUAL"
+        
+        git commit -m "$COMMIT_MSG"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Resumo final
+      if: always()
+      run: |
+        echo ""
+        echo "═══════════════════════════════════════════════════════════"
+        echo "🏁 EXECUÇÃO FINALIZADA"
+        echo "═══════════════════════════════════════════════════════════"
+        echo ""
+        
+        if [ "${{ steps.check-changes.outputs.HAS_CHANGES }}" == "true" ]; then
+          echo "✅ Status: Noticiário atualizado e commitado com sucesso!"
+          echo "📁 Arquivos modificados: ${{ steps.check-changes.outputs.ARQUIVOS_MODIFICADOS }}"
+        else
+          echo "ℹ️  Status: Nenhuma atualização de noticiário detectada"
+        fi
+        
+        echo ""
+        echo "⏰ Horário: $(TZ='America/Sao_Paulo' date +'%d/%m/%Y %H:%M:%S')"
+        echo "═══════════════════════════════════════════════════════════"
