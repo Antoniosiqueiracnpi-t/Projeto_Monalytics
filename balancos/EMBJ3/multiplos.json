@@ -172,7 +172,7 @@
     "2015": {
       "periodo_referencia": "2015T4",
       "multiplos": {
-        "P_L": 286.6987,
+        "P_L": 286.6383,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -200,7 +200,7 @@
     "2016": {
       "periodo_referencia": "2016T4",
       "multiplos": {
-        "P_L": 119.1873,
+        "P_L": 119.1622,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -228,7 +228,7 @@
     "2017": {
       "periodo_referencia": "2017T4",
       "multiplos": {
-        "P_L": 87.5262,
+        "P_L": 87.5077,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -256,7 +256,7 @@
     "2018": {
       "periodo_referencia": "2018T4",
       "multiplos": {
-        "P_L": -104.0816,
+        "P_L": -104.0597,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -284,7 +284,7 @@
     "2019": {
       "periodo_referencia": "2019T4",
       "multiplos": {
-        "P_L": -53.0092,
+        "P_L": -52.998,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -312,7 +312,7 @@
     "2020": {
       "periodo_referencia": "2020T4",
       "multiplos": {
-        "P_L": -19.312,
+        "P_L": -19.3079,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -340,7 +340,7 @@
     "2021": {
       "periodo_referencia": "2021T4",
       "multiplos": {
-        "P_L": -253.6092,
+        "P_L": -253.5558,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -368,7 +368,7 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
-        "P_L": -73.0738,
+        "P_L": -73.0584,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -396,7 +396,7 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
-        "P_L": 88.9368,
+        "P_L": 88.9181,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -424,7 +424,7 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
-        "P_L": 36.317,
+        "P_L": 36.3093,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -452,7 +452,7 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "P_L": 36.6512,
+        "P_L": 36.6435,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -480,17 +480,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T21:03:28.659563",
-    "preco_utilizado": 94.86,
+    "data_calculo": "2026-01-08T21:28:22.179967",
+    "preco_utilizado": 94.84,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 740465044,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 36.6512,
-      "P_VPA": 3.3393,
-      "EV_EBITDA": 12.2286,
-      "EV_EBIT": 19.6452,
-      "EV_RECEITA": 1.7675,
+      "P_L": 36.6435,
+      "P_VPA": 3.3386,
+      "EV_EBITDA": 12.2261,
+      "EV_EBIT": 19.6412,
+      "EV_RECEITA": 1.7671,
       "DY": 0.0739,
       "PAYOUT": 2.9251,
       "ROE": 8.9525,

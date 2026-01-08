@@ -1,5 +1,5 @@
 {
-  "ticker": "RSUL3",
+  "ticker": "RSUL4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -172,7 +172,7 @@
     "2019": {
       "periodo_referencia": "2019T4",
       "multiplos": {
-        "P_L": 1.0941,
+        "P_L": 1.0854,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -200,7 +200,7 @@
     "2020": {
       "periodo_referencia": "2020T4",
       "multiplos": {
-        "P_L": -3.3163,
+        "P_L": -3.2899,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -228,7 +228,7 @@
     "2021": {
       "periodo_referencia": "2021T4",
       "multiplos": {
-        "P_L": 1.2712,
+        "P_L": 1.2611,
         "P_VPA": null,
         "EV_EBITDA": null,
         "EV_EBIT": null,
@@ -368,18 +368,18 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T21:03:29.787221",
-    "preco_utilizado": 65.5,
+    "data_calculo": "2026-01-08T21:28:24.319992",
+    "preco_utilizado": 64.98,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 583000,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 0.5617,
-      "P_VPA": 0.1394,
-      "EV_EBITDA": -0.1132,
-      "EV_EBIT": -0.1279,
-      "EV_RECEITA": -0.0285,
-      "DY": 6.3266,
+      "P_L": 0.5573,
+      "P_VPA": 0.1383,
+      "EV_EBITDA": -0.116,
+      "EV_EBIT": -0.1311,
+      "EV_RECEITA": -0.0292,
+      "DY": 6.3772,
       "PAYOUT": 3.6882,
       "ROE": 26.4814,
       "ROA": 15.8564,

@@ -1,5 +1,5 @@
 {
-  "ticker": "BRAP3",
+  "ticker": "BRAP4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -424,18 +424,18 @@
   },
   "ltm": {
     "periodo_referencia": "2023T4",
-    "data_calculo": "2026-01-08T09:08:45.531340",
-    "preco_utilizado": 21.37,
+    "data_calculo": "2026-01-08T21:28:25.025297",
+    "preco_utilizado": 21.16,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 393096610,
     "periodo_acoes": "2023T4",
     "multiplos": {
-      "P_L": 2.246,
-      "P_VPA": 1.0723,
-      "EV_EBITDA": 4.4587,
-      "EV_EBIT": 4.4587,
+      "P_L": 2.2239,
+      "P_VPA": 1.0618,
+      "EV_EBITDA": 4.4136,
+      "EV_EBIT": 4.4136,
       "EV_RECEITA": null,
-      "DY": 26.9963,
+      "DY": 27.2642,
       "PAYOUT": 119.5714,
       "ROE": 24.7746,
       "ROA": 23.7784,

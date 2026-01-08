@@ -1,5 +1,5 @@
 {
-  "ticker": "ITUB4",
+  "ticker": "ITUB3",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -210,15 +210,15 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-07T21:26:18.685268",
-    "preco_utilizado": 39.32,
+    "data_calculo": "2026-01-08T21:28:21.799486",
+    "preco_utilizado": 37.12,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 4570936219,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 9.2955,
-      "P_VPA": 0.7998,
-      "DY": 14.2635,
+      "P_L": 8.7754,
+      "P_VPA": 0.7551,
+      "DY": 15.1088,
       "PAYOUT": 57.1867,
       "ROE": 20.5777,
       "ROA": 1.5585,

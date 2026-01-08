@@ -96,7 +96,7 @@
     "2016": {
       "periodo_referencia": "2016T4",
       "multiplos": {
-        "P_L": 17.7865,
+        "P_L": 17.6103,
         "P_VPA": null,
         "DY": null,
         "PAYOUT": null,
@@ -111,7 +111,7 @@
     "2017": {
       "periodo_referencia": "2017T4",
       "multiplos": {
-        "P_L": 14.9208,
+        "P_L": 14.773,
         "P_VPA": null,
         "DY": null,
         "PAYOUT": null,
@@ -126,7 +126,7 @@
     "2018": {
       "periodo_referencia": "2018T4",
       "multiplos": {
-        "P_L": 13.1158,
+        "P_L": 12.9859,
         "P_VPA": null,
         "DY": null,
         "PAYOUT": null,
@@ -141,7 +141,7 @@
     "2019": {
       "periodo_referencia": "2019T4",
       "multiplos": {
-        "P_L": 12.6167,
+        "P_L": 12.4917,
         "P_VPA": null,
         "DY": null,
         "PAYOUT": null,
@@ -156,7 +156,7 @@
     "2020": {
       "periodo_referencia": "2020T4",
       "multiplos": {
-        "P_L": 27.3822,
+        "P_L": 27.1109,
         "P_VPA": null,
         "DY": null,
         "PAYOUT": null,
@@ -246,17 +246,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-07T21:26:21.551149",
-    "preco_utilizado": 16.15,
+    "data_calculo": "2026-01-08T21:28:28.087996",
+    "preco_utilizado": 15.99,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 1200000000,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 11.0451,
-      "P_VPA": 1.435,
-      "DY": 7.2811,
+      "P_L": 10.9357,
+      "P_VPA": 1.4207,
+      "DY": 7.354,
       "PAYOUT": 32.1681,
-      "EV_RECEITA": 3.2524,
+      "EV_RECEITA": 3.2183,
       "ROE": 33.0132,
       "ROA": 30.71,
       "MARGEM_LIQUIDA": 78.0189,

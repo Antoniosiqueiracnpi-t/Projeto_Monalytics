@@ -1,5 +1,5 @@
 {
-  "ticker": "GOAU3",
+  "ticker": "GOAU4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -480,18 +480,18 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T08:44:39.634359",
-    "preco_utilizado": 9.27,
+    "data_calculo": "2026-01-08T21:28:29.929880",
+    "preco_utilizado": 9.22,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 412681538,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 8.7453,
-      "P_VPA": 0.0698,
-      "EV_EBITDA": 1.0194,
-      "EV_EBIT": 2.2809,
-      "EV_RECEITA": 0.1804,
-      "DY": 7.3355,
+      "P_L": 8.6981,
+      "P_VPA": 0.0694,
+      "EV_EBITDA": 1.0177,
+      "EV_EBIT": 2.2772,
+      "EV_RECEITA": 0.1801,
+      "DY": 7.3753,
       "PAYOUT": 9.2539,
       "ROE": 5.4853,
       "ROA": 3.5798,

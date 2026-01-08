@@ -1,5 +1,5 @@
 {
-  "ticker": "HAGA3",
+  "ticker": "HAGA4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -480,17 +480,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T08:44:39.796903",
-    "preco_utilizado": 1.13,
+    "data_calculo": "2026-01-08T21:28:30.266126",
+    "preco_utilizado": 1.12,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 11900000,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 7.3976,
-      "P_VPA": -0.2676,
-      "EV_EBITDA": 8.4748,
-      "EV_EBIT": 8.4748,
-      "EV_RECEITA": -0.5708,
+      "P_L": 7.3321,
+      "P_VPA": -0.2652,
+      "EV_EBITDA": 8.5381,
+      "EV_EBIT": 8.5381,
+      "EV_RECEITA": -0.5751,
       "DY": null,
       "PAYOUT": null,
       "ROE": -3.5811,

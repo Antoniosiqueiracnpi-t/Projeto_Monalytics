@@ -1,5 +1,5 @@
 {
-  "ticker": "GGBR3",
+  "ticker": "GGBR4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -480,18 +480,18 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T08:44:39.431079",
-    "preco_utilizado": 21.27,
+    "data_calculo": "2026-01-08T21:28:29.489573",
+    "preco_utilizado": 21.2,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 412681538,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 14.18,
-      "P_VPA": 0.1604,
-      "EV_EBITDA": 1.4214,
-      "EV_EBIT": 3.1771,
-      "EV_RECEITA": 0.2517,
-      "DY": 6.0179,
+      "P_L": 14.1333,
+      "P_VPA": 0.1598,
+      "EV_EBITDA": 1.4191,
+      "EV_EBIT": 3.1718,
+      "EV_RECEITA": 0.2513,
+      "DY": 6.0377,
       "PAYOUT": 17.4039,
       "ROE": 5.5057,
       "ROA": 3.5896,

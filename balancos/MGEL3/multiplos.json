@@ -1,5 +1,5 @@
 {
-  "ticker": "MGEL3",
+  "ticker": "MGEL4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -480,17 +480,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T08:44:39.987965",
-    "preco_utilizado": 5.66,
+    "data_calculo": "2026-01-08T21:28:30.660342",
+    "preco_utilizado": 5.9,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 17349638,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 1.8821,
-      "P_VPA": 3.1721,
-      "EV_EBITDA": 5.9015,
-      "EV_EBIT": 9.705,
-      "EV_RECEITA": 0.621,
+      "P_L": 1.962,
+      "P_VPA": 3.3066,
+      "EV_EBITDA": 5.9398,
+      "EV_EBIT": 9.768,
+      "EV_RECEITA": 0.625,
       "DY": null,
       "PAYOUT": null,
       "ROE": 148.6361,

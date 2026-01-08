@@ -67,7 +67,7 @@
     "2018": {
       "periodo_referencia": "2018T4",
       "multiplos": {
-        "P_L": 2.3379,
+        "P_L": 2.2733,
         "P_VPA": null,
         "DY": null,
         "PAYOUT": null,
@@ -171,15 +171,15 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-07T21:26:18.049474",
-    "preco_utilizado": 5.06,
+    "data_calculo": "2026-01-08T21:28:21.311505",
+    "preco_utilizado": 4.92,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 500007354,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 7.4357,
-      "P_VPA": 0.5501,
-      "DY": 14.2292,
+      "P_L": 7.23,
+      "P_VPA": 0.5349,
+      "DY": 14.6341,
       "PAYOUT": 87.8996,
       "ROE": 9.0362,
       "ROA": 0.8778,

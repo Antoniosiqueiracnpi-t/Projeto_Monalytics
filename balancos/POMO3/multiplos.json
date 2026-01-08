@@ -1,5 +1,5 @@
 {
-  "ticker": "POMO3",
+  "ticker": "POMO4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -480,18 +480,18 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T21:03:29.241837",
-    "preco_utilizado": 5.93,
+    "data_calculo": "2026-01-08T21:28:23.181062",
+    "preco_utilizado": 5.94,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 448450042,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 5.8542,
-      "P_VPA": 0.6061,
-      "EV_EBITDA": 2.8388,
-      "EV_EBIT": 2.8388,
-      "EV_RECEITA": 0.4287,
-      "DY": 20.9106,
+      "P_L": 5.8641,
+      "P_VPA": 0.6071,
+      "EV_EBITDA": 2.842,
+      "EV_EBIT": 2.842,
+      "EV_RECEITA": 0.4292,
+      "DY": 20.8754,
       "PAYOUT": 45.8596,
       "ROE": 29.189,
       "ROA": 12.9308,
