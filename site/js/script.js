@@ -6042,7 +6042,7 @@ let autoSlideInterval = null;
 const originalLoadAcaoDataNoticias = loadAcaoData;
 loadAcaoData = async function(ticker) {
     await originalLoadAcaoDataNoticias.call(this, ticker);
-    await carregarNoticiasEmpresa(ticker);
+    await (ticker);
 };
 
 
@@ -6063,7 +6063,13 @@ async function carregarNoticiasEmpresa(ticker) {
         
         console.log(`🌐 URL: ${url}`);
         
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+            cache: 'no-store'
+        });
         
         if (!response.ok) {
             console.warn(`❌ Noticiário não encontrado para ${tickerPasta} (HTTP ${response.status})`);
@@ -6071,19 +6077,30 @@ async function carregarNoticiasEmpresa(ticker) {
             return;
         }
         
-        // Verifica se é realmente JSON
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            console.warn(`⚠️ Resposta não é JSON: ${contentType}`);
-            exibirEstadoVazioNoticias('Dados de notícias inválidos');
+        // FORÇA parsing como JSON independente do Content-Type
+        const text = await response.text();
+        
+        // Verifica se é HTML de erro
+        if (text.includes('<!DOCTYPE') || text.includes('<html')) {
+            console.warn(`❌ Arquivo não encontrado (retornou HTML 404)`);
+            exibirEstadoVazioNoticias(`Notícias não disponíveis para ${ticker}`);
             return;
         }
         
-        const data = await response.json();
+        // Tenta parsear como JSON
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (parseError) {
+            console.error('❌ Erro ao parsear JSON:', parseError);
+            console.log('Texto recebido:', text.substring(0, 200));
+            exibirEstadoVazioNoticias('Formato de notícias inválido');
+            return;
+        }
         
         // Valida estrutura do JSON
         if (!data || !data.noticias || !Array.isArray(data.noticias)) {
-            console.warn('⚠️ Estrutura de dados inválida');
+            console.warn('⚠️ Estrutura de dados inválida:', data);
             exibirEstadoVazioNoticias('Formato de notícias inválido');
             return;
         }
@@ -6107,6 +6124,7 @@ async function carregarNoticiasEmpresa(ticker) {
         exibirEstadoVazioNoticias('Erro ao carregar notícias');
     }
 }
+
 
 
 // Renderiza as notícias no carrossel
