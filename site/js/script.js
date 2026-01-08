@@ -5770,8 +5770,43 @@ async function loadComunicadosEmpresa(ticker) {
 
         const data = await response.json();
         
+        // Verifica se data é um objeto com propriedade que contém o array
+        let comunicados = [];
+        
+        if (Array.isArray(data)) {
+            // Se data já é um array
+            comunicados = data;
+        } else if (data && typeof data === 'object') {
+            // Se data é um objeto, procura pela propriedade que contém os comunicados
+            // Possíveis propriedades: noticias, comunicados, data, items, results
+            const possiveisChaves = ['noticias', 'comunicados', 'data', 'items', 'results'];
+            
+            for (const chave of possiveisChaves) {
+                if (data[chave] && Array.isArray(data[chave])) {
+                    comunicados = data[chave];
+                    break;
+                }
+            }
+            
+            // Se não encontrou em propriedades conhecidas, tenta pegar todos os valores do objeto
+            if (comunicados.length === 0) {
+                const valores = Object.values(data);
+                if (valores.length > 0 && Array.isArray(valores[0])) {
+                    comunicados = valores[0];
+                } else if (valores.every(v => v && typeof v === 'object' && v.titulo)) {
+                    // Se os valores são objetos de comunicados
+                    comunicados = valores;
+                }
+            }
+        }
+        
+        if (!Array.isArray(comunicados) || comunicados.length === 0) {
+            console.warn('Estrutura de dados não reconhecida:', data);
+            throw new Error('Formato de dados inválido');
+        }
+        
         // Ordena por data (mais recente primeiro)
-        data.sort((a, b) => {
+        comunicados.sort((a, b) => {
             const dataA = parseDataComunicado(a.data_referencia);
             const dataB = parseDataComunicado(b.data_referencia);
             return dataB - dataA;
@@ -5779,10 +5814,10 @@ async function loadComunicadosEmpresa(ticker) {
 
         comunicadosEmpresaData = {
             ticker: ticker,
-            comunicados: data
+            comunicados: comunicados
         };
 
-        console.log(`${data.length} comunicados carregados`);
+        console.log(`${comunicados.length} comunicado(s) carregado(s)`);
 
         renderComunicadosEmpresa();
 
@@ -5791,6 +5826,7 @@ async function loadComunicadosEmpresa(ticker) {
         document.getElementById('comunicadosEmpresaSection').style.display = 'none';
     }
 }
+
 
 // Parse data do formato DD/MM/YYYY
 function parseDataComunicado(dataStr) {
