@@ -6057,73 +6057,87 @@ async function carregarNoticiasEmpresa(ticker) {
         
         console.log(`📁 Ticker normalizado: ${tickerNorm} | Pasta: ${tickerPasta}`);
         
-        // Usa URL do GitHub RAW para evitar cache
+        // ✅ SOLUÇÃO 1: Cache busting com timestamp
         const timestamp = new Date().getTime();
         const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/noticiario.json?t=${timestamp}`;
         
         console.log(`🌐 URL: ${url}`);
         
+        // ✅ SOLUÇÃO 2: Configuração otimizada do fetch
         const response = await fetch(url, {
             method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-            },
-            cache: 'no-store'
+            cache: 'no-store',
+            redirect: 'follow'
         });
         
         if (!response.ok) {
-            console.warn(`❌ Noticiário não encontrado para ${tickerPasta} (HTTP ${response.status})`);
+            console.warn(`❌ HTTP ${response.status}: ${response.statusText}`);
             exibirEstadoVazioNoticias(`Notícias não disponíveis para ${ticker}`);
             return;
         }
         
-        // FORÇA parsing como JSON independente do Content-Type
-        const text = await response.text();
+        // ✅ SOLUÇÃO 3: Sempre usar .text() primeiro (ignora Content-Type)
+        const rawText = await response.text();
         
-        // Verifica se é HTML de erro
-        if (text.includes('<!DOCTYPE') || text.includes('<html')) {
-            console.warn(`❌ Arquivo não encontrado (retornou HTML 404)`);
+        // ✅ SOLUÇÃO 4: Validação de HTML 404
+        if (rawText.trim().startsWith('<!DOCTYPE') || rawText.trim().startsWith('<html')) {
+            console.warn(`❌ Arquivo não encontrado (retornou HTML)`);
             exibirEstadoVazioNoticias(`Notícias não disponíveis para ${ticker}`);
             return;
         }
         
-        // Tenta parsear como JSON
+        // ✅ SOLUÇÃO 5: Parse manual com try-catch
         let data;
         try {
-            data = JSON.parse(text);
+            data = JSON.parse(rawText);
+            console.log('✅ JSON parseado com sucesso!');
         } catch (parseError) {
-            console.error('❌ Erro ao parsear JSON:', parseError);
-            console.log('Texto recebido:', text.substring(0, 200));
+            console.error('❌ Erro ao parsear JSON:', parseError.message);
+            console.log('📄 Primeiros 200 caracteres:', rawText.substring(0, 200));
             exibirEstadoVazioNoticias('Formato de notícias inválido');
             return;
         }
         
-        // Valida estrutura do JSON
+        // ✅ SOLUÇÃO 6: Validação de estrutura
         if (!data || !data.noticias || !Array.isArray(data.noticias)) {
-            console.warn('⚠️ Estrutura de dados inválida:', data);
+            console.warn('⚠️ Estrutura JSON inválida');
+            console.log('Estrutura recebida:', Object.keys(data || {}));
             exibirEstadoVazioNoticias('Formato de notícias inválido');
             return;
         }
         
-        newsData = data.noticias.slice(0, 5); // Pega as 5 mais recentes
+        // ✅ SOLUÇÃO 7: Filtrar notícias válidas
+        const noticiasValidas = data.noticias.filter(n => 
+            n && n.titulo && n.descricao && n.url
+        );
         
-        if (newsData.length === 0) {
-            console.log('ℹ️ Nenhuma notícia disponível');
+        if (noticiasValidas.length === 0) {
+            console.log('ℹ️ Nenhuma notícia válida encontrada');
             exibirEstadoVazioNoticias('Nenhuma notícia disponível');
             return;
         }
         
-        console.log(`✅ ${newsData.length} notícias carregadas!`);
+        // Pega as 5 mais recentes
+        newsData = noticiasValidas.slice(0, 5);
         
+        console.log(`✅ ${newsData.length} notícias carregadas com sucesso!`);
+        console.table(newsData.map(n => ({
+            data: n.data,
+            titulo: n.titulo.substring(0, 50) + '...'
+        })));
+        
+        // Renderiza
         renderizarNoticias();
         atualizarInfoUltimaAtualizacao(data.ultima_atualizacao);
         iniciarAutoSlide();
         
     } catch (error) {
-        console.error('❌ Erro ao carregar notícias:', error);
+        console.error('❌ Erro fatal ao carregar notícias:', error);
+        console.error('Stack trace:', error.stack);
         exibirEstadoVazioNoticias('Erro ao carregar notícias');
     }
 }
+
 
 
 
