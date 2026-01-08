@@ -2,31 +2,32 @@
 # -*- coding: utf-8 -*-
 
 """
-CAPTURADOR DE DIVIDENDOS FUTUROS - FONTE OFICIAL (B3 LISTADOS)
-=============================================================
+CAPTURADOR DE DIVIDENDOS FUTUROS (OFICIAL B3 LISTADOS) + JANELA DESLIZANTE + DEDUP
+=================================================================================
 
-Fonte oficial:
-- B3 Listados (sistemaswebb3-listados.b3.com.br) via endpoints proxy em JSON.
+✅ Fonte oficial:
+- B3 Listados (sistemaswebb3-listados.b3.com.br) via endpoints proxy JSON.
+
+✅ Por que essa versão funciona melhor do que o caminho Plantão/CVM RAD:
+- Resolve o tradingName CANÔNICO via GetInitialCompanies (fluxo usado pela própria tela oficial)
+- Evita GetDetail via codeCVM (que estava sendo chamado errado e gerando 403)
 
 Fluxo:
-1) Carrega mapeamento_tradingname_b3.csv (ticker, trading_name, codigo)
+1) Carrega mapeamento_tradingname_b3.csv
 2) Para cada ticker:
-   - Dedup: lê balancos/{TICKER}/dividendos_futuros.json existente
-   - Busca proventos (cash dividends) no B3 Listados
-   - Aplica janela --dias (cliente) e só adiciona NÃO-duplicados
+   - Resolve tradingName canônico via GetInitialCompanies (B3)
+   - Busca proventos em dinheiro via GetListedCashDividends (B3)
+   - Janela deslizante --dias (filtra por data-com/ex/evento quando houver)
+   - Dedup: lê balancos/{TICKER}/dividendos_futuros.json existente e só adiciona novos
 3) Salva por ticker: balancos/{TICKER}/dividendos_futuros.json
-4) Salva agregado do dia (somente novos desta execução): balancos/dividendos_anunciados.json
+4) Salva agregado diário (SOMENTE novos desta execução): balancos/dividendos_anunciados.json
 
 Dependências:
 pip install requests pandas
-(opcional) pip install certifi
 
 Exemplos:
-  # Busca últimos 10 dias (janela deslizante)
   python src/capturar_dividendos_futuros.py --modo completo --dias 10
-
-  # Busca últimos 5 dias (20 empresas)
-  python src/capturar_dividendos_futuros.py --modo quantidade --quantidade 20 --dias 5
+  python src/capturar_dividendos_futuros.py --modo lista --lista "ASAI3,POSI3,GRND3,BMGB4" --dias 20
 """
 
 import argparse
@@ -39,11 +40,12 @@ import time
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Set
 from urllib.parse import quote
 
 import pandas as pd
 import requests
+from requests import Response
 
 
 # ---------------- LOGGING ----------------
@@ -51,60 +53,40 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(__name__)
 
 
+# ---------------- DATA MODEL ----------------
+@dataclass
+class Empresa:
+    ticker: str
+    trading_name: str
+    codigo: str  # pode ser código CVM numérico ou outro campo do seu CSV
+
+
 # ---------------- HELPERS ----------------
-def _b64_params(params: Dict) -> str:
-    """
-    Importante: a B3 Listados (proxy) costuma usar base64 de str(dict) (com aspas simples),
-    não JSON. Mantemos exatamente esse formato por compatibilidade.
-    """
-    raw = str(params).encode("ascii", errors="ignore")
-    return base64.b64encode(raw).decode("ascii")
-
-
-def _safe_get(session: requests.Session, url: str, timeout: int = 20) -> requests.Response:
-    """
-    GET com fallback (alguns ambientes antigos reclamam de SSL chain).
-    Preferimos verify=True, e só caímos para verify=False se necessário.
-    """
-    try:
-        resp = session.get(url, timeout=timeout, verify=True)
-        resp.raise_for_status()
-        return resp
-    except Exception as e1:
-        # fallback
-        logger.warning(f"⚠️  SSL/GET falhou (verify=True). Tentando verify=False... ({type(e1).__name__})")
-        resp = session.get(url, timeout=timeout, verify=False)
-        resp.raise_for_status()
-        return resp
-
-
 def _parse_any_date(value) -> Optional[date]:
     """
-    Tenta parsear datas em formatos comuns que aparecem nos JSONs da B3:
-    - '07/01/2026'
-    - '07/01/2026 23:12:12'
-    - '2026-01-07'
+    Parse tolerante:
+      - dd/mm/yyyy
+      - dd/mm/yyyy hh:mm:ss
+      - yyyy-mm-dd
     """
     if value is None:
         return None
     s = str(value).strip()
-    if not s or s.lower() in ("nan", "none"):
+    if not s or s.lower() in ("nan", "none", "null"):
         return None
 
-    # dd/mm/yyyy (com ou sem hora)
     m = re.search(r"(\d{2})/(\d{2})/(\d{4})", s)
     if m:
-        d, mth, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
         try:
+            d, mth, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
             return date(y, mth, d)
         except Exception:
             return None
 
-    # yyyy-mm-dd
     m = re.search(r"(\d{4})-(\d{2})-(\d{2})", s)
     if m:
-        y, mth, d = int(m.group(1)), int(m.group(2)), int(m.group(3))
         try:
+            y, mth, d = int(m.group(1)), int(m.group(2)), int(m.group(3))
             return date(y, mth, d)
         except Exception:
             return None
@@ -116,11 +98,13 @@ def _parse_money(value) -> float:
     if value is None:
         return 0.0
     s = str(value).strip()
-    if not s or s.lower() in ("nan", "none"):
+    if not s or s.lower() in ("nan", "none", "null"):
         return 0.0
-    # remove moeda/labels
+
+    # mantém dígitos, . , e -
     s = re.sub(r"[^\d,.\-]", "", s)
-    # pt-br: 1.234,56
+
+    # pt-br: 1.234,56 -> 1234.56
     s = s.replace(".", "").replace(",", ".")
     try:
         return float(s)
@@ -128,19 +112,18 @@ def _parse_money(value) -> float:
         return 0.0
 
 
-@dataclass
-class Empresa:
-    ticker: str
-    trading_name: str
-    codigo_cvm: str
+def _b64_str_dict(params: Dict) -> str:
+    """
+    A B3 Listados (proxy) usa base64 de str(dict) (com aspas simples) em vários endpoints.
+    Mantemos esse formato.
+    """
+    raw = str(params).encode("ascii", errors="ignore")
+    return base64.b64encode(raw).decode("ascii")
 
 
+# ---------------- CAPTURADOR ----------------
 class CapturadorDividendosFuturos:
-    """
-    Captura dividendos/proventos em dinheiro (cash dividends) via B3 Listados.
-    """
-
-    BASE_LISTADOS = "https://sistemaswebb3-listados.b3.com.br"
+    BASE = "https://sistemaswebb3-listados.b3.com.br"
 
     def __init__(self, dias: int = 30):
         self.session = requests.Session()
@@ -151,19 +134,20 @@ class CapturadorDividendosFuturos:
                     "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
                 ),
                 "Accept": "application/json,text/plain,*/*",
+                "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Referer": "https://sistemaswebb3-listados.b3.com.br/",
+                "Origin": "https://sistemaswebb3-listados.b3.com.br",
             }
         )
 
         self.pasta_balancos = Path("balancos")
         self.hoje = date.today()
 
-        self.dias_janela = int(dias)
+        self.dias_janela = int(dias) if dias and dias > 0 else 30
         self.total_novos = 0
+        self.dividendos_anunciados: List[Dict] = []  # SOMENTE novos desta execução
 
-        # agregado diário: SOMENTE novos desta execução
-        self.dividendos_anunciados: List[Dict] = []
-
-    # ---------------- PUBLIC ----------------
+    # -------------- PUBLIC --------------
     def executar(
         self,
         modo: str = "completo",
@@ -172,27 +156,28 @@ class CapturadorDividendosFuturos:
         quantidade: int = 10,
         dias: int = 30,
     ):
-        print("🔮 CAPTURANDO DIVIDENDOS FUTUROS (FONTE OFICIAL: B3 LISTADOS)")
-        print("=" * 78)
+        self.dias_janela = int(dias) if dias and dias > 0 else self.dias_janela
 
-        self.dias_janela = int(dias)
-        logger.info(f"🪟 Janela deslizante: últimos {self.dias_janela} dias")
+        print("🔮 CAPTURANDO DIVIDENDOS FUTUROS (B3 LISTADOS - OFICIAL) + JANELA DESLIZANTE")
+        print("=" * 90)
+        logger.info(f"🪟 Janela deslizante: últimos {self.dias_janela} dia(s)")
+        print("=" * 90)
 
         empresas = self._carregar_empresas(modo, ticker, lista, quantidade)
 
         for i, emp in enumerate(empresas, start=1):
-            self._processar_empresa(emp, idx=i, total=len(empresas))
-            time.sleep(1.1)  # rate limit leve (B3)
+            self._processar_empresa(emp, i, len(empresas))
+            time.sleep(1.1)  # rate-limit leve
 
         if self.dividendos_anunciados:
             self._salvar_dividendos_anunciados()
 
-        print("\n" + "=" * 78)
+        print("\n" + "=" * 90)
         print(f"✅ FINALIZADO: {self.total_novos} novos proventos encontrados na janela")
         print(f"📦 Compilado diário: {len(self.dividendos_anunciados)} itens (somente novos)")
-        print("=" * 78)
+        print("=" * 90)
 
-    # ---------------- LOAD EMPRESAS ----------------
+    # -------------- LOAD EMPRESAS --------------
     def _carregar_empresas(self, modo: str, ticker: str, lista: str, quantidade: int) -> List[Empresa]:
         mapeamento_path = Path("mapeamento_tradingname_b3.csv")
         if not mapeamento_path.exists():
@@ -200,7 +185,6 @@ class CapturadorDividendosFuturos:
             sys.exit(1)
 
         df = pd.read_csv(mapeamento_path, sep=";", encoding="utf-8")
-        # mantém compatibilidade com seu arquivo
         if "status" in df.columns:
             df = df[df["status"] == "ok"].copy()
 
@@ -210,7 +194,7 @@ class CapturadorDividendosFuturos:
                 Empresa(
                     ticker=str(row.get("ticker", "")).strip().upper(),
                     trading_name=str(row.get("trading_name", "")).strip().upper(),
-                    codigo_cvm=str(row.get("codigo", "")).strip(),
+                    codigo=str(row.get("codigo", "")).strip(),
                 )
             )
 
@@ -225,87 +209,89 @@ class CapturadorDividendosFuturos:
         elif modo == "quantidade":
             empresas = empresas[: int(quantidade)]
 
-        # modo completo: mantém tudo
         logger.info(f"📊 {len(empresas)} empresas para processar")
         return empresas
 
-    # ---------------- CORE ----------------
+    # -------------- CORE --------------
     def _processar_empresa(self, empresa: Empresa, idx: int, total: int):
         ticker = empresa.ticker
-        trading_name = empresa.trading_name
-        codigo_cvm = empresa.codigo_cvm
-
-        print(f"\n{'='*78}")
-        print(f"({idx}/{total}) 🔮 {ticker} | trading_name={trading_name} | CVM={codigo_cvm}")
-        print(f"{'='*78}")
+        print(f"\n{'='*90}")
+        print(f"({idx}/{total}) 🔮 {ticker} | trading_name(CSV)={empresa.trading_name} | codigo={empresa.codigo}")
+        print(f"{'='*90}")
 
         existentes = self._carregar_proventos_existentes(ticker)
         logger.info(f"📌 Já capturados: {len(existentes)} itens (dedup)")
 
-        # Janela deslizante
+        # ✅ Resolve tradingName canônico pelo fluxo oficial
+        trading_name_b3 = self._b3_get_trading_name_por_ticker(ticker)
+        if not trading_name_b3:
+            logger.warning(f"⚠️  TradingName não resolvido via B3 Listados para {ticker} (root={self._ticker_root(ticker)})")
+            logger.info("✅ Sem novos dividendos nesta janela")
+            return
+
+        logger.info(f"✅ tradingName(B3): {trading_name_b3}")
+
+        # Busca proventos em dinheiro
+        itens_raw = self._b3_get_listed_cash_dividends(trading_name_b3)
+
+        # Janela
         data_inicio = self.hoje - timedelta(days=self.dias_janela)
 
-        # Fonte oficial: B3 Listados
-        # 1) Se trading_name vier vazio/errado, tenta obter via GetDetail (CVM) e usa o tradingName oficial
-        trading_name_final = self._obter_trading_name_oficial(empresa) or trading_name
-        if trading_name_final != trading_name:
-            logger.info(f"🔁 trading_name ajustado via B3: {trading_name} → {trading_name_final}")
-            trading_name = trading_name_final
-
-        # 2) Busca proventos em dinheiro (cash dividends)
-        itens_raw = self._b3_get_listed_cash_dividends(trading_name)
-
-        # 3) Normaliza + filtra: futuro + janela --dias (por data ex/com/última atualização quando existir)
         novos: List[Dict] = []
-        for item in itens_raw:
-            norm = self._normalizar_item_b3(item)
+        for raw in itens_raw:
+            norm = self._normalizar_item_b3(raw)
 
-            # Exigimos pagamento futuro
+            # pagamento futuro
             dt_pag = _parse_any_date(norm.get("data_pagamento"))
             if not dt_pag or dt_pag < self.hoje:
                 continue
 
-            # Janela deslizante:
-            # Considera "data_com" ou "data_ex" se existirem; senão usa "data_evento" (quando houver)
+            # janela: usa data_com/ex/evento se existirem
             dt_com = _parse_any_date(norm.get("data_com"))
             dt_ex = _parse_any_date(norm.get("data_ex"))
             dt_evt = _parse_any_date(norm.get("data_evento"))
 
-            dentro_janela = False
-            for dtx in (dt_com, dt_ex, dt_evt):
-                if dtx and dtx >= data_inicio:
-                    dentro_janela = True
-                    break
-
-            # Se não tiver nenhuma dessas datas no JSON, não bloqueia (mantém),
-            # mas isso tende a ser raro nos payloads da B3.
-            if (dt_com or dt_ex or dt_evt) and not dentro_janela:
-                continue
+            # se tiver alguma data de referência, aplica janela
+            if dt_com or dt_ex or dt_evt:
+                dentro = False
+                for dtx in (dt_com, dt_ex, dt_evt):
+                    if dtx and dtx >= data_inicio:
+                        dentro = True
+                        break
+                if not dentro:
+                    continue
 
             chave = self._chave_dedup(norm)
             if chave in existentes:
                 continue
 
             novos.append(norm)
+            existentes.add(chave)  # evita duplicar nesta execução
 
         if not novos:
             logger.info("✅ Sem novos dividendos nesta janela")
             return
 
-        # 4) Salva incremental (antigos + novos)
+        # salva incremental
         self._salvar_dividendos_incremental(ticker, novos)
         self.total_novos += len(novos)
 
-        # 5) Agregado diário: só os novos desta execução
+        # agregado diário: somente novos
         for d in novos:
             item = dict(d)
             item["ticker"] = ticker
-            item["trading_name"] = trading_name
+            item["trading_name"] = trading_name_b3
             self.dividendos_anunciados.append(item)
 
         logger.info(f"💾 {ticker}: {len(novos)} novos (janela)")
 
-    # ---------------- DEDUP ----------------
+    # -------------- DEDUP --------------
+    def _chave_dedup(self, item: Dict) -> str:
+        dt = str(item.get("data_pagamento", "") or "").strip()
+        vl = float(item.get("valor_bruto", 0.0) or 0.0)
+        tp = str(item.get("tipo", "") or "").strip().upper()
+        return f"{dt}|{vl:.2f}|{tp}"
+
     def _carregar_proventos_existentes(self, ticker: str) -> Set[str]:
         arquivo = self.pasta_balancos / ticker / "dividendos_futuros.json"
         if not arquivo.exists():
@@ -313,131 +299,159 @@ class CapturadorDividendosFuturos:
 
         try:
             dados = json.loads(arquivo.read_text(encoding="utf-8"))
-            existentes: Set[str] = set()
+            s: Set[str] = set()
             for d in dados.get("dividendos", []):
-                existentes.add(self._chave_dedup(d))
-            return existentes
+                s.add(self._chave_dedup(d))
+            return s
         except Exception:
             return set()
 
-    def _chave_dedup(self, item: Dict) -> str:
+    # -------------- B3 (OFICIAL) --------------
+    def _ticker_root(self, ticker: str) -> str:
         """
-        Dedup forte: data_pagamento + valor_bruto(2 casas) + tipo
+        'ASAI3' -> 'ASAI', 'BMGB4' -> 'BMGB', 'BPAC11' -> 'BPAC'
         """
-        dt = str(item.get("data_pagamento", "")).strip()
-        vl = float(item.get("valor_bruto", 0.0) or 0.0)
-        tp = str(item.get("tipo", "")).strip().upper()
-        return f"{dt}|{vl:.2f}|{tp}"
+        t = (ticker or "").strip().upper()
+        m = re.match(r"^([A-Z]{4,6})", t)
+        return m.group(1) if m else t
 
-    # ---------------- B3 (OFICIAL) ----------------
-    def _obter_trading_name_oficial(self, empresa: Empresa) -> Optional[str]:
+    def _normalizar_trading_name_b3(self, trading_name: str) -> str:
         """
-        Usa endpoint oficial GetDetail (B3 Listados) via codeCVM.
-        Exemplo do próprio endpoint retornando tradingName e lastDate.
+        Mantém somente A-Z0-9 (remove espaços, /, ., etc.)
         """
-        cvm = str(empresa.codigo_cvm).strip()
-        if not cvm:
-            return None
+        s = (trading_name or "").upper()
+        return re.sub(r"[^A-Z0-9]", "", s)
 
-        params = {"codeCVM": cvm, "language": "pt-br"}
-        b64 = _b64_params(params)
-        url = f"{self.BASE_LISTADOS}/listedCompaniesProxy/CompanyCall/GetDetail/{quote(b64)}"
+    def _safe_get(self, url: str, timeout: int = 25) -> Response:
+        """
+        GET robusto:
+        - Primeiro com verify=True
+        - Se SSL falhar, tenta verify=False
+        - Se 403, tenta uma vez com headers reforçados (sem mascarar como erro de SSL)
+        """
+        try:
+            r = self.session.get(url, timeout=timeout, verify=True)
+            r.raise_for_status()
+            return r
+        except requests.exceptions.SSLError:
+            logger.warning("⚠️  SSLError (verify=True). Tentando verify=False...")
+            r = self.session.get(url, timeout=timeout, verify=False)
+            r.raise_for_status()
+            return r
+        except requests.HTTPError as e:
+            status = getattr(e.response, "status_code", None)
+            if status == 403:
+                # tenta uma vez com header reforçado
+                logger.warning("⚠️  403 Forbidden. Reforçando headers e tentando novamente...")
+                self.session.headers.update(
+                    {
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Connection": "keep-alive",
+                    }
+                )
+                r2 = self.session.get(url, timeout=timeout, verify=True)
+                if r2.status_code == 403:
+                    # última tentativa sem verify (não por SSL, mas por compatibilidade ambiente)
+                    r2 = self.session.get(url, timeout=timeout, verify=False)
+                r2.raise_for_status()
+                return r2
+            raise
+
+    def _b3_get_trading_name_por_ticker(self, ticker: str) -> Optional[str]:
+        """
+        ✅ Fluxo oficial: GetInitialCompanies -> achar issuingCompany == root(ticker) -> pegar tradingName
+        """
+        issuing = self._ticker_root(ticker)
+
+        params = {"language": "pt-br", "pageNumber": 1, "pageSize": 50, "company": issuing}
+        b64 = _b64_str_dict(params)
+        url = f"{self.BASE}/listedCompaniesProxy/CompanyCall/GetInitialCompanies/{quote(b64)}"
 
         try:
-            resp = _safe_get(self.session, url, timeout=20)
-            data = resp.json()
-            tn = str(data.get("tradingName", "")).strip().upper()
-            return tn or None
+            r = self._safe_get(url, timeout=25)
+            js = r.json() or {}
+            results = js.get("results") or []
+            for it in results:
+                if str(it.get("issuingCompany", "")).strip().upper() == issuing:
+                    tn = str(it.get("tradingName", "")).strip()
+                    return self._normalizar_trading_name_b3(tn) if tn else None
+            return None
         except Exception as e:
-            logger.warning(f"⚠️  GetDetail falhou para CVM={cvm}: {e}")
+            logger.warning(f"⚠️  Falha ao resolver tradingName para {ticker} (issuing={issuing}): {e}")
             return None
 
-    def _b3_get_listed_cash_dividends(self, trading_name: str) -> List[Dict]:
+    def _b3_get_listed_cash_dividends(self, trading_name_b3: str) -> List[Dict]:
         """
-        Endpoint oficial (B3 Listados):
+        Endpoint oficial:
           /listedCompaniesProxy/CompanyCall/GetListedCashDividends/{base64}
 
-        Paginação: pageNumber incremental até results vazio.
+        Paginação por pageNumber/pageSize.
         """
-        results: List[Dict] = []
+        resultados: List[Dict] = []
         page = 1
-        page_size = 120  # limite citado em mudanças de API
+        page_size = 120
 
         while True:
             params = {
                 "language": "pt-br",
                 "pageNumber": page,
                 "pageSize": page_size,
-                "tradingName": str(trading_name).strip().upper(),
+                "tradingName": trading_name_b3,
             }
-            b64 = _b64_params(params)
-            url = f"{self.BASE_LISTADOS}/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{quote(b64)}"
+            b64 = _b64_str_dict(params)
+            url = f"{self.BASE}/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{quote(b64)}"
 
             try:
-                resp = _safe_get(self.session, url, timeout=25)
-                payload = resp.json()
-                batch = payload.get("results") if isinstance(payload, dict) else None
+                r = self._safe_get(url, timeout=30)
+                js = r.json() or {}
+                batch = js.get("results") or []
                 if not batch:
                     break
 
-                results.extend(batch)
+                resultados.extend(batch)
                 page += 1
 
-                # proteção
-                if page > 40:
+                if page > 60:  # proteção
                     break
 
                 time.sleep(0.35)
             except Exception as e:
-                logger.warning(f"⚠️  CashDividends falhou (page={page}) {trading_name}: {e}")
+                logger.warning(f"⚠️  Falha GetListedCashDividends (page={page}) {trading_name_b3}: {e}")
                 break
 
-        return results
+        return resultados
 
-    # ---------------- NORMALIZAÇÃO ----------------
+    # -------------- NORMALIZAÇÃO --------------
     def _normalizar_item_b3(self, item: Dict) -> Dict:
         """
-        Converte um item do JSON da B3 para o seu formato padrão:
-          - data_pagamento (ISO string)
-          - valor_bruto (float)
-          - tipo (DIV/JCP etc)
-          - data_com (ISO string opcional)
-          - data_ex (ISO string opcional)
-          - data_evento (melhor esforço, p/ janela)
-          - fonte = B3_LISTADOS
-          - raw = item original (para auditoria)
+        Normaliza para o seu formato padrão.
+
+        Campos mais comuns observados na B3:
+        - paymentDate
+        - lastDatePrior (muitas vezes o "com"/record date)
+        - lastDate (muitas vezes ex-date)
+        - rate (valor)
+        - corporateActionType (DIV/JCP etc)
+        - approvedOn / approvalDate (às vezes)
         """
-        # Campos variam; tentamos múltiplos aliases comuns.
-        # OBS: Sem quebrar caso a B3 altere o nome de campos.
         def pick(*keys):
             for k in keys:
                 if k in item and item.get(k) not in (None, ""):
                     return item.get(k)
             return None
 
-        # pagamento
-        dt_pag = _parse_any_date(
-            pick("paymentDate", "paymentdate", "payDate", "datePayment", "dataPagamento", "data_pagamento")
-        )
-
-        # com / ex
+        dt_pag = _parse_any_date(pick("paymentDate", "datePayment", "dataPagamento", "data_pagamento"))
         dt_com = _parse_any_date(pick("lastDatePrior", "recordDate", "dataCom", "data_com"))
-        dt_ex = _parse_any_date(pick("exDate", "lastDate", "dataEx", "data_ex"))
+        dt_ex = _parse_any_date(pick("lastDate", "exDate", "dataEx", "data_ex"))
+        dt_evt = _parse_any_date(pick("approvedOn", "approvalDate", "createdAt", "dataEvento", "data_evento"))
 
-        # data_evento (para janela): tenta capturar uma data “de referência” do evento/anúncio
-        dt_evt = _parse_any_date(
-            pick("approvedOn", "approvalDate", "dateApproved", "createdAt", "lastDate", "dataEvento", "data_evento")
-        )
+        valor = _parse_money(pick("rate", "value", "amount", "valor", "valorProvento", "valor_bruto"))
 
-        # valor
-        valor = _parse_money(pick("rate", "value", "valor", "amount", "valorProvento", "valor_bruto"))
-
-        # tipo
-        tipo = str(pick("corporateActionType", "type", "proventoType", "tipo", "nature", "natureza") or "").strip().upper()
+        tipo = str(pick("corporateActionType", "type", "proventoType", "tipo", "natureza") or "").strip().upper()
         if not tipo:
             tipo = "DIV"
 
-        out = {
+        return {
             "data_pagamento": dt_pag.isoformat() if dt_pag else None,
             "valor_bruto": float(valor),
             "tipo": tipo,
@@ -445,11 +459,10 @@ class CapturadorDividendosFuturos:
             "data_ex": dt_ex.isoformat() if dt_ex else None,
             "data_evento": dt_evt.isoformat() if dt_evt else None,
             "fonte": "B3_LISTADOS",
-            "raw": item,
+            "raw": item,  # auditoria (mantém)
         }
-        return out
 
-    # ---------------- SAVE ----------------
+    # -------------- SAVE --------------
     def _salvar_dividendos_incremental(self, ticker: str, novos: List[Dict]):
         pasta = self.pasta_balancos / ticker
         pasta.mkdir(parents=True, exist_ok=True)
@@ -464,8 +477,9 @@ class CapturadorDividendosFuturos:
             except Exception:
                 antigos = []
 
-        # merge + dedup final (safety)
         merged = antigos + novos
+
+        # dedup final
         seen: Set[str] = set()
         final: List[Dict] = []
         for d in merged:
@@ -475,10 +489,8 @@ class CapturadorDividendosFuturos:
             seen.add(k)
             final.append(d)
 
-        # ordena por data_pagamento
         final.sort(key=lambda x: (x.get("data_pagamento") or "", str(x.get("tipo") or "")))
 
-        # período
         datas_pag = [d.get("data_pagamento") for d in final if d.get("data_pagamento")]
         periodo = {"inicio": None, "fim": None}
         if datas_pag:
@@ -499,7 +511,6 @@ class CapturadorDividendosFuturos:
     def _salvar_dividendos_anunciados(self):
         self.pasta_balancos.mkdir(parents=True, exist_ok=True)
 
-        # ordena por data_pagamento + ticker
         ordenados = sorted(
             self.dividendos_anunciados,
             key=lambda x: (x.get("data_pagamento") or "", x.get("ticker") or ""),
@@ -518,19 +529,15 @@ class CapturadorDividendosFuturos:
         arquivo.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8")
         logger.info(f"📦 Compilado diário salvo: {arquivo} ({len(ordenados)} novos)")
 
+
 # ---------------- CLI ----------------
 def main():
     parser = argparse.ArgumentParser(description="Capturar dividendos futuros (B3 Listados - oficial)")
-    parser.add_argument(
-        "--modo",
-        choices=["completo", "ticker", "lista", "quantidade"],
-        default="completo",
-        help="Modo de execução",
-    )
+    parser.add_argument("--modo", choices=["completo", "ticker", "lista", "quantidade"], default="completo")
     parser.add_argument("--ticker", default="", help="Ticker específico")
     parser.add_argument("--lista", default="", help="Lista de tickers (vírgula)")
     parser.add_argument("--quantidade", type=int, default=10, help="Qtd empresas (modo quantidade)")
-    parser.add_argument("--dias", type=int, default=30, help="Dias para buscar (janela deslizante)")
+    parser.add_argument("--dias", type=int, default=30, help="Dias da janela deslizante")
 
     args = parser.parse_args()
 
@@ -542,6 +549,7 @@ def main():
         quantidade=args.quantidade,
         dias=args.dias,
     )
+
 
 if __name__ == "__main__":
     main()
