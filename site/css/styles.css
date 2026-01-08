@@ -4421,7 +4421,14 @@ textarea:focus {
     padding: 0.5rem;
     background: #f9fafb;
     border-radius: 12px;
+    flex-wrap: wrap; 
 }
+
+/* Garante que o botão +4 nunca seja ocultado por regras externas */
+#comparadorAddIndicatorsBtn {
+    display: flex !important;
+}
+
 
 .indicator-tab {
     flex: 1;
@@ -4498,6 +4505,40 @@ textarea:focus {
     text-align: left;
     padding-left: 1.5rem;
 }
+
+/* ================================
+   COMPARADOR: congela coluna EMPRESA
+   ================================ */
+.comparador-table thead th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 30;
+    /* mantém o mesmo visual do header */
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+}
+
+.comparador-table tbody td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 15;
+    background: #ffffff;
+    /* separador visual ao rolar */
+    box-shadow: 2px 0 0 rgba(0,0,0,0.06);
+}
+
+/* acompanha zebra */
+.comparador-table tbody tr:nth-child(even) td:first-child {
+    background: #fafafa;
+}
+
+/* acompanha hover */
+.comparador-table tbody tr:hover td:first-child {
+    background: #f9fafb;
+}
+.comparador-table tbody tr:nth-child(even):hover td:first-child {
+    background: #f3f4f6;
+}
+
 
 .comparador-table tbody tr {
     border-bottom: 1px solid #f3f4f6;
@@ -4782,6 +4823,8 @@ textarea:focus {
 /* ===================== COMPARADOR: melhorias mobile + rolagem horizontal ===================== */
 .comparador-table-scroll {
     -webkit-overflow-scrolling: touch;
+    position: relative; /* ajuda o sticky em alguns browsers */
+
 }
 
 .comparador-table thead th,
