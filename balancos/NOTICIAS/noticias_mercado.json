@@ -1,8 +1,19 @@
 {
-  "ultima_atualizacao": "2026-01-08T01:56:05.155602-03:00",
+  "ultima_atualizacao": "2026-01-08T02:21:01.436498-03:00",
   "total_noticias": 17,
   "portais": {
     "Investing.com": [
+      {
+        "id": "8f10da7f1e0f",
+        "titulo": "Ações de chips chinesas sobem após relatório de que Pequim suspende pedidos da Nvidia H200",
+        "link": "https://br.investing.com/news/stock-market-news/acoes-de-chips-chinesas-sobem-apos-relatorio-de-que-pequim-suspende-pedidos-da-nvidia-h200-1793456",
+        "horario": "01:39",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Ações de chips chinesas sobem após relatório de que Pequim suspende pedidos...",
+        "fonte": "Investing.com"
+      },
       {
         "id": "da0a6c327821",
         "titulo": "Arrowhead Pharmaceuticals precifica oferta de notas conversíveis de US$ 625 milhões",
@@ -46,20 +57,34 @@
         "tags": [],
         "resumo": "Ações asiáticas caem seguindo perdas de Wall Street; KOSPI atinge novo recorde",
         "fonte": "Investing.com"
-      },
-      {
-        "id": "a4ad878e4c68",
-        "titulo": "Phathom Pharmaceuticals precifica oferta pública de US$ 130 milhões",
-        "link": "https://br.investing.com/news/company-news/phathom-pharmaceuticals-precifica-oferta-publica-de-us-130-milhoes-93CH-1793447",
-        "horario": "00:37",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Phathom Pharmaceuticals precifica oferta pública de US$ 130 milhões",
-        "fonte": "Investing.com"
       }
     ],
     "Valor Econômico": [
+      {
+        "id": "dde6f9c614b2",
+        "titulo": "Projeto de trem-bala de US$ 7 bi ligando aeroportos na Tailândia enfrenta impasse político",
+        "link": "https://valor.globo.com/mundo/noticia/2026/01/08/projeto-de-trem-bala-de-us-7-bi-ligando-aeroportos-na-tailndia-enfrenta-impasse-poltico.ghtml",
+        "horario": "02:07",
+        "imagem": "https://s2-valor.glbimg.com/WJ0-UhJ0aSS9KmcRjtEJMq1JmIQ=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2019/u/1/BumtKWToy9AYSDQzvEDA/001out9.jpg",
+        "categoria": "Geral",
+        "tags": [],
+        "resumo": "Projeto de trem-bala de US$ 7 bi ligando aeroportos na Tailândia enfrenta...",
+        "fonte": "Valor Econômico"
+      },
+      {
+        "id": "001e7f1fc99c",
+        "titulo": "Ataque dos EUA à Venezuela eleva preocupação de Taiwan sobre defesa",
+        "link": "https://valor.globo.com/mundo/noticia/2026/01/08/ataque-dos-eua-venezuela-eleva-preocupao-de-taiwan-sobre-defesa.ghtml",
+        "horario": "02:04",
+        "imagem": "https://s2-valor.glbimg.com/E6oZ-ajxIFQdxFxDFjw5dSCL9uQ=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2024/I/B/0ULFcBS6qlP0AcYQCncg/taiwan-china.png",
+        "categoria": "Internacional",
+        "tags": [
+          "Venezuela",
+          "EUA"
+        ],
+        "resumo": "Ataque dos EUA à Venezuela eleva preocupação de Taiwan sobre defesa",
+        "fonte": "Valor Econômico"
+      },
       {
         "id": "f6fb00540620",
         "titulo": "Preço do alumínio dispara com alta demanda de energia por data centers",
@@ -80,30 +105,6 @@
         "categoria": "Internacional",
         "tags": [],
         "resumo": "Importação de automóveis pela China deve atingir menor nível em 16 anos",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "ad7f3593954f",
-        "titulo": "Japão protesta contra possível exploração de campo de gás pela China",
-        "link": "https://valor.globo.com/mundo/noticia/2026/01/08/japo-protesta-contra-possvel-explorao-de-campo-de-gs-pela-china.ghtml",
-        "horario": "00:09",
-        "imagem": "https://s2-valor.glbimg.com/ADCBHMPMTOD11hUxoj187vjANZw=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/H/F/DmVKiGQBugqxUND80vIw/441408561.jpg",
-        "categoria": "Internacional",
-        "tags": [],
-        "resumo": "Japão protesta contra possível exploração de campo de gás pela China",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "88b69efa8a9d",
-        "titulo": "Trump retira os EUA de dezenas de entidades internacionais e da ONU",
-        "link": "https://valor.globo.com/mundo/noticia/2026/01/07/trump-retira-os-eua-de-dezenas-de-entidades-internacionais-e-da-onu.ghtml",
-        "horario": "23:27",
-        "imagem": "https://s2-valor.glbimg.com/JyaKfeBTMczK5L8p0nJdPY8Xf7Q=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/x/4/VN6jzXTnOReKOCXGm2JQ/2026-01-03t181943z-1529124610-rc2ttiatb14i-rtrmadp-3-usa-venezuela.jpg",
-        "categoria": "Internacional",
-        "tags": [
-          "EUA"
-        ],
-        "resumo": "Trump retira os EUA de dezenas de entidades internacionais e da ONU",
         "fonte": "Valor Econômico"
       }
     ],
