@@ -2866,6 +2866,32 @@ textarea:focus {
     .chart-container {
         max-width: 240px;
     }
+
+    /* Ajuste fino: Acionistas no mobile (menos "estourado") */
+    .acionista-item {
+        padding: 14px;
+    }
+
+    .acionista-header {
+        margin-bottom: 6px;
+    }
+
+    .acionista-nome {
+        font-size: 0.92rem;
+        line-height: 1.15;
+        padding: 0 10px;
+        word-break: break-word; /* evita cortar nomes grandes */
+    }
+
+    .acionista-percentual {
+        font-size: 1.08rem;
+    }
+
+    .acionista-nacionalidade,
+    .acionista-acoes {
+        font-size: 0.78rem;
+    }
+   
 }
 
 @media (max-width: 480px) {
