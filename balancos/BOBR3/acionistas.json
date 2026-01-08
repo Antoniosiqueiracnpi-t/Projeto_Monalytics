@@ -1,0 +1,90 @@
+{
+  "empresa": {
+    "cnpj": "50.564.053/0001-03",
+    "nome": "",
+    "ticker": "BOBR3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 6,
+  "acionistas": [
+    {
+      "nome": "Newco International Limited",
+      "cpf_cnpj": "07.223.327/0001-71",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Bahamas",
+      "acoes_total": 181984832,
+      "percentual_total": 69.857,
+      "acoes_ordinarias": 130687432,
+      "percentual_ordinarias": 94.966,
+      "acoes_preferenciais": 51297400,
+      "percentual_preferenciais": 41.741,
+      "posicao": 1
+    },
+    {
+      "nome": "SILVIO TINI DE ARAUJO",
+      "cpf_cnpj": "064.065.488-68",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 19813901,
+      "percentual_total": 7.606,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 19813901,
+      "percentual_preferenciais": 16.123,
+      "posicao": 2
+    },
+    {
+      "nome": "SERENITY BRASIL FUNDO DE INVESTIMENTOS EM AÇÕES",
+      "cpf_cnpj": "35.871.431/0001-08",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 19083283,
+      "percentual_total": 7.325,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 19083283,
+      "percentual_preferenciais": 15.528,
+      "posicao": 3
+    },
+    {
+      "nome": "BONSUCEX HOLDING S.A.",
+      "cpf_cnpj": "52.839.420/0001-60",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 9100289,
+      "percentual_total": 3.493,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 9100289,
+      "percentual_preferenciais": 7.405,
+      "posicao": 4
+    },
+    {
+      "nome": "BHD Participações S.A",
+      "cpf_cnpj": "00.257.846/0001-01",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 6927885,
+      "percentual_total": 2.659,
+      "acoes_ordinarias": 6927885,
+      "percentual_ordinarias": 5.034,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "RONALDO SAMPAIO FERREIRA",
+      "cpf_cnpj": "069.111.708-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 594100,
+      "percentual_total": 0.228,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 594100,
+      "percentual_preferenciais": 0.483,
+      "posicao": 6
+    }
+  ]
+}

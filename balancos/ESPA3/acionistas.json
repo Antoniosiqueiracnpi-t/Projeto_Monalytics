@@ -1,0 +1,103 @@
+{
+  "empresa": {
+    "cnpj": "26.659.061/0001-59",
+    "nome": "",
+    "ticker": "ESPA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 7,
+  "acionistas": [
+    {
+      "nome": "YGOR ALESSANDRO DE MOURA",
+      "cpf_cnpj": "651.412.881-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 61076274,
+      "percentual_total": 16.899,
+      "acoes_ordinarias": 61076274,
+      "percentual_ordinarias": 16.899,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Magnólia Fundo de Investimento em Participações Multiestratégia",
+      "cpf_cnpj": "26.290.061/0001-24",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 61065576,
+      "percentual_total": 16.896,
+      "acoes_ordinarias": 61065576,
+      "percentual_ordinarias": 16.896,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "Una Capital Ltda.",
+      "cpf_cnpj": "05.336.089/0001-85",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 37248963,
+      "percentual_total": 10.306,
+      "acoes_ordinarias": 37248963,
+      "percentual_ordinarias": 10.306,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "PAULO JOSÉ IÁSZ DE MORAIS",
+      "cpf_cnpj": "091.195.798-70",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 36299128,
+      "percentual_total": 10.043,
+      "acoes_ordinarias": 36299128,
+      "percentual_ordinarias": 10.043,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "FOURTH SAIL LP",
+      "cpf_cnpj": "30.791.155/0001-54",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 31833684,
+      "percentual_total": 8.808,
+      "acoes_ordinarias": 31833684,
+      "percentual_ordinarias": 8.808,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "SMZXP Participações Ltda.",
+      "cpf_cnpj": "22.377.621/0001-21",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 9225394,
+      "percentual_total": 2.553,
+      "acoes_ordinarias": 9225394,
+      "percentual_ordinarias": 2.553,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "JOSÉ CARLOS SEMENZATO",
+      "cpf_cnpj": "078.956.108-56",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 3478856,
+      "percentual_total": 0.963,
+      "acoes_ordinarias": 3478856,
+      "percentual_ordinarias": 0.963,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    }
+  ]
+}

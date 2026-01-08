@@ -1,0 +1,558 @@
+{
+  "ticker": "NATU3",
+  "total_dividendos": 22.0381,
+  "periodo": "2005-2021",
+  "quantidade_pagamentos": 55,
+  "dividendos": [
+    {
+      "data_com": "2005-03-02",
+      "valor": 1.33956,
+      "tipo": "DIVIDENDO",
+      "ano": 2005,
+      "mes": 3,
+      "dia": 2,
+      "trimestre": "T1",
+      "data_pagamento": "2005-02-23"
+    },
+    {
+      "data_com": "2005-03-02",
+      "valor": 0.188753,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2005,
+      "mes": 3,
+      "dia": 2,
+      "trimestre": "T1",
+      "data_pagamento": "2005-02-23"
+    },
+    {
+      "data_com": "2005-05-03",
+      "valor": 0.157819,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2005,
+      "mes": 5,
+      "dia": 3,
+      "trimestre": "T2",
+      "data_pagamento": "2005-04-28"
+    },
+    {
+      "data_com": "2005-08-01",
+      "valor": 1.065685,
+      "tipo": "DIVIDENDO",
+      "ano": 2005,
+      "mes": 8,
+      "dia": 1,
+      "trimestre": "T3",
+      "data_pagamento": "2005-07-27"
+    },
+    {
+      "data_com": "2005-08-01",
+      "valor": 0.121958,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2005,
+      "mes": 8,
+      "dia": 1,
+      "trimestre": "T3",
+      "data_pagamento": "2005-07-27"
+    },
+    {
+      "data_com": "2005-11-28",
+      "valor": 0.123383,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2005,
+      "mes": 11,
+      "dia": 28,
+      "trimestre": "T4",
+      "data_pagamento": "2005-11-23"
+    },
+    {
+      "data_com": "2006-03-02",
+      "valor": 2.291628,
+      "tipo": "DIVIDENDO",
+      "ano": 2006,
+      "mes": 3,
+      "dia": 2,
+      "trimestre": "T1",
+      "data_pagamento": "2006-02-21"
+    },
+    {
+      "data_com": "2006-07-31",
+      "valor": 0.26305,
+      "tipo": "DIVIDENDO",
+      "ano": 2006,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2006-07-26"
+    },
+    {
+      "data_com": "2006-07-31",
+      "valor": 0.078765,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2006,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2006-07-26"
+    },
+    {
+      "data_com": "2007-03-06",
+      "valor": 0.5,
+      "tipo": "DIVIDENDO",
+      "ano": 2007,
+      "mes": 3,
+      "dia": 6,
+      "trimestre": "T1",
+      "data_pagamento": "2007-02-28"
+    },
+    {
+      "data_com": "2007-07-30",
+      "valor": 0.322193,
+      "tipo": "DIVIDENDO",
+      "ano": 2007,
+      "mes": 7,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2007-07-25"
+    },
+    {
+      "data_com": "2007-07-30",
+      "valor": 0.091538,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2007,
+      "mes": 7,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2007-07-25"
+    },
+    {
+      "data_com": "2008-03-04",
+      "valor": 0.5545,
+      "tipo": "DIVIDENDO",
+      "ano": 2008,
+      "mes": 3,
+      "dia": 4,
+      "trimestre": "T1",
+      "data_pagamento": "2008-02-27"
+    },
+    {
+      "data_com": "2008-07-30",
+      "valor": 0.43907,
+      "tipo": "DIVIDENDO",
+      "ano": 2008,
+      "mes": 7,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2008-07-23"
+    },
+    {
+      "data_com": "2009-02-27",
+      "valor": 0.592489,
+      "tipo": "DIVIDENDO",
+      "ano": 2009,
+      "mes": 2,
+      "dia": 27,
+      "trimestre": "T1",
+      "data_pagamento": "2009-02-18"
+    },
+    {
+      "data_com": "2009-02-27",
+      "valor": 0.133931,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2009,
+      "mes": 2,
+      "dia": 27,
+      "trimestre": "T1",
+      "data_pagamento": "2009-02-18"
+    },
+    {
+      "data_com": "2009-07-24",
+      "valor": 0.058201,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2009,
+      "mes": 7,
+      "dia": 24,
+      "trimestre": "T3",
+      "data_pagamento": "2009-07-19"
+    },
+    {
+      "data_com": "2009-07-24",
+      "valor": 0.500321,
+      "tipo": "DIVIDENDO",
+      "ano": 2009,
+      "mes": 7,
+      "dia": 24,
+      "trimestre": "T3",
+      "data_pagamento": "2009-07-19"
+    },
+    {
+      "data_com": "2010-03-01",
+      "valor": 0.042354,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2010,
+      "mes": 3,
+      "dia": 1,
+      "trimestre": "T1",
+      "data_pagamento": "2010-02-24"
+    },
+    {
+      "data_com": "2010-03-01",
+      "valor": 0.788687,
+      "tipo": "DIVIDENDO",
+      "ano": 2010,
+      "mes": 3,
+      "dia": 1,
+      "trimestre": "T1",
+      "data_pagamento": "2010-02-24"
+    },
+    {
+      "data_com": "2010-07-27",
+      "valor": 0.589811,
+      "tipo": "DIVIDENDO",
+      "ano": 2010,
+      "mes": 7,
+      "dia": 27,
+      "trimestre": "T3",
+      "data_pagamento": "2010-07-21"
+    },
+    {
+      "data_com": "2010-07-27",
+      "valor": 0.082282,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2010,
+      "mes": 7,
+      "dia": 27,
+      "trimestre": "T3",
+      "data_pagamento": "2010-07-21"
+    },
+    {
+      "data_com": "2011-03-01",
+      "valor": 0.941381,
+      "tipo": "DIVIDENDO",
+      "ano": 2011,
+      "mes": 3,
+      "dia": 1,
+      "trimestre": "T1",
+      "data_pagamento": "2011-02-23"
+    },
+    {
+      "data_com": "2011-03-01",
+      "valor": 0.056758,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2011,
+      "mes": 3,
+      "dia": 1,
+      "trimestre": "T1",
+      "data_pagamento": "2011-02-23"
+    },
+    {
+      "data_com": "2011-07-26",
+      "valor": 0.684785,
+      "tipo": "DIVIDENDO",
+      "ano": 2011,
+      "mes": 7,
+      "dia": 26,
+      "trimestre": "T3",
+      "data_pagamento": "2011-07-20"
+    },
+    {
+      "data_com": "2011-07-26",
+      "valor": 0.086975,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2011,
+      "mes": 7,
+      "dia": 26,
+      "trimestre": "T3",
+      "data_pagamento": "2011-07-20"
+    },
+    {
+      "data_com": "2012-02-24",
+      "valor": 0.055168,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2012,
+      "mes": 2,
+      "dia": 24,
+      "trimestre": "T1",
+      "data_pagamento": "2012-02-15"
+    },
+    {
+      "data_com": "2012-02-24",
+      "valor": 1.091177,
+      "tipo": "DIVIDENDO",
+      "ano": 2012,
+      "mes": 2,
+      "dia": 24,
+      "trimestre": "T1",
+      "data_pagamento": "2012-02-15"
+    },
+    {
+      "data_com": "2012-07-31",
+      "valor": 0.762239,
+      "tipo": "DIVIDENDO",
+      "ano": 2012,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2012-07-25"
+    },
+    {
+      "data_com": "2012-07-31",
+      "valor": 0.085112,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2012,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2012-07-25"
+    },
+    {
+      "data_com": "2013-02-15",
+      "valor": 0.050855,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2013,
+      "mes": 2,
+      "dia": 15,
+      "trimestre": "T1",
+      "data_pagamento": "2013-02-06"
+    },
+    {
+      "data_com": "2013-02-15",
+      "valor": 1.093676,
+      "tipo": "DIVIDENDO",
+      "ano": 2013,
+      "mes": 2,
+      "dia": 15,
+      "trimestre": "T1",
+      "data_pagamento": "2013-02-06"
+    },
+    {
+      "data_com": "2013-07-31",
+      "valor": 0.78403,
+      "tipo": "DIVIDENDO",
+      "ano": 2013,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2013-07-24"
+    },
+    {
+      "data_com": "2013-07-31",
+      "valor": 0.063987,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2013,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2013-07-24"
+    },
+    {
+      "data_com": "2014-02-19",
+      "valor": 0.05217,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2014,
+      "mes": 2,
+      "dia": 19,
+      "trimestre": "T1",
+      "data_pagamento": "2014-02-12"
+    },
+    {
+      "data_com": "2014-02-19",
+      "valor": 1.104579,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 2,
+      "dia": 19,
+      "trimestre": "T1",
+      "data_pagamento": "2014-02-12"
+    },
+    {
+      "data_com": "2014-07-30",
+      "valor": 0.540431,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 7,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2014-07-23"
+    },
+    {
+      "data_com": "2014-07-30",
+      "valor": 0.064721,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2014,
+      "mes": 7,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2014-07-23"
+    },
+    {
+      "data_com": "2015-02-18",
+      "valor": 0.047217,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2015,
+      "mes": 2,
+      "dia": 18,
+      "trimestre": "T1",
+      "data_pagamento": "2015-02-11"
+    },
+    {
+      "data_com": "2015-02-18",
+      "valor": 0.996913,
+      "tipo": "DIVIDENDO",
+      "ano": 2015,
+      "mes": 2,
+      "dia": 18,
+      "trimestre": "T1",
+      "data_pagamento": "2015-02-11"
+    },
+    {
+      "data_com": "2015-07-29",
+      "valor": 0.067481,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2015,
+      "mes": 7,
+      "dia": 29,
+      "trimestre": "T3",
+      "data_pagamento": "2015-07-22"
+    },
+    {
+      "data_com": "2015-07-29",
+      "valor": 0.481751,
+      "tipo": "DIVIDENDO",
+      "ano": 2015,
+      "mes": 7,
+      "dia": 29,
+      "trimestre": "T3",
+      "data_pagamento": "2015-07-22"
+    },
+    {
+      "data_com": "2016-02-24",
+      "valor": 0.245727,
+      "tipo": "DIVIDENDO",
+      "ano": 2016,
+      "mes": 2,
+      "dia": 24,
+      "trimestre": "T1",
+      "data_pagamento": "2016-02-17"
+    },
+    {
+      "data_com": "2016-02-24",
+      "valor": 0.040439,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2016,
+      "mes": 2,
+      "dia": 24,
+      "trimestre": "T1",
+      "data_pagamento": "2016-02-17"
+    },
+    {
+      "data_com": "2016-12-19",
+      "valor": 0.143629,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2016,
+      "mes": 12,
+      "dia": 19,
+      "trimestre": "T4",
+      "data_pagamento": "2016-12-14"
+    },
+    {
+      "data_com": "2017-02-24",
+      "valor": 0.119161,
+      "tipo": "DIVIDENDO",
+      "ano": 2017,
+      "mes": 2,
+      "dia": 24,
+      "trimestre": "T1",
+      "data_pagamento": "2017-02-22"
+    },
+    {
+      "data_com": "2017-02-24",
+      "valor": 0.013015,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2017,
+      "mes": 2,
+      "dia": 24,
+      "trimestre": "T1",
+      "data_pagamento": "2017-02-22"
+    },
+    {
+      "data_com": "2017-12-22",
+      "valor": 0.181897,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2017,
+      "mes": 12,
+      "dia": 22,
+      "trimestre": "T4",
+      "data_pagamento": "2017-12-19"
+    },
+    {
+      "data_com": "2018-03-19",
+      "valor": 0.299114,
+      "tipo": "DIVIDENDO",
+      "ano": 2018,
+      "mes": 3,
+      "dia": 19,
+      "trimestre": "T1",
+      "data_pagamento": "2018-03-14"
+    },
+    {
+      "data_com": "2018-03-19",
+      "valor": 0.01582,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2018,
+      "mes": 3,
+      "dia": 19,
+      "trimestre": "T1",
+      "data_pagamento": "2018-03-14"
+    },
+    {
+      "data_com": "2019-01-04",
+      "valor": 0.258747,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2019,
+      "mes": 1,
+      "dia": 4,
+      "trimestre": "T1",
+      "data_pagamento": "2018-12-28"
+    },
+    {
+      "data_com": "2019-02-26",
+      "valor": 0.131546,
+      "tipo": "DIVIDENDO",
+      "ano": 2019,
+      "mes": 2,
+      "dia": 26,
+      "trimestre": "T1",
+      "data_pagamento": "2019-02-21"
+    },
+    {
+      "data_com": "2019-11-06",
+      "valor": 0.127845,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2019,
+      "mes": 11,
+      "dia": 6,
+      "trimestre": "T4",
+      "data_pagamento": "2019-11-01"
+    },
+    {
+      "data_com": "2021-06-23",
+      "valor": 0.865277,
+      "tipo": "DIVIDENDO",
+      "ano": 2021,
+      "mes": 6,
+      "dia": 23,
+      "trimestre": "T2",
+      "data_pagamento": "2004-07-27"
+    },
+    {
+      "data_com": "2021-06-23",
+      "valor": 0.158498,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2021,
+      "mes": 6,
+      "dia": 23,
+      "trimestre": "T2",
+      "data_pagamento": "2004-07-27"
+    }
+  ]
+}

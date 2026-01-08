@@ -1,9 +1,9 @@
 {
   "ticker": "NATU3",
-  "ultima_atualizacao": "2026-01-05T23:04:17.213115",
+  "ultima_atualizacao": "2026-01-08T23:00:41.896509",
   "periodo": {
     "inicio": "2025-06-26",
-    "fim": "2026-01-02"
+    "fim": "2026-01-07"
   },
   "dados": [
     {
@@ -1457,16 +1457,49 @@
       "mm20": 7.76,
       "mm50": 8.14,
       "mm200": null
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 7.22,
+      "maxima": 7.41,
+      "minima": 7.22,
+      "fechamento": 7.35,
+      "volume": 7815500,
+      "mm20": 7.71,
+      "mm50": 8.11,
+      "mm200": null
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 7.39,
+      "maxima": 7.56,
+      "minima": 7.38,
+      "fechamento": 7.42,
+      "volume": 7577600,
+      "mm20": 7.66,
+      "mm50": 8.09,
+      "mm200": null
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 7.43,
+      "maxima": 7.47,
+      "minima": 7.26,
+      "fechamento": 7.28,
+      "volume": 5975700,
+      "mm20": 7.59,
+      "mm50": 8.06,
+      "mm200": null
     }
   ],
   "estatisticas": {
-    "total_dias": 132,
+    "total_dias": 135,
     "preco_inicial": 36.86,
-    "preco_atual": 7.2,
-    "variacao_periodo": -80.47,
+    "preco_atual": 7.28,
+    "variacao_periodo": -80.25,
     "maxima_periodo": 36.86,
     "minima_periodo": 7.2,
-    "volume_medio": 9724882,
+    "volume_medio": 9667061,
     "tendencia": "indefinida"
   }
 }

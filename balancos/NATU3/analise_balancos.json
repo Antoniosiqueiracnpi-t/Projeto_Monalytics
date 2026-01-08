@@ -1,0 +1,42 @@
+{
+  "ticker": "NATU3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T23:01:00.286757",
+  "periodo_analisado": {
+    "inicio": "2020T1",
+    "fim": "2025T2",
+    "total_trimestres": 22,
+    "anos": 5.5
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -10.7,
+      "variacao_total": -44.79,
+      "ultimo_valor": 4150.83
+    },
+    "margens": {
+      "bruta": 64.47,
+      "operacional": 1.88,
+      "liquida": 8.65
+    },
+    "rentabilidade": {
+      "roe_medio": 15.38
+    },
+    "caixa": {
+      "media": -209.14,
+      "ultimo": -1418.83
+    },
+    "balanco": {
+      "ativo_total": 34864.57,
+      "patrimonio": 15042.96
+    }
+  },
+  "analise_critica": "NATU3 enfrenta desafios no crescimento, com receita em tendência de queda. Opera com margens comprimidas (margem líquida de 8.65%). Gera excelente retorno sobre o patrimônio (ROE médio de 15.38%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Excelente retorno sobre patrimônio (ROE: 15.38%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -10.7%)",
+    "Queima de caixa operacional"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "ticker": "ESPA3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T23:01:00.267486",
+  "periodo_analisado": {
+    "inicio": "2020T1",
+    "fim": "2025T3",
+    "total_trimestres": 23,
+    "anos": 5.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.13,
+      "variacao_total": 53.68,
+      "ultimo_valor": 266.03
+    },
+    "margens": {
+      "bruta": 38.24,
+      "operacional": 6.35,
+      "liquida": 19.97
+    },
+    "rentabilidade": {
+      "roe_medio": 16.2
+    },
+    "caixa": {
+      "media": 19.21,
+      "ultimo": 97.41
+    },
+    "balanco": {
+      "ativo_total": 2252.06,
+      "patrimonio": 863.24
+    }
+  },
+  "analise_critica": "ESPA3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 19.97%. Gera excelente retorno sobre o patrimônio (ROE médio de 16.2%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (19.97%)",
+    "Excelente retorno sobre patrimônio (ROE: 16.2%)"
+  ],
+  "pontos_atencao": []
+}

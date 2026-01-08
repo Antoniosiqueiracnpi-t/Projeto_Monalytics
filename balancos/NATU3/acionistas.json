@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "32.785.497/0001-97",
+    "nome": "",
+    "ticker": "NATU3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "Natura Cosméticos S.A.",
+      "cpf_cnpj": "71.673.990/0001-77",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1390615155,
+      "percentual_total": 100.0,
+      "acoes_ordinarias": 1390615155,
+      "percentual_ordinarias": 100.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    }
+  ]
+}
