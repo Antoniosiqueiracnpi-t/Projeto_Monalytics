@@ -28,7 +28,7 @@ on:
         required: false
         default: ''
       dias:
-        description: 'Dias para buscar notícias (janela deslizante)'
+        description: 'Janela deslizante em dias (para evitar duplicatas e capturar anúncios perdidos)'
         required: false
         default: '10'
 
@@ -50,7 +50,7 @@ jobs:
 
       - name: Instalar dependências
         run: |
-          pip install finbr pandas requests beautifulsoup4 lxml --break-system-packages
+          pip install finbr pandas requests lxml beautifulsoup4 --break-system-packages
 
       - name: Capturar dividendos históricos
         run: |
@@ -82,15 +82,15 @@ jobs:
             fi
           fi
 
-      - name: Capturar dividendos futuros
+      - name: Capturar dividendos futuros (OFICIAL B3 LISTADOS + janela deslizante)
         run: |
-          echo "🔮 Capturando dividendos futuros (notícias + B3 + CVM RAD)..."
+          echo "🔮 Capturando dividendos futuros (B3 Listados - oficial + janela)..."
 
           if [ "${{ github.event_name }}" == "schedule" ]; then
-            echo "🤖 Execução automática: modo completo (janela 10 dias)"
+            echo "🤖 Execução automática: modo completo (janela=10 dias)"
             python src/capturar_dividendos_futuros.py --modo completo --dias 10
           else
-            echo "👤 Execução manual: modo ${{ github.event.inputs.modo }} | janela ${{ github.event.inputs.dias }} dia(s)"
+            echo "👤 Execução manual: modo ${{ github.event.inputs.modo }} (janela=${{ github.event.inputs.dias }} dias)"
 
             if [ "${{ github.event.inputs.modo }}" == "ticker" ]; then
               python src/capturar_dividendos_futuros.py \
@@ -138,10 +138,6 @@ jobs:
 
           if [ -f "balancos/estatisticas_dividendos.json" ]; then
             echo "✅ estatisticas_dividendos.json criado"
-          fi
-
-          if [ -f "balancos/dividendos_anunciados.json" ]; then
-            echo "✅ dividendos_anunciados.json criado (novos da janela)"
           fi
 
           HISTORICO_COUNT=$(find balancos -name "dividendos_historico.json" | wc -l)
@@ -193,7 +189,7 @@ jobs:
           if [ "${{ github.event_name }}" == "schedule" ]; then
             COMMIT_MSG="💰 Atualizar agenda completa de dividendos (automático - $(date +'%Y-%m-%d %H:%M')) [skip netlify]"
           else
-            COMMIT_MSG="💰 Atualizar agenda completa de dividendos - ${{ github.event.inputs.modo }} (janela ${{ github.event.inputs.dias }}d) [skip netlify]"
+            COMMIT_MSG="💰 Atualizar agenda completa de dividendos - ${{ github.event.inputs.modo }} (janela=${{ github.event.inputs.dias }}d) [skip netlify]"
           fi
 
           git commit -m "$COMMIT_MSG"
