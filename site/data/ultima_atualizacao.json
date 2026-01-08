@@ -1,7 +1,11 @@
 {
-  "timestamp": 1767896426000,
+  "timestamp": 1767896700000,
   "data": "2026-01-08",
-  "hora": "15:20 BRT",
-  "fonte": "noticias_mercado",
-  "versao": "1.0.0"
+  "hora": "15:25 BRT",
+  "deploy": "manual",
+  "versao": "1.0.0",
+  "trigger": "workflow_dispatch",
+  "iso": "2026-01-08T15:25:00-03:00",
+  "run_id": "20827339449",
+  "commit_sha": "77bbb7412b5a629c2d803c785903a1c94b85e396"
 }
