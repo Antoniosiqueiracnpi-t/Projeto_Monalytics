@@ -5770,50 +5770,31 @@ async function loadComunicadosEmpresa(ticker) {
 
         const data = await response.json();
         
-        // Verifica se data é um objeto com propriedade que contém o array
+        // Extrai array de notícias
         let comunicados = [];
         
-        if (Array.isArray(data)) {
-            // Se data já é um array
-            comunicados = data;
-        } else if (data && typeof data === 'object') {
-            // Se data é um objeto, procura pela propriedade que contém os comunicados
-            // Possíveis propriedades: noticias, comunicados, data, items, results
-            const possiveisChaves = ['noticias', 'comunicados', 'data', 'items', 'results'];
-            
-            for (const chave of possiveisChaves) {
-                if (data[chave] && Array.isArray(data[chave])) {
-                    comunicados = data[chave];
-                    break;
-                }
-            }
-            
-            // Se não encontrou em propriedades conhecidas, tenta pegar todos os valores do objeto
-            if (comunicados.length === 0) {
-                const valores = Object.values(data);
-                if (valores.length > 0 && Array.isArray(valores[0])) {
-                    comunicados = valores[0];
-                } else if (valores.every(v => v && typeof v === 'object' && v.titulo)) {
-                    // Se os valores são objetos de comunicados
-                    comunicados = valores;
-                }
-            }
+        if (data.noticias && Array.isArray(data.noticias)) {
+            comunicados = data.noticias;
+        } else {
+            throw new Error('Estrutura de dados inválida');
         }
         
-        if (!Array.isArray(comunicados) || comunicados.length === 0) {
-            console.warn('Estrutura de dados não reconhecida:', data);
-            throw new Error('Formato de dados inválido');
+        if (comunicados.length === 0) {
+            throw new Error('Nenhum comunicado disponível');
         }
         
         // Ordena por data (mais recente primeiro)
         comunicados.sort((a, b) => {
-            const dataA = parseDataComunicado(a.data_referencia);
-            const dataB = parseDataComunicado(b.data_referencia);
+            const dataA = new Date(a.data);
+            const dataB = new Date(b.data);
             return dataB - dataA;
         });
 
         comunicadosEmpresaData = {
             ticker: ticker,
+            empresa: data.empresa || {},
+            total: data.total_noticias || comunicados.length,
+            ultima_atualizacao: data.ultima_atualizacao,
             comunicados: comunicados
         };
 
@@ -5827,23 +5808,16 @@ async function loadComunicadosEmpresa(ticker) {
     }
 }
 
-
-// Parse data do formato DD/MM/YYYY
-function parseDataComunicado(dataStr) {
-    const partes = dataStr.split('/');
-    return new Date(partes[2], partes[1] - 1, partes[0]);
-}
-
-// Formata data para exibição
-function formatarDataComunicado(dataStr) {
-    const data = parseDataComunicado(dataStr);
+// Formata data ISO para exibição (2026-01-05 -> 05 jan. 2026)
+function formatarDataComunicado(dataISO) {
+    const data = new Date(dataISO + 'T00:00:00');
     const opcoes = { day: '2-digit', month: 'short', year: 'numeric' };
     return data.toLocaleDateString('pt-BR', opcoes);
 }
 
 // Verifica se comunicado é novo (últimos 7 dias)
-function comunicadoEhNovo(dataStr) {
-    const data = parseDataComunicado(dataStr);
+function comunicadoEhNovo(dataISO) {
+    const data = new Date(dataISO + 'T00:00:00');
     const hoje = new Date();
     const diasDiferenca = (hoje - data) / (1000 * 60 * 60 * 24);
     return diasDiferenca <= 7;
@@ -5854,7 +5828,7 @@ function agruparComunicadosPorMes(comunicados) {
     const grupos = {};
     
     comunicados.forEach(com => {
-        const data = parseDataComunicado(com.data_referencia);
+        const data = new Date(com.data + 'T00:00:00');
         const mesAno = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
         
         if (!grupos[mesAno]) {
@@ -5870,10 +5844,35 @@ function agruparComunicadosPorMes(comunicados) {
     return grupos;
 }
 
+// Extrai ID do comunicado da URL
+function extrairIdComunicado(url) {
+    const match = url.match(/idNoticia=(\d+)/);
+    return match ? match[1] : 'N/A';
+}
+
+// Define cor da badge por categoria
+function getCorCategoria(categoria) {
+    const cores = {
+        'Governança': { bg: '#dbeafe', text: '#1e40af' },
+        'Aviso': { bg: '#fef3c7', text: '#92400e' },
+        'Outros': { bg: '#e5e7eb', text: '#374151' },
+        'Resultados': { bg: '#d1fae5', text: '#065f46' },
+        'Dividendos': { bg: '#fce7f3', text: '#9f1239' }
+    };
+    
+    return cores[categoria] || cores['Outros'];
+}
+
 // Renderiza card de comunicado
 function renderComunicadoCard(comunicado) {
-    const ehNovo = comunicadoEhNovo(comunicado.data_referencia);
-    const dataFormatada = formatarDataComunicado(comunicado.data_referencia);
+    const ehNovo = comunicadoEhNovo(comunicado.data);
+    const dataFormatada = formatarDataComunicado(comunicado.data);
+    const idComunicado = extrairIdComunicado(comunicado.url);
+    const corCategoria = getCorCategoria(comunicado.categoria);
+    
+    // Limpa o título removendo espaços extras
+    const tituloLimpo = comunicado.titulo.trim();
+    const headlineLimpo = comunicado.headline.trim();
     
     return `
         <div class="comunicado-card">
@@ -5882,25 +5881,30 @@ function renderComunicadoCard(comunicado) {
                     <i class="far fa-calendar"></i>
                     <span>${dataFormatada}</span>
                 </div>
-                ${ehNovo ? `
-                    <div class="comunicado-badge novo">
-                        <i class="fas fa-star"></i>
-                        <span>Novo</span>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    ${ehNovo ? `
+                        <div class="comunicado-badge novo">
+                            <i class="fas fa-star"></i>
+                            <span>Novo</span>
+                        </div>
+                    ` : ''}
+                    <div class="comunicado-badge" style="background: ${corCategoria.bg}; color: ${corCategoria.text};">
+                        <span>${comunicado.categoria}</span>
                     </div>
-                ` : ''}
+                </div>
             </div>
             
-            <h3 class="comunicado-titulo">${comunicado.titulo}</h3>
-            <p class="comunicado-assunto">${comunicado.assunto}</p>
+            <h3 class="comunicado-titulo">${tituloLimpo}</h3>
+            <p class="comunicado-assunto">${headlineLimpo}</p>
             
             <div class="comunicado-footer">
                 <div class="comunicado-protocolo">
                     <i class="fas fa-file-alt"></i>
-                    <span>Protocolo: ${comunicado.protocolo}</span>
+                    <span>ID: ${idComunicado}</span>
                 </div>
-                <a href="${comunicado.link_pdf}" target="_blank" rel="noopener noreferrer" class="comunicado-link">
-                    <i class="fas fa-file-pdf"></i>
-                    <span>Abrir PDF</span>
+                <a href="${comunicado.url}" target="_blank" rel="noopener noreferrer" class="comunicado-link">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span>Ver Detalhes</span>
                 </a>
             </div>
         </div>
@@ -5926,12 +5930,13 @@ function renderComunicadosEmpresa() {
     }
 
     const totalComunicados = comunicadosEmpresaData.comunicados.length;
+    const nomeEmpresa = comunicadosEmpresaData.empresa.nome || comunicadosEmpresaData.ticker;
     
     loading.style.display = 'none';
     content.style.display = 'block';
     section.style.display = 'block';
     
-    subtitle.textContent = `${totalComunicados} comunicado${totalComunicados !== 1 ? 's' : ''} disponível${totalComunicados !== 1 ? 'is' : ''}`;
+    subtitle.textContent = `${nomeEmpresa} - ${totalComunicados} comunicado${totalComunicados !== 1 ? 's' : ''} disponível${totalComunicados !== 1 ? 'is' : ''}`;
 
     // Renderiza 3 comunicados mais recentes
     const comunicadosRecentes = comunicadosEmpresaData.comunicados.slice(0, 3);
@@ -5967,6 +5972,8 @@ function renderComunicadosEmpresa() {
         });
         
         antigos.innerHTML = antigosHTML;
+    } else {
+        verMaisContainer.style.display = 'none';
     }
 
     // Inicializa botão Ver Mais
@@ -5995,6 +6002,11 @@ function initComunicadosVerMais() {
             antigos.style.display = 'block';
             novoBotao.classList.add('expanded');
             novoBotao.querySelector('span').textContent = 'Ocultar comunicados anteriores';
+            
+            // Scroll suave até os comunicados antigos
+            setTimeout(() => {
+                antigos.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
         }
     });
 }
@@ -6014,5 +6026,6 @@ function toggleMesComunicados(grupoId) {
 }
 
 console.log('✅ Comunicados da Empresa inicializado');
+
 
 
