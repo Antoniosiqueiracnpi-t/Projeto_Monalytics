@@ -5656,3 +5656,376 @@ textarea:focus {
     }
 }
 
+
+/* ========================================
+   COMUNICADOS DA EMPRESA
+   ======================================== */
+
+.comunicados-empresa-section {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.comunicados-empresa-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.comunicados-empresa-title-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.comunicados-empresa-title-group i {
+    font-size: 1.75rem;
+    color: #f59e0b;
+}
+
+.comunicados-empresa-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+}
+
+.comunicados-empresa-subtitle {
+    font-size: 0.95rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Loading e Empty States */
+.comunicados-empresa-loading,
+.comunicados-empresa-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    gap: 1rem;
+}
+
+.comunicados-empresa-loading i {
+    font-size: 2.5rem;
+    color: #f59e0b;
+}
+
+.comunicados-empresa-loading span {
+    font-size: 1rem;
+    color: #6b7280;
+}
+
+.comunicados-empresa-empty i {
+    font-size: 3rem;
+    color: #9ca3af;
+}
+
+.comunicados-empresa-empty p {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Card de Comunicado */
+.comunicado-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    border-left: 4px solid #f59e0b;
+}
+
+.comunicado-card:hover {
+    background: #f3f4f6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.comunicado-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.comunicado-data {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #6b7280;
+    white-space: nowrap;
+}
+
+.comunicado-data i {
+    color: #f59e0b;
+}
+
+.comunicado-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #92400e;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.comunicado-badge i {
+    font-size: 0.7rem;
+}
+
+.comunicado-titulo {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.4;
+}
+
+.comunicado-assunto {
+    font-size: 0.9rem;
+    color: #4b5563;
+    margin: 0 0 1rem 0;
+    line-height: 1.6;
+}
+
+.comunicado-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.comunicado-protocolo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.comunicado-protocolo i {
+    color: #9ca3af;
+}
+
+.comunicado-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.comunicado-link:hover {
+    background: linear-gradient(135deg, #d97706, #b45309);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.comunicado-link i {
+    font-size: 0.9rem;
+}
+
+/* Botão Ver Mais */
+.comunicados-ver-mais-container {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.comunicados-ver-mais-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 2rem;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    color: #6b7280;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.comunicados-ver-mais-btn:hover {
+    background: #f9fafb;
+    border-color: #f59e0b;
+    color: #d97706;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+}
+
+.comunicados-ver-mais-btn i {
+    transition: transform 0.3s ease;
+}
+
+.comunicados-ver-mais-btn.expanded i {
+    transform: rotate(180deg);
+}
+
+/* Comunicados Antigos por Mês */
+.comunicados-antigos {
+    margin-top: 1rem;
+}
+
+.comunicados-mes-grupo {
+    margin-bottom: 1.5rem;
+}
+
+.comunicados-mes-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.comunicados-mes-header:hover {
+    background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+}
+
+.comunicados-mes-header i.fa-calendar-alt {
+    color: #f59e0b;
+    font-size: 1.1rem;
+}
+
+.comunicados-mes-titulo {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #374151;
+    margin: 0;
+    flex: 1;
+}
+
+.comunicados-mes-count {
+    background: white;
+    color: #6b7280;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.comunicados-mes-toggle {
+    color: #9ca3af;
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.comunicados-mes-header.expanded .comunicados-mes-toggle {
+    transform: rotate(180deg);
+}
+
+.comunicados-mes-conteudo {
+    display: none;
+    padding-left: 1rem;
+}
+
+.comunicados-mes-conteudo.expanded {
+    display: block;
+}
+
+/* Badge Novo (últimos 7 dias) */
+.comunicado-badge.novo {
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+    color: #166534;
+}
+
+/* Responsividade */
+@media screen and (max-width: 768px) {
+    .comunicados-empresa-section {
+        padding: 1.5rem;
+    }
+
+    .comunicados-empresa-title {
+        font-size: 1.3rem;
+    }
+
+    .comunicado-card {
+        padding: 1.25rem;
+    }
+
+    .comunicado-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .comunicado-titulo {
+        font-size: 1rem;
+    }
+
+    .comunicado-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .comunicado-link {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .comunicados-mes-header {
+        padding: 0.65rem 0.85rem;
+    }
+
+    .comunicados-mes-titulo {
+        font-size: 0.95rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .comunicados-empresa-section {
+        padding: 1rem;
+    }
+
+    .comunicados-empresa-title {
+        font-size: 1.1rem;
+    }
+
+    .comunicado-card {
+        padding: 1rem;
+    }
+
+    .comunicado-titulo {
+        font-size: 0.95rem;
+    }
+
+    .comunicado-assunto {
+        font-size: 0.85rem;
+    }
+
+    .comunicados-ver-mais-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
