@@ -24,22 +24,27 @@ def obter_pasta_ticker(ticker):
 
 def buscar_nome_empresa_ticker(ticker):
     """
-    Busca o nome da empresa associada ao ticker no mapeamento_b3.json.
+    Busca o nome da empresa associada ao ticker no mapeamento_b3_consolidado.csv.
     """
     try:
-        if os.path.exists('mapeamento_b3.json'):
-            with open('mapeamento_b3.json', 'r', encoding='utf-8') as f:
-                dados = json.load(f)
-                ticker_limpo = re.sub(r'\d+$', '', ticker.upper())
+        if os.path.exists('mapeamento_b3_consolidado.csv'):
+            import csv
+            with open('mapeamento_b3_consolidado.csv', 'r', encoding='utf-8-sig') as f:
+                reader = csv.DictReader(f, delimiter=';')
+                ticker_limpo = ticker.upper().strip()
                 
-                for item in dados:
-                    if item['ticker'].startswith(ticker_limpo):
-                        return item['nome_empresa']
+                for row in reader:
+                    # Coluna ticker pode ter múltiplos tickers separados por ;
+                    tickers_linha = row['ticker'].split(';')
+                    for t in tickers_linha:
+                        if t.strip().upper() == ticker_limpo:
+                            return row['empresa'].strip()
         
         return ticker
     except Exception as e:
         print(f"Erro ao buscar nome da empresa: {e}")
         return ticker
+
 
 def extrair_data_publicacao(item):
     """
