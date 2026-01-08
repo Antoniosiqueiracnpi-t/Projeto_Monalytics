@@ -1,50 +1,110 @@
+"""
+CAPTURA DE NOTICIÁRIO EMPRESARIAL - VERSÃO GITHUB ACTIONS
+- Busca notícias via Google News RSS
+- Suporta múltiplos tickers (modo lista, quantidade, ticker, faixa)
+- Salva em JSON na pasta de cada empresa (balancos/<TICKER>/noticiario.json)
+- Acumula notícias (evita duplicatas por ID)
+- Limita a 100 notícias mais recentes por empresa
+"""
+
 import requests
 from bs4 import BeautifulSoup
 import json
-import os
 from datetime import datetime
 import re
 from urllib.parse import urlparse, parse_qs
+import argparse
+import sys
+import pandas as pd
+from pathlib import Path
 
-def obter_pasta_ticker(ticker):
-    """
-    Determina a pasta correta para salvar os dados do ticker.
-    """
-    base_path = "balancos"
-    ticker_base = re.sub(r'\d+$', '', ticker.upper())
-    
-    if os.path.exists(base_path):
-        for pasta in os.listdir(base_path):
-            if pasta.startswith(ticker_base):
-                return os.path.join(base_path, pasta)
-    
-    pasta_ticker = os.path.join(base_path, ticker.upper())
-    os.makedirs(pasta_ticker, exist_ok=True)
-    return pasta_ticker
 
-def buscar_nome_empresa_ticker(ticker):
+# ============================================================================
+# UTILITÁRIOS MULTI-TICKER
+# ============================================================================
+
+def load_mapeamento_consolidado() -> pd.DataFrame:
+    """Carrega CSV de mapeamento (tenta consolidado, fallback para original)."""
+    csv_consolidado = "mapeamento_b3_consolidado.csv"
+    csv_original = "mapeamento_final_b3_completo_utf8.csv"
+    
+    # Tentar CSV consolidado primeiro
+    if Path(csv_consolidado).exists():
+        try:
+            return pd.read_csv(csv_consolidado, sep=";", encoding="utf-8-sig")
+        except Exception:
+            pass
+    
+    # Fallback para CSV original
+    if Path(csv_original).exists():
+        try:
+            return pd.read_csv(csv_original, sep=";", encoding="utf-8-sig")
+        except Exception:
+            pass
+    
+    # Último fallback
+    try:
+        return pd.read_csv(csv_original, sep=";")
+    except Exception as e:
+        raise FileNotFoundError(
+            f"Nenhum arquivo de mapeamento encontrado"
+        ) from e
+
+
+def extrair_ticker_base(ticker: str) -> str:
     """
-    Busca o nome da empresa associada ao ticker no mapeamento_b3_consolidado.csv.
+    Remove números finais do ticker (PETR4 -> PETR).
+    """
+    return re.sub(r'\d+$', '', ticker.upper().strip())
+
+
+def obter_pasta_ticker(ticker_base: str, pasta_saida: Path) -> Path:
+    """
+    Busca pasta existente para a empresa (com ou sem número de classe).
+    Prioriza pasta com número. Se não existir, retorna pasta com ticker base.
+    
+    Exemplos:
+    - Se existe BBAS3/ -> retorna BBAS3/
+    - Se existe BBAS/ -> retorna BBAS/
+    - Se não existe nenhuma -> retorna BBAS/
+    """
+    pastas_encontradas = []
+    
+    if pasta_saida.exists():
+        for pasta in pasta_saida.iterdir():
+            if pasta.is_dir():
+                pasta_base = extrair_ticker_base(pasta.name)
+                if pasta_base == ticker_base:
+                    pastas_encontradas.append(pasta)
+    
+    if pastas_encontradas:
+        # Prioriza pasta com número (ex: BBAS3 ao invés de BBAS)
+        # Ordena por comprimento decrescente para pegar primeiro as com número
+        pastas_encontradas.sort(key=lambda p: len(p.name), reverse=True)
+        return pastas_encontradas[0]
+    
+    # Se não encontrou nenhuma, retorna pasta com ticker base (sem número)
+    return pasta_saida / ticker_base
+
+
+def buscar_nome_empresa_ticker(ticker_base: str, df: pd.DataFrame) -> str:
+    """
+    Busca o nome da empresa associada ao ticker base no DataFrame.
     """
     try:
-        if os.path.exists('mapeamento_b3_consolidado.csv'):
-            import csv
-            with open('mapeamento_b3_consolidado.csv', 'r', encoding='utf-8-sig') as f:
-                reader = csv.DictReader(f, delimiter=';')
-                ticker_limpo = ticker.upper().strip()
-                
-                for row in reader:
-                    # Coluna ticker pode ter múltiplos tickers separados por ;
-                    tickers_linha = row['ticker'].split(';')
-                    for t in tickers_linha:
-                        if t.strip().upper() == ticker_limpo:
-                            return row['empresa'].strip()
-        
-        return ticker
+        # Buscar ticker base na coluna ticker_base
+        match = df[df['ticker_base'] == ticker_base]
+        if not match.empty:
+            return str(match.iloc[0]['empresa']).strip()
+        return ticker_base
     except Exception as e:
-        print(f"Erro ao buscar nome da empresa: {e}")
-        return ticker
+        print(f"⚠️ Erro ao buscar nome da empresa: {e}")
+        return ticker_base
 
+
+# ============================================================================
+# FUNÇÕES DE EXTRAÇÃO DE NOTÍCIAS
+# ============================================================================
 
 def extrair_data_publicacao(item):
     """
@@ -64,7 +124,8 @@ def extrair_data_publicacao(item):
     agora = datetime.now()
     return agora.strftime('%Y-%m-%d'), agora.strftime('%Y-%m-%d %H:%M:%S')
 
-def extrair_fonte_noticia(link):
+
+def extrair_fonte_noticia(link: str) -> str:
     """
     Extrai a fonte da notícia a partir da URL.
     """
@@ -112,7 +173,8 @@ def extrair_fonte_noticia(link):
     except:
         return 'Desconhecida'
 
-def limpar_descricao_html(descricao):
+
+def limpar_descricao_html(descricao: str) -> str:
     """
     Remove tags HTML da descrição e limpa o texto.
     """
@@ -132,16 +194,14 @@ def limpar_descricao_html(descricao):
     except:
         return descricao
 
-def buscar_noticiario_empresarial(ticker):
+
+def buscar_noticiario_empresarial(ticker_base: str, nome_empresa: str) -> list:
     """
     Busca notícias do mercado sobre a empresa via Google News RSS.
     """
     try:
-        ticker_clean = re.sub(r'\d+$', '', ticker.upper())
-        nome_empresa = buscar_nome_empresa_ticker(ticker)
-        
         # Monta query de busca mais específica
-        query = f'{nome_empresa} OR {ticker_clean} bolsa ações'
+        query = f'{nome_empresa} OR {ticker_base} bolsa ações'
         
         # URL do Google News RSS
         url = f'https://news.google.com/rss/search?q={query}&hl=pt-BR&gl=BR&ceid=BR:pt-419'
@@ -190,30 +250,32 @@ def buscar_noticiario_empresarial(ticker):
                     noticias.append(noticia)
                 
                 except Exception as e:
-                    print(f"Erro ao processar item de notícia: {e}")
+                    print(f"⚠️ Erro ao processar item de notícia: {e}")
                     continue
             
             return noticias
         else:
-            print(f"Erro ao buscar notícias: Status {response.status_code}")
+            print(f"⚠️ Erro ao buscar notícias: Status {response.status_code}")
             return []
     
     except Exception as e:
-        print(f"Erro ao buscar noticiário empresarial: {e}")
+        print(f"❌ Erro ao buscar noticiário empresarial: {e}")
         return []
 
-def salvar_noticiario_json(ticker, noticias):
+
+def salvar_noticiario_json(ticker_base: str, nome_empresa: str, noticias: list, pasta_saida: Path) -> Path | None:
     """
     Salva o noticiário em formato JSON na pasta do ticker.
     Acumula com notícias existentes, evitando duplicatas por ID.
     """
     try:
-        pasta_ticker = obter_pasta_ticker(ticker)
-        arquivo_json = os.path.join(pasta_ticker, 'noticiario.json')
+        pasta_ticker = obter_pasta_ticker(ticker_base, pasta_saida)
+        pasta_ticker.mkdir(parents=True, exist_ok=True)
+        arquivo_json = pasta_ticker / 'noticiario.json'
         
         # Carrega notícias existentes se o arquivo já existir
         noticias_existentes = []
-        if os.path.exists(arquivo_json):
+        if arquivo_json.exists():
             with open(arquivo_json, 'r', encoding='utf-8') as f:
                 dados_existentes = json.load(f)
                 noticias_existentes = dados_existentes.get('noticias', [])
@@ -236,14 +298,10 @@ def salvar_noticiario_json(ticker, noticias):
         # Limita a 100 notícias mais recentes para não crescer indefinidamente
         noticias_finais = noticias_finais[:100]
         
-        # Busca informações da empresa
-        nome_empresa = buscar_nome_empresa_ticker(ticker)
-        ticker_limpo = re.sub(r'\d+$', '', ticker.upper())
-        
         # Monta estrutura final
         dados_finais = {
             'empresa': {
-                'ticker': ticker_limpo,
+                'ticker': ticker_base,
                 'nome': nome_empresa
             },
             'ultima_atualizacao': datetime.now().isoformat(),
@@ -256,68 +314,182 @@ def salvar_noticiario_json(ticker, noticias):
         with open(arquivo_json, 'w', encoding='utf-8') as f:
             json.dump(dados_finais, f, ensure_ascii=False, indent=2)
         
-        print(f"✅ {len(noticias_finais)} notícias salvas em: {arquivo_json}")
+        print(f"  ✅ {len(noticias_finais)} notícias | {arquivo_json}")
         return arquivo_json
     
     except Exception as e:
-        print(f"❌ Erro ao salvar noticiário: {e}")
+        print(f"  ❌ Erro ao salvar: {e}")
         return None
 
-def exibir_noticiario_formatado(noticias, limite=5):
+
+# ============================================================================
+# PROCESSAMENTO EM LOTE
+# ============================================================================
+
+def processar_ticker(row: pd.Series, df: pd.DataFrame, pasta_saida: Path) -> bool:
     """
-    Exibe o noticiário em formato bonito e amigável.
+    Processa um único ticker: busca e salva notícias.
+    
+    Returns:
+        True se sucesso, False se erro
     """
-    if not noticias:
-        print("Nenhuma notícia encontrada.")
-        return
+    try:
+        ticker_base = row['ticker_base']
+        nome_empresa = row.get('empresa', ticker_base)
+        
+        print(f"\n📰 {ticker_base} - {nome_empresa[:50]}")
+        print(f"  📁 Pasta: {obter_pasta_ticker(ticker_base, pasta_saida).name}")
+        
+        noticias = buscar_noticiario_empresarial(ticker_base, nome_empresa)
+        
+        if noticias:
+            arquivo_salvo = salvar_noticiario_json(ticker_base, nome_empresa, noticias, pasta_saida)
+            return arquivo_salvo is not None
+        else:
+            print(f"  ⚠️ Nenhuma notícia encontrada")
+            return False
+            
+    except Exception as e:
+        print(f"  ❌ Erro: {e}")
+        return False
+
+
+def selecionar_empresas(df: pd.DataFrame, modo: str, **kwargs) -> pd.DataFrame:
+    """Seleciona empresas baseado no modo especificado."""
     
-    noticias_exibir = noticias[:limite]
+    if modo == 'quantidade':
+        qtd = int(kwargs.get('quantidade', 10))
+        return df.head(qtd)
     
-    print(f"\n{'=' * 100}")
-    print(f"📰 NOTICIÁRIO EMPRESARIAL ({len(noticias)} notícias)")
-    print(f"{'=' * 100}\n")
+    elif modo == 'ticker':
+        ticker = kwargs.get('ticker', '').strip().upper()
+        ticker_base = extrair_ticker_base(ticker)
+        return df[df['ticker_base'] == ticker_base]
     
-    for i, noticia in enumerate(noticias_exibir, 1):
-        print(f"{'-' * 100}")
-        print(f"{i}. \033[1m{noticia['titulo']}\033[0m")
-        print(f"   📅 {noticia['data_hora']} | 📰 {noticia['fonte']}")
-        print(f"   \033[94m{noticia['descricao']}\033[0m")
-        if noticia.get('url'):
-            print(f"   🔗 {noticia['url']}")
-        print(f"{'-' * 100}\n")
+    elif modo == 'lista':
+        lista = kwargs.get('lista', '')
+        tickers = [extrair_ticker_base(t.strip().upper()) for t in lista.split(',') if t.strip()]
+        return df[df['ticker_base'].isin(tickers)]
+    
+    elif modo == 'faixa':
+        faixa = kwargs.get('faixa', '1-50')
+        inicio, fim = map(int, faixa.split('-'))
+        return df.iloc[inicio-1:fim]
+    
+    else:
+        print(f"⚠️ Modo '{modo}' não reconhecido. Usando primeiras 10 empresas.")
+        return df.head(10)
+
+
+def processar_lote(df_sel: pd.DataFrame, df_completo: pd.DataFrame, pasta_saida: Path):
+    """
+    Processa um lote de empresas selecionadas.
+    """
+    print(f"\n{'='*70}")
+    print(f"🚀 Processando {len(df_sel)} empresas...")
+    print(f"{'='*70}")
+
+    ok_count = 0
+    err_count = 0
+
+    for idx, (_, row) in enumerate(df_sel.iterrows(), 1):
+        print(f"\n[{idx}/{len(df_sel)}]", end=" ")
+        
+        sucesso = processar_ticker(row, df_completo, pasta_saida)
+        
+        if sucesso:
+            ok_count += 1
+        else:
+            err_count += 1
+
+    print(f"\n{'='*70}")
+    print(f"✅ Finalizado: OK={ok_count} | ERRO={err_count}")
+    print(f"💾 Salvos em: {pasta_saida}/")
+    print(f"{'='*70}\n")
+
+
+# ============================================================================
+# MAIN COM ARGPARSE
+# ============================================================================
 
 def main():
     """
-    Função principal para executar a captura de noticiário.
+    Função principal com suporte a argumentos CLI.
     """
-    import sys
-    
-    if len(sys.argv) < 2:
-        print("❌ Uso: python capturar_noticiario_empresarial.py TICKER")
-        print("   Exemplo: python capturar_noticiario_empresarial.py ABEV3")
+    parser = argparse.ArgumentParser(
+        description="Captura noticiário empresarial via Google News RSS"
+    )
+    parser.add_argument(
+        "--modo",
+        choices=["quantidade", "ticker", "lista", "faixa"],
+        default="quantidade",
+        help="Modo de seleção: quantidade, ticker, lista, faixa",
+    )
+    parser.add_argument(
+        "--quantidade", 
+        type=int,
+        default=10, 
+        help="Quantidade de empresas (modo quantidade)"
+    )
+    parser.add_argument(
+        "--ticker", 
+        default="", 
+        help="Ticker específico (modo ticker): ex: PETR4"
+    )
+    parser.add_argument(
+        "--lista", 
+        default="", 
+        help="Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4"
+    )
+    parser.add_argument(
+        "--faixa", 
+        default="1-50", 
+        help="Faixa de linhas (modo faixa): ex: 1-50, 51-150"
+    )
+    args = parser.parse_args()
+
+    # Carregar mapeamento
+    try:
+        df = load_mapeamento_consolidado()
+        df = df[df["ticker"].notna()].reset_index(drop=True)
+        df['ticker_base'] = df['ticker'].apply(extrair_ticker_base)
+        df = df.drop_duplicates(subset=['ticker_base'], keep='first')
+    except Exception as e:
+        print(f"❌ Erro ao carregar mapeamento: {e}")
         sys.exit(1)
+
+    # Pasta de saída
+    pasta_saida = Path("balancos")
+    pasta_saida.mkdir(exist_ok=True)
+
+    # Seleção baseada no modo usando **kwargs
+    df_sel = selecionar_empresas(
+        df, 
+        args.modo,
+        quantidade=args.quantidade,
+        ticker=args.ticker,
+        lista=args.lista,
+        faixa=args.faixa
+    )
     
-    ticker = sys.argv[1].upper()
-    
-    print(f"🔍 Buscando noticiário empresarial de {ticker}...")
-    print(f"⏳ Aguarde, isso pode levar alguns segundos...\n")
-    
-    noticias = buscar_noticiario_empresarial(ticker)
-    
-    if noticias:
-        print(f"✅ {len(noticias)} notícias encontradas!")
-        
-        # Salva em JSON
-        arquivo_salvo = salvar_noticiario_json(ticker, noticias)
-        
-        if arquivo_salvo:
-            # Exibe preview
-            exibir_noticiario_formatado(noticias, limite=5)
-            print(f"\n💾 Arquivo salvo: {arquivo_salvo}")
-        else:
-            print("\n❌ Erro ao salvar arquivo JSON")
-    else:
-        print("❌ Nenhuma notícia encontrada ou erro na busca")
+    if df_sel.empty:
+        print(f"❌ Nenhuma empresa selecionada com os critérios fornecidos.")
+        sys.exit(1)
+
+    # Exibir informações do job
+    print(f"\n{'='*70}")
+    print(f">>> JOB: CAPTURAR NOTICIÁRIO EMPRESARIAL <<<")
+    print(f"{'='*70}")
+    print(f"Modo: {args.modo}")
+    print(f"Empresas selecionadas: {len(df_sel)}")
+    print(f"Fonte: Google News RSS")
+    print(f"Limite por empresa: 30 notícias novas (max 100 acumuladas)")
+    print(f"Saída: balancos/<TICKER>/noticiario.json")
+    print(f"{'='*70}")
+
+    # Processar
+    processar_lote(df_sel, df, pasta_saida)
+
 
 if __name__ == "__main__":
     main()
