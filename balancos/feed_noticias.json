@@ -1,19 +1,19 @@
 {
   "meta": {
-    "ultima_atualizacao": "2026-01-08T10:56:00.354477Z",
+    "ultima_atualizacao": "2026-01-08T23:11:23.983156Z",
     "data_atualizacao": "2026-01-08",
-    "hora_atualizacao": "10:56:00",
+    "hora_atualizacao": "23:11:23",
     "total_empresas": 293,
-    "total_noticias": 3185,
+    "total_noticias": 3187,
     "periodo": {
       "inicio": "2025-12-04",
-      "fim": "2026-01-07"
+      "fim": "2026-01-08"
     }
   },
   "estatisticas": {
     "por_categoria": {
       "Governança": 1159,
-      "Outros": 913,
+      "Outros": 915,
       "Aviso": 753,
       "Fato Relevante": 341,
       "Resultados": 18,
@@ -48,7 +48,7 @@
       },
       {
         "categoria": "Outros",
-        "total": 913
+        "total": 915
       },
       {
         "categoria": "Aviso",
@@ -111,6 +111,36 @@
     ]
   },
   "feed": [
+    {
+      "data": "2026-01-08",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "SUZB",
+        "nome": "SUZANO S.A.",
+        "cnpj": "16.404.287/0001-55"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)  ",
+        "headline": "SUZANO S.A. (SUZB-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)  ",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198334&agencia=18&dataNoticia=2026-01-08%2018:04:20"
+      }
+    },
+    {
+      "data": "2026-01-08",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "LPSB",
+        "nome": "LPS BRASIL – CONSULTORIA DE IMÓVEIS S.A.",
+        "cnpj": "08.078.847/0001-09"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)  ",
+        "headline": "LOPES BRASIL (LPSB-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)  ",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3197288&agencia=18&dataNoticia=2026-01-08%2012:23:02"
+      }
+    },
     {
       "data": "2026-01-07",
       "hora": "16:00:00",
