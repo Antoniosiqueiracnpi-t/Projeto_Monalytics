@@ -777,7 +777,7 @@
                                     <i class="fas fa-calendar"></i> Trimestral
                                 </button>
                             </div>
-                    
+                        
                             <div class="chart-table-switch">
                                 <button class="chart-table-btn active" data-display="tabela" id="displayTabelaBtn">
                                     <i class="fas fa-table"></i> Tabela
@@ -787,6 +787,23 @@
                                 </button>
                             </div>
                         </div>
+                        
+                        <!-- Controles de Tipo de Demonstração (apenas para gráfico) -->
+                        <div class="demonstracao-tipo-controls" id="demonstracaoTipoControls" style="display: none;">
+                            <button class="demonstracao-tipo-btn active" data-tipo="DRE" id="tipoDREBtn">
+                                <i class="fas fa-file-invoice-dollar"></i> DRE
+                            </button>
+                            <button class="demonstracao-tipo-btn" data-tipo="BPA" id="tipoBPABtn">
+                                <i class="fas fa-coins"></i> BPA
+                            </button>
+                            <button class="demonstracao-tipo-btn" data-tipo="BPP" id="tipoBPPBtn">
+                                <i class="fas fa-hand-holding-usd"></i> BPP
+                            </button>
+                            <button class="demonstracao-tipo-btn" data-tipo="DFC" id="tipoDFCBtn" style="display: none;">
+                                <i class="fas fa-exchange-alt"></i> DFC
+                            </button>
+                        </div>
+
                     
                         <!-- Container Tabela -->
                         <div class="analise-balancos-table-wrapper" id="analiseBalancosTableWrapper" style="display: none;">
