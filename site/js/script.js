@@ -5447,10 +5447,11 @@ function renderDemonstracoesFinanceirasTabela() {
     const config = demonstracoesFinanceirasData.ehFinanceira ? CONTAS_BALANCOS.FINANCEIRAS : CONTAS_BALANCOS.NAOFINANCEIRAS;
     const primeiroArquivo = Object.values(demonstracoesFinanceirasData.balancos)[0];
     const primeiroItem = Object.values(primeiroArquivo)[0];
-    const todosPeriodos = Object.keys(primeiroItem.valores);
+    const todosPeriodos = Object.keys(primeiroItem.valores).sort();
 
     let periodosExibir;
     if (demonstracoesViewType === 'anual') {
+        // Anual: pega apenas último trimestre disponível de cada ano
         const anos = {};
         todosPeriodos.forEach(p => {
             const match = p.match(/(\d{4})T(\d)/);
@@ -5462,14 +5463,15 @@ function renderDemonstracoesFinanceirasTabela() {
                 }
             }
         });
-        periodosExibir = Object.values(anos).sort();
+        periodosExibir = Object.values(anos).sort().slice(-8); // Últimos 8 anos
     } else {
-        periodosExibir = todosPeriodos.sort();
+        // Trimestral: MOSTRA TODO O HISTÓRICO DISPONÍVEL (não limita a 8)
+        periodosExibir = todosPeriodos;
     }
 
     // Cabeçalho
     let headerHTML = '<tr><th>Conta</th>';
-    periodosExibir.slice(-8).forEach(periodo => {
+    periodosExibir.forEach(periodo => {
         const periodoFormatado = formatarPeriodoExibicao(periodo, demonstracoesViewType);
         headerHTML += `<th>${periodoFormatado}</th>`;
     });
@@ -5482,8 +5484,8 @@ function renderDemonstracoesFinanceirasTabela() {
     for (const [grupoNome, contas] of Object.entries(config)) {
         if (contas.length === 0) continue;
 
-        // Cabeçalho do grupo - marca com classe especial
-        bodyHTML += `<tr class="grupo-row"><td colspan="${periodosExibir.slice(-8).length + 1}" class="grupo-header">${grupoNome}</td></tr>`;
+        // Cabeçalho do grupo - aplicar classe grupo-header DIRETAMENTE no TD
+        bodyHTML += `<tr class="grupo-row"><td class="grupo-header" colspan="${periodosExibir.length + 1}">${grupoNome}</td></tr>`;
 
         // Contas do grupo
         contas.forEach(contaConfig => {
@@ -5491,10 +5493,9 @@ function renderDemonstracoesFinanceirasTabela() {
             
             if (!dadosConta) return;
 
-            // Usa nome abreviado para exibição
             bodyHTML += `<tr><td title="${contaConfig.nomeCompleto}">${contaConfig.nome}</td>`;
 
-            periodosExibir.slice(-8).forEach(periodo => {
+            periodosExibir.forEach(periodo => {
                 let valor = dadosConta.valores[periodo];
 
                 // Para view anual, acumula DRE e DFC
@@ -5530,6 +5531,7 @@ function renderDemonstracoesFinanceirasTabela() {
     document.getElementById('analiseBalancosTableWrapper').style.display = 'block';
 }
 
+
 // Renderiza gráfico de balanços
 function renderDemonstracoesFinanceirasGrafico() {
     const ctx = document.getElementById('analiseBalancosChart');
@@ -5542,10 +5544,11 @@ function renderDemonstracoesFinanceirasGrafico() {
     const config = demonstracoesFinanceirasData.ehFinanceira ? CONTAS_BALANCOS.FINANCEIRAS : CONTAS_BALANCOS.NAOFINANCEIRAS;
     const primeiroArquivo = Object.values(demonstracoesFinanceirasData.balancos)[0];
     const primeiroItem = Object.values(primeiroArquivo)[0];
-    const todosPeriodos = Object.keys(primeiroItem.valores);
+    const todosPeriodos = Object.keys(primeiroItem.valores).sort();
 
     let periodosExibir;
     if (demonstracoesViewType === 'anual') {
+        // Anual: último trimestre de cada ano
         const anos = {};
         todosPeriodos.forEach(p => {
             const match = p.match(/(\d{4})T(\d)/);
@@ -5557,12 +5560,13 @@ function renderDemonstracoesFinanceirasGrafico() {
                 }
             }
         });
-        periodosExibir = Object.values(anos).sort();
+        periodosExibir = Object.values(anos).sort().slice(-12); // Últimos 12 anos
     } else {
-        periodosExibir = todosPeriodos.sort();
+        // Trimestral: TODO O HISTÓRICO (não limita)
+        periodosExibir = todosPeriodos;
     }
 
-    const labels = periodosExibir.slice(-12).map(p => formatarPeriodoExibicao(p, demonstracoesViewType));
+    const labels = periodosExibir.map(p => formatarPeriodoExibicao(p, demonstracoesViewType));
 
     const contasSelecionadas = config[demonstracaoTipoAtivo];
     
@@ -5573,7 +5577,6 @@ function renderDemonstracoesFinanceirasGrafico() {
 
     // Datasets
     const datasets = [];
-    // Cores mais fortes para gráfico de barras
     const coresLinha = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
     const coresBarra = ['#6366f1', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#f472b6'];
     const coresUsar = demonstracaoTipoAtivo === 'DFC' ? coresBarra : coresLinha;
@@ -5584,7 +5587,7 @@ function renderDemonstracoesFinanceirasGrafico() {
         const dadosConta = demonstracoesFinanceirasData.balancos[demonstracaoTipoAtivo]?.[contaConfig.codigo];
         if (!dadosConta) return;
 
-        const dados = periodosExibir.slice(-12).map(periodo => {
+        const dados = periodosExibir.map(periodo => {
             let valor = dadosConta.valores[periodo];
 
             if (demonstracoesViewType === 'anual' && (demonstracaoTipoAtivo === 'DRE' || demonstracaoTipoAtivo === 'DFC')) {
@@ -5605,7 +5608,7 @@ function renderDemonstracoesFinanceirasGrafico() {
         });
 
         datasets.push({
-            label: contaConfig.nome, // Usa nome abreviado
+            label: contaConfig.nome,
             data: dados,
             borderColor: coresUsar[corIndex % coresUsar.length],
             backgroundColor: demonstracaoTipoAtivo === 'DFC' 
@@ -5630,6 +5633,12 @@ function renderDemonstracoesFinanceirasGrafico() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 20, // Espaço extra no topo para a legenda
+                    bottom: 10
+                }
+            },
             plugins: {
                 legend: {
                     display: true,
@@ -5638,7 +5647,7 @@ function renderDemonstracoesFinanceirasGrafico() {
                     labels: {
                         boxWidth: 12,
                         boxHeight: 12,
-                        padding: 10,
+                        padding: 12, // Aumentado de 10 para 12
                         font: {
                             size: 11,
                             family: "'Inter', sans-serif"
@@ -5687,7 +5696,9 @@ function renderDemonstracoesFinanceirasGrafico() {
                     ticks: {
                         font: {
                             size: 10
-                        }
+                        },
+                        maxRotation: 45, // Rotação para acomodar mais períodos
+                        minRotation: 45
                     },
                     grid: {
                         display: false
@@ -5704,6 +5715,7 @@ function renderDemonstracoesFinanceirasGrafico() {
 
     document.getElementById('analiseBalancosChartWrapper').style.display = 'block';
 }
+
 
 // Formata valores em milhares (0.000mi)
 function formatarValorDemonstracoes(valor) {
