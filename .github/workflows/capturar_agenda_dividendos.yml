@@ -27,96 +27,103 @@ on:
         description: 'Lista de tickers separados por vírgula (modo lista)'
         required: false
         default: ''
+      dias:
+        description: 'Dias para buscar notícias (janela deslizante)'
+        required: false
+        default: '10'
 
 jobs:
   capturar-agenda-dividendos:
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: write
-    
+
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
-      
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      
+
       - name: Instalar dependências
         run: |
-          pip install finbr pandas requests --break-system-packages
-      
+          pip install finbr pandas requests beautifulsoup4 lxml --break-system-packages
+
       - name: Capturar dividendos históricos
         run: |
           echo "📊 Capturando dividendos históricos (finbr)..."
-          
+
           if [ "${{ github.event_name }}" == "schedule" ]; then
             echo "🤖 Execução automática: modo completo"
             python src/capturar_dividendos_passados.py --modo completo
           else
             echo "👤 Execução manual: modo ${{ github.event.inputs.modo }}"
-            
+
             if [ "${{ github.event.inputs.modo }}" == "ticker" ]; then
               python src/capturar_dividendos_passados.py \
                 --modo ticker \
                 --ticker "${{ github.event.inputs.ticker }}"
-            
+
             elif [ "${{ github.event.inputs.modo }}" == "lista" ]; then
               python src/capturar_dividendos_passados.py \
                 --modo lista \
                 --lista "${{ github.event.inputs.lista }}"
-            
+
             elif [ "${{ github.event.inputs.modo }}" == "quantidade" ]; then
               python src/capturar_dividendos_passados.py \
                 --modo quantidade \
                 --quantidade "${{ github.event.inputs.quantidade }}"
-            
+
             elif [ "${{ github.event.inputs.modo }}" == "completo" ]; then
               python src/capturar_dividendos_passados.py --modo completo
             fi
           fi
-      
+
       - name: Capturar dividendos futuros
         run: |
-          echo "🔮 Capturando dividendos futuros (notícias + B3 API)..."
-          
+          echo "🔮 Capturando dividendos futuros (notícias + B3 + CVM RAD)..."
+
           if [ "${{ github.event_name }}" == "schedule" ]; then
-            echo "🤖 Execução automática: modo completo"
-            python src/capturar_dividendos_futuros.py --modo completo
+            echo "🤖 Execução automática: modo completo (janela 10 dias)"
+            python src/capturar_dividendos_futuros.py --modo completo --dias 10
           else
-            echo "👤 Execução manual: modo ${{ github.event.inputs.modo }}"
-            
+            echo "👤 Execução manual: modo ${{ github.event.inputs.modo }} | janela ${{ github.event.inputs.dias }} dia(s)"
+
             if [ "${{ github.event.inputs.modo }}" == "ticker" ]; then
               python src/capturar_dividendos_futuros.py \
                 --modo ticker \
-                --ticker "${{ github.event.inputs.ticker }}"
-            
+                --ticker "${{ github.event.inputs.ticker }}" \
+                --dias "${{ github.event.inputs.dias }}"
+
             elif [ "${{ github.event.inputs.modo }}" == "lista" ]; then
               python src/capturar_dividendos_futuros.py \
                 --modo lista \
-                --lista "${{ github.event.inputs.lista }}"
-            
+                --lista "${{ github.event.inputs.lista }}" \
+                --dias "${{ github.event.inputs.dias }}"
+
             elif [ "${{ github.event.inputs.modo }}" == "quantidade" ]; then
               python src/capturar_dividendos_futuros.py \
                 --modo quantidade \
-                --quantidade "${{ github.event.inputs.quantidade }}"
-            
+                --quantidade "${{ github.event.inputs.quantidade }}" \
+                --dias "${{ github.event.inputs.dias }}"
+
             elif [ "${{ github.event.inputs.modo }}" == "completo" ]; then
-              python src/capturar_dividendos_futuros.py --modo completo
+              python src/capturar_dividendos_futuros.py --modo completo --dias "${{ github.event.inputs.dias }}"
             fi
           fi
-      
+
       - name: Consolidar agenda de dividendos
         run: |
           echo "📦 Consolidando dividendos em agenda única..."
           python src/consolidar_dividendos.py
-      
+
       - name: Verificar arquivos gerados
         run: |
           echo "🔍 Verificando arquivos gerados..."
-          
+
           if [ -f "balancos/agenda_dividendos.json" ]; then
             echo "✅ agenda_dividendos.json criado"
             TAMANHO=$(du -h balancos/agenda_dividendos.json | cut -f1)
@@ -124,18 +131,22 @@ jobs:
           else
             echo "⚠️  agenda_dividendos.json não encontrado"
           fi
-          
+
           if [ -f "balancos/agenda_dividendos_mes.json" ]; then
             echo "✅ agenda_dividendos_mes.json criado"
           fi
-          
+
           if [ -f "balancos/estatisticas_dividendos.json" ]; then
             echo "✅ estatisticas_dividendos.json criado"
           fi
-          
+
+          if [ -f "balancos/dividendos_anunciados.json" ]; then
+            echo "✅ dividendos_anunciados.json criado (novos da janela)"
+          fi
+
           HISTORICO_COUNT=$(find balancos -name "dividendos_historico.json" | wc -l)
           FUTUROS_COUNT=$(find balancos -name "dividendos_futuros.json" | wc -l)
-          
+
           echo ""
           echo "📊 Resumo:"
           echo "   Dividendos históricos: $HISTORICO_COUNT empresas"
@@ -144,11 +155,11 @@ jobs:
       - name: 📝 Atualizar timestamp
         run: |
           mkdir -p site/data
-          
+
           TIMESTAMP=$(date +%s)000
           DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
           HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
-          
+
           cat > site/data/ultima_atualizacao.json << EOF
           {
             "timestamp": ${TIMESTAMP},
@@ -158,33 +169,34 @@ jobs:
             "versao": "1.0.0"
           }
           EOF
-          
+
           echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
-      
+
       - name: Commit e Push resultados
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          
+
           git add balancos/*/dividendos_historico.json 2>/dev/null || true
           git add balancos/*/dividendos_futuros.json 2>/dev/null || true
+          git add balancos/dividendos_anunciados.json 2>/dev/null || true
           git add balancos/agenda_dividendos.json 2>/dev/null || true
           git add balancos/agenda_dividendos_mes.json 2>/dev/null || true
           git add balancos/estatisticas_dividendos.json 2>/dev/null || true
           git add site/data/ultima_atualizacao.json
-          
+
           if git diff --staged --quiet; then
             echo "⚠️  Nenhuma mudança para commit"
             exit 0
           fi
-          
+
           if [ "${{ github.event_name }}" == "schedule" ]; then
             COMMIT_MSG="💰 Atualizar agenda completa de dividendos (automático - $(date +'%Y-%m-%d %H:%M')) [skip netlify]"
           else
-            COMMIT_MSG="💰 Atualizar agenda completa de dividendos - ${{ github.event.inputs.modo }} [skip netlify]"
+            COMMIT_MSG="💰 Atualizar agenda completa de dividendos - ${{ github.event.inputs.modo }} (janela ${{ github.event.inputs.dias }}d) [skip netlify]"
           fi
-          
+
           git commit -m "$COMMIT_MSG"
           git push
-          
+
           echo "✅ Arquivos commitados e enviados com sucesso!"
