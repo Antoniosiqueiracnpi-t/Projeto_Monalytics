@@ -4475,7 +4475,7 @@ const INDICADORES_CONFIG = {
     'NAO_FINANCEIRAS': {
         main: [
             { code: 'P_L', label: 'P/L', type: 'menor_melhor', format: 'x', allowNegative: false },
-            { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: true },
+            { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: false },
             { code: 'ROE', label: 'ROE', type: 'maior_melhor', format: '%', allowNegative: true },
             { code: 'DY', label: 'DY', type: 'maior_melhor', format: '%', allowNegative: true }
         ],
@@ -4490,7 +4490,7 @@ const INDICADORES_CONFIG = {
     'FINANCEIRAS': {
         main: [
             { code: 'P_L', label: 'P/L', type: 'menor_melhor', format: 'x', allowNegative: false },
-            { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: true },
+            { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: false },
             { code: 'ROE', label: 'ROE', type: 'maior_melhor', format: '%', allowNegative: true },
             { code: 'DY', label: 'DY', type: 'maior_melhor', format: '%', allowNegative: true }
         ],
@@ -4978,14 +4978,14 @@ function obterDefIndicador(code) {
     const defs = {
         // Principais (comuns)
         P_L: { code: 'P_L', label: 'P/L', type: 'menor_melhor', format: 'x', allowNegative: false },
-        P_VPA: { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: true },
+        P_VPA: { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: false },
         ROE: { code: 'ROE', label: 'ROE', type: 'maior_melhor', format: '%', allowNegative: true },
         DY: { code: 'DY', label: 'DY', type: 'maior_melhor', format: '%', allowNegative: true },
 
         // Não-financeiras
-        EV_EBITDA: { code: 'EV_EBITDA', label: 'EV/EBITDA', type: 'menor_melhor', format: 'x', allowNegative: true },
-        EV_EBIT: { code: 'EV_EBIT', label: 'EV/EBIT', type: 'menor_melhor', format: 'x', allowNegative: true },
-        EV_RECEITA: { code: 'EV_RECEITA', label: 'EV/RECEITA', type: 'menor_melhor', format: 'x', allowNegative: true },
+        EV_EBITDA: { code: 'EV_EBITDA', label: 'EV/EBITDA', type: 'menor_melhor', format: 'x', allowNegative: false },
+        EV_EBIT: { code: 'EV_EBIT', label: 'EV/EBIT', type: 'menor_melhor', format: 'x', allowNegative: false },
+        EV_RECEITA: { code: 'EV_RECEITA', label: 'EV/RECEITA', type: 'menor_melhor', format: 'x', allowNegative: false },
         ROA: { code: 'ROA', label: 'ROA', type: 'maior_melhor', format: '%', allowNegative: true },
         ROIC: { code: 'ROIC', label: 'ROIC', type: 'maior_melhor', format: '%', allowNegative: true },
         MARGEM_EBITDA: { code: 'MARGEM_EBITDA', label: 'MARGEM EBITDA', type: 'maior_melhor', format: '%', allowNegative: true },
