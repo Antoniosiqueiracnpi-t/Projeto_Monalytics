@@ -1,0 +1,39 @@
+{
+  "ticker": "MULT3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T19:42:52.941730",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.58,
+      "variacao_total": 137.41,
+      "ultimo_valor": 617.54
+    },
+    "margens": {
+      "bruta": 78.93,
+      "operacional": 64.56,
+      "liquida": 44.25
+    },
+    "rentabilidade": {
+      "roe_medio": 11.39
+    },
+    "caixa": {
+      "media": 249.63,
+      "ultimo": 906.45
+    },
+    "balanco": {
+      "ativo_total": 12802.39,
+      "patrimonio": 6019.91
+    }
+  },
+  "analise_critica": "MULT3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 44.25%. Retorno sobre patrimônio adequado (ROE de 11.39%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (44.25%)"
+  ],
+  "pontos_atencao": []
+}

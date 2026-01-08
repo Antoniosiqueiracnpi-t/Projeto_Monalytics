@@ -1,9 +1,9 @@
 {
   "ticker": "HBRE3",
-  "ultima_atualizacao": "2026-01-05T23:03:17.632124",
+  "ultima_atualizacao": "2026-01-08T19:41:42.781504",
   "periodo": {
     "inicio": "2021-01-26",
-    "fim": "2026-01-02"
+    "fim": "2026-01-07"
   },
   "dados": [
     {
@@ -13557,16 +13557,49 @@
       "mm20": 3.36,
       "mm50": 3.28,
       "mm200": 2.93
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 3.5,
+      "maxima": 3.64,
+      "minima": 3.4,
+      "fechamento": 3.61,
+      "volume": 733300,
+      "mm20": 3.37,
+      "mm50": 3.29,
+      "mm200": 2.93
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 3.63,
+      "maxima": 3.65,
+      "minima": 3.57,
+      "fechamento": 3.61,
+      "volume": 374900,
+      "mm20": 3.38,
+      "mm50": 3.3,
+      "mm200": 2.94
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 3.58,
+      "maxima": 3.73,
+      "minima": 3.58,
+      "fechamento": 3.66,
+      "volume": 376000,
+      "mm20": 3.39,
+      "mm50": 3.31,
+      "mm200": 2.95
     }
   ],
   "estatisticas": {
-    "total_dias": 1232,
+    "total_dias": 1235,
     "preco_inicial": 14.12,
-    "preco_atual": 3.53,
-    "variacao_periodo": -75.0,
+    "preco_atual": 3.66,
+    "variacao_periodo": -74.08,
     "maxima_periodo": 14.12,
     "minima_periodo": 1.95,
-    "volume_medio": 292684,
+    "volume_medio": 293175,
     "tendencia": "alta"
   }
 }

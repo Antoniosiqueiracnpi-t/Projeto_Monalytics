@@ -1,0 +1,43 @@
+{
+  "ticker": "ALOS3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T19:42:52.818631",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 22.4,
+      "variacao_total": 735.08,
+      "ultimo_valor": 678.32
+    },
+    "margens": {
+      "bruta": 73.1,
+      "operacional": 88.49,
+      "liquida": 55.64
+    },
+    "rentabilidade": {
+      "roe_medio": 6.9
+    },
+    "caixa": {
+      "media": 196.93,
+      "ultimo": 1185.58
+    },
+    "balanco": {
+      "ativo_total": 26343.58,
+      "patrimonio": 14170.95
+    }
+  },
+  "analise_critica": "ALOS3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 55.64%. Retorno sobre patrimônio abaixo do esperado (ROE de 6.9%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 22.4%)",
+    "Alta margem de lucro líquido (55.64%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": [
+    "Retorno sobre patrimônio baixo (ROE: 6.9%)"
+  ]
+}

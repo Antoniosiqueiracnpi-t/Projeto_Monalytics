@@ -1,0 +1,43 @@
+{
+  "ticker": "NEXP3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T19:42:52.962489",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -40.83,
+      "variacao_total": -99.6,
+      "ultimo_valor": 0.2
+    },
+    "margens": {
+      "bruta": 74.24,
+      "operacional": 3663.65,
+      "liquida": 4230.08
+    },
+    "rentabilidade": {
+      "roe_medio": 102.08
+    },
+    "caixa": {
+      "media": -9.28,
+      "ultimo": -11.86
+    },
+    "balanco": {
+      "ativo_total": 26.06,
+      "patrimonio": -82.9
+    }
+  },
+  "analise_critica": "NEXP3 enfrenta desafios no crescimento, com receita em tendência de queda. Destaca-se pela alta rentabilidade, com margem líquida média de 4230.08%. Gera excelente retorno sobre o patrimônio (ROE médio de 102.08%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (4230.08%)",
+    "Excelente retorno sobre patrimônio (ROE: 102.08%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -40.83%)",
+    "Queima de caixa operacional"
+  ]
+}

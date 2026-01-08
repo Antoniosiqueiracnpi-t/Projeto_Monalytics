@@ -1,0 +1,43 @@
+{
+  "ticker": "SCAR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T19:42:52.988833",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -7.6,
+      "variacao_total": -56.4,
+      "ultimo_valor": 60.68
+    },
+    "margens": {
+      "bruta": 68.74,
+      "operacional": 49.53,
+      "liquida": 16.16
+    },
+    "rentabilidade": {
+      "roe_medio": 6.53
+    },
+    "caixa": {
+      "media": 5.66,
+      "ultimo": -27.93
+    },
+    "balanco": {
+      "ativo_total": 2868.06,
+      "patrimonio": 1513.73
+    }
+  },
+  "analise_critica": "SCAR3 enfrenta desafios no crescimento, com receita em tendência de queda. Apresenta rentabilidade saudável com margem líquida de 16.16%. Retorno sobre patrimônio abaixo do esperado (ROE de 6.53%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (16.16%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -7.6%)",
+    "Retorno sobre patrimônio baixo (ROE: 6.53%)",
+    "Queima de caixa operacional"
+  ]
+}

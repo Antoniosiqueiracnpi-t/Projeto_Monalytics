@@ -1,0 +1,43 @@
+{
+  "ticker": "LOGG3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T19:42:52.900109",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.92,
+      "variacao_total": 196.81,
+      "ultimo_valor": 66.74
+    },
+    "margens": {
+      "bruta": 98.9,
+      "operacional": 149.81,
+      "liquida": 105.2
+    },
+    "rentabilidade": {
+      "roe_medio": 5.66
+    },
+    "caixa": {
+      "media": 26.61,
+      "ultimo": -18.77
+    },
+    "balanco": {
+      "ativo_total": 7160.5,
+      "patrimonio": 3851.82
+    }
+  },
+  "analise_critica": "LOGG3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 105.2%. Retorno sobre patrimônio abaixo do esperado (ROE de 5.66%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.92%)",
+    "Alta margem de lucro líquido (105.2%)"
+  ],
+  "pontos_atencao": [
+    "Retorno sobre patrimônio baixo (ROE: 5.66%)",
+    "Queima de caixa operacional"
+  ]
+}

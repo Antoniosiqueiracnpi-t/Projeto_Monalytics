@@ -1,0 +1,42 @@
+{
+  "ticker": "HBRE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T19:42:52.859347",
+  "periodo_analisado": {
+    "inicio": "2020T1",
+    "fim": "2025T3",
+    "total_trimestres": 23,
+    "anos": 5.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 23.81,
+      "variacao_total": 223.78,
+      "ultimo_valor": 63.16
+    },
+    "margens": {
+      "bruta": 79.71,
+      "operacional": 173.2,
+      "liquida": 100.72
+    },
+    "rentabilidade": {
+      "roe_medio": 5.6
+    },
+    "caixa": {
+      "media": 19.79,
+      "ultimo": 157.31
+    },
+    "balanco": {
+      "ativo_total": 5000.72,
+      "patrimonio": 2769.47
+    }
+  },
+  "analise_critica": "HBRE3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 100.72%. Retorno sobre patrimônio abaixo do esperado (ROE de 5.6%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 23.81%)",
+    "Alta margem de lucro líquido (100.72%)"
+  ],
+  "pontos_atencao": [
+    "Retorno sobre patrimônio baixo (ROE: 5.6%)"
+  ]
+}
