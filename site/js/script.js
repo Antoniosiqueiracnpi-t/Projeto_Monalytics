@@ -5197,14 +5197,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
 /* ========================================
-   ANÁLISE DOS BALANÇOS
+   ANÁLISE DOS BALANÇOS - DEMONSTRAÇÕES FINANCEIRAS
    ======================================== */
 
-let analiseBalancosData = null;
-let analiseBalancosChart = null;
-let analiseBalancosViewType = 'anual'; // 'anual' ou 'trimestral'
-let analiseBalancosDisplayMode = 'tabela'; // 'tabela' ou 'grafico'
+let demonstracoesFinanceirasData = null;
+let demonstracoesFinanceirasChart = null;
+let demonstracoesViewType = 'anual'; // 'anual' ou 'trimestral'
+let demonstracoesDisplayMode = 'tabela'; // 'tabela' ou 'grafico'
 
 // Configuração de contas por tipo de empresa
 const CONTAS_BALANCOS = {
@@ -5255,17 +5256,17 @@ const CONTAS_BALANCOS = {
 };
 
 // Hook de carregamento no loadAcaoData
-const originalLoadAcaoDataWithBalancos = loadAcaoData;
+const originalLoadAcaoDataDemonstra = loadAcaoData;
 loadAcaoData = async function(ticker) {
-    await originalLoadAcaoDataWithBalancos.call(this, ticker);
+    await originalLoadAcaoDataDemonstra.call(this, ticker);
     // Carrega análise de balanços
-    await loadAnaliseBalancosData(ticker);
+    await loadDemonstracoesFinanceirasData(ticker);
 };
 
 // Carrega dados dos balanços
-async function loadAnaliseBalancosData(ticker) {
+async function loadDemonstracoesFinanceirasData(ticker) {
     try {
-        console.log('Carregando balanços de', ticker, '...');
+        console.log('Carregando demonstrações financeiras de', ticker, '...');
 
         const tickerNorm = normalizarTicker(ticker);
         const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item.ticker) === tickerNorm);
@@ -5275,7 +5276,7 @@ async function loadAnaliseBalancosData(ticker) {
         }
 
         const tickerPasta = obterTickerPasta(ticker);
-        const ehFinanceira = isIntermediarioFinanceiro(ticker);
+        const ehFinanceira = isSetorFinanceiro(empresaInfo.setor);
         const timestamp = new Date().getTime();
 
         // Carrega arquivos necessários
@@ -5288,13 +5289,13 @@ async function loadAnaliseBalancosData(ticker) {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`Arquivo ${arquivo} não encontrado`);
             const text = await response.text();
-            return { tipo: arquivo.split('_')[0].toUpperCase(), dados: parseCSV(text) };
+            return { tipo: arquivo.split('_')[0].toUpperCase(), dados: parseDemonstracoesCSV(text) };
         });
 
         const resultados = await Promise.all(promessas);
 
         // Monta estrutura de dados
-        analiseBalancosData = {
+        demonstracoesFinanceirasData = {
             ticker: ticker,
             empresa: empresaInfo.empresa,
             ehFinanceira: ehFinanceira,
@@ -5302,22 +5303,22 @@ async function loadAnaliseBalancosData(ticker) {
         };
 
         resultados.forEach(resultado => {
-            analiseBalancosData.balancos[resultado.tipo] = resultado.dados;
+            demonstracoesFinanceirasData.balancos[resultado.tipo] = resultado.dados;
         });
 
-        console.log('Balanços carregados:', Object.keys(analiseBalancosData.balancos));
+        console.log('Demonstrações carregadas:', Object.keys(demonstracoesFinanceirasData.balancos));
 
         // Renderiza seção
-        renderAnaliseBalancosSection();
+        renderDemonstracoesFinanceirasSection();
 
     } catch (error) {
-        console.error('Erro ao carregar balanços:', error);
+        console.error('Erro ao carregar demonstrações:', error);
         document.getElementById('analiseBalancosSection').style.display = 'none';
     }
 }
 
 // Parser CSV simples
-function parseCSV(csvText) {
+function parseDemonstracoesCSV(csvText) {
     const linhas = csvText.split('\n').filter(l => l.trim());
     const header = linhas[0].split(',').map(h => h.trim());
     
@@ -5343,9 +5344,9 @@ function parseCSV(csvText) {
 }
 
 // Renderiza seção principal
-function renderAnaliseBalancosSection() {
+function renderDemonstracoesFinanceirasSection() {
     const section = document.getElementById('analiseBalancosSection');
-    if (!section || !analiseBalancosData) return;
+    if (!section || !demonstracoesFinanceirasData) return;
 
     const loading = document.getElementById('analiseBalancosLoading');
     const controls = document.getElementById('analiseBalancosControls');
@@ -5355,45 +5356,45 @@ function renderAnaliseBalancosSection() {
     controls.style.display = 'flex';
     section.style.display = 'block';
 
-    subtitle.textContent = `${analiseBalancosData.empresa} - ${analiseBalancosData.ehFinanceira ? 'Instituição Financeira' : 'Empresa Não Financeira'}`;
+    subtitle.textContent = `${demonstracoesFinanceirasData.empresa} - ${demonstracoesFinanceirasData.ehFinanceira ? 'Instituição Financeira' : 'Empresa Não Financeira'}`;
 
     // Inicializa eventos
-    initAnaliseBalancosControls();
+    initDemonstracoesFinanceirasControls();
 
     // Renderiza tabela inicial
-    renderAnaliseBalancosTabela();
+    renderDemonstracoesFinanceirasTabela();
 }
 
 // Inicializa controles de visualização
-function initAnaliseBalancosControls() {
+function initDemonstracoesFinanceirasControls() {
     // Botões de Anual/Trimestral
-    document.getElementById('viewAnualBtn').addEventListener('click', () => alternarViewType('anual'));
-    document.getElementById('viewTrimestralBtn').addEventListener('click', () => alternarViewType('trimestral'));
+    document.getElementById('viewAnualBtn').addEventListener('click', () => alternarDemonstracoesViewType('anual'));
+    document.getElementById('viewTrimestralBtn').addEventListener('click', () => alternarDemonstracoesViewType('trimestral'));
 
     // Botões de Tabela/Gráfico
-    document.getElementById('displayTabelaBtn').addEventListener('click', () => alternarDisplayMode('tabela'));
-    document.getElementById('displayGraficoBtn').addEventListener('click', () => alternarDisplayMode('grafico'));
+    document.getElementById('displayTabelaBtn').addEventListener('click', () => alternarDemonstracoesDisplayMode('tabela'));
+    document.getElementById('displayGraficoBtn').addEventListener('click', () => alternarDemonstracoesDisplayMode('grafico'));
 }
 
 // Alterna entre anual e trimestral
-function alternarViewType(tipo) {
-    analiseBalancosViewType = tipo;
+function alternarDemonstracoesViewType(tipo) {
+    demonstracoesViewType = tipo;
     
     // Atualiza botões
     document.querySelectorAll('.view-type-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-view="${tipo}"]`).classList.add('active');
 
     // Re-renderiza
-    if (analiseBalancosDisplayMode === 'tabela') {
-        renderAnaliseBalancosTabela();
+    if (demonstracoesDisplayMode === 'tabela') {
+        renderDemonstracoesFinanceirasTabela();
     } else {
-        renderAnaliseBalancosGrafico();
+        renderDemonstracoesFinanceirasGrafico();
     }
 }
 
 // Alterna entre tabela e gráfico
-function alternarDisplayMode(modo) {
-    analiseBalancosDisplayMode = modo;
+function alternarDemonstracoesDisplayMode(modo) {
+    demonstracoesDisplayMode = modo;
     
     // Atualiza botões
     document.querySelectorAll('.chart-table-btn').forEach(btn => btn.classList.remove('active'));
@@ -5406,32 +5407,32 @@ function alternarDisplayMode(modo) {
     if (modo === 'tabela') {
         tableWrapper.style.display = 'block';
         chartWrapper.style.display = 'none';
-        renderAnaliseBalancosTabela();
+        renderDemonstracoesFinanceirasTabela();
     } else {
         tableWrapper.style.display = 'none';
         chartWrapper.style.display = 'block';
-        renderAnaliseBalancosGrafico();
+        renderDemonstracoesFinanceirasGrafico();
     }
 
     footer.style.display = 'block';
 }
 
 // Renderiza tabela de balanços
-function renderAnaliseBalancosTabela() {
+function renderDemonstracoesFinanceirasTabela() {
     const thead = document.getElementById('analiseBalancosTableHead');
     const tbody = document.getElementById('analiseBalancosTableBody');
     const footer = document.getElementById('analiseBalancosDataSource');
 
-    if (!analiseBalancosData) return;
+    if (!demonstracoesFinanceirasData) return;
 
-    const config = analiseBalancosData.ehFinanceira ? CONTAS_BALANCOS.FINANCEIRAS : CONTAS_BALANCOS.NAOFINANCEIRAS;
-    const primeiroArquivo = Object.values(analiseBalancosData.balancos)[0];
+    const config = demonstracoesFinanceirasData.ehFinanceira ? CONTAS_BALANCOS.FINANCEIRAS : CONTAS_BALANCOS.NAOFINANCEIRAS;
+    const primeiroArquivo = Object.values(demonstracoesFinanceirasData.balancos)[0];
     const primeiroItem = Object.values(primeiroArquivo)[0];
     const todosPeriodos = Object.keys(primeiroItem.valores);
 
     // Filtra períodos baseado na visualização
     let periodosExibir;
-    if (analiseBalancosViewType === 'anual') {
+    if (demonstracoesViewType === 'anual') {
         // Pega apenas 4º trimestre de cada ano (ou 3º se não tiver 4º)
         const anos = {};
         todosPeriodos.forEach(p => {
@@ -5469,7 +5470,7 @@ function renderAnaliseBalancosTabela() {
 
         // Contas do grupo
         contas.forEach(contaConfig => {
-            const dadosConta = analiseBalancosData.balancos[grupoNome]?.[contaConfig.codigo];
+            const dadosConta = demonstracoesFinanceirasData.balancos[grupoNome]?.[contaConfig.codigo];
             
             if (!dadosConta) return;
 
@@ -5479,7 +5480,7 @@ function renderAnaliseBalancosTabela() {
                 let valor = dadosConta.valores[periodo];
 
                 // Para view anual, acumula DRE e DFC
-                if (analiseBalancosViewType === 'anual' && (grupoNome === 'DRE' || grupoNome === 'DFC')) {
+                if (demonstracoesViewType === 'anual' && (grupoNome === 'DRE' || grupoNome === 'DFC')) {
                     const ano = periodo.match(/(\d{4})/)[1];
                     const trimestre = parseInt(periodo.match(/T(\d)/)[1]);
                     
@@ -5493,7 +5494,7 @@ function renderAnaliseBalancosTabela() {
                     }
                 }
 
-                const valorFormatado = formatarValorBalancos(valor);
+                const valorFormatado = formatarValorDemonstracoes(valor);
                 bodyHTML += `<td>${valorFormatado}</td>`;
             });
 
@@ -5511,23 +5512,23 @@ function renderAnaliseBalancosTabela() {
 }
 
 // Renderiza gráfico de balanços
-function renderAnaliseBalancosGrafico() {
+function renderDemonstracoesFinanceirasGrafico() {
     const ctx = document.getElementById('analiseBalancosChart');
-    if (!ctx || !analiseBalancosData) return;
+    if (!ctx || !demonstracoesFinanceirasData) return;
 
     // Destroi gráfico anterior
-    if (analiseBalancosChart) {
-        analiseBalancosChart.destroy();
+    if (demonstracoesFinanceirasChart) {
+        demonstracoesFinanceirasChart.destroy();
     }
 
-    const config = analiseBalancosData.ehFinanceira ? CONTAS_BALANCOS.FINANCEIRAS : CONTAS_BALANCOS.NAOFINANCEIRAS;
-    const primeiroArquivo = Object.values(analiseBalancosData.balancos)[0];
+    const config = demonstracoesFinanceirasData.ehFinanceira ? CONTAS_BALANCOS.FINANCEIRAS : CONTAS_BALANCOS.NAOFINANCEIRAS;
+    const primeiroArquivo = Object.values(demonstracoesFinanceirasData.balancos)[0];
     const primeiroItem = Object.values(primeiroArquivo)[0];
     const todosPeriodos = Object.keys(primeiroItem.valores);
 
     // Filtra períodos
     let periodosExibir;
-    if (analiseBalancosViewType === 'anual') {
+    if (demonstracoesViewType === 'anual') {
         const anos = {};
         todosPeriodos.forEach(p => {
             const match = p.match(/(\d{4})T(\d)/);
@@ -5554,14 +5555,14 @@ function renderAnaliseBalancosGrafico() {
     const contasPrincipais = config.DRE.slice(0, 4);
 
     contasPrincipais.forEach(contaConfig => {
-        const dadosConta = analiseBalancosData.balancos.DRE?.[contaConfig.codigo];
+        const dadosConta = demonstracoesFinanceirasData.balancos.DRE?.[contaConfig.codigo];
         if (!dadosConta) return;
 
         const dados = labels.map(periodo => {
             let valor = dadosConta.valores[periodo];
 
             // Acumula se for anual
-            if (analiseBalancosViewType === 'anual') {
+            if (demonstracoesViewType === 'anual') {
                 const ano = periodo.match(/(\d{4})/)[1];
                 const trimestre = parseInt(periodo.match(/T(\d)/)[1]);
                 
@@ -5591,7 +5592,7 @@ function renderAnaliseBalancosGrafico() {
         corIndex++;
     });
 
-    analiseBalancosChart = new Chart(ctx, {
+    demonstracoesFinanceirasChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
@@ -5639,7 +5640,7 @@ function renderAnaliseBalancosGrafico() {
 }
 
 // Formata valores em milhares (0.000mi)
-function formatarValorBalancos(valor) {
+function formatarValorDemonstracoes(valor) {
     if (valor === null || valor === undefined || isNaN(valor)) {
         return '-';
     }
@@ -5653,20 +5654,8 @@ function formatarValorBalancos(valor) {
     return milhoes.toFixed(3).replace('.', ',') + 'mi';
 }
 
-// Funções auxiliares já existentes (usar as do código)
-function normalizarTicker(ticker) {
-    return String(ticker || '').trim().toUpperCase();
-}
+console.log('✅ Análise dos Balanços (Demonstrações Financeiras) inicializada');
 
-function obterTickerPasta(ticker) {
-    const tickerNorm = normalizarTicker(ticker);
-    const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item.ticker) === tickerNorm);
-    
-    if (!empresaInfo) return tickerNorm;
-    
-    return empresaInfo.tickerpasta && empresaInfo.tickerpasta.trim() 
-        ? empresaInfo.tickerpasta.trim().toUpperCase() 
-        : tickerNorm;
-}
 
-console.log('✅ Análise dos Balanços inicializada');
+
+
