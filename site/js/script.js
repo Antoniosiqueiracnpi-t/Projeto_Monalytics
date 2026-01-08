@@ -5753,6 +5753,8 @@ loadAcaoData = async function(ticker) {
     await loadComunicadosEmpresa(ticker);
 };
 
+
+
 // Carrega comunicados da empresa
 async function loadComunicadosEmpresa(ticker) {
     try {
@@ -6035,6 +6037,13 @@ console.log('✅ Comunicados da Empresa inicializado');
 let currentNewsIndex = 0;
 let newsData = [];
 let autoSlideInterval = null;
+
+// Hook de carregamento
+const originalLoadAcaoDataNoticias = loadAcaoData;
+loadAcaoData = async function(ticker) {
+    await originalLoadAcaoDataNoticias.call(this, ticker);
+    await carregarNoticiasEmpresa(ticker);
+};
 
 // Carrega notícias da empresa
 async function carregarNoticiasEmpresa() {
