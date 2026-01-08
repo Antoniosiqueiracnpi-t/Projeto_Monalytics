@@ -6045,35 +6045,65 @@ loadAcaoData = async function(ticker) {
     await carregarNoticiasEmpresa(ticker);
 };
 
+
 // Carrega notícias da empresa
 async function carregarNoticiasEmpresa(ticker) {
     try {
         console.log('🔍 Buscando noticiário empresarial de', ticker, '...');
         
-        // CORREÇÃO: Remove o último dígito do ticker (PETR4 -> PETR)
-        const tickerPasta = obterTickerPasta(ticker);
+        // Normaliza o ticker e obtém a pasta correta
+        const tickerNorm = normalizarTicker(ticker);
+        const tickerPasta = obterTickerPasta(tickerNorm);
         
-        const response = await fetch(`balancos/${tickerPasta}/noticiario.json`);
+        console.log(`📁 Ticker normalizado: ${tickerNorm} | Pasta: ${tickerPasta}`);
+        
+        // Usa URL do GitHub RAW para evitar cache
+        const timestamp = new Date().getTime();
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/noticiario.json?t=${timestamp}`;
+        
+        console.log(`🌐 URL: ${url}`);
+        
+        const response = await fetch(url);
         
         if (!response.ok) {
-            exibirEstadoVazioNoticias('Notícias não disponíveis para esta empresa');
+            console.warn(`❌ Noticiário não encontrado para ${tickerPasta} (HTTP ${response.status})`);
+            exibirEstadoVazioNoticias(`Notícias não disponíveis para ${ticker}`);
+            return;
+        }
+        
+        // Verifica se é realmente JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            console.warn(`⚠️ Resposta não é JSON: ${contentType}`);
+            exibirEstadoVazioNoticias('Dados de notícias inválidos');
             return;
         }
         
         const data = await response.json();
+        
+        // Valida estrutura do JSON
+        if (!data || !data.noticias || !Array.isArray(data.noticias)) {
+            console.warn('⚠️ Estrutura de dados inválida');
+            exibirEstadoVazioNoticias('Formato de notícias inválido');
+            return;
+        }
+        
         newsData = data.noticias.slice(0, 5); // Pega as 5 mais recentes
         
         if (newsData.length === 0) {
+            console.log('ℹ️ Nenhuma notícia disponível');
             exibirEstadoVazioNoticias('Nenhuma notícia disponível');
             return;
         }
+        
+        console.log(`✅ ${newsData.length} notícias carregadas!`);
         
         renderizarNoticias();
         atualizarInfoUltimaAtualizacao(data.ultima_atualizacao);
         iniciarAutoSlide();
         
     } catch (error) {
-        console.error('Erro ao carregar notícias:', error);
+        console.error('❌ Erro ao carregar notícias:', error);
         exibirEstadoVazioNoticias('Erro ao carregar notícias');
     }
 }
