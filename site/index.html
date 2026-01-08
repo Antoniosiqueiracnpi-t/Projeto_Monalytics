@@ -742,6 +742,84 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- ANÁLISE DOS BALANÇOS -->
+                    <div class="analise-balancos-section" id="analiseBalancosSection" style="display: none;">
+                        <div class="analise-balancos-header">
+                            <div class="analise-balancos-title-group">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                <div>
+                                    <h3 class="analise-balancos-title">Análise dos Balanços</h3>
+                                    <p class="analise-balancos-subtitle" id="analiseBalancosSubtitle">Demonstrações financeiras consolidadas</p>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Loading State -->
+                        <div class="analise-balancos-loading" id="analiseBalancosLoading" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Carregando balanços...</span>
+                        </div>
+                    
+                        <!-- Empty State -->
+                        <div class="analise-balancos-empty" id="analiseBalancosEmpty" style="display: none;">
+                            <i class="fas fa-info-circle"></i>
+                            <p>Não há dados suficientes de balanços</p>
+                        </div>
+                    
+                        <!-- Controles de Visualização -->
+                        <div class="analise-balancos-controls" id="analiseBalancosControls" style="display: none;">
+                            <div class="view-type-switch">
+                                <button class="view-type-btn active" data-view="anual" id="viewAnualBtn">
+                                    <i class="fas fa-calendar-alt"></i> Anual
+                                </button>
+                                <button class="view-type-btn" data-view="trimestral" id="viewTrimestralBtn">
+                                    <i class="fas fa-calendar"></i> Trimestral
+                                </button>
+                            </div>
+                    
+                            <div class="chart-table-switch">
+                                <button class="chart-table-btn active" data-display="tabela" id="displayTabelaBtn">
+                                    <i class="fas fa-table"></i> Tabela
+                                </button>
+                                <button class="chart-table-btn" data-display="grafico" id="displayGraficoBtn">
+                                    <i class="fas fa-chart-line"></i> Gráfico
+                                </button>
+                            </div>
+                        </div>
+                    
+                        <!-- Container Tabela -->
+                        <div class="analise-balancos-table-wrapper" id="analiseBalancosTableWrapper" style="display: none;">
+                            <div class="analise-balancos-table-scroll">
+                                <table class="analise-balancos-table" id="analiseBalancosTable">
+                                    <thead id="analiseBalancosTableHead">
+                                        <!-- Cabeçalho gerado dinamicamente -->
+                                    </thead>
+                                    <tbody id="analiseBalancosTableBody">
+                                        <!-- Dados gerados dinamicamente -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    
+                        <!-- Container Gráfico -->
+                        <div class="analise-balancos-chart-wrapper" id="analiseBalancosChartWrapper" style="display: none;">
+                            <div class="analise-balancos-chart-container">
+                                <canvas id="analiseBalancosChart"></canvas>
+                            </div>
+                        </div>
+                    
+                        <!-- Rodapé -->
+                        <div class="analise-balancos-footer" id="analiseBalancosFooter" style="display: none;">
+                            <div class="analise-balancos-legend">
+                                <div class="legend-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span id="analiseBalancosDataSource">Dados referentes ao período</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     
                     
                 </div>
