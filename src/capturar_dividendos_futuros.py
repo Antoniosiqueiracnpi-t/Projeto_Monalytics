@@ -1,355 +1,358 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-CAPTURADOR DE DIVIDENDOS FUTUROS - Projeto Monalytics
+CAPTURADOR DE DIVIDENDOS FUTUROS B3 + CVM RAD (COMPLETO)
+========================================================
 
-Usa finbr para capturar dividendos futuros de múltiplas fontes:
-1. b3.plantao_noticias.get() - Notícias B3 sobre dividendos
-2. statusinvest.acao.dividendos() - Incluem dividendos provisionados
+Fluxo:
+1. Carrega mapeamento_tradingname_b3.csv 
+2. Para cada empresa: trading_name → B3 → link CVM → tabela proventos
+3. Salva por ticker: balancos/{TICKER}/dividendos_futuros.json
+4. Salva agregado diário: balancos/dividendos_anunciados.json
 
-IMPORTANTE: Roda 100% ONLINE (GitHub Actions ou ambiente sem proxy)
-
-USO:
-python src/capturar_dividendos_futuros.py --modo lista --lista "BBAS3,ITUB4,VALE3"
-python src/capturar_dividendos_futuros.py --modo completo
+Dependências:
+pip install requests beautifulsoup4 pandas lxml
 """
 
+import requests
+from bs4 import BeautifulSoup
 import json
 import pandas as pd
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
+import re
+import time
 import argparse
 import sys
-import re
+from typing import List, Dict, Optional
+from urllib.parse import urljoin
+import logging
 
+# Configurar logging
+logging.basicConfig(level=logging.INFO, format='%(message)s')
+logger = logging.getLogger(__name__)
 
 class CapturadorDividendosFuturos:
-    """
-    Captura dividendos futuros usando finbr (B3 notícias + StatusInvest).
-    """
     
-    def __init__(self, pasta_output: str = "balancos"):
-        self.pasta_output = Path(pasta_output)
-        self.empresas_processadas = 0
-        self.dividendos_totais = 0
-        self.noticias_b3_cache = None
+    def __init__(self):
+        self.session = requests.Session()
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        })
+        self.pasta_balancos = Path("balancos")
+        self.hoje = date.today()
+        self.total_futuros = 0
+        self.dividendos_anunciados = []  # NOVO: agregador diário
     
-    def buscar_noticias_b3(self):
-        """
-        Busca notícias B3 dos últimos 90 dias (cache).
-        """
-        if self.noticias_b3_cache is not None:
-            return self.noticias_b3_cache
+    def executar(self, modo: str = 'completo', ticker: str = '', lista: str = '', quantidade: int = 10):
+        """Ponto de entrada principal."""
+        print("🔮 CAPTURANDO DIVIDENDOS FUTUROS (B3 + CVM RAD)")
+        print("=" * 70)
         
-        try:
-            from finbr.b3 import plantao_noticias
-            
-            # Buscar últimos 90 dias
-            fim = datetime.now()
-            inicio = fim - timedelta(days=90)
-            
-            print(f"  📰 Buscando notícias B3 ({inicio.strftime('%Y-%m-%d')} a {fim.strftime('%Y-%m-%d')})...")
-            noticias = plantao_noticias.get(inicio=inicio, fim=fim)
-            
-            self.noticias_b3_cache = noticias
-            print(f"  ✅ {len(noticias) if not noticias else 0} notícias B3 carregadas")
-            
-            return noticias
-        except:
-            print(f"  ⚠️  Erro ao buscar notícias B3")
-            return []
+        empresas = self._carregar_empresas(modo, ticker, lista, quantidade)
+        
+        for empresa in empresas:
+            self._processar_empresa(empresa)
+            time.sleep(1.5)  # Rate limiting
+        
+        # NOVO: salvar compilado diário
+        if self.dividendos_anunciados:
+            self._salvar_dividendos_anunciados()
+        
+        print("\n" + "=" * 70)
+        print(f"✅ FINALIZADO: {self.total_futuros} dividendos futuros encontrados")
+        print(f"📊 Compilado diário: {len(self.dividendos_anunciados)} proventos")
+        print("=" * 70)
     
-    def filtrar_noticias_ticker(self, ticker: str, noticias: list) -> list:
-        """
-        Filtra notícias relacionadas ao ticker e categoria Dividendos.
-        """
-        ticker_clean = ticker.upper().replace('.SA', '').replace('3', '').replace('4', '')
+    def _carregar_empresas(self, modo, ticker, lista, quantidade):
+        """Carrega lista de empresas do mapeamento."""
+        mapeamento_path = Path("mapeamento_tradingname_b3.csv")
         
-        noticias_ticker = []
-        for noticia in noticias:
-            # Verificar se menciona o ticker
-            titulo = getattr(noticia, 'titulo', '')
-            categoria = getattr(noticia, 'categoria', '')
-            
-            if ticker_clean in titulo.upper() and 'DIVID' in categoria.upper():
-                noticias_ticker.append(noticia)
+        if not mapeamento_path.exists():
+            logger.error("❌ mapeamento_tradingname_b3.csv não encontrado na raiz!")
+            sys.exit(1)
         
-        return noticias_ticker
+        df = pd.read_csv(mapeamento_path, sep=';', encoding='utf-8')
+        df = df[df['status'] == 'ok'].copy()
+        
+        empresas = []
+        for _, row in df.iterrows():
+            empresas.append({
+                'ticker': row['ticker'],
+                'trading_name': row['trading_name'].upper().strip(),
+                'codigo': row['codigo']
+            })
+        
+        if modo == 'ticker':
+            empresas = [e for e in empresas if e['ticker'] == ticker]
+        elif modo == 'lista':
+            tickers_lista = [t.strip() for t in lista.split(',')]
+            empresas = [e for e in empresas if e['ticker'] in tickers_lista]
+        elif modo == 'quantidade':
+            empresas = empresas[:quantidade]
+        
+        logger.info(f"📊 {len(empresas)} empresas para processar")
+        return empresas
     
-    def parse_noticia(self, noticia) -> dict:
-        """
-        Extrai informações de dividendo de uma notícia.
-        """
-        titulo = getattr(noticia, 'titulo', '')
-        headline = getattr(noticia, 'headline', '')
-        texto = f"{titulo} {headline}"
+    def _processar_empresa(self, empresa):
+        """Processa uma empresa completa."""
+        ticker = empresa['ticker']
+        trading_name = empresa['trading_name']
         
-        # Detectar tipo
-        if 'JCP' in texto.upper() or 'JUROS SOBRE CAPITAL' in texto.upper():
-            tipo = 'JCP'
-        else:
-            tipo = 'Dividendos'
+        print(f"\n{'='*70}")
+        print(f"🔮 {ticker} ({trading_name})")
+        print(f"{'='*70}")
         
-        # Extrair valor
-        valor_match = re.search(r'R\$\s*(\d+[.,]\d+)', texto)
-        valor = float(valor_match.group(1).replace(',', '.')) if valor_match else None
-        
-        # Extrair datas
-        datas = re.findall(r'(\d{2}/\d{2}/\d{4})', texto)
-        datas_convertidas = []
-        for d in datas:
-            try:
-                dia, mes, ano = d.split('/')
-                data_iso = f"{ano}-{mes}-{dia}"
-                # Só adicionar se for data futura
-                if data_iso >= datetime.now().strftime('%Y-%m-%d'):
-                    datas_convertidas.append(data_iso)
-            except:
-                pass
-        
-        data_pagamento = datas_convertidas[0] if datas_convertidas else None
-        
-        return {
-            'tipo': tipo,
-            'valor': valor,
-            'data_pagamento': data_pagamento,
-            'data_anuncio': getattr(noticia, 'data', None),
-            'fonte_url': getattr(noticia, 'url', None)
-        }
-    
-    def capturar_futuros_noticias(self, ticker: str) -> list:
-        """
-        Captura dividendos futuros de notícias B3.
-        """
-        noticias = self.buscar_noticias_b3()
-        
-        if not noticias:
-            return []
-        
-        # Filtrar notícias do ticker
-        noticias_ticker = self.filtrar_noticias_ticker(ticker, noticias)
-        
-        if not noticias_ticker:
-            return []
-        
-        print(f"    [noticias_b3] ✓ {len(noticias_ticker)} notícias de dividendos")
-        
-        # Parsear notícias
         dividendos = []
-        for noticia in noticias_ticker:
-            parsed = self.parse_noticia(noticia)
-            if parsed['valor'] and parsed['data_pagamento']:
-                dividendos.append({
-                    'ticker': ticker,
-                    'tipo': parsed['tipo'],
-                    'valor': parsed['valor'],
-                    'data_pagamento': parsed['data_pagamento'],
-                    'data_anuncio': parsed['data_anuncio'],
-                    'status': 'provisionado',
-                    'fonte': 'noticias_b3',
-                    'fonte_url': parsed['fonte_url']
-                })
+        
+        # Buscar notícias por trading_name + ticker
+        noticias = self._buscar_noticias_b3(trading_name, ticker)
+        
+        for noticia in noticias:
+            try:
+                futuros_noticia = self._extrair_dividendos_cvm(noticia['url'])
+                dividendos.extend(futuros_noticia)
+                logger.info(f"  📄 {noticia['titulo'][:60]}... → {len(futuros_noticia)} proventos")
+            except Exception as e:
+                logger.warning(f"  ⚠️ Erro em {noticia['titulo'][:40]}: {e}")
+        
+        # Salvar por ticker (EXISTENTE)
+        if dividendos:
+            self._salvar_dividendos(ticker, dividendos)
+            self.total_futuros += len(dividendos)
+            
+            # NOVO: agregar no compilado diário
+            for d in dividendos:
+                item = d.copy()
+                item['ticker'] = ticker
+                item['trading_name'] = trading_name
+                self.dividendos_anunciados.append(item)
+        else:
+            logger.info("  ⚠️ Nenhum dividendo futuro encontrado")
+    
+    def _buscar_noticias_b3(self, trading_name: str, ticker: str) -> List[Dict]:
+        """Busca notícias B3 por trading_name + ticker."""
+        url_base = "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Index"
+        data_inicio = (self.hoje - timedelta(days=90)).strftime('%d/%m/%Y')
+        
+        # Busca 1: trading_name (principal)
+        params1 = {
+            'agencia': '18',
+            'busca': trading_name,
+            'dataInicio': data_inicio,
+            'dataFim': self.hoje.strftime('%d/%m/%Y')
+        }
+        noticias = self._scrapear_pagina_b3(url_base, params1)
+        
+        # Busca 2: ticker (fallback)
+        params2 = {
+            'agencia': '18',
+            'busca': ticker.replace('3', ''),
+            'dataInicio': data_inicio,
+            'dataFim': self.hoje.strftime('%d/%m/%Y')
+        }
+        noticias.extend(self._scrapear_pagina_b3(url_base, params2))
+        
+        # Dedup e filtro por fatos relevantes
+        noticias_dict = {}
+        for n in noticias:
+            if 'fato relevante' in n['titulo'].lower() and n['url'] not in noticias_dict:
+                noticias_dict[n['url']] = n
+        
+        return list(noticias_dict.values())
+    
+    def _scrapear_pagina_b3(self, url: str, params: dict) -> List[Dict]:
+        """Scraping genérico de página B3."""
+        try:
+            resp = self.session.get(url, params=params, timeout=10)
+            resp.raise_for_status()
+            soup = BeautifulSoup(resp.text, 'html.parser')
+            
+            noticias = []
+            for selector in ['table tr:has(a)', '.noticia-item', '.linha-resultado', 'tr td a']:
+                for row in soup.select(selector):
+                    link = row.select_one('a')
+                    if link:
+                        titulo = link.get_text().strip()
+                        href = link.get('href', '')
+                        if href and any(palavra in titulo.lower() 
+                                     for palavra in ['fato relevante', 'dividendos', 'jcp', 'proventos']):
+                            noticias.append({
+                                'titulo': titulo,
+                                'url': urljoin(url, href)
+                            })
+            return noticias[:10]  # Limite por página
+        except Exception as e:
+            logger.warning(f"Erro scraping B3: {e}")
+            return []
+    
+    def _extrair_dividendos_cvm(self, url_b3: str) -> List[Dict]:
+        """B3 → link CVM → parse proventos."""
+        # 1. Abrir página B3
+        resp = self.session.get(url_b3, timeout=10)
+        soup = BeautifulSoup(resp.text, 'html.parser')
+        
+        # 2. Encontrar link CVM RAD
+        link_cvm = None
+        for elem in soup.find_all(string=re.compile(r'documento|ver arq|uivo|cvm', re.I)):
+            parent_a = elem.find_parent('a')
+            if parent_a:
+                href = parent_a.get('href')
+                if href and ('rad.cvm.gov.br' in href or 'IPEExterno' in href):
+                    link_cvm = urljoin(url_b3, href)
+                    break
+        
+        if not link_cvm:
+            return []
+        
+        logger.info(f"📄 Documento CVM: {link_cvm}")
+        
+        # 3. Abrir CVM RAD
+        resp_cvm = self.session.get(link_cvm, timeout=15)
+        soup_cvm = BeautifulSoup(resp_cvm.text, 'html.parser')
+        
+        # 4. Parsear todas as tabelas
+        dividendos = []
+        for table in soup_cvm.find_all('table'):
+            try:
+                dfs = pd.read_html(str(table))
+                for df in dfs:
+                    novos_proventos = self._parse_tabela_proventos(df)
+                    dividendos.extend([p for p in novos_proventos if p])
+            except:
+                continue
         
         return dividendos
     
-    def capturar_futuros_statusinvest(self, ticker: str) -> list:
-        """
-        Captura dividendos futuros do StatusInvest.
-        """
-        try:
-            from finbr.statusinvest import acao
-            
-            ticker_clean = ticker.upper().replace('.SA', '')
-            dividendos_df = acao.dividendos(ticker_clean)
-            
-            if dividendos_df is None or dividendos_df.empty:
-                return []
-            
-            # Filtrar apenas futuros
-            hoje = datetime.now().strftime('%Y-%m-%d')
-            dividendos = []
-            
-            for _, row in dividendos_df.iterrows():
-                # Verificar se tem data de pagamento
-                data_pag = None
-                if 'datapagamento' in dividendos_df.columns:
-                    data_pag = pd.to_datetime(row['datapagamento']).strftime('%Y-%m-%d')
-                elif 'data_pagamento' in dividendos_df.columns:
-                    data_pag = pd.to_datetime(row['data_pagamento']).strftime('%Y-%m-%d')
+    def _parse_tabela_proventos(self, df: pd.DataFrame) -> List[Dict]:
+        """Parse inteligente de tabelas de proventos."""
+        proventos = []
+        
+        # Normalizar colunas
+        cols_lower = df.columns.str.lower().str.strip()
+        
+        # Identificar colunas relevantes
+        col_data_pag = self._encontrar_coluna(cols_lower, ['pagamento', 'data pagamento', 'data_pgto'])
+        col_valor = self._encontrar_coluna(cols_lower, ['valor', 'r$', 'montante'])
+        col_tipo = self._encontrar_coluna(cols_lower, ['tipo', 'natureza', 'espécie'])
+        col_data_com = self._encontrar_coluna(cols_lower, ['data com', 'com'])
+        col_data_ex = self._encontrar_coluna(cols_lower, ['data ex', 'ex'])
+        
+        for idx, row in df.iterrows():
+            try:
+                data_pag = self._parse_data(row[col_data_pag] if col_data_pag is not None else '')
+                if not data_pag or data_pag < self.hoje:
+                    continue
                 
-                # Se data futura, adicionar
-                if data_pag and data_pag >= hoje:
-                    dividendos.append({
-                        'ticker': ticker,
-                        'tipo': row.get('tipo', 'Dividendos'),
-                        'valor': float(row.get('valor', 0)),
-                        'data_pagamento': data_pag,
-                        'status': 'provisionado',
-                        'fonte': 'statusinvest'
-                    })
-            
-            if dividendos:
-                print(f"    [statusinvest] ✓ {len(dividendos)} futuros")
-            
-            return dividendos
-        except:
-            return []
+                provento = {
+                    'data_pagamento': data_pag.isoformat(),
+                    'valor_bruto': self._parse_valor(row[col_valor] if col_valor is not None else 0),
+                    'tipo': str(row[col_tipo]) if col_tipo is not None else 'DIV',
+                    'data_com': self._parse_data(row[col_data_com] if col_data_com is not None else ''),
+                    'data_ex': self._parse_data(row[col_data_ex] if col_data_ex is not None else ''),
+                    'fonte': 'CVM_RAD',
+                    'linha_original': idx
+                }
+                
+                proventos.append(provento)
+            except:
+                continue
+        
+        return proventos
     
-    def capturar_dividendos(self, ticker: str) -> dict:
-        """
-        Captura dividendos futuros de um ticker.
-        """
-        print(f"  🔮 Buscando dividendos futuros de {ticker}...")
-        
-        dividendos = []
-        
-        # Fonte 1: Notícias B3
-        div_noticias = self.capturar_futuros_noticias(ticker)
-        dividendos.extend(div_noticias)
-        
-        # Fonte 2: StatusInvest
-        div_statusinvest = self.capturar_futuros_statusinvest(ticker)
-        dividendos.extend(div_statusinvest)
-        
-        if not dividendos:
-            print(f"  ⚠️  Sem dividendos futuros para {ticker}")
+    def _encontrar_coluna(self, cols: pd.Index, palavras: List[str]) -> Optional[int]:
+        """Encontra coluna por palavras-chave."""
+        for palavra in palavras:
+            for i, col in enumerate(cols):
+                if palavra in col:
+                    return i
+        return None
+    
+    def _parse_data(self, texto) -> Optional[date]:
+        """Parse flexível de datas brasileiras."""
+        if pd.isna(texto):
             return None
         
-        # Deduplicar por data_pagamento + valor
-        vistos = set()
-        unicos = []
-        for div in dividendos:
-            chave = (div.get('data_pagamento'), div.get('valor'))
-            if chave not in vistos:
-                vistos.add(chave)
-                unicos.append(div)
+        padroes = [
+            r'(\d{1,2})/(\d{1,2})/(\d{4})',
+            r'(\d{4})-(\d{1,2})-(\d{1,2})',
+            r'(\d{1,2})[/-](\d{1,2})[/-](\d{4})'
+        ]
         
-        # Ordenar por data
-        unicos.sort(key=lambda x: x.get('data_pagamento', '9999-99-99'))
+        for padrao in padroes:
+            match = re.search(padrao, str(texto))
+            if match:
+                try:
+                    return date(int(match.group(3)), int(match.group(2)), int(match.group(1)))
+                except:
+                    continue
+        return None
+    
+    def _parse_valor(self, texto) -> float:
+        """Parse valores monetários."""
+        if pd.isna(texto):
+            return 0.0
         
-        total_provisionado = sum(d['valor'] for d in unicos)
+        texto = re.sub(r'[^\d,.]', '', str(texto))
+        texto = texto.replace('.', '').replace(',', '.')
+        try:
+            return float(texto)
+        except:
+            return 0.0
+    
+    def _salvar_dividendos(self, ticker: str, dividendos: List[Dict]):
+        """Salva JSON por ticker (EXISTENTE)."""
+        pasta = self.pasta_balancos / ticker
+        pasta.mkdir(exist_ok=True)
         
-        resultado = {
+        dados = {
             'ticker': ticker,
-            'ultima_atualizacao': datetime.now().isoformat() + 'Z',
-            'total_dividendos': len(unicos),
-            'dividendos': unicos,
-            'estatisticas': {
-                'total_provisionado': round(total_provisionado, 2),
-                'proxima_data': unicos[0].get('data_pagamento') if unicos else None,
-                'proximo_valor': unicos[0].get('valor') if unicos else None
-            }
+            'ultima_atualizacao': datetime.now().isoformat(),
+            'total_futuros': len(dividendos),
+            'periodo': {
+                'inicio': min([d['data_pagamento'] for d in dividendos]),
+                'fim': max([d['data_pagamento'] for d in dividendos])
+            },
+            'dividendos': dividendos
         }
         
-        print(f"  ✅ {ticker}: {len(unicos)} dividendos futuros")
-        print(f"     Total provisionado: R$ {total_provisionado:.2f}")
-        if resultado['estatisticas']['proxima_data']:
-            print(f"     Próximo: {resultado['estatisticas']['proxima_data']} - R$ {resultado['estatisticas']['proximo_valor']:.2f}")
-        
-        self.empresas_processadas += 1
-        self.dividendos_totais += len(unicos)
-        
-        return resultado
+        arquivo = pasta / 'dividendos_futuros.json'
+        arquivo.write_text(json.dumps(dados, ensure_ascii=False, indent=2))
     
-    def salvar_json(self, ticker: str, dados: dict):
-        """
-        Salva JSON de dividendos futuros.
-        """
-        if dados is None:
-            return
+    def _salvar_dividendos_anunciados(self):
+        """NOVO: Salva compilado diário com todos os proventos anunciados."""
+        self.pasta_balancos.mkdir(exist_ok=True)
         
-        pasta_ticker = self.pasta_output / ticker
-        pasta_ticker.mkdir(parents=True, exist_ok=True)
+        # Ordena por data_pagamento + ticker
+        ordenados = sorted(
+            self.dividendos_anunciados,
+            key=lambda x: (x.get('data_pagamento', ''), x.get('ticker', ''))
+        )
         
-        arquivo = pasta_ticker / "dividendos_futuros.json"
-        with open(arquivo, 'w', encoding='utf-8') as f:
-            json.dump(dados, f, ensure_ascii=False, indent=2)
+        dados = {
+            'data_execucao': datetime.now().strftime('%Y-%m-%d'),
+            'hora_execucao': datetime.now().strftime('%H:%M:%S'),
+            'total_proventos': len(ordenados),
+            'total_empresas': len({d['ticker'] for d in ordenados}),
+            'proventos': ordenados,
+        }
         
-        print(f"  💾 Salvo: {arquivo}")
-    
-    def processar_ticker(self, ticker: str):
-        """
-        Processa um único ticker.
-        """
-        print(f"\n{'='*70}")
-        print(f"🔮 {ticker}")
-        print(f"{'='*70}")
-        
-        dados = self.capturar_dividendos(ticker)
-        if dados:
-            self.salvar_json(ticker, dados)
-    
-    def processar_lista(self, tickers: list):
-        """
-        Processa lista de tickers.
-        """
-        print(f"\n{'='*70}")
-        print(f"🔮 CAPTURANDO DIVIDENDOS FUTUROS (ONLINE)")
-        print(f"{'='*70}")
-        print(f"Total de tickers: {len(tickers)}")
-        
-        for ticker in tickers:
-            self.processar_ticker(ticker)
-        
-        self.imprimir_resumo()
-    
-    def imprimir_resumo(self):
-        """
-        Imprime resumo final.
-        """
-        print(f"\n{'='*70}")
-        print(f"📊 RESUMO FINAL")
-        print(f"{'='*70}")
-        print(f"✅ Empresas processadas: {self.empresas_processadas}")
-        print(f"✅ Total de dividendos futuros: {self.dividendos_totais}")
-
-
-def carregar_mapeamento(arquivo: str = "mapeamento_b3_consolidado.csv") -> list:
-    """Carrega lista de tickers do CSV."""
-    try:
-        df = pd.read_csv(arquivo, sep=';')
-        return df['ticker'].unique().tolist()
-    except:
-        return []
-
+        arquivo = self.pasta_balancos / 'dividendos_anunciados.json'
+        arquivo.write_text(json.dumps(dados, ensure_ascii=False, indent=2))
+        logger.info(f"💾 Compilado diário salvo: {arquivo} ({len(ordenados)} proventos)")
 
 def main():
-    parser = argparse.ArgumentParser(description='Capturar dividendos futuros (ONLINE)')
-    parser.add_argument('--modo', choices=['quantidade', 'ticker', 'lista', 'completo'],
-                       default='quantidade')
-    parser.add_argument('--quantidade', type=int, default=10)
-    parser.add_argument('--ticker', type=str)
-    parser.add_argument('--lista', type=str)
+    parser = argparse.ArgumentParser(description='Capturar dividendos futuros B3+CVM')
+    parser.add_argument('--modo', choices=['completo', 'ticker', 'lista', 'quantidade'], 
+                       default='completo', help='Modo de execução')
+    parser.add_argument('--ticker', help='Ticker específico')
+    parser.add_argument('--lista', help='Lista de tickers (vírgula)')
+    parser.add_argument('--quantidade', type=int, default=10, help='Qtd empresas (modo quantidade)')
     
     args = parser.parse_args()
     
     capturador = CapturadorDividendosFuturos()
-    
-    if args.modo == 'ticker':
-        if not args.ticker:
-            print("❌ Erro: --ticker é obrigatório no modo 'ticker'")
-            sys.exit(1)
-        capturador.processar_ticker(args.ticker)
-    
-    elif args.modo == 'lista':
-        if not args.lista:
-            print("❌ Erro: --lista é obrigatório no modo 'lista'")
-            sys.exit(1)
-        tickers = [t.strip() for t in args.lista.split(',')]
-        capturador.processar_lista(tickers)
-    
-    elif args.modo == 'quantidade':
-        tickers = carregar_mapeamento()
-        if not tickers:
-            print("❌ Erro: Não foi possível carregar lista de tickers")
-            sys.exit(1)
-        capturador.processar_lista(tickers[:args.quantidade])
-    
-    elif args.modo == 'completo':
-        tickers = carregar_mapeamento()
-        if not tickers:
-            print("❌ Erro: Não foi possível carregar lista de tickers")
-            sys.exit(1)
-        capturador.processar_lista(tickers)
-
+    capturador.executar(args.modo, args.ticker, args.lista, args.quantidade)
 
 if __name__ == "__main__":
     main()
