@@ -6046,10 +6046,14 @@ loadAcaoData = async function(ticker) {
 };
 
 // Carrega notícias da empresa
-async function carregarNoticiasEmpresa() {
+async function carregarNoticiasEmpresa(ticker) {
     try {
-        const ticker = empresa.ticker.substring(0, empresa.ticker.length - 1);
-        const response = await fetch(`balancos/${ticker}/noticiario.json`);
+        console.log('🔍 Buscando noticiário empresarial de', ticker, '...');
+        
+        // CORREÇÃO: Remove o último dígito do ticker (PETR4 -> PETR)
+        const tickerPasta = obterTickerPasta(ticker);
+        
+        const response = await fetch(`balancos/${tickerPasta}/noticiario.json`);
         
         if (!response.ok) {
             exibirEstadoVazioNoticias('Notícias não disponíveis para esta empresa');
@@ -6073,6 +6077,7 @@ async function carregarNoticiasEmpresa() {
         exibirEstadoVazioNoticias('Erro ao carregar notícias');
     }
 }
+
 
 // Renderiza as notícias no carrossel
 function renderizarNoticias() {
