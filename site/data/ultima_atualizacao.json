@@ -1,7 +1,11 @@
 {
-  "timestamp": 1767891633000,
+  "timestamp": 1767891768000,
   "data": "2026-01-08",
-  "hora": "14:00 BRT",
-  "fonte": "agenda_dividendos",
-  "versao": "1.0.0"
+  "hora": "14:02 BRT",
+  "deploy": "manual",
+  "versao": "1.0.0",
+  "trigger": "workflow_dispatch",
+  "iso": "2026-01-08T14:02:48-03:00",
+  "run_id": "20824969838",
+  "commit_sha": "f055e9709e6e0bad18c1e4ad547bb0bad11d6b27"
 }
