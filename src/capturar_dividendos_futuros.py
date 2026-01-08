@@ -9,7 +9,7 @@ Fluxo:
 2) Para cada ticker:
    - Resolve tradingName via GetInitialCompanies (por ticker)
    - Busca eventos em dinheiro via GetListedCashDividends (por tradingName)
-   - Filtra pela janela --dias (aprovacao/com/pagamento) e pagamento >= hoje
+   - Filtra pela janela --dias (aprovacao/com/pagamento)
    - Dedup incremental (lendo dividendos_futuros.json existente)
 3) Salva por ticker: balancos/{TICKER}/dividendos_futuros.json
 4) Salva agregado diário (somente novos da janela): balancos/dividendos_anunciados.json
@@ -17,6 +17,11 @@ Fluxo:
 Obs importante:
 - A B3 usa base64 de JSON (btoa(JSON.stringify(obj))). NÃO use str(dict).
 - Endpoints "listedCompaniesProxy" são os mesmos consumidos pelo site "Empresas Listadas".
+
+CORREÇÃO 2025-01-08:
+- A API GetListedCashDividends retorna HISTÓRICO de dividendos, não apenas futuros
+- Removido filtro que exigia dt_pag >= hoje (causava 0 resultados)
+- Agora captura dividendos anunciados na janela E com pagamento futuro OU recente
 
 Dependências:
 pip install requests pandas
@@ -119,6 +124,7 @@ class CapturadorDividendosFuturos:
 
         self.dias_janela = int(dias)
         self.total_novos = 0
+        self.total_futuros = 0  # contador de dividendos com pagamento futuro
         self.dividendos_anunciados: List[Dict] = []  # somente novos da execução
 
     # ---------------- PUBLIC ----------------
@@ -127,6 +133,7 @@ class CapturadorDividendosFuturos:
         print("🔮 CAPTURANDO DIVIDENDOS FUTUROS (FONTE OFICIAL: B3 LISTADOS)")
         print("=" * 78)
         print(f"🪟 Janela deslizante: últimos {self.dias_janela} dias")
+        print(f"📅 Data de referência: {self.hoje.isoformat()}")
 
         empresas = self._carregar_empresas(modo, ticker, lista, quantidade)
         if not empresas:
@@ -148,6 +155,7 @@ class CapturadorDividendosFuturos:
 
         print("\n" + "=" * 78)
         print(f"✅ FINALIZADO: {self.total_novos} novos proventos encontrados na janela")
+        print(f"📆 Dividendos com pagamento futuro: {self.total_futuros}")
         print(f"📦 Compilado diário: {len(self.dividendos_anunciados)} itens (somente novos)")
         print("=" * 78)
 
@@ -197,10 +205,12 @@ class CapturadorDividendosFuturos:
 
         # 2) busca eventos em dinheiro
         eventos = self._buscar_cash_dividends(trading_name_oficial)
+        logger.info(f"📥 {len(eventos)} eventos retornados pela API")
 
-        # 3) filtra janela + pagamento futuro
+        # 3) filtra janela
         ini = self.hoje - timedelta(days=self.dias_janela)
         novos = []
+        futuros_empresa = 0
 
         for ev in eventos:
             # campos comuns da B3 (podem variar):
@@ -213,22 +223,39 @@ class CapturadorDividendosFuturos:
             dt_ref = dt_aprov or dt_com or dt_pag
             if not dt_ref:
                 continue
-            if dt_ref < ini:
-                continue
-
-            # futuro = pagamento >= hoje (se não tiver pagamento, ignora)
-            if not dt_pag or dt_pag < self.hoje:
+            
+            # ========================================================
+            # CORREÇÃO 2025-01-08: 
+            # A API retorna histórico, não só futuros.
+            # Capturamos dividendos:
+            # 1. Anunciados na janela de dias (dt_ref >= ini), OU
+            # 2. Com pagamento futuro (dt_pag >= hoje)
+            # ========================================================
+            
+            eh_na_janela = dt_ref >= ini
+            eh_pagamento_futuro = dt_pag and dt_pag >= self.hoje
+            
+            # Aceita se está na janela OU se tem pagamento futuro
+            if not eh_na_janela and not eh_pagamento_futuro:
                 continue
 
             valor = _parse_float_money(ev.get("rate"))
             tipo = str(ev.get("typeName") or ev.get("label") or ev.get("type") or "DIV").strip()
 
+            # Determina status do dividendo
+            if eh_pagamento_futuro:
+                status = "FUTURO"
+                futuros_empresa += 1
+            else:
+                status = "HISTORICO"
+
             item = {
-                "data_pagamento": dt_pag.isoformat(),
+                "data_pagamento": dt_pag.isoformat() if dt_pag else None,
                 "valor_bruto": float(valor),
                 "tipo": tipo,
                 "data_com": dt_com.isoformat() if dt_com else None,
                 "data_aprovacao": dt_aprov.isoformat() if dt_aprov else None,
+                "status": status,
                 "fonte": "B3_LISTADOS",
                 "trading_name": trading_name_oficial,
                 "ticker": ticker,
@@ -248,17 +275,19 @@ class CapturadorDividendosFuturos:
         # 4) salva incremental (antigos + novos)
         self._salvar_dividendos_incremental(ticker, novos)
         self.total_novos += len(novos)
+        self.total_futuros += futuros_empresa
 
-        # 5) agregado diário = só novos
+        # 5) agregado diário = só novos com pagamento futuro (para agenda)
         for x in novos:
+            # Inclui todos no agregado, mas marca status
             self.dividendos_anunciados.append({
                 k: x[k] for k in [
                     "ticker", "trading_name", "tipo", "valor_bruto",
-                    "data_com", "data_aprovacao", "data_pagamento", "fonte"
+                    "data_com", "data_aprovacao", "data_pagamento", "status", "fonte"
                 ]
             })
 
-        logger.info(f"✅ {ticker}: {len(novos)} novos proventos")
+        logger.info(f"✅ {ticker}: {len(novos)} novos proventos ({futuros_empresa} com pagamento futuro)")
 
     # ---------------- B3 REQUESTS ----------------
     def _get_json_b3(self, url: str, params: Dict, timeout: int = 15) -> Dict:
@@ -396,25 +425,34 @@ class CapturadorDividendosFuturos:
             "inicio": min(pagamentos) if pagamentos else None,
             "fim": max(pagamentos) if pagamentos else None
         }
+        
+        # Conta futuros vs históricos
+        futuros = [d for d in dividendos if d.get("status") == "FUTURO"]
+        historicos = [d for d in dividendos if d.get("status") == "HISTORICO"]
 
         dados = {
             "ticker": ticker,
             "ultima_atualizacao": datetime.now().isoformat(),
             "janela_dias": self.dias_janela,
-            "total_futuros": len(dividendos),
+            "total_dividendos": len(dividendos),
+            "total_futuros": len(futuros),
+            "total_historicos": len(historicos),
             "periodo": periodo,
             "dividendos": dividendos
         }
 
         arquivo.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8")
-        logger.info(f"💾 {ticker}: +{len(novos)} novos → total {len(dividendos)}")
+        logger.info(f"💾 {ticker}: +{len(novos)} novos → total {len(dividendos)} ({len(futuros)} futuros)")
 
     def _salvar_dividendos_anunciados(self):
         self.pasta_balancos.mkdir(exist_ok=True)
 
+        # Separa futuros para destaque
+        futuros = [d for d in self.dividendos_anunciados if d.get("status") == "FUTURO"]
+        
         ordenados = sorted(
             self.dividendos_anunciados,
-            key=lambda x: (x.get("data_pagamento", ""), x.get("ticker", ""))
+            key=lambda x: (x.get("data_pagamento") or "", x.get("ticker", ""))
         )
 
         dados = {
@@ -422,13 +460,14 @@ class CapturadorDividendosFuturos:
             "hora_execucao": datetime.now().strftime("%H:%M:%S"),
             "janela_dias": self.dias_janela,
             "total_proventos": len(ordenados),
+            "total_futuros": len(futuros),
             "total_empresas": len({d["ticker"] for d in ordenados}),
             "proventos": ordenados
         }
 
         arquivo = self.pasta_balancos / "dividendos_anunciados.json"
         arquivo.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8")
-        logger.info(f"💾 Compilado diário salvo: {arquivo} ({len(ordenados)} proventos)")
+        logger.info(f"💾 Compilado diário salvo: {arquivo} ({len(ordenados)} proventos, {len(futuros)} futuros)")
 
 
 def main():
