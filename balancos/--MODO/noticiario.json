@@ -3,12 +3,22 @@
     "ticker": "--MODO",
     "nome": "--MODO"
   },
-  "ultima_atualizacao": "2026-01-08T21:59:18.940510",
-  "total_noticias": 30,
+  "ultima_atualizacao": "2026-01-08T22:15:30.062393",
+  "total_noticias": 60,
   "fonte": "Google News",
   "noticias": [
     {
       "id": 1795717583,
+      "data": "2025-12-16",
+      "data_hora": "2025-12-16 08:00:00",
+      "titulo": "Itaú liga modo risk on e vai entrar em 2026 comprando mais mundo (e mais Brasil) - Estadão E-Investidor",
+      "descricao": "Itaú liga modo risk on e vai entrar em 2026 comprando mais mundo (e mais Brasil) Estadão E-Investidor",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNNF9RY1d5VzhPWEh2RkJNQWdwQ1JvYUxNcWt1Qmo1bkNNOW1GSFNYU0F6ckJPQjdfT0xFNlZnUFVGNTVpcXZCeG1Gei1namd4M0toMU1nQ1l3MkoxaU5MNkZKWXBnbC1WaHlJRWdJRUViUE9mZlFFcGh5VWRfMVlnYmgzeWF0Z9IBiwFBVV95cUxQU2F1ZUh5SXRhOGpZTzBTOTdSelZFWEExNWFNLTJXZEVySU1jczlwbnVNbW8taUZWdTh6aHBfSVNJMk1xS2h4ZGRrNEZOWU1IOER2blhKZ0ZtSncxNUpkWlhhSE1fdDVXODhJOXhpSko5UTY1YVdwQ1A3X3h1b25mU1NXZTYtRTNVVnlV?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 246765870,
       "data": "2025-12-16",
       "data_hora": "2025-12-16 08:00:00",
       "titulo": "Itaú liga modo risk on e vai entrar em 2026 comprando mais mundo (e mais Brasil) - Estadão E-Investidor",
@@ -28,7 +38,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 1302399692,
+      "data": "2025-12-15",
+      "data_hora": "2025-12-15 08:00:00",
+      "titulo": "Ibovespa tem menor volatilidade em 40 anos no modo 'calmaria antes da tempestade' - Valor Investe",
+      "descricao": "Ibovespa tem menor volatilidade em 40 anos no modo 'calmaria antes da tempestade' Valor Investe",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMihwJBVV95cUxNdkxLMC1uTFQ3MVNCLU1nSzRMd1hfcHhQWS0zSFVUVHVtSHYzcVI4WG9tWE45QUdpemRnTlBkekUtQ21CNE1iUFVQMVNtbXRlNnRCOGxkMUY5RUtkVjQtWlJPSTFLYnRXQVJ0WWdIcVVCUFpuOTF3Q2YyTkhBZzY1MXRfY2xaZFM3NXA4R0N1a3hGSlpZWGthQ1Q5bW5tdzFPMnNYTklGUzh3Um5CcGpFekpGLUdOTUlVY1FLXzcwNkpvckNQRUtDMDB5Um1wQjI2MnZRUkN5TlRnYVZoS29fcEFGUFM3X3JLZGVZNDEzSXJOSlhka2hLb3BGd2FnOTBHOUMwRld0Y9IBlgJBVV95cUxNUmxLdHl3ZVlQZ0plSjFmOHBVOFFCdlF3ZzNRdTlaYXBWVGo0VExXZzZxS2drcW1rY2tvbDlNbHlqSVpXRWo2bjluTEVXTjlOcF9JZnNKQTVQcmJUTWdvejUya0NrSlduU2NCdFJoU0pqMmZlTHVzUEIxVFhBSjhaMUNmbzk3OHNycXFiS2tybWpQNzU5X1Z5aHo4Y1M1N2pSYV9oVUFEczMwdkh1SHdNbFpKWHlBbmQ5TmpDbUR1Z1EwTEpZZERoMzN3ajdybjFCNTlpX0RXYV9kWUI4Xzl0V0stbWZXdlZOZFgyUGEtdzN1ZDAzMDRlcG9TVFU2c0JIZTNXbUZhNXpKVzBBZG5BVVZDZFNwUQ?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 1324954708,
+      "data": "2025-12-03",
+      "data_hora": "2025-12-03 08:00:00",
+      "titulo": "Mercados globais iniciam quarta-feira (3) em modo de cautela à espera do Fed; veja destaques do dia - Empiricus",
+      "descricao": "Mercados globais iniciam quarta-feira (3) em modo de cautela à espera do Fed; veja destaques do dia Empiricus",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPbjhWREVza3E1MW5xdG93VHRrU1lTNnlQSnhISThsbmNvYlBsekI3T3lLcXoyMlJLR3FTTFdubG05bVhxd2ExanQ4Uzc1NFlrU25vV0NDNGFnMHV1eVFkT0lBNm9fOUVGN0NaUDFOQTdBanVESWdYa1A1SmtHUjA4ZkQ0NkZ4aURPV3gxN0lGSXBnM2syMWp6cjVmbEFoLUh0Z1NDNjNGR2lvRE41bE5OWktJeXpRZklWcXNaWTFMYnVPM2NrbEU0?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 1898577444,
       "data": "2025-12-03",
       "data_hora": "2025-12-03 08:00:00",
       "titulo": "Mercados globais iniciam quarta-feira (3) em modo de cautela à espera do Fed; veja destaques do dia - Empiricus",
@@ -48,7 +78,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 1539678360,
+      "data": "2025-12-02",
+      "data_hora": "2025-12-02 08:00:00",
+      "titulo": "Agenda de dividendos: quais empresas pagam proventos este mês? - Toro Blog",
+      "descricao": "Agenda de dividendos: quais empresas pagam proventos este mês? Toro Blog",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1rQjZyX01OckF6dkxhb1dyZmNCOVhyMGFZOUZGQzBHV0Fha0VHdGl3OXgzWjlvTVRBYnIxNW11VHhXMm5pRFREbExKMUpqLUlaNF8zRGlwMFMtdnBhS3VHQ1NwNFNLLTNCdU5KOFJJWVRaRm8?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 490121598,
+      "data": "2025-11-18",
+      "data_hora": "2025-11-18 08:00:00",
+      "titulo": "Tempo real: Ibovespa recua com pressão negativa de Wall Street; dólar tem queda a R$ 5,31 - Money Times",
+      "descricao": "Tempo real: Ibovespa recua com pressão negativa de Wall Street; dólar tem queda a R$ 5,31 Money Times",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPVkZSbEJGdmE3VVZTSURTdXpxUHh6WjlHTXI5eW1Sd0hscmdNN3FrSUlsdlJodERWLXkxN1MzODItSlRLZlYtRFl1aFIxRk55Mk0yNWo4S0Z3dURTcjVfWG9vRVZlUl9aWjNEUmctcFp0d2JsX19pRUNIcDNqb2IxM0dIR1NmaHVONHBzaEpLZEh0UVlLSUEw?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 667067917,
       "data": "2025-11-18",
       "data_hora": "2025-11-18 08:00:00",
       "titulo": "Tempo real: Ibovespa recua com pressão negativa de Wall Street; dólar tem queda a R$ 5,31 - Money Times",
@@ -78,6 +128,26 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 1659879079,
+      "data": "2025-11-11",
+      "data_hora": "2025-11-11 08:00:00",
+      "titulo": "Mercado: Feriado nos EUA, Copom e Oi agitam investidores | InvestNews - InvestNews",
+      "descricao": "Mercado: Feriado nos EUA, Copom e Oi agitam investidores | InvestNews InvestNews",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQMmZnOTh6ZDNTMVZMQjMyempBbE5oMk05bmwxeTBTdmU3U05uVTVnVXozdWhGVkxQUm1Vdlc5c0taV2RXTWxlUTJwWlExcDI1TWxrWm9Eb1N0cnRoMk9CUEhSNXRfcDRrVWg0OGFFRkNacG1NOHNaMU55T0RVWTlueWNXaklvT0hPNnZodDNOR3J0SGlmbmVDMUUxQ0pYSmU5Q3NEOE1kck16S3BJYWF3aUhCamtVQUZFd1Jv0gHAAUFVX3lxTE5BOWpRQkpjOThUUWk3UWhYeThTOXBHdk9CYkNBY3FjdVlmRWcyRmZEUHdrWWMwR0lkN00tOUtFN182X2hKa19ubVluRndZdjJrOVNQYXRKVVYway1WVll1UGRzZnhKUDVFSDZTem1rZVgwX0x5X2ZGQ3hIZWUteThZbDNCSTd2c0taVS1xdlUtTTR4b3dmaDZFWkE1S05NMWZPUE1JQXI0SlVoX3NrNjRqTDlHY3N5allxRWtSUEVsYw?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 1817648641,
+      "data": "2025-11-11",
+      "data_hora": "2025-11-11 08:00:00",
+      "titulo": "Índice da bolsa de valores brasileira fecha em alta e renova recorde acima dos 150 mil pontos - Brasil 61",
+      "descricao": "Índice da bolsa de valores brasileira fecha em alta e renova recorde acima dos 150 mil pontos Brasil 61",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQUnBaZVRYeVMwcmtFSXYweWNDUkE1cnpnMFhKdC1XTmxKcWFLbS1KeWJXNERZeXdwd3g1WVdNTzBnM0ZxbDFqLW1DNy1wUGM0anM2UXRQYTF4U2tsdUZZbU9sZGZfdUtNcWkxU2NPak9rWXF3V0FqNjk0YmFibEp4UnA1UVVVV1F2cjBZZWVCWWtremloVTA0SDBORkl3M1VEOGJiMXZXeVJaTEMtYWdMdjlMTEhXamxTQ3ZsNm04dXdPZ2VSVG9V?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 705991531,
       "data": "2025-11-10",
       "data_hora": "2025-11-10 08:00:00",
@@ -88,7 +158,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 1981841466,
+      "data": "2025-11-10",
+      "data_hora": "2025-11-10 08:00:00",
+      "titulo": "No dia da falência, ações da Oi desabam e lideram perdas na Bolsa - TELETIME News",
+      "descricao": "No dia da falência, ações da Oi desabam e lideram perdas na Bolsa TELETIME News",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQVldjVXk1MTl4clNZa1Qxb2RaM1FJNUc4bGEtMzhmemVhaDcyeUlBbjA4NXRVSHFDMHJQVV9fUGREMmx2Y0Z1RFFtekRRdnptUTVVSk51NzJEVmNpbjc4QUFha3VmVXRtTVhZdkxCdDBCYUV6bmVCN0MwQzBOV2NCM3dHWVFHczNuVkp5STUyV1hTakphUTMxNUxoTURsNEotNlE?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 1414733949,
+      "data": "2025-11-06",
+      "data_hora": "2025-11-06 08:00:00",
+      "titulo": "Bolsas europeias recuam com queda de ações de tecnologia e balanços - CNN Brasil",
+      "descricao": "Bolsas europeias recuam com queda de ações de tecnologia e balanços CNN Brasil",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQZFhRRC1zd1F0cW15RzdROFZBZzI2NG9CenYyYnJfa2hVWHlnTEFmakg3LVdzb003Z0YxNldwTGJtNklTUEJYbVp0TElmN3cwSjA2VmJJT2l5RllweVVJc2MwMzI2SDh0ZEl1bmZRRWZzemg5cDRMbVprTFA3TTNUUUI5YXgtUW9ydDNRUkZ0ZDRiZ29aVVU2cjVHdnoybG53anVLbmxqdmpKcTVnRnpVRHR5eW8?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 2027433561,
       "data": "2025-11-06",
       "data_hora": "2025-11-06 08:00:00",
       "titulo": "Bolsas europeias recuam com queda de ações de tecnologia e balanços - CNN Brasil",
@@ -118,7 +208,37 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 169585326,
+      "data": "2025-09-15",
+      "data_hora": "2025-09-15 07:00:00",
+      "titulo": "Ibovespa na máxima, dólar na mínima: O que impulsiona o mercado nesta segunda? - Money Times",
+      "descricao": "Ibovespa na máxima, dólar na mínima: O que impulsiona o mercado nesta segunda? Money Times",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQVkFJdi16X2l5SU41WUMyZlplNmNXNlJacGt6QVRXOTh6a0ExZVJUMDg2QkRwY3hUU0lJN2RJSXdocWphZnkteGdvbC1MbGNUa3AybGdfemktdTBUVHlIdjlWUjNUMjFkSmkwVXFzay1vUmhjQlEtYjEwQVNsdURtUzA3dTNheHlxenBlWTRsOS1nVUpBN2plSHExN194alR1bHpremFzNGRvbVk3UTFGcw?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 860306128,
+      "data": "2025-09-15",
+      "data_hora": "2025-09-15 07:00:00",
+      "titulo": "Musk ligou o modo “CEO em tempo de guerra”, comprou mais de €800 milhões em ações da Tesla e cotação disparou - Expresso",
+      "descricao": "Musk ligou o modo “CEO em tempo de guerra”, comprou mais de €800 milhões em ações da Tesla e cotação disparou Expresso",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxOUE8wTzBZeDAwS1BtUFVsYy1xb0pGbm5KcWI1bHpZTWlWNTlNZzhManZLQkhGM3JZSGlQcFlXWW5ZVmY4Y3ZTVUw3bVVVekdNTW5pcUNvaUhqWDQ4cElxYmFQMGx0SnFOZFhQY1lWd1lzZDgwVGFtNE03Y3pBOUVCejVHRFlCaEk2Ql9SSEtNWHJRblphLTNCZ3RFUE9Ea3dfR3JwTzRjekZVVzJHY1A0UlNCaTNFd1dVc2JadXVvcFEwOFJ1MFAxc3B0ckhnUzNmS3h3V0FqU2prS0Y4LVNURHkzYkxSNFFXSzFXVldUR2xPcnBHb3NUa0tn0gH_AUFVX3lxTE5OR01lME4zM1ZnWWoyUzQ5WUtVWDlpUzNYSVRiZVFSMERWUDJVS2QwRnFMcUhTNGo2WGRsLTNQaHZoSEFDQkZUbUkyYUVQYUlhMHBFb0ZtR2hYelkwUVdjYmVLUkdZTWhUX3JSUGMwaTVxQkFPNHE1NFFoTVVtNUNNcEg2bjRzZVRDNUtIVXVfWDZHRXM0TE4zLV9zdG5Nc0owQ3BBamFDSXJWMW12aS0wNkZrUU9kRTF4OEdmUGdOOF80NXN5UjdFb04zQ2xqdEFJYnNXbnhndndWN01QTE9FYTlzUklGMmFHdW41QkpGdEhONWlUeDd0VjZqX3FIdw?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 399909552,
+      "data": "2025-06-21",
+      "data_hora": "2025-06-21 07:00:00",
+      "titulo": "Incidência de ITCMD na transmissão de ações gera controvérsia - conjur.com.br",
+      "descricao": "Incidência de ITCMD na transmissão de ações gera controvérsia conjur.com.br",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOc2M1TW5iRGVjMGxUa3dLdUYxNzZEdXF0ZGc2VFhBRGtMcWhNQnBvWWstZk8wUUlfb2JkTWhPalUxU3dGVHNjNFNVc2N3U1FPUS12VWNUZER2QXo1VmNyRWYyMlBnbjNVaWhqNmVEZTVfYlM4VkRvLWc5ZE5GaFA1a0pqeUdsc1VacXMxSGxJXzQ2U0JpTUlRQ0hGQmdCRV95ZnVJZkNzRGVkQTRBRDFETjVpLXY1VFVyNjlJd0l4RFA4Y09nSzEwNzE0T0NnQQ?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 640830398,
       "data": "2025-06-21",
       "data_hora": "2025-06-21 07:00:00",
       "titulo": "Incidência de ITCMD na transmissão de ações gera controvérsia - conjur.com.br",
@@ -138,7 +258,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 462151807,
+      "data": "2025-06-20",
+      "data_hora": "2025-06-20 07:00:00",
+      "titulo": "Onde investir R$ 400 mil em 2025? Veja os ativos mais rentáveis! - Toro Blog",
+      "descricao": "Onde investir R$ 400 mil em 2025? Veja os ativos mais rentáveis! Toro Blog",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOUTlSOWlsTW1LLXhweElHbFNxZXVZbkNiNHVrWXNELUJmNHppV0JfM2xCZ055V3hXUmJRcFlXMVhocUtTOXBWVUpXUG9zcTYtWXFOc1VqVU96RzdFckwzbnNSakFfQThTTlBKNjVqZ0ZYdG44ejRHQU9iWWY3OHhncTl6TQ?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 1272989480,
+      "data": "2025-05-15",
+      "data_hora": "2025-05-15 07:00:00",
+      "titulo": "Ibovespa com recorde de pontos: o que isso quer dizer? - InvesTalk",
+      "descricao": "Ibovespa com recorde de pontos: o que isso quer dizer? InvesTalk",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQUmdmQTdVel9nYjNvSUx4YmNfYzJGV3B5cUd6TEd4UWVZWktRUjh0QlpJVTluODV0VW85WVZXZVhBUlA0amk1ZnZyRGdUdEtPX2ZuVl9jWm1vbTZIRGc3YS1XOUJjREtxcGxGNXFnV3NoSm9hc2JLazkxNGl6a3ZPOTl2VkRIZUtlT1YtWC1JQmtTZmVERDRpaUtkMTFYdw?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 1433021372,
       "data": "2025-05-15",
       "data_hora": "2025-05-15 07:00:00",
       "titulo": "Ibovespa com recorde de pontos: o que isso quer dizer? - InvesTalk",
@@ -158,7 +298,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 173610004,
+      "data": "2025-05-07",
+      "data_hora": "2025-05-07 07:00:00",
+      "titulo": "Duas ações para os próximos 25 anos: gestores apostam nestes papéis para sobreviver ao caos — e defendem investimentos em commodities - Seu Dinheiro",
+      "descricao": "Duas ações para os próximos 25 anos: gestores apostam nestes papéis para sobreviver ao caos — e defendem investimentos em commodities Seu Dinheiro",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxQS0FlZFUxdElrUDlXaWJPVXVYOVJ4NkxiV3hzeEZPakgzbEs1bUN2LXkwbGpBNktyZjRaMzFSLTdoVWhFSTJIanEyaDFWUUJWN21Sb0Z3VE5uS3JMV1I2N09nS21JQ1BRLWNYZXMxUW5DSF9KdHVXWnZnVlREZEVaSk5PNzgtb19kRHF4RUVTUEU5a09Xenl3Nlowa1JfSEpkVGoxX3MtbWlkNlpNNm9PVjA2T0VqOXp4RlF0RXY0OUpXNnVURERDcFk4YVlKMXNIWGZGUWxTYVEzaHJ6NlllTVkzYzQ5WHpIYVN6RzF3NEw4NlQ4eDdOdDhqeFRnQjRNZ1FJT2doRzJlZw?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 1529523388,
+      "data": "2025-04-22",
+      "data_hora": "2025-04-22 07:00:00",
+      "titulo": "BOLSA EUA em modo de recuperação - TradingView – Acompanhe todos os mercados",
+      "descricao": "BOLSA EUA em modo de recuperação TradingView – Acompanhe todos os mercados",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1SRjBUNmVMSm9Jb01USUdTM0RSU29oUGQtTGpualhHc2R1QkhibWtHMFNhVnptQTNTamJnWDIyX0l6QW5tcGJwMjZ4QngyNW9BdW5PNkx2ekVMUmhmNmxaZDA3Qm50a0U5bEtONllCcTE3YWNGTkNj?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 1422290752,
       "data": "2025-04-22",
       "data_hora": "2025-04-22 07:00:00",
       "titulo": "BOLSA EUA em modo de recuperação - TradingView – Acompanhe todos os mercados",
@@ -178,7 +338,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 41023628,
+      "data": "2025-04-01",
+      "data_hora": "2025-04-01 12:25:30",
+      "titulo": "Ibovespa fecha em queda, mas março é o melhor mês de 2025 - Nord Investimentos",
+      "descricao": "Ibovespa fecha em queda, mas março é o melhor mês de 2025 Nord Investimentos",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPdTVjbkpLZFQzb2pDVmZvanE4MjBXVjExMWdtMXlLTllCOXJScWJCWE1QV1RzRjB4N2ZBaFpOWTRzejlsQi1GWTVvektkdV93QzRnM2lzR21KTzlSaGRSNlAyMVhSZUVQZXdNZHdaRjNZaldsZWpKb1NpdjFBblFHN2VOelVWX2hfWjk0bnk5eTJiTk5DRHJ4MXZ1c1hONXZvVzVJ0gGoAUFVX3lxTFBkdlBRLUcxc3pVY0xheW9DSUVLNW9CYk1kUFZyejMwdUxWUjBkOWJKZ0JvZ0pGeGt2MllTaS1wOXlLWTczVXhydlFWMV9NcEpwU1BQZ3lSUl93c1FESERoRWoyNEJoaGJOZGlWUUxKaTFPYmM3QnkyeDBRX2VuM082RHVkUGVIRGpDLTY0cDlKSTViTEcwbThHTlRCZ3FVNWZSYlMwWU1ieA?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 1321569931,
+      "data": "2025-03-27",
+      "data_hora": "2025-03-27 07:00:00",
+      "titulo": "Americanas “ainda está longe” de sair do modo recuperação, diz presidente - InfoMoney",
+      "descricao": "Americanas “ainda está longe” de sair do modo recuperação, diz presidente InfoMoney",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOc25PY3VHa3A2Ym9ySXdfbG1XNjNFUVdSRGJ4WmNsUUlBR19lRGh2WUV5Ull0ZTE1MGp6VjRjMVdTS0EzZFRKc2NEMm4xOC1ma25CS1NjOFQtMDRXTkxWVTZ0MGFwaHotM01SMVdJTlIxQXU3MlpwZ01kYmc2Znpxam41eHNwZXJldXFONlFMeXF2VjlTYktxclN6OUs3ekNLOUpEQm9TdU1PY1hCMnfSAbMBQVVfeXFMTnJPUk5aUEhENkhUQkEtaHhRS3BoZ3F6VVFGTjRJRmw1bHMyODhmdm5Cd0Rjc2tVMHB1R2ViYkJ2OUZ4SGQ2aWQ0OU1IendBTXlIdWt2NUV1RG5sdlo1RS1yY18tYUliRHZjU2JXQ3d0b0VOQkwxakZmbmVqNWRIUDdpT1JXUGNLaTViWWh3d1FNZ2llV2E3emp6aGxNS2x0NEpMX2pDbTl1S0haaFRoZ1pQaVU?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 1330284996,
       "data": "2025-03-27",
       "data_hora": "2025-03-27 07:00:00",
       "titulo": "Americanas “ainda está longe” de sair do modo recuperação, diz presidente - InfoMoney",
@@ -198,7 +378,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 1588086646,
+      "data": "2025-01-29",
+      "data_hora": "2025-01-29 08:00:00",
+      "titulo": "Vivo vai discutir grupamento e desdobramento de ações na Bolsa - TELETIME News",
+      "descricao": "Vivo vai discutir grupamento e desdobramento de ações na Bolsa TELETIME News",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQdkw2Z0EzRTZhTHhnNkVNQ3BOSWNsSi0zaVNqekJnT1ZkM01wWnJyRmd4bzNtX21mSkZSX3ZJRDQ5cnotbXZ4NjUtNUcyWHFsZ3dvTmVZOXpsVzdJWVBJYjVDMmZnMENQUU9HTXhTek50OUN6THlfWk5tcjhJU2ZPVXhoWlBIX0lqYWVXTUNUVXhJUUM1UThBU0VjYzRuMkU?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 1013441423,
+      "data": "2024-12-13",
+      "data_hora": "2024-12-13 08:00:00",
+      "titulo": "Ações da Westwing (WEST3)\nserão agrupadas na proporção de 10 para 1 - Valor Investe",
+      "descricao": "Ações da Westwing (WEST3) serão agrupadas na proporção de 10 para 1 Valor Investe",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxNaTJwblhhRnc0bF9VRzFwV3JXdWRJN1B0WkVlUzU3Q1RiN0prSTRYV09LSEcyRTBkeFBZOGtZdF9YT3NEVWV2U3ZDMnJoN1E5Y1BBZEVrVzJldjhxXzRjMTdZYVB3alplZUFuTmVweU5wR0s0OXVBamd0cGFBY1NFeHB5OEhYZmswVmFvMmRlbE5OMlF1QVlTOGdZZlVxdDhGTWZRdkxNNndsS1JVdjgwLWl2R0pEaUxmRGdIeUFJQlpVTVFHTUJjeUxHZV9BYWN1NWJKTG1nei1saGktMmdSaFlpVDdZQkZGSUHSAfgBQVVfeXFMTVo4N0dWT0Z3bTNWRDBzaFM4VlhxRmdOUnE5NnY3bzFiUm5rNVJzclBrNjk2QlRfVVpOLVdjNU9CeVZQakwzT1g4NTNJaFZUYm4ycHNlNmc0SWljSk53UmN3Wkt5T2tWM2lfQVBjMW9KUkg0MHBFcHhuUGhHU0V1N1JiLTZqUzJmOHFyaWlFcDd6Q2Rndl9yN2xKWUZGblpmbkpzNG5faV9BWG9fOExUSElLYWJMSlpfM2otRXlxVExNdlQxWW5HeVprLVZIRUo0cWdEVENaOVRRdXJMVGdrY3N0dkU4STkxcUU4VUZ2N1BKMW1xU0FQNEc?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 1038426879,
       "data": "2024-12-13",
       "data_hora": "2024-12-13 08:00:00",
       "titulo": "Ações da Westwing (WEST3)\nserão agrupadas na proporção de 10 para 1 - Valor Investe",
@@ -218,7 +418,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 2002100166,
+      "data": "2024-11-14",
+      "data_hora": "2024-11-14 08:00:00",
+      "titulo": "PMEs na Bolsa: CVM prevê norma para 2025 e BEE4 se prepara para ser ‘a nova B3’ - InfoMoney",
+      "descricao": "PMEs na Bolsa: CVM prevê norma para 2025 e BEE4 se prepara para ser ‘a nova B3’ InfoMoney",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOSTVfWTFEMnBISkZJM2YwZnh1STN6M2VKdG1DVHhfWk9QTGl2Qi1fWWUtYWlrRmJsUFZGU2NVWFgtNXF3T0ViNTZKeTBQWjZGdUZaS3YwVmd4MldSdFoxMm05NFhNQWJSdlR1RXNrbER0ZHFTRkRoWlJVdmNyM0M3UEpYbTladVBIb29LWlU0cDRmcVRkckRScnNfTXdiYXpJUTNjSGJEd1hnanAzaEs4SlJ2Ny1fX2duTWlXdA?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 1044226125,
+      "data": "2024-09-19",
+      "data_hora": "2024-09-19 07:00:00",
+      "titulo": "Como ajustar a carteira de investimentos após queda de juros nos EUA e alta no Brasil - InvesTalk",
+      "descricao": "Como ajustar a carteira de investimentos após queda de juros nos EUA e alta no Brasil InvesTalk",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQN0lvQzR6SVJibGk5XzNPV3JxM2IxNThJMElvVWNyUlhmOWZSdXVvMU54eTRWaUFMTnk3UmI0bGNmWHYwbUxzOGxPUWJKRmhYT3RSLW5HekpWb0NPeGJsa1JaSzMtX1NwVW5PRXJkWlh4MEdZWGxXVXUzUGdrRDVvVWJvd2JWNUswbVZ4NHZkSGFPeVUwVWJhdTFpbnBSTVVrTWhqRkdnc3hEVHB4ejgwYTZkbkhZU1ZtN2g3ak9oQkxYdjZGNFl3aDdn?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 1897953495,
       "data": "2024-09-19",
       "data_hora": "2024-09-19 07:00:00",
       "titulo": "Como ajustar a carteira de investimentos após queda de juros nos EUA e alta no Brasil - InvesTalk",
@@ -238,7 +458,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 977714880,
+      "data": "2024-03-26",
+      "data_hora": "2024-03-26 07:00:00",
+      "titulo": "Como investir na Bolsa de Valores: guia prático com tudo o que você precisa saber - Exame",
+      "descricao": "Como investir na Bolsa de Valores: guia prático com tudo o que você precisa saber Exame",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPT291ZlFpQVlkMlpWaEk2ZlQtMHN0M1NQU25iWXhHLVNmUjhFSHFySGh0TVJhTWJSRm13dVlUTnhiejZVbWRNLWcwcmRrdHNMbzR4Ykt3TThqUGtwbjVMSEpRUWthWE9EZU13NldBemJuakJpaTR4blhGOU9CcXNSQTg2Q1ZLM1c1ZzJZc0lqVVRzYmtodEI0dzB0dWlkdXFKM05seFZFNEpGSzFFMkR1Vg?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 930548116,
+      "data": "2023-11-16",
+      "data_hora": "2023-11-16 08:00:00",
+      "titulo": "Quais os setores com melhor desempenho na bolsa em 1, 3, 5 e 10 anos? - Bora Investir B3",
+      "descricao": "Quais os setores com melhor desempenho na bolsa em 1, 3, 5 e 10 anos? Bora Investir B3",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNUnBVRHpIOHVLNUREX3BwVk4waHZxS0F3cmlnMlo3YkdqNUtZRnpGaDFVNUlBdmhHYVVGcERUSXZsVVQ2VmdjR0RXdktWMzBJZlJ0RU9xeXZmcFQ4amZvVHlzWnlVMkNhQ1kxVElBdWtjczNld3Y5Q1VBTDBDeHo4TWdFUzBqVTVqREJZR3Zyb1RNdmNoSXRqWXhQNndWSjdlaDB4MmpTN3puY2lfUmhfa2RwQzVkZw?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 1255170520,
       "data": "2023-11-16",
       "data_hora": "2023-11-16 08:00:00",
       "titulo": "Quais os setores com melhor desempenho na bolsa em 1, 3, 5 e 10 anos? - Bora Investir B3",
@@ -258,7 +498,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 2033951684,
+      "data": "2023-11-09",
+      "data_hora": "2023-11-09 20:42:34",
+      "titulo": "Ações em queda hoje: quais empresas estão caindo na Bolsa de Valores? - Toro Blog",
+      "descricao": "Ações em queda hoje: quais empresas estão caindo na Bolsa de Valores? Toro Blog",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE43QjBpaERlaUlzMjhGZ0RsNU1xOXdrb2RlSzdRMEU1UktiVzdNMWUwWTFQZ0Z1NzVtUXJxY2ZlV1FuZEU3S0R2akFYT29hbTRYdU9rMkNrOHVGY0pHTkdRLXVDbHZfX2g1LU9icXFFMHB6UQ?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 591074123,
+      "data": "2023-02-17",
+      "data_hora": "2023-02-17 08:00:00",
+      "titulo": "O barato que sai caro: como a Legacy está operando a Bolsa brasileira no atual cenário - InfoMoney",
+      "descricao": "O barato que sai caro: como a Legacy está operando a Bolsa brasileira no atual cenário InfoMoney",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPVG16d0QxYzhyZklJclRlT1U1Qjl5YjJITVU5WnlBUnBuR3pDOFo3VHh3QTVOeDZlNE5jOWxBclVzc1h3ZDA5Vnhwd09lSjVLQ1Boa3U3dWJWYkFJSUItVW1kNDc2NUdRcmVsNXF5SFcyMmxhOVYyQXh4QnVER2x4QTA5Q0lrbC1ab0xYc2FyODFNSU5GR25JVW5TRlpocFpWTUJQcTBXQ1M5TWp6TXFBRDloekY4NFJsNTZEaGRyRU1nUdIBxwFBVV95cUxOb1hwcnI1QXJvbDZaQU9uVXVZOE5QV3NyUzNlX3duSW4wYzFXYlFzWUF4a3pBdnRobnhqQU9VWWwyWVFGOXpJMXRDYXFzaUUzaDhQWU5jSEJtMFFFeTJtc0EwaGppakhTbEZkUlYtRjd1WDNKMFBiRTh0bW1MYjVjVWpXTVFUcW9BZmVjTlFnV2M1aU0zZEVmVEliWDZWUTNMcmxJWGxGTm9qQ0FDSWdnck9YTDViMkIxMFRJTmNfZDl2aFZrTWww?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 332806990,
       "data": "2023-02-17",
       "data_hora": "2023-02-17 08:00:00",
       "titulo": "O barato que sai caro: como a Legacy está operando a Bolsa brasileira no atual cenário - InfoMoney",
@@ -278,7 +538,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 1855916099,
+      "data": "2021-07-19",
+      "data_hora": "2021-07-19 07:00:00",
+      "titulo": "Giro da Bolsa (16/07/2021): as principais notícias semanais do mercado de ações - Investidor Sardinha",
+      "descricao": "Giro da Bolsa (16/07/2021): as principais notícias semanais do mercado de ações Investidor Sardinha",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1TQzZLZDFDZG82dGR6VHVfSENxeExIbUJJOUpyNTFRUGpoSkRldVhEb095endzNGVnNU1CME81djdQdk02NzJIbDhrczQzd2w4Y2lzYnh1TlhlQ3h2czkyVHRJQ1JVeUQyd25aX2NHejRRMkpZOTBoUlpRZHVtekk?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 277851963,
+      "data": "2021-02-11",
+      "data_hora": "2021-02-11 08:00:00",
+      "titulo": "Caso Gamestop: a dificuldade em punir responsáveis por manipulações no mercado - JOTA Info",
+      "descricao": "Caso Gamestop: a dificuldade em punir responsáveis por manipulações no mercado JOTA Info",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPaGpQSDNtb216V3R4cVFJYjk1UjJDdG1zb01Kc2lQbmlyMmtqY3FrMVJWVDRUMDZDdnZPV3hWbXNWVTdvekxMbHhXLTZuOXEzZWE2NHJ1ZjFDTUhELU96ODE4NVFpRGMtZjgxa0ZSZWpDcVR6cl9pdV9JT0x2X3M4ZDNkdWZEU0lQdnRWT3lKajUxY1lNbkl1U2I5M0ltQ3NpUlJHMERQc0ZBRldXQXc?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 1271048431,
       "data": "2021-02-11",
       "data_hora": "2021-02-11 08:00:00",
       "titulo": "Caso Gamestop: a dificuldade em punir responsáveis por manipulações no mercado - JOTA Info",
@@ -298,7 +578,27 @@
       "tipo": "noticia_mercado"
     },
     {
+      "id": 828149501,
+      "data": "2020-12-10",
+      "data_hora": "2020-12-10 08:00:00",
+      "titulo": "FIFA: Conheça a 'bolsa de valores' do jogo e entenda por que está despencando - CNN Brasil",
+      "descricao": "FIFA: Conheça a 'bolsa de valores' do jogo e entenda por que está despencando CNN Brasil",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPWVBCN3BNMzlXV2pNQzUxT2xkUHVDZkRsNm45Z1d1dm1LQ3IweWUxZHFzQmlTSWw0VEpEMzEwcEREY0tJWWFreVVJT1FtUEZWNks5U3NOV0F2RzFvcWNLcmtZQTN2Z1dpUVVkTGdmd2VPaUtQT0RCS1lQeFpjXzJsMTQ0X19HZmQxRGl5RThlZUl6eEplYkdUTkRJWlBQekRGMm1vRm5yQ2w1TS0yQlVuOWd0d1pCQnZSU3pJX3lSc0hBaHNTMVRILXBB?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
       "id": 133952758,
+      "data": "2020-07-14",
+      "data_hora": "2020-07-14 07:00:00",
+      "titulo": "Melhor modo de lucrar na Bolsa é investir em ações da própria B3 - Money Times",
+      "descricao": "Melhor modo de lucrar na Bolsa é investir em ações da própria B3 Money Times",
+      "fonte": "Google News",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQOVNoZ3dSaE1wX255M0Jvd0JDZzVIQ2NDTGdrTm5YYm40SXgxNUZSS0U3d3kwcVpvbGpiMzF3RzlqaTBkbE5EQjhMUnNyclVlUjFEdnRtTXZEMTNQV3RwZ1ZDMGhUZ3ZPdHQ1NjAwZTRpMnhUdVdJcUVGMWpSbUFOOXNGNGliYjdvZGlkS1hfRTZscnRwbTRlN3dlNA?oc=5",
+      "tipo": "noticia_mercado"
+    },
+    {
+      "id": 118196561,
       "data": "2020-07-14",
       "data_hora": "2020-07-14 07:00:00",
       "titulo": "Melhor modo de lucrar na Bolsa é investir em ações da própria B3 - Money Times",
