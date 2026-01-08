@@ -1,7 +1,7 @@
 {
   "meta": {
-    "ultima_atualizacao": "2026-01-08T12:26:08.749127Z",
-    "total_empresas": 276
+    "ultima_atualizacao": "2026-01-08T12:50:59.357960Z",
+    "total_empresas": 278
   },
   "proximos_dividendos": [],
   "por_empresa": [
@@ -103,6 +103,14 @@
     },
     {
       "ticker": "ITUB3",
+      "historicos": 936,
+      "futuros": 0,
+      "total_valor": 345.61,
+      "ultimo_pagamento": "2025-12-09",
+      "proximo_pagamento": null
+    },
+    {
+      "ticker": "ITUB4",
       "historicos": 936,
       "futuros": 0,
       "total_valor": 345.61,
@@ -251,6 +259,14 @@
       "futuros": 0,
       "total_valor": 143.41,
       "ultimo_pagamento": "2025-12-11",
+      "proximo_pagamento": null
+    },
+    {
+      "ticker": "ISAE4",
+      "historicos": 210,
+      "futuros": 0,
+      "total_valor": 140.16,
+      "ultimo_pagamento": "2025-12-19",
       "proximo_pagamento": null
     },
     {
@@ -2215,7 +2231,7 @@
     }
   ],
   "resumo": {
-    "total_empresas_com_historico": 276,
+    "total_empresas_com_historico": 278,
     "total_empresas_com_futuros": 0,
     "total_dividendos_futuros": 0,
     "valor_total_provisionado": 0
