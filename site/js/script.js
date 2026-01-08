@@ -6139,37 +6139,31 @@ function renderizarNoticias() {
 // Cria um item de notícia
 function criarItemNoticia(noticia, index) {
     const item = document.createElement('div');
-    item.className = `news-item ${index === 0 ? 'active' : ''}`;
+    item.className = `noticiario-item ${index === 0 ? 'active' : ''}`;
     
-    const data = formatarDataNoticia(noticia.data_hora);
+    const data = formatarDataNoticia(noticia.datahora);
     const fonte = noticia.fonte || 'Google News';
     const tipo = formatarTipoNoticia(noticia.tipo);
     
     item.innerHTML = `
-        <div class="news-item-header">
-            <div class="news-item-date">
+        <div class="noticiario-item-header">
+            <div class="noticiario-item-date">
                 <i class="fas fa-calendar-alt"></i>
                 <span>${data}</span>
             </div>
-            <div class="news-item-source">
+            <div class="noticiario-item-source">
                 <i class="fas fa-globe"></i>
                 <span>${fonte}</span>
             </div>
         </div>
-        
-        <h3 class="news-item-title">${noticia.titulo}</h3>
-        
-        <p class="news-item-description">${noticia.descricao}</p>
-        
-        <div class="news-item-footer">
-            <div class="news-item-type">
+        <h3 class="noticiario-item-title">${noticia.titulo}</h3>
+        <p class="noticiario-item-description">${noticia.descricao}</p>
+        <div class="noticiario-item-footer">
+            <div class="noticiario-item-type">
                 <i class="fas fa-tag"></i>
                 <span>${tipo}</span>
             </div>
-            <a href="${noticia.url}" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="news-read-more-btn">
+            <a href="${noticia.url}" target="_blank" rel="noopener noreferrer" class="noticiario-read-more-btn">
                 Ler notícia completa
                 <i class="fas fa-arrow-right"></i>
             </a>
@@ -6310,13 +6304,13 @@ function irParaNoticia(index) {
 // Atualiza notícia ativa
 function atualizarNoticiaAtiva() {
     // Atualiza itens de notícia
-    const newsItems = document.querySelectorAll('.news-item');
+    const newsItems = document.querySelectorAll('.noticiario-item');
     newsItems.forEach((item, index) => {
         item.classList.toggle('active', index === currentNewsIndex);
     });
     
     // Atualiza dots
-    const dots = document.querySelectorAll('.news-dot');
+    const dots = document.querySelectorAll('.noticiario-dot');
     dots.forEach((dot, index) => {
         dot.classList.toggle('active', index === currentNewsIndex);
     });
@@ -6324,9 +6318,8 @@ function atualizarNoticiaAtiva() {
     // Atualiza botões
     const prevBtn = document.getElementById('newsPrev');
     const nextBtn = document.getElementById('newsNext');
-    
-    if (prevBtn) prevBtn.disabled = currentNewsIndex === 0;
-    if (nextBtn) nextBtn.disabled = currentNewsIndex === newsData.length - 1;
+    if (prevBtn) prevBtn.disabled = (currentNewsIndex === 0);
+    if (nextBtn) nextBtn.disabled = (currentNewsIndex === newsData.length - 1);
 }
 
 // Inicia auto-slide
