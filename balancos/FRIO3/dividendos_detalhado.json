@@ -1,0 +1,68 @@
+{
+  "ticker": "FRIO3",
+  "total_dividendos": 1.6059,
+  "periodo": "2008-2011",
+  "quantidade_pagamentos": 6,
+  "dividendos": [
+    {
+      "data_com": "2008-04-08",
+      "valor": 0.063953,
+      "tipo": "DIVIDENDO",
+      "ano": 2008,
+      "mes": 4,
+      "dia": 8,
+      "trimestre": "T2",
+      "data_pagamento": "2008-04-08"
+    },
+    {
+      "data_com": "2009-11-10",
+      "valor": 0.265,
+      "tipo": "DIVIDENDO",
+      "ano": 2009,
+      "mes": 11,
+      "dia": 10,
+      "trimestre": "T4",
+      "data_pagamento": "2009-11-05"
+    },
+    {
+      "data_com": "2010-04-30",
+      "valor": 0.292282,
+      "tipo": "DIVIDENDO",
+      "ano": 2010,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2010-04-30"
+    },
+    {
+      "data_com": "2010-05-07",
+      "valor": 0.302,
+      "tipo": "DIVIDENDO",
+      "ano": 2010,
+      "mes": 5,
+      "dia": 7,
+      "trimestre": "T2",
+      "data_pagamento": "2010-05-06"
+    },
+    {
+      "data_com": "2011-04-07",
+      "valor": 0.449,
+      "tipo": "DIVIDENDO",
+      "ano": 2011,
+      "mes": 4,
+      "dia": 7,
+      "trimestre": "T2",
+      "data_pagamento": "2011-04-07"
+    },
+    {
+      "data_com": "2011-06-28",
+      "valor": 0.2337,
+      "tipo": "REST CAP DIN",
+      "ano": 2011,
+      "mes": 6,
+      "dia": 28,
+      "trimestre": "T2",
+      "data_pagamento": "2011-04-07"
+    }
+  ]
+}

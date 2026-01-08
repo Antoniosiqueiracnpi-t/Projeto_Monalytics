@@ -1,0 +1,103 @@
+{
+  "empresa": {
+    "cnpj": "86.375.425/0001-09",
+    "nome": "",
+    "ticker": "MTSA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 7,
+  "acionistas": [
+    {
+      "nome": "FLAVIO SNELL",
+      "cpf_cnpj": "024.614.558-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2498462,
+      "percentual_total": 28.226,
+      "acoes_ordinarias": 1549721,
+      "percentual_ordinarias": 36.788,
+      "acoes_preferenciais": 948741,
+      "percentual_preferenciais": 20.451,
+      "posicao": 1
+    },
+    {
+      "nome": "D' Angelo Participações Ltda",
+      "cpf_cnpj": "79.373.700/0001-81",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1081409,
+      "percentual_total": 12.217,
+      "acoes_ordinarias": 1036130,
+      "percentual_ordinarias": 24.596,
+      "acoes_preferenciais": 45279,
+      "percentual_preferenciais": 0.976,
+      "posicao": 2
+    },
+    {
+      "nome": "Partbank S.A.",
+      "cpf_cnpj": "29.557.386/0001-19",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1019609,
+      "percentual_total": 11.519,
+      "acoes_ordinarias": 1000109,
+      "percentual_ordinarias": 23.741,
+      "acoes_preferenciais": 19500,
+      "percentual_preferenciais": 0.42,
+      "posicao": 3
+    },
+    {
+      "nome": "EDVALDO ANGELO",
+      "cpf_cnpj": "154.761.039-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 830557,
+      "percentual_total": 9.383,
+      "acoes_ordinarias": 406301,
+      "percentual_ordinarias": 9.645,
+      "acoes_preferenciais": 424256,
+      "percentual_preferenciais": 9.145,
+      "posicao": 4
+    },
+    {
+      "nome": "LIS Capital Gestora de Recursos Ltda",
+      "cpf_cnpj": "23.345.332/0001-03",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 424256,
+      "percentual_total": 4.793,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 424256,
+      "percentual_preferenciais": 9.145,
+      "posicao": 5
+    },
+    {
+      "nome": "JOSÉ CLAUDIO PAGANO",
+      "cpf_cnpj": "763.370.228-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 252350,
+      "percentual_total": 2.851,
+      "acoes_ordinarias": 350,
+      "percentual_ordinarias": 0.008,
+      "acoes_preferenciais": 252000,
+      "percentual_preferenciais": 5.432,
+      "posicao": 6
+    },
+    {
+      "nome": "MARCIA RITA PIMENTEL MENEZES",
+      "cpf_cnpj": "323.763.167-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 229600,
+      "percentual_total": 2.594,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 229600,
+      "percentual_preferenciais": 4.949,
+      "posicao": 7
+    }
+  ]
+}

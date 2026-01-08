@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "84.693.183/0001-68",
+    "nome": "",
+    "ticker": "SHUL3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "GERT HEINZ SCHULZ",
+      "cpf_cnpj": "033.330.009-20",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 45133094,
+      "percentual_total": 12.629,
+      "acoes_ordinarias": 34057126,
+      "percentual_ordinarias": 22.304,
+      "acoes_preferenciais": 11075968,
+      "percentual_preferenciais": 5.411,
+      "posicao": 1
+    },
+    {
+      "nome": "WALDIR CARLOS SCHULZ",
+      "cpf_cnpj": "081.756.919-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 44719570,
+      "percentual_total": 12.513,
+      "acoes_ordinarias": 34118642,
+      "percentual_ordinarias": 22.345,
+      "acoes_preferenciais": 10600928,
+      "percentual_preferenciais": 5.179,
+      "posicao": 2
+    },
+    {
+      "nome": "OVANDI ROSENSTOCK",
+      "cpf_cnpj": "121.181.509-97",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 36560276,
+      "percentual_total": 10.23,
+      "acoes_ordinarias": 27955724,
+      "percentual_ordinarias": 18.308,
+      "acoes_preferenciais": 8604552,
+      "percentual_preferenciais": 4.204,
+      "posicao": 3
+    },
+    {
+      "nome": "ELIANA ERNA SCHULZ MANTEUFEL",
+      "cpf_cnpj": "247.949.379-20",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 28511900,
+      "percentual_total": 7.978,
+      "acoes_ordinarias": 28511900,
+      "percentual_ordinarias": 18.673,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "DORIANE BRAATZ",
+      "cpf_cnpj": "463.324.059-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 28506072,
+      "percentual_total": 7.977,
+      "acoes_ordinarias": 27931372,
+      "percentual_ordinarias": 18.293,
+      "acoes_preferenciais": 574700,
+      "percentual_preferenciais": 0.281,
+      "posicao": 5
+    },
+    {
+      "nome": "CLUBE DE INVESTIMENTOS SOL",
+      "cpf_cnpj": "01.038.051/0001-75",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 23851884,
+      "percentual_total": 6.674,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 23851884,
+      "percentual_preferenciais": 11.653,
+      "posicao": 6
+    },
+    {
+      "nome": "TRIGONO FLAGSHIP SMALL CAPS MASTER FIA",
+      "cpf_cnpj": "29.088.425/0001-86",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 20381500,
+      "percentual_total": 5.703,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 20381500,
+      "percentual_preferenciais": 9.958,
+      "posicao": 7
+    },
+    {
+      "nome": "SÉRGIO EDUARDO FERREIRA RODARTE",
+      "cpf_cnpj": "133.230.836-87",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 16898928,
+      "percentual_total": 4.729,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 16898928,
+      "percentual_preferenciais": 8.256,
+      "posicao": 8
+    },
+    {
+      "nome": "REAL INVESTOR MASTER FIA - BDR NIVEL I",
+      "cpf_cnpj": "36.352.539/0001-57",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 9744132,
+      "percentual_total": 2.727,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 9744132,
+      "percentual_preferenciais": 4.761,
+      "posicao": 9
+    },
+    {
+      "nome": "TRIGONO VERBIER MASTER FUNDO DE INVESTIMENTO EM ACOES",
+      "cpf_cnpj": "42.190.558/0001-27",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4870000,
+      "percentual_total": 1.363,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 4870000,
+      "percentual_preferenciais": 2.379,
+      "posicao": 10
+    }
+  ]
+}

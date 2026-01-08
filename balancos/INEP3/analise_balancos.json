@@ -1,0 +1,42 @@
+{
+  "ticker": "INEP4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T23:20:14.950801",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T2",
+    "total_trimestres": 42,
+    "anos": 10.5
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -31.44,
+      "variacao_total": -97.91,
+      "ultimo_valor": 1.54
+    },
+    "margens": {
+      "bruta": 33.93,
+      "operacional": -1709.96,
+      "liquida": 4622.32
+    },
+    "rentabilidade": {
+      "roe_medio": null
+    },
+    "caixa": {
+      "media": -5.87,
+      "ultimo": -225.61
+    },
+    "balanco": {
+      "ativo_total": 440.27,
+      "patrimonio": -1791.04
+    }
+  },
+  "analise_critica": "INEP4 enfrenta desafios no crescimento, com receita em tendência de queda. Destaca-se pela alta rentabilidade, com margem líquida média de 4622.32%. Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (4622.32%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -31.44%)",
+    "Queima de caixa operacional"
+  ]
+}

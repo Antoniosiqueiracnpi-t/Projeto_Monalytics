@@ -1,0 +1,42 @@
+{
+  "ticker": "TASA4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T23:20:15.141945",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 6.01,
+      "variacao_total": 84.56,
+      "ultimo_valor": 320.29
+    },
+    "margens": {
+      "bruta": 34.27,
+      "operacional": 8.53,
+      "liquida": 16.74
+    },
+    "rentabilidade": {
+      "roe_medio": 30.39
+    },
+    "caixa": {
+      "media": 39.01,
+      "ultimo": -47.34
+    },
+    "balanco": {
+      "ativo_total": 2489.84,
+      "patrimonio": 1294.47
+    }
+  },
+  "analise_critica": "TASA4 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 16.74%. Gera excelente retorno sobre o patrimônio (ROE médio de 30.39%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (16.74%)",
+    "Excelente retorno sobre patrimônio (ROE: 30.39%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

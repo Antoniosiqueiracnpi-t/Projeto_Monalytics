@@ -1,0 +1,37 @@
+{
+  "ticker": "MTSA4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T23:20:15.015107",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 9.77,
+      "variacao_total": 166.0,
+      "ultimo_valor": 154.02
+    },
+    "margens": {
+      "bruta": 25.28,
+      "operacional": 8.61,
+      "liquida": 8.8
+    },
+    "rentabilidade": {
+      "roe_medio": 12.38
+    },
+    "caixa": {
+      "media": 11.97,
+      "ultimo": 46.59
+    },
+    "balanco": {
+      "ativo_total": 571.18,
+      "patrimonio": 471.15
+    }
+  },
+  "analise_critica": "MTSA4 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 8.8%). Retorno sobre patrimônio adequado (ROE de 12.38%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": []
+}

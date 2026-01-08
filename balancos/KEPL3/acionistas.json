@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "91.983.056/0001-69",
+    "nome": "",
+    "ticker": "KEPL3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "Trígono Capital S.A",
+      "cpf_cnpj": "28.925.400/0001-27",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 27502000,
+      "percentual_total": 15.303,
+      "acoes_ordinarias": 27502000,
+      "percentual_ordinarias": 15.303,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "FERNANDO FRANCISCO BROCHADO HELLER",
+      "cpf_cnpj": "030.076.338-77",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 11490000,
+      "percentual_total": 6.393,
+      "acoes_ordinarias": 11490000,
+      "percentual_ordinarias": 6.393,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "DEISE DUPRAT VILELA HELLER",
+      "cpf_cnpj": "912.420.967-87",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 6945000,
+      "percentual_total": 3.864,
+      "acoes_ordinarias": 6945000,
+      "percentual_ordinarias": 3.864,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "Kielce Gestão de Ativos Ltda - ME",
+      "cpf_cnpj": "20.830.054/0001-91",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2400000,
+      "percentual_total": 1.335,
+      "acoes_ordinarias": 2400000,
+      "percentual_ordinarias": 1.335,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    }
+  ]
+}

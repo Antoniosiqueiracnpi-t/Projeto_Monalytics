@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "92.781.335/0001-02",
+    "nome": "",
+    "ticker": "TASA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "Gibraltar Incorporações e Participações Ltda",
+      "cpf_cnpj": "39.504.062/0001-76",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 27871037,
+      "percentual_total": 20.008,
+      "acoes_ordinarias": 15961881,
+      "percentual_ordinarias": 31.243,
+      "acoes_preferenciais": 11909156,
+      "percentual_preferenciais": 13.501,
+      "posicao": 1
+    },
+    {
+      "nome": "BYK Participações S.A.",
+      "cpf_cnpj": "24.713.697/0001-06",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 26059293,
+      "percentual_total": 18.708,
+      "acoes_ordinarias": 25835198,
+      "percentual_ordinarias": 50.568,
+      "acoes_preferenciais": 224095,
+      "percentual_preferenciais": 0.254,
+      "posicao": 2
+    },
+    {
+      "nome": "LUIZ BARSI FILHO",
+      "cpf_cnpj": "006.541.838-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 11681230,
+      "percentual_total": 8.386,
+      "acoes_ordinarias": 1833920,
+      "percentual_ordinarias": 3.59,
+      "acoes_preferenciais": 9847310,
+      "percentual_preferenciais": 11.164,
+      "posicao": 3
+    },
+    {
+      "nome": "CBC Brasil Comércio e Distribuição Ltda",
+      "cpf_cnpj": "61.482.725/0001-58",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 739744,
+      "percentual_total": 0.531,
+      "acoes_ordinarias": 739744,
+      "percentual_ordinarias": 1.448,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    }
+  ]
+}

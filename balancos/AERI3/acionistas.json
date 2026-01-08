@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "12.528.708/0001-07",
+    "nome": "",
+    "ticker": "AERI3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "BANCO BTG PACTUAL S/A",
+      "cpf_cnpj": "30.306.294/0001-45",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 15524286,
+      "percentual_total": 24.991,
+      "acoes_ordinarias": 15524286,
+      "percentual_ordinarias": 24.991,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "VERA SARNES NEGRÃO",
+      "cpf_cnpj": "046.744.348-31",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 13740020,
+      "percentual_total": 22.118,
+      "acoes_ordinarias": 13740020,
+      "percentual_ordinarias": 22.118,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "ALEXANDRE SARNES NEGRÃO",
+      "cpf_cnpj": "323.567.238-97",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 5242902,
+      "percentual_total": 8.44,
+      "acoes_ordinarias": 5242902,
+      "percentual_ordinarias": 8.44,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "FERNANDA SARNES NEGRÃO",
+      "cpf_cnpj": "289.699.648-60",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4158163,
+      "percentual_total": 6.694,
+      "acoes_ordinarias": 4158163,
+      "percentual_ordinarias": 6.694,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "GISELA SARNES NEGRÃO ASSIS",
+      "cpf_cnpj": "271.575.058-78",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4158163,
+      "percentual_total": 6.694,
+      "acoes_ordinarias": 4158163,
+      "percentual_ordinarias": 6.694,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "BERNARDO ROMANO NEGRAO",
+      "cpf_cnpj": "533.088.938-35",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 3435003,
+      "percentual_total": 5.53,
+      "acoes_ordinarias": 3435003,
+      "percentual_ordinarias": 5.53,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "CÁSSIO CANCELA E PENNA",
+      "cpf_cnpj": "044.690.916-50",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 560215,
+      "percentual_total": 0.902,
+      "acoes_ordinarias": 560215,
+      "percentual_ordinarias": 0.902,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    },
+    {
+      "nome": "VITOR DE ARAUJO SANTOS",
+      "cpf_cnpj": "324.538.388-65",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 560215,
+      "percentual_total": 0.902,
+      "acoes_ordinarias": 560215,
+      "percentual_ordinarias": 0.902,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 8
+    },
+    {
+      "nome": "LUIZ HENRIQUE DEL CISTIA THONON",
+      "cpf_cnpj": "316.600.158-12",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 334196,
+      "percentual_total": 0.538,
+      "acoes_ordinarias": 334196,
+      "percentual_ordinarias": 0.538,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 9
+    },
+    {
+      "nome": "DANIEL HENRIQUE DA COSTA MELLO",
+      "cpf_cnpj": "303.633.878-03",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 190000,
+      "percentual_total": 0.306,
+      "acoes_ordinarias": 190000,
+      "percentual_ordinarias": 0.306,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 10
+    }
+  ]
+}
