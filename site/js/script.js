@@ -6042,7 +6042,7 @@ let autoSlideInterval = null;
 const originalLoadAcaoDataNoticias = loadAcaoData;
 loadAcaoData = async function(ticker) {
     await originalLoadAcaoDataNoticias.call(this, ticker);
-    await (ticker);
+    await carregarNoticiasEmpresa(ticker);
 };
 
 
@@ -6159,7 +6159,7 @@ function renderizarNoticias() {
         
         // Cria dot de navegação
         const dot = document.createElement('div');
-        dot.className = `news-dot ${index === 0 ? 'active' : ''}`;
+        dot.className = `noticiario-dot ${index === 0 ? 'active' : ''}`;
         dot.onclick = () => irParaNoticia(index);
         dotsContainer.appendChild(dot);
     });
@@ -6173,7 +6173,7 @@ function criarItemNoticia(noticia, index) {
     const item = document.createElement('div');
     item.className = `noticiario-item ${index === 0 ? 'active' : ''}`;
     
-    const data = formatarDataNoticia(noticia.datahora);
+    const data = formatarDataNoticia(noticia.data_hora || noticia.data);
     const fonte = noticia.fonte || 'Google News';
     const tipo = formatarTipoNoticia(noticia.tipo);
     
@@ -6384,5 +6384,3 @@ document.addEventListener('DOMContentLoaded', () => {
         newsCard.addEventListener('mouseleave', iniciarAutoSlide);
     }
 });
-
-
