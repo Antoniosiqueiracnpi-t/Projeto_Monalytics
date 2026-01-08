@@ -1,0 +1,39 @@
+{
+  "ticker": "EUCA4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T21:59:44.592411",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.57,
+      "variacao_total": 187.21,
+      "ultimo_valor": 798.34
+    },
+    "margens": {
+      "bruta": 30.99,
+      "operacional": 11.96,
+      "liquida": 7.56
+    },
+    "rentabilidade": {
+      "roe_medio": 9.11
+    },
+    "caixa": {
+      "media": 74.02,
+      "ultimo": 402.35
+    },
+    "balanco": {
+      "ativo_total": 4753.03,
+      "patrimonio": 2803.79
+    }
+  },
+  "analise_critica": "EUCA4 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 7.56%). Retorno sobre patrimônio abaixo do esperado (ROE de 9.11%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.57%)"
+  ],
+  "pontos_atencao": []
+}

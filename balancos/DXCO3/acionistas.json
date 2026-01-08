@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "97.837.181/0001-47",
+    "nome": "",
+    "ticker": "DXCO3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "Itaúsa S.A",
+      "cpf_cnpj": "61.532.644/0001-15",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 305897334,
+      "percentual_total": 37.279,
+      "acoes_ordinarias": 305897334,
+      "percentual_ordinarias": 37.279,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "FIA Jequitibá",
+      "cpf_cnpj": "38.658.204/0001-97",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 83705922,
+      "percentual_total": 10.201,
+      "acoes_ordinarias": 83705922,
+      "percentual_ordinarias": 10.201,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "SALO DAVI SEIBEL",
+      "cpf_cnpj": "047.345.997-34",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 59282522,
+      "percentual_total": 7.225,
+      "acoes_ordinarias": 59282522,
+      "percentual_ordinarias": 7.225,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "FOURTH SAIL CAPITAL US LP",
+      "cpf_cnpj": "30.791.155/0001-54",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 45234800,
+      "percentual_total": 5.513,
+      "acoes_ordinarias": 45234800,
+      "percentual_ordinarias": 5.513,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "ANDREA LASERNA SEIBEL",
+      "cpf_cnpj": "140.725.018-32",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 9597627,
+      "percentual_total": 1.17,
+      "acoes_ordinarias": 9597627,
+      "percentual_ordinarias": 1.17,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "DANIELA LASERNA SEIBEL",
+      "cpf_cnpj": "221.998.868-67",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 9597627,
+      "percentual_total": 1.17,
+      "acoes_ordinarias": 9597627,
+      "percentual_ordinarias": 1.17,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "ALFREDO EGYDIO ARRUDA VILLELA FILHO",
+      "cpf_cnpj": "066.530.838-88",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 6012228,
+      "percentual_total": 0.733,
+      "acoes_ordinarias": 6012228,
+      "percentual_ordinarias": 0.733,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    },
+    {
+      "nome": "ANA LÚCIA DE MATTOS BARRETTO VILLELA",
+      "cpf_cnpj": "066.530.828-06",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 6011057,
+      "percentual_total": 0.733,
+      "acoes_ordinarias": 6011057,
+      "percentual_ordinarias": 0.733,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 8
+    },
+    {
+      "nome": "RICARDO VILLELA MARINO",
+      "cpf_cnpj": "252.398.288-90",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 5753203,
+      "percentual_total": 0.701,
+      "acoes_ordinarias": 5753203,
+      "percentual_ordinarias": 0.701,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 9
+    },
+    {
+      "nome": "RODOLFO VILLELA MARINO",
+      "cpf_cnpj": "271.943.018-81",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 5753199,
+      "percentual_total": 0.701,
+      "acoes_ordinarias": 5753199,
+      "percentual_ordinarias": 0.701,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 10
+    }
+  ]
+}
