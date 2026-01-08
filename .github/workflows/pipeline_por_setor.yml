@@ -200,6 +200,13 @@ jobs:
         run: |
           python src/capturar_noticias.py --modo lista --lista "${TICKERS}" --dias 30
 
+      - name: Capturar Noticiario Empresarial 
+        id: noticiario
+        continue-on-error: true
+        run: |
+          python src/capturar_noticiario_empresarial.py --modo lista --lista "${TICKERS}"         
+
+
       - name: Capturar histórico de preços (5 anos)
         continue-on-error: true
         run: |
@@ -300,6 +307,7 @@ jobs:
           echo "  - Acionistas:            ${{ steps.acionistas.outcome }}"
           echo "  - Logos:                 ${{ steps.logos.outcome }}"
           echo "  - Notícias:              ${{ steps.noticias.outcome }}"
+          echo "  - Noticiário (Google):   ${{ steps.noticiario.outcome }}"
           echo ""
           echo "🔄 PADRONIZAÇÕES:"
           echo "  - DRE:                   ${{ steps.dre.outcome }}"
