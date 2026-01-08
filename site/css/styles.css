@@ -5046,3 +5046,420 @@ textarea:focus {
     display: flex;
     gap: 10px;
 }
+
+/* ========================================
+   ANÁLISE DOS BALANÇOS
+   ======================================== */
+
+.analise-balancos-section {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.analise-balancos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.analise-balancos-title-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.analise-balancos-title-group i {
+    font-size: 1.75rem;
+    color: #4f46e5;
+}
+
+.analise-balancos-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+}
+
+.analise-balancos-subtitle {
+    font-size: 0.95rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Loading e Empty States */
+.analise-balancos-loading,
+.analise-balancos-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    gap: 1rem;
+}
+
+.analise-balancos-loading i {
+    font-size: 2.5rem;
+    color: #4f46e5;
+}
+
+.analise-balancos-loading span {
+    font-size: 1rem;
+    color: #6b7280;
+}
+
+.analise-balancos-empty i {
+    font-size: 3rem;
+    color: #9ca3af;
+}
+
+.analise-balancos-empty p {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Controles */
+.analise-balancos-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.view-type-switch,
+.chart-table-switch {
+    display: flex;
+    gap: 0.5rem;
+    background: #f9fafb;
+    padding: 0.5rem;
+    border-radius: 12px;
+}
+
+.view-type-btn,
+.chart-table-btn {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.view-type-btn:hover,
+.chart-table-btn:hover {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.view-type-btn.active,
+.chart-table-btn.active {
+    background: white;
+    color: #4f46e5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.view-type-btn i,
+.chart-table-btn i {
+    font-size: 1rem;
+}
+
+/* Tabela de Balanços */
+.analise-balancos-table-wrapper {
+    margin-top: 1rem;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.analise-balancos-table-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+}
+
+.analise-balancos-table {
+    width: max-content;
+    min-width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    background: white;
+}
+
+/* Cabeçalho da Tabela */
+.analise-balancos-table thead {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.analise-balancos-table thead th {
+    padding: 1rem 0.75rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+/* PRIMEIRA COLUNA CONGELADA */
+.analise-balancos-table thead th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 30;
+    text-align: left;
+    padding-left: 1.5rem;
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    min-width: 280px;
+}
+
+.analise-balancos-table tbody td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 15;
+    background: #ffffff;
+    text-align: left;
+    font-weight: 600;
+    padding-left: 1.5rem;
+    box-shadow: 2px 0 0 rgba(0, 0, 0, 0.06);
+    min-width: 280px;
+}
+
+/* Corpo da Tabela */
+.analise-balancos-table tbody tr {
+    border-bottom: 1px solid #f3f4f6;
+    transition: background 0.2s ease;
+}
+
+.analise-balancos-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.analise-balancos-table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.analise-balancos-table tbody tr:nth-child(even):hover {
+    background: #f3f4f6;
+}
+
+/* Acompanha zebra */
+.analise-balancos-table tbody tr:nth-child(even) td:first-child {
+    background: #fafafa;
+}
+
+.analise-balancos-table tbody tr:hover td:first-child {
+    background: #f9fafb;
+}
+
+.analise-balancos-table tbody tr:nth-child(even):hover td:first-child {
+    background: #f3f4f6;
+}
+
+.analise-balancos-table tbody td {
+    padding: 1rem 0.75rem;
+    text-align: center;
+    color: #374151;
+    font-weight: 500;
+}
+
+/* Cabeçalhos de Grupo (DRE, BPA, BPP, DFC) */
+.analise-balancos-table .grupo-header {
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #1f2937;
+    text-align: left !important;
+    padding-left: 1rem !important;
+}
+
+/* Container do Gráfico */
+.analise-balancos-chart-wrapper {
+    margin-top: 1.5rem;
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid #e5e7eb;
+}
+
+.analise-balancos-chart-container {
+    position: relative;
+    height: 450px;
+}
+
+.analise-balancos-chart-container canvas {
+    max-height: 450px;
+}
+
+/* Rodapé */
+.analise-balancos-footer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.analise-balancos-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.legend-item i {
+    font-size: 0.9rem;
+    color: #4f46e5;
+}
+
+/* ========================================
+   RESPONSIVIDADE - ANÁLISE BALANÇOS
+   ======================================== */
+
+@media screen and (max-width: 968px) {
+    .analise-balancos-section {
+        padding: 1.5rem;
+    }
+
+    .analise-balancos-title {
+        font-size: 1.3rem;
+    }
+
+    .analise-balancos-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .view-type-switch,
+    .chart-table-switch {
+        width: 100%;
+    }
+
+    .view-type-btn,
+    .chart-table-btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .analise-balancos-table {
+        font-size: 0.85rem;
+    }
+
+    .analise-balancos-table thead th,
+    .analise-balancos-table tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .analise-balancos-table thead th:first-child,
+    .analise-balancos-table tbody td:first-child {
+        min-width: 200px;
+    }
+
+    .analise-balancos-chart-container {
+        height: 350px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .analise-balancos-section {
+        padding: 1.25rem;
+        margin-top: 1.5rem;
+    }
+
+    .analise-balancos-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .analise-balancos-table {
+        font-size: 0.8rem;
+    }
+
+    .analise-balancos-table thead th {
+        font-size: 0.75rem;
+        padding: 0.85rem 0.6rem;
+    }
+
+    .analise-balancos-table tbody td {
+        padding: 0.85rem 0.6rem;
+    }
+
+    .analise-balancos-table thead th:first-child,
+    .analise-balancos-table tbody td:first-child {
+        min-width: 180px;
+    }
+
+    .analise-balancos-chart-container {
+        height: 300px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .analise-balancos-section {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+
+    .analise-balancos-title {
+        font-size: 1.1rem;
+    }
+
+    .analise-balancos-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .analise-balancos-table {
+        font-size: 0.75rem;
+    }
+
+    .analise-balancos-table thead th {
+        font-size: 0.7rem;
+        padding: 0.5rem 0.3rem;
+    }
+
+    .analise-balancos-table tbody td {
+        padding: 0.5rem 0.3rem;
+    }
+
+    .analise-balancos-table thead th:first-child,
+    .analise-balancos-table tbody td:first-child {
+        min-width: 160px;
+        padding-left: 0.75rem;
+    }
+
+    .analise-balancos-chart-container {
+        height: 250px;
+    }
+
+    .view-type-btn,
+    .chart-table-btn {
+        padding: 0.65rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
