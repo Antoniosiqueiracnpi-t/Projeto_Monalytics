@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "15.141.799/0001-03",
+    "nome": "",
+    "ticker": "FESA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "Fundação José Carvalho",
+      "cpf_cnpj": "13.962.766/0001-07",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 178487284,
+      "percentual_total": 50.538,
+      "acoes_ordinarias": 116347784,
+      "percentual_ordinarias": 98.83,
+      "acoes_preferenciais": 62139500,
+      "percentual_preferenciais": 26.392,
+      "posicao": 1
+    },
+    {
+      "nome": "Trigono Capital Ltda.",
+      "cpf_cnpj": "28.925.400/0001-27",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 11732500,
+      "percentual_total": 3.322,
+      "acoes_ordinarias": 12000,
+      "percentual_ordinarias": 0.01,
+      "acoes_preferenciais": 11720500,
+      "percentual_preferenciais": 4.978,
+      "posicao": 2
+    }
+  ]
+}

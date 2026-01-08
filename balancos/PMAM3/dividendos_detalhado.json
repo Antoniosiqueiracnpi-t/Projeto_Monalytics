@@ -1,0 +1,28 @@
+{
+  "ticker": "PMAM3",
+  "total_dividendos": 0.3066,
+  "periodo": "2011-2016",
+  "quantidade_pagamentos": 2,
+  "dividendos": [
+    {
+      "data_com": "2011-04-29",
+      "valor": 0.220017,
+      "tipo": "DIVIDENDO",
+      "ano": 2011,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2011-04-29"
+    },
+    {
+      "data_com": "2016-04-29",
+      "valor": 0.08654,
+      "tipo": "DIVIDENDO",
+      "ano": 2016,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2016-04-29"
+    }
+  ]
+}

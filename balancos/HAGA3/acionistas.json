@@ -1,0 +1,103 @@
+{
+  "empresa": {
+    "cnpj": "30.540.991/0001-66",
+    "nome": "",
+    "ticker": "HAGA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 7,
+  "acionistas": [
+    {
+      "nome": "ASSOCIAÇÃO DOS FUNCIONARIOS DA FERRAGENS HAGA",
+      "cpf_cnpj": "39.523.725/0001-08",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2884730,
+      "percentual_total": 24.241,
+      "acoes_ordinarias": 2884230,
+      "percentual_ordinarias": 72.712,
+      "acoes_preferenciais": 500,
+      "percentual_preferenciais": 0.006,
+      "posicao": 1
+    },
+    {
+      "nome": "NUEVO SUMATRA FUNDO DE INVEST.DE AÇÕES (\"FUNDO\")",
+      "cpf_cnpj": "07.096.468/0001-70",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1554300,
+      "percentual_total": 13.061,
+      "acoes_ordinarias": 60900,
+      "percentual_ordinarias": 1.535,
+      "acoes_preferenciais": 1493400,
+      "percentual_preferenciais": 18.824,
+      "posicao": 2
+    },
+    {
+      "nome": "JOAO ANTONIO LIAN",
+      "cpf_cnpj": "020.454.488-27",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 768200,
+      "percentual_total": 6.455,
+      "acoes_ordinarias": 63800,
+      "percentual_ordinarias": 1.608,
+      "acoes_preferenciais": 704400,
+      "percentual_preferenciais": 8.879,
+      "posicao": 3
+    },
+    {
+      "nome": "FUNDO ITAIM FIM",
+      "cpf_cnpj": "20.046.677/0001-78",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 316400,
+      "percentual_total": 2.659,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 316400,
+      "percentual_preferenciais": 3.988,
+      "posicao": 4
+    },
+    {
+      "nome": "FUNDO GARIN SPECIAL",
+      "cpf_cnpj": "10.447.046/0001-07",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 67900,
+      "percentual_total": 0.571,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 67900,
+      "percentual_preferenciais": 0.856,
+      "posicao": 5
+    },
+    {
+      "nome": "FUNDO MCG",
+      "cpf_cnpj": "11.874.869/0001-81",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 67900,
+      "percentual_total": 0.571,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 67900,
+      "percentual_preferenciais": 0.856,
+      "posicao": 6
+    },
+    {
+      "nome": "FUNDO GARIN OR",
+      "cpf_cnpj": "28.568.701/0001-40",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 26400,
+      "percentual_total": 0.222,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 26400,
+      "percentual_preferenciais": 0.333,
+      "posicao": 7
+    }
+  ]
+}

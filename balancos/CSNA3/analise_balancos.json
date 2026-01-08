@@ -1,0 +1,42 @@
+{
+  "ticker": "CSNA3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T08:44:41.276893",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.82,
+      "variacao_total": 194.09,
+      "ultimo_valor": 11793.87
+    },
+    "margens": {
+      "bruta": 29.69,
+      "operacional": 19.69,
+      "liquida": 9.44
+    },
+    "rentabilidade": {
+      "roe_medio": 26.2
+    },
+    "caixa": {
+      "media": 1204.5,
+      "ultimo": -1006.67
+    },
+    "balanco": {
+      "ativo_total": 100825.59,
+      "patrimonio": 17355.37
+    }
+  },
+  "analise_critica": "CSNA3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 9.44%). Gera excelente retorno sobre o patrimônio (ROE médio de 26.2%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.82%)",
+    "Excelente retorno sobre patrimônio (ROE: 26.2%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

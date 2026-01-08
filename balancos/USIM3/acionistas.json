@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "60.894.730/0001-05",
+    "nome": "",
+    "ticker": "USIM3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "Ternium Investiments S.àr.l",
+      "cpf_cnpj": "12.659.927/0001-17",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Luxemburgo",
+      "acoes_total": 250202081,
+      "percentual_total": 19.967,
+      "acoes_ordinarias": 243214714,
+      "percentual_ordinarias": 34.486,
+      "acoes_preferenciais": 6987367,
+      "percentual_preferenciais": 1.275,
+      "posicao": 1
+    },
+    {
+      "nome": "Nippon Steel Corporation",
+      "cpf_cnpj": "05.473.413/0001-07",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Japão",
+      "acoes_total": 159275793,
+      "percentual_total": 12.711,
+      "acoes_ordinarias": 156137035,
+      "percentual_ordinarias": 22.139,
+      "acoes_preferenciais": 3138758,
+      "percentual_preferenciais": 0.573,
+      "posicao": 2
+    },
+    {
+      "nome": "Confab Industrial S.A.",
+      "cpf_cnpj": "60.882.628/0001-90",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 48794995,
+      "percentual_total": 3.894,
+      "acoes_ordinarias": 47511792,
+      "percentual_ordinarias": 6.737,
+      "acoes_preferenciais": 1283203,
+      "percentual_preferenciais": 0.234,
+      "posicao": 3
+    },
+    {
+      "nome": "Prosid Investiments S.C.A.",
+      "cpf_cnpj": "14.759.342/0001-02",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Uruguai",
+      "acoes_total": 39035998,
+      "percentual_total": 3.115,
+      "acoes_ordinarias": 38009435,
+      "percentual_ordinarias": 5.389,
+      "acoes_preferenciais": 1026563,
+      "percentual_preferenciais": 0.187,
+      "posicao": 4
+    },
+    {
+      "nome": "VERA CRUZ FUNDO DE INVESTIMENTO FINANCEIRO EM AÇÕES",
+      "cpf_cnpj": "61.594.403/0001-09",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 36708037,
+      "percentual_total": 2.929,
+      "acoes_ordinarias": 36235837,
+      "percentual_ordinarias": 5.138,
+      "acoes_preferenciais": 472200,
+      "percentual_preferenciais": 0.086,
+      "posicao": 5
+    },
+    {
+      "nome": "Previdência Usiminas",
+      "cpf_cnpj": "16.619.488/0001-70",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 34109762,
+      "percentual_total": 2.722,
+      "acoes_ordinarias": 34109762,
+      "percentual_ordinarias": 4.836,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "GESTORAS KAPITALO",
+      "cpf_cnpj": "11.180.009/0001-48",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 28409742,
+      "percentual_total": 2.267,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 28409742,
+      "percentual_preferenciais": 5.186,
+      "posicao": 7
+    },
+    {
+      "nome": "PLURAL INVESTIMENTOS GESTÃO DE RECURSOS LTDA.",
+      "cpf_cnpj": "09.630.188/0001-26",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 27657084,
+      "percentual_total": 2.207,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 27657084,
+      "percentual_preferenciais": 5.049,
+      "posicao": 8
+    },
+    {
+      "nome": "TERNIUM ARGENTINA SA",
+      "cpf_cnpj": "05.722.544/0001-80",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Argentina",
+      "acoes_total": 19517996,
+      "percentual_total": 1.558,
+      "acoes_ordinarias": 19004715,
+      "percentual_ordinarias": 2.695,
+      "acoes_preferenciais": 513281,
+      "percentual_preferenciais": 0.094,
+      "posicao": 9
+    },
+    {
+      "nome": "Mitsubishi Corporation",
+      "cpf_cnpj": "05.613.715/0001-33",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Japão",
+      "acoes_total": 3724772,
+      "percentual_total": 0.297,
+      "acoes_ordinarias": 3724772,
+      "percentual_ordinarias": 0.528,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 10
+    }
+  ]
+}

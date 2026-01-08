@@ -1,44 +1,11 @@
 {
   "ticker": "USIM6",
-  "ultima_atualizacao": "2026-01-05T23:04:42.500457",
+  "ultima_atualizacao": "2026-01-08T08:43:34.221708",
   "periodo": {
-    "inicio": "2020-12-07",
-    "fim": "2026-01-02"
+    "inicio": "2020-12-10",
+    "fim": "2026-01-07"
   },
   "dados": [
-    {
-      "data": "2020-12-07",
-      "abertura": 10.07,
-      "maxima": 10.07,
-      "minima": 10.07,
-      "fechamento": 10.07,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
-    {
-      "data": "2020-12-08",
-      "abertura": 10.07,
-      "maxima": 10.07,
-      "minima": 10.07,
-      "fechamento": 10.07,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
-    {
-      "data": "2020-12-09",
-      "abertura": 10.07,
-      "maxima": 10.07,
-      "minima": 10.07,
-      "fechamento": 10.07,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-10",
       "abertura": 10.07,
@@ -222,7 +189,7 @@
       "minima": 10.07,
       "fechamento": 10.07,
       "volume": 0,
-      "mm20": 10.07,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -233,7 +200,7 @@
       "minima": 10.07,
       "fechamento": 10.07,
       "volume": 0,
-      "mm20": 10.07,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -244,7 +211,7 @@
       "minima": 10.07,
       "fechamento": 10.07,
       "volume": 0,
-      "mm20": 10.07,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +520,7 @@
       "fechamento": 11.38,
       "volume": 0,
       "mm20": 11.37,
-      "mm50": 10.71,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -564,7 +531,7 @@
       "fechamento": 11.38,
       "volume": 0,
       "mm20": 11.38,
-      "mm50": 10.74,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -575,7 +542,7 @@
       "fechamento": 11.38,
       "volume": 0,
       "mm20": 11.38,
-      "mm50": 10.76,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2171,7 @@
       "volume": 0,
       "mm20": 18.27,
       "mm50": 18.27,
-      "mm200": 16.89
+      "mm200": null
     },
     {
       "data": "2021-09-29",
@@ -2215,7 +2182,7 @@
       "volume": 0,
       "mm20": 18.23,
       "mm50": 18.25,
-      "mm200": 16.92
+      "mm200": null
     },
     {
       "data": "2021-09-30",
@@ -2226,7 +2193,7 @@
       "volume": 0,
       "mm20": 18.14,
       "mm50": 18.23,
-      "mm200": 16.96
+      "mm200": null
     },
     {
       "data": "2021-10-01",
@@ -13898,6 +13865,39 @@
       "mm20": 8.0,
       "mm50": 8.0,
       "mm200": 8.35
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 8.0,
+      "maxima": 8.0,
+      "minima": 8.0,
+      "fechamento": 8.0,
+      "volume": 0,
+      "mm20": 8.0,
+      "mm50": 8.0,
+      "mm200": 8.34
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 8.0,
+      "maxima": 8.0,
+      "minima": 8.0,
+      "fechamento": 8.0,
+      "volume": 0,
+      "mm20": 8.0,
+      "mm50": 8.0,
+      "mm200": 8.32
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 8.0,
+      "maxima": 8.0,
+      "minima": 8.0,
+      "fechamento": 8.0,
+      "volume": 0,
+      "mm20": 8.0,
+      "mm50": 8.0,
+      "mm200": 8.31
     }
   ],
   "estatisticas": {

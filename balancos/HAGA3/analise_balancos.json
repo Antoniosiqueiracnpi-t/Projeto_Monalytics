@@ -1,0 +1,34 @@
+{
+  "ticker": "HAGA4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T08:44:41.447623",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 0.17,
+      "variacao_total": 1.77,
+      "ultimo_valor": 7.9
+    },
+    "margens": {
+      "bruta": 26.17,
+      "operacional": 11.04,
+      "liquida": 14.27
+    },
+    "rentabilidade": {
+      "roe_medio": null
+    },
+    "caixa": {},
+    "balanco": {
+      "ativo_total": 69.75,
+      "patrimonio": -50.25
+    }
+  },
+  "analise_critica": "HAGA4 mantém receita relativamente estável no período. Apresenta rentabilidade saudável com margem líquida de 14.27%.",
+  "pontos_fortes": [],
+  "pontos_atencao": []
+}

@@ -1,0 +1,41 @@
+{
+  "ticker": "PATI4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T08:44:41.535995",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.03,
+      "variacao_total": 172.8,
+      "ultimo_valor": 494.59
+    },
+    "margens": {
+      "bruta": 12.55,
+      "operacional": 6.61,
+      "liquida": 4.28
+    },
+    "rentabilidade": {
+      "roe_medio": 11.69
+    },
+    "caixa": {
+      "media": 31.35,
+      "ultimo": 118.21
+    },
+    "balanco": {
+      "ativo_total": 1517.74,
+      "patrimonio": 779.06
+    }
+  },
+  "analise_critica": "PATI4 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 4.28%). Retorno sobre patrimônio adequado (ROE de 11.69%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.03%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (4.28%)"
+  ]
+}

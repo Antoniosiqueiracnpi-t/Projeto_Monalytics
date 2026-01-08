@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "33.042.730/0001-04",
+    "nome": "",
+    "ticker": "CSNA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "VICUNHA AÇOS S.A.",
+      "cpf_cnpj": "04.213.131/0001-08",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 552412693,
+      "percentual_total": 41.657,
+      "acoes_ordinarias": 552412693,
+      "percentual_ordinarias": 41.657,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "AVELINA PARTICIPAÇÕES S.A.",
+      "cpf_cnpj": "61.123.219/0001-72",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 66261625,
+      "percentual_total": 4.997,
+      "acoes_ordinarias": 66261625,
+      "percentual_ordinarias": 4.997,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "CFL Ana Participações S.A.",
+      "cpf_cnpj": "49.384.963/0001-25",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 66261625,
+      "percentual_total": 4.997,
+      "acoes_ordinarias": 66261625,
+      "percentual_ordinarias": 4.997,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "RIO IACO PARTICIPAÇÕES S.A.",
+      "cpf_cnpj": "06.990.482/0001-50",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 45706242,
+      "percentual_total": 3.447,
+      "acoes_ordinarias": 45706242,
+      "percentual_ordinarias": 3.447,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    }
+  ]
+}

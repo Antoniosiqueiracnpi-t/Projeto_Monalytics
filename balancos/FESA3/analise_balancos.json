@@ -1,0 +1,40 @@
+{
+  "ticker": "FESA4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T08:44:41.321655",
+  "periodo_analisado": {
+    "inicio": "2015T2",
+    "fim": "2025T3",
+    "total_trimestres": 41,
+    "anos": 10.2
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.02,
+      "variacao_total": 116.38,
+      "ultimo_valor": 542.57
+    },
+    "margens": {
+      "bruta": 29.17,
+      "operacional": 17.88,
+      "liquida": 17.37
+    },
+    "rentabilidade": {
+      "roe_medio": 15.41
+    },
+    "caixa": {
+      "media": 111.76,
+      "ultimo": 299.26
+    },
+    "balanco": {
+      "ativo_total": 4231.64,
+      "patrimonio": 3389.55
+    }
+  },
+  "analise_critica": "FESA4 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 17.37%. Gera excelente retorno sobre o patrimônio (ROE médio de 15.41%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (17.37%)",
+    "Excelente retorno sobre patrimônio (ROE: 15.41%)"
+  ],
+  "pontos_atencao": []
+}
