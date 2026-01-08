@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "89.086.144/0001-16",
+    "nome": "",
+    "ticker": "RAPT3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "DRAMD PARTICIPAÇÕES E ADMINISTRAÇÃO LTDA",
+      "cpf_cnpj": "94.800.018/0001-11",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 149677255,
+      "percentual_total": 42.799,
+      "acoes_ordinarias": 104515297,
+      "percentual_ordinarias": 83.053,
+      "acoes_preferenciais": 45161958,
+      "percentual_preferenciais": 20.172,
+      "posicao": 1
+    },
+    {
+      "nome": "TPE GESTORA DE RECURSOS LTDA",
+      "cpf_cnpj": "35.098.801/0001-16",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 22321500,
+      "percentual_total": 6.383,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 22321500,
+      "percentual_preferenciais": 9.97,
+      "posicao": 2
+    },
+    {
+      "nome": "PREVI-Caixa Previdência Funcionários Banco do Brasil",
+      "cpf_cnpj": "33.754.482/0001-24",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 10308300,
+      "percentual_total": 2.948,
+      "acoes_ordinarias": 10308300,
+      "percentual_ordinarias": 8.191,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "DANIEL RAUL RANDON",
+      "cpf_cnpj": "680.334.270-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 252300,
+      "percentual_total": 0.072,
+      "acoes_ordinarias": 155,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 252145,
+      "percentual_preferenciais": 0.113,
+      "posicao": 4
+    },
+    {
+      "nome": "ALEXANDRE RANDON",
+      "cpf_cnpj": "468.801.000-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 191310,
+      "percentual_total": 0.055,
+      "acoes_ordinarias": 165,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 191145,
+      "percentual_preferenciais": 0.085,
+      "posicao": 5
+    },
+    {
+      "nome": "MAURIEN HELENA RANDON BARBOSA",
+      "cpf_cnpj": "536.947.400-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 67750,
+      "percentual_total": 0.019,
+      "acoes_ordinarias": 661,
+      "percentual_ordinarias": 0.001,
+      "acoes_preferenciais": 67089,
+      "percentual_preferenciais": 0.03,
+      "posicao": 6
+    },
+    {
+      "nome": "ROSELI BEATRIZ RANDON",
+      "cpf_cnpj": "398.167.960-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 64975,
+      "percentual_total": 0.019,
+      "acoes_ordinarias": 1066,
+      "percentual_ordinarias": 0.001,
+      "acoes_preferenciais": 63909,
+      "percentual_preferenciais": 0.029,
+      "posicao": 7
+    },
+    {
+      "nome": "DAVID ABRAMO RANDON",
+      "cpf_cnpj": "277.049.120-20",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 59562,
+      "percentual_total": 0.017,
+      "acoes_ordinarias": 1828,
+      "percentual_ordinarias": 0.001,
+      "acoes_preferenciais": 57734,
+      "percentual_preferenciais": 0.026,
+      "posicao": 8
+    },
+    {
+      "nome": "DAVI COUTO FROTA",
+      "cpf_cnpj": "059.523.657-01",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 27540,
+      "percentual_total": 0.008,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 27540,
+      "percentual_preferenciais": 0.012,
+      "posicao": 9
+    },
+    {
+      "nome": "AUDREY VICTORIA RANDON FOREST",
+      "cpf_cnpj": "014.984.970-20",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 644,
+      "percentual_total": 0.0,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 644,
+      "percentual_preferenciais": 0.0,
+      "posicao": 10
+    }
+  ]
+}

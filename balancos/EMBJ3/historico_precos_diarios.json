@@ -1,9 +1,9 @@
 {
   "ticker": "EMBJ3",
-  "ultima_atualizacao": "2026-01-05T23:03:56.439295",
+  "ultima_atualizacao": "2026-01-08T20:03:48.022489",
   "periodo": {
     "inicio": "2025-10-27",
-    "fim": "2026-01-02"
+    "fim": "2026-01-07"
   },
   "dados": [
     {
@@ -500,16 +500,49 @@
       "mm20": 87.26,
       "mm50": null,
       "mm200": null
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 89.01,
+      "maxima": 92.99,
+      "minima": 89.01,
+      "fechamento": 92.89,
+      "volume": 5419800,
+      "mm20": 87.7,
+      "mm50": null,
+      "mm200": null
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 92.91,
+      "maxima": 93.61,
+      "minima": 91.45,
+      "fechamento": 93.08,
+      "volume": 4897500,
+      "mm20": 88.06,
+      "mm50": null,
+      "mm200": null
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 93.61,
+      "maxima": 95.45,
+      "minima": 92.65,
+      "fechamento": 93.91,
+      "volume": 3236700,
+      "mm20": 88.55,
+      "mm50": null,
+      "mm200": null
     }
   ],
   "estatisticas": {
-    "total_dias": 45,
+    "total_dias": 48,
     "preco_inicial": 86.09,
-    "preco_atual": 88.59,
-    "variacao_periodo": 2.91,
-    "maxima_periodo": 89.9,
+    "preco_atual": 93.91,
+    "variacao_periodo": 9.09,
+    "maxima_periodo": 93.91,
     "minima_periodo": 81.69,
-    "volume_medio": 4239275,
+    "volume_medio": 4256695,
     "tendencia": "indefinida"
   }
 }

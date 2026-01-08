@@ -1,0 +1,40 @@
+{
+  "ticker": "FRAS3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T20:05:39.563132",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 20.28,
+      "variacao_total": 595.32,
+      "ultimo_valor": 1414.07
+    },
+    "margens": {
+      "bruta": 29.21,
+      "operacional": 11.29,
+      "liquida": 7.54
+    },
+    "rentabilidade": {
+      "roe_medio": 13.42
+    },
+    "caixa": {
+      "media": 101.6,
+      "ultimo": 1030.92
+    },
+    "balanco": {
+      "ativo_total": 6892.51,
+      "patrimonio": 2429.69
+    }
+  },
+  "analise_critica": "FRAS3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 7.54%). Retorno sobre patrimônio adequado (ROE de 13.42%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 20.28%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

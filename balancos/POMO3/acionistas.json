@@ -1,0 +1,90 @@
+{
+  "empresa": {
+    "cnpj": "88.611.835/0001-29",
+    "nome": "",
+    "ticker": "POMO3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 6,
+  "acionistas": [
+    {
+      "nome": "BELLPART PARTICIPAÇÕES LTDA",
+      "cpf_cnpj": "23.881.539/0001-00",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 187178726,
+      "percentual_total": 16.367,
+      "acoes_ordinarias": 182345904,
+      "percentual_ordinarias": 43.644,
+      "acoes_preferenciais": 4832822,
+      "percentual_preferenciais": 0.666,
+      "posicao": 1
+    },
+    {
+      "nome": "Alaska Investimentos Ltda",
+      "cpf_cnpj": "11.752.203/0001-50",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 109987838,
+      "percentual_total": 9.617,
+      "acoes_ordinarias": 82215738,
+      "percentual_ordinarias": 19.678,
+      "acoes_preferenciais": 27772100,
+      "percentual_preferenciais": 3.826,
+      "posicao": 2
+    },
+    {
+      "nome": "JAMES EDUARDO BELLINI",
+      "cpf_cnpj": "281.887.480-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 45058560,
+      "percentual_total": 3.94,
+      "acoes_ordinarias": 20971364,
+      "percentual_ordinarias": 5.019,
+      "acoes_preferenciais": 24087196,
+      "percentual_preferenciais": 3.318,
+      "posicao": 3
+    },
+    {
+      "nome": "FUNDAÇÃO MARCOPOLO",
+      "cpf_cnpj": "91.109.421/0001-00",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 30917181,
+      "percentual_total": 2.703,
+      "acoes_ordinarias": 21774275,
+      "percentual_ordinarias": 5.212,
+      "acoes_preferenciais": 9142906,
+      "percentual_preferenciais": 1.26,
+      "posicao": 4
+    },
+    {
+      "nome": "MAURO GILBERTO BELLINI",
+      "cpf_cnpj": "327.912.590-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 23549931,
+      "percentual_total": 2.059,
+      "acoes_ordinarias": 11394864,
+      "percentual_ordinarias": 2.727,
+      "acoes_preferenciais": 12155067,
+      "percentual_preferenciais": 1.675,
+      "posicao": 5
+    },
+    {
+      "nome": "PAULO ALEXANDER PACHECO BELLINI",
+      "cpf_cnpj": "804.277.740-04",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 17564671,
+      "percentual_total": 1.536,
+      "acoes_ordinarias": 9521912,
+      "percentual_ordinarias": 2.279,
+      "acoes_preferenciais": 8042759,
+      "percentual_preferenciais": 1.108,
+      "posicao": 6
+    }
+  ]
+}

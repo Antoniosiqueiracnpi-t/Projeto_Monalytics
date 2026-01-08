@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "85.778.074/0001-06",
+    "nome": "",
+    "ticker": "RSUL3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "STRAMOSK PARTICIPAÇÕES S.A.",
+      "cpf_cnpj": "11.784.409/0001-62",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4272976,
+      "percentual_total": 70.37,
+      "acoes_ordinarias": 3219218,
+      "percentual_ordinarias": 90.0,
+      "acoes_preferenciais": 1053758,
+      "percentual_preferenciais": 42.231,
+      "posicao": 1
+    },
+    {
+      "nome": "TRIGONO DELPHOS INCOME FIA",
+      "cpf_cnpj": "29.088.410/0001-18",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 463700,
+      "percentual_total": 7.637,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 463700,
+      "percentual_preferenciais": 18.583,
+      "posicao": 2
+    },
+    {
+      "nome": "FERNANDO ABOUDIB CAMARGO",
+      "cpf_cnpj": "241.620.867-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 368014,
+      "percentual_total": 6.061,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 368014,
+      "percentual_preferenciais": 14.749,
+      "posicao": 3
+    },
+    {
+      "nome": "CARLOS HENRIQUE STRAMOSK",
+      "cpf_cnpj": "379.443.809-44",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 71537,
+      "percentual_total": 1.178,
+      "acoes_ordinarias": 71537,
+      "percentual_ordinarias": 2.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "EUGENIO CESAR STRAMOSK",
+      "cpf_cnpj": "467.572.529-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 71537,
+      "percentual_total": 1.178,
+      "acoes_ordinarias": 71537,
+      "percentual_ordinarias": 2.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "JOSÉ EDUARDO STRAMOSK",
+      "cpf_cnpj": "181.870.999-68",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 71537,
+      "percentual_total": 1.178,
+      "acoes_ordinarias": 71537,
+      "percentual_ordinarias": 2.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "JOÃO STRAMOSK FILHO",
+      "cpf_cnpj": "157.968.339-87",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 71537,
+      "percentual_total": 1.178,
+      "acoes_ordinarias": 71537,
+      "percentual_ordinarias": 2.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    },
+    {
+      "nome": "LUIS ANTONIO STRAMOSK",
+      "cpf_cnpj": "311.068.469-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 71537,
+      "percentual_total": 1.178,
+      "acoes_ordinarias": 71537,
+      "percentual_ordinarias": 2.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 8
+    },
+    {
+      "nome": "TRIGONO ICATU 100 FUNDO DE INVESTIMENTO EM AÇÕES PREVIDÊNCIA",
+      "cpf_cnpj": "35.610.398/0001-62",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 52400,
+      "percentual_total": 0.863,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 52400,
+      "percentual_preferenciais": 2.1,
+      "posicao": 9
+    },
+    {
+      "nome": "TRIGONO HORIZON MICROCAP MASTER FIA",
+      "cpf_cnpj": "43.104.134/0001-65",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 19700,
+      "percentual_total": 0.324,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 19700,
+      "percentual_preferenciais": 0.79,
+      "posicao": 10
+    }
+  ]
+}

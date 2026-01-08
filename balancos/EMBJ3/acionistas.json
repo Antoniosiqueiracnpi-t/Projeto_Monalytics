@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "07.689.002/0001-89",
+    "nome": "",
+    "ticker": "EMBJ3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "BlackRock Inc",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 40711074,
+      "percentual_total": 5.498,
+      "acoes_ordinarias": 40711074,
+      "percentual_ordinarias": 5.498,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "BNDES Participações - BNDESPAR",
+      "cpf_cnpj": "00.383.281/0001-09",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 39762489,
+      "percentual_total": 5.37,
+      "acoes_ordinarias": 39762489,
+      "percentual_ordinarias": 5.37,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    }
+  ]
+}

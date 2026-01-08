@@ -1,0 +1,41 @@
+{
+  "ticker": "TUPY3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-08T20:05:39.796265",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 11.19,
+      "variacao_total": 204.44,
+      "ultimo_valor": 2399.2
+    },
+    "margens": {
+      "bruta": 16.39,
+      "operacional": 4.98,
+      "liquida": 4.18
+    },
+    "rentabilidade": {
+      "roe_medio": 9.27
+    },
+    "caixa": {
+      "media": 143.19,
+      "ultimo": 557.42
+    },
+    "balanco": {
+      "ativo_total": 9867.68,
+      "patrimonio": 3090.86
+    }
+  },
+  "analise_critica": "TUPY3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 4.18%). Retorno sobre patrimônio abaixo do esperado (ROE de 9.27%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 11.19%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (4.18%)"
+  ]
+}
