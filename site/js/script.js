@@ -5206,6 +5206,7 @@ let demonstracoesFinanceirasData = null;
 let demonstracoesFinanceirasChart = null;
 let demonstracoesViewType = 'anual'; // 'anual' ou 'trimestral'
 let demonstracoesDisplayMode = 'tabela'; // 'tabela' ou 'grafico'
+let demonstracaoTipoAtivo = 'DRE'; // 'DRE', 'BPA', 'BPP', 'DFC'
 
 // Configuração de contas por tipo de empresa
 const CONTAS_BALANCOS = {
@@ -5374,6 +5375,12 @@ function initDemonstracoesFinanceirasControls() {
     // Botões de Tabela/Gráfico
     document.getElementById('displayTabelaBtn').addEventListener('click', () => alternarDemonstracoesDisplayMode('tabela'));
     document.getElementById('displayGraficoBtn').addEventListener('click', () => alternarDemonstracoesDisplayMode('grafico'));
+
+    // Botões de Tipo de Demonstração (DRE, BPA, BPP, DFC)
+    document.getElementById('tipoDREBtn')?.addEventListener('click', () => alternarDemonstracaoTipo('DRE'));
+    document.getElementById('tipoBPABtn')?.addEventListener('click', () => alternarDemonstracaoTipo('BPA'));
+    document.getElementById('tipoBPPBtn')?.addEventListener('click', () => alternarDemonstracaoTipo('BPP'));
+    document.getElementById('tipoDFCBtn')?.addEventListener('click', () => alternarDemonstracaoTipo('DFC'));
 }
 
 // Alterna entre anual e trimestral
@@ -5402,19 +5409,50 @@ function alternarDemonstracoesDisplayMode(modo) {
 
     const tableWrapper = document.getElementById('analiseBalancosTableWrapper');
     const chartWrapper = document.getElementById('analiseBalancosChartWrapper');
+    const tipoControls = document.getElementById('demonstracaoTipoControls');
     const footer = document.getElementById('analiseBalancosFooter');
 
     if (modo === 'tabela') {
         tableWrapper.style.display = 'block';
         chartWrapper.style.display = 'none';
+        tipoControls.style.display = 'none';
         renderDemonstracoesFinanceirasTabela();
     } else {
         tableWrapper.style.display = 'none';
         chartWrapper.style.display = 'block';
+        tipoControls.style.display = 'flex';
+        
+        // Mostra/oculta botão DFC para não financeiras
+        const dfcBtn = document.getElementById('tipoDFCBtn');
+        if (dfcBtn) {
+            dfcBtn.style.display = demonstracoesFinanceirasData.ehFinanceira ? 'none' : 'flex';
+        }
+        
         renderDemonstracoesFinanceirasGrafico();
     }
 
     footer.style.display = 'block';
+}
+
+// Alterna tipo de demonstração (DRE, BPA, BPP, DFC)
+function alternarDemonstracaoTipo(tipo) {
+    demonstracaoTipoAtivo = tipo;
+    
+    // Atualiza botões
+    document.querySelectorAll('.demonstracao-tipo-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-tipo="${tipo}"]`)?.classList.add('active');
+
+    // Re-renderiza gráfico
+    renderDemonstracoesFinanceirasGrafico();
+}
+
+// Formata período para exibição (remove T4/T3 quando anual)
+function formatarPeriodoExibicao(periodo, viewType) {
+    if (viewType === 'anual') {
+        // Remove o T4, T3, etc e deixa apenas o ano
+        return periodo.replace(/T\d/, '');
+    }
+    return periodo;
 }
 
 // Renderiza tabela de balanços
@@ -5433,7 +5471,7 @@ function renderDemonstracoesFinanceirasTabela() {
     // Filtra períodos baseado na visualização
     let periodosExibir;
     if (demonstracoesViewType === 'anual') {
-        // Pega apenas 4º trimestre de cada ano (ou 3º se não tiver 4º)
+        // Pega apenas último trimestre disponível de cada ano
         const anos = {};
         todosPeriodos.forEach(p => {
             const match = p.match(/(\d{4})T(\d)/);
@@ -5453,8 +5491,9 @@ function renderDemonstracoesFinanceirasTabela() {
 
     // Cabeçalho
     let headerHTML = '<tr><th>Conta</th>';
-    periodosExibir.slice(-8).forEach(periodo => { // Últimos 8 períodos
-        headerHTML += `<th>${periodo}</th>`;
+    periodosExibir.slice(-8).forEach(periodo => {
+        const periodoFormatado = formatarPeriodoExibicao(periodo, demonstracoesViewType);
+        headerHTML += `<th>${periodoFormatado}</th>`;
     });
     headerHTML += '</tr>';
     thead.innerHTML = headerHTML;
@@ -5505,8 +5544,9 @@ function renderDemonstracoesFinanceirasTabela() {
     tbody.innerHTML = bodyHTML;
 
     // Atualiza footer
-    const ultimoPeriodo = periodosExibir[periodosExibir.length - 1];
-    footer.textContent = `Dados referentes ao período ${periodosExibir[0]} a ${ultimoPeriodo}`;
+    const primeiroFormatado = formatarPeriodoExibicao(periodosExibir[0], demonstracoesViewType);
+    const ultimoFormatado = formatarPeriodoExibicao(periodosExibir[periodosExibir.length - 1], demonstracoesViewType);
+    footer.textContent = `Dados referentes ao período ${primeiroFormatado} a ${ultimoFormatado}`;
     document.getElementById('analiseBalancosFooter').style.display = 'block';
     document.getElementById('analiseBalancosTableWrapper').style.display = 'block';
 }
@@ -5545,24 +5585,30 @@ function renderDemonstracoesFinanceirasGrafico() {
         periodosExibir = todosPeriodos.sort();
     }
 
-    const labels = periodosExibir.slice(-12); // Últimos 12 períodos
+    const labels = periodosExibir.slice(-12).map(p => formatarPeriodoExibicao(p, demonstracoesViewType));
 
-    // Datasets: pega 4 contas principais de DRE
+    // Pega contas do tipo selecionado
+    const contasSelecionadas = config[demonstracaoTipoAtivo];
+    
+    if (!contasSelecionadas || contasSelecionadas.length === 0) {
+        console.warn(`Tipo ${demonstracaoTipoAtivo} não possui contas configuradas`);
+        return;
+    }
+
+    // Datasets
     const datasets = [];
     const cores = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
     let corIndex = 0;
 
-    const contasPrincipais = config.DRE.slice(0, 4);
-
-    contasPrincipais.forEach(contaConfig => {
-        const dadosConta = demonstracoesFinanceirasData.balancos.DRE?.[contaConfig.codigo];
+    contasSelecionadas.forEach(contaConfig => {
+        const dadosConta = demonstracoesFinanceirasData.balancos[demonstracaoTipoAtivo]?.[contaConfig.codigo];
         if (!dadosConta) return;
 
-        const dados = labels.map(periodo => {
+        const dados = periodosExibir.slice(-12).map(periodo => {
             let valor = dadosConta.valores[periodo];
 
-            // Acumula se for anual
-            if (demonstracoesViewType === 'anual') {
+            // Acumula se for anual e DRE/DFC
+            if (demonstracoesViewType === 'anual' && (demonstracaoTipoAtivo === 'DRE' || demonstracaoTipoAtivo === 'DFC')) {
                 const ano = periodo.match(/(\d{4})/)[1];
                 const trimestre = parseInt(periodo.match(/T(\d)/)[1]);
                 
@@ -5582,18 +5628,21 @@ function renderDemonstracoesFinanceirasGrafico() {
         datasets.push({
             label: contaConfig.nome,
             data: dados,
-            borderColor: cores[corIndex],
-            backgroundColor: cores[corIndex] + '20',
-            borderWidth: 2,
+            borderColor: cores[corIndex % cores.length],
+            backgroundColor: cores[corIndex % cores.length] + '20',
+            borderWidth: demonstracaoTipoAtivo === 'DFC' ? 0 : 2,
             tension: 0.4,
-            fill: true
+            fill: demonstracaoTipoAtivo !== 'DFC'
         });
 
         corIndex++;
     });
 
+    // Define tipo de gráfico (barra para DFC, linha para outros)
+    const tipoGrafico = demonstracaoTipoAtivo === 'DFC' ? 'bar' : 'line';
+
     demonstracoesFinanceirasChart = new Chart(ctx, {
-        type: 'line',
+        type: tipoGrafico,
         data: {
             labels: labels,
             datasets: datasets
@@ -5620,7 +5669,7 @@ function renderDemonstracoesFinanceirasGrafico() {
             },
             scales: {
                 y: {
-                    beginAtZero: false,
+                    beginAtZero: demonstracaoTipoAtivo === 'DFC',
                     ticks: {
                         callback: function(value) {
                             return 'R$ ' + value.toFixed(0) + 'mi';
