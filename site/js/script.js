@@ -5451,7 +5451,6 @@ function renderDemonstracoesFinanceirasTabela() {
 
     let periodosExibir;
     if (demonstracoesViewType === 'anual') {
-        // Anual: pega apenas último trimestre disponível de cada ano
         const anos = {};
         todosPeriodos.forEach(p => {
             const match = p.match(/(\d{4})T(\d)/);
@@ -5463,9 +5462,8 @@ function renderDemonstracoesFinanceirasTabela() {
                 }
             }
         });
-        periodosExibir = Object.values(anos).sort().slice(-8); // Últimos 8 anos
+        periodosExibir = Object.values(anos).sort().slice(-8);
     } else {
-        // Trimestral: MOSTRA TODO O HISTÓRICO DISPONÍVEL (não limita a 8)
         periodosExibir = todosPeriodos;
     }
 
@@ -5478,14 +5476,21 @@ function renderDemonstracoesFinanceirasTabela() {
     headerHTML += '</tr>';
     thead.innerHTML = headerHTML;
 
-    // Corpo
+    // Corpo - NOVA ESTRUTURA SEM COLSPAN
     let bodyHTML = '';
     
     for (const [grupoNome, contas] of Object.entries(config)) {
         if (contas.length === 0) continue;
 
-        // Cabeçalho do grupo - aplicar classe grupo-header DIRETAMENTE no TD
-        bodyHTML += `<tr class="grupo-row"><td class="grupo-header" colspan="${periodosExibir.length + 1}">${grupoNome}</td></tr>`;
+        // Linha de cabeçalho do grupo - SEM COLSPAN, com células vazias
+        bodyHTML += `<tr class="grupo-row">`;
+        bodyHTML += `<td class="grupo-header">${grupoNome}</td>`;
+        
+        // Adiciona células vazias para cada período (mantém estrutura da tabela)
+        periodosExibir.forEach(() => {
+            bodyHTML += `<td class="grupo-header-empty"></td>`;
+        });
+        bodyHTML += `</tr>`;
 
         // Contas do grupo
         contas.forEach(contaConfig => {
@@ -5498,7 +5503,6 @@ function renderDemonstracoesFinanceirasTabela() {
             periodosExibir.forEach(periodo => {
                 let valor = dadosConta.valores[periodo];
 
-                // Para view anual, acumula DRE e DFC
                 if (demonstracoesViewType === 'anual' && (grupoNome === 'DRE' || grupoNome === 'DFC')) {
                     const ano = periodo.match(/(\d{4})/)[1];
                     const trimestre = parseInt(periodo.match(/T(\d)/)[1]);
@@ -5523,13 +5527,13 @@ function renderDemonstracoesFinanceirasTabela() {
 
     tbody.innerHTML = bodyHTML;
 
-    // Atualiza footer
     const primeiroFormatado = formatarPeriodoExibicao(periodosExibir[0], demonstracoesViewType);
     const ultimoFormatado = formatarPeriodoExibicao(periodosExibir[periodosExibir.length - 1], demonstracoesViewType);
     footer.textContent = `Dados referentes ao período ${primeiroFormatado} a ${ultimoFormatado}`;
     document.getElementById('analiseBalancosFooter').style.display = 'block';
     document.getElementById('analiseBalancosTableWrapper').style.display = 'block';
 }
+
 
 
 // Renderiza gráfico de balanços
