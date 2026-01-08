@@ -1,8 +1,44 @@
 {
-  "ultima_atualizacao": "2026-01-08T02:21:01.436498-03:00",
+  "ultima_atualizacao": "2026-01-08T02:47:11.755023-03:00",
   "total_noticias": 17,
   "portais": {
     "Investing.com": [
+      {
+        "id": "51f81537375f",
+        "titulo": "Austrália - Ações fecharam o pregão em alta e o Índice S&P/ASX 200 avançou 0,29%",
+        "link": "https://br.investing.com/news/stock-market-news/australia--acoes-fecharam-o-pregao-em-alta-e-o-indice-spasx-200-avancou-029-1793460",
+        "horario": "02:30",
+        "imagem": "",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Austrália - Ações fecharam o pregão em alta e o Índice S&P/ASX...",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "fb54c90fdafb",
+        "titulo": "Os Futuros de Ouro caíram durante a sessão asiática",
+        "link": "https://br.investing.com/news/commodities-news/os-futuros-de-ouro-cairam-durante-a-sessao-asiatica-1793458",
+        "horario": "02:25",
+        "imagem": "https://i-invdn-com.investing.com/news/LYNXMPEA660DP_M.jpg",
+        "categoria": "Commodities",
+        "tags": [],
+        "resumo": "Os Futuros de Ouro caíram durante a sessão asiática",
+        "fonte": "Investing.com"
+      },
+      {
+        "id": "2edf5411ed68",
+        "titulo": "Preço do bitcoin hoje: cai abaixo de US$ 91 mil com foco em geopolítica e dados de emprego",
+        "link": "https://br.investing.com/news/cryptocurrency-news/preco-do-bitcoin-hoje-cai-abaixo-de-us-91-mil-com-foco-em-geopolitica-e-dados-de-emprego-1793459",
+        "horario": "02:23",
+        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "categoria": "Criptomoedas",
+        "tags": [
+          "Cripto",
+          "Bitcoin"
+        ],
+        "resumo": "Preço do bitcoin hoje: cai abaixo de US$ 91 mil com foco...",
+        "fonte": "Investing.com"
+      },
       {
         "id": "8f10da7f1e0f",
         "titulo": "Ações de chips chinesas sobem após relatório de que Pequim suspende pedidos da Nvidia H200",
@@ -24,42 +60,20 @@
         "tags": [],
         "resumo": "Arrowhead Pharmaceuticals precifica oferta de notas conversíveis de US$ 625 milhões",
         "fonte": "Investing.com"
-      },
-      {
-        "id": "7a49ec6a429b",
-        "titulo": "Alumis precifica oferta pública ampliada de ações a US$ 17 por ação",
-        "link": "https://br.investing.com/news/company-news/alumis-precifica-oferta-publica-ampliada-de-acoes-a-us-17-por-acao-93CH-1793452",
-        "horario": "00:58",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Alumis precifica oferta pública ampliada de ações a US$ 17 por ação",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "78df8341e2b4",
-        "titulo": "Ações de químicas japonesas caem após China abrir investigação sobre material de chips",
-        "link": "https://br.investing.com/news/stock-market-news/acoes-de-quimicas-japonesas-caem-apos-china-abrir-investigacao-sobre-material-de-chips-1793451",
-        "horario": "00:49",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Internacional",
-        "tags": [],
-        "resumo": "Ações de químicas japonesas caem após China abrir investigação sobre material de...",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "93206558f6d5",
-        "titulo": "Ações asiáticas caem seguindo perdas de Wall Street; KOSPI atinge novo recorde",
-        "link": "https://br.investing.com/news/stock-market-news/acoes-asiaticas-caem-seguindo-perdas-de-wall-street-kospi-atinge-novo-recorde-1793449",
-        "horario": "00:47",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Ações asiáticas caem seguindo perdas de Wall Street; KOSPI atinge novo recorde",
-        "fonte": "Investing.com"
       }
     ],
     "Valor Econômico": [
+      {
+        "id": "ce5773ec4be2",
+        "titulo": "Lucro operacional da Samsung triplica no quarto trimestre com alta nos preços dos chips",
+        "link": "https://valor.globo.com/empresas/noticia/2026/01/08/lucro-operacional-da-samsung-triplica-no-quarto-trimestre-com-alta-nos-preos-dos-chips.ghtml",
+        "horario": "02:16",
+        "imagem": "https://s2-valor.glbimg.com/ZTc8oxxWMjw2pMuWJFqWbtHyHFQ=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/n/Q/PA7GkSQvKlwl3zJhPUJQ/fabrica-de-chips-da-samsung-na-coreia-do-sul.avif",
+        "categoria": "Empresas",
+        "tags": [],
+        "resumo": "Lucro operacional da Samsung triplica no quarto trimestre com alta nos preços...",
+        "fonte": "Valor Econômico"
+      },
       {
         "id": "dde6f9c614b2",
         "titulo": "Projeto de trem-bala de US$ 7 bi ligando aeroportos na Tailândia enfrenta impasse político",
@@ -94,17 +108,6 @@
         "categoria": "Geral",
         "tags": [],
         "resumo": "Preço do alumínio dispara com alta demanda de energia por data centers",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "d6b1550e7904",
-        "titulo": "Importação de automóveis pela China deve atingir menor nível em 16 anos",
-        "link": "https://valor.globo.com/mundo/noticia/2026/01/08/importao-de-automveis-pela-china-deve-atingir-menor-nvel-em-16-anos.ghtml",
-        "horario": "01:25",
-        "imagem": "https://s2-valor.glbimg.com/HHaBd73j88n4FkU7iDHxW4AVRlU=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2024/T/A/hINAobTvGiOn5dVCP3Rw/gettyimages-1716417169.jpg",
-        "categoria": "Internacional",
-        "tags": [],
-        "resumo": "Importação de automóveis pela China deve atingir menor nível em 16 anos",
         "fonte": "Valor Econômico"
       }
     ],
@@ -190,8 +193,8 @@
         "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
         "categoria": "Mercados",
         "tags": [
-          "Dólar",
-          "Ibovespa"
+          "Ibovespa",
+          "Dólar"
         ],
         "resumo": "Ibovespa cai 1% e volta aos 161 mil pontos com pressão dos...",
         "fonte": "Money Times"
