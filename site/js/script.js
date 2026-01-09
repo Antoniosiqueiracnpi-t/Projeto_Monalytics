@@ -6494,9 +6494,10 @@ async function loadDashboardB3() {
     var chart1 = document.getElementById('participacaoChart');
     if (chart1 && typeof Chart !== 'undefined') {
       var ctx1 = chart1.getContext('2d');
-      if (window.participacaoChart) {
+      if (window.participacaoChart && typeof window.participacaoChart.destroy === 'function') {
         window.participacaoChart.destroy();
       }
+      window.participacaoChart = null;
 
       var labels1 = (participacao || []).map(function (p) {
         return (p && p.tipo_investidor) ? p.tipo_investidor : '';
@@ -6534,9 +6535,10 @@ async function loadDashboardB3() {
     var chart2 = document.getElementById('fluxoMensalChart');
     if (chart2 && typeof Chart !== 'undefined') {
       var ctx2 = chart2.getContext('2d');
-      if (window.fluxoChart) {
+      if (window.fluxoChart && typeof window.fluxoChart.destroy === 'function') {
         window.fluxoChart.destroy();
       }
+      window.fluxoChart = null;
 
       window.fluxoChart = new Chart(ctx2, {
         type: 'line',
