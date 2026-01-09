@@ -6434,9 +6434,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// 🔥 SOLUÇÃO DEFINITIVA - Correção de chaves com "%"
-// Obs: propriedades com "%" DEVEM ser acessadas com colchetes: obj["chave_%"]
-
+// 🔥 FIX DEFINITIVO - Dashboard B3 (Chart.js sem travar / sem colidir com IDs)
 async function loadDashboardB3() {
   try {
     var dashboardLoading = document.getElementById('dashboardLoading');
@@ -6444,10 +6442,17 @@ async function loadDashboardB3() {
     var dashboardFooter = document.getElementById('dashboardFooter');
 
     if (dashboardLoading) dashboardLoading.style.display = 'flex';
-    if (dashboardGrid) dashboardGrid.style.display = 'none';
     if (dashboardFooter) dashboardFooter.style.display = 'none';
 
-    // Fetch paralelo com fallbacks (mantido)
+    // ✅ IMPORTANTE:
+    // Deixa o grid "renderizável" para o Chart.js medir tamanho,
+    // mas invisível para o usuário durante o carregamento.
+    if (dashboardGrid) {
+      dashboardGrid.style.display = 'grid';
+      dashboardGrid.style.visibility = 'hidden';
+    }
+
+    // Fetch
     var resumoResp = await fetch('data/b3_fluxo_resumo.json');
     var participacaoResp = await fetch('data/b3_participacao_investidores.json');
     var volumeResp = await fetch('data/b3_volume_negociacao.json');
@@ -6457,14 +6462,14 @@ async function loadDashboardB3() {
 
     var resumo = await resumoResp.json();
     var participacao = await participacaoResp.json();
-    var volume = await volumeResp.json();
+    var volume = await volumeResp.json(); // mantido (mesmo que não use direto)
     var fluxoMensal = await fluxoMensalResp.json();
     var fluxoAnual = await fluxoAnualResp.json();
     var timestamp = await timestampResp.json();
 
     var data = (resumo && resumo[0]) ? resumo[0] : {};
 
-    // KPIs - SEM optional chaining
+    // KPIs
     var kpiSaldo = document.getElementById('kpiSaldo');
     var kpiVolume = document.getElementById('kpiVolume');
     var kpiParticipacao = document.getElementById('kpiParticipacao');
@@ -6472,43 +6477,37 @@ async function loadDashboardB3() {
 
     var ytdSaldo = Number(data && data.ytd_saldo_estrangeiros_milhoes) || 0;
     var ytdVolume = Number(data && data.ytd_volume_estrangeiros_milhoes) || 0;
+    var maiorParticipantePct = Number(data && data['maior_participante_%']) || 0; // chave com %
 
-    // ✅ CHAVE COM % -> bracket notation
-    var maiorParticipantePct = Number(data && data['maior_participante_%']) || 0;
+    if (kpiSaldo) kpiSaldo.textContent = 'R$ ' + ytdSaldo.toLocaleString('pt-BR') + ' mi';
+    if (kpiVolume) kpiVolume.textContent = 'R$ ' + Math.round(ytdVolume / 1000).toLocaleString('pt-BR') + ' bi';
+    if (kpiParticipacao) kpiParticipacao.textContent = maiorParticipantePct.toLocaleString('pt-BR') + '%';
 
-    if (kpiSaldo) {
-      kpiSaldo.textContent = 'R$ ' + ytdSaldo.toLocaleString('pt-BR') + ' mi';
-    }
-    if (kpiVolume) {
-      kpiVolume.textContent = 'R$ ' + Math.round(ytdVolume / 1000).toLocaleString('pt-BR') + ' bi';
-    }
-    if (kpiParticipacao) {
-      kpiParticipacao.textContent = maiorParticipantePct.toLocaleString('pt-BR') + '%';
-    }
     if (dashboardTimestamp) {
       var ts = (timestamp && timestamp.timestamp) ? timestamp.timestamp : Date.now();
       dashboardTimestamp.textContent = '(' + new Date(ts).toLocaleDateString('pt-BR') + ')';
     }
 
-    // Charts com verificação explícita
+    // ✅ Registry próprio (não colide com IDs do DOM)
+    window.__b3Charts = window.__b3Charts || {};
+
+    // Doughnut
     var chart1 = document.getElementById('participacaoChart');
     if (chart1 && typeof Chart !== 'undefined') {
       var ctx1 = chart1.getContext('2d');
-      if (window.participacaoChart && typeof window.participacaoChart.destroy === 'function') {
-        window.participacaoChart.destroy();
-      }
-      window.participacaoChart = null;
+
+      var old1 = window.__b3Charts.participacao;
+      if (old1 && typeof old1.destroy === 'function') old1.destroy();
 
       var labels1 = (participacao || []).map(function (p) {
         return (p && p.tipo_investidor) ? p.tipo_investidor : '';
       });
 
-      // ✅ CHAVE COM % -> bracket notation
       var data1 = (participacao || []).map(function (p) {
-        return Number(p && p['participacao_media_%']) || 0;
+        return Number(p && p['participacao_media_%']) || 0; // chave com %
       });
 
-      window.participacaoChart = new Chart(ctx1, {
+      window.__b3Charts.participacao = new Chart(ctx1, {
         type: 'doughnut',
         data: {
           labels: labels1,
@@ -6530,20 +6529,19 @@ async function loadDashboardB3() {
       });
     }
 
-    // Line Chart
+    // Line
     var recentFluxo = (fluxoMensal || []).slice(-6).reverse();
     var chart2 = document.getElementById('fluxoMensalChart');
     if (chart2 && typeof Chart !== 'undefined') {
       var ctx2 = chart2.getContext('2d');
-      if (window.fluxoChart && typeof window.fluxoChart.destroy === 'function') {
-        window.fluxoChart.destroy();
-      }
-      window.fluxoChart = null;
 
-      window.fluxoChart = new Chart(ctx2, {
+      var old2 = window.__b3Charts.fluxoMensal;
+      if (old2 && typeof old2.destroy === 'function') old2.destroy();
+
+      window.__b3Charts.fluxoMensal = new Chart(ctx2, {
         type: 'line',
         data: {
-          labels: recentFluxo.map(function (f) { return f && f.periodo ? f.periodo : ''; }),
+          labels: recentFluxo.map(function (f) { return (f && f.periodo) ? f.periodo : ''; }),
           datasets: [{
             label: 'Saldo (R$ mi)',
             data: recentFluxo.map(function (f) { return Number(f && f.saldo_milhoes) || 0; }),
@@ -6584,10 +6582,20 @@ async function loadDashboardB3() {
       }
     }
 
-    // Finalizar
+    // Finalizar (agora mostra de verdade)
     if (dashboardLoading) dashboardLoading.style.display = 'none';
-    if (dashboardGrid) dashboardGrid.style.display = 'grid';
+    if (dashboardGrid) dashboardGrid.style.visibility = 'visible';
     if (dashboardFooter) dashboardFooter.style.display = 'flex';
+
+    // ✅ força um resize após ficar visível (evita canvas “mal medido”)
+    setTimeout(function () {
+      if (window.__b3Charts && window.__b3Charts.participacao && typeof window.__b3Charts.participacao.resize === 'function') {
+        window.__b3Charts.participacao.resize();
+      }
+      if (window.__b3Charts && window.__b3Charts.fluxoMensal && typeof window.__b3Charts.fluxoMensal.resize === 'function') {
+        window.__b3Charts.fluxoMensal.resize();
+      }
+    }, 50);
 
     console.log('✅ Dashboard B3 carregado!');
 
@@ -6599,6 +6607,7 @@ async function loadDashboardB3() {
     }
   }
 }
+
 
 // Inicializar
 if (document.readyState === 'loading') {
