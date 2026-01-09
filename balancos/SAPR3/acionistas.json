@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "76.484.013/0001-45",
+    "nome": "",
+    "ticker": "SAPR3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "Estado do Paraná",
+      "cpf_cnpj": "76.416.940/0001-28",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 302653778,
+      "percentual_total": 20.027,
+      "acoes_ordinarias": 302653775,
+      "percentual_ordinarias": 60.082,
+      "acoes_preferenciais": 3,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Blackrock, Inc",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 63616027,
+      "percentual_total": 4.21,
+      "acoes_ordinarias": 10945814,
+      "percentual_ordinarias": 2.173,
+      "acoes_preferenciais": 52670213,
+      "percentual_preferenciais": 5.228,
+      "posicao": 2
+    }
+  ]
+}
