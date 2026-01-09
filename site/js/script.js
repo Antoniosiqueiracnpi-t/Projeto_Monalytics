@@ -6094,94 +6094,156 @@ loadAcaoData = async function(ticker) {
 // Carrega notícias da empresa
 async function carregarNoticiasEmpresa(ticker) {
     try {
-        console.log('🔍 Buscando noticiário empresarial de', ticker, '...');
-        
-        // Normaliza o ticker e obtém a pasta correta
+        console.log('🔍 Buscando noticiário empresarial de', ticker, '.');
+
+        // Normaliza ticker
         const tickerNorm = normalizarTicker(ticker);
-        const tickerPasta = obterTickerPasta(tickerNorm);
-        
-        console.log(`📁 Ticker normalizado: ${tickerNorm} | Pasta: ${tickerPasta}`);
-        
-        // ✅ SOLUÇÃO 1: Cache busting com timestamp
-        const timestamp = new Date().getTime();
-        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/noticiario.json?t=${timestamp}`;
-        
-        console.log(`🌐 URL: ${url}`);
-        
-        // ✅ SOLUÇÃO 2: Configuração otimizada do fetch
-        const response = await fetch(url, {
-            method: 'GET',
-            cache: 'no-store',
-            redirect: 'follow'
-        });
-        
-        if (!response.ok) {
-            console.warn(`❌ HTTP ${response.status}: ${response.statusText}`);
-            exibirEstadoVazioNoticias(`Notícias não disponíveis para ${ticker}`);
-            return;
+        const tickerBase = String(tickerNorm || '').replace(/\d+$/, '').toUpperCase();
+
+        // Monta lista de pastas candidatas (robusta p/ múltiplas classes: KLBN11/KLBN3/KLBN4 etc.)
+        let candidatos = [];
+
+        function pushUnique(v) {
+            if (!v) return;
+            const val = String(v).trim().toUpperCase();
+            if (!val) return;
+            if (candidatos.indexOf(val) === -1) candidatos.push(val);
         }
-        
-        // ✅ SOLUÇÃO 3: Sempre usar .text() primeiro (ignora Content-Type)
-        const rawText = await response.text();
-        
-        // ✅ SOLUÇÃO 4: Validação de HTML 404
-        if (rawText.trim().startsWith('<!DOCTYPE') || rawText.trim().startsWith('<html')) {
-            console.warn(`❌ Arquivo não encontrado (retornou HTML)`);
-            exibirEstadoVazioNoticias(`Notícias não disponíveis para ${ticker}`);
-            return;
-        }
-        
-        // ✅ SOLUÇÃO 5: Parse manual com try-catch
-        let data;
+
+        // 1) tenta o próprio ticker (se você está na KLBN3, tenta KLBN3 primeiro)
+        pushUnique(tickerNorm);
+
+        // 2) tenta listar todas as classes a partir do MAPA_EMPRESAS_B3 (quando disponível)
+        //    (para KLBN3 deve incluir KLBN11, KLBN4 etc.)
         try {
-            data = JSON.parse(rawText);
-            console.log('✅ JSON parseado com sucesso!');
-        } catch (parseError) {
-            console.error('❌ Erro ao parsear JSON:', parseError.message);
-            console.log('📄 Primeiros 200 caracteres:', rawText.substring(0, 200));
-            exibirEstadoVazioNoticias('Formato de notícias inválido');
+            if (typeof MAPA_EMPRESAS_B3 === 'object' && MAPA_EMPRESAS_B3) {
+                const info = MAPA_EMPRESAS_B3[tickerNorm] || MAPA_EMPRESAS_B3[tickerBase] || null;
+
+                if (info && info.tickersNegociacao) {
+                    const list = Array.isArray(info.tickersNegociacao)
+                        ? info.tickersNegociacao
+                        : String(info.tickersNegociacao).split(',');
+
+                    list.forEach(t => pushUnique(t));
+                }
+            }
+        } catch (e) {
+            // silencioso (não quebra o carregamento)
+        }
+
+        // 3) mantém a pasta calculada pela sua lógica atual (fallback)
+        try {
+            pushUnique(obterTickerPasta(tickerNorm));
+        } catch (e) {
+            // silencioso
+        }
+
+        // 4) tenta também o ticker base sem número (ex.: KLBN)
+        pushUnique(tickerBase);
+
+        // Reordena para aumentar chance de bater com o modelo de captura:
+        // - mantém o ticker atual primeiro
+        // - depois prioriza nomes mais longos (ex.: KLBN11 costuma ser onde o script Python salva se existir)
+        if (candidatos.length > 1) {
+            const first = candidatos[0];
+            const rest = candidatos.slice(1).sort((a, b) => (b.length - a.length));
+            candidatos = [first].concat(rest.filter(x => x !== first));
+        }
+
+        console.log(`📁 Ticker normalizado: ${tickerNorm} | Candidatos: ${candidatos.join(', ')}`);
+
+        // Cache busting
+        const timestamp = Date.now();
+
+        // Tenta cada pasta candidata até encontrar um noticiario.json válido
+        let data = null;
+        let pastaUsada = null;
+
+        for (let i = 0; i < candidatos.length; i++) {
+            const pasta = candidatos[i];
+            const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${pasta}/noticiario.json?t=${timestamp}&try=${i}`;
+
+            console.log(`🌐 Tentativa ${i + 1}/${candidatos.length}: ${url}`);
+
+            const response = await fetch(url, {
+                method: 'GET',
+                cache: 'no-store',
+                redirect: 'follow'
+            });
+
+            if (!response.ok) {
+                console.warn(`⚠️ ${pasta}: HTTP ${response.status} (${response.statusText})`);
+                continue;
+            }
+
+            // Sempre usar text() primeiro
+            const rawText = await response.text();
+
+            // Valida HTML (404 do GitHub raw às vezes vem como HTML)
+            const trimmed = rawText.trim();
+            if (trimmed.startsWith('<!DOCTYPE') || trimmed.startsWith('<html')) {
+                console.warn(`⚠️ ${pasta}: retornou HTML (provável 404)`);
+                continue;
+            }
+
+            // Parse JSON
+            try {
+                data = JSON.parse(rawText);
+                pastaUsada = pasta;
+                console.log(`✅ Noticiário encontrado na pasta: ${pastaUsada}`);
+                break;
+            } catch (parseError) {
+                console.warn(`⚠️ ${pasta}: JSON inválido (${parseError.message})`);
+                continue;
+            }
+        }
+
+        // Se não achou em nenhuma pasta
+        if (!data) {
+            exibirEstadoVazioNoticias(`Notícias não disponíveis para ${tickerNorm}`);
             return;
         }
-        
-        // ✅ SOLUÇÃO 6: Validação de estrutura
-        if (!data || !data.noticias || !Array.isArray(data.noticias)) {
+
+        // Validação de estrutura
+        if (!data.noticias || !Array.isArray(data.noticias)) {
             console.warn('⚠️ Estrutura JSON inválida');
             console.log('Estrutura recebida:', Object.keys(data || {}));
             exibirEstadoVazioNoticias('Formato de notícias inválido');
             return;
         }
-        
-        // ✅ SOLUÇÃO 7: Filtrar notícias válidas
-        const noticiasValidas = data.noticias.filter(n => 
+
+        // Filtra notícias válidas
+        const noticiasValidas = data.noticias.filter(n =>
             n && n.titulo && n.descricao && n.url
         );
-        
+
         if (noticiasValidas.length === 0) {
             console.log('ℹ️ Nenhuma notícia válida encontrada');
             exibirEstadoVazioNoticias('Nenhuma notícia disponível');
             return;
         }
-        
+
         // Pega as 5 mais recentes
         newsData = noticiasValidas.slice(0, 5);
-        
-        console.log(`✅ ${newsData.length} notícias carregadas com sucesso!`);
+
+        console.log(`✅ ${newsData.length} notícias carregadas com sucesso! (pasta: ${pastaUsada})`);
         console.table(newsData.map(n => ({
             data: n.data,
-            titulo: n.titulo.substring(0, 50) + '...'
+            titulo: (n.titulo || '').substring(0, 50) + '...'
         })));
-        
+
         // Renderiza
         renderizarNoticias();
         atualizarInfoUltimaAtualizacao(data.ultima_atualizacao);
         iniciarAutoSlide();
-        
+
     } catch (error) {
         console.error('❌ Erro fatal ao carregar notícias:', error);
         console.error('Stack trace:', error.stack);
         exibirEstadoVazioNoticias('Erro ao carregar notícias');
     }
 }
+
 
 
 
