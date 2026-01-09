@@ -6434,66 +6434,85 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// 🔥 SOLUÇÃO DEFINITIVA - Compatível IE11+
+// 🔥 SOLUÇÃO DEFINITIVA - Correção de chaves com "%"
+// Obs: propriedades com "%" DEVEM ser acessadas com colchetes: obj["chave_%"]
+
 async function loadDashboardB3() {
   try {
     var dashboardLoading = document.getElementById('dashboardLoading');
     var dashboardGrid = document.getElementById('dashboardGrid');
     var dashboardFooter = document.getElementById('dashboardFooter');
-    
+
     if (dashboardLoading) dashboardLoading.style.display = 'flex';
     if (dashboardGrid) dashboardGrid.style.display = 'none';
     if (dashboardFooter) dashboardFooter.style.display = 'none';
-    
-    // Fetch paralelo com fallbacks
+
+    // Fetch paralelo com fallbacks (mantido)
     var resumoResp = await fetch('data/b3_fluxo_resumo.json');
     var participacaoResp = await fetch('data/b3_participacao_investidores.json');
     var volumeResp = await fetch('data/b3_volume_negociacao.json');
     var fluxoMensalResp = await fetch('data/b3_fluxo_estrangeiro_mensal.json');
     var fluxoAnualResp = await fetch('data/b3_fluxo_estrangeiro_anual.json');
     var timestampResp = await fetch('data/ultima_atualizacao.json');
-    
+
     var resumo = await resumoResp.json();
     var participacao = await participacaoResp.json();
     var volume = await volumeResp.json();
     var fluxoMensal = await fluxoMensalResp.json();
     var fluxoAnual = await fluxoAnualResp.json();
     var timestamp = await timestampResp.json();
-    
-    var data = resumo[0] || {};
-    
+
+    var data = (resumo && resumo[0]) ? resumo[0] : {};
+
     // KPIs - SEM optional chaining
     var kpiSaldo = document.getElementById('kpiSaldo');
     var kpiVolume = document.getElementById('kpiVolume');
     var kpiParticipacao = document.getElementById('kpiParticipacao');
     var dashboardTimestamp = document.getElementById('dashboardTimestamp');
-    
+
+    var ytdSaldo = Number(data && data.ytd_saldo_estrangeiros_milhoes) || 0;
+    var ytdVolume = Number(data && data.ytd_volume_estrangeiros_milhoes) || 0;
+
+    // ✅ CHAVE COM % -> bracket notation
+    var maiorParticipantePct = Number(data && data['maior_participante_%']) || 0;
+
     if (kpiSaldo) {
-      kpiSaldo.textContent = 'R$ ' + (data.ytd_saldo_estrangeiros_milhoes || 0).toLocaleString() + ' mi';
+      kpiSaldo.textContent = 'R$ ' + ytdSaldo.toLocaleString('pt-BR') + ' mi';
     }
     if (kpiVolume) {
-      kpiVolume.textContent = 'R$ ' + Math.round((data.ytd_volume_estrangeiros_milhoes || 0) / 1000).toLocaleString() + ' bi';
+      kpiVolume.textContent = 'R$ ' + Math.round(ytdVolume / 1000).toLocaleString('pt-BR') + ' bi';
     }
     if (kpiParticipacao) {
-      kpiParticipacao.textContent = (data.maior_participante_% || 0) + '%';
+      kpiParticipacao.textContent = maiorParticipantePct.toLocaleString('pt-BR') + '%';
     }
     if (dashboardTimestamp) {
-      dashboardTimestamp.textContent = '(' + new Date(timestamp.timestamp || Date.now()).toLocaleDateString('pt-BR') + ')';
+      var ts = (timestamp && timestamp.timestamp) ? timestamp.timestamp : Date.now();
+      dashboardTimestamp.textContent = '(' + new Date(ts).toLocaleDateString('pt-BR') + ')';
     }
-    
+
     // Charts com verificação explícita
     var chart1 = document.getElementById('participacaoChart');
-    if (chart1) {
+    if (chart1 && typeof Chart !== 'undefined') {
       var ctx1 = chart1.getContext('2d');
       if (window.participacaoChart) {
         window.participacaoChart.destroy();
       }
+
+      var labels1 = (participacao || []).map(function (p) {
+        return (p && p.tipo_investidor) ? p.tipo_investidor : '';
+      });
+
+      // ✅ CHAVE COM % -> bracket notation
+      var data1 = (participacao || []).map(function (p) {
+        return Number(p && p['participacao_media_%']) || 0;
+      });
+
       window.participacaoChart = new Chart(ctx1, {
         type: 'doughnut',
         data: {
-          labels: participacao.map(function(p) { return p.tipo_investidor; }),
+          labels: labels1,
           datasets: [{
-            data: participacao.map(function(p) { return p.participacao_media_% || 0; }),
+            data: data1,
             backgroundColor: ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6']
           }]
         },
@@ -6509,22 +6528,23 @@ async function loadDashboardB3() {
         }
       });
     }
-    
+
     // Line Chart
-    var recentFluxo = fluxoMensal.slice(-6).reverse();
+    var recentFluxo = (fluxoMensal || []).slice(-6).reverse();
     var chart2 = document.getElementById('fluxoMensalChart');
-    if (chart2) {
+    if (chart2 && typeof Chart !== 'undefined') {
       var ctx2 = chart2.getContext('2d');
       if (window.fluxoChart) {
         window.fluxoChart.destroy();
       }
+
       window.fluxoChart = new Chart(ctx2, {
         type: 'line',
         data: {
-          labels: recentFluxo.map(function(f) { return f.periodo; }),
+          labels: recentFluxo.map(function (f) { return f && f.periodo ? f.periodo : ''; }),
           datasets: [{
             label: 'Saldo (R$ mi)',
-            data: recentFluxo.map(function(f) { return f.saldo_milhoes || 0; }),
+            data: recentFluxo.map(function (f) { return Number(f && f.saldo_milhoes) || 0; }),
             borderColor: '#f59e0b',
             backgroundColor: 'rgba(245, 158, 11, 0.1)',
             tension: 0.4,
@@ -6542,28 +6562,33 @@ async function loadDashboardB3() {
         }
       });
     }
-    
+
     // Tabela
     var tbody = document.querySelector('#anualTable tbody');
     if (tbody) {
       tbody.innerHTML = '';
-      for (var i = 0; i < fluxoAnual.length; i++) {
-        var row = fluxoAnual[i];
-        tbody.innerHTML += '<tr>' +
-          '<td>' + row.ano + '</td>' +
-          '<td>' + (row.saldo_milhoes || 0).toLocaleString() + '</td>' +
-        '<td>' + Math.round((row.volume_total_milhoes || 0) / 1000).toLocaleString() + '</td>' +
+      for (var i = 0; i < (fluxoAnual || []).length; i++) {
+        var row = fluxoAnual[i] || {};
+        var ano = (row.ano != null) ? row.ano : '';
+        var saldo = Number(row.saldo_milhoes) || 0;
+        var volumeTotal = Number(row.volume_total_milhoes) || 0;
+
+        tbody.innerHTML +=
+          '<tr>' +
+            '<td>' + ano + '</td>' +
+            '<td>' + saldo.toLocaleString('pt-BR') + '</td>' +
+            '<td>' + Math.round(volumeTotal / 1000).toLocaleString('pt-BR') + '</td>' +
           '</tr>';
       }
     }
-    
+
     // Finalizar
     if (dashboardLoading) dashboardLoading.style.display = 'none';
     if (dashboardGrid) dashboardGrid.style.display = 'grid';
     if (dashboardFooter) dashboardFooter.style.display = 'flex';
-    
+
     console.log('✅ Dashboard B3 carregado!');
-    
+
   } catch (error) {
     console.error('❌ Erro Dashboard B3:', error);
     var loadingEl = document.getElementById('dashboardLoading');
