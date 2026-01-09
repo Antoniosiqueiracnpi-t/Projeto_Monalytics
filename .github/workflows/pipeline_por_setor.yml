@@ -13,12 +13,13 @@ on:
           - "Agropecuária"
           - "Alimentos Processados"
           - "Automóveis e Motocicletas"
+          - "Água e Saneamento"
           - "Bebidas"
-          - "Computadores e Equipamentos"
           - "Comércio Varejista"
           - "Comércio e Distribuição"
           - "Construção Civil"
           - "Construção e Engenharia"
+          - "Computadores e Equipamentos"
           - "Diversos"
           - "Embalagens"
           - "Energia Elétrica"
@@ -40,7 +41,7 @@ on:
           - "Produtos de Cuidado Pessoal e de Limpeza"
           - "Programas e Serviços"
           - "Químicos"
-          - "Serv.Méd.Hospit.,Análises e Diagnósticos"
+          - "Serviços Méd.Hospit.,Análises e Diagnósticos"
           - "Serviços"
           - "Siderurgia e Metalurgia"
           - "Tecidos, Vestuário e Calçados"
@@ -48,7 +49,7 @@ on:
           - "Transporte"
           - "Utilidades Domésticas"
           - "Viagens e Lazer"
-          - "Água e Saneamento"
+
 
       limite:
         description: "Opcional: limita a quantidade de tickers do setor (0 = todos). Útil para testes rápidos."
