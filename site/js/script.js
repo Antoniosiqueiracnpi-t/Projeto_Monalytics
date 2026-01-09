@@ -749,6 +749,7 @@ async function carregarMapeamentoB3() {
  * Atualiza o card de informações da empresa a partir do ticker selecionado.
  * tickerSelecionado: string, ex: "BEEF3"
  */
+
 function atualizarCardEmpresa(tickerSelecionado) {
     if (!MAPA_EMPRESAS_B3 || !tickerSelecionado) return;
     
@@ -1606,8 +1607,11 @@ function normalizarTicker(t) {
 
 /**
  * Retorna o ticker da PASTA (balancos/<TICKER_PASTA>/) para um ticker selecionado.
- * - Para empresas com múltiplas classes (3/4/11 etc), usamos o primeiro ticker da linha do CSV (ticker_pasta).
- * - Mantém compatibilidade com a base antiga usando todosTickersStr quando ticker_pasta não existir.
+ * 
+ * CORREÇÃO 2025-01: Prioriza tickers de AÇÃO (3, 4, 5, 6) sobre UNITS (11)
+ * porque as pastas de dados geralmente usam o ticker de ação, não unit.
+ * 
+ * Exemplo: KLBN11;KLBN3;KLBN4 → retorna KLBN3 ou KLBN4 (não KLBN11)
  */
 function obterTickerPasta(ticker) {
     const t = normalizarTicker(ticker);
@@ -1616,9 +1620,37 @@ function obterTickerPasta(ticker) {
     const info = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === t);
     if (!info) return t;
 
-    const fallback = info.todosTickersStr ? String(info.todosTickersStr).split(/[;\/ ,]+/)[0] : '';
-    const pasta = normalizarTicker(info.ticker_pasta || fallback || t);
-    return pasta || t;
+    // Pega todos os tickers relacionados da empresa
+    const todosTickersStr = info.todosTickersStr || info.ticker_pasta || t;
+    const tickers = String(todosTickersStr)
+        .split(/[;\/ ,]+/)
+        .map(tk => tk.trim().toUpperCase())
+        .filter(Boolean);
+
+    if (!tickers.length) return t;
+
+    // PRIORIDADE: Ticker de ação (3, 4, 5, 6) sobre unit (11)
+    // Ordem de preferência: 3 → 4 → 5 → 6 → qualquer outro → 11
+    const prioridade = ['3', '4', '5', '6'];
+    
+    for (const sufixo of prioridade) {
+        const tickerAcao = tickers.find(tk => tk.endsWith(sufixo));
+        if (tickerAcao) {
+            console.log(`📁 Ticker ${t} → Pasta: ${tickerAcao} (de ${todosTickersStr})`);
+            return tickerAcao;
+        }
+    }
+    
+    // Se não encontrou ticker de ação, retorna o primeiro que NÃO seja unit (11)
+    const tickerNaoUnit = tickers.find(tk => !tk.endsWith('11'));
+    if (tickerNaoUnit) {
+        console.log(`📁 Ticker ${t} → Pasta: ${tickerNaoUnit} (fallback não-unit)`);
+        return tickerNaoUnit;
+    }
+    
+    // Último recurso: retorna o primeiro ticker (mesmo que seja unit)
+    console.log(`📁 Ticker ${t} → Pasta: ${tickers[0]} (fallback unit)`);
+    return tickers[0] || t;
 }
 
 
