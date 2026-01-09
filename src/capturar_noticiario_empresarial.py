@@ -433,19 +433,57 @@ def processar_lote(df_sel: pd.DataFrame, df_full: pd.DataFrame, pasta_saida: Pat
 # ============================================================================
 
 def main():
-    parser = argparse.ArgumentParser(description="Captura noticiário empresarial via Google News RSS")
+    """
+    Função principal com suporte a argumentos CLI.
+    ✅ FIX: aceita ticker posicional (ex: python script.py KLBN11)
+    """
+    parser = argparse.ArgumentParser(
+        description="Captura noticiário empresarial via Google News RSS"
+    )
     parser.add_argument(
         "--modo",
         choices=["quantidade", "ticker", "lista", "faixa"],
         default="quantidade",
         help="Modo de seleção: quantidade, ticker, lista, faixa",
     )
-    parser.add_argument("--quantidade", type=int, default=10, help="Quantidade de empresas (modo quantidade)")
-    parser.add_argument("--ticker", default="", help="Ticker específico (modo ticker): ex: PETR4 ou KLBN11")
-    parser.add_argument("--lista", default="", help="Lista de tickers (modo lista): ex: PETR4,VALE3,KLBN11")
-    parser.add_argument("--faixa", default="1-50", help="Faixa de linhas (modo faixa): ex: 1-50, 51-150")
+    parser.add_argument(
+        "--quantidade",
+        type=int,
+        default=10,
+        help="Quantidade de empresas (modo quantidade)"
+    )
+    parser.add_argument(
+        "--ticker",
+        default="",
+        help="Ticker específico (modo ticker): ex: PETR4 ou KLBN11"
+    )
+    parser.add_argument(
+        "--lista",
+        default="",
+        help="Lista de tickers (modo lista): ex: PETR4,VALE3,KLBN11"
+    )
+    parser.add_argument(
+        "--faixa",
+        default="1-50",
+        help="Faixa de linhas (modo faixa): ex: 1-50, 51-150"
+    )
+
+    # ✅ NOVO: captura argumento posicional opcional (compatível com workflow antigo)
+    parser.add_argument(
+        "positional_ticker",
+        nargs="?",
+        default="",
+        help="(Opcional) Ticker posicional. Ex: python script.py KLBN11"
+    )
+
     args = parser.parse_args()
 
+    # ✅ Se veio ticker posicional, assume modo ticker automaticamente
+    if args.positional_ticker and not args.ticker:
+        args.modo = "ticker"
+        args.ticker = args.positional_ticker
+
+    # Carregar mapeamento
     try:
         df_full = load_mapeamento_consolidado()
         df_full = df_full[df_full["ticker"].notna()].reset_index(drop=True)
@@ -460,33 +498,38 @@ def main():
         print(f"❌ Erro ao carregar mapeamento: {e}")
         sys.exit(1)
 
+    # Pasta de saída
     pasta_saida = Path("balancos")
     pasta_saida.mkdir(exist_ok=True)
 
+    # Seleção baseada no modo
     df_sel = selecionar_empresas(
         df_base,
         args.modo,
         quantidade=args.quantidade,
         ticker=args.ticker,
         lista=args.lista,
-        faixa=args.faixa,
+        faixa=args.faixa
     )
 
     if df_sel.empty:
         print("❌ Nenhuma empresa selecionada com os critérios fornecidos.")
         sys.exit(1)
 
+    # Exibir informações do job
     print(f"\n{'='*70}")
-    print(">>> JOB: CAPTURAR NOTICIÁRIO EMPRESARIAL <<<")
+    print(f">>> JOB: CAPTURAR NOTICIÁRIO EMPRESARIAL <<<")
     print(f"{'='*70}")
     print(f"Modo: {args.modo}")
     print(f"Empresas selecionadas (ticker_base): {len(df_sel)}")
-    print("Fonte: Google News RSS")
-    print("Limite por empresa: 30 notícias novas (max 100 acumuladas) POR TICKER")
-    print("Saída: balancos/<TICKER>/noticiario.json (todas as classes)")
+    print(f"Fonte: Google News RSS")
+    print(f"Limite por empresa: 30 notícias novas (max 100 acumuladas) POR TICKER")
+    print(f"Saída: balancos/<TICKER>/noticiario.json (todas as classes)")
     print(f"{'='*70}")
 
+    # Processar
     processar_lote(df_sel, df_full, pasta_saida)
+
 
 
 if __name__ == "__main__":
