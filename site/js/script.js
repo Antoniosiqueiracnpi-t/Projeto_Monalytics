@@ -616,8 +616,12 @@ function parseMapeamentoB3(csvText) {
             .map(t => t.trim().toUpperCase())
             .filter(t => t.length > 0);
         
+        // CORREÇÃO: Armazena TODOS os tickers formatados para exibição
+        const tickersNegociacao = tickers.join(', ');
+        
         const dadosEmpresa = {
-            ticker: tickers[0],
+            ticker: tickers[0],                    // Ticker principal (para compatibilidade)
+            tickersNegociacao: tickersNegociacao,  // NOVO: Todos os tickers da empresa
             empresa: cols[IDX_EMPRESA].trim(),
             cnpj: cols[IDX_CNPJ].trim(),
             setor: cols[IDX_SETOR].trim(),
@@ -626,7 +630,7 @@ function parseMapeamentoB3(csvText) {
             descricao: cols[IDX_DESCRICAO].trim()
         };
         
-        // Mapeia todos os tickers
+        // Mapeia todos os tickers para os mesmos dados da empresa
         tickers.forEach(ticker => {
             mapa[ticker] = { ...dadosEmpresa, ticker };
         });
@@ -745,7 +749,6 @@ async function carregarMapeamentoB3() {
  * Atualiza o card de informações da empresa a partir do ticker selecionado.
  * tickerSelecionado: string, ex: "BEEF3"
  */
-
 function atualizarCardEmpresa(tickerSelecionado) {
     if (!MAPA_EMPRESAS_B3 || !tickerSelecionado) return;
     
@@ -775,10 +778,10 @@ function atualizarCardEmpresa(tickerSelecionado) {
             : (setor || segmento || '-');
     }
     
-    // 4. Tickers de negociação
+    // 4. Tickers de negociação - CORREÇÃO: Usa tickersNegociacao com todos os tickers
     const tickersEl = document.getElementById('empresaTickers');
     if (tickersEl) {
-        tickersEl.textContent = info.ticker || ticker;
+        tickersEl.textContent = info.tickersNegociacao || info.ticker || ticker;
     }
     
     // 5. Endereço da sede
@@ -791,15 +794,27 @@ function atualizarCardEmpresa(tickerSelecionado) {
     const descEl = document.getElementById('empresaDescricao');
     if (descEl) descEl.textContent = info.descricao || '-';
     
-    // 7. Empresas do mesmo setor
+    // 7. Empresas do mesmo setor - CORREÇÃO: Filtra por CNPJ para evitar duplicatas
     const mesmoSetorEl = document.getElementById('empresasMesmoSetor');
     if (mesmoSetorEl) {
         mesmoSetorEl.innerHTML = '';
         const setorRef = info.setor;
+        const cnpjAtual = info.cnpj;
         
         if (setorRef) {
+            // Usar Set para garantir CNPJs únicos e evitar empresas duplicadas
+            const cnpjsExibidos = new Set();
+            
             Object.values(MAPA_EMPRESAS_B3)
-                .filter(e => e.setor === setorRef && e.ticker !== ticker)
+                .filter(e => {
+                    // Mesmo setor, CNPJ diferente, e CNPJ ainda não exibido
+                    if (e.setor !== setorRef) return false;
+                    if (e.cnpj === cnpjAtual) return false;
+                    if (cnpjsExibidos.has(e.cnpj)) return false;
+                    
+                    cnpjsExibidos.add(e.cnpj);
+                    return true;
+                })
                 .slice(0, 12)
                 .forEach(e => {
                     const a = document.createElement('a');
