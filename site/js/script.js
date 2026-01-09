@@ -6434,7 +6434,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// 🔥 FIX DEFINITIVO - Dashboard B3 (Chart.js sem travar / sem colidir com IDs)
+// 🔥 SOLUÇÃO DEFINITIVA - Correção de chaves com "%"
+// Obs: propriedades com "%" DEVEM ser acessadas com colchetes: obj["chave_%"]
+
+// 🔥 FIX DEFINITIVO - Dashboard B3 (Chart.js sem esticar / sem travar / sem colidir com IDs)
 async function loadDashboardB3() {
   try {
     var dashboardLoading = document.getElementById('dashboardLoading');
@@ -6444,12 +6447,10 @@ async function loadDashboardB3() {
     if (dashboardLoading) dashboardLoading.style.display = 'flex';
     if (dashboardFooter) dashboardFooter.style.display = 'none';
 
-    // ✅ IMPORTANTE:
-    // Deixa o grid "renderizável" para o Chart.js medir tamanho,
-    // mas invisível para o usuário durante o carregamento.
+    // ✅ IMPORTANTE: mantém renderizável (medível) para o Chart.js
     if (dashboardGrid) {
       dashboardGrid.style.display = 'grid';
-      dashboardGrid.style.visibility = 'hidden';
+      dashboardGrid.classList.remove('is-visible'); // fica invisível durante o load
     }
 
     // Fetch
@@ -6462,14 +6463,14 @@ async function loadDashboardB3() {
 
     var resumo = await resumoResp.json();
     var participacao = await participacaoResp.json();
-    var volume = await volumeResp.json(); // mantido (mesmo que não use direto)
+    var volume = await volumeResp.json(); // mantido (pode ser usado depois)
     var fluxoMensal = await fluxoMensalResp.json();
     var fluxoAnual = await fluxoAnualResp.json();
     var timestamp = await timestampResp.json();
 
     var data = (resumo && resumo[0]) ? resumo[0] : {};
 
-    // KPIs
+    // KPIs - sem optional chaining
     var kpiSaldo = document.getElementById('kpiSaldo');
     var kpiVolume = document.getElementById('kpiVolume');
     var kpiParticipacao = document.getElementById('kpiParticipacao');
@@ -6477,7 +6478,9 @@ async function loadDashboardB3() {
 
     var ytdSaldo = Number(data && data.ytd_saldo_estrangeiros_milhoes) || 0;
     var ytdVolume = Number(data && data.ytd_volume_estrangeiros_milhoes) || 0;
-    var maiorParticipantePct = Number(data && data['maior_participante_%']) || 0; // chave com %
+
+    // ✅ chaves com "%" precisam ser acessadas por colchetes
+    var maiorParticipantePct = Number(data && data['maior_participante_%']) || 0;
 
     if (kpiSaldo) kpiSaldo.textContent = 'R$ ' + ytdSaldo.toLocaleString('pt-BR') + ' mi';
     if (kpiVolume) kpiVolume.textContent = 'R$ ' + Math.round(ytdVolume / 1000).toLocaleString('pt-BR') + ' bi';
@@ -6488,8 +6491,17 @@ async function loadDashboardB3() {
       dashboardTimestamp.textContent = '(' + new Date(ts).toLocaleDateString('pt-BR') + ')';
     }
 
-    // ✅ Registry próprio (não colide com IDs do DOM)
+    // ✅ registry próprio (não colide com IDs do DOM)
     window.__b3Charts = window.__b3Charts || {};
+
+    // Aguarda um frame para garantir layout calculado
+    await new Promise(function (resolve) {
+      if (window.requestAnimationFrame) {
+        requestAnimationFrame(function(){ resolve(); });
+      } else {
+        setTimeout(resolve, 0);
+      }
+    });
 
     // Doughnut
     var chart1 = document.getElementById('participacaoChart');
@@ -6504,7 +6516,7 @@ async function loadDashboardB3() {
       });
 
       var data1 = (participacao || []).map(function (p) {
-        return Number(p && p['participacao_media_%']) || 0; // chave com %
+        return Number(p && p['participacao_media_%']) || 0;
       });
 
       window.__b3Charts.participacao = new Chart(ctx1, {
@@ -6519,6 +6531,7 @@ async function loadDashboardB3() {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: false,
           plugins: {
             legend: {
               position: 'bottom',
@@ -6554,6 +6567,7 @@ async function loadDashboardB3() {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: false,
           scales: {
             y: { ticks: { color: '#a0a0a0' }, grid: { color: 'rgba(255,255,255,0.1)' } },
             x: { ticks: { color: '#a0a0a0' } }
@@ -6582,19 +6596,17 @@ async function loadDashboardB3() {
       }
     }
 
-    // Finalizar (agora mostra de verdade)
+    // Finalizar
     if (dashboardLoading) dashboardLoading.style.display = 'none';
-    if (dashboardGrid) dashboardGrid.style.visibility = 'visible';
+    if (dashboardGrid) dashboardGrid.classList.add('is-visible');
     if (dashboardFooter) dashboardFooter.style.display = 'flex';
 
-    // ✅ força um resize após ficar visível (evita canvas “mal medido”)
+    // força resize após visível (evita canvas mal medido)
     setTimeout(function () {
-      if (window.__b3Charts && window.__b3Charts.participacao && typeof window.__b3Charts.participacao.resize === 'function') {
-        window.__b3Charts.participacao.resize();
-      }
-      if (window.__b3Charts && window.__b3Charts.fluxoMensal && typeof window.__b3Charts.fluxoMensal.resize === 'function') {
-        window.__b3Charts.fluxoMensal.resize();
-      }
+      var c1 = window.__b3Charts && window.__b3Charts.participacao;
+      var c2 = window.__b3Charts && window.__b3Charts.fluxoMensal;
+      if (c1 && typeof c1.resize === 'function') c1.resize();
+      if (c2 && typeof c2.resize === 'function') c2.resize();
     }, 50);
 
     console.log('✅ Dashboard B3 carregado!');
@@ -6607,7 +6619,6 @@ async function loadDashboardB3() {
     }
   }
 }
-
 
 // Inicializar
 if (document.readyState === 'loading') {
