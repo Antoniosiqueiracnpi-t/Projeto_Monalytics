@@ -6437,7 +6437,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // 🔥 SOLUÇÃO DEFINITIVA - Correção de chaves com "%"
 // Obs: propriedades com "%" DEVEM ser acessadas com colchetes: obj["chave_%"]
 
-// 🔥 FIX DEFINITIVO - Dashboard B3 (Chart.js sem esticar / sem travar / sem colidir com IDs)
+// 🔥 Dashboard B3 - SEM GRÁFICOS (apenas cards) - evita bugs de Chart.js
 async function loadDashboardB3() {
   try {
     var dashboardLoading = document.getElementById('dashboardLoading');
@@ -6445,13 +6445,8 @@ async function loadDashboardB3() {
     var dashboardFooter = document.getElementById('dashboardFooter');
 
     if (dashboardLoading) dashboardLoading.style.display = 'flex';
+    if (dashboardGrid) dashboardGrid.style.display = 'none';
     if (dashboardFooter) dashboardFooter.style.display = 'none';
-
-    // ✅ IMPORTANTE: mantém renderizável (medível) para o Chart.js
-    if (dashboardGrid) {
-      dashboardGrid.style.display = 'grid';
-      dashboardGrid.classList.remove('is-visible'); // fica invisível durante o load
-    }
 
     // Fetch
     var resumoResp = await fetch('data/b3_fluxo_resumo.json');
@@ -6470,7 +6465,7 @@ async function loadDashboardB3() {
 
     var data = (resumo && resumo[0]) ? resumo[0] : {};
 
-    // KPIs - sem optional chaining
+    // KPIs
     var kpiSaldo = document.getElementById('kpiSaldo');
     var kpiVolume = document.getElementById('kpiVolume');
     var kpiParticipacao = document.getElementById('kpiParticipacao');
@@ -6479,137 +6474,108 @@ async function loadDashboardB3() {
     var ytdSaldo = Number(data && data.ytd_saldo_estrangeiros_milhoes) || 0;
     var ytdVolume = Number(data && data.ytd_volume_estrangeiros_milhoes) || 0;
 
-    // ✅ chaves com "%" precisam ser acessadas por colchetes
+    // ✅ chaves com "%" precisam de colchetes
     var maiorParticipantePct = Number(data && data['maior_participante_%']) || 0;
 
-    if (kpiSaldo) kpiSaldo.textContent = 'R$ ' + ytdSaldo.toLocaleString('pt-BR') + ' mi';
-    if (kpiVolume) kpiVolume.textContent = 'R$ ' + Math.round(ytdVolume / 1000).toLocaleString('pt-BR') + ' bi';
-    if (kpiParticipacao) kpiParticipacao.textContent = maiorParticipantePct.toLocaleString('pt-BR') + '%';
-
+    if (kpiSaldo) {
+      kpiSaldo.textContent = 'R$ ' + ytdSaldo.toLocaleString('pt-BR') + ' mi';
+    }
+    if (kpiVolume) {
+      kpiVolume.textContent = 'R$ ' + Math.round(ytdVolume / 1000).toLocaleString('pt-BR') + ' bi';
+    }
+    if (kpiParticipacao) {
+      kpiParticipacao.textContent = maiorParticipantePct.toLocaleString('pt-BR') + '%';
+    }
     if (dashboardTimestamp) {
       var ts = (timestamp && timestamp.timestamp) ? timestamp.timestamp : Date.now();
       dashboardTimestamp.textContent = '(' + new Date(ts).toLocaleDateString('pt-BR') + ')';
     }
 
-    // ✅ registry próprio (não colide com IDs do DOM)
-    window.__b3Charts = window.__b3Charts || {};
+    // =========================
+    // Card: Participação Investidores (Top 5)
+    // =========================
+    var partEl = document.getElementById('participacaoInvestidoresCard');
+    if (partEl) {
+      var arr = Array.isArray(participacao) ? participacao.slice() : [];
 
-    // Aguarda um frame para garantir layout calculado
-    await new Promise(function (resolve) {
-      if (window.requestAnimationFrame) {
-        requestAnimationFrame(function(){ resolve(); });
+      arr.sort(function(a, b) {
+        var av = Number(a && a['participacao_media_%']) || 0;
+        var bv = Number(b && b['participacao_media_%']) || 0;
+        return bv - av;
+      });
+
+      var top = arr.slice(0, 5);
+
+      if (!top.length) {
+        partEl.innerHTML = '<div class="b3-card-muted">Sem dados disponíveis.</div>';
       } else {
-        setTimeout(resolve, 0);
+        var html = '';
+        for (var i = 0; i < top.length; i++) {
+          var p = top[i] || {};
+          var nome = (p.tipo_investidor != null) ? String(p.tipo_investidor) : '—';
+          var pct = (Number(p['participacao_media_%']) || 0);
+
+          html += '<div class="b3-card-line">' +
+                    '<div class="label">' + nome + '</div>' +
+                    '<div class="value">' + pct.toLocaleString('pt-BR') + '%</div>' +
+                  '</div>';
+        }
+        partEl.innerHTML = html;
       }
-    });
-
-    // Doughnut
-    var chart1 = document.getElementById('participacaoChart');
-    if (chart1 && typeof Chart !== 'undefined') {
-      var ctx1 = chart1.getContext('2d');
-
-      var old1 = window.__b3Charts.participacao;
-      if (old1 && typeof old1.destroy === 'function') old1.destroy();
-
-      var labels1 = (participacao || []).map(function (p) {
-        return (p && p.tipo_investidor) ? p.tipo_investidor : '';
-      });
-
-      var data1 = (participacao || []).map(function (p) {
-        return Number(p && p['participacao_media_%']) || 0;
-      });
-
-      window.__b3Charts.participacao = new Chart(ctx1, {
-        type: 'doughnut',
-        data: {
-          labels: labels1,
-          datasets: [{
-            data: data1,
-            backgroundColor: ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6']
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: { color: '#fff', padding: 20 }
-            }
-          }
-        }
-      });
     }
 
-    // Line
-    var recentFluxo = (fluxoMensal || []).slice(-6).reverse();
-    var chart2 = document.getElementById('fluxoMensalChart');
-    if (chart2 && typeof Chart !== 'undefined') {
-      var ctx2 = chart2.getContext('2d');
+    // =========================
+    // Card: Fluxo Estrangeiro Mensal (últimos 6)
+    // =========================
+    var fluxoEl = document.getElementById('fluxoMensalCard');
+    if (fluxoEl) {
+      var fx = Array.isArray(fluxoMensal) ? fluxoMensal.slice() : [];
+      var recent = fx.slice(-6).reverse(); // mais recente em cima
 
-      var old2 = window.__b3Charts.fluxoMensal;
-      if (old2 && typeof old2.destroy === 'function') old2.destroy();
+      if (!recent.length) {
+        fluxoEl.innerHTML = '<div class="b3-card-muted">Sem dados disponíveis.</div>';
+      } else {
+        var html2 = '';
+        for (var j = 0; j < recent.length; j++) {
+          var f = recent[j] || {};
+          var per = (f.periodo != null) ? String(f.periodo) : '—';
+          var saldo = Number(f.saldo_milhoes) || 0;
 
-      window.__b3Charts.fluxoMensal = new Chart(ctx2, {
-        type: 'line',
-        data: {
-          labels: recentFluxo.map(function (f) { return (f && f.periodo) ? f.periodo : ''; }),
-          datasets: [{
-            label: 'Saldo (R$ mi)',
-            data: recentFluxo.map(function (f) { return Number(f && f.saldo_milhoes) || 0; }),
-            borderColor: '#f59e0b',
-            backgroundColor: 'rgba(245, 158, 11, 0.1)',
-            tension: 0.4,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: false,
-          scales: {
-            y: { ticks: { color: '#a0a0a0' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-            x: { ticks: { color: '#a0a0a0' } }
-          },
-          plugins: { legend: { labels: { color: '#fff' } } }
+          var cls = saldo >= 0 ? 'b3-val-pos' : 'b3-val-neg';
+          var sinal = saldo >= 0 ? '+' : '−';
+          var abs = Math.abs(saldo);
+
+          html2 += '<div class="b3-card-line">' +
+                     '<div class="label">' + per + '</div>' +
+                     '<div class="value ' + cls + '">' + sinal + 'R$ ' + abs.toLocaleString('pt-BR') + ' mi</div>' +
+                   '</div>';
         }
-      });
+        fluxoEl.innerHTML = html2;
+      }
     }
 
-    // Tabela
+    // =========================
+    // Tabela anual (mantido)
+    // =========================
     var tbody = document.querySelector('#anualTable tbody');
     if (tbody) {
       tbody.innerHTML = '';
-      for (var i = 0; i < (fluxoAnual || []).length; i++) {
-        var row = fluxoAnual[i] || {};
-        var ano = (row.ano != null) ? row.ano : '';
-        var saldo = Number(row.saldo_milhoes) || 0;
-        var volumeTotal = Number(row.volume_total_milhoes) || 0;
-
-        tbody.innerHTML +=
-          '<tr>' +
-            '<td>' + ano + '</td>' +
-            '<td>' + saldo.toLocaleString('pt-BR') + '</td>' +
-            '<td>' + Math.round(volumeTotal / 1000).toLocaleString('pt-BR') + '</td>' +
+      for (var k = 0; k < (fluxoAnual || []).length; k++) {
+        var row = fluxoAnual[k] || {};
+        tbody.innerHTML += '<tr>' +
+          '<td>' + row.ano + '</td>' +
+          '<td>' + (Number(row.saldo_milhoes) || 0).toLocaleString('pt-BR') + '</td>' +
+          '<td>' + Math.round((Number(row.volume_total_milhoes) || 0) / 1000).toLocaleString('pt-BR') + '</td>' +
           '</tr>';
       }
     }
 
     // Finalizar
     if (dashboardLoading) dashboardLoading.style.display = 'none';
-    if (dashboardGrid) dashboardGrid.classList.add('is-visible');
+    if (dashboardGrid) dashboardGrid.style.display = 'grid';
     if (dashboardFooter) dashboardFooter.style.display = 'flex';
 
-    // força resize após visível (evita canvas mal medido)
-    setTimeout(function () {
-      var c1 = window.__b3Charts && window.__b3Charts.participacao;
-      var c2 = window.__b3Charts && window.__b3Charts.fluxoMensal;
-      if (c1 && typeof c1.resize === 'function') c1.resize();
-      if (c2 && typeof c2.resize === 'function') c2.resize();
-    }, 50);
-
-    console.log('✅ Dashboard B3 carregado!');
+    console.log('✅ Dashboard B3 carregado (sem gráficos)!');
 
   } catch (error) {
     console.error('❌ Erro Dashboard B3:', error);
