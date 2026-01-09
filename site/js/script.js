@@ -2435,33 +2435,15 @@ function renderSuggestions(matches) {
 }
 
 // Carrega dados da ação
-/**
- * Carrega dados da ação com FALLBACK AUTOMÁTICO para tickers múltiplos
- * Se ticker_pasta (ex: KLBN11) retornar 404, tenta outros tickers da mesma empresa
- */
 async function loadAcaoData(ticker) {
-    // ======================================================================
-    // ✅ VALIDAÇÃO CRÍTICA: Verifica se elementos da UI existem
-    // ======================================================================
-    const loadingState = document.getElementById('acaoLoadingState');
     const emptyState = document.getElementById('acaoEmptyState');
-    const content = document.getElementById('acaoContent');
-
-    if (!loadingState || !emptyState || !content) {
-        console.error('❌ ERRO CRÍTICO: Elementos da interface não encontrados!');
-        console.error('Verifique se o HTML contém os IDs:');
-        console.error('  - acaoLoadingState:', !!loadingState);
-        console.error('  - acaoEmptyState:', !!emptyState);
-        console.error('  - acaoContent:', !!content);
-        
-        alert('Erro ao carregar interface. Recarregue a página.');
-        return; // ← PARA EXECUÇÃO AQUI (não tenta acessar .style)
-    }
-
-    loadingState.style.display = 'flex';
+    const loadingState = document.getElementById('acaoLoadingState');
+    const content = document.getElementById('acaoAnaliseContent');
+    
     emptyState.style.display = 'none';
     content.style.display = 'none';
-
+    loadingState.style.display = 'block';
+    
     try {
         console.log(`🔍 Carregando dados de ${ticker}...`);
         
@@ -2469,9 +2451,7 @@ async function loadAcaoData(ticker) {
         const t = String(ticker || '').trim().toUpperCase();
         
         // Busca info da empresa no mapeamento (comparação normalizada)
-        const empresaInfo = mapeamentoB3.find(item => 
-            String(item.ticker || '').trim().toUpperCase() === t
-        );
+        const empresaInfo = mapeamentoB3.find(item => String(item.ticker || '').trim().toUpperCase() === t);
         
         if (!empresaInfo) {
             throw new Error(`Ticker ${t} não encontrado no mapeamento B3`);
@@ -2479,94 +2459,34 @@ async function loadAcaoData(ticker) {
         
         console.log('✅ Empresa encontrada:', empresaInfo.empresa);
         
-        // ======================================================================
-        // ✅ CORREÇÃO: LISTA DE TICKERS PARA TENTAR (COM FALLBACK)
-        // ======================================================================
-        const tickersCandidatos = [];
-        
-        // 1. Primeiro: ticker_pasta (se definido)
-        if (empresaInfo.ticker_pasta && empresaInfo.ticker_pasta.trim()) {
-            tickersCandidatos.push(empresaInfo.ticker_pasta.trim().toUpperCase());
-        }
-        
-        // 2. Segundo: ticker solicitado
-        tickersCandidatos.push(t);
-        
-        // 3. Terceiro: outros tickers da mesma empresa (todosTickersStr)
-        if (empresaInfo.todosTickersStr) {
-            const outrosTickers = String(empresaInfo.todosTickersStr)
-                .split(/[;\/ ,]+/)
-                .map(tk => tk.trim().toUpperCase())
-                .filter(tk => tk && tk !== t && !tickersCandidatos.includes(tk));
-            tickersCandidatos.push(...outrosTickers);
-        }
-        
-        // Remove duplicatas
-        const tickersUnicos = [...new Set(tickersCandidatos)];
-        
-        console.log(`🔍 Tickers candidatos (em ordem de prioridade): ${tickersUnicos.join(', ')}`);
-        
-        // ======================================================================
-        // TENTAR CARREGAR DADOS (COM FALLBACK AUTOMÁTICO)
-        // ======================================================================
-        let tickerPasta = null;
-        let response = null;
-        const timestamp = new Date().getTime();
-        
-        for (const candidato of tickersUnicos) {
-            const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${candidato}/historico_precos_diarios.json?t=${timestamp}`;
-            
-            console.log(`🔄 Tentando buscar dados em: balancos/${candidato}/`);
-            
-            try {
-                const tentativa = await fetch(url);
-                if (tentativa.ok) {
-                    response = tentativa;
-                    tickerPasta = candidato;
-                    console.log(`✅ Dados encontrados em: balancos/${tickerPasta}/`);
-                    break;
-                }
-            } catch (e) {
-                // Continua para próximo candidato
-            }
-        }
-        
-        // Se nenhum ticker funcionou, lança erro
-        if (!response || !tickerPasta) {
-            throw new Error(
-                `Dados não encontrados para ${ticker}. ` +
-                `Tentativas: ${tickersUnicos.join(', ')}`
-            );
-        }
+        // Usa SEMPRE a pasta principal calculada no mapeamento
+        const tickerPasta = (empresaInfo.ticker_pasta && empresaInfo.ticker_pasta.trim())
+            ? empresaInfo.ticker_pasta.trim().toUpperCase()
+            : t;
         
         console.log(`📂 Usando pasta: balancos/${tickerPasta}/`);
         
-        // Carregar dados JSON
+        const timestamp = new Date().getTime();
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/historico_precos_diarios.json?t=${timestamp}`);
+        
+        if (!response.ok) {
+            throw new Error(`Dados não encontrados para ${ticker}`);
+        }
+        
         acaoAtualData = await response.json();
         console.log('✅ Dados carregados:', acaoAtualData.dados.length, 'registros');
         
-        // ======================================================================
-        // ✅ VALIDAÇÃO: Verifica se elementos ainda existem antes de atualizar
-        // ======================================================================
-        const acaoTicker = document.getElementById('acaoTicker');
-        const acaoNome = document.getElementById('acaoNome');
+        // Atualiza UI com ticker solicitado
+        document.getElementById('acaoTicker').textContent = ticker;
+        document.getElementById('acaoNome').textContent = empresaInfo.empresa;
+        
+        // Carrega logo
         const logoImg = document.getElementById('acaoLogoImg');
         const logoFallback = document.getElementById('acaoLogoFallback');
-        
-        if (acaoTicker) acaoTicker.textContent = ticker;
-        if (acaoNome) acaoNome.textContent = empresaInfo.empresa;
-        
-        if (logoImg && logoFallback) {
-            logoImg.src = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/logo.png?t=${timestamp}`;
-            logoImg.style.display = 'block';
-            logoFallback.style.display = 'none';
-            logoFallback.textContent = ticker.substring(0, 4);
-        }
-        
-        // ======================================================================
-        // ATUALIZAR VARIÁVEL GLOBAL PARA OUTRAS FUNÇÕES USAREM tickerPasta
-        // ======================================================================
-        window.TICKER_PASTA_ATUAL = tickerPasta;  // ← IMPORTANTE!
+        logoImg.src = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/logo.png?t=${timestamp}`;
+        logoImg.style.display = 'block';
+        logoFallback.style.display = 'none';
+        logoFallback.textContent = ticker.substring(0, 4);
         
         // Atualiza informações da empresa
         updateEmpresaInfo(ticker);
@@ -2585,10 +2505,8 @@ async function loadAcaoData(ticker) {
         
     } catch (error) {
         console.error('❌ Erro ao carregar ação:', error);
-        
-        if (loadingState) loadingState.style.display = 'none';
-        if (emptyState) emptyState.style.display = 'block';
-        
+        loadingState.style.display = 'none';
+        emptyState.style.display = 'block';
         alert(`Erro ao carregar ${ticker}:\n${error.message}`);
     }
 }
@@ -2674,8 +2592,7 @@ async function loadMultiplosData(ticker) {
             throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
         }
         
-        // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
+        const tickerPasta = obterTickerPasta(ticker);
         const timestamp = new Date().getTime();
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
         
@@ -2723,8 +2640,7 @@ async function loadAcionistasData(ticker) {
         if (!empresaInfo) {
             throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
         }
-        // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
+        const tickerPasta = obterTickerPasta(ticker);
         
         const timestamp = new Date().getTime();
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/acionistas.json?t=${timestamp}`);
@@ -2765,8 +2681,7 @@ async function loadAnaliseBalancos(ticker) {
         if (!empresaInfo) {
             throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
         }
-        // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
+        const tickerPasta = obterTickerPasta(ticker);
         
         const timestamp = new Date().getTime();
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/analise_balancos.json?t=${timestamp}`);
@@ -3329,8 +3244,7 @@ async function carregarDYAtual(ticker) {
         if (!empresaInfo) {
             throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
         }
-        // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
+        const tickerPasta = obterTickerPasta(ticker);
         
         console.log(`🔍 Buscando DY em multiplos.json (ticker: ${tickerPasta})...`);
         
@@ -3388,8 +3302,7 @@ async function carregarDYHistorico(ticker) {
         if (!empresaInfo) {
             throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
         }
-        // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
+        const tickerPasta = obterTickerPasta(ticker);
         
         console.log(`📈 Buscando DY histórico em multiplos.json (ticker: ${tickerPasta})...`);
         
@@ -5363,8 +5276,7 @@ async function loadDemonstracoesFinanceirasData(ticker) {
             throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
         }
 
-        // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
+        const tickerPasta = obterTickerPasta(ticker);
         const ehFinanceira = isSetorFinanceiro(empresaInfo.setor);
         const timestamp = new Date().getTime();
 
@@ -5848,8 +5760,7 @@ async function loadComunicadosEmpresa(ticker) {
     try {
         console.log('Carregando comunicados da empresa de', ticker, '...');
 
-        // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
+        const tickerPasta = obterTickerPasta(ticker);
         const timestamp = new Date().getTime();
         const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/noticias.json?t=${timestamp}`;
 
