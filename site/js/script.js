@@ -2440,9 +2440,23 @@ function renderSuggestions(matches) {
  * Se ticker_pasta (ex: KLBN11) retornar 404, tenta outros tickers da mesma empresa
  */
 async function loadAcaoData(ticker) {
+    // ======================================================================
+    // ✅ VALIDAÇÃO CRÍTICA: Verifica se elementos da UI existem
+    // ======================================================================
     const loadingState = document.getElementById('acaoLoadingState');
     const emptyState = document.getElementById('acaoEmptyState');
     const content = document.getElementById('acaoContent');
+
+    if (!loadingState || !emptyState || !content) {
+        console.error('❌ ERRO CRÍTICO: Elementos da interface não encontrados!');
+        console.error('Verifique se o HTML contém os IDs:');
+        console.error('  - acaoLoadingState:', !!loadingState);
+        console.error('  - acaoEmptyState:', !!emptyState);
+        console.error('  - acaoContent:', !!content);
+        
+        alert('Erro ao carregar interface. Recarregue a página.');
+        return; // ← PARA EXECUÇÃO AQUI (não tenta acessar .style)
+    }
 
     loadingState.style.display = 'flex';
     emptyState.style.display = 'none';
@@ -2531,17 +2545,23 @@ async function loadAcaoData(ticker) {
         acaoAtualData = await response.json();
         console.log('✅ Dados carregados:', acaoAtualData.dados.length, 'registros');
         
-        // Atualiza UI com ticker solicitado (não com tickerPasta)
-        document.getElementById('acaoTicker').textContent = ticker;
-        document.getElementById('acaoNome').textContent = empresaInfo.empresa;
-        
-        // Carrega logo (usa tickerPasta)
+        // ======================================================================
+        // ✅ VALIDAÇÃO: Verifica se elementos ainda existem antes de atualizar
+        // ======================================================================
+        const acaoTicker = document.getElementById('acaoTicker');
+        const acaoNome = document.getElementById('acaoNome');
         const logoImg = document.getElementById('acaoLogoImg');
         const logoFallback = document.getElementById('acaoLogoFallback');
-        logoImg.src = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/logo.png?t=${timestamp}`;
-        logoImg.style.display = 'block';
-        logoFallback.style.display = 'none';
-        logoFallback.textContent = ticker.substring(0, 4);
+        
+        if (acaoTicker) acaoTicker.textContent = ticker;
+        if (acaoNome) acaoNome.textContent = empresaInfo.empresa;
+        
+        if (logoImg && logoFallback) {
+            logoImg.src = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/logo.png?t=${timestamp}`;
+            logoImg.style.display = 'block';
+            logoFallback.style.display = 'none';
+            logoFallback.textContent = ticker.substring(0, 4);
+        }
         
         // ======================================================================
         // ATUALIZAR VARIÁVEL GLOBAL PARA OUTRAS FUNÇÕES USAREM tickerPasta
@@ -2565,8 +2585,10 @@ async function loadAcaoData(ticker) {
         
     } catch (error) {
         console.error('❌ Erro ao carregar ação:', error);
-        loadingState.style.display = 'none';
-        emptyState.style.display = 'block';
+        
+        if (loadingState) loadingState.style.display = 'none';
+        if (emptyState) emptyState.style.display = 'block';
+        
         alert(`Erro ao carregar ${ticker}:\n${error.message}`);
     }
 }
