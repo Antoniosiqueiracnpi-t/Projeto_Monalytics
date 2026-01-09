@@ -798,6 +798,71 @@ def _calcular_ev(dados: DadosEmpresa, periodo: str, market_cap: Optional[float] 
     
     return market_cap + divida_liquida
 
+def _calcular_vpa(dados: DadosEmpresa, periodo: str) -> float:
+    """
+    Calcula Valor Patrimonial por Ação (VPA) de um período.
+    
+    VPA = Patrimônio Líquido / Número de Ações
+    
+    Args:
+        dados: Dados da empresa
+        periodo: Período desejado (ex: "2024T4")
+    
+    Returns:
+        VPA em R$/ação ou np.nan se dados insuficientes
+    
+    Unidades:
+        - PL em R$ MIL (balanços CVM)
+        - Ações em UNIDADES
+        - VPA = (PL × 1000) / Ações → R$/ação
+    
+    Exemplo:
+        PL = 50.000.000 R$ mil = R$ 50 bilhões
+        Ações = 10.000.000.000 unidades
+        VPA = 50.000.000.000 / 10.000.000.000 = R$ 5,00/ação
+    """
+    pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
+    acoes = _obter_acoes(dados, periodo)
+    
+    if not np.isfinite(pl) or not np.isfinite(acoes):
+        return np.nan
+    
+    if acoes <= 0:
+        return np.nan
+    
+    # Converter PL de R$ mil para R$ (× 1000), depois dividir por ações
+    vpa = (pl * 1000.0) / acoes
+    
+    return vpa
+
+
+def _calcular_vpa_banco(dados: DadosEmpresa, periodo: str, pl_code: str) -> float:
+    """
+    Calcula VPA para bancos (PL pode estar em 2.07 ou 2.08).
+    
+    Args:
+        dados: Dados da empresa
+        periodo: Período desejado
+        pl_code: Código da conta PL ("2.07" ou "2.08")
+    
+    Returns:
+        VPA em R$/ação ou np.nan se dados insuficientes
+    """
+    pl = _obter_valor_pontual(dados.bpp, pl_code, periodo)
+    acoes = _obter_acoes(dados, periodo)
+    
+    if not np.isfinite(pl) or not np.isfinite(acoes):
+        return np.nan
+    
+    if acoes <= 0:
+        return np.nan
+    
+    # Converter PL de R$ mil para R$ (× 1000), depois dividir por ações
+    vpa = (pl * 1000.0) / acoes
+    
+    return vpa
+
+
 
 # ======================================================================================
 # CALCULADORA LTM (Last Twelve Months)
@@ -1339,8 +1404,10 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, lpa_ltm))
     
     
-    pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
-    resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
+    #pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
+    #resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
+    vpa = _calcular_vpa(dados, periodo)
+    resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))    
     
     ebitda_ltm = _calcular_ebitda_ltm(dados, periodo)
     resultado["EV_EBITDA"] = _normalizar_valor(_safe_divide(ev, ebitda_ltm))
@@ -1463,7 +1530,8 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
 MULTIPLOS_METADATA = {
     #"P_L": {"nome": "P/L", "categoria": "Valuation", "formula": "Market Cap / Lucro Líquido LTM", "unidade": "x", "usa_preco": True},
     "P_L": {"nome": "P/L", "categoria": "Valuation", "formula": "Preço / Lucro por Ação LTM", "unidade": "x", "usa_preco": True},
-    "P_VPA": {"nome": "P/VPA", "categoria": "Valuation", "formula": "Market Cap / Patrimônio Líquido", "unidade": "x", "usa_preco": True},
+    #"P_VPA": {"nome": "P/VPA", "categoria": "Valuation", "formula": "Market Cap / Patrimônio Líquido", "unidade": "x", "usa_preco": True},
+    "P_VPA": {"nome": "P/VPA", "categoria": "Valuation", "formula": "Preço / Valor Patrimonial por Ação", "unidade": "x", "usa_preco": True},
     "EV_EBITDA": {"nome": "EV/EBITDA", "categoria": "Valuation", "formula": "Enterprise Value / EBITDA LTM", "unidade": "x", "usa_preco": True},
     "EV_EBIT": {"nome": "EV/EBIT", "categoria": "Valuation", "formula": "Enterprise Value / EBIT LTM", "unidade": "x", "usa_preco": True},
     "EV_RECEITA": {"nome": "EV/Receita", "categoria": "Valuation", "formula": "Enterprise Value / Receita LTM", "unidade": "x", "usa_preco": True},
@@ -1505,7 +1573,7 @@ MULTIPLOS_BANCOS_METADATA = {
     "P_VPA": {
         "nome": "P/VPA",
         "categoria": "Valuation",
-        "formula": "Market Cap / Patrimônio Líquido",
+        "formula": "Preço / Valor Patrimonial por Ação",
         "unidade": "x",
         "usa_preco": True
     },
@@ -1575,7 +1643,7 @@ MULTIPLOS_HOLDINGS_SEGUROS_METADATA = {
     "P_VPA": {
         "nome": "P/VPA",
         "categoria": "Valuation",
-        "formula": "Market Cap / Patrimônio Líquido",
+        "formula": "Preço / Valor Patrimonial por Ação",
         "unidade": "x",
         "usa_preco": True
     },
@@ -1659,7 +1727,7 @@ MULTIPLOS_SEGURADORAS_METADATA = {
     "P_VPA": {
         "nome": "P/VPA",
         "categoria": "Valuation",
-        "formula": "Market Cap / Patrimônio Líquido",
+        "formula": "Preço / Valor Patrimonial por Ação",
         "unidade": "x",
         "usa_preco": True
     },
@@ -1794,7 +1862,7 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     ll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_BANCOS["lucro_liquido"], periodo)
     
     # Patrimônio Líquido - Código detectado automaticamente (2.07 ou 2.08)
-    pl = _obter_valor_pontual(dados.bpp, pl_code, periodo)
+    # pl = _obter_valor_pontual(dados.bpp, pl_code, periodo)
     pl_medio = _obter_valor_medio(dados, dados.bpp, pl_code, periodo)
     
     # Ativo Total - Conta 1 (sempre existe)
@@ -1824,7 +1892,9 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, lpa_ltm))    
     
     # P/VPA = Market Cap / Patrimônio Líquido
-    resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
+    # resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
+    vpa = _calcular_vpa_banco(dados, periodo, pl_code)
+    resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
     # Dividend Yield = (Dividendos LTM / Market Cap) × 100
     resultado["DY"] = _normalizar_valor(
@@ -1901,7 +1971,7 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
         ll_ltm_controladora = _calcular_ltm(dados, dados.dre, "3.11.01", periodo)
     
     # Patrimônio Líquido
-    pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
+    # pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
     pl_medio = _obter_valor_medio(dados, dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
     
     # Ativo Total
@@ -1950,7 +2020,9 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     
     
     # P/VPA = Market Cap / Patrimônio Líquido
-    resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
+    # resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
+    vpa = _calcular_vpa(dados, periodo)
+    resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
     # Dividend Yield = (Dividendos LTM / Market Cap) × 100
     resultado["DY"] = _normalizar_valor(
@@ -2052,7 +2124,7 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     
     # ==================== PATRIMÔNIO E ATIVO ====================
     
-    pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
+    # pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
     pl_medio = _obter_valor_medio(dados, dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
     
     at = _obter_valor_pontual(dados.bpa, CONTAS_BPA["ativo_total"], periodo)
@@ -2133,7 +2205,9 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     
     resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, lpa_ltm))    
     
-    resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
+    #resultado["P_VPA"] = _normalizar_valor(_safe_divide(market_cap, pl))
+    vpa = _calcular_vpa(dados, periodo)
+    resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
     resultado["DY"] = _normalizar_valor(
         _safe_divide(dividendos_ltm, market_cap) * 100 if np.isfinite(market_cap) and market_cap > 0 else np.nan
