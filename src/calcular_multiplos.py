@@ -1398,7 +1398,7 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     
     resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, lpa_ltm))
     
-    # ✅ ADICIONAR: Obter PL (usado em P/VPA, ROIC, Dív.Líq/PL)
+    # Obter Patrimônio Líquido (usado em P/VPA, ROIC, Dív.Líq/PL)
     pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
     
     # P/VPA = Preço / Valor Patrimonial por Ação
@@ -1857,10 +1857,6 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     # Lucro Líquido LTM - Conta 3.11 (sempre existe)
     ll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE_BANCOS["lucro_liquido"], periodo)
     
-    # Patrimônio Líquido - Código detectado automaticamente (2.07 ou 2.08)
-    # pl = _obter_valor_pontual(dados.bpp, pl_code, periodo)
-    pl_medio = _obter_valor_medio(dados, dados.bpp, pl_code, periodo)
-    
     # Ativo Total - Conta 1 (sempre existe)
     at = _obter_valor_pontual(dados.bpa, CONTAS_BPA_BANCOS["ativo_total"], periodo)
     at_medio = _obter_valor_medio(dados, dados.bpa, CONTAS_BPA_BANCOS["ativo_total"], periodo)
@@ -1883,7 +1879,7 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     
     resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, lpa_ltm))
     
-    # ✅ ADICIONAR: Obter PL (usado em P/VPA, ROE, PL/Ativos)
+    # Patrimônio Líquido - Código detectado automaticamente (2.07 ou 2.08)
     pl = _obter_valor_pontual(dados.bpp, pl_code, periodo)
     pl_medio = _obter_valor_medio(dados, dados.bpp, pl_code, periodo)
     
@@ -1964,10 +1960,6 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     else:  # CXSE3
         ll_ltm = _calcular_ltm(dados, dados.dre, "3.11", periodo)  # CXSE3 usa 3.11
         ll_ltm_controladora = _calcular_ltm(dados, dados.dre, "3.11.01", periodo)
-    
-    # Patrimônio Líquido
-    # pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
-    pl_medio = _obter_valor_medio(dados, dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
     
     # Ativo Total
     at = _obter_valor_pontual(dados.bpa, CONTAS_BPA["ativo_total"], periodo)
@@ -2116,9 +2108,6 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
         ll_ltm_controladora = np.nan
     
     # ==================== PATRIMÔNIO E ATIVO ====================
-    
-    # pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
-    pl_medio = _obter_valor_medio(dados, dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
     
     at = _obter_valor_pontual(dados.bpa, CONTAS_BPA["ativo_total"], periodo)
     at_medio = _obter_valor_medio(dados, dados.bpa, CONTAS_BPA["ativo_total"], periodo)
