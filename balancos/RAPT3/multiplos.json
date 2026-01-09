@@ -1,5 +1,5 @@
 {
-  "ticker": "RAPT3",
+  "ticker": "RAPT4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -480,18 +480,18 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T22:17:08.997591",
-    "preco_utilizado": 6.17,
+    "data_calculo": "2026-01-09T21:27:33.529352",
+    "preco_utilizado": 6.34,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 243785452,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 39.7962,
-      "P_VPA": 0.3197,
-      "EV_EBITDA": 4.2439,
-      "EV_EBIT": 7.1478,
-      "EV_RECEITA": 0.6221,
-      "DY": 8.3031,
+      "P_L": 40.8927,
+      "P_VPA": 0.3285,
+      "EV_EBITDA": 4.2654,
+      "EV_EBIT": 7.1839,
+      "EV_RECEITA": 0.6252,
+      "DY": 8.0804,
       "PAYOUT": 36.9729,
       "ROE": 7.4473,
       "ROA": 2.087,

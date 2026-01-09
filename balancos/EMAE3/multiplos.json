@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -172,8 +172,8 @@
     "2015": {
       "periodo_referencia": "2015T4",
       "multiplos": {
-        "P_L": 13.3057,
-        "P_VPA": null,
+        "P_L": 13.2807,
+        "P_VPA": 2.0676,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -200,8 +200,8 @@
     "2016": {
       "periodo_referencia": "2016T4",
       "multiplos": {
-        "P_L": 14.4699,
-        "P_VPA": null,
+        "P_L": 14.4427,
+        "P_VPA": 2.1756,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -228,8 +228,8 @@
     "2017": {
       "periodo_referencia": "2017T4",
       "multiplos": {
-        "P_L": 6.6771,
-        "P_VPA": null,
+        "P_L": 6.6646,
+        "P_VPA": 1.9184,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -256,8 +256,8 @@
     "2018": {
       "periodo_referencia": "2018T4",
       "multiplos": {
-        "P_L": 7.8366,
-        "P_VPA": null,
+        "P_L": 7.8219,
+        "P_VPA": 1.8102,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -480,17 +480,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T21:28:16.699557",
-    "preco_utilizado": 42.65,
+    "data_calculo": "2026-01-09T21:27:20.461992",
+    "preco_utilizado": 42.57,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 36947082787,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 2.8009,
-      "P_VPA": 1016.3404,
-      "EV_EBITDA": 5672.0271,
-      "EV_EBIT": 5672.0271,
-      "EV_RECEITA": 2538.8537,
+      "P_L": 2.7957,
+      "P_VPA": 1014.434,
+      "EV_EBITDA": 5661.3845,
+      "EV_EBIT": 5661.3845,
+      "EV_RECEITA": 2534.0899,
       "DY": null,
       "PAYOUT": null,
       "ROE": 23.4393,

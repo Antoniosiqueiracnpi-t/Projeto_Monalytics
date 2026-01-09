@@ -1,5 +1,5 @@
 {
-  "ticker": "RSUL3",
+  "ticker": "RSUL4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -172,8 +172,8 @@
     "2019": {
       "periodo_referencia": "2019T4",
       "multiplos": {
-        "P_L": 1.0854,
-        "P_VPA": null,
+        "P_L": 1.0726,
+        "P_VPA": -14.3043,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -200,8 +200,8 @@
     "2020": {
       "periodo_referencia": "2020T4",
       "multiplos": {
-        "P_L": -3.2899,
-        "P_VPA": null,
+        "P_L": -3.251,
+        "P_VPA": -4.5752,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -228,8 +228,8 @@
     "2021": {
       "periodo_referencia": "2021T4",
       "multiplos": {
-        "P_L": 1.2611,
-        "P_VPA": null,
+        "P_L": 1.2461,
+        "P_VPA": 4.678,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -285,7 +285,7 @@
       "periodo_referencia": "2023T4",
       "multiplos": {
         "P_L": 76.9627,
-        "P_VPA": null,
+        "P_VPA": 468.5747,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -341,7 +341,7 @@
       "periodo_referencia": "2025T3",
       "multiplos": {
         "P_L": 0.3119,
-        "P_VPA": null,
+        "P_VPA": 0.0774,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -368,18 +368,18 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T22:17:09.339937",
-    "preco_utilizado": 64.98,
+    "data_calculo": "2026-01-09T21:27:34.321042",
+    "preco_utilizado": 64.21,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 583000,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 0.5573,
-      "P_VPA": 0.1383,
-      "EV_EBITDA": -0.116,
-      "EV_EBIT": -0.1311,
-      "EV_RECEITA": -0.0292,
-      "DY": 6.3772,
+      "P_L": 0.5507,
+      "P_VPA": 0.1366,
+      "EV_EBITDA": -0.1202,
+      "EV_EBIT": -0.1359,
+      "EV_RECEITA": -0.0303,
+      "DY": 6.4537,
       "PAYOUT": 3.6882,
       "ROE": 26.4814,
       "ROA": 15.8564,

@@ -1,5 +1,5 @@
 {
-  "ticker": "SHUL3",
+  "ticker": "SHUL4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -480,18 +480,18 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T23:20:13.935966",
-    "preco_utilizado": 5.09,
+    "data_calculo": "2026-01-09T21:27:30.968183",
+    "preco_utilizado": 5.11,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 63816925,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 3.5087,
-      "P_VPA": 0.209,
-      "EV_EBITDA": 0.5051,
-      "EV_EBIT": 0.7606,
-      "EV_RECEITA": 0.097,
-      "DY": 11.1415,
+      "P_L": 3.5225,
+      "P_VPA": 0.2098,
+      "EV_EBITDA": 0.5084,
+      "EV_EBIT": 0.7656,
+      "EV_RECEITA": 0.0976,
+      "DY": 11.0978,
       "PAYOUT": 13.8723,
       "ROE": 17.6587,
       "ROA": 9.6057,

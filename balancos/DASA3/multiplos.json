@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -480,17 +480,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-09T08:48:39.177596",
-    "preco_utilizado": 4.23,
+    "data_calculo": "2026-01-09T21:27:40.376309",
+    "preco_utilizado": 3.98,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 311803015,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": -10.1766,
-      "P_VPA": 0.1682,
-      "EV_EBITDA": 2.0466,
-      "EV_EBIT": 5.6742,
-      "EV_RECEITA": 0.5709,
+      "P_L": -9.5752,
+      "P_VPA": 0.1583,
+      "EV_EBITDA": 2.0243,
+      "EV_EBIT": 5.6126,
+      "EV_RECEITA": 0.5647,
       "DY": null,
       "PAYOUT": null,
       "ROE": 14.8247,

@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -172,8 +172,8 @@
     "2015": {
       "periodo_referencia": "2015T4",
       "multiplos": {
-        "P_L": 22.7638,
-        "P_VPA": null,
+        "P_L": 23.0236,
+        "P_VPA": 0.6753,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -200,8 +200,8 @@
     "2016": {
       "periodo_referencia": "2016T4",
       "multiplos": {
-        "P_L": 22.9444,
-        "P_VPA": null,
+        "P_L": 23.2063,
+        "P_VPA": 0.6462,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -228,8 +228,8 @@
     "2017": {
       "periodo_referencia": "2017T4",
       "multiplos": {
-        "P_L": 15.9724,
-        "P_VPA": null,
+        "P_L": 16.1547,
+        "P_VPA": 0.6181,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -256,8 +256,8 @@
     "2018": {
       "periodo_referencia": "2018T4",
       "multiplos": {
-        "P_L": 11.6573,
-        "P_VPA": null,
+        "P_L": 11.7903,
+        "P_VPA": 0.572,
         "EV_EBITDA": null,
         "EV_EBIT": null,
         "EV_RECEITA": null,
@@ -480,18 +480,18 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T21:28:19.113069",
-    "preco_utilizado": 28.91,
+    "data_calculo": "2026-01-09T21:27:23.111571",
+    "preco_utilizado": 29.24,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 76423831,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 13.6756,
-      "P_VPA": 0.1559,
-      "EV_EBITDA": -0.264,
-      "EV_EBIT": -0.4408,
-      "EV_RECEITA": -0.248,
-      "DY": 4.5102,
+      "P_L": 13.8317,
+      "P_VPA": 0.1577,
+      "EV_EBITDA": -0.2545,
+      "EV_EBIT": -0.425,
+      "EV_RECEITA": -0.2391,
+      "DY": 4.4593,
       "PAYOUT": 11.5189,
       "ROE": 5.9906,
       "ROA": 3.0915,

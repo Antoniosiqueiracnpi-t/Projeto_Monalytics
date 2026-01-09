@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -424,7 +424,7 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T21:28:17.626178",
+    "data_calculo": "2026-01-09T21:27:21.489374",
     "preco_utilizado": 15.05,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 32774246,

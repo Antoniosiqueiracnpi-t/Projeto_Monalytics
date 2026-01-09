@@ -1,5 +1,5 @@
 {
-  "ticker": "DOHL3",
+  "ticker": "DOHL4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -368,7 +368,7 @@
   },
   "ltm": {
     "periodo_referencia": "2021T3",
-    "data_calculo": "2026-01-09T09:11:42.279081",
+    "data_calculo": "2026-01-09T21:27:49.202337",
     "preco_utilizado": 3.67,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 75645285,

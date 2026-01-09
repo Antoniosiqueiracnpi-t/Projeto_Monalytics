@@ -1,5 +1,5 @@
 {
-  "ticker": "CTNM3",
+  "ticker": "CTNM4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -452,7 +452,7 @@
   },
   "ltm": {
     "periodo_referencia": "2024T3",
-    "data_calculo": "2026-01-09T09:11:41.962682",
+    "data_calculo": "2026-01-09T21:27:48.475395",
     "preco_utilizado": 0.86,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 30636457,

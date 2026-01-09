@@ -1,5 +1,5 @@
 {
-  "ticker": "CTKA3",
+  "ticker": "CTKA4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -480,17 +480,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-09T09:11:41.782241",
-    "preco_utilizado": 40.15,
+    "data_calculo": "2026-01-09T21:27:48.061698",
+    "preco_utilizado": 41.2,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 14406147,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 2.1538,
-      "P_VPA": 10.7239,
-      "EV_EBITDA": 10.2813,
-      "EV_EBIT": 10.2813,
-      "EV_RECEITA": 1.2332,
+      "P_L": 2.2101,
+      "P_VPA": 11.0044,
+      "EV_EBITDA": 10.4488,
+      "EV_EBIT": 10.4488,
+      "EV_RECEITA": 1.2533,
       "DY": null,
       "PAYOUT": null,
       "ROE": -8291.823,

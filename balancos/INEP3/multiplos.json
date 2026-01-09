@@ -1,5 +1,5 @@
 {
-  "ticker": "INEP3",
+  "ticker": "INEP4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -480,17 +480,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T2",
-    "data_calculo": "2026-01-08T23:20:12.962819",
-    "preco_utilizado": 1.1,
+    "data_calculo": "2026-01-09T21:27:29.531688",
+    "preco_utilizado": 1.21,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 95659930,
     "periodo_acoes": "2025T2",
     "multiplos": {
       "P_L": -0.0001,
-      "P_VPA": -0.0588,
-      "EV_EBITDA": -3.8745,
-      "EV_EBIT": -3.7926,
-      "EV_RECEITA": 252.2433,
+      "P_VPA": -0.0646,
+      "EV_EBITDA": -3.9146,
+      "EV_EBIT": -3.8318,
+      "EV_RECEITA": 254.8505,
       "DY": null,
       "PAYOUT": null,
       "ROE": -28.1363,

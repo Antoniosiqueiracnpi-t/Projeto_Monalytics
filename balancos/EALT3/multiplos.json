@@ -1,5 +1,5 @@
 {
-  "ticker": "EALT3",
+  "ticker": "EALT4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -396,18 +396,18 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T23:20:12.569369",
-    "preco_utilizado": 13.66,
+    "data_calculo": "2026-01-09T21:27:28.852313",
+    "preco_utilizado": 14.0,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 2250000,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 1.4606,
-      "P_VPA": 0.0862,
-      "EV_EBITDA": 0.9195,
-      "EV_EBIT": 1.3843,
-      "EV_RECEITA": 0.1955,
-      "DY": 8.8111,
+      "P_L": 1.497,
+      "P_VPA": 0.0884,
+      "EV_EBITDA": 0.9257,
+      "EV_EBIT": 1.3937,
+      "EV_RECEITA": 0.1968,
+      "DY": 8.5971,
       "PAYOUT": 2.6056,
       "ROE": 32.6859,
       "ROA": 16.6592,

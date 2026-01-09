@@ -1,5 +1,5 @@
 {
-  "ticker": "EUCA3",
+  "ticker": "EUCA4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -16,7 +16,7 @@
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Market Cap / Patrimônio Líquido",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
@@ -480,18 +480,18 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-08T21:59:43.881951",
-    "preco_utilizado": 18.19,
+    "data_calculo": "2026-01-09T21:27:27.009742",
+    "preco_utilizado": 18.11,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 92619256,
     "periodo_acoes": "2025T3",
     "multiplos": {
-      "P_L": 3.3412,
-      "P_VPA": 0.6009,
-      "EV_EBITDA": 4.3233,
-      "EV_EBIT": 4.3233,
-      "EV_RECEITA": 0.7102,
-      "DY": 7.7191,
+      "P_L": 3.3265,
+      "P_VPA": 0.5982,
+      "EV_EBITDA": 4.3087,
+      "EV_EBIT": 4.3087,
+      "EV_RECEITA": 0.7078,
+      "DY": 7.7532,
       "PAYOUT": 44.0007,
       "ROE": 10.9702,
       "ROA": 6.3962,
