@@ -6435,64 +6435,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // NOVO: Dashboard B3
+// ✅ VERSÃO CORRIGIDA - Dashboard B3 (substitua o bloco inteiro)
 async function loadDashboardB3() {
   try {
+    showLoading('dashboardLoading', true);
+    
     const [resumo, participacao, volume, fluxoMensal, fluxoAnual, timestamp] = await Promise.all([
-      fetch('data/b3_fluxo_resumo.json'),
-      fetch('data/b3_participacao_investidores.json'),
-      fetch('data/b3_volume_negociacao.json'),
-      fetch('data/b3_fluxo_estrangeiro_mensal.json'),
-      fetch('data/b3_fluxo_estrangeiro_anual.json'),
-      fetch('data/ultima_atualizacao.json')
+      fetch('data/b3_fluxo_resumo.json').then(r => r.json()),
+      fetch('data/b3_participacao_investidores.json').then(r => r.json()),
+      fetch('data/b3_volume_negociacao.json').then(r => r.json()),
+      fetch('data/b3_fluxo_estrangeiro_mensal.json').then(r => r.json()),
+      fetch('data/b3_fluxo_estrangeiro_anual.json').then(r => r.json()),
+      fetch('data/ultima_atualizacao.json').then(r => r.json())
     ]);
     
-    const [resumoData, partData, volData, fluxoData, anualData, tsData] = await Promise.all([
-      resumo.json(), participacao.json(), volume.json(), fluxoMensal.json(), fluxoAnual.json(), timestamp.json()
-    ]);
-    
-    const data = resumoData[0];
+    const data = resumo[0];
     
     // KPIs
-    document.getElementById('kpiSaldo').textContent = `R$ ${data.ytd_saldo_estrangeiros_milhoes.toLocaleString()} mi`;
-    document.getElementById('kpiVolume').textContent = `R$ ${(data.ytd_volume_estrangeiros_milhoes / 1000).toLocaleString()} bi`;
-    document.getElementById('kpiParticipacao').textContent = `${data.maior_participante_%}%`;
-    document.getElementById('dashboardTimestamp').textContent = `(${new Date(tsData.timestamp).toLocaleDateString('pt-BR')})`;
+    document.getElementById('kpiSaldo').textContent = `R$ ${data.ytd_saldo_estrangeiros_milhoes?.toLocaleString() || '0'} mi`;
+    document.getElementById('kpiVolume').textContent = `R$ ${Math.round((data.ytd_volume_estrangeiros_milhoes || 0) / 1000).toLocaleString()} bi`;
+    document.getElementById('kpiParticipacao').textContent = `${data.maior_participante_% || 0}%`;
+    document.getElementById('dashboardTimestamp').textContent = `(${new Date(timestamp.timestamp).toLocaleDateString('pt-BR')})`;
     
-    // Doughnut Participação
-    const ctx1 = document.getElementById('participacaoChart').getContext('2d');
-    new Chart(ctx1, {
-      type: 'doughnut',
-      data: {
-        labels: partData.map(p => p.tipo_investidor),
-        datasets: [{ data: partData.map(p => p.participacao_media_%), backgroundColor: ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6'] }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#fff' } } } }
-    });
+    // Doughnut Chart
+    const ctx1 = document.getElementById('participacaoChart')?.getContext('2d');
+    if (ctx1) {
+      if (window.participacaoChart) window.participacaoChart.destroy();
+      window.participacaoChart = new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+          labels: participacao.map(p => p.tipo_investidor),
+          datasets: [{
+            data: participacao.map(p => p.participacao_media_%),
+            backgroundColor: ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { color: '#fff', padding: 20 } } }
+        }
+      });
+    }
     
-    // Line Fluxo Mensal (últimos 6 meses)
-    const recentFluxo = fluxoData.slice(-6).reverse();
-    const ctx2 = document.getElementById('fluxoMensalChart').getContext('2d');
-    new Chart(ctx2, {
-      type: 'line',
-      data: {
-        labels: recentFluxo.map(f => f.periodo),
-        datasets: [{
-          label: 'Saldo (R$ mi)',
-          data: recentFluxo.map(f => f.saldo_milhoes),
-          borderColor: '#f59e0b',
-          backgroundColor: 'rgba(245, 158, 11, 0.1)',
-          tension: 0.4,
-          fill: true
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { color: '#a0a0a0' }, grid: { color: 'rgba(255,255,255,0.1)' } }, plugins: { legend: { labels: { color: '#fff' } } } }
-    });
+    // Line Chart (últimos 6 meses)
+    const recentFluxo = fluxoMensal.slice(-6).reverse();
+    const ctx2 = document.getElementById('fluxoMensalChart')?.getContext('2d');
+    if (ctx2) {
+      if (window.fluxoChart) window.fluxoChart.destroy();
+      window.fluxoChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+          labels: recentFluxo.map(f => f.periodo),
+          datasets: [{
+            label: 'Saldo (R$ mi)',
+            data: recentFluxo.map(f => f.saldo_milhoes),
+            borderColor: '#f59e0b',
+            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { ticks: { color: '#a0a0a0' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+            x: { ticks: { color: '#a0a0a0' } }
+          },
+          plugins: { legend: { labels: { color: '#fff' } } }
+        }
+      });
+    }
     
     // Tabela Anual
     const tbody = document.querySelector('#anualTable tbody');
-    anualData.forEach(row => {
-      tbody.innerHTML += `<tr><td>${row.ano}</td><td>${row.saldo_milhoes.toLocaleString()}</td><td>${(row.volume_total_milhoes / 1000).toLocaleString()}</td></tr>`;
-    });
+    if (tbody) {
+      tbody.innerHTML = anualData.map(row => 
+        `<tr>
+          <td>${row.ano}</td>
+          <td>${row.saldo_milhoes.toLocaleString()}</td>
+          <td>${Math.round(row.volume_total_milhoes / 1000).toLocaleString()}</td>
+        </tr>`
+      ).join('');
+    }
     
     // Show content
     document.getElementById('dashboardLoading').style.display = 'none';
@@ -6501,13 +6527,21 @@ async function loadDashboardB3() {
     
   } catch (error) {
     console.error('Erro Dashboard B3:', error);
-    document.getElementById('dashboardLoading').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao carregar dados';
+    document.getElementById('dashboardLoading').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao carregar';
   }
 }
 
-// Inicializar no DOMContentLoaded ou auto-update
-document.addEventListener('DOMContentLoaded', loadDashboardB3);
-// Integre com seu auto-update.js se existir
+// Utility para loading (se não existir)
+function showLoading(id, show = true) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = show ? 'flex' : 'none';
+}
+
+// Inicializar
+document.addEventListener('DOMContentLoaded', () => {
+  loadDashboardB3();
+});
+
 
 
 
