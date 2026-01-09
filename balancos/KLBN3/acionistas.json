@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "89.637.490/0001-45",
+    "nome": "",
+    "ticker": "KLBN3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "KLABIN IRMÃOS S.A.",
+      "cpf_cnpj": "60.485.034/0001-45",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1196120367,
+      "percentual_total": 19.356,
+      "acoes_ordinarias": 1196120367,
+      "percentual_ordinarias": 52.235,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "The Bank Of New York Department",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 344191875,
+      "percentual_total": 5.57,
+      "acoes_ordinarias": 68838375,
+      "percentual_ordinarias": 3.006,
+      "acoes_preferenciais": 275353500,
+      "percentual_preferenciais": 7.079,
+      "posicao": 2
+    },
+    {
+      "nome": "BlackRock Inc",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 301800448,
+      "percentual_total": 4.884,
+      "acoes_ordinarias": 60360089,
+      "percentual_ordinarias": 2.636,
+      "acoes_preferenciais": 241440359,
+      "percentual_preferenciais": 6.207,
+      "posicao": 3
+    },
+    {
+      "nome": "T. Rowe Price Associates",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 274610682,
+      "percentual_total": 4.444,
+      "acoes_ordinarias": 54922136,
+      "percentual_ordinarias": 2.398,
+      "acoes_preferenciais": 219688546,
+      "percentual_preferenciais": 5.648,
+      "posicao": 4
+    }
+  ]
+}
