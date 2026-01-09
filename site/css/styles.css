@@ -6437,8 +6437,6 @@ textarea:focus {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-
-/* ✅ FIX: trava layout/altura dos gráficos (evita “esticamento infinito” do Chart.js) */
 .charts-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -6449,11 +6447,6 @@ textarea:focus {
   border-radius: 12px;
   padding: 1.5rem;
   border: 1px solid rgba(255,255,255,0.08);
-
-  /* ✅ importante: dá contexto de altura pro canvas */
-  display: flex;
-  flex-direction: column;
-  min-height: 340px; /* desktop */
 }
 .chart-card h4 {
   color: #fff;
@@ -6461,15 +6454,6 @@ textarea:focus {
   font-size: 1rem;
   font-weight: 600;
 }
-
-/* ✅ o canvas precisa ter altura fixa/limitada */
-.chart-card canvas {
-  display: block;
-  width: 100% !important;
-  height: 260px !important;
-  max-height: 260px !important;
-}
-
 .summary-table {
   background: rgba(255,255,255,0.02);
   border-radius: 12px;
@@ -6511,23 +6495,53 @@ textarea:focus {
   .dashboard-b3-container { padding: 1.5rem; }
   .charts-row { grid-template-columns: 1fr; }
   .kpi-cards { grid-template-columns: repeat(3, 1fr); }
-
-  /* ✅ mobile/tablet: ajusta altura do card/canvas */
-  .chart-card { min-height: 320px; }
-  .chart-card canvas {
-    height: 240px !important;
-    max-height: 240px !important;
-  }
 }
 @media (max-width: 480px) {
   .kpi-cards { grid-template-columns: 1fr; }
   .dashboard-title { font-size: 1.3rem; }
+}
 
-  .chart-card { min-height: 300px; }
-  .chart-card canvas {
+
+/* =========================================================
+   FIX Dashboard B3 (Chart.js) - evita esticar/travar
+   Causa raiz: Chart.js inicializado com container invisível/sem dimensão
+   ========================================================= */
+
+/* Mantém o grid renderizável (medível) e controla visibilidade via classe */
+#dashboardGrid{
+  display: grid;
+  visibility: hidden;
+}
+#dashboardGrid.is-visible{
+  visibility: visible;
+}
+
+/* Trava a altura do card/canvas para evitar resize-loop */
+.dashboard-b3-container .chart-card{
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+  overflow: hidden;
+}
+.dashboard-b3-container .chart-card canvas{
+  display: block;
+  width: 100% !important;
+  height: 260px !important;
+  max-height: 260px !important;
+}
+
+@media (max-width: 768px){
+  .dashboard-b3-container .chart-card{ min-height: 320px; }
+  .dashboard-b3-container .chart-card canvas{
+    height: 240px !important;
+    max-height: 240px !important;
+  }
+}
+
+@media (max-width: 480px){
+  .dashboard-b3-container .chart-card{ min-height: 300px; }
+  .dashboard-b3-container .chart-card canvas{
     height: 220px !important;
     max-height: 220px !important;
   }
 }
-
-
