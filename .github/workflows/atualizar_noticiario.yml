@@ -3,7 +3,7 @@ name: Atualizar Noticiário Empresarial
 on:
   schedule:
     - cron: '0 12 * * *'
-  
+
   workflow_dispatch:
     inputs:
       modo:
@@ -40,18 +40,18 @@ on:
 jobs:
   atualizar-noticiario:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout do repositório
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    
+
     - name: Configurar Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-    
+
     # ========================================================================
     # ✅ CORREÇÃO: Instalar TODAS as dependências do requirements.txt
     # ========================================================================
@@ -59,7 +59,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    
+
     - name: Buscar lista de tickers
       id: get-tickers
       run: |
@@ -68,13 +68,12 @@ jobs:
           echo "TICKERS=" >> $GITHUB_OUTPUT
           exit 0
         fi
-        
+
         # Extrai lista completa de tickers do CSV (usa ; como delimitador)
         TODOS_TICKERS=$(python3 -c "
         import csv
         tickers = []
         with open('mapeamento_b3_consolidado.csv', 'r', encoding='utf-8') as f:
-            # Remove BOM se existir e usa ; como delimitador
             content = f.read()
             if content.startswith('\ufeff'):
                 content = content[1:]
@@ -83,18 +82,22 @@ jobs:
             for row in reader:
                 ticker_str = row.get('ticker', '').strip()
                 if ticker_str:
-                    # Separa múltiplos tickers (ex: ALUP11;ALUP3;ALUP4)
+                    # OBS: nesta planilha o delimitador de múltiplos tickers pode variar
+                    # Mantemos split por ';' conforme seu código original (sem prejuízo)
                     for ticker in ticker_str.split(';'):
                         ticker = ticker.strip()
                         if ticker:
                             tickers.append(ticker)
-        # Remove duplicatas e imprime
         tickers = list(dict.fromkeys(tickers))
         print(' '.join(tickers))
         ")
-        
+
+        # ✅ FIX: schedule não tem inputs -> evita string vazia e segue para "else"
         MODO="${{ github.event.inputs.modo }}"
-        
+        if [ -z "$MODO" ]; then
+          MODO="schedule"
+        fi
+
         if [ "$MODO" == "ticker" ]; then
           TICKER_INPUT="${{ github.event.inputs.ticker }}"
           if [ -n "$TICKER_INPUT" ]; then
@@ -104,7 +107,7 @@ jobs:
             echo "TICKERS=" >> $GITHUB_OUTPUT
             exit 1
           fi
-        
+
         elif [ "$MODO" == "lista" ]; then
           LISTA_INPUT="${{ github.event.inputs.lista }}"
           if [ -n "$LISTA_INPUT" ]; then
@@ -114,7 +117,7 @@ jobs:
             echo "TICKERS=" >> $GITHUB_OUTPUT
             exit 1
           fi
-        
+
         elif [ "$MODO" == "faixa" ]; then
           FAIXA_INPUT="${{ github.event.inputs.faixa }}"
           if [ -n "$FAIXA_INPUT" ]; then
@@ -126,8 +129,8 @@ jobs:
             echo "TICKERS=" >> $GITHUB_OUTPUT
             exit 1
           fi
-        
-        elif [ "$MODO" == "quantidade" ] || [ -z "$MODO" ]; then
+
+        elif [ "$MODO" == "quantidade" ]; then
           QTD_INPUT="${{ github.event.inputs.quantidade }}"
           if [ -z "$QTD_INPUT" ]; then
             QTD_INPUT="10"
@@ -138,7 +141,7 @@ jobs:
           else
             TICKERS_SELECIONADOS=$(echo "$TODOS_TICKERS" | tr ' ' '\n' | head -n "$QTD_INPUT" | tr '\n' ' ')
           fi
-        
+
         else
           # Execução agendada (cron) - processa tickers que já têm pasta
           if [ -d "balancos" ]; then
@@ -147,7 +150,7 @@ jobs:
             TICKERS_SELECIONADOS=""
           fi
         fi
-        
+
         if [ -z "$TICKERS_SELECIONADOS" ]; then
           echo "⚠️ Nenhum ticker selecionado"
           echo "TICKERS=" >> $GITHUB_OUTPUT
@@ -156,43 +159,55 @@ jobs:
           TOTAL=$(echo "$TICKERS_SELECIONADOS" | wc -w)
           echo "✅ $TOTAL ticker(s) selecionado(s)"
         fi
-    
+
     - name: Atualizar noticiário
       run: |
         TICKERS="${{ steps.get-tickers.outputs.TICKERS }}"
-        
+
         if [ -z "$TICKERS" ]; then
           echo "⚠️ Nenhum ticker para processar"
           exit 0
         fi
-        
+
         TOTAL=$(echo "$TICKERS" | wc -w)
         CONTADOR=0
         SUCESSO=0
         ERRO=0
-        
+
         for TICKER in $TICKERS; do
           CONTADOR=$((CONTADOR + 1))
           echo "[$CONTADOR/$TOTAL] Processando $TICKER..."
-          if python src/capturar_noticiario_empresarial.py "$TICKER"; then
+
+          # ====================================================================
+          # ✅ FIX DEFINITIVO:
+          # NÃO passe ticker como argumento posicional (python script.py KLBN11)
+          # Passe como argumento nomeado para o argparse:
+          #   --modo ticker --ticker "KLBN11"
+          #
+          # Isso elimina "unrecognized arguments: KLBN11"
+          # e também garante que o script consiga mapear ticker_base corretamente.
+          # ====================================================================
+          if python src/capturar_noticiario_empresarial.py --modo ticker --ticker "$TICKER"; then
             SUCESSO=$((SUCESSO + 1))
           else
             ERRO=$((ERRO + 1))
           fi
+
           if [ $CONTADOR -lt $TOTAL ]; then
             sleep 3
           fi
         done
-        
+
         echo "✅ Sucesso: $SUCESSO | ❌ Erro: $ERRO"
-    
+
+        # Se você quiser falhar o workflow quando houver erro:
+        # if [ "$ERRO" -gt 0 ]; then exit 1; fi
+
     - name: Verificar mudanças
       id: check-changes
       run: |
-        # Adiciona arquivos novos ao stage
         git add balancos/*/noticiario.json 2>/dev/null || true
-        
-        # Verifica se há mudanças (arquivos novos ou modificados)
+
         if git diff --cached --quiet; then
           echo "HAS_CHANGES=false" >> $GITHUB_OUTPUT
           echo "⚠️ Nenhuma mudança detectada"
@@ -202,7 +217,7 @@ jobs:
           echo "ARQUIVOS_MODIFICADOS=$ARQUIVOS_MODIFICADOS" >> $GITHUB_OUTPUT
           echo "✅ $ARQUIVOS_MODIFICADOS arquivo(s) com mudanças"
         fi
-    
+
     - name: Commit e Push
       if: steps.check-changes.outputs.HAS_CHANGES == 'true'
       env:
@@ -210,17 +225,20 @@ jobs:
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "GitHub Actions Bot"
+
         DATA_ATUAL=$(TZ='America/Sao_Paulo' date +'%d/%m/%Y %H:%M')
         MODO="${{ github.event.inputs.modo }}"
         ARQUIVOS="${{ steps.check-changes.outputs.ARQUIVOS_MODIFICADOS }}"
+
         if [ -z "$MODO" ]; then
           COMMIT_MSG="Atualização automática de noticiário empresarial - $DATA_ATUAL"
         else
           COMMIT_MSG="Atualização de noticiário (modo: $MODO) - $DATA_ATUAL"
         fi
+
         git commit -m "$COMMIT_MSG"
         git push
-    
+
     - name: Resumo final
       if: always()
       run: |
