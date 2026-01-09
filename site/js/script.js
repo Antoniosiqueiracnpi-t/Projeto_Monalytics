@@ -6434,62 +6434,97 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// NOVO: Dashboard B3
-// ✅ VERSÃO CORRIGIDA - Dashboard B3 (substitua o bloco inteiro)
+// 🔥 SOLUÇÃO DEFINITIVA - Compatível IE11+
 async function loadDashboardB3() {
   try {
-    showLoading('dashboardLoading', true);
+    var dashboardLoading = document.getElementById('dashboardLoading');
+    var dashboardGrid = document.getElementById('dashboardGrid');
+    var dashboardFooter = document.getElementById('dashboardFooter');
     
-    const [resumo, participacao, volume, fluxoMensal, fluxoAnual, timestamp] = await Promise.all([
-      fetch('data/b3_fluxo_resumo.json').then(r => r.json()),
-      fetch('data/b3_participacao_investidores.json').then(r => r.json()),
-      fetch('data/b3_volume_negociacao.json').then(r => r.json()),
-      fetch('data/b3_fluxo_estrangeiro_mensal.json').then(r => r.json()),
-      fetch('data/b3_fluxo_estrangeiro_anual.json').then(r => r.json()),
-      fetch('data/ultima_atualizacao.json').then(r => r.json())
-    ]);
+    if (dashboardLoading) dashboardLoading.style.display = 'flex';
+    if (dashboardGrid) dashboardGrid.style.display = 'none';
+    if (dashboardFooter) dashboardFooter.style.display = 'none';
     
-    const data = resumo[0];
+    // Fetch paralelo com fallbacks
+    var resumoResp = await fetch('data/b3_fluxo_resumo.json');
+    var participacaoResp = await fetch('data/b3_participacao_investidores.json');
+    var volumeResp = await fetch('data/b3_volume_negociacao.json');
+    var fluxoMensalResp = await fetch('data/b3_fluxo_estrangeiro_mensal.json');
+    var fluxoAnualResp = await fetch('data/b3_fluxo_estrangeiro_anual.json');
+    var timestampResp = await fetch('data/ultima_atualizacao.json');
     
-    // KPIs
-    document.getElementById('kpiSaldo').textContent = `R$ ${data.ytd_saldo_estrangeiros_milhoes?.toLocaleString() || '0'} mi`;
-    document.getElementById('kpiVolume').textContent = `R$ ${Math.round((data.ytd_volume_estrangeiros_milhoes || 0) / 1000).toLocaleString()} bi`;
-    document.getElementById('kpiParticipacao').textContent = `${data.maior_participante_% || 0}%`;
-    document.getElementById('dashboardTimestamp').textContent = `(${new Date(timestamp.timestamp).toLocaleDateString('pt-BR')})`;
+    var resumo = await resumoResp.json();
+    var participacao = await participacaoResp.json();
+    var volume = await volumeResp.json();
+    var fluxoMensal = await fluxoMensalResp.json();
+    var fluxoAnual = await fluxoAnualResp.json();
+    var timestamp = await timestampResp.json();
     
-    // Doughnut Chart
-    const ctx1 = document.getElementById('participacaoChart')?.getContext('2d');
-    if (ctx1) {
-      if (window.participacaoChart) window.participacaoChart.destroy();
+    var data = resumo[0] || {};
+    
+    // KPIs - SEM optional chaining
+    var kpiSaldo = document.getElementById('kpiSaldo');
+    var kpiVolume = document.getElementById('kpiVolume');
+    var kpiParticipacao = document.getElementById('kpiParticipacao');
+    var dashboardTimestamp = document.getElementById('dashboardTimestamp');
+    
+    if (kpiSaldo) {
+      kpiSaldo.textContent = 'R$ ' + (data.ytd_saldo_estrangeiros_milhoes || 0).toLocaleString() + ' mi';
+    }
+    if (kpiVolume) {
+      kpiVolume.textContent = 'R$ ' + Math.round((data.ytd_volume_estrangeiros_milhoes || 0) / 1000).toLocaleString() + ' bi';
+    }
+    if (kpiParticipacao) {
+      kpiParticipacao.textContent = (data.maior_participante_% || 0) + '%';
+    }
+    if (dashboardTimestamp) {
+      dashboardTimestamp.textContent = '(' + new Date(timestamp.timestamp || Date.now()).toLocaleDateString('pt-BR') + ')';
+    }
+    
+    // Charts com verificação explícita
+    var chart1 = document.getElementById('participacaoChart');
+    if (chart1) {
+      var ctx1 = chart1.getContext('2d');
+      if (window.participacaoChart) {
+        window.participacaoChart.destroy();
+      }
       window.participacaoChart = new Chart(ctx1, {
         type: 'doughnut',
         data: {
-          labels: participacao.map(p => p.tipo_investidor),
+          labels: participacao.map(function(p) { return p.tipo_investidor; }),
           datasets: [{
-            data: participacao.map(p => p.participacao_media_%),
+            data: participacao.map(function(p) { return p.participacao_media_% || 0; }),
             backgroundColor: ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6']
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: 'bottom', labels: { color: '#fff', padding: 20 } } }
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#fff', padding: 20 }
+            }
+          }
         }
       });
     }
     
-    // Line Chart (últimos 6 meses)
-    const recentFluxo = fluxoMensal.slice(-6).reverse();
-    const ctx2 = document.getElementById('fluxoMensalChart')?.getContext('2d');
-    if (ctx2) {
-      if (window.fluxoChart) window.fluxoChart.destroy();
+    // Line Chart
+    var recentFluxo = fluxoMensal.slice(-6).reverse();
+    var chart2 = document.getElementById('fluxoMensalChart');
+    if (chart2) {
+      var ctx2 = chart2.getContext('2d');
+      if (window.fluxoChart) {
+        window.fluxoChart.destroy();
+      }
       window.fluxoChart = new Chart(ctx2, {
         type: 'line',
         data: {
-          labels: recentFluxo.map(f => f.periodo),
+          labels: recentFluxo.map(function(f) { return f.periodo; }),
           datasets: [{
             label: 'Saldo (R$ mi)',
-            data: recentFluxo.map(f => f.saldo_milhoes),
+            data: recentFluxo.map(function(f) { return f.saldo_milhoes || 0; }),
             borderColor: '#f59e0b',
             backgroundColor: 'rgba(245, 158, 11, 0.1)',
             tension: 0.4,
@@ -6508,39 +6543,43 @@ async function loadDashboardB3() {
       });
     }
     
-    // Tabela Anual
-    const tbody = document.querySelector('#anualTable tbody');
+    // Tabela
+    var tbody = document.querySelector('#anualTable tbody');
     if (tbody) {
-      tbody.innerHTML = anualData.map(row => 
-        `<tr>
-          <td>${row.ano}</td>
-          <td>${row.saldo_milhoes.toLocaleString()}</td>
-          <td>${Math.round(row.volume_total_milhoes / 1000).toLocaleString()}</td>
-        </tr>`
-      ).join('');
+      tbody.innerHTML = '';
+      for (var i = 0; i < fluxoAnual.length; i++) {
+        var row = fluxoAnual[i];
+        tbody.innerHTML += '<tr>' +
+          '<td>' + row.ano + '</td>' +
+          '<td>' + (row.saldo_milhoes || 0).toLocaleString() + '</td>' +
+        '<td>' + Math.round((row.volume_total_milhoes || 0) / 1000).toLocaleString() + '</td>' +
+          '</tr>';
+      }
     }
     
-    // Show content
-    document.getElementById('dashboardLoading').style.display = 'none';
-    document.getElementById('dashboardGrid').style.display = 'grid';
-    document.getElementById('dashboardFooter').style.display = 'flex';
+    // Finalizar
+    if (dashboardLoading) dashboardLoading.style.display = 'none';
+    if (dashboardGrid) dashboardGrid.style.display = 'grid';
+    if (dashboardFooter) dashboardFooter.style.display = 'flex';
+    
+    console.log('✅ Dashboard B3 carregado!');
     
   } catch (error) {
-    console.error('Erro Dashboard B3:', error);
-    document.getElementById('dashboardLoading').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao carregar';
+    console.error('❌ Erro Dashboard B3:', error);
+    var loadingEl = document.getElementById('dashboardLoading');
+    if (loadingEl) {
+      loadingEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao carregar dados';
+    }
   }
 }
 
-// Utility para loading (se não existir)
-function showLoading(id, show = true) {
-  const el = document.getElementById(id);
-  if (el) el.style.display = show ? 'flex' : 'none';
+// Inicializar
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadDashboardB3);
+} else {
+  loadDashboardB3();
 }
 
-// Inicializar
-document.addEventListener('DOMContentLoaded', () => {
-  loadDashboardB3();
-});
 
 
 
