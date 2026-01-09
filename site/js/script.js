@@ -6163,7 +6163,9 @@ async function carregarNoticiasEmpresa(ticker) {
             const pasta = candidatos[i];
             const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${pasta}/noticiario.json?t=${timestamp}&try=${i}`;
 
-            console.log(`🌐 Tentativa ${i + 1}/${candidatos.length}: ${url}`);
+            // console.debug em vez de log (menos agressivo no console)
+            console.debug(`🌐 Tentativa ${i + 1}/${candidatos.length}: ${url}`);
+
 
             const response = await fetch(url, {
                 method: 'GET',
@@ -6172,9 +6174,16 @@ async function carregarNoticiasEmpresa(ticker) {
             });
 
             if (!response.ok) {
+              // 404 aqui é esperado durante fallback (ex.: KLBN11/KLBN3 não existe)
+              // então evita "warning" para não poluir o console.
+              if (response.status !== 404) {
                 console.warn(`⚠️ ${pasta}: HTTP ${response.status} (${response.statusText})`);
-                continue;
+              } else {
+                console.log(`ℹ️ ${pasta}: noticiario.json não encontrado (404) — tentando próxima pasta...`);
+              }
+              continue;
             }
+
 
             // Sempre usar text() primeiro
             const rawText = await response.text();
