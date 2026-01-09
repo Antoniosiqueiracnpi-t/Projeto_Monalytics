@@ -432,60 +432,6 @@
                 <h2 class="section-title">Análise de Ações</h2>
                 <p class="section-subtitle">Ferramentas completas de análise quantitativa</p>
             </div>
-
-
-            <!-- 🆕 NOVO CARD - ANÁLISE PARTICIPANTES DO MERCADO -->
-            <div class="card participantes-mercado" data-card="participantes">
-              <div class="card-header">
-                <div class="card-title-group">
-                  <i class="fas fa-users icon-primary"></i>
-                  <h3>Análise dos Participantes do Mercado</h3>
-                  <span class="badge-status bg-gradient-primary" id="status-participantes">Carregando...</span>
-                </div>
-                <div class="card-actions">
-                  <button class="btn-toggle" onclick="toggleCard('participantes')">
-                    <i class="fas fa-chevron-down"></i>
-                  </button>
-                </div>
-              </div>
-              
-              <div class="card-content">
-                <div class="participants-grid">
-                  <!-- KPIs principais -->
-                  <div class="kpi-group">
-                    <div class="kpi-card primary">
-                      <div class="kpi-value" id="ultimo-saldo">R$ 0 bi</div>
-                      <div class="kpi-label">Saldo Últ. Mês <br><small id="ultimo-periodo">-</small></div>
-                    </div>
-                    <div class="kpi-card secondary">
-                      <div class="kpi-value" id="ytd-saldo">R$ 0 bi</div>
-                      <div class="kpi-label">YTD Estrangeiros</div>
-                    </div>
-                    <div class="kpi-card accent">
-                      <div class="kpi-value" id="volume-total">R$ 0 tri</div>
-                      <div class="kpi-label">Volume Total Histórico</div>
-                    </div>
-                  </div>
-            
-                  <!-- Gráfico de pizza participação -->
-                  <div class="chart-section">
-                    <div class="chart-container">
-                      <canvas id="participacaoChart"></canvas>
-                    </div>
-                    <div class="chart-legend" id="participacaoLegend"></div>
-                  </div>
-            
-                  <!-- Fluxo mensal (sparkline + tabela) -->
-                  <div class="fluxo-section">
-                    <div class="sparkline-container">
-                      <canvas id="saldoSparkline" width="300" height="60"></canvas>
-                    </div>
-                    <div class="fluxo-tabela" id="ultimos-fluxos"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
     
             <!-- Agenda de Dividendos -->
             <div class="dividendos-container" id="dividendos">
