@@ -6668,3 +6668,94 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarParticipantesMercado();
 });
 
+
+// 🆕 GRÁFICO PIZZA PARTICIPAÇÃO (VERSÃO ROBUSTA)
+function renderParticipacaoChart(participacao) {
+  const canvas = document.getElementById('participacaoChart');
+  if (!canvas) {
+    console.error('❌ Canvas participacaoChart não encontrado');
+    return;
+  }
+
+  const ctx = canvas.getContext('2d');
+  
+  // Destroy chart anterior se existir
+  if (window.participacaoChart) {
+    window.participacaoChart.destroy();
+  }
+
+  // Preparar dados
+  const labels = participacao.map(p => p.tipo_investidor);
+  const data = participacao.map(p => p.participacao_media_%);
+  
+  if (data.some(d => d <= 0 || isNaN(d))) {
+    console.error('❌ Dados inválidos para pizza:', data);
+    ctx.fillStyle = '#ff6b6b';
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 16px Inter';
+    ctx.fillText('Dados Indisponíveis', canvas.width/2, canvas.height/2);
+    return;
+  }
+
+  // Criar chart
+  window.participacaoChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+        backgroundColor: [
+          'linear-gradient(135deg, #00d4ff, #0099cc)',  // Ciano
+          'linear-gradient(135deg, #ff6b6b, #ee5a52)',  // Vermelho
+          'linear-gradient(135deg, #ffd93d, #fcca15)',  // Amarelo
+          'linear-gradient(135deg, #00ff88, #00cc66)',  // Verde
+          'linear-gradient(135deg, #a8e6cf, #88d8af)'   // Turquesa
+        ],
+        borderColor: 'rgba(255,255,255,0.2)',
+        borderWidth: 2,
+        borderRadius: 8,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { 
+          display: false 
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0,0,0,0.9)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          callbacks: {
+            label: ctx => `${ctx.label}: ${ctx.parsed}%`
+          }
+        }
+      },
+      animation: {
+        animateRotate: true,
+        duration: 1500,
+        easing: 'easeOutQuart'
+      },
+      cutout: '70%',
+      layout: {
+        padding: 20
+      }
+    }
+  });
+
+  console.log('✅ Gráfico pizza renderizado:', data);
+}
+
+// Na função carregarParticipantesMercado(), substitua o bloco por:
+try {
+  // ... (KPIs e outros)
+  
+  // GRÁFICO PIZZA (ROBUSTO)
+  renderParticipacaoChart(participacao);
+  
+} catch (error) {
+  console.error('❌ Erro pizza:', error);
+}
+
