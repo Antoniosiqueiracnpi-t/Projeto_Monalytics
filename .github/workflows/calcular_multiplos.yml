@@ -49,10 +49,18 @@ jobs:
   calcular_multiplos:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    
+    # ✅ CORREÇÃO 1: Permissão de escrita no repositório
+    permissions:
+      contents: write
 
     steps:
+      # ✅ CORREÇÃO 2: Checkout completo com histórico
       - name: 📥 Baixar código
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🐍 Setup Python
         uses: actions/setup-python@v4
@@ -128,41 +136,61 @@ jobs:
           echo "JSON: $JSON_COUNT arquivos"
           echo "CSV: $CSV_COUNT arquivos"
 
+      # ✅ CORREÇÃO 3: Lógica de commit e push melhorada
       - name: 💾 Commit e Push
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-          # Adicionar arquivos de múltiplos
-          JSON_FILES=$(find balancos -type f -name "multiplos.json" 2>/dev/null || true)
-          CSV_FILES=$(find balancos -type f -name "multiplos.csv" 2>/dev/null || true)
+          # Adicionar TODOS os arquivos multiplos.* (modificados ou novos)
+          git add balancos/*/multiplos.json balancos/*/multiplos.csv 2>/dev/null || true
 
-          if [ -z "$JSON_FILES" ] && [ -z "$CSV_FILES" ]; then
-            echo "Nenhum arquivo de múltiplos foi gerado. Nada para commitar."
+          # Verificar se há mudanças no staging area
+          if git diff --cached --quiet; then
+            echo "✅ Sem alterações nos múltiplos. Nada para commitar."
             exit 0
           fi
 
-          # Adicionar arquivos
-          [ -n "$JSON_FILES" ] && echo "$JSON_FILES" | xargs -r git add
-          [ -n "$CSV_FILES" ] && echo "$CSV_FILES" | xargs -r git add
+          # Contar e listar arquivos modificados
+          CHANGED_COUNT=$(git diff --cached --name-only | wc -l)
+          echo "📊 Arquivos alterados: $CHANGED_COUNT"
+          
+          echo "📝 Primeiros 10 arquivos:"
+          git diff --cached --name-only | head -10
 
-          # Verificar se há mudanças
-          git diff --staged --quiet && {
-            echo "Sem alterações para commitar."
-            exit 0
-          }
-
-          # Commit com mensagem descritiva
+          # Preparar mensagem de commit baseada no trigger
           TRIGGER="${{ github.event_name }}"
-          DATE=$(date +'%Y-%m-%d %H:%M')
+          DATE=$(date +'%Y-%m-%d %H:%M UTC')
           
           if [ "$TRIGGER" == "push" ]; then
-            MSG="Múltiplos atualizados (auto) - $DATE"
+            MSG="🤖 Múltiplos atualizados (auto) - $DATE"
           elif [ "$TRIGGER" == "schedule" ]; then
-            MSG="Múltiplos atualizados (schedule) - $DATE"
+            MSG="📅 Múltiplos atualizados (semanal) - $DATE"
           else
-            MSG="Múltiplos calculados - $DATE"
+            MSG="🔢 Múltiplos calculados (manual) - $DATE"
           fi
 
           git commit -m "$MSG"
-          git push
+          
+          # Push com retry automático
+          MAX_RETRIES=3
+          RETRY_COUNT=0
+          
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            if git push origin HEAD; then
+              echo "✅ Push realizado com sucesso!"
+              exit 0
+            else
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              echo "⚠️ Push falhou. Tentativa $RETRY_COUNT de $MAX_RETRIES..."
+              
+              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                echo "🔄 Tentando rebase..."
+                sleep 5
+                git pull --rebase origin main
+              fi
+            fi
+          done
+          
+          echo "❌ Push falhou após $MAX_RETRIES tentativas"
+          exit 1
