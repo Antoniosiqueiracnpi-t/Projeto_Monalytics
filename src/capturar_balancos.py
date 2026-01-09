@@ -49,52 +49,37 @@ def load_mapeamento_consolidado() -> pd.DataFrame:
         ) from e
 
 
-def extrair_ticker_inteligente(ticker_str: str) -> str:
+def extrair_ticker_inteligente(tickers_str):
     """
-    Extrai o melhor ticker de uma string de múltiplos tickers.
-    
-    REGRA DE PRIORIDADE (para CVM):
-    1. Ticker terminado em 3 (ON - Ordinária) - PRIORIDADE MÁXIMA
-    2. Ticker terminado em 4 (PN - Preferencial)
-    3. Qualquer outro ticker disponível
-    
-    Exemplos:
-        "SAPR11;SAPR3;SAPR4" → SAPR3 (prioriza ON)
-        "ITUB3;ITUB4" → ITUB3 (prioriza ON)
-        "PETR3;PETR4" → PETR3 (prioriza ON)
-        "KLBN11;KLBN3;KLBN4" → KLBN3 (prioriza ON, mas KLBN11 tem dados)
-        "ABCB4" → ABCB4 (único disponível)
+    Extrai o ticker mais adequado para busca na CVM.
+    Prioriza: ON (código 3) > PN (código 4) > UNIT (código 11)
     
     Args:
-        ticker_str: String com um ou mais tickers separados por ";"
+        tickers_str: String com tickers separados por ';' (ex: "SAPR11;SAPR3;SAPR4")
     
     Returns:
-        Melhor ticker para buscar dados na CVM
+        str: Ticker selecionado segundo a prioridade
     """
-    ticker_str = ticker_str.strip().upper()
+    # Remove aspas e espaços, depois faz split por ponto-e-vírgula
+    tickers = [t.strip().strip('"') for t in tickers_str.split(';')]
     
-    # Se não tem ponto-e-vírgula, retornar direto
-    if ';' not in ticker_str:
-        return ticker_str
+    # Prioridade 1: Busca ticker ON (termina com 3)
+    for ticker in tickers:
+        if ticker.endswith('3') and not ticker.endswith('11'):  # Evita confusão com UNIT11
+            return ticker
     
-    # Separar tickers
-    tickers = [t.strip() for t in ticker_str.split(';') if t.strip()]
+    # Prioridade 2: Busca ticker PN (termina com 4)
+    for ticker in tickers:
+        if ticker.endswith('4'):
+            return ticker
     
-    if not tickers:
-        return ticker_str
+    # Prioridade 3: Busca ticker UNIT (termina com 11)
+    for ticker in tickers:
+        if ticker.endswith('11'):
+            return ticker
     
-    # 1. PRIORIDADE MÁXIMA: Tickers terminados em "3" (ON)
-    tickers_3 = [t for t in tickers if t.endswith('3')]
-    if tickers_3:
-        return tickers_3[0]
-    
-    # 2. SEGUNDA PRIORIDADE: Tickers terminados em "4" (PN)
-    tickers_4 = [t for t in tickers if t.endswith('4')]
-    if tickers_4:
-        return tickers_4[0]
-    
-    # 3. FALLBACK: Retornar o primeiro disponível
-    return tickers[0]
+    # Fallback: retorna o primeiro ticker disponível
+    return tickers[0] if tickers else tickers_str
 
 
 def get_pasta_balanco(ticker: str) -> Path:
