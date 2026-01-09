@@ -1,9 +1,9 @@
 {
   "ticker": "ONCO3",
-  "ultima_atualizacao": "2026-01-05T23:04:30.589312",
+  "ultima_atualizacao": "2026-01-09T08:47:41.659877",
   "periodo": {
     "inicio": "2021-09-21",
-    "fim": "2026-01-02"
+    "fim": "2026-01-08"
   },
   "dados": [
     {
@@ -11764,16 +11764,60 @@
       "mm20": 2.36,
       "mm50": 2.1,
       "mm200": 3.97
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 2.75,
+      "maxima": 2.75,
+      "minima": 2.36,
+      "fechamento": 2.36,
+      "volume": 4987000,
+      "mm20": 2.37,
+      "mm50": 2.11,
+      "mm200": 3.95
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 2.36,
+      "maxima": 2.69,
+      "minima": 2.35,
+      "fechamento": 2.68,
+      "volume": 7341700,
+      "mm20": 2.41,
+      "mm50": 2.12,
+      "mm200": 3.94
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 2.65,
+      "maxima": 3.07,
+      "minima": 2.63,
+      "fechamento": 2.92,
+      "volume": 10839800,
+      "mm20": 2.45,
+      "mm50": 2.13,
+      "mm200": 3.93
+    },
+    {
+      "data": "2026-01-08",
+      "abertura": 2.92,
+      "maxima": 3.0,
+      "minima": 2.79,
+      "fechamento": 2.86,
+      "volume": 7176100,
+      "mm20": 2.48,
+      "mm50": 2.15,
+      "mm200": 3.91
     }
   ],
   "estatisticas": {
-    "total_dias": 1069,
+    "total_dias": 1073,
     "preco_inicial": 14.77,
-    "preco_atual": 2.72,
-    "variacao_periodo": -81.58,
+    "preco_atual": 2.86,
+    "variacao_periodo": -80.63,
     "maxima_periodo": 15.41,
     "minima_periodo": 1.62,
-    "volume_medio": 3277404,
+    "volume_medio": 3293466,
     "tendencia": "indefinida"
   }
 }

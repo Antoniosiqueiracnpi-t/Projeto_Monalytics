@@ -1,0 +1,39 @@
+{
+  "ticker": "RDOR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T08:48:40.879479",
+  "periodo_analisado": {
+    "inicio": "2019T1",
+    "fim": "2025T3",
+    "total_trimestres": 27,
+    "anos": 6.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 27.1,
+      "variacao_total": 375.25,
+      "ultimo_valor": 14415.54
+    },
+    "margens": {
+      "bruta": 20.81,
+      "operacional": 15.59,
+      "liquida": 6.75
+    },
+    "rentabilidade": {
+      "roe_medio": 13.63
+    },
+    "caixa": {
+      "media": 555.46,
+      "ultimo": 792.25
+    },
+    "balanco": {
+      "ativo_total": 110033.26,
+      "patrimonio": 28802.27
+    }
+  },
+  "analise_critica": "RDOR3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 6.75%). Retorno sobre patrimônio adequado (ROE de 13.63%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 27.1%)"
+  ],
+  "pontos_atencao": []
+}

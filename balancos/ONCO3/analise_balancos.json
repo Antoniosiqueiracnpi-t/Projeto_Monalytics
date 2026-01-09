@@ -1,0 +1,42 @@
+{
+  "ticker": "ONCO3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T08:48:40.839613",
+  "periodo_analisado": {
+    "inicio": "2021T1",
+    "fim": "2025T3",
+    "total_trimestres": 19,
+    "anos": 4.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 20.32,
+      "variacao_total": 129.92,
+      "ultimo_valor": 1412.99
+    },
+    "margens": {
+      "bruta": 33.28,
+      "operacional": 1.16,
+      "liquida": 12.73
+    },
+    "rentabilidade": {
+      "roe_medio": 60.74
+    },
+    "caixa": {
+      "media": -78.7,
+      "ultimo": -374.64
+    },
+    "balanco": {
+      "ativo_total": 8221.36,
+      "patrimonio": 1198.5
+    }
+  },
+  "analise_critica": "ONCO3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 12.73%. Gera excelente retorno sobre o patrimônio (ROE médio de 60.74%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 20.32%)",
+    "Excelente retorno sobre patrimônio (ROE: 60.74%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

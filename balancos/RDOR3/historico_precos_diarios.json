@@ -1,9 +1,9 @@
 {
   "ticker": "RDOR3",
-  "ultima_atualizacao": "2026-01-05T23:04:31.465409",
+  "ultima_atualizacao": "2026-01-09T08:47:42.436276",
   "periodo": {
     "inicio": "2020-12-15",
-    "fim": "2026-01-02"
+    "fim": "2026-01-08"
   },
   "dados": [
     {
@@ -13832,16 +13832,60 @@
       "mm20": 41.44,
       "mm50": 41.13,
       "mm200": 34.41
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 40.49,
+      "maxima": 41.17,
+      "minima": 40.26,
+      "fechamento": 40.95,
+      "volume": 4211400,
+      "mm20": 41.35,
+      "mm50": 41.19,
+      "mm200": 34.48
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 41.39,
+      "maxima": 43.01,
+      "minima": 41.38,
+      "fechamento": 42.5,
+      "volume": 5554400,
+      "mm20": 41.37,
+      "mm50": 41.28,
+      "mm200": 34.57
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 42.28,
+      "maxima": 42.69,
+      "minima": 40.8,
+      "fechamento": 40.99,
+      "volume": 4652600,
+      "mm20": 41.24,
+      "mm50": 41.32,
+      "mm200": 34.64
+    },
+    {
+      "data": "2026-01-08",
+      "abertura": 41.06,
+      "maxima": 41.3,
+      "minima": 40.26,
+      "fechamento": 40.67,
+      "volume": 4927200,
+      "mm20": 41.25,
+      "mm50": 41.36,
+      "mm200": 34.71
     }
   ],
   "estatisticas": {
-    "total_dias": 1257,
+    "total_dias": 1261,
     "preco_inicial": 55.81,
-    "preco_atual": 40.47,
-    "variacao_periodo": -27.49,
+    "preco_atual": 40.67,
+    "variacao_periodo": -27.13,
     "maxima_periodo": 64.24,
     "minima_periodo": 17.39,
-    "volume_medio": 4982786,
+    "volume_medio": 4982321,
     "tendencia": "indefinida"
   }
 }

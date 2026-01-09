@@ -1,0 +1,39 @@
+{
+  "ticker": "QUAL3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T08:48:40.860218",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -0.98,
+      "variacao_total": -9.82,
+      "ultimo_valor": 362.82
+    },
+    "margens": {
+      "bruta": 79.2,
+      "operacional": 23.57,
+      "liquida": 13.51
+    },
+    "rentabilidade": {
+      "roe_medio": 13.73
+    },
+    "caixa": {
+      "media": 163.54,
+      "ultimo": 247.96
+    },
+    "balanco": {
+      "ativo_total": 3906.81,
+      "patrimonio": 1342.05
+    }
+  },
+  "analise_critica": "QUAL3 enfrenta desafios no crescimento, com receita em tendência de queda. Apresenta rentabilidade saudável com margem líquida de 13.51%. Retorno sobre patrimônio adequado (ROE de 13.73%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -0.98%)"
+  ]
+}

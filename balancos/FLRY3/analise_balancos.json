@@ -1,0 +1,40 @@
+{
+  "ticker": "FLRY3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T08:48:40.761882",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 16.35,
+      "variacao_total": 390.27,
+      "ultimo_valor": 2190.98
+    },
+    "margens": {
+      "bruta": 28.16,
+      "operacional": 16.25,
+      "liquida": 9.23
+    },
+    "rentabilidade": {
+      "roe_medio": 14.9
+    },
+    "caixa": {
+      "media": 268.1,
+      "ultimo": 1527.88
+    },
+    "balanco": {
+      "ativo_total": 13584.23,
+      "patrimonio": 5482.67
+    }
+  },
+  "analise_critica": "FLRY3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 9.23%). Retorno sobre patrimônio adequado (ROE de 14.9%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 16.35%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

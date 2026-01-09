@@ -1,0 +1,40 @@
+{
+  "ticker": "HAPV3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T08:48:40.781561",
+  "periodo_analisado": {
+    "inicio": "2018T1",
+    "fim": "2025T3",
+    "total_trimestres": 31,
+    "anos": 7.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 30.27,
+      "variacao_total": 626.52,
+      "ultimo_valor": 7918.12
+    },
+    "margens": {
+      "bruta": 36.49,
+      "operacional": 9.96,
+      "liquida": 12.29
+    },
+    "rentabilidade": {
+      "roe_medio": 11.06
+    },
+    "caixa": {
+      "media": 417.96,
+      "ultimo": 1803.02
+    },
+    "balanco": {
+      "ativo_total": 74469.34,
+      "patrimonio": 48652.1
+    }
+  },
+  "analise_critica": "HAPV3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 12.29%. Retorno sobre patrimônio adequado (ROE de 11.06%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 30.27%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

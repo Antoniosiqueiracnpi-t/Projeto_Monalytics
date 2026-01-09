@@ -1,0 +1,40 @@
+{
+  "ticker": "ODPV3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T08:48:40.820697",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 7.04,
+      "variacao_total": 104.32,
+      "ultimo_valor": 617.39
+    },
+    "margens": {
+      "bruta": 52.4,
+      "operacional": 28.43,
+      "liquida": 21.81
+    },
+    "rentabilidade": {
+      "roe_medio": 37.1
+    },
+    "caixa": {
+      "media": 108.37,
+      "ultimo": 188.74
+    },
+    "balanco": {
+      "ativo_total": 2248.92,
+      "patrimonio": 1290.65
+    }
+  },
+  "analise_critica": "ODPV3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 21.81%. Gera excelente retorno sobre o patrimônio (ROE médio de 37.1%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (21.81%)",
+    "Excelente retorno sobre patrimônio (ROE: 37.1%)"
+  ],
+  "pontos_atencao": []
+}

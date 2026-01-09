@@ -1,0 +1,103 @@
+{
+  "empresa": {
+    "cnpj": "12.104.241/0004-02",
+    "nome": "",
+    "ticker": "ONCO3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 7,
+  "acionistas": [
+    {
+      "nome": "JOSEPHINA III FUNDO DE INVESTIMENTO EM PARTICIPAÇÕES",
+      "cpf_cnpj": "57.968.633/0001-05",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 207498778,
+      "percentual_total": 18.315,
+      "acoes_ordinarias": 207498778,
+      "percentual_ordinarias": 18.315,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "LATACHE GESTÃO DE RECURSOS LTDA",
+      "cpf_cnpj": "12.461.742/0001-01",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 165611657,
+      "percentual_total": 14.618,
+      "acoes_ordinarias": 165611657,
+      "percentual_ordinarias": 14.618,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "BANCO MASTER",
+      "cpf_cnpj": "33.923.798/0001-00",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 98287130,
+      "percentual_total": 8.675,
+      "acoes_ordinarias": 98287130,
+      "percentual_ordinarias": 8.675,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "nan",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "nan",
+      "nacionalidade": "Brasil",
+      "acoes_total": 71956099,
+      "percentual_total": 6.351,
+      "acoes_ordinarias": 71956099,
+      "percentual_ordinarias": 6.351,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "nan",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "nan",
+      "nacionalidade": "Brasil",
+      "acoes_total": 71432594,
+      "percentual_total": 6.305,
+      "acoes_ordinarias": 71432594,
+      "percentual_ordinarias": 6.305,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "nan",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "nan",
+      "nacionalidade": "Brasil",
+      "acoes_total": 66834330,
+      "percentual_total": 5.899,
+      "acoes_ordinarias": 66834330,
+      "percentual_ordinarias": 5.899,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "BRUNO LEMOS FERRARI",
+      "cpf_cnpj": "814.320.466-91",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 56776520,
+      "percentual_total": 5.011,
+      "acoes_ordinarias": 56776520,
+      "percentual_ordinarias": 5.011,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    }
+  ]
+}
