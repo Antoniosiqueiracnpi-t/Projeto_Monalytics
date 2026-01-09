@@ -6429,3 +6429,85 @@ document.addEventListener('DOMContentLoaded', () => {
         newsCard.addEventListener('mouseleave', iniciarAutoSlide);
     }
 });
+
+
+
+
+
+// NOVO: Dashboard B3
+async function loadDashboardB3() {
+  try {
+    const [resumo, participacao, volume, fluxoMensal, fluxoAnual, timestamp] = await Promise.all([
+      fetch('data/b3_fluxo_resumo.json'),
+      fetch('data/b3_participacao_investidores.json'),
+      fetch('data/b3_volume_negociacao.json'),
+      fetch('data/b3_fluxo_estrangeiro_mensal.json'),
+      fetch('data/b3_fluxo_estrangeiro_anual.json'),
+      fetch('data/ultima_atualizacao.json')
+    ]);
+    
+    const [resumoData, partData, volData, fluxoData, anualData, tsData] = await Promise.all([
+      resumo.json(), participacao.json(), volume.json(), fluxoMensal.json(), fluxoAnual.json(), timestamp.json()
+    ]);
+    
+    const data = resumoData[0];
+    
+    // KPIs
+    document.getElementById('kpiSaldo').textContent = `R$ ${data.ytd_saldo_estrangeiros_milhoes.toLocaleString()} mi`;
+    document.getElementById('kpiVolume').textContent = `R$ ${(data.ytd_volume_estrangeiros_milhoes / 1000).toLocaleString()} bi`;
+    document.getElementById('kpiParticipacao').textContent = `${data.maior_participante_%}%`;
+    document.getElementById('dashboardTimestamp').textContent = `(${new Date(tsData.timestamp).toLocaleDateString('pt-BR')})`;
+    
+    // Doughnut Participação
+    const ctx1 = document.getElementById('participacaoChart').getContext('2d');
+    new Chart(ctx1, {
+      type: 'doughnut',
+      data: {
+        labels: partData.map(p => p.tipo_investidor),
+        datasets: [{ data: partData.map(p => p.participacao_media_%), backgroundColor: ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6'] }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#fff' } } } }
+    });
+    
+    // Line Fluxo Mensal (últimos 6 meses)
+    const recentFluxo = fluxoData.slice(-6).reverse();
+    const ctx2 = document.getElementById('fluxoMensalChart').getContext('2d');
+    new Chart(ctx2, {
+      type: 'line',
+      data: {
+        labels: recentFluxo.map(f => f.periodo),
+        datasets: [{
+          label: 'Saldo (R$ mi)',
+          data: recentFluxo.map(f => f.saldo_milhoes),
+          borderColor: '#f59e0b',
+          backgroundColor: 'rgba(245, 158, 11, 0.1)',
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { color: '#a0a0a0' }, grid: { color: 'rgba(255,255,255,0.1)' } }, plugins: { legend: { labels: { color: '#fff' } } } }
+    });
+    
+    // Tabela Anual
+    const tbody = document.querySelector('#anualTable tbody');
+    anualData.forEach(row => {
+      tbody.innerHTML += `<tr><td>${row.ano}</td><td>${row.saldo_milhoes.toLocaleString()}</td><td>${(row.volume_total_milhoes / 1000).toLocaleString()}</td></tr>`;
+    });
+    
+    // Show content
+    document.getElementById('dashboardLoading').style.display = 'none';
+    document.getElementById('dashboardGrid').style.display = 'grid';
+    document.getElementById('dashboardFooter').style.display = 'flex';
+    
+  } catch (error) {
+    console.error('Erro Dashboard B3:', error);
+    document.getElementById('dashboardLoading').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao carregar dados';
+  }
+}
+
+// Inicializar no DOMContentLoaded ou auto-update
+document.addEventListener('DOMContentLoaded', loadDashboardB3);
+// Integre com seu auto-update.js se existir
+
+
+
