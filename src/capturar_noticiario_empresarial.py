@@ -367,29 +367,97 @@ def processar_ticker(row: pd.Series, df_full: pd.DataFrame, pasta_saida: Path) -
         return False
 
 
-def selecionar_empresas(df_base: pd.DataFrame, modo: str, **kwargs) -> pd.DataFrame:
+def selecionar_empresas(df_base: pd.DataFrame, modo: str, df_full: pd.DataFrame | None = None, **kwargs) -> pd.DataFrame:
     """
     Seleciona empresas baseado no modo especificado.
-    df_base deve conter 1 linha por ticker_base.
+    ✅ FIX: fallback para df_full e fallback final "dummy row" quando ticker não existir no CSV.
     """
+
+    # garante coluna ticker_base normalizada no df_base
+    if "ticker_base" in df_base.columns:
+        df_base = df_base.copy()
+        df_base["ticker_base"] = df_base["ticker_base"].astype(str).apply(normalizar_ticker)
+
+    def _linha_dummy(ticker_base: str) -> pd.DataFrame:
+        return pd.DataFrame([{"ticker_base": normalizar_ticker(ticker_base), "empresa": normalizar_ticker(ticker_base)}])
+
     if modo == "quantidade":
         qtd = int(kwargs.get("quantidade", 10))
         return df_base.head(qtd)
 
     elif modo == "ticker":
-        ticker = normalizar_ticker(kwargs.get("ticker", ""))
+        ticker = normalizar_ticker(kwargs.get("ticker", "")) or normalizar_ticker(kwargs.get("positional_ticker", ""))
+        if not ticker:
+            return pd.DataFrame()
+
         ticker_base = extrair_ticker_base(ticker)
-        return df_base[df_base["ticker_base"] == ticker_base]
+
+        # 1) tenta no df_base
+        sel = df_base[df_base["ticker_base"] == ticker_base]
+        if not sel.empty:
+            return sel
+
+        # 2) fallback: tenta no df_full (por ticker exato ou por ticker_base)
+        if df_full is not None and "ticker" in df_full.columns:
+            df_full2 = df_full.copy()
+            df_full2["ticker"] = df_full2["ticker"].astype(str).apply(normalizar_ticker)
+            df_full2["ticker_base"] = df_full2["ticker_base"].astype(str).apply(normalizar_ticker)
+
+            # tenta ticker exato
+            hit = df_full2[df_full2["ticker"] == ticker]
+            if not hit.empty:
+                tb = str(hit.iloc[0]["ticker_base"])
+                out = df_full2[df_full2["ticker_base"] == tb].drop_duplicates(subset=["ticker_base"], keep="first")
+                return out[["ticker_base", "empresa"]].head(1) if "empresa" in out.columns else out[["ticker_base"]].head(1)
+
+            # tenta pelo ticker_base calculado
+            hit2 = df_full2[df_full2["ticker_base"] == ticker_base]
+            if not hit2.empty:
+                out = hit2.drop_duplicates(subset=["ticker_base"], keep="first")
+                return out[["ticker_base", "empresa"]].head(1) if "empresa" in out.columns else out[["ticker_base"]].head(1)
+
+        # 3) fallback final: cria dummy e segue (não quebra o job)
+        return _linha_dummy(ticker_base)
 
     elif modo == "lista":
-        lista = kwargs.get("lista", "")
+        lista = str(kwargs.get("lista", "") or "")
+        tickers_raw = [normalizar_ticker(x) for x in lista.split(",") if normalizar_ticker(x)]
+        if not tickers_raw:
+            return pd.DataFrame()
+
         bases = []
-        for t in lista.split(","):
-            tt = normalizar_ticker(t)
-            if tt:
-                bases.append(extrair_ticker_base(tt))
-        bases = list(dict.fromkeys(bases))  # unique mantendo ordem
-        return df_base[df_base["ticker_base"].isin(bases)]
+        for t in tickers_raw:
+            bases.append(extrair_ticker_base(t))
+        # unique mantendo ordem
+        bases = list(dict.fromkeys(bases))
+
+        # 1) tenta no df_base
+        sel = df_base[df_base["ticker_base"].isin(bases)]
+        sel = sel.copy()
+
+        # 2) adiciona o que faltar via df_full ou dummy
+        faltantes = [b for b in bases if b not in set(sel["ticker_base"].tolist())]
+
+        if faltantes and df_full is not None and "ticker_base" in df_full.columns:
+            df_full2 = df_full.copy()
+            df_full2["ticker_base"] = df_full2["ticker_base"].astype(str).apply(normalizar_ticker)
+
+            for b in faltantes:
+                hit = df_full2[df_full2["ticker_base"] == b]
+                if not hit.empty:
+                    row = hit.drop_duplicates(subset=["ticker_base"], keep="first")
+                    if "empresa" in row.columns:
+                        sel = pd.concat([sel, row[["ticker_base", "empresa"]].head(1)], ignore_index=True)
+                    else:
+                        sel = pd.concat([sel, row[["ticker_base"]].head(1)], ignore_index=True)
+                else:
+                    sel = pd.concat([sel, _linha_dummy(b)], ignore_index=True)
+
+        elif faltantes:
+            for b in faltantes:
+                sel = pd.concat([sel, _linha_dummy(b)], ignore_index=True)
+
+        return sel.drop_duplicates(subset=["ticker_base"], keep="first").reset_index(drop=True)
 
     elif modo == "faixa":
         faixa = kwargs.get("faixa", "1-50")
@@ -399,6 +467,7 @@ def selecionar_empresas(df_base: pd.DataFrame, modo: str, **kwargs) -> pd.DataFr
     else:
         print(f"⚠️ Modo '{modo}' não reconhecido. Usando primeiras 10 empresas.")
         return df_base.head(10)
+
 
 
 def processar_lote(df_sel: pd.DataFrame, df_full: pd.DataFrame, pasta_saida: Path):
@@ -433,52 +502,24 @@ def processar_lote(df_sel: pd.DataFrame, df_full: pd.DataFrame, pasta_saida: Pat
 # ============================================================================
 
 def main():
-    """
-    Função principal com suporte a argumentos CLI.
-    ✅ FIX: aceita ticker posicional (ex: python script.py KLBN11)
-    """
-    parser = argparse.ArgumentParser(
-        description="Captura noticiário empresarial via Google News RSS"
-    )
+    parser = argparse.ArgumentParser(description="Captura noticiário empresarial via Google News RSS")
     parser.add_argument(
         "--modo",
         choices=["quantidade", "ticker", "lista", "faixa"],
         default="quantidade",
         help="Modo de seleção: quantidade, ticker, lista, faixa",
     )
-    parser.add_argument(
-        "--quantidade",
-        type=int,
-        default=10,
-        help="Quantidade de empresas (modo quantidade)"
-    )
-    parser.add_argument(
-        "--ticker",
-        default="",
-        help="Ticker específico (modo ticker): ex: PETR4 ou KLBN11"
-    )
-    parser.add_argument(
-        "--lista",
-        default="",
-        help="Lista de tickers (modo lista): ex: PETR4,VALE3,KLBN11"
-    )
-    parser.add_argument(
-        "--faixa",
-        default="1-50",
-        help="Faixa de linhas (modo faixa): ex: 1-50, 51-150"
-    )
+    parser.add_argument("--quantidade", type=int, default=10, help="Quantidade de empresas (modo quantidade)")
+    parser.add_argument("--ticker", default="", help="Ticker específico (modo ticker): ex: PETR4 ou KLBN11")
+    parser.add_argument("--lista", default="", help="Lista de tickers (modo lista): ex: PETR4,VALE3,KLBN11")
+    parser.add_argument("--faixa", default="1-50", help="Faixa de linhas (modo faixa): ex: 1-50, 51-150")
 
-    # ✅ NOVO: captura argumento posicional opcional (compatível com workflow antigo)
-    parser.add_argument(
-        "positional_ticker",
-        nargs="?",
-        default="",
-        help="(Opcional) Ticker posicional. Ex: python script.py KLBN11"
-    )
+    # ✅ aceita ticker posicional (workflow antigo: python script.py KLBN11)
+    parser.add_argument("positional_ticker", nargs="?", default="", help="Ticker posicional (opcional)")
 
     args = parser.parse_args()
 
-    # ✅ Se veio ticker posicional, assume modo ticker automaticamente
+    # se veio posicional, assume modo ticker
     if args.positional_ticker and not args.ticker:
         args.modo = "ticker"
         args.ticker = args.positional_ticker
@@ -491,8 +532,9 @@ def main():
         df_full["ticker"] = df_full["ticker"].astype(str).apply(normalizar_ticker)
         df_full["ticker_base"] = df_full["ticker"].apply(extrair_ticker_base)
 
-        # df_base: 1 linha por ticker_base (para não processar duplicado)
+        # df_base: 1 linha por ticker_base
         df_base = df_full.drop_duplicates(subset=["ticker_base"], keep="first").reset_index(drop=True)
+        df_base["ticker_base"] = df_base["ticker_base"].astype(str).apply(normalizar_ticker)
 
     except Exception as e:
         print(f"❌ Erro ao carregar mapeamento: {e}")
@@ -502,32 +544,32 @@ def main():
     pasta_saida = Path("balancos")
     pasta_saida.mkdir(exist_ok=True)
 
-    # Seleção baseada no modo
+    # Seleção
     df_sel = selecionar_empresas(
         df_base,
         args.modo,
+        df_full=df_full,                 # ✅ passa df_full para fallback
         quantidade=args.quantidade,
         ticker=args.ticker,
         lista=args.lista,
-        faixa=args.faixa
+        faixa=args.faixa,
+        positional_ticker=args.positional_ticker,
     )
 
     if df_sel.empty:
         print("❌ Nenhuma empresa selecionada com os critérios fornecidos.")
         sys.exit(1)
 
-    # Exibir informações do job
     print(f"\n{'='*70}")
-    print(f">>> JOB: CAPTURAR NOTICIÁRIO EMPRESARIAL <<<")
+    print(">>> JOB: CAPTURAR NOTICIÁRIO EMPRESARIAL <<<")
     print(f"{'='*70}")
     print(f"Modo: {args.modo}")
     print(f"Empresas selecionadas (ticker_base): {len(df_sel)}")
-    print(f"Fonte: Google News RSS")
-    print(f"Limite por empresa: 30 notícias novas (max 100 acumuladas) POR TICKER")
-    print(f"Saída: balancos/<TICKER>/noticiario.json (todas as classes)")
+    print("Fonte: Google News RSS")
+    print("Limite por empresa: 30 notícias novas (max 100 acumuladas) POR TICKER")
+    print("Saída: balancos/<TICKER>/noticiario.json (todas as classes)")
     print(f"{'='*70}")
 
-    # Processar
     processar_lote(df_sel, df_full, pasta_saida)
 
 
