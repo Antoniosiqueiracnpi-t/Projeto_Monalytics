@@ -178,22 +178,53 @@ def _pick_value_for_code(group: pd.DataFrame, code: str) -> float:
 # ======================================================================================
 
 DEPREC_PATTERNS = [
+    # Depreciação + Amortização (padrões existentes)
     r"deprecia[çc][aã]o\s*(e|ou)?\s*amortiza[çc][aã]o",
     r"amortiza[çc][aã]o\s*(e|ou)?\s*deprecia[çc][aã]o",
+    
+    # Depreciação + Amortização + Impairment (NOVO)
+    r"deprecia[çc][aã]o\s*,?\s*amortiza[çc][aã]o\s*(e|ou)\s*(impairment|redução ao valor recuper[aá]vel)",
+    r"deprecia[çc][aã]o\s*,?\s*(impairment|redução ao valor recuper[aá]vel)\s*(e|ou)\s*amortiza[çc][aã]o",
+    r"amortiza[çc][aã]o\s*,?\s*deprecia[çc][aã]o\s*(e|ou)\s*(impairment|redução ao valor recuper[aá]vel)",
+    
+    # Depreciação + Impairment (sem Amortização)
+    r"deprecia[çc][aã]o\s*(e|ou)\s*(impairment|redução ao valor recuper[aá]vel)",
+    r"(impairment|redução ao valor recuper[aá]vel)\s*(e|ou)\s*deprecia[çc][aã]o",
+    
+    # Amortização + Impairment (sem Depreciação)
+    r"amortiza[çc][aã]o\s*(e|ou)\s*(impairment|redução ao valor recuper[aá]vel)",
+    r"(impairment|redução ao valor recuper[aá]vel)\s*(e|ou)\s*amortiza[çc][aã]o",
+    
+    # Somente Impairment (casos isolados)
+    r"^(impairment|redução ao valor recuper[aá]vel)\s*$",
+    
+    # Depreciação ou Amortização isoladas (padrões existentes)
     r"^deprecia[çc][oõ]es?\s*$",
     r"^amortiza[çc][oõ]es?\s*$",
     r"^deprecia[çc][aã]o\s*$",
     r"^amortiza[çc][aã]o\s*$",
+    
+    # Abreviações e formatos especiais
     r"deprec\.\s*(e|ou)?\s*amort\.",
     r"d&a",
     r"deprec\s*/\s*amort",
+    r"d\s*,?\s*a\s*(e|ou)?\s*i",  # NOVO: D, A e I
+    r"d&a&i",  # NOVO: D&A&I
 ]
 
 DEPREC_REGEX = [re.compile(p, re.IGNORECASE) for p in DEPREC_PATTERNS]
 
 
 def _is_deprec_amort_account(ds_conta: str) -> bool:
-    """Verifica se o nome da conta corresponde a Depreciação e/ou Amortização."""
+    """
+    Verifica se o nome da conta corresponde a Depreciação, Amortização e/ou Impairment.
+    
+    Captura variações como:
+    - Depreciação e Amortização
+    - Depreciação, Amortização e Impairment
+    - Depreciação, Amortização e Redução ao Valor Recuperável
+    - D&A, D&A&I, D, A e I
+    """
     ds_clean = ds_conta.strip()
     for regex in DEPREC_REGEX:
         if regex.search(ds_clean):
