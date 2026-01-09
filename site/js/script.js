@@ -1606,6 +1606,121 @@ function obterTickerPasta(ticker) {
     return pasta || t;
 }
 
+// =========================== RESOLVER PASTA CANÔNICA (EMPRESA) ===========================
+// Cache para não ficar testando rede toda hora
+const _PASTA_EMPRESA_CACHE = new Map();
+
+// Arquivos que indicam que a pasta tem “dados corporativos” (não apenas preços)
+const _PASTA_EMPRESA_PROBES = [
+  'dre_padronizado.csv',
+  'bpa_padronizado.csv',
+  'bpp_padronizado.csv',
+  'dfc_padronizado.csv',
+  'multiplos.json',
+  'noticias.json',
+  'noticiario.json'
+];
+
+function _getTickersCandidatosEmpresa(ticker) {
+  const t = normalizarTicker(ticker);
+  if (!Array.isArray(mapeamentoB3) || !mapeamentoB3.length) return [t];
+
+  const info = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === t);
+  if (!info) return [t];
+
+  const cands = [];
+
+  // 1) ticker_pasta do CSV (se houver)
+  if (info.ticker_pasta) cands.push(normalizarTicker(info.ticker_pasta));
+
+  // 2) ticker selecionado
+  cands.push(t);
+
+  // 3) todos os tickers da empresa
+  if (info.todosTickersStr) {
+    const outros = String(info.todosTickersStr)
+      .split(/[;\/ ,]+/)
+      .map(x => normalizarTicker(x))
+      .filter(Boolean);
+    cands.push(...outros);
+  }
+
+  // Heurística extra (opcional, ajuda quando CSV vem “fora de ordem”):
+  // tenta priorizar classes comuns (3/4/11/5/6/33/34) do mesmo prefixo.
+  const prefix = t.slice(0, 4);
+  if (/^[A-Z]{4}$/.test(prefix)) {
+    cands.push(prefix + '3', prefix + '4', prefix + '11', prefix + '5', prefix + '6', prefix + '33', prefix + '34');
+  }
+
+  return [...new Set(cands.filter(Boolean))];
+}
+
+async function _probeUrlOk(url) {
+  try {
+    // HEAD é leve (quando suportado)
+    const r = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+    if (r.ok) return true;
+
+    // Alguns servidores podem não gostar de HEAD; fallback: GET mínimo
+    if (r.status === 405 || r.status === 403) {
+      const r2 = await fetch(url, {
+        method: 'GET',
+        cache: 'no-store',
+        headers: { Range: 'bytes=0-0' }
+      });
+      return r2.ok;
+    }
+
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Resolve a pasta “canônica” da empresa (balancos/<PASTA>/) para carregar
+ * arquivos corporativos (padronizados, múltiplos, notícias).
+ */
+async function resolverTickerPastaEmpresa(ticker) {
+  const t = normalizarTicker(ticker);
+  if (!t) return t;
+
+  // Cache direto
+  if (_PASTA_EMPRESA_CACHE.has(t)) return _PASTA_EMPRESA_CACHE.get(t);
+
+  const candidatos = _getTickersCandidatosEmpresa(t);
+
+  // Tenta achar o primeiro candidato que tenha algum “probe” corporativo
+  for (const cand of candidatos) {
+    for (const file of _PASTA_EMPRESA_PROBES) {
+      const url = `${DATA_CONFIG.GITHUB_RAW}/${DATA_CONFIG.BRANCH}/balancos/${cand}/${file}?t=${Date.now()}`;
+      const ok = await _probeUrlOk(url);
+      if (ok) {
+        // Cacheia para o ticker atual e (se soubermos) para o grupo também
+        _PASTA_EMPRESA_CACHE.set(t, cand);
+
+        const info = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === t);
+        if (info && info.todosTickersStr) {
+          String(info.todosTickersStr)
+            .split(/[;\/ ,]+/)
+            .map(x => normalizarTicker(x))
+            .filter(Boolean)
+            .forEach(x => _PASTA_EMPRESA_CACHE.set(x, cand));
+        }
+
+        return cand;
+      }
+    }
+  }
+
+  // fallback: usa a regra antiga (pode depender do CSV)
+  const fallback = obterTickerPasta(t);
+  _PASTA_EMPRESA_CACHE.set(t, fallback);
+  return fallback;
+}
+
+
+
 
 /**
  * Carrega dados de dividendos
@@ -2675,7 +2790,7 @@ async function loadMultiplosData(ticker) {
         }
         
         // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
+        const tickerPasta = await resolverTickerPastaEmpresa(tickerNorm);
         const timestamp = new Date().getTime();
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
         
@@ -5364,7 +5479,7 @@ async function loadDemonstracoesFinanceirasData(ticker) {
         }
 
         // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
+        const tickerPasta = await resolverTickerPastaEmpresa(tickerNorm);
         const ehFinanceira = isSetorFinanceiro(empresaInfo.setor);
         const timestamp = new Date().getTime();
 
@@ -5849,7 +5964,7 @@ async function loadComunicadosEmpresa(ticker) {
         console.log('Carregando comunicados da empresa de', ticker, '...');
 
         // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
+        const tickerPasta = await resolverTickerPastaEmpresa(ticker);
         const timestamp = new Date().getTime();
         const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/noticias.json?t=${timestamp}`;
 
@@ -6142,7 +6257,7 @@ async function carregarNoticiasEmpresa(ticker) {
         
         // Normaliza o ticker e obtém a pasta correta
         const tickerNorm = normalizarTicker(ticker);
-        const tickerPasta = obterTickerPasta(tickerNorm);
+        const tickerPasta = await resolverTickerPastaEmpresa(tickerNorm);
         
         console.log(`📁 Ticker normalizado: ${tickerNorm} | Pasta: ${tickerPasta}`);
         
