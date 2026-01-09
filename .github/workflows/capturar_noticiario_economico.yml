@@ -32,7 +32,8 @@ jobs:
       - name: 📦 Instalar dependências
         run: |
           pip install --upgrade pip
-          pip install feedparser pytz beautifulsoup4
+          pip install -r requirements.txt
+
 
       - name: 📰 Capturar notícias
         id: captura
