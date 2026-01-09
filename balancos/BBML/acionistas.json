@@ -1,0 +1,51 @@
+{
+  "empresa": {
+    "cnpj": "01.107.327/0001-20",
+    "nome": "",
+    "ticker": "BBML3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 3,
+  "acionistas": [
+    {
+      "nome": "Stratus SCP Coinvestimentos I - Fundo de Investimento em Participações - Multiestratégia",
+      "cpf_cnpj": "27.984.444/0001-65",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 26739595,
+      "percentual_total": 65.601,
+      "acoes_ordinarias": 26739595,
+      "percentual_ordinarias": 65.601,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "MARCOS EGÍDIO BATTISTELLA",
+      "cpf_cnpj": "317.990.199-34",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 11685287,
+      "percentual_total": 28.668,
+      "acoes_ordinarias": 11685287,
+      "percentual_ordinarias": 28.668,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "JUARES LUIZ NICOLOTTI",
+      "cpf_cnpj": "151.048.501-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2335936,
+      "percentual_total": 5.731,
+      "acoes_ordinarias": 2335936,
+      "percentual_ordinarias": 5.731,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    }
+  ]
+}

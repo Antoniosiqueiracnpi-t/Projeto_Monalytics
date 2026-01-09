@@ -1,0 +1,37 @@
+{
+  "ticker": "VLID3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T08:55:07.283533",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 3.91,
+      "variacao_total": 49.66,
+      "ultimo_valor": 540.4
+    },
+    "margens": {
+      "bruta": 27.54,
+      "operacional": 9.97,
+      "liquida": 6.98
+    },
+    "rentabilidade": {
+      "roe_medio": 10.77
+    },
+    "caixa": {
+      "media": 86.51,
+      "ultimo": 300.15
+    },
+    "balanco": {
+      "ativo_total": 2874.06,
+      "patrimonio": 1732.09
+    }
+  },
+  "analise_critica": "VLID3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 6.98%). Retorno sobre patrimônio adequado (ROE de 10.77%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": []
+}
