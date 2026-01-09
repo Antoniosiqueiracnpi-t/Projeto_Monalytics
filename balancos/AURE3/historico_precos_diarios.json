@@ -1,9 +1,9 @@
 {
   "ticker": "AURE3",
-  "ultima_atualizacao": "2026-01-06T22:34:40.902649",
+  "ultima_atualizacao": "2026-01-09T23:02:27.494008",
   "periodo": {
     "inicio": "2022-03-28",
-    "fim": "2026-01-05"
+    "fim": "2026-01-08"
   },
   "dados": [
     {
@@ -10378,16 +10378,49 @@
       "mm20": 12.13,
       "mm50": 11.77,
       "mm200": 10.12
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 11.82,
+      "maxima": 12.13,
+      "minima": 11.82,
+      "fechamento": 11.9,
+      "volume": 3634300,
+      "mm20": 12.08,
+      "mm50": 11.79,
+      "mm200": 10.14
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 11.9,
+      "maxima": 12.05,
+      "minima": 11.53,
+      "fechamento": 11.53,
+      "volume": 2232400,
+      "mm20": 12.02,
+      "mm50": 11.79,
+      "mm200": 10.16
+    },
+    {
+      "data": "2026-01-08",
+      "abertura": 11.55,
+      "maxima": 11.72,
+      "minima": 11.48,
+      "fechamento": 11.52,
+      "volume": 1612000,
+      "mm20": 11.98,
+      "mm50": 11.79,
+      "mm200": 10.18
     }
   ],
   "estatisticas": {
-    "total_dias": 943,
+    "total_dias": 946,
     "preco_inicial": 12.76,
-    "preco_atual": 11.78,
-    "variacao_periodo": -7.66,
+    "preco_atual": 11.52,
+    "variacao_periodo": -9.7,
     "maxima_periodo": 13.16,
     "minima_periodo": 7.34,
-    "volume_medio": 4323413,
+    "volume_medio": 4317608,
     "tendencia": "indefinida"
   }
 }

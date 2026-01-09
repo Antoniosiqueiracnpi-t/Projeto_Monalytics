@@ -1,9 +1,9 @@
 {
   "ticker": "CSED3",
-  "ultima_atualizacao": "2026-01-07T22:32:05.150925",
+  "ultima_atualizacao": "2026-01-09T23:02:21.897958",
   "periodo": {
     "inicio": "2021-02-11",
-    "fim": "2026-01-06"
+    "fim": "2026-01-08"
   },
   "dados": [
     {
@@ -13447,16 +13447,38 @@
       "mm20": 5.73,
       "mm50": 5.73,
       "mm200": 4.75
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 6.33,
+      "maxima": 6.42,
+      "minima": 6.18,
+      "fechamento": 6.29,
+      "volume": 796300,
+      "mm20": 5.74,
+      "mm50": 5.75,
+      "mm200": 4.77
+    },
+    {
+      "data": "2026-01-08",
+      "abertura": 6.31,
+      "maxima": 6.55,
+      "minima": 6.29,
+      "fechamento": 6.5,
+      "volume": 1090700,
+      "mm20": 5.8,
+      "mm50": 5.77,
+      "mm200": 4.79
     }
   ],
   "estatisticas": {
-    "total_dias": 1222,
+    "total_dias": 1224,
     "preco_inicial": 9.96,
-    "preco_atual": 6.28,
-    "variacao_periodo": -36.97,
+    "preco_atual": 6.5,
+    "variacao_periodo": -34.76,
     "maxima_periodo": 12.52,
     "minima_periodo": 1.63,
-    "volume_medio": 576078,
+    "volume_medio": 576679,
     "tendencia": "alta"
   }
 }

@@ -1,9 +1,9 @@
 {
   "ticker": "BSLI4",
-  "ultima_atualizacao": "2026-01-06T22:11:53.429219",
+  "ultima_atualizacao": "2026-01-09T23:03:05.859549",
   "periodo": {
     "inicio": "2024-12-09",
-    "fim": "2026-01-05"
+    "fim": "2026-01-08"
   },
   "dados": [
     {
@@ -2612,16 +2612,49 @@
       "mm20": 7.27,
       "mm50": 7.87,
       "mm200": 8.61
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 7.19,
+      "maxima": 7.29,
+      "minima": 7.08,
+      "fechamento": 7.15,
+      "volume": 1400,
+      "mm20": 7.25,
+      "mm50": 7.83,
+      "mm200": 8.62
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 7.12,
+      "maxima": 7.42,
+      "minima": 7.12,
+      "fechamento": 7.12,
+      "volume": 700,
+      "mm20": 7.23,
+      "mm50": 7.79,
+      "mm200": 8.62
+    },
+    {
+      "data": "2026-01-08",
+      "abertura": 7.41,
+      "maxima": 7.41,
+      "minima": 7.36,
+      "fechamento": 7.36,
+      "volume": 300,
+      "mm20": 7.24,
+      "mm50": 7.76,
+      "mm200": 8.63
     }
   ],
   "estatisticas": {
-    "total_dias": 237,
+    "total_dias": 240,
     "preco_inicial": 7.73,
-    "preco_atual": 7.21,
-    "variacao_periodo": -6.71,
+    "preco_atual": 7.36,
+    "variacao_periodo": -4.77,
     "maxima_periodo": 12.49,
     "minima_periodo": 5.79,
-    "volume_medio": 6597,
-    "tendencia": "baixa"
+    "volume_medio": 6525,
+    "tendencia": "indefinida"
   }
 }

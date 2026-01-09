@@ -1,9 +1,9 @@
 {
   "ticker": "IFCM3",
-  "ultima_atualizacao": "2026-01-05T23:04:19.092723",
+  "ultima_atualizacao": "2026-01-09T23:03:43.165681",
   "periodo": {
     "inicio": "2021-05-07",
-    "fim": "2026-01-02"
+    "fim": "2026-01-08"
   },
   "dados": [
     {
@@ -12798,16 +12798,60 @@
       "mm20": 1.31,
       "mm50": 1.81,
       "mm200": 15.47
+    },
+    {
+      "data": "2026-01-05",
+      "abertura": 1.18,
+      "maxima": 1.19,
+      "minima": 1.12,
+      "fechamento": 1.15,
+      "volume": 192100,
+      "mm20": 1.28,
+      "mm50": 1.79,
+      "mm200": 15.36
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 1.16,
+      "maxima": 1.16,
+      "minima": 1.11,
+      "fechamento": 1.14,
+      "volume": 271000,
+      "mm20": 1.25,
+      "mm50": 1.77,
+      "mm200": 15.23
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 1.14,
+      "maxima": 1.14,
+      "minima": 1.07,
+      "fechamento": 1.08,
+      "volume": 254000,
+      "mm20": 1.23,
+      "mm50": 1.74,
+      "mm200": 15.1
+    },
+    {
+      "data": "2026-01-08",
+      "abertura": 1.09,
+      "maxima": 1.09,
+      "minima": 1.01,
+      "fechamento": 1.06,
+      "volume": 256000,
+      "mm20": 1.2,
+      "mm50": 1.72,
+      "mm200": 14.97
     }
   ],
   "estatisticas": {
-    "total_dias": 1163,
+    "total_dias": 1167,
     "preco_inicial": 4665.91,
-    "preco_atual": 1.17,
-    "variacao_periodo": -99.97,
+    "preco_atual": 1.06,
+    "variacao_periodo": -99.98,
     "maxima_periodo": 7299.7,
     "minima_periodo": 0.77,
-    "volume_medio": 51830,
+    "volume_medio": 52486,
     "tendencia": "baixa"
   }
 }

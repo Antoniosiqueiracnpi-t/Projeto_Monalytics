@@ -1,9 +1,9 @@
 {
   "ticker": "SOJA3",
-  "ultima_atualizacao": "2026-01-06T19:21:19.011145",
+  "ultima_atualizacao": "2026-01-09T23:01:48.498315",
   "periodo": {
     "inicio": "2021-04-30",
-    "fim": "2026-01-05"
+    "fim": "2026-01-08"
   },
   "dados": [
     {
@@ -12864,16 +12864,49 @@
       "mm20": 8.51,
       "mm50": 8.72,
       "mm200": 9.58
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 8.95,
+      "maxima": 9.04,
+      "minima": 8.9,
+      "fechamento": 8.99,
+      "volume": 335500,
+      "mm20": 8.55,
+      "mm50": 8.71,
+      "mm200": 9.58
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 8.99,
+      "maxima": 8.99,
+      "minima": 8.57,
+      "fechamento": 8.57,
+      "volume": 1069000,
+      "mm20": 8.57,
+      "mm50": 8.7,
+      "mm200": 9.57
+    },
+    {
+      "data": "2026-01-08",
+      "abertura": 8.68,
+      "maxima": 8.68,
+      "minima": 8.48,
+      "fechamento": 8.48,
+      "volume": 956400,
+      "mm20": 8.6,
+      "mm50": 8.68,
+      "mm200": 9.57
     }
   ],
   "estatisticas": {
-    "total_dias": 1169,
+    "total_dias": 1172,
     "preco_inicial": 13.42,
-    "preco_atual": 8.95,
-    "variacao_periodo": -33.3,
+    "preco_atual": 8.48,
+    "variacao_periodo": -36.8,
     "maxima_periodo": 16.97,
     "minima_periodo": 7.88,
-    "volume_medio": 455328,
-    "tendencia": "indefinida"
+    "volume_medio": 456177,
+    "tendencia": "baixa"
   }
 }

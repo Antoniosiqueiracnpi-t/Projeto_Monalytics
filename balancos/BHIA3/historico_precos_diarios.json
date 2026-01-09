@@ -1,33 +1,11 @@
 {
   "ticker": "BHIA3",
-  "ultima_atualizacao": "2026-01-07T08:31:54.924500",
+  "ultima_atualizacao": "2026-01-09T23:02:00.233935",
   "periodo": {
-    "inicio": "2020-12-09",
-    "fim": "2026-01-06"
+    "inicio": "2020-12-11",
+    "fim": "2026-01-08"
   },
   "dados": [
-    {
-      "data": "2020-12-09",
-      "abertura": 388.25,
-      "maxima": 390.43,
-      "minima": 375.12,
-      "fechamento": 376.44,
-      "volume": 1714886,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
-    {
-      "data": "2020-12-10",
-      "abertura": 378.4,
-      "maxima": 379.5,
-      "minima": 364.19,
-      "fechamento": 372.28,
-      "volume": 2128952,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-11",
       "abertura": 369.66,
@@ -222,7 +200,7 @@
       "minima": 327.66,
       "fechamento": 330.72,
       "volume": 1663467,
-      "mm20": 357.57,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -233,7 +211,7 @@
       "minima": 328.32,
       "fechamento": 331.82,
       "volume": 1801138,
-      "mm20": 355.34,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +531,7 @@
       "fechamento": 275.82,
       "volume": 2110038,
       "mm20": 314.6,
-      "mm50": 332.69,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -564,7 +542,7 @@
       "fechamento": 259.63,
       "volume": 3884034,
       "mm20": 312.1,
-      "mm50": 330.36,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2182,7 @@
       "volume": 2074661,
       "mm20": 191.21,
       "mm50": 233.69,
-      "mm200": 285.85
+      "mm200": null
     },
     {
       "data": "2021-10-01",
@@ -2215,7 +2193,7 @@
       "volume": 2119003,
       "mm20": 189.74,
       "mm50": 231.07,
-      "mm200": 284.87
+      "mm200": null
     },
     {
       "data": "2021-10-04",
@@ -13898,16 +13876,38 @@
       "mm20": 3.16,
       "mm50": 3.35,
       "mm200": 4.13
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 3.08,
+      "maxima": 3.09,
+      "minima": 3.0,
+      "fechamento": 3.01,
+      "volume": 4193900,
+      "mm20": 3.14,
+      "mm50": 3.34,
+      "mm200": 4.11
+    },
+    {
+      "data": "2026-01-08",
+      "abertura": 3.02,
+      "maxima": 3.04,
+      "minima": 2.98,
+      "fechamento": 2.98,
+      "volume": 2780100,
+      "mm20": 3.12,
+      "mm50": 3.33,
+      "mm200": 4.09
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 376.44,
-    "preco_atual": 3.08,
-    "variacao_periodo": -99.18,
-    "maxima_periodo": 376.44,
+    "preco_inicial": 367.91,
+    "preco_atual": 2.98,
+    "variacao_periodo": -99.19,
+    "maxima_periodo": 374.03,
     "minima_periodo": 2.65,
-    "volume_medio": 3715583,
+    "volume_medio": 3718061,
     "tendencia": "baixa"
   }
 }

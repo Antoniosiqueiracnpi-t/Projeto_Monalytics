@@ -1,9 +1,9 @@
 {
   "ticker": "AGXY3",
-  "ultima_atualizacao": "2026-01-06T19:21:17.687747",
+  "ultima_atualizacao": "2026-01-09T23:01:47.641619",
   "periodo": {
     "inicio": "2021-07-27",
-    "fim": "2026-01-05"
+    "fim": "2026-01-08"
   },
   "dados": [
     {
@@ -12204,16 +12204,49 @@
       "mm20": 4.69,
       "mm50": 5.2,
       "mm200": 6.09
+    },
+    {
+      "data": "2026-01-06",
+      "abertura": 4.37,
+      "maxima": 4.42,
+      "minima": 4.25,
+      "fechamento": 4.25,
+      "volume": 30300,
+      "mm20": 4.65,
+      "mm50": 5.17,
+      "mm200": 6.07
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 4.22,
+      "maxima": 4.35,
+      "minima": 4.22,
+      "fechamento": 4.29,
+      "volume": 11000,
+      "mm20": 4.61,
+      "mm50": 5.14,
+      "mm200": 6.05
+    },
+    {
+      "data": "2026-01-08",
+      "abertura": 4.32,
+      "maxima": 4.32,
+      "minima": 4.21,
+      "fechamento": 4.29,
+      "volume": 9400,
+      "mm20": 4.58,
+      "mm50": 5.11,
+      "mm200": 6.03
     }
   ],
   "estatisticas": {
-    "total_dias": 1109,
+    "total_dias": 1112,
     "preco_inicial": 151.72,
-    "preco_atual": 4.36,
-    "variacao_periodo": -97.13,
+    "preco_atual": 4.29,
+    "variacao_periodo": -97.17,
     "maxima_periodo": 175.91,
-    "minima_periodo": 4.36,
-    "volume_medio": 19002,
+    "minima_periodo": 4.25,
+    "volume_medio": 18996,
     "tendencia": "baixa"
   }
 }

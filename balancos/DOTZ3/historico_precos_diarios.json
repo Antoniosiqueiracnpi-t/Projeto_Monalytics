@@ -1,9 +1,9 @@
 {
   "ticker": "DOTZ3",
-  "ultima_atualizacao": "2026-01-07T22:32:05.410625",
+  "ultima_atualizacao": "2026-01-09T23:02:22.138189",
   "periodo": {
     "inicio": "2021-05-31",
-    "fim": "2026-01-06"
+    "fim": "2026-01-08"
   },
   "dados": [
     {
@@ -12644,16 +12644,38 @@
       "mm20": 5.52,
       "mm50": 6.45,
       "mm200": 6.32
+    },
+    {
+      "data": "2026-01-07",
+      "abertura": 4.51,
+      "maxima": 4.51,
+      "minima": 4.33,
+      "fechamento": 4.35,
+      "volume": 12400,
+      "mm20": 5.42,
+      "mm50": 6.38,
+      "mm200": 6.33
+    },
+    {
+      "data": "2026-01-08",
+      "abertura": 4.36,
+      "maxima": 4.4,
+      "minima": 4.27,
+      "fechamento": 4.33,
+      "volume": 15500,
+      "mm20": 5.31,
+      "mm50": 6.31,
+      "mm200": 6.33
     }
   ],
   "estatisticas": {
-    "total_dias": 1149,
+    "total_dias": 1151,
     "preco_inicial": 132.0,
-    "preco_atual": 4.39,
-    "variacao_periodo": -96.67,
+    "preco_atual": 4.33,
+    "variacao_periodo": -96.72,
     "maxima_periodo": 171.5,
     "minima_periodo": 2.66,
-    "volume_medio": 15458,
-    "tendencia": "indefinida"
+    "volume_medio": 15455,
+    "tendencia": "baixa"
   }
 }

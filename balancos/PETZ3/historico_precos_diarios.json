@@ -1,33 +1,11 @@
 {
   "ticker": "PETZ3",
-  "ultima_atualizacao": "2026-01-07T08:31:57.426039",
+  "ultima_atualizacao": "2026-01-09T23:02:03.700735",
   "periodo": {
-    "inicio": "2020-12-09",
+    "inicio": "2020-12-11",
     "fim": "2026-01-06"
   },
   "dados": [
-    {
-      "data": "2020-12-09",
-      "abertura": 16.99,
-      "maxima": 17.01,
-      "minima": 16.4,
-      "fechamento": 16.58,
-      "volume": 2010694,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
-    {
-      "data": "2020-12-10",
-      "abertura": 16.6,
-      "maxima": 16.72,
-      "minima": 16.06,
-      "fechamento": 16.21,
-      "volume": 3527339,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-11",
       "abertura": 16.21,
@@ -222,7 +200,7 @@
       "minima": 16.66,
       "fechamento": 17.63,
       "volume": 5795187,
-      "mm20": 17.09,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -233,7 +211,7 @@
       "minima": 17.43,
       "fechamento": 18.75,
       "volume": 9303973,
-      "mm20": 17.2,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +531,7 @@
       "fechamento": 19.91,
       "volume": 4519448,
       "mm20": 20.68,
-      "mm50": 19.15,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -564,7 +542,7 @@
       "fechamento": 19.52,
       "volume": 4126095,
       "mm20": 20.68,
-      "mm50": 19.21,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2182,7 @@
       "volume": 6787095,
       "mm20": 24.18,
       "mm50": 23.96,
-      "mm200": 21.27
+      "mm200": null
     },
     {
       "data": "2021-10-01",
@@ -2215,7 +2193,7 @@
       "volume": 7917810,
       "mm20": 24.09,
       "mm50": 23.97,
-      "mm200": 21.3
+      "mm200": null
     },
     {
       "data": "2021-10-04",
@@ -13901,13 +13879,13 @@
     }
   ],
   "estatisticas": {
-    "total_dias": 1263,
-    "preco_inicial": 16.58,
+    "total_dias": 1261,
+    "preco_inicial": 16.45,
     "preco_atual": 4.39,
-    "variacao_periodo": -73.53,
+    "variacao_periodo": -73.32,
     "maxima_periodo": 26.4,
     "minima_periodo": 2.9,
-    "volume_medio": 9568027,
+    "volume_medio": 9578811,
     "tendencia": "alta"
   }
 }

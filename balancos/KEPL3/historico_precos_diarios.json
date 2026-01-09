@@ -1,22 +1,11 @@
 {
   "ticker": "KEPL3",
-  "ultima_atualizacao": "2026-01-08T23:18:50.732823",
+  "ultima_atualizacao": "2026-01-09T23:03:14.956337",
   "periodo": {
-    "inicio": "2020-12-10",
-    "fim": "2026-01-07"
+    "inicio": "2020-12-11",
+    "fim": "2026-01-08"
   },
   "dados": [
-    {
-      "data": "2020-12-10",
-      "abertura": 3.33,
-      "maxima": 3.35,
-      "minima": 3.24,
-      "fechamento": 3.35,
-      "volume": 1022400,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-11",
       "abertura": 3.35,
@@ -222,7 +211,7 @@
       "minima": 3.3,
       "fechamento": 3.3,
       "volume": 701400,
-      "mm20": 3.29,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 4.05,
       "volume": 1134000,
       "mm20": 3.7,
-      "mm50": 3.45,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1297200,
       "mm20": 4.25,
       "mm50": 4.51,
-      "mm200": 4.25
+      "mm200": null
     },
     {
       "data": "2021-10-04",
@@ -13898,16 +13887,27 @@
       "mm20": 9.7,
       "mm50": 9.34,
       "mm200": 7.8
+    },
+    {
+      "data": "2026-01-08",
+      "abertura": 10.05,
+      "maxima": 10.16,
+      "minima": 10.02,
+      "fechamento": 10.08,
+      "volume": 1575100,
+      "mm20": 9.73,
+      "mm50": 9.4,
+      "mm200": 7.82
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 3.35,
-    "preco_atual": 10.05,
-    "variacao_periodo": 199.93,
+    "preco_inicial": 3.29,
+    "preco_atual": 10.08,
+    "variacao_periodo": 206.27,
     "maxima_periodo": 10.24,
     "minima_periodo": 3.18,
-    "volume_medio": 1484090,
+    "volume_medio": 1484527,
     "tendencia": "alta"
   }
 }
