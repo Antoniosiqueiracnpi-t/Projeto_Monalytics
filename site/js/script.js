@@ -6588,3 +6588,83 @@ document.addEventListener('DOMContentLoaded', () => {
         newsCard.addEventListener('mouseleave', iniciarAutoSlide);
     }
 });
+
+
+
+
+
+// 🆕 CARREGAR PARTICIPANTES DO MERCADO
+async function carregarParticipantesMercado() {
+  try {
+    const [resumoResp, participacaoResp, mensalResp] = await Promise.all([
+      fetch('site/data/b3_fluxo_resumo.json'),
+      fetch('site/data/b3_participacao_investidores.json'),
+      fetch('site/data/b3_fluxo_estrangeiro_mensal.json')
+    ]);
+
+    const [resumo, participacao, mensal] = await Promise.all([
+      resumoResp.json(),
+      participacaoResp.json(),
+      mensalResp.json()
+    ]);
+
+    const ultimo = resumo[0];
+    const ultimosFluxos = mensal.slice(-4); // Últimos 4 meses
+
+    // 1️⃣ KPIs
+    document.getElementById('ultimo-saldo').textContent = 
+      formatarMoeda(ultimo.ultimo_mes_saldo_milhoes / 1000, 1) + ' bi';
+    document.getElementById('ultimo-periodo').textContent = ultimo.ultimo_mes_periodo;
+    document.getElementById('ytd-saldo').textContent = 
+      formatarMoeda(ultimo.ytd_saldo_estrangeiros_milhoes / 1000, 1) + ' bi';
+    document.getElementById('volume-total').textContent = 
+      formatarMoeda(ultimo.volume_total_milhoes / 1000, 0) + ' tri';
+
+    // 2️⃣ Gráfico Pizza
+    const ctx = document.getElementById('participacaoChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: participacao.map(p => p.tipo_investidor),
+        datasets: [{
+          data: participacao.map(p => p.participacao_media_%),
+          backgroundColor: ['#00d4ff', '#ff6b6b', '#ffd93d', '#00ff88', '#a8e6cf'],
+          borderWidth: 0,
+          borderRadius: 10
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        cutout: '65%'
+      }
+    });
+
+    // 3️⃣ Sparkline Saldo
+    renderSparkline('saldoSparkline', mensal.map(m => m.saldo_milhoes));
+
+    // 4️⃣ Tabela Fluxos
+    const tabela = document.getElementById('ultimos-fluxos');
+    tabela.innerHTML = ultimosFluxos.map(f => `
+      <div class="fluxo-item ${f.saldo_milhoes >= 0 ? 'fluxo-positivo' : 'fluxo-negativo'}">
+        ${f.periodo}<br>
+        <strong>R$${formatarMoeda(Math.abs(f.saldo_milhoes), 1)}M</strong>
+      </div>
+    `).join('');
+
+    document.getElementById('status-participantes').textContent = 'Atualizado';
+    document.getElementById('status-participantes').className = 'badge-status bg-gradient-success';
+    
+  } catch (error) {
+    console.error('Erro participantes:', error);
+    document.getElementById('status-participantes').textContent = 'Erro';
+    document.getElementById('status-participantes').className = 'badge-status bg-gradient-danger';
+  }
+}
+
+// Inicializar no load da página
+document.addEventListener('DOMContentLoaded', () => {
+  carregarParticipantesMercado();
+});
+
