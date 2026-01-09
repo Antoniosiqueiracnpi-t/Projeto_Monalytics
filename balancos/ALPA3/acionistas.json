@@ -1,0 +1,103 @@
+{
+  "empresa": {
+    "cnpj": "61.079.117/0001-05",
+    "nome": "",
+    "ticker": "ALPA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 7,
+  "acionistas": [
+    {
+      "nome": "Itaúsa S.A.",
+      "cpf_cnpj": "61.532.644/0001-15",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 202065604,
+      "percentual_total": 29.841,
+      "acoes_ordinarias": 148274505,
+      "percentual_ordinarias": 43.673,
+      "acoes_preferenciais": 53791099,
+      "percentual_preferenciais": 15.932,
+      "posicao": 1
+    },
+    {
+      "nome": "Cambuhy Alpa Holding Ltda",
+      "cpf_cnpj": "04.723.665/0001-84",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 162373602,
+      "percentual_total": 23.979,
+      "acoes_ordinarias": 121558919,
+      "percentual_ordinarias": 35.804,
+      "acoes_preferenciais": 40814683,
+      "percentual_preferenciais": 12.088,
+      "posicao": 2
+    },
+    {
+      "nome": "SILVIO TINI DE ARAÚJO",
+      "cpf_cnpj": "064.065.488-68",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 48865389,
+      "percentual_total": 7.216,
+      "acoes_ordinarias": 19168217,
+      "percentual_ordinarias": 5.646,
+      "acoes_preferenciais": 29697172,
+      "percentual_preferenciais": 8.796,
+      "posicao": 3
+    },
+    {
+      "nome": "BONSUCEX HOLDING S.A.",
+      "cpf_cnpj": "52.839.420/0001-60",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 41381989,
+      "percentual_total": 6.111,
+      "acoes_ordinarias": 13089073,
+      "percentual_ordinarias": 3.855,
+      "acoes_preferenciais": 28292916,
+      "percentual_preferenciais": 8.38,
+      "posicao": 4
+    },
+    {
+      "nome": "MS ALPA PARTICIPAÇÕES LTDA",
+      "cpf_cnpj": "48.066.335/0001-39",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 33372792,
+      "percentual_total": 4.928,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 33372792,
+      "percentual_preferenciais": 9.884,
+      "posicao": 5
+    },
+    {
+      "nome": "Alpa Fundo de Investimentos em Ações",
+      "cpf_cnpj": "35.727.406/0001-55",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 32895033,
+      "percentual_total": 4.858,
+      "acoes_ordinarias": 26715585,
+      "percentual_ordinarias": 7.869,
+      "acoes_preferenciais": 6179448,
+      "percentual_preferenciais": 1.83,
+      "posicao": 6
+    },
+    {
+      "nome": "nan",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "nan",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2379800,
+      "percentual_total": 0.351,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 2379800,
+      "percentual_preferenciais": 0.705,
+      "posicao": 7
+    }
+  ]
+}

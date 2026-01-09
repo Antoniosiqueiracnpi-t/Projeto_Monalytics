@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "82.640.558/0001-04",
+    "nome": "",
+    "ticker": "CTKA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "Kasavii Participações S.A.",
+      "cpf_cnpj": "19.947.634/0001-84",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 5364075,
+      "percentual_total": 86.442,
+      "acoes_ordinarias": 2811039,
+      "percentual_ordinarias": 97.66,
+      "acoes_preferenciais": 2553036,
+      "percentual_preferenciais": 76.738,
+      "posicao": 1
+    }
+  ]
+}

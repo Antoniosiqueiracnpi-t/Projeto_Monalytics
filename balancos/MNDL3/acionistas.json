@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "88.610.191/0001-54",
+    "nome": "",
+    "ticker": "MNDL3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "RTI VERTEX INVESTIMENTOS LTDA",
+      "cpf_cnpj": "08.343.232/0001-54",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 3104116,
+      "percentual_total": 31.288,
+      "acoes_ordinarias": 3104116,
+      "percentual_ordinarias": 31.288,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "ZHEPAR PARTICIPAÇÕES LTDA.",
+      "cpf_cnpj": "86.816.527/0001-04",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2835560,
+      "percentual_total": 28.581,
+      "acoes_ordinarias": 2835560,
+      "percentual_ordinarias": 28.581,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "WIDENHAM INVESTIMENTOS S.A",
+      "cpf_cnpj": "05.941.376/0001-14",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1990000,
+      "percentual_total": 20.058,
+      "acoes_ordinarias": 1990000,
+      "percentual_ordinarias": 20.058,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "ELECE ADM E PARTICIPAÇÕES LTDA",
+      "cpf_cnpj": "87.431.490/0001-69",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 174040,
+      "percentual_total": 1.754,
+      "acoes_ordinarias": 174040,
+      "percentual_ordinarias": 1.754,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    }
+  ]
+}

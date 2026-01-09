@@ -1,0 +1,43 @@
+{
+  "ticker": "SGPS3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T09:11:44.748544",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2024T3",
+    "total_trimestres": 39,
+    "anos": 9.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -15.96,
+      "variacao_total": -80.83,
+      "ultimo_valor": 105.11
+    },
+    "margens": {
+      "bruta": 22.51,
+      "operacional": -13.97,
+      "liquida": 37.85
+    },
+    "rentabilidade": {
+      "roe_medio": 36.76
+    },
+    "caixa": {
+      "media": 7.58,
+      "ultimo": -19.63
+    },
+    "balanco": {
+      "ativo_total": 2347.4,
+      "patrimonio": -812.04
+    }
+  },
+  "analise_critica": "SGPS3 enfrenta desafios no crescimento, com receita em tendência de queda. Destaca-se pela alta rentabilidade, com margem líquida média de 37.85%. Gera excelente retorno sobre o patrimônio (ROE médio de 36.76%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (37.85%)",
+    "Excelente retorno sobre patrimônio (ROE: 36.76%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -15.96%)",
+    "Queima de caixa operacional"
+  ]
+}

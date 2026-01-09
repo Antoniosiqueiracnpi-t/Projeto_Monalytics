@@ -1,0 +1,77 @@
+{
+  "empresa": {
+    "cnpj": "88.613.658/0001-10",
+    "nome": "",
+    "ticker": "PTNT3"
+  },
+  "data_referencia": "2026-12-31",
+  "ano_fre": 2026,
+  "top_acionistas": 5,
+  "acionistas": [
+    {
+      "nome": "GLADIUM ADMINISTRAÇÃO E PARTICIPAÇÕES LTDA",
+      "cpf_cnpj": "89.565.519/0001-20",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 16076208,
+      "percentual_total": 33.46,
+      "acoes_ordinarias": 15631704,
+      "percentual_ordinarias": 97.595,
+      "acoes_preferenciais": 444504,
+      "percentual_preferenciais": 1.388,
+      "posicao": 1
+    },
+    {
+      "nome": "CLUBE DE INVESTIMENTOS SOL",
+      "cpf_cnpj": "01.038.051/0001-75",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 10225300,
+      "percentual_total": 21.282,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 10225300,
+      "percentual_preferenciais": 31.925,
+      "posicao": 2
+    },
+    {
+      "nome": "WALTER APPEL",
+      "cpf_cnpj": "345.684.178-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2479800,
+      "percentual_total": 5.161,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 2479800,
+      "percentual_preferenciais": 7.742,
+      "posicao": 3
+    },
+    {
+      "nome": "TRIGONO VERBIER MASTER FUNDO DE INVESTIMENTO EM ACOES",
+      "cpf_cnpj": "42.190.558/0001-27",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1071000,
+      "percentual_total": 2.229,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 1071000,
+      "percentual_preferenciais": 3.344,
+      "posicao": 4
+    },
+    {
+      "nome": "TRIGONO HORIZON MICROCAP MASTER FIA",
+      "cpf_cnpj": "43.104.134/0001-65",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 456900,
+      "percentual_total": 0.951,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 456900,
+      "percentual_preferenciais": 1.426,
+      "posicao": 5
+    }
+  ]
+}

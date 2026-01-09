@@ -1,0 +1,42 @@
+{
+  "ticker": "CTSA4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T09:11:44.603827",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2024T3",
+    "total_trimestres": 39,
+    "anos": 9.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -15.31,
+      "variacao_total": -79.37,
+      "ultimo_valor": 19.92
+    },
+    "margens": {
+      "bruta": 113.68,
+      "operacional": -151.57,
+      "liquida": 195.74
+    },
+    "rentabilidade": {
+      "roe_medio": 17.96
+    },
+    "caixa": {
+      "media": 2.8,
+      "ultimo": 27.39
+    },
+    "balanco": {
+      "ativo_total": 648.54,
+      "patrimonio": 142.69
+    }
+  },
+  "analise_critica": "CTSA4 enfrenta desafios no crescimento, com receita em tendência de queda. Destaca-se pela alta rentabilidade, com margem líquida média de 195.74%. Gera excelente retorno sobre o patrimônio (ROE médio de 17.96%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (195.74%)",
+    "Excelente retorno sobre patrimônio (ROE: 17.96%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -15.31%)"
+  ]
+}

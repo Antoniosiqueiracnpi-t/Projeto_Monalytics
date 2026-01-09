@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "17.245.234/0001-00",
+    "nome": "",
+    "ticker": "CEDO3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "AROLDO TEODORO CAMPOS",
+      "cpf_cnpj": "567.008.736-49",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2613332,
+      "percentual_total": 26.104,
+      "acoes_ordinarias": 1150532,
+      "percentual_ordinarias": 20.16,
+      "acoes_preferenciais": 1462800,
+      "percentual_preferenciais": 33.986,
+      "posicao": 1
+    },
+    {
+      "nome": "FABIANO SOARES NOGUEIRA",
+      "cpf_cnpj": "163.134.296-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1020066,
+      "percentual_total": 10.189,
+      "acoes_ordinarias": 867675,
+      "percentual_ordinarias": 15.203,
+      "acoes_preferenciais": 152391,
+      "percentual_preferenciais": 3.541,
+      "posicao": 2
+    },
+    {
+      "nome": "JOSE CLAUDIO PAGANO",
+      "cpf_cnpj": "763.370.228-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 825000,
+      "percentual_total": 8.241,
+      "acoes_ordinarias": 285000,
+      "percentual_ordinarias": 4.994,
+      "acoes_preferenciais": 540000,
+      "percentual_preferenciais": 12.546,
+      "posicao": 3
+    },
+    {
+      "nome": "LUIZ CÉSAR GUIMARÃES",
+      "cpf_cnpj": "419.827.896-20",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 356487,
+      "percentual_total": 3.561,
+      "acoes_ordinarias": 344042,
+      "percentual_ordinarias": 6.028,
+      "acoes_preferenciais": 12445,
+      "percentual_preferenciais": 0.289,
+      "posicao": 4
+    },
+    {
+      "nome": "PAULA MASCARENHAS DE FREITAS BORGES",
+      "cpf_cnpj": "549.883.576-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 284297,
+      "percentual_total": 2.84,
+      "acoes_ordinarias": 262519,
+      "percentual_ordinarias": 4.6,
+      "acoes_preferenciais": 21778,
+      "percentual_preferenciais": 0.506,
+      "posicao": 5
+    },
+    {
+      "nome": "VICTOR MASCARENHAS DE FREITAS BORGES",
+      "cpf_cnpj": "221.708.396-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 271482,
+      "percentual_total": 2.712,
+      "acoes_ordinarias": 248440,
+      "percentual_ordinarias": 4.353,
+      "acoes_preferenciais": 23042,
+      "percentual_preferenciais": 0.535,
+      "posicao": 6
+    },
+    {
+      "nome": "AMÉLIA GONZAGA CARVALHO SILVA",
+      "cpf_cnpj": "097.230.566-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 256806,
+      "percentual_total": 2.565,
+      "acoes_ordinarias": 232390,
+      "percentual_ordinarias": 4.072,
+      "acoes_preferenciais": 24416,
+      "percentual_preferenciais": 0.567,
+      "posicao": 7
+    },
+    {
+      "nome": "LUCIANA FREITAS BORGES MIRANDA",
+      "cpf_cnpj": "428.577.166-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 256039,
+      "percentual_total": 2.558,
+      "acoes_ordinarias": 256039,
+      "percentual_ordinarias": 4.486,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 8
+    },
+    {
+      "nome": "FRANCISCO ASCLEPIO BARROSO AGUIAR",
+      "cpf_cnpj": "170.810.253-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 200000,
+      "percentual_total": 1.998,
+      "acoes_ordinarias": 22400,
+      "percentual_ordinarias": 0.392,
+      "acoes_preferenciais": 177600,
+      "percentual_preferenciais": 4.126,
+      "posicao": 9
+    },
+    {
+      "nome": "MARIA CRISTINA SAMPAIO PAGANO",
+      "cpf_cnpj": "499.669.528-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 192300,
+      "percentual_total": 1.921,
+      "acoes_ordinarias": 32300,
+      "percentual_ordinarias": 0.566,
+      "acoes_preferenciais": 160000,
+      "percentual_preferenciais": 3.717,
+      "posicao": 10
+    }
+  ]
+}

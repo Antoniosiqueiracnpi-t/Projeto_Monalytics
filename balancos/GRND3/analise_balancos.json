@@ -1,0 +1,40 @@
+{
+  "ticker": "GRND3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T09:11:44.665914",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 3.45,
+      "variacao_total": 42.8,
+      "ultimo_valor": 760.1
+    },
+    "margens": {
+      "bruta": 45.3,
+      "operacional": 11.73,
+      "liquida": 25.18
+    },
+    "rentabilidade": {
+      "roe_medio": 16.74
+    },
+    "caixa": {
+      "media": 148.45,
+      "ultimo": 473.75
+    },
+    "balanco": {
+      "ativo_total": 4524.89,
+      "patrimonio": 4050.73
+    }
+  },
+  "analise_critica": "GRND3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 25.18%. Gera excelente retorno sobre o patrimônio (ROE médio de 16.74%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (25.18%)",
+    "Excelente retorno sobre patrimônio (ROE: 16.74%)"
+  ],
+  "pontos_atencao": []
+}

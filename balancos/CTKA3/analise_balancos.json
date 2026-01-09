@@ -1,0 +1,40 @@
+{
+  "ticker": "CTKA4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T09:11:44.518390",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 13.31,
+      "variacao_total": 271.42,
+      "ultimo_valor": 192.02
+    },
+    "margens": {
+      "bruta": 40.79,
+      "operacional": 10.1,
+      "liquida": 13.94
+    },
+    "rentabilidade": {
+      "roe_medio": 1287.37
+    },
+    "caixa": {
+      "media": 13.6,
+      "ultimo": 41.88
+    },
+    "balanco": {
+      "ativo_total": 724.85,
+      "patrimonio": 53.94
+    }
+  },
+  "analise_critica": "CTKA4 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 13.94%. Gera excelente retorno sobre o patrimônio (ROE médio de 1287.37%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 13.31%)",
+    "Excelente retorno sobre patrimônio (ROE: 1287.37%)"
+  ],
+  "pontos_atencao": []
+}

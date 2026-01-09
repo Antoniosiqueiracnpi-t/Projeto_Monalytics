@@ -1,0 +1,41 @@
+{
+  "ticker": "VULC3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-09T09:11:44.872342",
+  "periodo_analisado": {
+    "inicio": "2015T1",
+    "fim": "2025T3",
+    "total_trimestres": 41,
+    "anos": 10.2
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 12.9,
+      "variacao_total": 236.42,
+      "ultimo_valor": 955.68
+    },
+    "margens": {
+      "bruta": 36.82,
+      "operacional": 13.19,
+      "liquida": 15.74
+    },
+    "rentabilidade": {
+      "roe_medio": 41.16
+    },
+    "caixa": {
+      "media": 72.48,
+      "ultimo": 417.87
+    },
+    "balanco": {
+      "ativo_total": 4218.62,
+      "patrimonio": 2503.38
+    }
+  },
+  "analise_critica": "VULC3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 15.74%. Gera excelente retorno sobre o patrimônio (ROE médio de 41.16%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 12.9%)",
+    "Alta margem de lucro líquido (15.74%)",
+    "Excelente retorno sobre patrimônio (ROE: 41.16%)"
+  ],
+  "pontos_atencao": []
+}

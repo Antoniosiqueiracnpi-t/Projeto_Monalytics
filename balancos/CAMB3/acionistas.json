@@ -1,0 +1,51 @@
+{
+  "empresa": {
+    "cnpj": "61.088.894/0001-08",
+    "nome": "",
+    "ticker": "CAMB3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 3,
+  "acionistas": [
+    {
+      "nome": "ROBERTO ESTEFANO",
+      "cpf_cnpj": "067.524.468-49",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 11278775,
+      "percentual_total": 26.679,
+      "acoes_ordinarias": 11278775,
+      "percentual_ordinarias": 26.679,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "EDUARDO ESTEFANO FILHO",
+      "cpf_cnpj": "067.527.138-04",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 9069795,
+      "percentual_total": 21.454,
+      "acoes_ordinarias": 9069795,
+      "percentual_ordinarias": 21.454,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "SUELI VIZINTAS ESTEFANO",
+      "cpf_cnpj": "536.017.428-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1627040,
+      "percentual_total": 3.849,
+      "acoes_ordinarias": 1627040,
+      "percentual_ordinarias": 3.849,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    }
+  ]
+}
