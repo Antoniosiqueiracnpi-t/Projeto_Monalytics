@@ -1606,121 +1606,6 @@ function obterTickerPasta(ticker) {
     return pasta || t;
 }
 
-// =========================== RESOLVER PASTA CANÔNICA (EMPRESA) ===========================
-// Cache para não ficar testando rede toda hora
-const _PASTA_EMPRESA_CACHE = new Map();
-
-// Arquivos que indicam que a pasta tem “dados corporativos” (não apenas preços)
-const _PASTA_EMPRESA_PROBES = [
-  'dre_padronizado.csv',
-  'bpa_padronizado.csv',
-  'bpp_padronizado.csv',
-  'dfc_padronizado.csv',
-  'multiplos.json',
-  'noticias.json',
-  'noticiario.json'
-];
-
-function _getTickersCandidatosEmpresa(ticker) {
-  const t = normalizarTicker(ticker);
-  if (!Array.isArray(mapeamentoB3) || !mapeamentoB3.length) return [t];
-
-  const info = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === t);
-  if (!info) return [t];
-
-  const cands = [];
-
-  // 1) ticker_pasta do CSV (se houver)
-  if (info.ticker_pasta) cands.push(normalizarTicker(info.ticker_pasta));
-
-  // 2) ticker selecionado
-  cands.push(t);
-
-  // 3) todos os tickers da empresa
-  if (info.todosTickersStr) {
-    const outros = String(info.todosTickersStr)
-      .split(/[;\/ ,]+/)
-      .map(x => normalizarTicker(x))
-      .filter(Boolean);
-    cands.push(...outros);
-  }
-
-  // Heurística extra (opcional, ajuda quando CSV vem “fora de ordem”):
-  // tenta priorizar classes comuns (3/4/11/5/6/33/34) do mesmo prefixo.
-  const prefix = t.slice(0, 4);
-  if (/^[A-Z]{4}$/.test(prefix)) {
-    cands.push(prefix + '3', prefix + '4', prefix + '11', prefix + '5', prefix + '6', prefix + '33', prefix + '34');
-  }
-
-  return [...new Set(cands.filter(Boolean))];
-}
-
-async function _probeUrlOk(url) {
-  try {
-    // HEAD é leve (quando suportado)
-    const r = await fetch(url, { method: 'HEAD', cache: 'no-store' });
-    if (r.ok) return true;
-
-    // Alguns servidores podem não gostar de HEAD; fallback: GET mínimo
-    if (r.status === 405 || r.status === 403) {
-      const r2 = await fetch(url, {
-        method: 'GET',
-        cache: 'no-store',
-        headers: { Range: 'bytes=0-0' }
-      });
-      return r2.ok;
-    }
-
-    return false;
-  } catch {
-    return false;
-  }
-}
-
-/**
- * Resolve a pasta “canônica” da empresa (balancos/<PASTA>/) para carregar
- * arquivos corporativos (padronizados, múltiplos, notícias).
- */
-async function resolverTickerPastaEmpresa(ticker) {
-  const t = normalizarTicker(ticker);
-  if (!t) return t;
-
-  // Cache direto
-  if (_PASTA_EMPRESA_CACHE.has(t)) return _PASTA_EMPRESA_CACHE.get(t);
-
-  const candidatos = _getTickersCandidatosEmpresa(t);
-
-  // Tenta achar o primeiro candidato que tenha algum “probe” corporativo
-  for (const cand of candidatos) {
-    for (const file of _PASTA_EMPRESA_PROBES) {
-      const url = `${DATA_CONFIG.GITHUB_RAW}/${DATA_CONFIG.BRANCH}/balancos/${cand}/${file}?t=${Date.now()}`;
-      const ok = await _probeUrlOk(url);
-      if (ok) {
-        // Cacheia para o ticker atual e (se soubermos) para o grupo também
-        _PASTA_EMPRESA_CACHE.set(t, cand);
-
-        const info = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === t);
-        if (info && info.todosTickersStr) {
-          String(info.todosTickersStr)
-            .split(/[;\/ ,]+/)
-            .map(x => normalizarTicker(x))
-            .filter(Boolean)
-            .forEach(x => _PASTA_EMPRESA_CACHE.set(x, cand));
-        }
-
-        return cand;
-      }
-    }
-  }
-
-  // fallback: usa a regra antiga (pode depender do CSV)
-  const fallback = obterTickerPasta(t);
-  _PASTA_EMPRESA_CACHE.set(t, fallback);
-  return fallback;
-}
-
-
-
 
 /**
  * Carrega dados de dividendos
@@ -2790,7 +2675,7 @@ async function loadMultiplosData(ticker) {
         }
         
         // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = await resolverTickerPastaEmpresa(tickerNorm);
+        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
         const timestamp = new Date().getTime();
         const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
         
@@ -5479,7 +5364,7 @@ async function loadDemonstracoesFinanceirasData(ticker) {
         }
 
         // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = await resolverTickerPastaEmpresa(tickerNorm);
+        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
         const ehFinanceira = isSetorFinanceiro(empresaInfo.setor);
         const timestamp = new Date().getTime();
 
@@ -5964,7 +5849,7 @@ async function loadComunicadosEmpresa(ticker) {
         console.log('Carregando comunicados da empresa de', ticker, '...');
 
         // const tickerPasta = obterTickerPasta(ticker);
-        const tickerPasta = await resolverTickerPastaEmpresa(ticker);
+        const tickerPasta = window.TICKER_PASTA_ATUAL || normalizarTicker(ticker);  // ← CORRETO!
         const timestamp = new Date().getTime();
         const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/noticias.json?t=${timestamp}`;
 
@@ -6257,7 +6142,7 @@ async function carregarNoticiasEmpresa(ticker) {
         
         // Normaliza o ticker e obtém a pasta correta
         const tickerNorm = normalizarTicker(ticker);
-        const tickerPasta = await resolverTickerPastaEmpresa(tickerNorm);
+        const tickerPasta = obterTickerPasta(tickerNorm);
         
         console.log(`📁 Ticker normalizado: ${tickerNorm} | Pasta: ${tickerPasta}`);
         
@@ -6588,174 +6473,3 @@ document.addEventListener('DOMContentLoaded', () => {
         newsCard.addEventListener('mouseleave', iniciarAutoSlide);
     }
 });
-
-
-
-
-
-// 🆕 CARREGAR PARTICIPANTES DO MERCADO
-async function carregarParticipantesMercado() {
-  try {
-    const [resumoResp, participacaoResp, mensalResp] = await Promise.all([
-      fetch('site/data/b3_fluxo_resumo.json'),
-      fetch('site/data/b3_participacao_investidores.json'),
-      fetch('site/data/b3_fluxo_estrangeiro_mensal.json')
-    ]);
-
-    const [resumo, participacao, mensal] = await Promise.all([
-      resumoResp.json(),
-      participacaoResp.json(),
-      mensalResp.json()
-    ]);
-
-    const ultimo = resumo[0];
-    const ultimosFluxos = mensal.slice(-4); // Últimos 4 meses
-
-    // 1️⃣ KPIs
-    document.getElementById('ultimo-saldo').textContent = 
-      formatarMoeda(ultimo.ultimo_mes_saldo_milhoes / 1000, 1) + ' bi';
-    document.getElementById('ultimo-periodo').textContent = ultimo.ultimo_mes_periodo;
-    document.getElementById('ytd-saldo').textContent = 
-      formatarMoeda(ultimo.ytd_saldo_estrangeiros_milhoes / 1000, 1) + ' bi';
-    document.getElementById('volume-total').textContent = 
-      formatarMoeda(ultimo.volume_total_milhoes / 1000, 0) + ' tri';
-
-    // 2️⃣ Gráfico Pizza
-    const ctx = document.getElementById('participacaoChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: participacao.map(p => p.tipo_investidor),
-        datasets: [{
-          data: participacao.map(p => p.participacao_media_%),
-          backgroundColor: ['#00d4ff', '#ff6b6b', '#ffd93d', '#00ff88', '#a8e6cf'],
-          borderWidth: 0,
-          borderRadius: 10
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        cutout: '65%'
-      }
-    });
-
-    // 3️⃣ Sparkline Saldo
-    renderSparkline('saldoSparkline', mensal.map(m => m.saldo_milhoes));
-
-    // 4️⃣ Tabela Fluxos
-    const tabela = document.getElementById('ultimos-fluxos');
-    tabela.innerHTML = ultimosFluxos.map(f => `
-      <div class="fluxo-item ${f.saldo_milhoes >= 0 ? 'fluxo-positivo' : 'fluxo-negativo'}">
-        ${f.periodo}<br>
-        <strong>R$${formatarMoeda(Math.abs(f.saldo_milhoes), 1)}M</strong>
-      </div>
-    `).join('');
-
-    document.getElementById('status-participantes').textContent = 'Atualizado';
-    document.getElementById('status-participantes').className = 'badge-status bg-gradient-success';
-    
-  } catch (error) {
-    console.error('Erro participantes:', error);
-    document.getElementById('status-participantes').textContent = 'Erro';
-    document.getElementById('status-participantes').className = 'badge-status bg-gradient-danger';
-  }
-}
-
-// Inicializar no load da página
-document.addEventListener('DOMContentLoaded', () => {
-  carregarParticipantesMercado();
-});
-
-
-// 🆕 GRÁFICO PIZZA PARTICIPAÇÃO (VERSÃO ROBUSTA)
-function renderParticipacaoChart(participacao) {
-  const canvas = document.getElementById('participacaoChart');
-  if (!canvas) {
-    console.error('❌ Canvas participacaoChart não encontrado');
-    return;
-  }
-
-  const ctx = canvas.getContext('2d');
-  
-  // Destroy chart anterior se existir
-  if (window.participacaoChart) {
-    window.participacaoChart.destroy();
-  }
-
-  // Preparar dados
-  const labels = participacao.map(p => p.tipo_investidor);
-  const data = participacao.map(p => p.participacao_media_%);
-  
-  if (data.some(d => d <= 0 || isNaN(d))) {
-    console.error('❌ Dados inválidos para pizza:', data);
-    ctx.fillStyle = '#ff6b6b';
-    ctx.textAlign = 'center';
-    ctx.font = 'bold 16px Inter';
-    ctx.fillText('Dados Indisponíveis', canvas.width/2, canvas.height/2);
-    return;
-  }
-
-  // Criar chart
-  window.participacaoChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: labels,
-      datasets: [{
-        data: data,
-        backgroundColor: [
-          'linear-gradient(135deg, #00d4ff, #0099cc)',  // Ciano
-          'linear-gradient(135deg, #ff6b6b, #ee5a52)',  // Vermelho
-          'linear-gradient(135deg, #ffd93d, #fcca15)',  // Amarelo
-          'linear-gradient(135deg, #00ff88, #00cc66)',  // Verde
-          'linear-gradient(135deg, #a8e6cf, #88d8af)'   // Turquesa
-        ],
-        borderColor: 'rgba(255,255,255,0.2)',
-        borderWidth: 2,
-        borderRadius: 8,
-        hoverOffset: 8
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { 
-          display: false 
-        },
-        tooltip: {
-          backgroundColor: 'rgba(0,0,0,0.9)',
-          titleColor: '#fff',
-          bodyColor: '#fff',
-          callbacks: {
-            label: ctx => `${ctx.label}: ${ctx.parsed}%`
-          }
-        }
-      },
-      animation: {
-        animateRotate: true,
-        duration: 1500,
-        easing: 'easeOutQuart'
-      },
-      cutout: '70%',
-      layout: {
-        padding: 20
-      }
-    }
-  });
-
-  console.log('✅ Gráfico pizza renderizado:', data);
-}
-
-// Na função carregarParticipantesMercado(), substitua o bloco por:
-try {
-  // ... (KPIs e outros)
-  
-  // GRÁFICO PIZZA (ROBUSTO)
-  renderParticipacaoChart(participacao);
-  
-} catch (error) {
-  console.error('❌ Erro pizza:', error);
-}
-
