@@ -432,6 +432,75 @@
                 <h2 class="section-title">Análise de Ações</h2>
                 <p class="section-subtitle">Ferramentas completas de análise quantitativa</p>
             </div>
+
+
+            <!-- NOVO: Dashboard Mercado B3 -->
+            <div class="dashboard-b3-container" id="dashboardB3">
+              <div class="dashboard-header">
+                <div class="dashboard-title-group">
+                  <i class="fas fa-tachometer-alt"></i>
+                  <div>
+                    <h3 class="dashboard-title">Dashboard Mercado B3</h3>
+                    <p class="dashboard-subtitle">Fluxo estrangeiro, volume e participação YTD <span id="dashboardTimestamp"></span></p>
+                  </div>
+                </div>
+                <div class="loading-spinner" id="dashboardLoading">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <span>Carregando dashboard...</span>
+                </div>
+              </div>
+              <div class="dashboard-grid" id="dashboardGrid" style="display: none;">
+                <!-- KPI Cards -->
+                <div class="kpi-cards">
+                  <div class="kpi-card">
+                    <div class="kpi-icon estrangeiro"><i class="fas fa-globe"></i></div>
+                    <div class="kpi-value" id="kpiSaldo">R$ 0 mi</div>
+                    <div class="kpi-label">Saldo Estrangeiro YTD</div>
+                  </div>
+                  <div class="kpi-card">
+                    <div class="kpi-icon volume"><i class="fas fa-chart-line"></i></div>
+                    <div class="kpi-value" id="kpiVolume">R$ 0 bi</div>
+                    <div class="kpi-label">Volume Total</div>
+                  </div>
+                  <div class="kpi-card">
+                    <div class="kpi-icon participacao"><i class="fas fa-users"></i></div>
+                    <div class="kpi-value" id="kpiParticipacao">0%</div>
+                    <div class="kpi-label">Estrangeiro %</div>
+                  </div>
+                </div>
+                <!-- Charts Row -->
+                <div class="charts-row">
+                  <!-- Doughnut Participação -->
+                  <div class="chart-card">
+                    <h4>Participação Investidores</h4>
+                    <canvas id="participacaoChart"></canvas>
+                  </div>
+                  <!-- Line Fluxo Mensal -->
+                  <div class="chart-card">
+                    <h4>Fluxo Estrangeiro Mensal</h4>
+                    <canvas id="fluxoMensalChart"></canvas>
+                  </div>
+                </div>
+                <!-- Anual Summary -->
+                <div class="summary-table">
+                  <h4>Resumo Anual Estrangeiros</h4>
+                  <div class="table-scroll">
+                    <table id="anualTable">
+                      <thead><tr><th>Ano</th><th>Saldo (R$ mi)</th><th>Volume (R$ mi)</th></tr></thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="dashboard-footer" id="dashboardFooter" style="display: none;">
+                <i class="fas fa-info-circle"></i>
+                <span>Dados B3 atualizados diariamente | Fonte: site/data/*.json</span>
+              </div>
+            </div>
+            <!-- FIM NOVO CARD -->
+
+
+            
     
             <!-- Agenda de Dividendos -->
             <div class="dividendos-container" id="dividendos">
