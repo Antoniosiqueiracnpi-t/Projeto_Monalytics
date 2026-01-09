@@ -1,0 +1,92 @@
+name: Coletar Fluxo Estrangeiros B3
+
+on:
+  schedule:
+    # 8h BRT ≈ 11h UTC (considerando horário padrão, ajuste se tiver horário de verão)
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  fluxo_estrangeiros:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: 📦 Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 📊 Coletar fluxo estrangeiros B3
+        id: coleta
+        run: |
+          echo "🔄 Iniciando coleta de fluxo estrangeiro B3..."
+          if python src/coletar_fluxo_estrangeiros.py; then
+            echo "✅ Script executado com sucesso"
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Erro ao executar script"
+            echo "success=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: 🔍 Verificar mudanças
+        id: verificar
+        run: |
+          echo "📊 Status do repositório:"
+          git status
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "ℹ️ Nenhuma alteração detectada"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Alterações detectadas:"
+            git status --short
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 💾 Commit e push
+        if: steps.verificar.outputs.has_changes == 'true'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
+          git add site/data/b3_*.json
+
+          if git diff --staged --quiet; then
+            echo "⚠️ Nenhuma alteração staged"
+            exit 0
+          fi
+
+          TIMESTAMP=$(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')
+          git commit -m "📊 Fluxo estrangeiros B3: ${TIMESTAMP} [skip netlify]"
+
+          git push origin main
+
+      - name: 📋 Resumo da execução
+        if: always()
+        run: |
+          echo "═══════════════════════════════════════"
+          echo "📋 RESUMO DA EXECUÇÃO"
+          echo "═══════════════════════════════════════"
+          echo "Script executado: ${{ steps.coleta.outputs.success }}"
+          echo "Mudanças detectadas: ${{ steps.verificar.outputs.has_changes }}"
+          echo "Horário: $(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')"
+          echo "═══════════════════════════════════════"
