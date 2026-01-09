@@ -36,9 +36,8 @@ jobs:
 
       - name: 📰 Capturar notícias
         id: captura
+        continue-on-error: false
         run: |
-          echo "🔄 Iniciando captura de notícias..."
-          
           if python src/capturar_noticiario_economico.py; then
             echo "✅ Script executado com sucesso"
             echo "success=true" >> $GITHUB_OUTPUT
@@ -47,7 +46,6 @@ jobs:
             echo "success=false" >> $GITHUB_OUTPUT
             exit 1
           fi
-        continue-on-error: false
 
       - name: 📝 Atualizar timestamp
         if: steps.captura.outputs.success == 'true'
@@ -149,3 +147,4 @@ jobs:
         if: failure()
         run: |
           echo "❌ Workflow falhou!"
+
