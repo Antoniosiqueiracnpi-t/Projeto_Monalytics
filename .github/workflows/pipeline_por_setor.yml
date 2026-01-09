@@ -1,11 +1,26 @@
-name: Pipeline por Setor (Capturas → Padronizações → Preços → Múltiplos)
+name: Pipeline por Setor ou Tickers (Seleção de Etapas)
 
 on:
   workflow_dispatch:
     inputs:
-      setor:
-        description: "Selecione o setor (coluna 'setor' do mapeamento_b3_consolidado.csv)."
+      # ========================================================================
+      # MODO DE SELEÇÃO: SETOR OU TICKERS ESPECÍFICOS
+      # ========================================================================
+      modo_selecao:
+        description: "Como deseja selecionar as empresas?"
         required: true
+        type: choice
+        default: "setor"
+        options:
+          - "setor"
+          - "tickers"
+
+      # ========================================================================
+      # OPÇÃO 1: SELEÇÃO POR SETOR
+      # ========================================================================
+      setor:
+        description: "[SETOR] Selecione o setor (usado apenas se modo_selecao = 'setor')"
+        required: false
         type: choice
         default: "TODOS"
         options:
@@ -51,18 +66,40 @@ on:
           - "Viagens e Lazer"
           - "Água e Saneamento"
 
-
-
       limite:
-        description: "Opcional: limita a quantidade de tickers do setor (0 = todos). Útil para testes rápidos."
-        required: true
+        description: "[SETOR] Limite de tickers (0 = todos). Usado apenas se modo_selecao = 'setor'"
+        required: false
         default: "0"
         type: string
+
+      # ========================================================================
+      # OPÇÃO 2: SELEÇÃO POR TICKERS ESPECÍFICOS
+      # ========================================================================
+      tickers_manuais:
+        description: "[TICKERS] Lista de tickers separados por vírgula (ex: PETR4,VALE3,ABEV3). Usado apenas se modo_selecao = 'tickers'"
+        required: false
+        type: string
+        default: ""
+
+      # ========================================================================
+      # SELEÇÃO DE ETAPAS A EXECUTAR
+      # ========================================================================
+      etapas:
+        description: "Quais etapas executar? (separe por vírgula ou digite 'todas')"
+        required: true
+        type: string
+        default: "todas"
+        # Opções disponíveis (exemplos para o usuário):
+        # todas
+        # balancos,dividendos,acoes
+        # dre,dfc,bp
+        # precos_historico,atualizar_precos
+        # multiplos,analise
+        # balancos,dre,multiplos (somente essenciais)
 
 permissions:
   contents: write
 
-# ✅ ADICIONAR: Prevenir execuções paralelas deste workflow
 concurrency:
   group: pipeline-setor
   cancel-in-progress: false
@@ -89,170 +126,273 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Selecionar tickers por setor (mapeamento_b3_consolidado.csv)
+      # ========================================================================
+      # SELEÇÃO DE TICKERS (POR SETOR OU LISTA MANUAL)
+      # ========================================================================
+      
+      - name: Selecionar tickers (setor ou manual)
         id: selecionar
         env:
+          MODO_SELECAO: ${{ inputs.modo_selecao }}
           SETOR: ${{ inputs.setor }}
           LIMITE: ${{ inputs.limite }}
+          TICKERS_MANUAIS: ${{ inputs.tickers_manuais }}
         run: |
           python - <<'PY'
           from pathlib import Path
           import os, sys
           import pandas as pd
 
-          setor = (os.environ.get("SETOR") or "").strip()
-          limite = int((os.environ.get("LIMITE") or "0").strip() or "0")
-
-          candidates = [
-              Path("mapeamento_b3_consolidado.csv"),
-              Path("src/mapeamento_b3_consolidado.csv"),
-          ]
-          path = next((p for p in candidates if p.exists()), None)
-
-          if path is None:
-              found = None
-              for p in Path(".").rglob("mapeamento_b3_consolidado.csv"):
-                  found = p
-                  break
-              path = found
-
-          if path is None or not path.exists():
-              print("❌ mapeamento_b3_consolidado.csv não encontrado no repo.")
-              sys.exit(1)
-
-          df = pd.read_csv(path, sep=";", encoding="utf-8-sig")
-
-          if "ticker" not in df.columns or "setor" not in df.columns:
-              print("❌ CSV inválido: precisa ter colunas 'ticker' e 'setor'.")
-              print("Colunas encontradas:", list(df.columns))
-              sys.exit(1)
-
-          if setor.upper() == "TODOS":
-              df_sel = df
+          modo = (os.environ.get("MODO_SELECAO") or "setor").strip().lower()
+          
+          # ============================================================
+          # MODO 1: TICKERS MANUAIS
+          # ============================================================
+          if modo == "tickers":
+              tickers_str = (os.environ.get("TICKERS_MANUAIS") or "").strip()
+              
+              if not tickers_str:
+                  print("❌ Modo 'tickers' selecionado, mas nenhum ticker foi fornecido.")
+                  print("   Por favor, preencha o campo 'tickers_manuais' (ex: PETR4,VALE3,ABEV3)")
+                  sys.exit(1)
+              
+              # Processar lista manual
+              tickers = [t.strip().upper() for t in tickers_str.split(",") if t.strip()]
+              
+              if not tickers:
+                  print("❌ Nenhum ticker válido encontrado na lista fornecida.")
+                  sys.exit(1)
+              
+              print(f"✅ Modo: TICKERS MANUAIS | Quantidade: {len(tickers)}")
+              print(f"   Tickers: {', '.join(tickers)}")
+          
+          # ============================================================
+          # MODO 2: SELEÇÃO POR SETOR
+          # ============================================================
           else:
-              alvo = setor.casefold()
-              key = df["setor"].fillna("").astype(str).str.strip().str.casefold()
-              df_sel = df[key == alvo]
+              setor = (os.environ.get("SETOR") or "").strip()
+              limite = int((os.environ.get("LIMITE") or "0").strip() or "0")
 
-              if df_sel.empty:
-                  df_sel = df[key.str.contains(alvo, na=False)]
+              # Localizar CSV
+              candidates = [
+                  Path("mapeamento_b3_consolidado.csv"),
+                  Path("src/mapeamento_b3_consolidado.csv"),
+              ]
+              path = next((p for p in candidates if p.exists()), None)
 
-              if df_sel.empty:
-                  print(f"❌ Setor '{setor}' não encontrado.")
-                  print("\nSetores disponíveis (no CSV):")
-                  for s in sorted(df["setor"].dropna().astype(str).unique()):
-                      print("-", s)
+              if path is None:
+                  found = None
+                  for p in Path(".").rglob("mapeamento_b3_consolidado.csv"):
+                      found = p
+                      break
+                  path = found
+
+              if path is None or not path.exists():
+                  print("❌ mapeamento_b3_consolidado.csv não encontrado no repo.")
                   sys.exit(1)
 
-          tickers = sorted({str(t).strip().upper() for t in df_sel["ticker"].dropna().tolist() if str(t).strip()})
+              df = pd.read_csv(path, sep=";", encoding="utf-8-sig")
 
-          if limite > 0:
-              tickers = tickers[:limite]
+              if "ticker" not in df.columns or "setor" not in df.columns:
+                  print("❌ CSV inválido: precisa ter colunas 'ticker' e 'setor'.")
+                  print("Colunas encontradas:", list(df.columns))
+                  sys.exit(1)
 
-          if not tickers:
-              print(f"❌ Nenhum ticker encontrado para o setor '{setor}'.")
-              sys.exit(1)
+              # Filtrar por setor
+              if setor.upper() == "TODOS":
+                  df_sel = df
+              else:
+                  alvo = setor.casefold()
+                  key = df["setor"].fillna("").astype(str).str.strip().str.casefold()
+                  df_sel = df[key == alvo]
 
-          print(f"✅ Setor: {setor} | Tickers: {len(tickers)} | CSV: {path}")
+                  if df_sel.empty:
+                      df_sel = df[key.str.contains(alvo, na=False)]
+
+                  if df_sel.empty:
+                      print(f"❌ Setor '{setor}' não encontrado.")
+                      print("\nSetores disponíveis (no CSV):")
+                      for s in sorted(df["setor"].dropna().astype(str).unique()):
+                          print("-", s)
+                      sys.exit(1)
+
+              tickers = sorted({str(t).strip().upper() for t in df_sel["ticker"].dropna().tolist() if str(t).strip()})
+
+              # Aplicar limite se fornecido
+              if limite > 0:
+                  tickers = tickers[:limite]
+
+              if not tickers:
+                  print(f"❌ Nenhum ticker encontrado para o setor '{setor}'.")
+                  sys.exit(1)
+
+              print(f"✅ Modo: SETOR | Setor: {setor} | Tickers: {len(tickers)} | Limite: {limite or 'sem limite'} | CSV: {path}")
+
+          # ============================================================
+          # SALVAR TICKERS NO GITHUB_ENV
+          # ============================================================
           tickers_csv = ",".join(tickers)
-
+          
           env_file = os.environ["GITHUB_ENV"]
           with open(env_file, "a", encoding="utf-8") as f:
               f.write(f"TICKERS={tickers_csv}\n")
               f.write(f"TICKERS_COUNT={len(tickers)}\n")
+              f.write(f"MODO_EXECUCAO={modo.upper()}\n")
+          
+          print(f"\n✅ Total de tickers selecionados: {len(tickers)}")
+          print(f"   Lista completa: {tickers_csv}")
           PY
 
       # ========================================================================
-      # CAPTURAS (SEM PREÇOS)
+      # PROCESSAR ETAPAS SELECIONADAS
+      # ========================================================================
+      
+      - name: Processar etapas selecionadas
+        id: processar_etapas
+        env:
+          ETAPAS_INPUT: ${{ inputs.etapas }}
+        run: |
+          python - <<'PY'
+          import os
+          
+          etapas_str = (os.environ.get("ETAPAS_INPUT") or "todas").strip().lower()
+          
+          # Lista completa de etapas disponíveis
+          todas_etapas = [
+              "balancos", "dividendos", "acoes", "acionistas", "logos",
+              "noticias", "noticiario", "historico_precos",
+              "dre", "dfc", "bp",
+              "precos_historico", "atualizar_precos",
+              "multiplos", "analise"
+          ]
+          
+          if etapas_str == "todas":
+              etapas_executar = todas_etapas
+          else:
+              # Processar lista separada por vírgulas
+              etapas_executar = [e.strip() for e in etapas_str.split(",") if e.strip()]
+              
+              # Validar etapas
+              invalidas = [e for e in etapas_executar if e not in todas_etapas]
+              if invalidas:
+                  print(f"⚠️  AVISO: Etapas inválidas ignoradas: {', '.join(invalidas)}")
+                  etapas_executar = [e for e in etapas_executar if e in todas_etapas]
+          
+          if not etapas_executar:
+              print("❌ Nenhuma etapa válida selecionada.")
+              print(f"   Etapas disponíveis: {', '.join(todas_etapas)}")
+              exit(1)
+          
+          print(f"✅ Etapas selecionadas: {len(etapas_executar)}/{len(todas_etapas)}")
+          print(f"   Lista: {', '.join(etapas_executar)}")
+          
+          # Salvar flags no GITHUB_ENV
+          env_file = os.environ["GITHUB_ENV"]
+          with open(env_file, "a", encoding="utf-8") as f:
+              for etapa in todas_etapas:
+                  flag = "true" if etapa in etapas_executar else "false"
+                  f.write(f"EXEC_{etapa.upper()}={flag}\n")
+          PY
+
+      # ========================================================================
+      # CAPTURAS (COM CONDICIONAIS)
       # ========================================================================
       
       - name: Capturar Balanços
         id: balancos
+        if: env.EXEC_BALANCOS == 'true'
         continue-on-error: true
         run: |
           python src/capturar_balancos.py --modo lista --lista "${TICKERS}"
 
       - name: Capturar Dividendos Trimestrais
         id: dividendos
+        if: env.EXEC_DIVIDENDOS == 'true'
         continue-on-error: true
         run: |
           python src/capturar_dividendos.py --modo lista --lista "${TICKERS}"
 
       - name: Capturar Histórico de Ações
         id: acoes
+        if: env.EXEC_ACOES == 'true'
         continue-on-error: true
         run: |
           python src/capturar_acoes.py --modo lista --lista "${TICKERS}"
 
       - name: Capturar Acionistas 
         id: acionistas
+        if: env.EXEC_ACIONISTAS == 'true'
         continue-on-error: true
         run: |
           python src/capturar_acionistas.py --modo lista --lista "${TICKERS}"
 
       - name: Capturar Logos
         id: logos
+        if: env.EXEC_LOGOS == 'true'
         continue-on-error: true
         run: |
           python src/capturar_logos.py --modo lista --lista "${TICKERS}"
 
-
       - name: Capturar Notícias (30 dias retroativos)
         id: noticias
+        if: env.EXEC_NOTICIAS == 'true'
         continue-on-error: true
         run: |
           python src/capturar_noticias.py --modo lista --lista "${TICKERS}" --dias 30
 
       - name: Capturar Noticiario Empresarial 
         id: noticiario
+        if: env.EXEC_NOTICIARIO == 'true'
         continue-on-error: true
         run: |
-          python src/capturar_noticiario_empresarial.py --modo lista --lista "${TICKERS}"         
-
+          python src/capturar_noticiario_empresarial.py --modo lista --lista "${TICKERS}"
 
       - name: Capturar histórico de preços (5 anos)
+        id: historico_precos
+        if: env.EXEC_HISTORICO_PRECOS == 'true'
         continue-on-error: true
         run: |
-          python src/capturar_historico_precos.py --modo lista --lista "${TICKERS}" --incluir-ibov   
+          python src/capturar_historico_precos.py --modo lista --lista "${TICKERS}" --incluir-ibov
 
       # ========================================================================
-      # PADRONIZAÇÕES
+      # PADRONIZAÇÕES (COM CONDICIONAIS)
       # ========================================================================
       
       - name: Padronizar DRE
         id: dre
+        if: env.EXEC_DRE == 'true'
         continue-on-error: true
         run: |
           python src/padronizar_dre.py --modo lista --lista "${TICKERS}"
 
       - name: Padronizar DFC
         id: dfc
+        if: env.EXEC_DFC == 'true'
         continue-on-error: true
         run: |
           python src/padronizar_dfc.py --modo lista --lista "${TICKERS}"
 
       - name: Padronizar BP (BPA + BPP)
         id: bp
+        if: env.EXEC_BP == 'true'
         continue-on-error: true
         run: |
           python src/padronizar_bp.py --modo lista --lista "${TICKERS}"
 
       # ========================================================================
-      # PREÇOS - ETAPA 1: CAPTURA HISTÓRICA COMPLETA
+      # PREÇOS (COM CONDICIONAIS)
       # ========================================================================
       
       - name: Capturar Preços Trimestrais (Histórico Completo)
         id: precos_historico
+        if: env.EXEC_PRECOS_HISTORICO == 'true'
         continue-on-error: true
         run: |
           python src/capturar_precos.py --modo lista --lista "${TICKERS}"
 
-      # ========================================================================
-      # PREÇOS - ETAPA 2: ATUALIZAÇÃO DIÁRIA E SINCRONIZAÇÃO
-      # ========================================================================
-      
       - name: Atualizar Preços Diários e Sincronizar Ações
         id: atualizar_precos
+        if: env.EXEC_ATUALIZAR_PRECOS == 'true'
         continue-on-error: true
         run: |
           echo "=========================================="
@@ -267,24 +407,22 @@ jobs:
           python src/atualizar_precos_diarios.py --modo lista --lista "${TICKERS}"
 
       # ========================================================================
-      # MÚLTIPLOS (COM PREÇOS E AÇÕES SINCRONIZADOS)
+      # MÚLTIPLOS E ANÁLISES (COM CONDICIONAIS)
       # ========================================================================
       
       - name: Calcular Múltiplos
         id: multiplos
+        if: env.EXEC_MULTIPLOS == 'true'
         continue-on-error: true
         run: |
           python src/calcular_multiplos.py --modo lista --lista "${TICKERS}"
 
-      # ========================================================================
-      # ANALISAR BALANÇOS 
-      # ========================================================================
-      
       - name: Analisar Balanços
         id: analise
+        if: env.EXEC_ANALISE == 'true'
         continue-on-error: true
         run: |
-          python src/analisar_balancos.py --modo lista --lista "${TICKERS}"            
+          python src/analisar_balancos.py --modo lista --lista "${TICKERS}"
 
       # ========================================================================
       # RESUMO DE EXECUÇÃO
@@ -296,34 +434,43 @@ jobs:
           echo "======================================================================"
           echo "                    RESUMO DO PIPELINE"
           echo "======================================================================"
-          echo "Setor selecionado: ${{ inputs.setor }}"
+          echo "Modo de seleção:   ${MODO_EXECUCAO}"
+          
+          if [ "${MODO_EXECUCAO}" = "SETOR" ]; then
+            echo "Setor selecionado: ${{ inputs.setor }}"
+            echo "Limite aplicado:   ${{ inputs.limite }} (0 = todos)"
+          else
+            echo "Tickers fornecidos: ${{ inputs.tickers_manuais }}"
+          fi
+          
           echo "Total de tickers:  ${TICKERS_COUNT}"
-          echo "Limite aplicado:   ${{ inputs.limite }} (0 = todos)"
+          echo "Etapas solicitadas: ${{ inputs.etapas }}"
           echo "======================================================================"
           echo ""
-          echo "Status por etapa (success/failure/skipped):"
+          echo "Status por etapa (✅ success | ❌ failure | ⏭️ skipped):"
           echo ""
           echo "📊 CAPTURAS:"
-          echo "  - Balanços:              ${{ steps.balancos.outcome }}"
-          echo "  - Dividendos:            ${{ steps.dividendos.outcome }}"
-          echo "  - Ações:                 ${{ steps.acoes.outcome }}"
-          echo "  - Acionistas:            ${{ steps.acionistas.outcome }}"
-          echo "  - Logos:                 ${{ steps.logos.outcome }}"
-          echo "  - Notícias:              ${{ steps.noticias.outcome }}"
-          echo "  - Noticiário (Google):   ${{ steps.noticiario.outcome }}"
+          echo "  - Balanços:              ${{ steps.balancos.outcome || '⏭️ não executada' }}"
+          echo "  - Dividendos:            ${{ steps.dividendos.outcome || '⏭️ não executada' }}"
+          echo "  - Ações:                 ${{ steps.acoes.outcome || '⏭️ não executada' }}"
+          echo "  - Acionistas:            ${{ steps.acionistas.outcome || '⏭️ não executada' }}"
+          echo "  - Logos:                 ${{ steps.logos.outcome || '⏭️ não executada' }}"
+          echo "  - Notícias:              ${{ steps.noticias.outcome || '⏭️ não executada' }}"
+          echo "  - Noticiário (Google):   ${{ steps.noticiario.outcome || '⏭️ não executada' }}"
+          echo "  - Histórico Preços:      ${{ steps.historico_precos.outcome || '⏭️ não executada' }}"
           echo ""
           echo "🔄 PADRONIZAÇÕES:"
-          echo "  - DRE:                   ${{ steps.dre.outcome }}"
-          echo "  - DFC:                   ${{ steps.dfc.outcome }}"
-          echo "  - BP (BPA + BPP):        ${{ steps.bp.outcome }}"
+          echo "  - DRE:                   ${{ steps.dre.outcome || '⏭️ não executada' }}"
+          echo "  - DFC:                   ${{ steps.dfc.outcome || '⏭️ não executada' }}"
+          echo "  - BP (BPA + BPP):        ${{ steps.bp.outcome || '⏭️ não executada' }}"
           echo ""
           echo "💰 PREÇOS:"
-          echo "  - Histórico Completo:    ${{ steps.precos_historico.outcome }}"
-          echo "  - Atualização Diária:    ${{ steps.atualizar_precos.outcome }}"
+          echo "  - Histórico Completo:    ${{ steps.precos_historico.outcome || '⏭️ não executada' }}"
+          echo "  - Atualização Diária:    ${{ steps.atualizar_precos.outcome || '⏭️ não executada' }}"
           echo ""
-          echo "📈 MÚLTIPLOS:"
-          echo "  - Cálculo Final:         ${{ steps.multiplos.outcome }}"
-          echo "  - Análise Balanços:      ${{ steps.analise.outcome }}"
+          echo "📈 MÚLTIPLOS E ANÁLISES:"
+          echo "  - Cálculo Múltiplos:     ${{ steps.multiplos.outcome || '⏭️ não executada' }}"
+          echo "  - Análise Balanços:      ${{ steps.analise.outcome || '⏭️ não executada' }}"
           echo ""
           echo "======================================================================"
           
@@ -361,7 +508,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: |
-            Pipeline: ${{ inputs.setor }} | Tickers: ${{ env.TICKERS_COUNT }}${{ inputs.limite != '0' && format(' | Limite: {0}', inputs.limite) || '' }}
+            Pipeline (${{ env.MODO_EXECUCAO }}): ${{ inputs.modo_selecao == 'setor' && inputs.setor || 'Manual' }} | Tickers: ${{ env.TICKERS_COUNT }}${{ inputs.limite != '0' && inputs.modo_selecao == 'setor' && format(' | Limite: {0}', inputs.limite) || '' }} | Etapas: ${{ inputs.etapas }}
           
           file_pattern: |
             balancos/
@@ -377,4 +524,3 @@ jobs:
           skip_dirty_check: false
           skip_fetch: false
           skip_checkout: false
-          
