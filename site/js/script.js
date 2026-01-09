@@ -2506,10 +2506,8 @@ async function loadAcaoData(ticker) {
         
         console.log('✅ Empresa encontrada:', empresaInfo.empresa);
         
-        // Usa SEMPRE a pasta principal calculada no mapeamento
-        const tickerPasta = (empresaInfo.ticker_pasta && empresaInfo.ticker_pasta.trim())
-            ? empresaInfo.ticker_pasta.trim().toUpperCase()
-            : t;
+        // CORREÇÃO: Usa função obterTickerPasta que prioriza ações sobre units
+        const tickerPasta = obterTickerPasta(t);
         
         console.log(`📂 Usando pasta: balancos/${tickerPasta}/`);
         
