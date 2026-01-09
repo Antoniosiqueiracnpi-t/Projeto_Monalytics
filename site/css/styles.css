@@ -6502,46 +6502,46 @@ textarea:focus {
 }
 
 
-/* =========================================================
-   FIX Dashboard B3 (Chart.js) - evita esticar/travar
-   Causa raiz: Chart.js inicializado com container invisível/sem dimensão
-   ========================================================= */
+/* ===========================
+   Dashboard B3 - Cards (sem gráficos)
+   =========================== */
 
-/* Mantém o grid renderizável (medível) e controla visibilidade via classe */
-#dashboardGrid{
-  display: grid;
-  visibility: hidden;
-}
-#dashboardGrid.is-visible{
-  visibility: visible;
-}
-
-/* Trava a altura do card/canvas para evitar resize-loop */
-.dashboard-b3-container .chart-card{
+.b3-card-lines{
   display: flex;
   flex-direction: column;
-  min-height: 340px;
-  overflow: hidden;
-}
-.dashboard-b3-container .chart-card canvas{
-  display: block;
-  width: 100% !important;
-  height: 260px !important;
-  max-height: 260px !important;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
 }
 
-@media (max-width: 768px){
-  .dashboard-b3-container .chart-card{ min-height: 320px; }
-  .dashboard-b3-container .chart-card canvas{
-    height: 240px !important;
-    max-height: 240px !important;
-  }
+.b3-card-line{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
 }
 
-@media (max-width: 480px){
-  .dashboard-b3-container .chart-card{ min-height: 300px; }
-  .dashboard-b3-container .chart-card canvas{
-    height: 220px !important;
-    max-height: 220px !important;
-  }
+.b3-card-line .label{
+  color: rgba(255,255,255,0.85);
+  font-size: 0.9rem;
+  font-weight: 600;
 }
+
+.b3-card-line .value{
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.b3-card-muted{
+  color: rgba(255,255,255,0.65);
+  font-size: 0.9rem;
+}
+
+.b3-val-pos{ color: #10b981; }
+.b3-val-neg{ color: #ef4444; }
