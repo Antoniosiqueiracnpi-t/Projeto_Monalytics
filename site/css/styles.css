@@ -1779,8 +1779,9 @@ textarea:focus {
 /* =========================== INDICATORS GRID (SLIDE 2) =========================== */
 .indicators-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */ /* ❌ COMENTADO - Causava layout 4+3 */
     gap: 1.5rem;
+    /* Grid responsivo definido no final do arquivo (linha ~6900+) */
 }
 
 .indicator-card {
@@ -4374,7 +4375,7 @@ textarea:focus {
   .stock-item { grid-template-columns: 80px 1fr; } /* desktop: 80px 1fr 120px 140px */
 
   /* evita overflow no Slide 2 */
-  .indicators-grid { grid-template-columns: repeat(2, 1fr); } /* mobile: 2 colunas */
+  /* .indicators-grid { grid-template-columns: repeat(2, 1fr); } */ /* ❌ COMENTADO - Grid responsivo no final do arquivo */
 
   /* setas “para dentro” do carrossel */
   .carousel-arrow { width: 44px; height: 44px; font-size: 1.1rem; }
@@ -4386,7 +4387,7 @@ textarea:focus {
 
 @media screen and (max-width: 480px) {
   .carousel-slide { padding: 1rem; }
-  .indicators-grid { grid-template-columns: 1fr; }  
+  /* .indicators-grid { grid-template-columns: 1fr; } */ /* ❌ COMENTADO - Grid responsivo no final do arquivo */  
 
   /* header do slide empilha melhor */
   .slide-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
@@ -6554,8 +6555,10 @@ textarea:focus {
 
 
 
-/* =========================== DROPDOWN MENU =========================== */
-/* Adicione este CSS ao final do styles.css ou como arquivo separado */
+/* =========================== DROPDOWN MENU - VERSÃO COMPLETA =========================== */
+/* Cole este arquivo COMPLETO no final do seu styles.css */
+
+/* =========================== DESKTOP =========================== */
 
 /* Item do menu com dropdown */
 .nav-item-dropdown {
@@ -6588,6 +6591,13 @@ textarea:focus {
     list-style: none;
 }
 
+/* Resetar qualquer list-style dos itens */
+.nav-dropdown li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 /* Mostrar dropdown ao hover */
 .nav-item-dropdown:hover .nav-dropdown {
     opacity: 1;
@@ -6604,7 +6614,7 @@ textarea:focus {
 .nav-dropdown-link {
     display: block;
     padding: 0.75rem 1.5rem;
-    color: var(--text-primary);
+    color: #333333;
     text-decoration: none;
     font-size: 0.9rem;
     font-weight: 500;
@@ -6614,36 +6624,398 @@ textarea:focus {
 
 .nav-dropdown-link:hover {
     background: rgba(0, 102, 204, 0.05);
-    border-left-color: var(--primary-color);
-    color: var(--primary-color);
+    border-left-color: #0066cc;
+    color: #0066cc;
     padding-left: 1.75rem;
 }
 
 /* =========================== MOBILE =========================== */
 @media (max-width: 768px) {
-    /* Em mobile, dropdown sempre visível quando menu aberto */
+    /* Garantir que o menu mobile tenha overflow adequado */
+    .nav-menu {
+        overflow-y: auto;
+        max-height: calc(100vh - 80px);
+    }
+
+    /* Garantir que itens do menu não se sobreponham */
+    .nav-menu > li {
+        position: relative;
+        display: block;
+        width: 100%;
+        margin: 0;
+    }
+
+    /* Link principal do menu */
+    .nav-link {
+        display: block;
+        width: 100%;
+        padding: 1rem 1.5rem;
+        text-align: left;
+    }
+
+    /* Item do menu com dropdown no mobile */
+    .nav-item-dropdown {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    /* Link principal "Ações" no mobile */
+    .nav-item-dropdown > .nav-link {
+        display: block;
+        width: 100%;
+        position: relative;
+    }
+
+    /* Em mobile, dropdown sempre visível */
     .nav-dropdown {
-        position: static;
+        position: static !important;
+        width: 100%;
+        min-width: auto;
         opacity: 1;
         visibility: visible;
         transform: none;
         box-shadow: none;
-        background: transparent;
-        margin-top: 0.5rem;
-        padding-left: 1rem;
+        background: rgba(0, 102, 204, 0.03);
+        border-left: 3px solid #0066cc;
+        border-radius: 0 8px 8px 0;
+        margin: 0.5rem 0 0.5rem 1rem;
+        padding: 0.5rem 0;
+        z-index: auto;
     }
 
+    /* Esconder ícone de dropdown no mobile */
     .dropdown-icon {
-        display: none; /* Esconde seta em mobile */
+        display: none !important;
     }
 
+    /* Container dos links do dropdown */
+    .nav-dropdown li {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    /* Links individuais do dropdown */
     .nav-dropdown-link {
-        padding: 0.6rem 1rem;
-        font-size: 0.85rem;
-        border-left: 2px solid rgba(0, 102, 204, 0.2);
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        border-left: none;
+        color: #333333;
+        background: transparent;
+        transition: all 0.2s ease;
     }
 
-    .nav-dropdown-link:hover {
-        padding-left: 1.25rem;
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:active {
+        background: rgba(0, 102, 204, 0.08);
+        padding-left: 1.75rem;
+        color: #0066cc;
+    }
+
+    /* Prevenir sobreposição de elementos */
+    .nav-menu {
+        z-index: 1000;
     }
 }
+
+/* =========================== CORREÇÃO: DROPDOWN MENU =========================== */
+/* Adicionado em 10/01/2026 - Menu com dropdown para Ações */
+
+/* Item do menu com dropdown */
+.nav-item-dropdown {
+    position: relative;
+}
+
+/* Ícone do dropdown */
+.dropdown-icon {
+    font-size: 0.75rem;
+    margin-left: 0.25rem;
+    transition: transform 0.3s ease;
+}
+
+/* Dropdown escondido por padrão */
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 102, 204, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    z-index: 1000;
+    list-style: none;
+}
+
+/* Resetar qualquer list-style dos itens */
+.nav-dropdown li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Mostrar dropdown ao hover */
+.nav-item-dropdown:hover .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Rotacionar ícone ao hover */
+.nav-item-dropdown:hover .dropdown-icon {
+    transform: rotate(180deg);
+}
+
+/* Links do dropdown */
+.nav-dropdown-link {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: #333333;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.nav-dropdown-link:hover {
+    background: rgba(0, 102, 204, 0.05);
+    border-left-color: #0066cc;
+    color: #0066cc;
+    padding-left: 1.75rem;
+}
+
+/* =========================== MOBILE: DROPDOWN =========================== */
+@media (max-width: 768px) {
+    /* Garantir que o menu mobile tenha overflow adequado */
+    .nav-menu {
+        overflow-y: auto;
+        max-height: calc(100vh - 80px);
+    }
+
+    /* Garantir que itens do menu não se sobreponham */
+    .nav-menu > li {
+        position: relative;
+        display: block;
+        width: 100%;
+        margin: 0;
+    }
+
+    /* Link principal do menu */
+    .nav-link {
+        display: block;
+        width: 100%;
+        padding: 1rem 1.5rem;
+        text-align: left;
+    }
+
+    /* Item do menu com dropdown no mobile */
+    .nav-item-dropdown {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    /* Link principal "Ações" no mobile */
+    .nav-item-dropdown > .nav-link {
+        display: block;
+        width: 100%;
+        position: relative;
+    }
+
+    /* Em mobile, dropdown sempre visível */
+    .nav-dropdown {
+        position: static !important;
+        width: 100%;
+        min-width: auto;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        background: rgba(0, 102, 204, 0.03);
+        border-left: 3px solid #0066cc;
+        border-radius: 0 8px 8px 0;
+        margin: 0.5rem 0 0.5rem 1rem;
+        padding: 0.5rem 0;
+        z-index: auto;
+    }
+
+    /* Esconder ícone de dropdown no mobile */
+    .dropdown-icon {
+        display: none !important;
+    }
+
+    /* Container dos links do dropdown */
+    .nav-dropdown li {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    /* Links individuais do dropdown */
+    .nav-dropdown-link {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        border-left: none;
+        color: #333333;
+        background: transparent;
+        transition: all 0.2s ease;
+    }
+
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:active {
+        background: rgba(0, 102, 204, 0.08);
+        padding-left: 1.75rem;
+        color: #0066cc;
+    }
+
+    /* Prevenir sobreposição de elementos */
+    .nav-menu {
+        z-index: 1000;
+    }
+}
+
+
+/* =========================== CORREÇÃO: INDICADORES ECONÔMICOS =========================== */
+/* Adicionado em 10/01/2026 - Layout Responsivo Progressivo */
+/* ATENÇÃO: Estilos antigos do .indicators-grid foram comentados nas linhas 1782, 4377 e 4389 */
+
+/* Grid dos Indicadores - Base (FORÇADO com !important) */
+.indicators-grid {
+    display: grid !important;
+    gap: 1.5rem !important;
+    padding: 0 !important;
+}
+
+/* Tablet e Desktop pequeno: 2 colunas */
+@media (min-width: 769px) and (max-width: 1199px) {
+    .indicators-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+}
+
+/* Desktop médio: 3 colunas (7 cards = 3+3+1 centralizado) */
+@media (min-width: 1200px) and (max-width: 1399px) {
+    .indicators-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        max-width: 950px;
+        margin: 0 auto;
+    }
+    
+    /* Centralizar último card se ímpar */
+    .indicator-card:nth-child(7) {
+        grid-column: 2 / 3;
+    }
+}
+
+/* Desktop grande: 4 colunas */
+@media (min-width: 1400px) {
+    .indicators-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
+
+/* Mobile: 1 coluna */
+@media (max-width: 768px) {
+    .indicators-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+}
+
+/* Cards dos Indicadores - Estilos Aprimorados */
+.indicator-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    min-height: 100px;
+}
+
+.indicator-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 102, 204, 0.15);
+    transform: translateY(-2px);
+}
+
+.indicator-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.indicator-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.indicator-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #666;
+    letter-spacing: 0.5px;
+}
+
+.indicator-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0066cc;
+}
+
+.indicator-sub {
+    font-size: 0.75rem;
+    color: #999;
+}
+
+/* Cores dos Ícones dos Indicadores */
+.indicator-icon.selic {
+    background: linear-gradient(135deg, #0066cc 0%, #00b4d8 100%);
+}
+
+.indicator-icon.cdi {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+}
+
+.indicator-icon.ipca {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+}
+
+.indicator-icon.igpm {
+    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+}
+
+.indicator-icon.dolar {
+    background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+}
+
+/* =========================== FIM DAS CORREÇÕES =========================== */
