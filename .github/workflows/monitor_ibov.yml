@@ -2,8 +2,14 @@ name: Monitor IBOVESPA (Intraday)
 
 on:
   schedule:
-    - cron: '0,30 13-21 * * 1-5'
+    # 10:30 BRT (13:30 UTC)
+    - cron: '30 13 * * 1-5'
+    # 11:00–18:30 BRT (14:00–21:30 UTC) a cada 30 min
+    - cron: '0,30 14-21 * * 1-5'
+    # 19:00 BRT (22:00 UTC)
+    - cron: '0 22 * * 1-5'
   workflow_dispatch:
+
 
 permissions:
   contents: write
@@ -69,6 +75,6 @@ jobs:
             exit 0
           fi
 
-          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+          TIMESTAMP=$(TZ='America/Sao_Paulo' date +"%Y-%m-%d %H:%M BRT")
           git commit -m "Monitor IBOVESPA: ${TIMESTAMP} [skip netlify]"
           git push
