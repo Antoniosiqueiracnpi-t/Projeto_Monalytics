@@ -486,6 +486,30 @@ function resetAutoPlay() {
     startAutoPlay();
 }
 
+/**
+ * Monitora visibilidade da página para pausar/retomar autoplay
+ */
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        stopAutoPlay();
+    } else {
+        startAutoPlay();
+    }
+});
+
+/**
+ * Garante que o carrossel inicia mesmo se houver erro
+ */
+window.addEventListener('load', () => {
+    // Timeout de segurança para garantir que o carrossel inicia
+    setTimeout(() => {
+        if (!autoPlayInterval) {
+            console.log('⚠️ Carrossel não estava rodando, iniciando agora...');
+            startAutoPlay();
+        }
+    }, 1000);
+});
+
 // =========================== DATA LOADING ===========================
 
 /**
@@ -1385,6 +1409,7 @@ async function loadIndicadoresData() {
 /**
  * Renderiza indicadores econômicos
  */
+
 function renderIndicadoresData(data) {
     // Esconde loading
     document.getElementById('indicadoresLoading').style.display = 'none';
@@ -1395,32 +1420,66 @@ function renderIndicadoresData(data) {
     
     const ind = data.indicadores || {};
     
-    // SELIC
-    if (ind.selic) {
+    // ========== SELIC ==========
+    if (ind.selic && !ind.selic.erro) {
         document.getElementById('selicValor').textContent = ind.selic.formato || '-';
+    } else {
+        document.getElementById('selicValor').textContent = 'N/A';
     }
     
-    // CDI
-    if (ind.cdi) {
+    // ========== CDI ==========
+    if (ind.cdi && !ind.cdi.erro) {
         document.getElementById('cdiValor').textContent = ind.cdi.formato || '-';
+    } else {
+        document.getElementById('cdiValor').textContent = 'N/A';
     }
     
-    // IPCA
-    if (ind.ipca) {
-        document.getElementById('ipcaValor').textContent = ind.ipca.formato_acumulado || '-';
-        document.getElementById('ipcaMes').textContent = `Referência: ${formatMonth(ind.ipca.mes_referencia)}`;
+    // ========== IPCA MENSAL ==========
+    if (ind.ipca && !ind.ipca.erro) {
+        document.getElementById('ipcaMensalValor').textContent = ind.ipca.formato_mensal || 'N/A';
+        document.getElementById('ipcaMensalMes').textContent = `Ref: ${formatMonth(ind.ipca.mes_referencia)}`;
+    } else {
+        document.getElementById('ipcaMensalValor').textContent = 'N/A';
+        document.getElementById('ipcaMensalMes').textContent = '-';
     }
     
-    // DÓLAR
+    // ========== IPCA 12M ==========
+    if (ind.ipca && !ind.ipca.erro) {
+        document.getElementById('ipcaAcumValor').textContent = ind.ipca.formato_acumulado || 'N/A';
+        document.getElementById('ipcaAcumMes').textContent = `Ref: ${formatMonth(ind.ipca.mes_referencia)}`;
+    } else {
+        document.getElementById('ipcaAcumValor').textContent = 'N/A';
+        document.getElementById('ipcaAcumMes').textContent = '-';
+    }
+    
+    // ========== IGP-M MENSAL ==========
+    if (ind.igpm && !ind.igpm.erro) {
+        document.getElementById('igpmMensalValor').textContent = ind.igpm.formato_mensal || 'N/A';
+        document.getElementById('igpmMensalMes').textContent = `Ref: ${formatMonth(ind.igpm.mes_referencia)}`;
+    } else {
+        document.getElementById('igpmMensalValor').textContent = 'N/A';
+        document.getElementById('igpmMensalMes').textContent = '-';
+    }
+    
+    // ========== IGP-M 12M ==========
+    if (ind.igpm && !ind.igpm.erro) {
+        document.getElementById('igpmAcumValor').textContent = ind.igpm.formato_acumulado || 'N/A';
+        document.getElementById('igpmAcumMes').textContent = `Ref: ${formatMonth(ind.igpm.mes_referencia)}`;
+    } else {
+        document.getElementById('igpmAcumValor').textContent = 'N/A';
+        document.getElementById('igpmAcumMes').textContent = '-';
+    }
+    
+    // ========== DÓLAR ==========
     if (ind.dolar && !ind.dolar.erro) {
-        document.getElementById('dolarValor').textContent = ind.dolar.formato || '-';
+        document.getElementById('dolarValor').textContent = ind.dolar.formato_compra || 'N/A';
         document.getElementById('dolarData').textContent = `Data: ${formatDate(ind.dolar.data_referencia)}`;
     } else {
         document.getElementById('dolarValor').textContent = 'N/D';
         document.getElementById('dolarData').textContent = 'Dados indisponíveis';
     }
     
-    // Timestamp
+    // ========== TIMESTAMP ==========
     const timestamp = new Date(data.ultima_atualizacao);
     document.getElementById('indicadoresTimestamp').textContent = formatTimestamp(timestamp);
 }
