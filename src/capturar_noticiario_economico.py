@@ -1,615 +1,438 @@
 """
-CAPTURA DE NOTICIÁRIO ECONÔMICO (NOTÍCIAS DO MERCADO) - DESACOPLADO DO EMPRESARIAL
+CAPTURA DE NOTICIÁRIO ECONÔMICO (TOTALMENTE DESACOPLADO DO NOTICIÁRIO EMPRESARIAL)
 
-- Atualiza o bloco do site "Notícias do Mercado"
-- Fonte: Google News RSS (busca por consultas amplas de mercado / macro / bolsa / câmbio / cripto)
-- Saída: balancos/NOTICIAS/noticias_mercado.json
+- Objetivo: gerar o feed "Notícias do Mercado" consumido pelo site (SLIDE 4).
+- Fonte: Google News RSS (busca por palavras-chave, NÃO por ticker de empresa).
+- Saída:
+    balancos/NOTICIAS/noticias_mercado.json
 
-✅ Imagens:
-- Google News RSS geralmente não traz thumbnail.
-- Então buscamos a imagem na página do artigo via:
-  - og:image / og:image:secure_url
-  - twitter:image
-  - JSON-LD (application/ld+json) -> image
+IMPORTANTE (imagens):
+- Muitos feeds RSS (incluindo o Google News RSS) NÃO entregam imagem no XML.
+- Para resolver, este script tenta (na ordem):
+    1) <media:content> / <media:thumbnail> / <enclosure>
+    2) <img src="..."> dentro do <description>
+    3) fallback: baixar a página do link e extrair meta og:image / twitter:image
 
-Opcional:
-- Respeita janela de execução 08:00-20:00 (America/Sao_Paulo)
-  - Para forçar execução: export FORCE_RUN=1 ou --force
+O script foi escrito para ser determinístico e reduzir conflitos de merge:
+- Ordenação consistente
+- Deduplicação por id SHA1
 """
 
 from __future__ import annotations
 
-import argparse
 import hashlib
 import json
 import os
-import re
-from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+import time
+from datetime import datetime
 from email.utils import parsedate_to_datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Any
-from urllib.parse import urlparse, parse_qs, quote, urljoin
+from typing import Dict, List, Optional, Tuple
+from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
+
+try:
+    from zoneinfo import ZoneInfo  # py3.9+
+except Exception:  # pragma: no cover
+    ZoneInfo = None  # type: ignore
 
 
 # =============================================================================
 # Config
 # =============================================================================
 
-OUTPUT_PATH = Path("balancos/NOTICIAS/noticias_mercado.json")
-
-GOOGLE_NEWS_RSS = "https://news.google.com/rss/search"
-
-USER_AGENT = (
+UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) "
     "Chrome/120.0.0.0 Safari/537.36"
 )
 
-HEADERS = {"User-Agent": USER_AGENT}
-TIMEOUT_RSS = 20
-TIMEOUT_ARTIGO = 7
+HEADERS = {
+    "User-Agent": UA,
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
+}
 
-MAX_ITENS_POR_QUERY = 25
-MAX_TOTAL_ITENS = 160
-MAX_ITENS_POR_PORTAL = 18
-MAX_DIAS_LOOKBACK = 1
+SAO_PAULO_TZ = "America/Sao_Paulo"
 
-# Janela (SP)
-HORA_INICIO = 8
-HORA_FIM = 20  # inclusive
+# Quantidade por categoria (antes de deduplicar)
+MAX_ITENS_POR_CATEGORIA = int(os.getenv("NEWS_MAX_PER_CATEGORY", "12"))
 
-# Consultas amplas (ajuste fino aqui se quiser)
-QUERIES = [
-    'ibovespa OR "B3" OR "bolsa brasileira" OR ações',
-    'dólar OR câmbio OR "real" OR "Banco Central" OR "Copom" OR Selic OR juros',
-    'IPCA OR inflação OR PIB OR "atividade econômica" OR "economia brasileira"',
-    'Fed OR "Treasuries" OR "mercados globais" OR China OR EUA OR "Europa" OR commodities',
-    'Bitcoin OR criptomoedas OR "cripto" OR Ethereum',
-]
+# Limite final no JSON
+MAX_TOTAL_FINAL = int(os.getenv("NEWS_MAX_TOTAL", "60"))
 
+# Delay curto para não estressar o Google News / sites
+DELAY_BETWEEN_REQUESTS_SEC = float(os.getenv("NEWS_DELAY_SEC", "0.4"))
 
-# =============================================================================
-# TZ helpers
-# =============================================================================
+# Timeout de rede
+TIMEOUT_SEC = int(os.getenv("NEWS_TIMEOUT_SEC", "15"))
 
-def _get_sp_tz():
-    try:
-        from zoneinfo import ZoneInfo  # py3.9+
-        return ZoneInfo("America/Sao_Paulo")
-    except Exception:
-        return timezone(timedelta(hours=-3))
+# Categorias do front (o JS usa data-categoria para filtros)
+CATEGORIAS_QUERY: Dict[str, str] = {
+    "bolsa":   "B3 bolsa ibovespa ações resultados trimestrais",
+    "economia":"Brasil economia inflação selic juros PIB fiscal",
+    "exterior":"exterior EUA China Europa guerra sanções FED",
+    "cripto":  "bitcoin ethereum cripto blockchain",
+    "geral":   "mercados dólar petróleo minério de ferro commodities",
+}
 
-
-TZ_SP = _get_sp_tz()
+GOOGLE_NEWS_RSS = "https://news.google.com/rss/search"
 
 
 # =============================================================================
-# Utils
+# Helpers
 # =============================================================================
 
-def _norm(s: str) -> str:
-    return str(s or "").strip()
+def _now_sp() -> datetime:
+    if ZoneInfo is None:
+        return datetime.now()
+    return datetime.now(ZoneInfo(SAO_PAULO_TZ))
+
+
+def _to_sp(dt: datetime) -> datetime:
+    if ZoneInfo is None:
+        return dt
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=ZoneInfo("UTC")).astimezone(ZoneInfo(SAO_PAULO_TZ))
+    return dt.astimezone(ZoneInfo(SAO_PAULO_TZ))
 
 
 def _sha1_id(titulo: str, link: str, data_hora: str) -> int:
-    base = f"{_norm(titulo)}|{_norm(link)}|{_norm(data_hora)}"
+    base = f"{(titulo or '').strip()}|{(link or '').strip()}|{(data_hora or '').strip()}"
     digest = hashlib.sha1(base.encode("utf-8")).hexdigest()
     return int(digest[:12], 16)
 
 
-def _now_sp() -> datetime:
-    return datetime.now(TZ_SP)
-
-
-def _within_window(now_sp: datetime) -> bool:
-    return HORA_INICIO <= now_sp.hour <= HORA_FIM
-
-
-def _clean_text(s: str) -> str:
-    s = _norm(s)
-    s = re.sub(r"\s+", " ", s).strip()
-    return s
-
-
-def limpar_descricao_html(descricao: str, limit: int = 260) -> str:
+def _limpar_html(texto_html: str, max_len: int = 240) -> str:
     try:
-        soup = BeautifulSoup(descricao or "", "html.parser")
-        texto = " ".join(soup.get_text().split()).strip()
-        if limit and len(texto) > limit:
-            texto = texto[: max(0, limit - 3)] + "..."
+        soup = BeautifulSoup(texto_html or "", "html.parser")
+        texto = " ".join(soup.get_text(" ").split()).strip()
+        if len(texto) > max_len:
+            return texto[: max_len - 3] + "..."
         return texto
     except Exception:
-        return _clean_text(descricao)
+        s = str(texto_html or "").strip()
+        return s[: max_len - 3] + "..." if len(s) > max_len else s
 
 
-def _placeholder_image_data_uri() -> str:
-    svg = (
-        "<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450'>"
-        "<rect width='100%' height='100%' fill='#0b1220'/>"
-        "<text x='50%' y='50%' fill='#ffffff' font-size='42' font-family='Arial' "
-        "text-anchor='middle' dominant-baseline='middle'>Notícias</text>"
-        "</svg>"
-    )
-    return "data:image/svg+xml;charset=utf-8," + quote(svg, safe="")
-
-
-PLACEHOLDER_IMG = _placeholder_image_data_uri()
-
-
-def _resolver_url_real_google_news(link: Optional[str]) -> Optional[str]:
-    if not link:
-        return link
-    try:
-        if "news.google.com" not in link:
-            return link
-        parsed = urlparse(link)
-        params = parse_qs(parsed.query)
-        if "url" in params and params["url"]:
-            return params["url"][0]
-        return link
-    except Exception:
-        return link
-
-
-def extrair_data_publicacao(item) -> Tuple[str, str, str]:
+def _parse_pubdate(item) -> Tuple[str, str, str]:
+    """Retorna (data_yyyy_mm_dd, data_hora_iso, horario_hh_mm) em fuso SP."""
+    dt = None
     try:
         pub = item.find("pubDate")
         if pub and pub.text:
             dt = parsedate_to_datetime(pub.text.strip())
-            if dt.tzinfo is None:
-                dt = dt.replace(tzinfo=timezone.utc)
-            dt_sp = dt.astimezone(TZ_SP)
-            return (
-                dt_sp.strftime("%Y-%m-%d"),
-                dt_sp.strftime("%Y-%m-%d %H:%M:%S"),
-                dt_sp.strftime("%H:%M"),
-            )
     except Exception:
-        pass
+        dt = None
 
-    agora = _now_sp()
-    return (
-        agora.strftime("%Y-%m-%d"),
-        agora.strftime("%Y-%m-%d %H:%M:%S"),
-        agora.strftime("%H:%M"),
-    )
+    if dt is None:
+        dt = _now_sp()
+    else:
+        dt = _to_sp(dt)
+
+    data = dt.strftime("%Y-%m-%d")
+    data_hora_iso = dt.strftime("%Y-%m-%d %H:%M:%S")
+    horario = dt.strftime("%H:%M")
+    return data, data_hora_iso, horario
 
 
-def extrair_fonte_noticia(link: Optional[str], item=None) -> str:
+def _first_text(tag) -> str:
     try:
-        if item is not None:
-            src = item.find("source")
-            if src and src.text:
-                return _clean_text(src.text)
-
-        if not link:
-            return "Google News"
-
-        url_final = _resolver_url_real_google_news(link) or link
-        dom = (urlparse(url_final).netloc or "").replace("www.", "").strip().lower()
-
-        fontes_conhecidas = {
-            "infomoney.com.br": "InfoMoney",
-            "valorinveste.globo.com": "Valor Investe",
-            "valor.globo.com": "Valor Econômico",
-            "economia.uol.com.br": "UOL Economia",
-            "moneytimes.com.br": "Money Times",
-            "exame.com": "Exame",
-            "estadao.com.br": "Estadão",
-            "folha.uol.com.br": "Folha de S.Paulo",
-            "g1.globo.com": "G1",
-            "cnnbrasil.com.br": "CNN Brasil",
-            "seudinheiro.com": "Seu Dinheiro",
-            "investnews.com.br": "InvestNews",
-            "bloomberg.com": "Bloomberg",
-            "reuters.com": "Reuters",
-        }
-
-        for d, nome in fontes_conhecidas.items():
-            if dom.endswith(d):
-                return nome
-
-        if dom:
-            return dom.split(".")[0].capitalize()
-
-        return "Google News"
+        return (tag.text or "").strip()
     except Exception:
-        return "Google News"
+        return ""
 
 
-# =============================================================================
-# Captura de imagem do artigo (OG/Twitter/JSON-LD)
-# =============================================================================
+def _find_image_in_rss_item(item) -> Optional[str]:
+    """Tenta achar imagem no próprio XML (media/enclosure/description img)."""
+    for name in ("media:content", "media:thumbnail"):
+        t = item.find(name)
+        if t and t.get("url"):
+            return str(t.get("url")).strip() or None
 
-_session = requests.Session()
-_img_cache: Dict[str, Optional[str]] = {}
+    enc = item.find("enclosure")
+    if enc and enc.get("url"):
+        return str(enc.get("url")).strip() or None
 
-
-def _safe_json_loads(s: str) -> Optional[Any]:
-    try:
-        return json.loads(s)
-    except Exception:
-        return None
-
-
-def _extract_image_from_ldjson(obj: Any) -> Optional[str]:
-    """
-    Tenta extrair campo image em JSON-LD.
-    Pode ser string, lista, dict, ou nested.
-    """
-    if obj is None:
-        return None
-
-    # Se é lista, tenta cada item
-    if isinstance(obj, list):
-        for it in obj:
-            r = _extract_image_from_ldjson(it)
-            if r:
-                return r
-        return None
-
-    if isinstance(obj, dict):
-        # campos comuns
-        for key in ("image", "thumbnailUrl", "thumbnailURL"):
-            if key in obj:
-                val = obj.get(key)
-                if isinstance(val, str) and val.strip():
-                    return val.strip()
-                if isinstance(val, list) and val:
-                    for v in val:
-                        if isinstance(v, str) and v.strip():
-                            return v.strip()
-                        if isinstance(v, dict):
-                            u = v.get("url") or v.get("@id")
-                            if isinstance(u, str) and u.strip():
-                                return u.strip()
-                if isinstance(val, dict):
-                    u = val.get("url") or val.get("@id")
-                    if isinstance(u, str) and u.strip():
-                        return u.strip()
-
-        # tenta varrer subestruturas
-        for _, v in obj.items():
-            r = _extract_image_from_ldjson(v)
-            if r:
-                return r
+    desc = item.find("description")
+    if desc and desc.text:
+        try:
+            soup = BeautifulSoup(desc.text, "html.parser")
+            img = soup.find("img")
+            if img and img.get("src"):
+                return str(img.get("src")).strip() or None
+        except Exception:
+            pass
 
     return None
 
 
-def buscar_imagem_og(url: str) -> Optional[str]:
-    """
-    Faz GET leve e tenta extrair:
-    - og:image / og:image:secure_url
-    - twitter:image
-    - JSON-LD image
-    Retorna URL absoluta.
-    """
-    u = _norm(url)
-    if not u:
+def _extract_og_image_from_html(html: str) -> Optional[str]:
+    """Extrai og:image / twitter:image do HTML."""
+    try:
+        soup = BeautifulSoup(html or "", "html.parser")
+        for prop in ("og:image", "twitter:image", "twitter:image:src"):
+            meta = soup.find("meta", attrs={"property": prop}) or soup.find("meta", attrs={"name": prop})
+            if meta and meta.get("content"):
+                url = str(meta.get("content")).strip()
+                if url:
+                    return url
+    except Exception:
+        return None
+    return None
+
+
+class _ImageCache:
+    def __init__(self):
+        self._cache: Dict[str, Optional[str]] = {}
+
+    def get(self, url: str) -> Optional[str]:
+        return self._cache.get(url)
+
+    def set(self, url: str, img: Optional[str]) -> None:
+        self._cache[url] = img
+
+
+_IMG_CACHE = _ImageCache()
+
+
+def _buscar_imagem_por_og(link: str) -> Optional[str]:
+    if not link:
         return None
 
-    if u in _img_cache:
-        return _img_cache[u]
+    cached = _IMG_CACHE.get(link)
+    if cached is not None:
+        return cached
 
     try:
-        resp = _session.get(u, headers=HEADERS, timeout=TIMEOUT_ARTIGO, allow_redirects=True)
-        ct = (resp.headers.get("Content-Type") or "").lower()
-        if resp.status_code >= 400:
-            _img_cache[u] = None
+        r = requests.get(link, headers=HEADERS, timeout=TIMEOUT_SEC)
+        if r.status_code != 200:
+            _IMG_CACHE.set(link, None)
             return None
-        if "text/html" not in ct and "application/xhtml+xml" not in ct:
-            _img_cache[u] = None
-            return None
-
-        html = resp.text or ""
-        soup = BeautifulSoup(html, "html.parser")
-
-        # 1) OpenGraph
-        for sel in [
-            ("meta", {"property": "og:image:secure_url"}),
-            ("meta", {"property": "og:image"}),
-            ("meta", {"name": "og:image"}),
-        ]:
-            tag = soup.find(sel[0], sel[1])
-            if tag and tag.get("content"):
-                img = str(tag.get("content")).strip()
-                if img:
-                    _img_cache[u] = urljoin(resp.url, img)
-                    return _img_cache[u]
-
-        # 2) Twitter card
-        for sel in [
-            ("meta", {"name": "twitter:image"}),
-            ("meta", {"property": "twitter:image"}),
-        ]:
-            tag = soup.find(sel[0], sel[1])
-            if tag and tag.get("content"):
-                img = str(tag.get("content")).strip()
-                if img:
-                    _img_cache[u] = urljoin(resp.url, img)
-                    return _img_cache[u]
-
-        # 3) JSON-LD
-        scripts = soup.find_all("script", {"type": "application/ld+json"})
-        for sc in scripts:
-            txt = (sc.string or sc.get_text() or "").strip()
-            if not txt:
-                continue
-            obj = _safe_json_loads(txt)
-            img = _extract_image_from_ldjson(obj)
-            if img:
-                _img_cache[u] = urljoin(resp.url, img)
-                return _img_cache[u]
-
-        _img_cache[u] = None
-        return None
-
+        img = _extract_og_image_from_html(r.text)
+        _IMG_CACHE.set(link, img)
+        return img
     except Exception:
-        _img_cache[u] = None
+        _IMG_CACHE.set(link, None)
         return None
 
 
-def extrair_imagem(item, descricao_html: str, link_final: str) -> str:
-    """
-    Estratégia:
-    1) media:content / enclosure / <img> na descrição (quando houver)
-    2) se não houver, tenta OG/Twitter/JSON-LD da página do artigo
-    3) fallback placeholder
-    """
-    # 1) media:content
+def _normalizar_dominio(url: str) -> str:
     try:
-        mc = item.find("media:content")
-        if mc and mc.get("url"):
-            return str(mc.get("url")).strip()
+        netloc = (urlparse(url).netloc or "").lower().replace("www.", "").strip()
+        return netloc
     except Exception:
-        pass
-
-    # 2) enclosure
-    try:
-        enc = item.find("enclosure")
-        if enc and enc.get("url"):
-            return str(enc.get("url")).strip()
-    except Exception:
-        pass
-
-    # 3) img na descrição
-    try:
-        soup = BeautifulSoup(descricao_html or "", "html.parser")
-        img = soup.find("img")
-        if img and img.get("src"):
-            return str(img.get("src")).strip()
-    except Exception:
-        pass
-
-    # 4) OG/Twitter/JSON-LD da página do artigo
-    img_og = buscar_imagem_og(link_final)
-    if img_og:
-        return img_og
-
-    return PLACEHOLDER_IMG
+        return ""
 
 
-def classificar_categoria_e_tags(titulo: str, descricao: str) -> Tuple[str, List[str]]:
-    txt = f"{titulo} {descricao}".lower()
-    tags: List[str] = []
+def _fonte_por_dominio(url: str, fallback: str = "") -> str:
+    dom = _normalizar_dominio(url)
+    if not dom:
+        return fallback or "Desconhecida"
 
-    def has(*words):
-        return any(w in txt for w in words)
-
-    if has("bitcoin", "cripto", "criptomo", "ethereum", "btc", "eth"):
-        cat = "Cripto"
-        if "bitcoin" in txt or "btc" in txt:
-            tags.append("Bitcoin")
-        if "ethereum" in txt or "eth" in txt:
-            tags.append("Ethereum")
-        return cat, tags[:3]
-
-    if has("ibovespa", "b3", "bolsa", "ações", "acoes", "small caps", "blue chips", "índice"):
-        cat = "Bolsa"
-        if "ibovespa" in txt:
-            tags.append("Ibovespa")
-        if "b3" in txt:
-            tags.append("B3")
-        if "ações" in txt or "acoes" in txt:
-            tags.append("Ações")
-        return cat, tags[:3]
-
-    if has("eua", "fed", "powell", "treasur", "dow", "nasdaq", "s&p", "china", "europa", "bce", "boe", "japão", "japao"):
-        cat = "Exterior"
-        if "fed" in txt:
-            tags.append("Fed")
-        if "eua" in txt:
-            tags.append("EUA")
-        if "china" in txt:
-            tags.append("China")
-        return cat, tags[:3]
-
-    if has("dólar", "dolar", "câmbio", "cambio", "selic", "copom", "juros", "ipca", "infla", "pib",
-           "banco central", "commod", "petróleo", "petroleo", "minério", "minerio"):
-        cat = "Economia"
-        if "dólar" in txt or "dolar" in txt:
-            tags.append("Dólar")
-        if "selic" in txt or "copom" in txt:
-            tags.append("Selic")
-        if "ipca" in txt or "infla" in txt:
-            tags.append("Inflação")
-        return cat, tags[:3]
-
-    return "Geral", []
-
-
-# =============================================================================
-# Scraping Google News RSS (econômico)
-# =============================================================================
-
-@dataclass
-class Noticia:
-    id: int
-    data: str
-    data_hora: str
-    horario: str
-    titulo: str
-    descricao: str
-    link: str
-    fonte: str
-    imagem: str
-    categoria: str
-    tags: List[str]
-
-
-def fetch_rss_google_news(query: str) -> bytes:
-    params = {
-        "q": query,
-        "hl": "pt-BR",
-        "gl": "BR",
-        "ceid": "BR:pt-419",
+    fontes = {
+        "infomoney.com.br": "InfoMoney",
+        "valor.globo.com": "Valor Econômico",
+        "valorinveste.globo.com": "Valor Investe",
+        "moneytimes.com.br": "Money Times",
+        "estadao.com.br": "Estadão",
+        "folha.uol.com.br": "Folha",
+        "g1.globo.com": "G1",
+        "uol.com.br": "UOL",
+        "terra.com.br": "Terra",
+        "cnnbrasil.com.br": "CNN Brasil",
+        "investnews.com.br": "InvestNews",
+        "seudinheiro.com": "Seu Dinheiro",
+        "bloomberg.com": "Bloomberg",
+        "reuters.com": "Reuters",
     }
-    r = _session.get(GOOGLE_NEWS_RSS, params=params, headers=HEADERS, timeout=TIMEOUT_RSS)
+    for k, v in fontes.items():
+        if dom.endswith(k):
+            return v
+
+    return (dom.split(".")[0] or "Desconhecida").capitalize()
+
+
+# =============================================================================
+# Google News RSS
+# =============================================================================
+
+def _rss_google_news(query: str, max_itens: int) -> List[Dict]:
+    params = {"q": query, "hl": "pt-BR", "gl": "BR", "ceid": "BR:pt-419"}
+    r = requests.get(GOOGLE_NEWS_RSS, params=params, headers=HEADERS, timeout=TIMEOUT_SEC)
     if r.status_code != 200:
-        raise RuntimeError(f"HTTP {r.status_code}")
-    return r.content
-
-
-def coletar_noticias() -> List[Noticia]:
-    coletadas: Dict[int, Noticia] = {}
-
-    for q in QUERIES:
-        try:
-            xml = fetch_rss_google_news(q)
-        except Exception as e:
-            print(f"⚠️ Falha ao buscar RSS para query: {q} | {e}")
-            continue
-
-        soup = BeautifulSoup(xml, "xml")
-        itens = soup.find_all("item")
-
-        for item in itens[:MAX_ITENS_POR_QUERY]:
-            try:
-                titulo = item.find("title").text.strip() if item.find("title") else "Título não disponível"
-                link_raw = item.find("link").text.strip() if item.find("link") else ""
-                descricao_html = item.find("description").text if item.find("description") else ""
-
-                link = _resolver_url_real_google_news(link_raw) or link_raw
-                descricao = limpar_descricao_html(descricao_html)
-
-                data, data_hora, horario = extrair_data_publicacao(item)
-                fonte = extrair_fonte_noticia(link, item=item)
-
-                categoria, tags = classificar_categoria_e_tags(titulo, descricao)
-                imagem = extrair_imagem(item, descricao_html, link)
-
-                nid = _sha1_id(titulo, link, data_hora)
-
-                coletadas[nid] = Noticia(
-                    id=nid,
-                    data=data,
-                    data_hora=data_hora,
-                    horario=horario,
-                    titulo=_clean_text(titulo),
-                    descricao=_clean_text(descricao),
-                    link=link,
-                    fonte=_clean_text(fonte) or "Google News",
-                    imagem=imagem or PLACEHOLDER_IMG,
-                    categoria=categoria,
-                    tags=tags,
-                )
-            except Exception:
-                continue
-
-            if len(coletadas) >= MAX_TOTAL_ITENS:
-                break
-
-        if len(coletadas) >= MAX_TOTAL_ITENS:
-            break
-
-    return list(coletadas.values())
-
-
-def filtrar_por_recencia(noticias: List[Noticia]) -> List[Noticia]:
-    if not noticias:
         return []
 
-    hoje = _now_sp().strftime("%Y-%m-%d")
-    ontem = (_now_sp() - timedelta(days=1)).strftime("%Y-%m-%d")
+    soup = BeautifulSoup(r.content, "xml")
+    items = soup.find_all("item") or []
 
-    hoje_list = [n for n in noticias if n.data == hoje]
-    if len(hoje_list) >= 12:
-        return hoje_list
+    saida: List[Dict] = []
+    for it in items[:max_itens]:
+        titulo = _first_text(it.find("title")) or "Título não disponível"
+        link = _first_text(it.find("link"))
+        desc = _first_text(it.find("description"))
 
-    return [n for n in noticias if n.data in (hoje, ontem)]
+        data, data_hora, horario = _parse_pubdate(it)
+
+        fonte_rss = ""
+        src = it.find("source")
+        if src and src.text:
+            fonte_rss = src.text.strip()
+
+        fonte = fonte_rss or _fonte_por_dominio(link)
+
+        imagem = _find_image_in_rss_item(it)
+        if not imagem and link:
+            imagem = _buscar_imagem_por_og(link)
+            time.sleep(DELAY_BETWEEN_REQUESTS_SEC)
+
+        saida.append(
+            {
+                "titulo": titulo,
+                "link": link,
+                "descricao": _limpar_html(desc),
+                "data": data,
+                "data_hora": data_hora,
+                "horario": horario,
+                "fonte": fonte,
+                "imagem": imagem or "",
+            }
+        )
+
+    return saida
 
 
-def agrupar_por_portal(noticias: List[Noticia]) -> Dict[str, List[dict]]:
-    portais: Dict[str, List[Noticia]] = {}
-    for n in noticias:
-        portal = n.fonte or "Google News"
-        portais.setdefault(portal, []).append(n)
+# =============================================================================
+# Geração do JSON final
+# =============================================================================
 
-    out: Dict[str, List[dict]] = {}
-    for portal, arr in portais.items():
-        arr.sort(key=lambda x: x.data_hora, reverse=True)
-        arr = arr[:MAX_ITENS_POR_PORTAL]
-        out[portal] = [n.__dict__ for n in arr]
+def _tags_por_categoria(categoria: str, titulo: str) -> List[str]:
+    cat = (categoria or "").lower().strip()
+    title = (titulo or "").lower()
 
-    return out
+    tags: List[str] = []
+    if cat == "cripto":
+        if "bitcoin" in title:
+            tags.append("Bitcoin")
+        if "ethereum" in title:
+            tags.append("Ethereum")
+    elif cat == "bolsa":
+        if "ibov" in title or "ibovespa" in title:
+            tags.append("IBOV")
+        if "ações" in title or "acao" in title:
+            tags.append("Ações")
+    elif cat == "economia":
+        for k, tag in [("selic", "Selic"), ("infla", "Inflação"), ("pib", "PIB"), ("dólar", "Dólar"), ("dolar", "Dólar")]:
+            if k in title:
+                tags.append(tag)
+    elif cat == "exterior":
+        for k, tag in [("eua", "EUA"), ("fed", "FED"), ("china", "China"), ("europa", "Europa")]:
+            if k in title:
+                tags.append(tag)
+
+    if cat and cat != "geral":
+        tags.append(cat.capitalize())
+
+    tags = list(dict.fromkeys([t for t in tags if t]))
+    return tags[:3]
 
 
-def salvar_json(portais: Dict[str, List[dict]]):
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    total = sum(len(v) for v in portais.values())
+def gerar_noticias_mercado() -> Dict:
+    por_portal: Dict[str, List[Dict]] = {}
+    bruto: List[Tuple[str, Dict]] = []
 
-    payload = {
+    for categoria, query in CATEGORIAS_QUERY.items():
+        itens = _rss_google_news(query=query, max_itens=MAX_ITENS_POR_CATEGORIA)
+        for it in itens:
+            bruto.append((categoria, it))
+
+    vistos: Dict[int, Dict] = {}
+    for categoria, it in bruto:
+        titulo = it.get("titulo", "")
+        link = it.get("link", "")
+        data_hora = it.get("data_hora", "")
+        nid = _sha1_id(titulo, link, data_hora)
+
+        vistos[nid] = {
+            "id": nid,
+            "categoria": (categoria or "geral").lower(),
+            "titulo": str(titulo).strip(),
+            "link": str(link).strip(),
+            "fonte": str(it.get("fonte", "")).strip() or "Desconhecida",
+            "horario": str(it.get("horario", "")).strip(),
+            "data": str(it.get("data", "")).strip(),
+            "data_hora": str(data_hora).strip(),
+            "descricao": str(it.get("descricao", "")).strip(),
+            "tags": _tags_por_categoria(categoria, titulo),
+            "imagem": str(it.get("imagem", "")).strip(),
+        }
+
+    finais = list(vistos.values())
+    finais.sort(key=lambda x: (x.get("data_hora", ""), x.get("id", 0)), reverse=True)
+    finais = finais[:MAX_TOTAL_FINAL]
+
+    for n in finais:
+        portal = n.get("fonte", "Desconhecida") or "Desconhecida"
+        por_portal.setdefault(portal, []).append(n)
+
+    for portal, arr in por_portal.items():
+        arr.sort(key=lambda x: (x.get("data_hora", ""), x.get("id", 0)), reverse=True)
+
+    return {
         "ultima_atualizacao": _now_sp().isoformat(),
-        "total_noticias": total,
-        "fonte": "Google News RSS",
-        "portais": portais,
+        "meta": {
+            "total_portais": len(por_portal),
+            "total_noticias": sum(len(v) for v in por_portal.values()),
+            "fonte": "Google News RSS",
+        },
+        "portais": por_portal,
     }
 
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
+
+def salvar_json(payload: Dict, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2, sort_keys=True)
 
 
-# =============================================================================
-# CLI
-# =============================================================================
+def atualizar_timestamp_telemetria(path: Path, fonte: str) -> None:
+    """Atualiza site/data/ultima_atualizacao.json sem destruir chaves extras (reduz conflito)."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    dados: Dict = {}
+    if path.exists():
+        try:
+            dados = json.loads(path.read_text(encoding="utf-8")) or {}
+            if not isinstance(dados, dict):
+                dados = {}
+        except Exception:
+            dados = {}
 
-def main():
-    parser = argparse.ArgumentParser(description="Captura noticiário econômico (Notícias do Mercado) via Google News RSS")
-    parser.add_argument("--force", action="store_true", help="Força execução mesmo fora da janela 08-20 (SP)")
-    args = parser.parse_args()
+    now = _now_sp()
+    dados.update(
+        {
+            "timestamp": int(time.time()) * 1000,
+            "data": now.strftime("%Y-%m-%d"),
+            "hora": now.strftime("%H:%M BRT"),
+            "fonte": fonte,
+            "versao": "1.0.0",
+        }
+    )
 
-    force_env = os.getenv("FORCE_RUN", "").strip() == "1"
-    now_sp = _now_sp()
+    path.write_text(json.dumps(dados, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
 
-    if not (args.force or force_env) and not _within_window(now_sp):
-        print(
-            f"⏸️ Fora da janela de execução (SP). Agora: {now_sp.strftime('%Y-%m-%d %H:%M:%S')} | "
-            f"Janela: {HORA_INICIO:02d}:00-{HORA_FIM:02d}:59. Saindo sem erro."
-        )
-        return
 
-    print(f"🕒 Agora (SP): {now_sp.strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"📰 Coletando notícias do mercado... (queries={len(QUERIES)})")
+def main() -> None:
+    out_json = Path("balancos/NOTICIAS/noticias_mercado.json")
+    payload = gerar_noticias_mercado()
+    salvar_json(payload, out_json)
 
-    noticias = coletar_noticias()
-    noticias = filtrar_por_recencia(noticias)
+    # mantém compatibilidade com seu fluxo atual
+    atualizar_timestamp_telemetria(Path("site/data/ultima_atualizacao.json"), fonte="noticias_mercado")
 
-    if not noticias:
-        print("⚠️ Nenhuma notícia coletada (após filtros).")
-        salvar_json({})
-        print(f"✅ JSON salvo (vazio): {OUTPUT_PATH}")
-        return
-
-    portais = agrupar_por_portal(noticias)
-    salvar_json(portais)
-
-    total = sum(len(v) for v in portais.values())
-    print(f"✅ Salvo: {OUTPUT_PATH} | portais={len(portais)} | noticias={total}")
+    total = payload.get("meta", {}).get("total_noticias", 0)
+    print(f"✅ noticias_mercado.json gerado | total={total}")
 
 
 if __name__ == "__main__":
