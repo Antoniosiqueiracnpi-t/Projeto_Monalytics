@@ -1,22 +1,11 @@
 {
   "ticker": "OIBR4",
-  "ultima_atualizacao": "2026-01-09T23:04:14.115220",
+  "ultima_atualizacao": "2026-01-10T23:03:35.764757",
   "periodo": {
-    "inicio": "2020-12-11",
-    "fim": "2026-01-08"
+    "inicio": "2020-12-14",
+    "fim": "2026-01-09"
   },
   "dados": [
-    {
-      "data": "2020-12-11",
-      "abertura": 349.0,
-      "maxima": 363.0,
-      "minima": 345.0,
-      "fechamento": 351.0,
-      "volume": 119236,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-14",
       "abertura": 355.0,
@@ -222,7 +211,7 @@
       "minima": 293.0,
       "fechamento": 296.0,
       "volume": 41279,
-      "mm20": 299.05,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 221.0,
       "volume": 47225,
       "mm20": 258.4,
-      "mm50": 278.98,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 6689,
       "mm20": 167.3,
       "mm50": 177.42,
-      "mm200": 230.97
+      "mm200": null
     },
     {
       "data": "2021-10-05",
@@ -13898,16 +13887,27 @@
       "mm20": 2.15,
       "mm50": 2.82,
       "mm200": 6.32
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 1.85,
+      "maxima": 1.85,
+      "minima": 1.78,
+      "fechamento": 1.84,
+      "volume": 2600,
+      "mm20": 2.12,
+      "mm50": 2.76,
+      "mm200": 6.29
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 351.0,
-    "preco_atual": 1.78,
-    "variacao_periodo": -99.49,
-    "maxima_periodo": 351.0,
+    "preco_inicial": 317.0,
+    "preco_atual": 1.84,
+    "variacao_periodo": -99.42,
+    "maxima_periodo": 333.0,
     "minima_periodo": 1.58,
-    "volume_medio": 20744,
+    "volume_medio": 20651,
     "tendencia": "baixa"
   }
 }

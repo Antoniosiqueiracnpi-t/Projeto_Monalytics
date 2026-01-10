@@ -1,22 +1,11 @@
 {
   "ticker": "MDIA3",
-  "ultima_atualizacao": "2026-01-09T23:01:53.716474",
+  "ultima_atualizacao": "2026-01-10T23:01:33.560053",
   "periodo": {
-    "inicio": "2020-12-11",
-    "fim": "2026-01-08"
+    "inicio": "2020-12-14",
+    "fim": "2026-01-09"
   },
   "dados": [
-    {
-      "data": "2020-12-11",
-      "abertura": 27.95,
-      "maxima": 28.47,
-      "minima": 27.91,
-      "fechamento": 28.29,
-      "volume": 523100,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-14",
       "abertura": 28.46,
@@ -222,7 +211,7 @@
       "minima": 28.08,
       "fechamento": 28.2,
       "volume": 1105100,
-      "mm20": 28.45,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 24.23,
       "volume": 1053400,
       "mm20": 25.83,
-      "mm50": 27.08,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 602200,
       "mm20": 27.0,
       "mm50": 27.15,
-      "mm200": 26.06
+      "mm200": null
     },
     {
       "data": "2021-10-05",
@@ -8524,7 +8513,7 @@
       "data": "2024-01-25",
       "abertura": 36.14,
       "maxima": 36.35,
-      "minima": 35.73,
+      "minima": 35.72,
       "fechamento": 36.01,
       "volume": 282500,
       "mm20": 35.31,
@@ -13898,16 +13887,27 @@
       "mm20": 23.8,
       "mm50": 25.33,
       "mm200": 25.0
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 24.5,
+      "maxima": 24.56,
+      "minima": 24.31,
+      "fechamento": 24.5,
+      "volume": 182800,
+      "mm20": 23.83,
+      "mm50": 25.25,
+      "mm200": 25.01
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 28.29,
-    "preco_atual": 24.39,
-    "variacao_periodo": -13.77,
+    "preco_inicial": 27.94,
+    "preco_atual": 24.5,
+    "variacao_periodo": -12.32,
     "maxima_periodo": 41.6,
     "minima_periodo": 17.46,
-    "volume_medio": 1104458,
+    "volume_medio": 1104189,
     "tendencia": "indefinida"
   }
 }

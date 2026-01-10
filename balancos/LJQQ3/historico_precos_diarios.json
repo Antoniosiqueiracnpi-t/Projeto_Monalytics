@@ -1,22 +1,11 @@
 {
   "ticker": "LJQQ3",
-  "ultima_atualizacao": "2026-01-09T23:02:01.741023",
+  "ultima_atualizacao": "2026-01-10T23:01:43.281215",
   "periodo": {
-    "inicio": "2020-12-11",
-    "fim": "2026-01-08"
+    "inicio": "2020-12-14",
+    "fim": "2026-01-09"
   },
   "dados": [
-    {
-      "data": "2020-12-11",
-      "abertura": 13.76,
-      "maxima": 13.76,
-      "minima": 13.43,
-      "fechamento": 13.51,
-      "volume": 1417998,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-14",
       "abertura": 13.56,
@@ -222,7 +211,7 @@
       "minima": 13.89,
       "fechamento": 14.35,
       "volume": 1038242,
-      "mm20": 13.89,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 15.34,
       "volume": 1244957,
       "mm20": 16.7,
-      "mm50": 15.17,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1769758,
       "mm20": 16.03,
       "mm50": 17.68,
-      "mm200": 16.95
+      "mm200": null
     },
     {
       "data": "2021-10-05",
@@ -13898,16 +13887,27 @@
       "mm20": 2.21,
       "mm50": 2.18,
       "mm200": 2.48
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 2.33,
+      "maxima": 2.51,
+      "minima": 2.33,
+      "fechamento": 2.38,
+      "volume": 2415800,
+      "mm20": 2.21,
+      "mm50": 2.19,
+      "mm200": 2.48
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 13.51,
-    "preco_atual": 2.32,
-    "variacao_periodo": -82.83,
+    "preco_inicial": 13.36,
+    "preco_atual": 2.38,
+    "variacao_periodo": -82.19,
     "maxima_periodo": 22.31,
     "minima_periodo": 1.88,
-    "volume_medio": 3196371,
+    "volume_medio": 3197161,
     "tendencia": "indefinida"
   }
 }

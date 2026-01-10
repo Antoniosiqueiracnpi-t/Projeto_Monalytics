@@ -1,9 +1,9 @@
 {
   "ticker": "AURE3",
-  "ultima_atualizacao": "2026-01-09T23:02:27.494008",
+  "ultima_atualizacao": "2026-01-10T23:02:04.144609",
   "periodo": {
     "inicio": "2022-03-28",
-    "fim": "2026-01-08"
+    "fim": "2026-01-09"
   },
   "dados": [
     {
@@ -10411,16 +10411,27 @@
       "mm20": 11.98,
       "mm50": 11.79,
       "mm200": 10.18
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 11.53,
+      "maxima": 11.78,
+      "minima": 11.49,
+      "fechamento": 11.62,
+      "volume": 1858200,
+      "mm20": 11.95,
+      "mm50": 11.79,
+      "mm200": 10.2
     }
   ],
   "estatisticas": {
-    "total_dias": 946,
+    "total_dias": 947,
     "preco_inicial": 12.76,
-    "preco_atual": 11.52,
-    "variacao_periodo": -9.7,
+    "preco_atual": 11.62,
+    "variacao_periodo": -8.91,
     "maxima_periodo": 13.16,
     "minima_periodo": 7.34,
-    "volume_medio": 4317608,
+    "volume_medio": 4315011,
     "tendencia": "indefinida"
   }
 }

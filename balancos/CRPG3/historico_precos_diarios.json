@@ -1,22 +1,11 @@
 {
   "ticker": "CRPG6",
-  "ultima_atualizacao": "2026-01-09T23:03:46.307302",
+  "ultima_atualizacao": "2026-01-10T23:03:12.352792",
   "periodo": {
-    "inicio": "2020-12-11",
-    "fim": "2026-01-08"
+    "inicio": "2020-12-14",
+    "fim": "2026-01-09"
   },
   "dados": [
-    {
-      "data": "2020-12-11",
-      "abertura": 19.6,
-      "maxima": 19.61,
-      "minima": 19.56,
-      "fechamento": 19.61,
-      "volume": 400,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-14",
       "abertura": 20.11,
@@ -222,7 +211,7 @@
       "minima": 30.14,
       "fechamento": 30.79,
       "volume": 800,
-      "mm20": 25.21,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 33.41,
       "volume": 1600,
       "mm20": 34.18,
-      "mm50": 30.38,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -1451,7 +1440,7 @@
       "data": "2021-06-28",
       "abertura": 64.54,
       "maxima": 65.99,
-      "minima": 63.8,
+      "minima": 63.81,
       "fechamento": 65.99,
       "volume": 400,
       "mm20": 60.84,
@@ -2204,7 +2193,7 @@
       "volume": 200,
       "mm20": 69.63,
       "mm50": 75.73,
-      "mm200": 52.57
+      "mm200": null
     },
     {
       "data": "2021-10-05",
@@ -6087,7 +6076,7 @@
       "volume": 0,
       "mm20": 23.47,
       "mm50": 24.05,
-      "mm200": 23.84
+      "mm200": 23.85
     },
     {
       "data": "2023-03-07",
@@ -13898,13 +13887,24 @@
       "mm20": 18.67,
       "mm50": 18.86,
       "mm200": 17.88
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 18.47,
+      "maxima": 18.48,
+      "minima": 18.47,
+      "fechamento": 18.48,
+      "volume": 200,
+      "mm20": 18.7,
+      "mm50": 19.0,
+      "mm200": 17.88
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 19.61,
+    "preco_inicial": 20.32,
     "preco_atual": 18.48,
-    "variacao_periodo": -5.79,
+    "variacao_periodo": -9.06,
     "maxima_periodo": 89.5,
     "minima_periodo": 10.99,
     "volume_medio": 1448,

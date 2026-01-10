@@ -1,9 +1,9 @@
 {
   "ticker": "FIQE3",
-  "ultima_atualizacao": "2026-01-09T23:04:13.546331",
+  "ultima_atualizacao": "2026-01-10T23:03:35.057579",
   "periodo": {
     "inicio": "2021-07-29",
-    "fim": "2026-01-08"
+    "fim": "2026-01-09"
   },
   "dados": [
     {
@@ -12215,16 +12215,27 @@
       "mm20": 4.65,
       "mm50": 4.39,
       "mm200": 3.45
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 4.9,
+      "maxima": 4.93,
+      "minima": 4.87,
+      "fechamento": 4.93,
+      "volume": 254500,
+      "mm20": 4.68,
+      "mm50": 4.42,
+      "mm200": 3.46
     }
   ],
   "estatisticas": {
-    "total_dias": 1110,
+    "total_dias": 1111,
     "preco_inicial": 5.89,
-    "preco_atual": 4.9,
-    "variacao_periodo": -16.82,
+    "preco_atual": 4.93,
+    "variacao_periodo": -16.31,
     "maxima_periodo": 5.89,
     "minima_periodo": 2.01,
-    "volume_medio": 472419,
+    "volume_medio": 472223,
     "tendencia": "alta"
   }
 }

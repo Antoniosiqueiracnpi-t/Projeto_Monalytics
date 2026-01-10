@@ -1,22 +1,11 @@
 {
   "ticker": "YDUQ3",
-  "ultima_atualizacao": "2026-01-09T23:02:23.716880",
+  "ultima_atualizacao": "2026-01-10T23:02:02.014058",
   "periodo": {
-    "inicio": "2020-12-11",
-    "fim": "2026-01-08"
+    "inicio": "2020-12-14",
+    "fim": "2026-01-09"
   },
   "dados": [
-    {
-      "data": "2020-12-11",
-      "abertura": 31.13,
-      "maxima": 31.16,
-      "minima": 29.92,
-      "fechamento": 30.61,
-      "volume": 4448900,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-14",
       "abertura": 30.92,
@@ -222,7 +211,7 @@
       "minima": 28.79,
       "fechamento": 29.37,
       "volume": 3268900,
-      "mm20": 29.15,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 24.98,
       "volume": 6072800,
       "mm20": 28.26,
-      "mm50": 28.9,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1475300,
       "mm20": 21.54,
       "mm50": 22.84,
-      "mm200": 26.47
+      "mm200": null
     },
     {
       "data": "2021-10-05",
@@ -13898,16 +13887,27 @@
       "mm20": 12.1,
       "mm50": 12.46,
       "mm200": 13.11
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 12.84,
+      "maxima": 13.22,
+      "minima": 12.65,
+      "fechamento": 12.75,
+      "volume": 2303400,
+      "mm20": 12.13,
+      "mm50": 12.46,
+      "mm200": 13.12
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 30.61,
-    "preco_atual": 12.84,
-    "variacao_periodo": -58.05,
+    "preco_inicial": 29.39,
+    "preco_atual": 12.75,
+    "variacao_periodo": -56.61,
     "maxima_periodo": 31.36,
     "minima_periodo": 5.83,
-    "volume_medio": 4196041,
+    "volume_medio": 4194342,
     "tendencia": "indefinida"
   }
 }

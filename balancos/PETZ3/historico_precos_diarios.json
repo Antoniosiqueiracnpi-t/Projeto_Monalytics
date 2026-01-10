@@ -1,22 +1,11 @@
 {
   "ticker": "PETZ3",
-  "ultima_atualizacao": "2026-01-09T23:02:03.700735",
+  "ultima_atualizacao": "2026-01-10T23:01:44.231589",
   "periodo": {
-    "inicio": "2020-12-11",
+    "inicio": "2020-12-14",
     "fim": "2026-01-06"
   },
   "dados": [
-    {
-      "data": "2020-12-11",
-      "abertura": 16.21,
-      "maxima": 16.72,
-      "minima": 16.16,
-      "fechamento": 16.45,
-      "volume": 5264131,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-14",
       "abertura": 16.61,
@@ -222,7 +211,7 @@
       "minima": 18.34,
       "fechamento": 20.07,
       "volume": 7669883,
-      "mm20": 17.39,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 20.16,
       "volume": 2521792,
       "mm20": 20.67,
-      "mm50": 19.29,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 3478697,
       "mm20": 23.92,
       "mm50": 23.96,
-      "mm200": 21.33
+      "mm200": null
     },
     {
       "data": "2021-10-05",
@@ -13879,13 +13868,13 @@
     }
   ],
   "estatisticas": {
-    "total_dias": 1261,
-    "preco_inicial": 16.45,
+    "total_dias": 1260,
+    "preco_inicial": 16.68,
     "preco_atual": 4.39,
-    "variacao_periodo": -73.32,
+    "variacao_periodo": -73.69,
     "maxima_periodo": 26.4,
     "minima_periodo": 2.9,
-    "volume_medio": 9578811,
+    "volume_medio": 9582235,
     "tendencia": "alta"
   }
 }

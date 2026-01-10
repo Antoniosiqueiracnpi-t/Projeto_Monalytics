@@ -1,9 +1,9 @@
 {
   "ticker": "TTEN3",
-  "ultima_atualizacao": "2026-01-09T23:01:48.758029",
+  "ultima_atualizacao": "2026-01-10T23:01:27.574442",
   "periodo": {
     "inicio": "2021-07-16",
-    "fim": "2026-01-08"
+    "fim": "2026-01-09"
   },
   "dados": [
     {
@@ -12303,16 +12303,27 @@
       "mm20": 16.43,
       "mm50": 15.84,
       "mm200": 14.63
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 16.5,
+      "maxima": 16.74,
+      "minima": 16.32,
+      "fechamento": 16.48,
+      "volume": 1398200,
+      "mm20": 16.43,
+      "mm50": 15.89,
+      "mm200": 14.64
     }
   ],
   "estatisticas": {
-    "total_dias": 1118,
+    "total_dias": 1119,
     "preco_inicial": 11.3,
-    "preco_atual": 16.44,
-    "variacao_periodo": 45.46,
+    "preco_atual": 16.48,
+    "variacao_periodo": 45.82,
     "maxima_periodo": 17.19,
     "minima_periodo": 6.58,
-    "volume_medio": 1215730,
+    "volume_medio": 1215893,
     "tendencia": "alta"
   }
 }

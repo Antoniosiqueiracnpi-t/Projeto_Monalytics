@@ -1,22 +1,11 @@
 {
   "ticker": "CPFE3",
-  "ultima_atualizacao": "2026-01-09T23:02:34.339441",
+  "ultima_atualizacao": "2026-01-10T23:02:10.745679",
   "periodo": {
-    "inicio": "2020-12-11",
-    "fim": "2026-01-08"
+    "inicio": "2020-12-14",
+    "fim": "2026-01-09"
   },
   "dados": [
-    {
-      "data": "2020-12-11",
-      "abertura": 22.22,
-      "maxima": 22.52,
-      "minima": 22.02,
-      "fechamento": 22.4,
-      "volume": 3013500,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-14",
       "abertura": 22.44,
@@ -222,7 +211,7 @@
       "minima": 22.15,
       "fechamento": 22.68,
       "volume": 1582900,
-      "mm20": 23.06,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 20.5,
       "volume": 3190400,
       "mm20": 23.31,
-      "mm50": 23.13,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 3088600,
       "mm20": 22.33,
       "mm50": 21.34,
-      "mm200": 22.01
+      "mm200": null
     },
     {
       "data": "2021-10-05",
@@ -13898,16 +13887,27 @@
       "mm20": 51.43,
       "mm50": 47.91,
       "mm200": 41.26
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 54.03,
+      "maxima": 54.94,
+      "minima": 52.95,
+      "fechamento": 53.54,
+      "volume": 1669000,
+      "mm20": 51.68,
+      "mm50": 48.17,
+      "mm200": 41.34
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 22.4,
-    "preco_atual": 54.03,
-    "variacao_periodo": 141.22,
+    "preco_inicial": 22.2,
+    "preco_atual": 53.54,
+    "variacao_periodo": 141.15,
     "maxima_periodo": 54.03,
     "minima_periodo": 18.79,
-    "volume_medio": 2182625,
+    "volume_medio": 2181560,
     "tendencia": "alta"
   }
 }

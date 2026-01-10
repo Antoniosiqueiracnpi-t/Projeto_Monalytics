@@ -1,9 +1,9 @@
 {
   "ticker": "IGTI4",
-  "ultima_atualizacao": "2026-01-09T23:02:51.607069",
+  "ultima_atualizacao": "2026-01-10T23:02:25.527357",
   "periodo": {
     "inicio": "2023-03-17",
-    "fim": "2026-01-08"
+    "fim": "2026-01-09"
   },
   "dados": [
     {
@@ -7727,16 +7727,27 @@
       "mm20": 11.29,
       "mm50": 11.28,
       "mm200": 10.05
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 11.4,
+      "maxima": 11.7,
+      "minima": 11.4,
+      "fechamento": 11.7,
+      "volume": 7400,
+      "mm20": 11.31,
+      "mm50": 11.31,
+      "mm200": 10.07
     }
   ],
   "estatisticas": {
-    "total_dias": 702,
+    "total_dias": 703,
     "preco_inicial": 7.85,
-    "preco_atual": 11.4,
-    "variacao_periodo": 45.22,
+    "preco_atual": 11.7,
+    "variacao_periodo": 49.04,
     "maxima_periodo": 12.18,
     "minima_periodo": 7.03,
-    "volume_medio": 2274,
+    "volume_medio": 2281,
     "tendencia": "alta"
   }
 }

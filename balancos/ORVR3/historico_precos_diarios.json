@@ -1,9 +1,9 @@
 {
   "ticker": "ORVR3",
-  "ultima_atualizacao": "2026-01-09T23:01:50.306872",
+  "ultima_atualizacao": "2026-01-10T23:01:29.737136",
   "periodo": {
     "inicio": "2021-02-17",
-    "fim": "2026-01-08"
+    "fim": "2026-01-09"
   },
   "dados": [
     {
@@ -13447,16 +13447,27 @@
       "mm20": 68.2,
       "mm50": 63.05,
       "mm200": 53.97
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 71.36,
+      "maxima": 72.65,
+      "minima": 71.11,
+      "fechamento": 71.88,
+      "volume": 1218200,
+      "mm20": 68.69,
+      "mm50": 63.38,
+      "mm200": 54.11
     }
   ],
   "estatisticas": {
-    "total_dias": 1222,
+    "total_dias": 1223,
     "preco_inicial": 21.94,
-    "preco_atual": 71.29,
-    "variacao_periodo": 224.99,
-    "maxima_periodo": 71.29,
+    "preco_atual": 71.88,
+    "variacao_periodo": 227.68,
+    "maxima_periodo": 71.88,
     "minima_periodo": 19.64,
-    "volume_medio": 448069,
+    "volume_medio": 448699,
     "tendencia": "alta"
   }
 }

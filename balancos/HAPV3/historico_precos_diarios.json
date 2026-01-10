@@ -1,22 +1,11 @@
 {
   "ticker": "HAPV3",
-  "ultima_atualizacao": "2026-01-09T23:03:51.909171",
+  "ultima_atualizacao": "2026-01-10T23:03:16.342785",
   "periodo": {
-    "inicio": "2020-12-11",
-    "fim": "2026-01-08"
+    "inicio": "2020-12-14",
+    "fim": "2026-01-09"
   },
   "dados": [
-    {
-      "data": "2020-12-11",
-      "abertura": 228.48,
-      "maxima": 231.17,
-      "minima": 224.75,
-      "fechamento": 226.54,
-      "volume": 373833,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-14",
       "abertura": 226.69,
@@ -222,7 +211,7 @@
       "minima": 252.37,
       "fechamento": 254.32,
       "volume": 1017226,
-      "mm20": 232.03,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 244.15,
       "volume": 1383033,
       "mm20": 255.7,
-      "mm50": 247.49,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 2628446,
       "mm20": 218.3,
       "mm50": 219.4,
-      "mm200": 230.48
+      "mm200": null
     },
     {
       "data": "2021-10-05",
@@ -13898,16 +13887,27 @@
       "mm20": 14.6,
       "mm50": 19.86,
       "mm200": 32.34
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 15.42,
+      "maxima": 15.96,
+      "minima": 15.23,
+      "fechamento": 15.25,
+      "volume": 6057000,
+      "mm20": 14.68,
+      "mm50": 19.51,
+      "mm200": 32.26
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 226.54,
-    "preco_atual": 15.37,
-    "variacao_periodo": -93.22,
+    "preco_inicial": 226.1,
+    "preco_atual": 15.25,
+    "variacao_periodo": -93.26,
     "maxima_periodo": 272.27,
     "minima_periodo": 13.48,
-    "volume_medio": 4244162,
+    "volume_medio": 4248662,
     "tendencia": "indefinida"
   }
 }

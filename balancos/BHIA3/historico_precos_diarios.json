@@ -1,22 +1,11 @@
 {
   "ticker": "BHIA3",
-  "ultima_atualizacao": "2026-01-09T23:02:00.233935",
+  "ultima_atualizacao": "2026-01-10T23:01:41.572344",
   "periodo": {
-    "inicio": "2020-12-11",
-    "fim": "2026-01-08"
+    "inicio": "2020-12-14",
+    "fim": "2026-01-09"
   },
   "dados": [
-    {
-      "data": "2020-12-11",
-      "abertura": 369.66,
-      "maxima": 374.47,
-      "minima": 366.16,
-      "fechamento": 367.91,
-      "volume": 1857308,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-14",
       "abertura": 369.22,
@@ -222,7 +211,7 @@
       "minima": 323.72,
       "fechamento": 324.82,
       "volume": 1861491,
-      "mm20": 352.97,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 264.88,
       "volume": 2484992,
       "mm20": 308.62,
-      "mm50": 328.21,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1507856,
       "mm20": 187.64,
       "mm50": 228.27,
-      "mm200": 283.85
+      "mm200": null
     },
     {
       "data": "2021-10-05",
@@ -13898,16 +13887,27 @@
       "mm20": 3.12,
       "mm50": 3.33,
       "mm200": 4.09
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 3.0,
+      "maxima": 3.02,
+      "minima": 2.93,
+      "fechamento": 2.93,
+      "volume": 3962300,
+      "mm20": 3.1,
+      "mm50": 3.32,
+      "mm200": 4.06
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 367.91,
-    "preco_atual": 2.98,
-    "variacao_periodo": -99.19,
+    "preco_inicial": 368.12,
+    "preco_atual": 2.93,
+    "variacao_periodo": -99.2,
     "maxima_periodo": 374.03,
     "minima_periodo": 2.65,
-    "volume_medio": 3718061,
+    "volume_medio": 3719728,
     "tendencia": "baixa"
   }
 }

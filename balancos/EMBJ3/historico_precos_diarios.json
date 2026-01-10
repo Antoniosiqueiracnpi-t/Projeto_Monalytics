@@ -1,9 +1,9 @@
 {
   "ticker": "EMBJ3",
-  "ultima_atualizacao": "2026-01-09T23:03:21.504597",
+  "ultima_atualizacao": "2026-01-10T23:02:51.173421",
   "periodo": {
     "inicio": "2025-10-27",
-    "fim": "2026-01-08"
+    "fim": "2026-01-09"
   },
   "dados": [
     {
@@ -544,16 +544,27 @@
       "mm20": 89.1,
       "mm50": null,
       "mm200": null
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 95.07,
+      "maxima": 96.01,
+      "minima": 94.36,
+      "fechamento": 95.85,
+      "volume": 2026600,
+      "mm20": 89.61,
+      "mm50": 86.61,
+      "mm200": null
     }
   ],
   "estatisticas": {
-    "total_dias": 49,
+    "total_dias": 50,
     "preco_inicial": 86.09,
-    "preco_atual": 94.84,
-    "variacao_periodo": 10.17,
-    "maxima_periodo": 94.84,
+    "preco_atual": 95.85,
+    "variacao_periodo": 11.34,
+    "maxima_periodo": 95.85,
     "minima_periodo": 81.69,
-    "volume_medio": 4273530,
+    "volume_medio": 4228592,
     "tendencia": "indefinida"
   }
 }

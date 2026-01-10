@@ -1,22 +1,11 @@
 {
   "ticker": "PTNT4",
-  "ultima_atualizacao": "2026-01-09T23:04:08.865681",
+  "ultima_atualizacao": "2026-01-10T23:03:32.275477",
   "periodo": {
-    "inicio": "2020-12-11",
-    "fim": "2026-01-08"
+    "inicio": "2020-12-14",
+    "fim": "2026-01-09"
   },
   "dados": [
-    {
-      "data": "2020-12-11",
-      "abertura": 3.95,
-      "maxima": 3.96,
-      "minima": 3.84,
-      "fechamento": 3.84,
-      "volume": 40500,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-14",
       "abertura": 3.83,
@@ -222,7 +211,7 @@
       "minima": 4.05,
       "fechamento": 4.05,
       "volume": 42800,
-      "mm20": 4.03,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 3.69,
       "volume": 31100,
       "mm20": 3.95,
-      "mm50": 4.01,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 9100,
       "mm20": 5.31,
       "mm50": 5.37,
-      "mm200": 4.5
+      "mm200": null
     },
     {
       "data": "2021-10-05",
@@ -13898,16 +13887,27 @@
       "mm20": 4.74,
       "mm50": 4.87,
       "mm200": 4.91
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 4.65,
+      "maxima": 4.65,
+      "minima": 4.5,
+      "fechamento": 4.57,
+      "volume": 13200,
+      "mm20": 4.72,
+      "mm50": 4.86,
+      "mm200": 4.9
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 3.84,
-    "preco_atual": 4.63,
-    "variacao_periodo": 20.53,
+    "preco_inicial": 3.93,
+    "preco_atual": 4.57,
+    "variacao_periodo": 16.24,
     "maxima_periodo": 8.33,
     "minima_periodo": 3.6,
-    "volume_medio": 18544,
+    "volume_medio": 18523,
     "tendencia": "baixa"
   }
 }

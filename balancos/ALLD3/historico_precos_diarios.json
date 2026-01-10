@@ -1,9 +1,9 @@
 {
   "ticker": "ALLD3",
-  "ultima_atualizacao": "2026-01-09T23:01:59.094830",
+  "ultima_atualizacao": "2026-01-10T23:01:39.894212",
   "periodo": {
     "inicio": "2021-04-12",
-    "fim": "2026-01-08"
+    "fim": "2026-01-09"
   },
   "dados": [
     {
@@ -13040,16 +13040,27 @@
       "mm20": 8.21,
       "mm50": 8.13,
       "mm200": 6.37
+    },
+    {
+      "data": "2026-01-09",
+      "abertura": 8.5,
+      "maxima": 8.5,
+      "minima": 8.41,
+      "fechamento": 8.43,
+      "volume": 259700,
+      "mm20": 8.23,
+      "mm50": 8.16,
+      "mm200": 6.39
     }
   ],
   "estatisticas": {
-    "total_dias": 1185,
+    "total_dias": 1186,
     "preco_inicial": 7.45,
-    "preco_atual": 8.44,
-    "variacao_periodo": 13.35,
+    "preco_atual": 8.43,
+    "variacao_periodo": 13.21,
     "maxima_periodo": 16.59,
     "minima_periodo": 2.23,
-    "volume_medio": 145424,
+    "volume_medio": 145521,
     "tendencia": "alta"
   }
 }
