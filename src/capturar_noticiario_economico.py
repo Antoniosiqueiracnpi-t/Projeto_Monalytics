@@ -149,6 +149,8 @@ class Noticia:
     data_publicacao: str
     imagem: str = ""
     resumo: str = ""
+    categoria: str = "Mercado"  # Campo esperado pelo JS
+    tags: List[str] = field(default_factory=list)  # Campo esperado pelo JS
     
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -161,6 +163,7 @@ class NoticiarioEconomico:
     total_noticias: int
     fontes: List[str]
     noticias: List[Dict[str, Any]]
+    portais: Dict[str, List[Dict[str, Any]]] = field(default_factory=dict)
     
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -269,6 +272,38 @@ def is_valid_image_url(url: str) -> bool:
         return True
     
     return False
+
+
+def detectar_categoria(titulo: str, resumo: str = "") -> str:
+    """
+    Detecta categoria da noticia baseado no titulo e resumo.
+    
+    Categorias possiveis: Mercado, Economia, Empresas, Politica, Internacional, Cripto
+    """
+    texto = f"{titulo} {resumo}".lower()
+    
+    # Palavras-chave por categoria
+    categorias = {
+        "Cripto": ["bitcoin", "btc", "ethereum", "cripto", "blockchain", "token", "nft"],
+        "Internacional": ["eua", "china", "europa", "fed", "powell", "trump", "biden", 
+                         "guerra", "russia", "ucrania", "internacional", "global"],
+        "Politica": ["lula", "governo", "congresso", "senado", "camara", "ministro",
+                    "haddad", "planalto", "stf", "politica", "eleicao"],
+        "Empresas": ["petrobras", "vale", "itau", "bradesco", "ambev", "weg", 
+                    "magazine", "magalu", "nubank", "banco", "varejista", "ipo",
+                    "fusao", "aquisicao", "lucro", "prejuizo", "balanco"],
+        "Economia": ["inflacao", "ipca", "pib", "selic", "copom", "juros", "dolar",
+                    "cambio", "fiscal", "divida", "orcamento", "economia", "recessao"],
+        "Mercado": ["ibovespa", "b3", "bolsa", "acoes", "indice", "alta", "queda",
+                   "investidor", "mercado", "pregao", "fechamento", "abertura"],
+    }
+    
+    for categoria, palavras in categorias.items():
+        for palavra in palavras:
+            if palavra in texto:
+                return categoria
+    
+    return "Mercado"  # Default
 
 
 def extract_summary(entry, max_length: int = 200) -> str:
@@ -416,6 +451,9 @@ def fetch_rss_news(
             # Extrair resumo
             resumo = extract_summary(entry)
             
+            # Detectar categoria
+            categoria = detectar_categoria(titulo, resumo)
+            
             # Criar objeto Noticia
             noticia = Noticia(
                 id=noticia_id,
@@ -427,6 +465,7 @@ def fetch_rss_news(
                 data_publicacao=data_pub,
                 imagem=imagem,
                 resumo=resumo,
+                categoria=categoria,
             )
             
             noticias.append(noticia)
@@ -460,6 +499,7 @@ def capturar_noticias() -> NoticiarioEconomico:
     print(f"Data/Hora: {now.strftime('%Y-%m-%d %H:%M:%S %Z')}")
     
     todas_noticias: List[Noticia] = []
+    noticias_por_portal: Dict[str, List[Dict[str, Any]]] = {}
     fontes_com_noticias: List[str] = []
     used_titles: Set[str] = set()
     used_ids: Set[str] = set()
@@ -482,6 +522,9 @@ def capturar_noticias() -> NoticiarioEconomico:
             if noticias:
                 todas_noticias.extend(noticias)
                 fontes_com_noticias.append(nome)
+                
+                # Agrupar por portal (formato esperado pelo JS)
+                noticias_por_portal[nome] = [n.to_dict() for n in noticias]
                 
                 # Contar com/sem imagem
                 com_img = sum(1 for n in noticias if n.imagem)
@@ -509,6 +552,7 @@ def capturar_noticias() -> NoticiarioEconomico:
         total_noticias=len(todas_noticias),
         fontes=fontes_com_noticias,
         noticias=[n.to_dict() for n in todas_noticias],
+        portais=noticias_por_portal,  # Formato esperado pelo JS
     )
     
     print(f"\n{'='*60}")
@@ -613,6 +657,16 @@ def salvar_noticiario(noticiario: NoticiarioEconomico) -> None:
         if fonte:
             fontes_set.add(fonte)
     noticiario.fontes = sorted(fontes_set)
+    
+    # Reagrupar por portal (para manter estrutura compativel com JS)
+    portais_merged: Dict[str, List[Dict[str, Any]]] = {}
+    for n in noticias_merged:
+        fonte = n.get("fonte", "Outros")
+        if fonte not in portais_merged:
+            portais_merged[fonte] = []
+        portais_merged[fonte].append(n)
+    
+    noticiario.portais = portais_merged
     
     # Salvar JSON principal
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
