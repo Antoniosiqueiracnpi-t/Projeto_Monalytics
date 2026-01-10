@@ -1,171 +1,232 @@
 """
-CAPTURA DE NOTICIÁRIO EMPRESARIAL - VERSÃO GITHUB ACTIONS
-- Busca notícias via Google News RSS
-- Suporta múltiplos tickers (modo lista, quantidade, ticker, faixa)
-- Salva em JSON na pasta de cada empresa (balancos/<TICKER>/noticiario.json)
-- Acumula notícias (evita duplicatas por ID)
-- Limita a 100 notícias mais recentes por empresa
+CAPTURA DE NOTICIÁRIO ECONÔMICO (NOTÍCIAS DO MERCADO) - DESACOPLADO DO EMPRESARIAL
 
-CORREÇÕES CIRÚRGICAS IMPORTANTES (mantendo o formato original):
-1) Deduplicação determinística: NÃO usa hash() do Python (instável entre execuções).
-   Agora usa SHA1 estável -> evita duplicatas entre runs do GitHub Actions.
-2) PubDate robusto: parsing via email.utils.parsedate_to_datetime (aceita GMT, +0000 etc.)
-3) Fonte robusta: prioriza <source> do RSS (quando disponível), fallback por domínio
-4) Query/URL robusta: requests.get com params= (encoding correto de espaços/acentos)
-5) Leitura do JSON existente resiliente: se JSON corromper, não derruba o ticker
+- Atualiza o bloco do site "Notícias do Mercado"
+- Fonte: Google News RSS (busca por consultas amplas de mercado / macro / bolsa / câmbio / cripto)
+- Saída: balancos/NOTICIAS/noticias_mercado.json
+
+Requisitos de compatibilidade com o site (script.js):
+- JSON deve conter:
+  - ultima_atualizacao (iso)
+  - total_noticias (int)
+  - portais (dict): { "NomePortal": [itens...] }
+
+Cada item (notícia) contém:
+- id (int) estável (sha1 truncado)
+- data (YYYY-MM-DD)
+- data_hora (YYYY-MM-DD HH:MM:SS)
+- horario (HH:MM)  -> usado para ordenação no front
+- titulo (str)
+- descricao (str)
+- link (str)
+- fonte (str)      -> nome do portal (para exibição)
+- imagem (str)     -> URL ou placeholder data-uri (para não quebrar layout)
+- categoria (str)  -> ex: "Bolsa", "Economia", "Exterior", "Cripto", "Geral"
+- tags (list[str]) -> tags curtas
+
+Opcional:
+- Respeita janela de execução 08:00-22:00 (America/Sao_Paulo)
+  - Para forçar execução: export FORCE_RUN=1
 """
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import re
+from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
+from urllib.parse import urlparse, parse_qs, quote
 
 import requests
 from bs4 import BeautifulSoup
-import json
-from datetime import datetime
-import re
-from urllib.parse import urlparse, parse_qs
-import argparse
-import sys
-import pandas as pd
-from pathlib import Path
-from typing import Optional
-import hashlib
-from email.utils import parsedate_to_datetime
 
 
-# ============================================================================
-# UTILITÁRIOS MULTI-TICKER
-# ============================================================================
+# =============================================================================
+# Config
+# =============================================================================
 
-def load_mapeamento_consolidado() -> pd.DataFrame:
-    """Carrega CSV de mapeamento (tenta consolidado, fallback para original)."""
-    csv_consolidado = "mapeamento_b3_consolidado.csv"
-    csv_original = "mapeamento_final_b3_completo_utf8.csv"
+OUTPUT_PATH = Path("balancos/NOTICIAS/noticias_mercado.json")
 
-    # Tentar CSV consolidado primeiro
-    if Path(csv_consolidado).exists():
-        try:
-            return pd.read_csv(csv_consolidado, sep=";", encoding="utf-8-sig")
-        except Exception:
-            pass
+GOOGLE_NEWS_RSS = "https://news.google.com/rss/search"
 
-    # Fallback para CSV original
-    if Path(csv_original).exists():
-        try:
-            return pd.read_csv(csv_original, sep=";", encoding="utf-8-sig")
-        except Exception:
-            pass
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/120.0.0.0 Safari/537.36"
+)
 
-    # Último fallback
-    try:
-        return pd.read_csv(csv_original, sep=";")
-    except Exception as e:
-        raise FileNotFoundError("Nenhum arquivo de mapeamento encontrado") from e
+HEADERS = {"User-Agent": USER_AGENT}
+
+TIMEOUT = 20
+MAX_ITENS_POR_QUERY = 25
+MAX_TOTAL_ITENS = 160          # limite global antes de agrupar
+MAX_ITENS_POR_PORTAL = 18      # limite por portal no JSON final
+MAX_DIAS_LOOKBACK = 1          # preferir hoje; se pouco conteúdo, aceitar ontem
+
+# Janela desejada (horário SP)
+HORA_INICIO = 8
+HORA_FIM = 22  # inclusive
 
 
-def extrair_ticker_base(ticker: str) -> str:
+# Consultas amplas (ajuste fino aqui se quiser)
+QUERIES = [
+    # Bolsa / B3
+    'ibovespa OR "B3" OR "bolsa brasileira" OR ações',
+    # Câmbio / juros
+    'dólar OR câmbio OR "real" OR "Banco Central" OR "Copom" OR Selic OR juros',
+    # Inflação / macro
+    'IPCA OR inflação OR PIB OR "atividade econômica" OR "economia brasileira"',
+    # Exterior / Fed / risco
+    'Fed OR "Treasuries" OR "mercados globais" OR China OR EUA OR "Europa" OR commodities',
+    # Cripto (mantém a categoria viva no bloco)
+    'Bitcoin OR criptomoedas OR "cripto" OR Ethereum',
+]
+
+
+# =============================================================================
+# TZ helpers
+# =============================================================================
+
+def _get_sp_tz():
     """
-    Remove números finais do ticker (PETR4 -> PETR).
-    """
-    return re.sub(r"\d+$", "", str(ticker).upper().strip())
-
-
-def obter_pasta_ticker(ticker_base: str, pasta_saida: Path) -> Path:
-    """
-    Busca pasta existente para a empresa (com ou sem número de classe).
-    Prioriza pasta com número. Se não existir, retorna pasta com ticker base.
-
-    Exemplos:
-    - Se existe BBAS3/ -> retorna BBAS3/
-    - Se existe BBAS/ -> retorna BBAS/
-    - Se não existe nenhuma -> retorna BBAS/
-    """
-    pastas_encontradas = []
-
-    if pasta_saida.exists():
-        for pasta in pasta_saida.iterdir():
-            if pasta.is_dir():
-                pasta_base = extrair_ticker_base(pasta.name)
-                if pasta_base == ticker_base:
-                    pastas_encontradas.append(pasta)
-
-    if pastas_encontradas:
-        # Prioriza pasta com número (ex: BBAS3 ao invés de BBAS)
-        # Ordena por comprimento decrescente para pegar primeiro as com número
-        pastas_encontradas.sort(key=lambda p: len(p.name), reverse=True)
-        return pastas_encontradas[0]
-
-    # Se não encontrou nenhuma, retorna pasta com ticker base (sem número)
-    return pasta_saida / ticker_base
-
-
-def buscar_nome_empresa_ticker(ticker_base: str, df: pd.DataFrame) -> str:
-    """
-    Busca o nome da empresa associada ao ticker base no DataFrame.
+    Tenta usar IANA (zoneinfo). Se não estiver disponível, usa offset fixo -03:00.
     """
     try:
-        match = df[df["ticker_base"] == ticker_base]
-        if not match.empty:
-            return str(match.iloc[0]["empresa"]).strip()
-        return ticker_base
-    except Exception as e:
-        print(f"⚠️ Erro ao buscar nome da empresa: {e}")
-        return ticker_base
+        from zoneinfo import ZoneInfo  # py3.9+
+        return ZoneInfo("America/Sao_Paulo")
+    except Exception:
+        return timezone(timedelta(hours=-3))
 
 
-# ============================================================================
-# FUNÇÕES DE EXTRAÇÃO DE NOTÍCIAS
-# ============================================================================
+TZ_SP = _get_sp_tz()
 
-def extrair_data_publicacao(item):
+
+# =============================================================================
+# Utils
+# =============================================================================
+
+def _norm(s: str) -> str:
+    return str(s or "").strip()
+
+
+def _sha1_id(titulo: str, link: str, data_hora: str) -> int:
+    base = f"{_norm(titulo)}|{_norm(link)}|{_norm(data_hora)}"
+    digest = hashlib.sha1(base.encode("utf-8")).hexdigest()
+    return int(digest[:12], 16)
+
+
+def _now_sp() -> datetime:
+    return datetime.now(TZ_SP)
+
+
+def _within_window(now_sp: datetime) -> bool:
+    return HORA_INICIO <= now_sp.hour <= HORA_FIM
+
+
+def _clean_text(s: str) -> str:
+    s = _norm(s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+
+def limpar_descricao_html(descricao: str, limit: int = 260) -> str:
+    try:
+        soup = BeautifulSoup(descricao or "", "html.parser")
+        texto = " ".join(soup.get_text().split()).strip()
+        if limit and len(texto) > limit:
+            texto = texto[: max(0, limit - 3)] + "..."
+        return texto
+    except Exception:
+        return _clean_text(descricao)
+
+
+def _placeholder_image_data_uri() -> str:
     """
-    Extrai a data de publicação do item RSS do Google News.
-    Retorna (YYYY-MM-DD, YYYY-MM-DD HH:MM:SS)
+    Placeholder leve (SVG) para não quebrar o layout quando não houver imagem.
+    """
+    svg = (
+        "<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450'>"
+        "<rect width='100%' height='100%' fill='#0b1220'/>"
+        "<text x='50%' y='50%' fill='#ffffff' font-size='42' font-family='Arial' "
+        "text-anchor='middle' dominant-baseline='middle'>Notícias</text>"
+        "</svg>"
+    )
+    return "data:image/svg+xml;charset=utf-8," + quote(svg, safe="")
+
+
+PLACEHOLDER_IMG = _placeholder_image_data_uri()
+
+
+def _resolver_url_real_google_news(link: Optional[str]) -> Optional[str]:
+    """
+    Se vier no formato news.google.com com ?url=, tenta extrair a URL real.
+    """
+    if not link:
+        return link
+    try:
+        if "news.google.com" not in link:
+            return link
+        parsed = urlparse(link)
+        params = parse_qs(parsed.query)
+        if "url" in params and params["url"]:
+            return params["url"][0]
+        return link
+    except Exception:
+        return link
+
+
+def extrair_data_publicacao(item) -> Tuple[str, str, str]:
+    """
+    Retorna:
+    - data (YYYY-MM-DD)
+    - data_hora (YYYY-MM-DD HH:MM:SS)
+    - horario (HH:MM) em TZ_SP
     """
     try:
-        pub_date = item.find("pubDate")
-        if pub_date and pub_date.text:
-            dt = parsedate_to_datetime(pub_date.text.strip())
-            return dt.strftime("%Y-%m-%d"), dt.strftime("%Y-%m-%d %H:%M:%S")
+        pub = item.find("pubDate")
+        if pub and pub.text:
+            dt = parsedate_to_datetime(pub.text.strip())
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            dt_sp = dt.astimezone(TZ_SP)
+            return (
+                dt_sp.strftime("%Y-%m-%d"),
+                dt_sp.strftime("%Y-%m-%d %H:%M:%S"),
+                dt_sp.strftime("%H:%M"),
+            )
     except Exception:
         pass
 
-    # Se falhar, usa data atual
-    agora = datetime.now()
-    return agora.strftime("%Y-%m-%d"), agora.strftime("%Y-%m-%d %H:%M:%S")
+    agora = _now_sp()
+    return (
+        agora.strftime("%Y-%m-%d"),
+        agora.strftime("%Y-%m-%d %H:%M:%S"),
+        agora.strftime("%H:%M"),
+    )
 
 
 def extrair_fonte_noticia(link: Optional[str], item=None) -> str:
     """
-    Extrai a fonte da notícia.
-    - Prioriza <source> do RSS (mais confiável no Google News RSS)
-    - Fallback: tenta extrair domínio da URL (inclui tentativa com parâmetro url=)
+    - Prioriza <source> do RSS
+    - Fallback: domínio
     """
     try:
-        # 1) Prioriza <source>
         if item is not None:
             src = item.find("source")
             if src and src.text:
-                return src.text.strip()
+                return _clean_text(src.text)
 
         if not link:
-            return "Desconhecida"
+            return "Google News"
 
-        # 2) Fallback por domínio / url real
-        dominio = ""
-        try:
-            if "news.google.com" in link:
-                parsed = urlparse(link)
-                params = parse_qs(parsed.query)
-                if "url" in params and params["url"]:
-                    url_real = params["url"][0]
-                    dominio = urlparse(url_real).netloc
-                else:
-                    # muitas vezes o link é um caminho do próprio Google News sem URL real
-                    dominio = urlparse(link).netloc
-            else:
-                dominio = urlparse(link).netloc
-        except Exception:
-            dominio = ""
-
-        dominio = (dominio or "").replace("www.", "").strip()
+        url_final = _resolver_url_real_google_news(link) or link
+        dom = (urlparse(url_final).netloc or "").replace("www.", "").strip().lower()
 
         fontes_conhecidas = {
             "infomoney.com.br": "InfoMoney",
@@ -180,369 +241,290 @@ def extrair_fonte_noticia(link: Optional[str], item=None) -> str:
             "cnnbrasil.com.br": "CNN Brasil",
             "seudinheiro.com": "Seu Dinheiro",
             "investnews.com.br": "InvestNews",
+            "bloomberg.com": "Bloomberg",
+            "reuters.com": "Reuters",
+            "wsj.com": "WSJ",
+            "ft.com": "Financial Times",
         }
 
-        for dominio_chave, nome_fonte in fontes_conhecidas.items():
-            if dominio_chave in dominio:
-                return nome_fonte
+        for d, nome in fontes_conhecidas.items():
+            if dom.endswith(d):
+                return nome
 
-        if "news.google.com" in dominio:
-            return "Google News"
+        if dom:
+            return dom.split(".")[0].capitalize()
 
-        # Se não encontrar, retorna domínio capitalizado
-        if dominio:
-            return dominio.split(".")[0].capitalize()
-
-        return "Desconhecida"
+        return "Google News"
     except Exception:
-        return "Desconhecida"
+        return "Google News"
 
 
-def limpar_descricao_html(descricao: str) -> str:
+def extrair_imagem(item, descricao_html: str) -> str:
     """
-    Remove tags HTML da descrição e limpa o texto.
+    Tenta achar imagem:
+    - media:content url=
+    - enclosure url=
+    - <img src="..."> na descrição
+    - fallback placeholder
     """
+    # 1) media:content
     try:
-        soup = BeautifulSoup(descricao, "html.parser")
-        texto = soup.get_text()
-        texto = " ".join(texto.split())
-
-        if len(texto) > 300:
-            texto = texto[:297] + "..."
-
-        return texto
+        mc = item.find("media:content")
+        if mc and mc.get("url"):
+            return str(mc.get("url")).strip()
     except Exception:
-        return descricao
+        pass
 
-
-def _gerar_id_noticia_estavel(titulo: str, link: Optional[str], data_hora: str) -> int:
-    """
-    Gera um ID estável entre execuções (importante para deduplicação).
-    NÃO usar hash() do Python (instável entre runs).
-    """
-    base = f"{titulo.strip()}|{(link or '').strip()}|{data_hora.strip()}"
-    digest = hashlib.sha1(base.encode("utf-8")).hexdigest()
-    return int(digest[:12], 16)
-
-
-def buscar_noticiario_empresarial(ticker_base: str, nome_empresa: str) -> list:
-    """
-    Busca notícias do mercado sobre a empresa via Google News RSS.
-    """
+    # 2) enclosure
     try:
-        # Monta query de busca mais específica
-        query = f'("{nome_empresa}") OR ({ticker_base}) bolsa ações'
+        enc = item.find("enclosure")
+        if enc and enc.get("url"):
+            return str(enc.get("url")).strip()
+    except Exception:
+        pass
 
-        headers = {
-            "User-Agent": (
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/120.0.0.0 Safari/537.36"
-            )
-        }
+    # 3) img na descrição
+    try:
+        soup = BeautifulSoup(descricao_html or "", "html.parser")
+        img = soup.find("img")
+        if img and img.get("src"):
+            return str(img.get("src")).strip()
+    except Exception:
+        pass
 
-        # URL/params do Google News RSS (encoding correto via params)
-        params = {
-            "q": query,
-            "hl": "pt-BR",
-            "gl": "BR",
-            "ceid": "BR:pt-419",
-        }
+    return PLACEHOLDER_IMG
 
-        response = requests.get(
-            "https://news.google.com/rss/search",
-            params=params,
-            headers=headers,
-            timeout=15
-        )
 
-        if response.status_code != 200:
-            print(f"⚠️ Erro ao buscar notícias: Status {response.status_code}")
-            return []
+def classificar_categoria_e_tags(titulo: str, descricao: str) -> Tuple[str, List[str]]:
+    """
+    Mantém categorias simples (para não depender do HTML do front):
+      Bolsa / Economia / Exterior / Cripto / Geral
+    """
+    txt = f"{titulo} {descricao}".lower()
 
-        soup = BeautifulSoup(response.content, "xml")
+    tags: List[str] = []
+
+    def has(*words):
+        return any(w in txt for w in words)
+
+    # Cripto
+    if has("bitcoin", "cripto", "criptomo", "ethereum", "btc", "eth"):
+        cat = "Cripto"
+        if "bitcoin" in txt or "btc" in txt:
+            tags.append("Bitcoin")
+        if "ethereum" in txt or "eth" in txt:
+            tags.append("Ethereum")
+        return cat, tags[:3]
+
+    # Bolsa
+    if has("ibovespa", "b3", "bolsa", "ações", "acoes", "small caps", "blue chips", "índice"):
+        cat = "Bolsa"
+        if "ibovespa" in txt:
+            tags.append("Ibovespa")
+        if "b3" in txt:
+            tags.append("B3")
+        if "ações" in txt or "acoes" in txt:
+            tags.append("Ações")
+        return cat, tags[:3]
+
+    # Exterior
+    if has("eua", "fed", "powell", "treasur", "dow", "nasdaq", "s&p", "china", "europa", "bce", "boe", "japão", "japao"):
+        cat = "Exterior"
+        if "fed" in txt:
+            tags.append("Fed")
+        if "eua" in txt:
+            tags.append("EUA")
+        if "china" in txt:
+            tags.append("China")
+        return cat, tags[:3]
+
+    # Economia (macro, juros, câmbio, inflação, commodities)
+    if has("dólar", "dolar", "câmbio", "cambio", "selic", "copom", "juros", "ipca", "infla", "pib",
+           "banco central", "commod", "petróleo", "petroleo", "minério", "minerio"):
+        cat = "Economia"
+        if "dólar" in txt or "dolar" in txt:
+            tags.append("Dólar")
+        if "selic" in txt or "copom" in txt:
+            tags.append("Selic")
+        if "ipca" in txt or "infla" in txt:
+            tags.append("Inflação")
+        return cat, tags[:3]
+
+    return "Geral", []
+
+
+# =============================================================================
+# Scraping Google News RSS (econômico)
+# =============================================================================
+
+@dataclass
+class Noticia:
+    id: int
+    data: str
+    data_hora: str
+    horario: str
+    titulo: str
+    descricao: str
+    link: str
+    fonte: str
+    imagem: str
+    categoria: str
+    tags: List[str]
+
+
+def fetch_rss_google_news(query: str) -> bytes:
+    params = {
+        "q": query,
+        "hl": "pt-BR",
+        "gl": "BR",
+        "ceid": "BR:pt-419",
+    }
+    r = requests.get(GOOGLE_NEWS_RSS, params=params, headers=HEADERS, timeout=TIMEOUT)
+    if r.status_code != 200:
+        raise RuntimeError(f"HTTP {r.status_code}")
+    return r.content
+
+
+def coletar_noticias() -> List[Noticia]:
+    coletadas: Dict[int, Noticia] = {}
+
+    for q in QUERIES:
+        try:
+            xml = fetch_rss_google_news(q)
+        except Exception as e:
+            print(f"⚠️ Falha ao buscar RSS para query: {q} | {e}")
+            continue
+
+        soup = BeautifulSoup(xml, "xml")
         itens = soup.find_all("item")
 
-        noticias = []
-
-        for item in itens[:30]:  # Limita a 30 notícias mais recentes
+        for item in itens[:MAX_ITENS_POR_QUERY]:
             try:
                 titulo = item.find("title").text.strip() if item.find("title") else "Título não disponível"
-                link = item.find("link").text.strip() if item.find("link") else None
-                descricao = item.find("description").text if item.find("description") else "Descrição não disponível"
+                link_raw = item.find("link").text.strip() if item.find("link") else ""
+                descricao_html = item.find("description").text if item.find("description") else ""
 
-                # Limpa descrição HTML
-                descricao_limpa = limpar_descricao_html(descricao)
+                link = _resolver_url_real_google_news(link_raw) or link_raw
+                descricao = limpar_descricao_html(descricao_html)
 
-                # Extrai data de publicação (robusto)
-                data, data_hora = extrair_data_publicacao(item)
-
-                # Extrai fonte (prioriza <source>)
+                data, data_hora, horario = extrair_data_publicacao(item)
                 fonte = extrair_fonte_noticia(link, item=item)
+                imagem = extrair_imagem(item, descricao_html)
 
-                # ID estável (dedupe real entre execuções)
-                id_noticia = _gerar_id_noticia_estavel(titulo, link, data_hora)
+                categoria, tags = classificar_categoria_e_tags(titulo, descricao)
 
-                noticia = {
-                    "id": id_noticia,
-                    "data": data,
-                    "data_hora": data_hora,
-                    "titulo": titulo,
-                    "descricao": descricao_limpa,
-                    "fonte": fonte,
-                    "url": link,
-                    "tipo": "noticia_mercado",
-                }
+                nid = _sha1_id(titulo, link, data_hora)
 
-                noticias.append(noticia)
-
-            except Exception as e:
-                print(f"⚠️ Erro ao processar item de notícia: {e}")
+                coletadas[nid] = Noticia(
+                    id=nid,
+                    data=data,
+                    data_hora=data_hora,
+                    horario=horario,
+                    titulo=_clean_text(titulo),
+                    descricao=_clean_text(descricao),
+                    link=link,
+                    fonte=_clean_text(fonte) or "Google News",
+                    imagem=imagem or PLACEHOLDER_IMG,
+                    categoria=categoria,
+                    tags=tags,
+                )
+            except Exception:
                 continue
 
-        return noticias
+            if len(coletadas) >= MAX_TOTAL_ITENS:
+                break
 
-    except Exception as e:
-        print(f"❌ Erro ao buscar noticiário empresarial: {e}")
+        if len(coletadas) >= MAX_TOTAL_ITENS:
+            break
+
+    return list(coletadas.values())
+
+
+def filtrar_por_recencia(noticias: List[Noticia]) -> List[Noticia]:
+    """
+    Preferência: notícias de hoje (TZ_SP). Se ficar muito vazio, aceita ontem também.
+    """
+    if not noticias:
         return []
 
+    hoje = _now_sp().strftime("%Y-%m-%d")
+    ontem = (_now_sp() - timedelta(days=1)).strftime("%Y-%m-%d")
 
-def salvar_noticiario_json(
-    ticker_base: str,
-    nome_empresa: str,
-    noticias: list,
-    pasta_saida: Path
-) -> Optional[Path]:
-    """
-    Salva o noticiário em formato JSON na pasta do ticker.
-    Acumula com notícias existentes, evitando duplicatas por ID.
-    """
-    try:
-        pasta_ticker = obter_pasta_ticker(ticker_base, pasta_saida)
-        pasta_ticker.mkdir(parents=True, exist_ok=True)
-        arquivo_json = pasta_ticker / "noticiario.json"
+    hoje_list = [n for n in noticias if n.data == hoje]
+    if len(hoje_list) >= 12:
+        return hoje_list
 
-        # Carrega notícias existentes se o arquivo já existir (resiliente a JSON corrompido)
-        noticias_existentes = []
-        if arquivo_json.exists():
-            try:
-                with open(arquivo_json, "r", encoding="utf-8") as f:
-                    dados_existentes = json.load(f)
-                    noticias_existentes = dados_existentes.get("noticias", [])
-            except Exception:
-                noticias_existentes = []
-
-        # Cria dicionário de notícias existentes por ID
-        noticias_dict = {}
-        for noticia in noticias_existentes:
-            nid = noticia.get("id")
-            if nid is not None:
-                noticias_dict[nid] = noticia
-
-        # Adiciona novas notícias (substitui se ID já existir)
-        for noticia in noticias:
-            nid = noticia.get("id")
-            if nid is not None:
-                noticias_dict[nid] = noticia
-
-        # Converte de volta para lista e ordena por data
-        noticias_finais = list(noticias_dict.values())
-        noticias_finais.sort(key=lambda x: x.get("data_hora", ""), reverse=True)
-
-        # Limita a 100 notícias mais recentes para não crescer indefinidamente
-        noticias_finais = noticias_finais[:100]
-
-        # Monta estrutura final
-        dados_finais = {
-            "empresa": {
-                "ticker": ticker_base,
-                "nome": nome_empresa
-            },
-            "ultima_atualizacao": datetime.now().isoformat(),
-            "total_noticias": len(noticias_finais),
-            "fonte": "Google News",
-            "noticias": noticias_finais
-        }
-
-        # Salva no arquivo JSON
-        with open(arquivo_json, "w", encoding="utf-8") as f:
-            json.dump(dados_finais, f, ensure_ascii=False, indent=2)
-
-        print(f"  ✅ {len(noticias_finais)} notícias | {arquivo_json}")
-        return arquivo_json
-
-    except Exception as e:
-        print(f"  ❌ Erro ao salvar: {e}")
-        return None
+    # fallback: hoje + ontem
+    return [n for n in noticias if n.data in (hoje, ontem)]
 
 
-# ============================================================================
-# PROCESSAMENTO EM LOTE
-# ============================================================================
+def agrupar_por_portal(noticias: List[Noticia]) -> Dict[str, List[dict]]:
+    portais: Dict[str, List[Noticia]] = {}
+    for n in noticias:
+        portal = n.fonte or "Google News"
+        portais.setdefault(portal, []).append(n)
 
-def processar_ticker(row: pd.Series, df: pd.DataFrame, pasta_saida: Path) -> bool:
-    """
-    Processa um único ticker: busca e salva notícias.
+    # ordenar por data_hora desc e aplicar limite por portal
+    out: Dict[str, List[dict]] = {}
+    for portal, arr in portais.items():
+        arr.sort(key=lambda x: x.data_hora, reverse=True)
+        arr = arr[:MAX_ITENS_POR_PORTAL]
+        out[portal] = [n.__dict__ for n in arr]
 
-    Returns:
-        True se sucesso, False se erro
-    """
-    try:
-        ticker_base = row["ticker_base"]
-        nome_empresa = row.get("empresa", ticker_base)
-
-        print(f"\n📰 {ticker_base} - {str(nome_empresa)[:50]}")
-        print(f"  📁 Pasta: {obter_pasta_ticker(ticker_base, pasta_saida).name}")
-
-        noticias = buscar_noticiario_empresarial(ticker_base, str(nome_empresa))
-
-        if noticias:
-            arquivo_salvo = salvar_noticiario_json(ticker_base, str(nome_empresa), noticias, pasta_saida)
-            return arquivo_salvo is not None
-        else:
-            print("  ⚠️ Nenhuma notícia encontrada")
-            return False
-
-    except Exception as e:
-        print(f"  ❌ Erro: {e}")
-        return False
+    return out
 
 
-def selecionar_empresas(df: pd.DataFrame, modo: str, **kwargs) -> pd.DataFrame:
-    """Seleciona empresas baseado no modo especificado."""
+def salvar_json(portais: Dict[str, List[dict]]):
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    if modo == "quantidade":
-        qtd = int(kwargs.get("quantidade", 10))
-        return df.head(qtd)
+    total = sum(len(v) for v in portais.values())
 
-    elif modo == "ticker":
-        ticker = kwargs.get("ticker", "").strip().upper()
-        ticker_base = extrair_ticker_base(ticker)
-        return df[df["ticker_base"] == ticker_base]
+    payload = {
+        "ultima_atualizacao": _now_sp().isoformat(),
+        "total_noticias": total,
+        "fonte": "Google News RSS",
+        "portais": portais,
+    }
 
-    elif modo == "lista":
-        lista = kwargs.get("lista", "")
-        tickers = [extrair_ticker_base(t.strip().upper()) for t in lista.split(",") if t.strip()]
-        return df[df["ticker_base"].isin(tickers)]
-
-    elif modo == "faixa":
-        faixa = kwargs.get("faixa", "1-50")
-        inicio, fim = map(int, faixa.split("-"))
-        return df.iloc[inicio - 1 : fim]
-
-    else:
-        print(f"⚠️ Modo '{modo}' não reconhecido. Usando primeiras 10 empresas.")
-        return df.head(10)
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
 
 
-def processar_lote(df_sel: pd.DataFrame, df_completo: pd.DataFrame, pasta_saida: Path):
-    """
-    Processa um lote de empresas selecionadas.
-    """
-    print(f"\n{'='*70}")
-    print(f"🚀 Processando {len(df_sel)} empresas...")
-    print(f"{'='*70}")
-
-    ok_count = 0
-    err_count = 0
-
-    for idx, (_, row) in enumerate(df_sel.iterrows(), 1):
-        print(f"\n[{idx}/{len(df_sel)}]", end=" ")
-
-        sucesso = processar_ticker(row, df_completo, pasta_saida)
-
-        if sucesso:
-            ok_count += 1
-        else:
-            err_count += 1
-
-    print(f"\n{'='*70}")
-    print(f"✅ Finalizado: OK={ok_count} | ERRO={err_count}")
-    print(f"💾 Salvos em: {pasta_saida}/")
-    print(f"{'='*70}\n")
-
-
-# ============================================================================
-# MAIN COM ARGPARSE
-# ============================================================================
+# =============================================================================
+# CLI
+# =============================================================================
 
 def main():
-    """
-    Função principal com suporte a argumentos CLI.
-    """
-    parser = argparse.ArgumentParser(
-        description="Captura noticiário empresarial via Google News RSS"
-    )
-    parser.add_argument(
-        "--modo",
-        choices=["quantidade", "ticker", "lista", "faixa"],
-        default="quantidade",
-        help="Modo de seleção: quantidade, ticker, lista, faixa",
-    )
-    parser.add_argument(
-        "--quantidade",
-        type=int,
-        default=10,
-        help="Quantidade de empresas (modo quantidade)"
-    )
-    parser.add_argument(
-        "--ticker",
-        default="",
-        help="Ticker específico (modo ticker): ex: PETR4"
-    )
-    parser.add_argument(
-        "--lista",
-        default="",
-        help="Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4"
-    )
-    parser.add_argument(
-        "--faixa",
-        default="1-50",
-        help="Faixa de linhas (modo faixa): ex: 1-50, 51-150"
-    )
+    parser = argparse.ArgumentParser(description="Captura noticiário econômico (Notícias do Mercado) via Google News RSS")
+    parser.add_argument("--force", action="store_true", help="Força execução mesmo fora da janela 08-22 (SP)")
     args = parser.parse_args()
 
-    # Carregar mapeamento
-    try:
-        df = load_mapeamento_consolidado()
-        df = df[df["ticker"].notna()].reset_index(drop=True)
-        df["ticker_base"] = df["ticker"].apply(extrair_ticker_base)
-        df = df.drop_duplicates(subset=["ticker_base"], keep="first")
-    except Exception as e:
-        print(f"❌ Erro ao carregar mapeamento: {e}")
-        sys.exit(1)
+    force_env = os.getenv("FORCE_RUN", "").strip() == "1"
+    now_sp = _now_sp()
 
-    # Pasta de saída
-    pasta_saida = Path("balancos")
-    pasta_saida.mkdir(exist_ok=True)
+    if not (args.force or force_env) and not _within_window(now_sp):
+        print(f"⏸️ Fora da janela de execução (SP). Agora: {now_sp.strftime('%Y-%m-%d %H:%M:%S')} | "
+              f"Janela: {HORA_INICIO:02d}:00-{HORA_FIM:02d}:59. Saindo sem erro.")
+        return
 
-    # Seleção baseada no modo usando **kwargs
-    df_sel = selecionar_empresas(
-        df,
-        args.modo,
-        quantidade=args.quantidade,
-        ticker=args.ticker,
-        lista=args.lista,
-        faixa=args.faixa
-    )
+    print(f"🕒 Agora (SP): {now_sp.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"📰 Coletando notícias do mercado... (queries={len(QUERIES)})")
 
-    if df_sel.empty:
-        print("❌ Nenhuma empresa selecionada com os critérios fornecidos.")
-        sys.exit(1)
+    noticias = coletar_noticias()
+    noticias = filtrar_por_recencia(noticias)
 
-    # Exibir informações do job
-    print(f"\n{'='*70}")
-    print(f">>> JOB: CAPTURAR NOTICIÁRIO EMPRESARIAL <<<")
-    print(f"{'='*70}")
-    print(f"Modo: {args.modo}")
-    print(f"Empresas selecionadas: {len(df_sel)}")
-    print(f"Fonte: Google News RSS")
-    print(f"Limite por empresa: 30 notícias novas (max 100 acumuladas)")
-    print(f"Saída: balancos/<TICKER>/noticiario.json")
-    print(f"{'='*70}")
+    if not noticias:
+        print("⚠️ Nenhuma notícia coletada (após filtros).")
+        # ainda assim salva um JSON válido (mantém o front estável)
+        salvar_json({})
+        print(f"✅ JSON salvo (vazio): {OUTPUT_PATH}")
+        return
 
-    # Processar
-    processar_lote(df_sel, df, pasta_saida)
+    portais = agrupar_por_portal(noticias)
+    salvar_json(portais)
+
+    total = sum(len(v) for v in portais.values())
+    print(f"✅ Salvo: {OUTPUT_PATH} | portais={len(portais)} | noticias={total}")
 
 
 if __name__ == "__main__":
