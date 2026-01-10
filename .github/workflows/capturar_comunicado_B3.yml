@@ -65,7 +65,7 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "schedule" ]; then
             echo "🤖 Execução automática: capturando TODAS as empresas"
-            python src/capturar_noticias.py --modo faixa --faixa 1-999 --dias 30
+            python src/capturar_comunicados_b3.py --modo faixa --faixa 1-999 --dias 30
           else
             echo "👤 Execução manual: usando parâmetros fornecidos"
             python src/capturar_noticias.py \
@@ -77,10 +77,10 @@ jobs:
               --dias "${{ github.event.inputs.dias }}"
           fi
       
-      - name: Consolidar notícias em JSON único
+      - name: Consolidar Comunicados em JSON único
         run: |
           echo "📊 Consolidando notícias para feed web..."
-          python src/consolidar_noticias.py
+          python src/consolidar_comunicados_b3.py
 
       - name: 📝 Atualizar timestamp
         run: |
@@ -107,7 +107,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: |
-            📰 Atualizar notícias B3 (${{ github.event_name == 'schedule' && 'automático diário' || 'manual' }} - ${{ github.run_number }}) [skip netlify]
+            📰 Atualizar Comunicados B3 (${{ github.event_name == 'schedule' && 'automático diário' || 'manual' }} - ${{ github.run_number }}) [skip netlify]
           
           file_pattern: |
             balancos/*/noticias.json
