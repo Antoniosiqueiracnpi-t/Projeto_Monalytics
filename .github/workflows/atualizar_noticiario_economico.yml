@@ -1,16 +1,16 @@
-name: 📰 Atualizar Noticiário Econômico (08h-20h BRT de 1h em 1h)
+name: 📰 Atualizar Noticiario Economico (08h-20h BRT de 1h em 1h)
 
 on:
   workflow_dispatch:
   schedule:
-    # GitHub cron é UTC. BRT (UTC-3): 08:00–20:00 => 11:00–23:00 UTC
+    # GitHub cron e UTC. BRT (UTC-3): 08:00-20:00 => 11:00-23:00 UTC
     - cron: "0 11-23 * * *"
 
 permissions:
   contents: write
 
 concurrency:
-  # IMPORTANTÍSSIMO: group compartilhado evita dois runs simultâneos do feed
+  # IMPORTANTE: group compartilhado evita dois runs simultaneos do feed
   group: noticias-mercado
   cancel-in-progress: true
 
@@ -34,11 +34,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4 lxml
 
-      - name: Atualizar notícias (gera JSON)
+      - name: Atualizar noticias (gera JSON)
         run: |
           python src/capturar_noticiario_economico.py
 
-      - name: Commit e push (estratégia: reset + regenerar)
+      - name: Commit e push (reset + regenerar)
         shell: bash
         run: |
           set -e
@@ -46,22 +46,22 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@users.noreply.github.com"
 
-          # Desabilitar rebase automático (força merge ou nada)
+          # Desabilitar rebase automatico
           git config pull.rebase false
 
-          # Se não houver mudanças locais, sai
+          # Se nao houver mudancas locais, sai
           if git diff --quiet && git diff --cached --quiet; then
-            echo "✅ Sem alterações no feed."
+            echo "Sem alteracoes no feed."
             exit 0
           fi
 
           # Retry loop
           for i in 1 2 3 4 5; do
             echo ""
-            echo "🔄 Tentativa $i/5"
-            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "Tentativa $i/5"
+            echo "========================================"
 
-            # 1) Abortar qualquer rebase/merge pendente (segurança)
+            # 1) Abortar qualquer rebase/merge pendente
             git rebase --abort 2>/dev/null || true
             git merge --abort 2>/dev/null || true
 
@@ -72,31 +72,31 @@ jobs:
             git reset --hard origin/main
 
             # 4) Re-executa o script para gerar JSON atualizado
-            echo "🔄 Regenerando notícias..."
+            echo "Regenerando noticias..."
             python src/capturar_noticiario_economico.py
 
             # 5) Adicionar arquivos gerados
             git add balancos/NOTICIAS/noticias_mercado.json site/data/ultima_atualizacao.json 2>/dev/null || true
 
-            # 6) Verificar se há algo para commitar
+            # 6) Verificar se ha algo para commitar
             if git diff --cached --quiet; then
-              echo "✅ Nada novo para commitar (JSON idêntico ao origin)."
+              echo "Nada novo para commitar (JSON identico ao origin)."
               exit 0
             fi
 
             # 7) Commit
             TS=$(TZ="America/Sao_Paulo" date +"%Y-%m-%d %H:%M:%S %Z")
-            git commit -m "📰 Notícias: ${TS} [skip netlify]"
+            git commit -m "📰 Noticias: ${TS} [skip netlify]"
 
-            # 8) Push direto (sem pull, já estamos sincronizados)
+            # 8) Push direto (sem pull, ja estamos sincronizados)
             if git push origin main; then
-              echo "✅ Push realizado com sucesso!"
+              echo "Push realizado com sucesso!"
               exit 0
             else
-              echo "⚠️ Push falhou (outro commit chegou). Tentando novamente em 10s..."
+              echo "Push falhou (outro commit chegou). Tentando novamente em 10s..."
               sleep 10
             fi
           done
 
-          echo "❌ Falha após 5 tentativas. Verifique manualmente."
+          echo "Falha apos 5 tentativas. Verifique manualmente."
           exit 1
