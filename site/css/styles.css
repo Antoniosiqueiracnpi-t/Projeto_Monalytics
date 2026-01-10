@@ -6551,3 +6551,99 @@ textarea:focus {
 
 .b3-val-pos{ color: #10b981; }
 .b3-val-neg{ color: #ef4444; }
+
+
+
+/* =========================== DROPDOWN MENU =========================== */
+/* Adicione este CSS ao final do styles.css ou como arquivo separado */
+
+/* Item do menu com dropdown */
+.nav-item-dropdown {
+    position: relative;
+}
+
+/* Ícone do dropdown */
+.dropdown-icon {
+    font-size: 0.75rem;
+    margin-left: 0.25rem;
+    transition: transform 0.3s ease;
+}
+
+/* Dropdown escondido por padrão */
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 102, 204, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    z-index: 1000;
+    list-style: none;
+}
+
+/* Mostrar dropdown ao hover */
+.nav-item-dropdown:hover .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Rotacionar ícone ao hover */
+.nav-item-dropdown:hover .dropdown-icon {
+    transform: rotate(180deg);
+}
+
+/* Links do dropdown */
+.nav-dropdown-link {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.nav-dropdown-link:hover {
+    background: rgba(0, 102, 204, 0.05);
+    border-left-color: var(--primary-color);
+    color: var(--primary-color);
+    padding-left: 1.75rem;
+}
+
+/* =========================== MOBILE =========================== */
+@media (max-width: 768px) {
+    /* Em mobile, dropdown sempre visível quando menu aberto */
+    .nav-dropdown {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        background: transparent;
+        margin-top: 0.5rem;
+        padding-left: 1rem;
+    }
+
+    .dropdown-icon {
+        display: none; /* Esconde seta em mobile */
+    }
+
+    .nav-dropdown-link {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+        border-left: 2px solid rgba(0, 102, 204, 0.2);
+    }
+
+    .nav-dropdown-link:hover {
+        padding-left: 1.25rem;
+    }
+}
