@@ -1779,7 +1779,7 @@ textarea:focus {
 /* =========================== INDICATORS GRID (SLIDE 2) =========================== */
 .indicators-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
 }
 
@@ -1827,8 +1827,13 @@ textarea:focus {
     background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
 }
 
+/* ========== NOVO: IGP-M ========== */
+.indicator-icon.igpm {
+    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+}
+
 .indicator-icon.dolar {
-    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+    background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
 }
 
 .indicator-info {
@@ -4369,7 +4374,7 @@ textarea:focus {
   .stock-item { grid-template-columns: 80px 1fr; } /* desktop: 80px 1fr 120px 140px */
 
   /* evita overflow no Slide 2 */
-  .indicators-grid { grid-template-columns: 1fr; } /* desktop: repeat(2, 1fr) */
+  .indicators-grid { grid-template-columns: repeat(2, 1fr); } /* mobile: 2 colunas */
 
   /* setas “para dentro” do carrossel */
   .carousel-arrow { width: 44px; height: 44px; font-size: 1.1rem; }
@@ -4381,6 +4386,7 @@ textarea:focus {
 
 @media screen and (max-width: 480px) {
   .carousel-slide { padding: 1rem; }
+  .indicators-grid { grid-template-columns: 1fr; }  
 
   /* header do slide empilha melhor */
   .slide-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
