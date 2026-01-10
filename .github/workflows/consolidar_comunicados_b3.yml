@@ -1,130 +1,129 @@
-name: Atualizar Consolidador de Comunicados B3
+name: Consolidar Comunicados B3 (pós-captura)
 
 on:
-  schedule:
-    - cron: '0 23 * * *'  # Executa diariamente às 23:00 UTC (20:00 BRT)
-  workflow_dispatch:  # Permite execução manual
+  workflow_run:
+    workflows: ["Capturar Comunicados B3"]
+    types:
+      - completed
 
 permissions:
   contents: write
 
 jobs:
-  consolidar-noticias:
+  consolidar:
     runs-on: ubuntu-latest
-    
+
+    # ✅ Só roda se o capturador terminou com sucesso
+    # ✅ E só quando o capturador foi disparado pelo agendamento (schedule)
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'schedule' }}
+
+    # ✅ Previne concorrência (se por algum motivo houver sobreposição)
+    concurrency:
+      group: consolidar-comunicados-b3
+      cancel-in-progress: false
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+        with:
+          fetch-depth: 0
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
-      - name: Verificar arquivos de notícias
-        id: check-noticias
+
+      - name: Verificar arquivos de comunicados (noticias.json)
+        id: check_files
         run: |
-          echo "📁 Verificando arquivos de notícias individuais..."
-          ARQUIVOS=$(find balancos -type f -name "noticias.json" 2>/dev/null | wc -l)
+          echo "📁 Verificando arquivos individuais..."
+          ARQUIVOS=$(find balancos -type f -name "noticias.json" 2>/dev/null | wc -l | tr -d ' ')
           echo "total_arquivos=$ARQUIVOS" >> $GITHUB_ENV
-          
-          if [ $ARQUIVOS -gt 0 ]; then
-            echo "✅ Encontrados $ARQUIVOS arquivos de notícias"
+
+          if [ "$ARQUIVOS" -gt 0 ]; then
+            echo "✅ Encontrados $ARQUIVOS arquivos noticias.json"
             echo "noticias_exists=true" >> $GITHUB_ENV
           else
-            echo "⚠️ Nenhum arquivo de notícias encontrado"
+            echo "⚠️ Nenhum noticias.json encontrado em balancos/"
             echo "noticias_exists=false" >> $GITHUB_ENV
           fi
-      
-      - name: Consolidar notícias em feed único
+
+      - name: Instalar dependências
         if: env.noticias_exists == 'true'
         run: |
-          echo "📊 Consolidando notícias das empresas B3..."
-          python src/consolidar_noticias.py
-      
-      - name: Verificar feed consolidado
+          python -m pip install --upgrade pip
+          pip install pandas
+
+      - name: Consolidar feed (balancos/feed_noticias.json)
+        if: env.noticias_exists == 'true'
+        run: |
+          echo "📊 Consolidando comunicados..."
+          python src/consolidar_comunicados_b3.py
+
+      - name: Validar feed consolidado
         if: env.noticias_exists == 'true'
         run: |
           if [ -f "balancos/feed_noticias.json" ]; then
-            echo "✅ Feed consolidado gerado"
-            
-            # Extrair estatísticas do feed
-            TOTAL_EMPRESAS=$(jq -r '.meta.total_empresas' balancos/feed_noticias.json)
-            TOTAL_NOTICIAS=$(jq -r '.meta.total_noticias' balancos/feed_noticias.json)
-            DATA_INICIO=$(jq -r '.meta.periodo.inicio' balancos/feed_noticias.json)
-            DATA_FIM=$(jq -r '.meta.periodo.fim' balancos/feed_noticias.json)
-            
-            echo ""
-            echo "📊 Estatísticas do feed consolidado:"
-            echo "   Total de empresas: $TOTAL_EMPRESAS"
-            echo "   Total de notícias: $TOTAL_NOTICIAS"
-            echo "   Período: $DATA_INICIO a $DATA_FIM"
-            
-            # Top 3 categorias
-            echo ""
-            echo "📈 Top 3 categorias:"
-            jq -r '.estatisticas.top_categorias[0:3][] | "   \(.categoria): \(.total) notícias"' balancos/feed_noticias.json
-            
-            # Top 3 empresas
-            echo ""
-            echo "📈 Top 3 empresas:"
-            jq -r '.estatisticas.top_empresas[0:3][] | "   \(.ticker): \(.total) notícias"' balancos/feed_noticias.json
-            
-            # Tamanho do arquivo
-            TAMANHO=$(du -h balancos/feed_noticias.json | cut -f1)
-            echo ""
-            echo "💾 Tamanho do arquivo: $TAMANHO"
+            echo "✅ Feed consolidado gerado: balancos/feed_noticias.json"
+            echo "💾 Tamanho:"
+            du -h balancos/feed_noticias.json | cut -f1
           else
-            echo "⚠️ Feed consolidado não foi gerado"
+            echo "❌ Feed não foi gerado."
             exit 1
           fi
-      
+
       - name: 📝 Atualizar timestamp de consolidação
         if: env.noticias_exists == 'true'
         run: |
           mkdir -p site/data
+
           TIMESTAMP=$(date +%s)000
           DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
           HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
-          
+
           cat > site/data/ultima_consolidacao_noticias.json << EOF
           {
             "timestamp": ${TIMESTAMP},
             "data": "${DATA}",
             "hora": "${HORA}",
-            "fonte": "consolidador_noticias_b3",
+            "fonte": "consolidador_comunicados_b3",
             "versao": "1.0.0"
           }
           EOF
-          
+
           echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
-      
-      - name: Commit e Push
+
+      - name: Commit e Push (com rebase)
         if: env.noticias_exists == 'true'
-        run: |
-          git config user.name "actions-user"
-          git config user.email "actions-user@users.noreply.github.com"
-          
-          # Verificar se houve mudanças no feed
-          if git diff --quiet balancos/feed_noticias.json; then
-            echo "ℹ️ Nenhuma mudança no feed consolidado"
-            exit 0
-          fi
-          
-          git add balancos/feed_noticias.json
-          git add site/data/ultima_consolidacao_noticias.json
-          git commit -m "📰 Atualizar feed consolidado notícias B3 - $(date +'%Y-%m-%d %H:%M') [skip netlify]"
-          git push
-          
-          echo "✅ Feed consolidado atualizado e commitado"
-      
-      - name: Resumo da execução
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: |
+            📰 Consolidar feed comunicados B3 (auto pós-captura) - ${{ github.run_number }} [skip netlify]
+
+          file_pattern: |
+            balancos/feed_noticias.json
+            site/data/ultima_consolidacao_noticias.json
+
+          commit_user_name: github-actions[bot]
+          commit_user_email: github-actions[bot]@users.noreply.github.com
+
+          pull: '--rebase --autostash'
+          push_options: '--force-with-lease'
+
+          skip_dirty_check: false
+          skip_fetch: false
+          skip_checkout: false
+
+      - name: Resumo
         if: always()
         run: |
           echo "======================================================================"
-          echo "  RESUMO DA CONSOLIDAÇÃO DE NOTÍCIAS B3"
+          echo "  RESUMO - CONSOLIDAR COMUNICADOS B3 (PÓS CAPTURA)"
           echo "======================================================================"
-          echo "Arquivos individuais encontrados: ${total_arquivos:-0}"
+          echo "Workflow origem: ${{ github.event.workflow_run.name }}"
+          echo "Evento origem:   ${{ github.event.workflow_run.event }}"
+          echo "Conclusão:       ${{ github.event.workflow_run.conclusion }}"
+          echo "Arquivos noticias.json encontrados: ${total_arquivos:-0}"
           echo "Feed consolidado: $([ -f balancos/feed_noticias.json ] && echo 'gerado' || echo 'não gerado')"
           echo "Timestamp: $([ -f site/data/ultima_consolidacao_noticias.json ] && echo 'atualizado' || echo 'não atualizado')"
           echo "======================================================================"
