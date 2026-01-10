@@ -1549,15 +1549,18 @@ function renderNoticiasData(data) {
  */
 async function loadNoticiasMercado() {
     try {
-        const response = await fetch(`${DATA_CONFIG.GITHUB_RAW}/${DATA_CONFIG.BRANCH}/${NOTICIAS_MERCADO_PATH}?t=${Date.now()}`);
-        
+        const url = `${DATA_CONFIG.GITHUB_RAW}/${DATA_CONFIG.BRANCH}/${NOTICIAS_MERCADO_PATH}?t=${Date.now()}`;
+
+        // força não usar cache do browser (além do cache-buster ?t=...)
+        const response = await fetch(url, { cache: 'no-store' });
+
         if (!response.ok) {
-            throw new Error('Erro ao carregar notícias');
+            throw new Error(`Erro ao carregar notícias (${response.status})`);
         }
-        
+
         const data = await response.json();
         renderNoticiasMercado(data);
-        
+
     } catch (error) {
         console.error('❌ Erro ao carregar notícias:', error);
         showNewsError();
@@ -1569,39 +1572,126 @@ async function loadNoticiasMercado() {
  */
 function renderNoticiasMercado(data) {
     // Esconde loading
-    document.getElementById('newsLoading').style.display = 'none';
-    
+    const loadingEl = document.getElementById('newsLoading');
+    if (loadingEl) loadingEl.style.display = 'none';
+
     // Mostra grid
-    document.getElementById('newsGrid').style.display = 'grid';
-    document.getElementById('newsTimestampSection').style.display = 'block';
-    
-    // Agrega todas as notícias em uma lista flat
+    const gridEl = document.getElementById('newsGrid');
+    if (gridEl) gridEl.style.display = 'grid';
+
+    const tsSectionEl = document.getElementById('newsTimestampSection');
+    if (tsSectionEl) tsSectionEl.style.display = 'block';
+
+    // Agrega todas as notícias em uma lista flat (suporta portais como array OU {noticias:[]})
     const todasNoticias = [];
-    
-    const portais = data.portais || {};
-    for (const noticias of Object.values(portais)) {
-        todasNoticias.push(...noticias);
+    const portais = data && data.portais ? data.portais : {};
+
+    for (const bloco of Object.values(portais)) {
+        if (Array.isArray(bloco)) {
+            todasNoticias.push(...bloco);
+        } else if (bloco && Array.isArray(bloco.noticias)) {
+            todasNoticias.push(...bloco.noticias);
+        }
     }
-    
-    // Ordena por horário (mais recentes primeiro)
+
+    // Helper local: tenta extrair um Date confiável por notícia
+    const parseDateTimeNoticia = (n) => {
+        if (!n) return null;
+
+        // 1) timestamp numérico (seg ou ms)
+        const ts = n.timestamp ?? n.ts ?? n.time;
+        if (typeof ts === 'number' && isFinite(ts)) {
+            const ms = ts > 1e12 ? ts : ts * 1000;
+            const d = new Date(ms);
+            if (!isNaN(d.getTime())) return d;
+        }
+
+        // 2) data_hora / datetime ISO
+        const dh = n.data_hora ?? n.datetime ?? n.dataHora ?? n.published_at ?? n.publishedAt;
+        if (typeof dh === 'string' && dh.trim()) {
+            const d = new Date(dh);
+            if (!isNaN(d.getTime())) return d;
+        }
+
+        // 3) data (dd/mm/aaaa ou aaaa-mm-dd) + horario
+        const dataStr = n.data ?? n.date;
+        const horaStr = n.horario ?? n.hora;
+        if (typeof dataStr === 'string' && dataStr.trim()) {
+            const ds = dataStr.trim();
+
+            // dd/mm/aaaa
+            const mBR = ds.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+            if (mBR) {
+                const dd = Number(mBR[1]);
+                const mm = Number(mBR[2]) - 1;
+                const yy = Number(mBR[3]);
+                const [hh, mi] = String(horaStr || '00:00').split(':').map(Number);
+                const d = new Date(yy, mm, dd, isFinite(hh) ? hh : 0, isFinite(mi) ? mi : 0, 0);
+                if (!isNaN(d.getTime())) return d;
+            }
+
+            // aaaa-mm-dd
+            const mISO = ds.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (mISO) {
+                const yy = Number(mISO[1]);
+                const mm = Number(mISO[2]) - 1;
+                const dd = Number(mISO[3]);
+                const [hh, mi] = String(horaStr || '00:00').split(':').map(Number);
+                const d = new Date(yy, mm, dd, isFinite(hh) ? hh : 0, isFinite(mi) ? mi : 0, 0);
+                if (!isNaN(d.getTime())) return d;
+            }
+        }
+
+        // 4) fallback: usa somente horario (hoje) — último recurso
+        if (typeof horaStr === 'string' && horaStr.includes(':')) {
+            const [hh, mi] = horaStr.split(':').map(Number);
+            const base = new Date();
+            base.setHours(isFinite(hh) ? hh : 0, isFinite(mi) ? mi : 0, 0, 0);
+            return base;
+        }
+
+        return null;
+    };
+
+    // Ordena por DateTime (mais recentes primeiro).
+    // Se não conseguir extrair datetime, mantém fallback por horário (comportamento antigo).
     todasNoticias.sort((a, b) => {
-        const timeA = a.horario.split(':').map(Number);
-        const timeB = b.horario.split(':').map(Number);
+        const da = parseDateTimeNoticia(a);
+        const db = parseDateTimeNoticia(b);
+
+        if (da && db) return db.getTime() - da.getTime();
+        if (db && !da) return 1;
+        if (da && !db) return -1;
+
+        const timeA = String(a?.horario || '00:00').split(':').map(Number);
+        const timeB = String(b?.horario || '00:00').split(':').map(Number);
         return (timeB[0] * 60 + timeB[1]) - (timeA[0] * 60 + timeA[1]);
     });
-    
+
     // Renderiza grid
     renderNewsGrid(todasNoticias);
-    
+
     // Inicializa filtros
     initNewsFilters(todasNoticias);
-    
-    // Timestamp
-    const timestamp = new Date(data.ultima_atualizacao);
-    document.getElementById('newsTimestamp').textContent = 
-        `Última atualização: ${formatTimestamp(timestamp)}`;
-}
 
+    // Timestamp (vindo do JSON)
+    const tsEl = document.getElementById('newsTimestamp');
+    if (tsEl) {
+        const rawTs = data?.ultima_atualizacao ?? data?.meta?.ultima_atualizacao;
+        const timestamp = rawTs ? new Date(rawTs) : null;
+
+        // Se o JSON não tiver ultima_atualizacao, usa a mais recente do feed (se der)
+        let finalDate = timestamp && !isNaN(timestamp.getTime()) ? timestamp : null;
+        if (!finalDate && todasNoticias.length) {
+            const d0 = parseDateTimeNoticia(todasNoticias[0]);
+            if (d0 && !isNaN(d0.getTime())) finalDate = d0;
+        }
+
+        tsEl.textContent = finalDate
+            ? `Última atualização: ${formatTimestamp(finalDate)}`
+            : 'Última atualização: -';
+    }
+}
 /**
  * Renderiza grid de notícias
  */
