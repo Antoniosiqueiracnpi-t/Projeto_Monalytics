@@ -4374,7 +4374,7 @@ textarea:focus {
   .stock-item { grid-template-columns: 80px 1fr; } /* desktop: 80px 1fr 120px 140px */
 
   /* evita overflow no Slide 2 */
-  .indicators-grid { grid-template-columns: repeat(2, 1fr); } /* mobile: 2 colunas */
+  .indicators-grid { grid-template-columns: 1fr; } /* desktop: repeat(2, 1fr) */
 
   /* setas “para dentro” do carrossel */
   .carousel-arrow { width: 44px; height: 44px; font-size: 1.1rem; }
