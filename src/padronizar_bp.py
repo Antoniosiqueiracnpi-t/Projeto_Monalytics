@@ -144,6 +144,179 @@ def _detect_depositos(df_bpp: pd.DataFrame) -> str:
         level_filter="2.0"
     ) or "2.02.01"
 
+
+# ======================================================================================
+# MAPEAMENTOS SEMÂNTICOS PARA DETECÇÃO ADAPTATIVA DE ESTRUTURA
+# ======================================================================================
+
+# Mapeamentos semânticos para contas de bancos (descrição → conta padronizada)
+# Usado quando há mudança de estrutura entre períodos
+
+SEMANTIC_MAP_BPA_BANCOS: Dict[str, List[str]] = {
+    # Conta padronizada: [padrões regex de descrição]
+    "1": [r"^Ativo\s+Total$"],
+    "1.01": [r"^Caixa\s+e\s+Equivalentes", r"^Disponibilidades$"],
+    "1.02": [r"^Ativos?\s+Financeiros?$"],
+    
+    # Depósito Compulsório - pode estar em diferentes níveis
+    "1.02.01": [
+        r"Dep[óo]sito[s]?\s+Compuls[óo]rio",
+        r"Compuls[óo]rio.*Banco\s+Central",
+        r"Ativos\s+Financeiros.*Valor\s+Justo.*Resultado",  # Estrutura antiga
+    ],
+    
+    # Ativos ao Valor Justo
+    "1.02.02": [
+        r"Ativos\s+Financeiros.*Valor\s+Justo.*Outros\s+Resultados",
+        r"Valor\s+Justo.*ORA",
+        r"FVOCI",
+    ],
+    
+    # Ativos ao Custo Amortizado
+    "1.02.03": [
+        r"Ativos\s+Financeiros.*Custo\s+Amortizado",
+        r"Custo\s+Amortizado",
+    ],
+    
+    # Estrutura nova (2025+)
+    "1.02.04": [
+        r"Ativos\s+Financeiros.*Custo\s+Amortizado",
+    ],
+    
+    # Operações de Crédito
+    "1.02.04.04": [
+        r"Opera[çc][õo]es\s+de\s+Cr[ée]dito",
+        r"Empr[ée]stimos.*Adiantamentos.*Clientes",
+    ],
+    
+    # Provisão PDD
+    "1.02.04.05": [
+        r"Provis[ãa]o.*Perda[s]?\s+Esperada",
+        r"PCLD",
+        r"Provis[ãa]o.*Risco.*Cr[ée]dito",
+    ],
+    
+    # Tributos
+    "1.03": [r"^Tributos", r"^Tributos\s+Diferidos"],
+    
+    # Outros Ativos
+    "1.04": [r"^Outros\s+Ativos$"],
+    
+    # Investimentos
+    "1.05": [r"^Investimentos$"],
+    
+    # Imobilizado
+    "1.06": [r"^Imobilizado$"],
+    
+    # Intangível
+    "1.07": [r"^Intang[íi]vel$"],
+}
+
+SEMANTIC_MAP_BPP_BANCOS: Dict[str, List[str]] = {
+    # Passivo Total
+    "2": [r"^Passivo\s+Total$"],
+    
+    # Passivos ao Valor Justo
+    "2.01": [
+        r"Passivos?\s+Financeiros?.*Valor\s+Justo",
+        r"FVTPL",
+    ],
+    
+    # Passivos ao Custo Amortizado
+    "2.02": [
+        r"Passivos?\s+Financeiros?.*Custo\s+Amortizado",
+    ],
+    
+    # Depósitos
+    "2.02.01": [
+        r"^Dep[óo]sitos$",
+        r"Dep[óo]sitos\s+de\s+Clientes",
+    ],
+    
+    # Captações
+    "2.02.02": [
+        r"Capta[çc][õo]es.*Mercado\s+Aberto",
+    ],
+    
+    # Recursos Interbancários
+    "2.02.03": [
+        r"Recursos.*Mercado\s+Interfinanceiro",
+        r"Recursos.*Interbancário",
+    ],
+    
+    # Outras Captações
+    "2.02.04": [
+        r"Outras\s+Capta[çc][õo]es",
+    ],
+    
+    # Provisões - estrutura antiga era 2.04, nova é 2.03
+    "2.03": [
+        r"^Provis[õo]es$",
+        r"Provis[ãa]o.*Contingentes",
+        r"Passivos\s+Financeiros.*Custo\s+Amortizado",  # Estrutura antiga
+    ],
+    
+    # Passivos Fiscais
+    "2.04": [
+        r"^Passivos?\s+Fiscais?$",
+        r"^Provis[õo]es$",  # Estrutura antiga
+    ],
+    
+    # Outros Passivos
+    "2.05": [
+        r"^Outros\s+Passivos$",
+        r"^Passivos?\s+Fiscais?$",  # Estrutura antiga
+    ],
+    
+    # Passivos sobre Ativos Não Correntes
+    "2.06": [
+        r"Ativos\s+N[ãa]o\s+Correntes?\s+a\s+Venda",
+        r"^Outros\s+Passivos$",  # Estrutura antiga
+    ],
+    
+    # Patrimônio Líquido - pode estar em 2.07 ou 2.08
+    "2.07": [
+        r"Patrim[oô]nio\s+L[íi]quido.*Consolidado",
+        r"^Patrim[oô]nio\s+L[íi]quido$",
+        r"Ativos\s+N[ãa]o\s+Correntes",  # Estrutura antiga
+    ],
+    
+    "2.08": [
+        r"Patrim[oô]nio\s+L[íi]quido.*Consolidado",
+        r"^Patrim[oô]nio\s+L[íi]quido$",
+    ],
+    
+    # Subcontas do PL
+    "2.07.01": [
+        r"Patrim[oô]nio.*Atribu[íi]do.*Controlador",
+        r"Capital\s+Social\s+Realizado",
+    ],
+    
+    "2.08.01": [
+        r"Capital\s+Social\s+Realizado",
+        r"Patrim[oô]nio.*Atribu[íi]do.*Controlador",
+    ],
+    
+    "2.07.01.01": [r"^Capital\s+Social\s+Realizado$"],
+    "2.08.01.01": [r"^Capital\s+Social\s+Realizado$"],
+    
+    "2.07.01.02": [r"^Reservas?\s+de\s+Capital$"],
+    "2.08.02": [r"^Reservas?\s+de\s+Capital$"],
+    
+    "2.07.01.04": [r"^Reservas?\s+de\s+Lucros?$"],
+    "2.08.04": [r"^Reservas?\s+de\s+Lucros?$"],
+    
+    "2.07.01.05": [r"Lucros.*Acumulados", r"Preju[íi]zos.*Acumulados"],
+    "2.08.05": [r"Lucros.*Acumulados", r"Preju[íi]zos.*Acumulados"],
+    
+    "2.07.01.08": [r"Outros\s+Resultados\s+Abrangentes"],
+    "2.08.08": [r"Outros\s+Resultados\s+Abrangentes"],
+    
+    "2.07.02": [r"N[ãa]o\s+Controladores", r"Minorit[áa]rios"],
+    "2.08.09": [r"N[ãa]o\s+Controladores", r"Minorit[áa]rios"],
+}
+
+
 # ======================================================================================
 # FUNÇÕES AUXILIARES
 # ======================================================================================
@@ -219,7 +392,6 @@ def load_mapeamento_consolidado() -> pd.DataFrame:
     raise FileNotFoundError(
         "Nenhum arquivo de mapeamento encontrado. Procurado em:\n- " + "\n- ".join(tried)
     )
-
 
 
 # ======================================================================================
@@ -474,6 +646,7 @@ def _build_bpp_schema_for_bank(df_bpp: pd.DataFrame) -> List[Tuple[str, str]]:
     
     return schema
 
+
 def _build_bpa_schema_for_bank(df_bpa: pd.DataFrame) -> List[Tuple[str, str]]:
     """
     Constrói esquema BPA dinâmico para bancos baseado nos dados reais.
@@ -517,6 +690,7 @@ def _build_bpa_schema_for_bank(df_bpa: pd.DataFrame) -> List[Tuple[str, str]]:
     ])
     
     return schema
+
 
 def _build_bpp_schema_for_bank_v2(df_bpp: pd.DataFrame) -> List[Tuple[str, str]]:
     """
@@ -581,6 +755,7 @@ def _build_bpp_schema_for_bank_v2(df_bpp: pd.DataFrame) -> List[Tuple[str, str]]
     ])
     
     return schema
+
 
 # ======================================================================================
 # CONTAS BPA/BPP - SEGURADORAS E HOLDINGS
@@ -689,6 +864,7 @@ TICKERS_HOLDINGS_SEGUROS: Set[str] = {"BBSE3", "CXSE3"}
 TICKERS_SEGURADORAS: Set[str] = {"IRBR3", "PSSA3"}
 # Empresa de tecnologia/marketplace (será tratada como empresa geral)
 TICKERS_TECH_MARKETPLACE: Set[str] = {"WIZC3"}
+
 
 def _is_banco(ticker: str) -> bool:
     """Verifica se é banco - também por variantes."""
@@ -852,12 +1028,260 @@ def _detect_fiscal_year_pattern(df_tri: pd.DataFrame, df_anu: pd.DataFrame, tick
 
 
 # ======================================================================================
+# DETECÇÃO E TRATAMENTO DE MUDANÇA DE ESTRUTURA DE PLANO DE CONTAS
+# ======================================================================================
+
+def _detect_structure_change(df: pd.DataFrame, key_accounts: List[str]) -> bool:
+    """
+    Detecta se houve mudança de estrutura do plano de contas entre períodos.
+    
+    Verifica se os mesmos códigos de conta existem em todos os períodos.
+    Se um código importante desaparece ou surge, indica mudança de estrutura.
+    
+    Args:
+        df: DataFrame com dados trimestrais
+        key_accounts: Lista de códigos de conta chave para verificar
+    
+    Returns:
+        True se detectou mudança de estrutura, False caso contrário
+    """
+    if df.empty or "data_fim" not in df.columns:
+        return False
+    
+    df = df.copy()
+    
+    # Agrupar por período
+    df["_periodo"] = df["data_fim"].dt.to_period("Q")
+    periodos = df["_periodo"].unique()
+    
+    if len(periodos) < 2:
+        return False
+    
+    # Para cada período, verificar quais contas-chave existem
+    structure_by_period = {}
+    for periodo in periodos:
+        df_periodo = df[df["_periodo"] == periodo]
+        codes_present = set(df_periodo["cd_conta"].unique())
+        # Verificar quais contas-chave estão presentes
+        key_present = frozenset(c for c in key_accounts if c in codes_present)
+        structure_by_period[periodo] = key_present
+    
+    # Se estrutura variou entre períodos, houve mudança
+    unique_structures = set(structure_by_period.values())
+    return len(unique_structures) > 1
+
+
+def _find_account_by_description(
+    df_periodo: pd.DataFrame, 
+    patterns: List[str],
+    level_hint: Optional[str] = None
+) -> Optional[Tuple[str, float]]:
+    """
+    Busca conta por padrões de descrição em um período específico.
+    
+    Args:
+        df_periodo: DataFrame de um período específico
+        patterns: Lista de regex para buscar na descrição
+        level_hint: Prefixo esperado do código (ex: "1.02", "2.03")
+    
+    Returns:
+        Tupla (código_encontrado, valor) ou None
+    """
+    for pattern in patterns:
+        mask = df_periodo["ds_conta"].str.contains(pattern, case=False, regex=True, na=False)
+        matches = df_periodo[mask]
+        
+        if level_hint:
+            matches = matches[matches["cd_conta"].str.startswith(level_hint)]
+        
+        if not matches.empty:
+            # Preferir conta com valor não-zero
+            if "valor_mil" in matches.columns:
+                nonzero = matches[matches["valor_mil"].abs() > 0]
+                if not nonzero.empty:
+                    row = nonzero.iloc[0]
+                else:
+                    row = matches.iloc[0]
+            else:
+                row = matches.iloc[0]
+            
+            valor = float(row["valor_mil"]) if "valor_mil" in row and pd.notna(row["valor_mil"]) else np.nan
+            return (str(row["cd_conta"]), valor)
+    
+    return None
+
+
+def _build_semantic_mapping_for_period(
+    df_periodo: pd.DataFrame,
+    semantic_map: Dict[str, List[str]],
+    is_bpa: bool = True
+) -> Dict[str, Tuple[str, float]]:
+    """
+    Constrói mapeamento semântico de contas para um período específico.
+    
+    Mapeia cada conta padronizada para o código real + valor naquele período.
+    
+    Args:
+        df_periodo: DataFrame com dados de um período específico
+        semantic_map: Dicionário de padrões semânticos
+        is_bpa: True se BPA, False se BPP
+    
+    Returns:
+        Dicionário mapeando código padrão → (código real, valor)
+    """
+    mapping = {}
+    
+    for padrao_key, patterns in semantic_map.items():
+        # Extrair hint de nível do código padrão
+        base_code = padrao_key.split("_")[0] if "_" in padrao_key else padrao_key
+        level_hint = ".".join(base_code.split(".")[:2]) if "." in base_code else base_code[:1]
+        
+        result = _find_account_by_description(df_periodo, patterns, level_hint)
+        if result:
+            mapping[padrao_key] = result
+    
+    return mapping
+
+
+class PeriodAwareExtractor:
+    """
+    Extrator de valores que lida com mudanças de estrutura entre períodos.
+    
+    Para bancos com mudança de plano de contas, extrai valores baseado em
+    descrição semântica em vez de códigos fixos.
+    """
+    
+    def __init__(self, df_tri: pd.DataFrame, df_anu: pd.DataFrame, is_bpa: bool = True):
+        self.df_tri = df_tri.copy()
+        self.df_anu = df_anu.copy()
+        self.is_bpa = is_bpa
+        self.semantic_map = SEMANTIC_MAP_BPA_BANCOS if is_bpa else SEMANTIC_MAP_BPP_BANCOS
+        
+        # Detectar se há mudança de estrutura
+        key_accounts = self._get_key_accounts()
+        self.has_structure_change = _detect_structure_change(df_tri, key_accounts)
+        
+        # Cache de mapeamentos por período
+        self._period_mappings: Dict[str, Dict] = {}
+    
+    def _get_key_accounts(self) -> List[str]:
+        """Retorna contas-chave para detectar mudança de estrutura."""
+        if self.is_bpa:
+            return ["1.02.01", "1.02.02", "1.02.03", "1.02.04", "1.03", "1.04"]
+        else:
+            return ["2.01", "2.02", "2.03", "2.04", "2.07", "2.08"]
+    
+    def _get_period_key(self, ano: int, trimestre: str) -> str:
+        return f"{ano}{trimestre}"
+    
+    def _get_mapping_for_period(self, ano: int, trimestre: str) -> Dict[str, Tuple[str, float]]:
+        """Obtém ou calcula mapeamento semântico para um período."""
+        key = self._get_period_key(ano, trimestre)
+        
+        if key not in self._period_mappings:
+            # Filtrar dados do período
+            mask = (self.df_tri["trimestre"] == trimestre)
+            if "data_fim" in self.df_tri.columns:
+                mask = mask & (self.df_tri["data_fim"].dt.year == ano)
+            
+            df_periodo = self.df_tri[mask]
+            
+            if df_periodo.empty:
+                self._period_mappings[key] = {}
+            else:
+                self._period_mappings[key] = _build_semantic_mapping_for_period(
+                    df_periodo, self.semantic_map, self.is_bpa
+                )
+        
+        return self._period_mappings[key]
+    
+    def get_value_semantic(
+        self, 
+        standard_code: str, 
+        ano: int, 
+        trimestre: str,
+        df_periodo: pd.DataFrame
+    ) -> float:
+        """
+        Obtém valor para uma conta padrão usando busca semântica.
+        
+        Args:
+            standard_code: Código padrão da conta (ex: "1.02.01")
+            ano: Ano fiscal
+            trimestre: Trimestre (T1, T2, T3, T4)
+            df_periodo: DataFrame filtrado para o período
+        
+        Returns:
+            Valor encontrado ou np.nan
+        """
+        # Buscar nos padrões semânticos
+        patterns = self.semantic_map.get(standard_code, [])
+        
+        if not patterns:
+            # Sem padrão semântico definido, tentar busca direta
+            return _pick_value_for_code(df_periodo, standard_code)
+        
+        # Buscar por descrição
+        level_hint = ".".join(standard_code.split(".")[:2]) if "." in standard_code else standard_code[:1]
+        result = _find_account_by_description(df_periodo, patterns, level_hint)
+        
+        if result:
+            return result[1]  # Retorna o valor
+        
+        # Fallback: busca direta pelo código
+        return _pick_value_for_code(df_periodo, standard_code)
+
+
+def _build_quarter_values_adaptive(
+    df_tri: pd.DataFrame,
+    schema: List[Tuple[str, str]],
+    fiscal_info: FiscalYearInfo,
+    extractor: PeriodAwareExtractor
+) -> pd.DataFrame:
+    """
+    Versão adaptativa de _build_quarter_values que lida com mudança de estrutura.
+    
+    Usa extração semântica baseada em descrição quando detecta mudança de estrutura
+    entre períodos.
+    
+    Args:
+        df_tri: DataFrame com dados trimestrais
+        schema: Lista de tuplas (código, descrição) do esquema padrão
+        fiscal_info: Informações sobre ano fiscal
+        extractor: Extrator adaptativo configurado
+    
+    Returns:
+        DataFrame com valores extraídos por período
+    """
+    df = df_tri.copy()
+    
+    if fiscal_info.is_mar_fev:
+        df["ano"] = df["data_fim"].apply(_get_fiscal_year_mar_fev)
+    else:
+        df["ano"] = df["data_fim"].dt.year
+    
+    rows = []
+    
+    # Agrupar por ano e trimestre
+    for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
+        ano = int(ano)
+        trimestre = str(trimestre)
+        
+        for code, _ in schema:
+            # Usar extração semântica
+            v = extractor.get_value_semantic(code, ano, trimestre, g)
+            rows.append((ano, trimestre, code, v))
+    
+    return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
+
+
+# ======================================================================================
 # CLASSE PRINCIPAL - PADRONIZADOR BP
 # ======================================================================================
 
 @dataclass
 class PadronizadorBP:
-    pasta_balancos: Path = Path("balancos")
+    pasta_balancos: Path = field(default_factory=lambda: Path("balancos"))
     _current_ticker: str = field(default="", repr=False)
 
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
@@ -1010,18 +1434,36 @@ class PadronizadorBP:
         # 2. Detectar padrão fiscal
         fiscal_info = _detect_fiscal_year_pattern(bpa_tri, bpa_anu, ticker)
         
-        # 3. Obter esquemas - CORREÇÃO: passa df_bpp para detecção dinâmica do PL
+        # 3. Obter esquemas - CORREÇÃO: passa df para detecção dinâmica
         bpa_schema = _get_bpa_schema(ticker, bpa_tri)
         bpp_schema = _get_bpp_schema(ticker, bpp_tri)
         
+        # 4. NOVO: Criar extratores adaptativos para bancos
+        bpa_extractor = None
+        bpp_extractor = None
+        structure_changed = False
+        
+        if _is_banco(ticker):
+            bpa_extractor = PeriodAwareExtractor(bpa_tri, bpa_anu, is_bpa=True)
+            bpp_extractor = PeriodAwareExtractor(bpp_tri, bpp_anu, is_bpa=False)
+            structure_changed = bpa_extractor.has_structure_change or bpp_extractor.has_structure_change
+        
         # ========== PROCESSAR BPA ==========
-        bpa_qtot = self._build_quarter_values(bpa_tri, bpa_schema, fiscal_info)
+        if structure_changed and bpa_extractor:
+            bpa_qtot = _build_quarter_values_adaptive(bpa_tri, bpa_schema, fiscal_info, bpa_extractor)
+        else:
+            bpa_qtot = self._build_quarter_values(bpa_tri, bpa_schema, fiscal_info)
+        
         bpa_anual = self._extract_annual_values(bpa_anu, bpa_schema, fiscal_info)
         bpa_qtot = self._add_t4_from_annual(bpa_qtot, bpa_anual, fiscal_info, bpa_schema)
         bpa_out = self._build_horizontal(bpa_qtot, bpa_schema)
         
         # ========== PROCESSAR BPP ==========
-        bpp_qtot = self._build_quarter_values(bpp_tri, bpp_schema, fiscal_info)
+        if structure_changed and bpp_extractor:
+            bpp_qtot = _build_quarter_values_adaptive(bpp_tri, bpp_schema, fiscal_info, bpp_extractor)
+        else:
+            bpp_qtot = self._build_quarter_values(bpp_tri, bpp_schema, fiscal_info)
+        
         bpp_anual = self._extract_annual_values(bpp_anu, bpp_schema, fiscal_info)
         bpp_qtot = self._add_t4_from_annual(bpp_qtot, bpp_anual, fiscal_info, bpp_schema)
         bpp_out = self._build_horizontal(bpp_qtot, bpp_schema)
@@ -1043,6 +1485,9 @@ class PadronizadorBP:
         pasta_usada = pasta.name
         pasta_info = f" (pasta: {pasta_usada})" if pasta_usada != ticker.upper() else ""
         
+        # NOVO: Indicar se detectou mudança de estrutura
+        struct_info = " | ESTRUTURA ADAPTATIVA" if structure_changed else ""
+        
         msg_parts = [
             f"Fiscal: {fiscal_status}",
             f"Tipo: {tipo}",
@@ -1051,7 +1496,7 @@ class PadronizadorBP:
             f"BPP: {n_periodos_bpp} períodos",
         ]
         
-        msg = f"bpa_padronizado.csv + bpp_padronizado.csv{pasta_info} | {' | '.join(m for m in msg_parts if m)}"
+        msg = f"bpa_padronizado.csv + bpp_padronizado.csv{pasta_info} | {' | '.join(m for m in msg_parts if m)}{struct_info}"
         
         return True, msg
 
@@ -1092,7 +1537,7 @@ def main():
     print("Saída: balancos/<TICKER>/bpa_padronizado.csv + bpp_padronizado.csv\n")
 
     pad = PadronizadorBP()
-    ok_count, err_count, irregular_count = 0, 0, 0
+    ok_count, err_count, irregular_count, adaptive_count = 0, 0, 0, 0
 
     for _, row in df_sel.iterrows():
         ticker_str = str(row["ticker"]).upper().strip()
@@ -1110,6 +1555,9 @@ def main():
             
             if "IRREGULAR" in msg or "MAR-FEV" in msg:
                 irregular_count += 1
+            
+            if "ESTRUTURA ADAPTATIVA" in msg:
+                adaptive_count += 1
             
             if ok:
                 ok_count += 1
@@ -1131,6 +1579,8 @@ def main():
     print(f"Finalizado: OK={ok_count} | ERRO={err_count}")
     if irregular_count > 0:
         print(f"            Anos fiscais especiais (MAR-FEV/irregular): {irregular_count}")
+    if adaptive_count > 0:
+        print(f"            Estrutura adaptativa (mudança de plano): {adaptive_count}")
     print("="*70 + "\n")
 
 
