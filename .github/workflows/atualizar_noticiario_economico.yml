@@ -4,8 +4,6 @@ on:
   schedule:
     # 08:00–20:00 BRT  => 11:00–23:00 UTC
     - cron: "0 11-23 * * *"
-    # 21:00–22:00 BRT  => 00:00–01:00 UTC (dia UTC seguinte)
-    - cron: "0 0-1 * * *"
   workflow_dispatch:
 
 concurrency:
