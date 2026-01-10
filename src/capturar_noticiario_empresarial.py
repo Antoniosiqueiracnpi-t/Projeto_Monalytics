@@ -4,19 +4,18 @@ CAPTURA DE NOTICIÁRIO EMPRESARIAL (DESACOPLADO DO NOTICIÁRIO ECONÔMICO)
 - Busca notícias via Google News RSS usando modelo simples:
   https://news.google.com/rss/search?q=<TICKER>&hl=pt-BR&gl=BR&ceid=BR:pt-419
 
-- Salva em JSON em TODAS as classes da empresa:
-  balancos/<TICKER_CLASSE>/noticiario.json
+✅ NOVA REGRA (conforme solicitado):
+- Antes de salvar, procura se JÁ EXISTE alguma pasta da empresa em balancos/ (independente da classe).
+  Ex.: se existir balancos/KLBN11/ ou balancos/KLBN3/ ou balancos/KLBN4/, considera que a empresa já tem pasta aberta.
+- Se existir, salva SOMENTE na pasta já existente (não cria nova pasta e não salva em múltiplas classes).
+- Só cria uma nova pasta se NÃO existir nenhuma pasta para a empresa no diretório balancos/.
+- Se precisar criar, cria SEMPRE com classe (ticker com número, ex: KLBN11), nunca com ticker_base puro (ex: KLBN).
 
 - Se o mapeamento NÃO existir no runner, o script continua funcionando em modo:
   - ticker
   - lista
   - ticker posicional
   - ou via env var TICKERS="KLBN11,VALE3,..."
-  E descobre as classes pela estrutura de pastas em balancos/.
-
-Regra de criação de pasta:
-- Se precisar criar, cria SEMPRE com uma classe válida (ticker com número, ex: KLBN11),
-  nunca com ticker_base puro (ex: KLBN).
 """
 
 from __future__ import annotations
@@ -30,7 +29,7 @@ import sys
 from datetime import datetime
 from email.utils import parsedate_to_datetime
 from pathlib import Path
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Tuple
 from urllib.parse import urlparse, parse_qs
 
 import requests
@@ -74,6 +73,17 @@ def _ler_json_resiliente(path: Path) -> Dict:
         return {}
 
 
+def _suffix_num(ticker: str) -> Optional[int]:
+    """Retorna sufixo numérico do ticker (KLBN11 -> 11)."""
+    m = re.search(r"(\d+)$", _norm(ticker))
+    if not m:
+        return None
+    try:
+        return int(m.group(1))
+    except Exception:
+        return None
+
+
 # =============================================================================
 # Mapeamento (opcional)
 # =============================================================================
@@ -107,7 +117,6 @@ def listar_classes_por_mapeamento(ticker_base: str, df_map: pd.DataFrame) -> Lis
     if m.empty:
         return []
     ticks = [_norm(x) for x in m["ticker"].dropna().astype(str).tolist() if str(x).strip()]
-    # remove duplicados preservando ordem
     ticks = list(dict.fromkeys(ticks))
     # classes (com número) primeiro
     ticks.sort(key=lambda t: (len(t) == len(tb), len(t)))
@@ -127,55 +136,62 @@ def buscar_nome_empresa_por_mapeamento(ticker_base: str, df_map: pd.DataFrame) -
 
 
 # =============================================================================
-# Descobrir classes por filesystem (fallback quando não há mapeamento)
+# Descobrir pasta existente (independente da classe)
 # =============================================================================
 
-def listar_classes_por_filesystem(ticker_base: str, pasta_saida: Path) -> List[str]:
+def encontrar_pasta_existente_empresa(ticker_base: str, pasta_saida: Path) -> Optional[Path]:
     """
-    Procura pastas em balancos/ que pertençam ao ticker_base.
-    Ex: ticker_base=KLBN -> encontra KLBN11, KLBN3, KLBN4.
+    Procura em balancos/ qualquer pasta já existente cuja base seja ticker_base.
+    Retorna a "melhor" pasta (preferência determinística):
+      1) mais dígitos no sufixo numérico (ex: 11 > 4)
+      2) maior sufixo numérico (ex: 11 > 6 > 5 > 4 > 3)
+      3) nome mais longo
+      4) ordem alfabética reversa (para determinismo)
     """
     tb = _norm(ticker_base)
-    classes: List[str] = []
 
     if not pasta_saida.exists():
-        return []
+        return None
 
+    candidatos: List[Path] = []
     for p in pasta_saida.iterdir():
-        if p.is_dir():
-            name = _norm(p.name)
-            if extrair_ticker_base(name) == tb and len(name) > len(tb):
-                classes.append(name)
+        if not p.is_dir():
+            continue
+        name = _norm(p.name)
+        if extrair_ticker_base(name) == tb:
+            candidatos.append(p)
 
-    # remove duplicados e ordena com classes mais longas primeiro (KLBN11 antes de KLBN3)
-    classes = list(dict.fromkeys(classes))
-    classes.sort(key=lambda t: len(t), reverse=True)
-    return classes
+    if not candidatos:
+        return None
+
+    def rank(p: Path) -> Tuple[int, int, int, str]:
+        name = _norm(p.name)
+        suf = re.search(r"(\d+)$", name)
+        suf_digits = len(suf.group(1)) if suf else 0
+        suf_num = int(suf.group(1)) if suf else -1
+        return (suf_digits, suf_num, len(name), name)
+
+    candidatos.sort(key=rank, reverse=True)
+    return candidatos[0]
 
 
-def garantir_pastas_classes(pasta_saida: Path, classes: List[str], ticker_fallback_classe: str) -> List[Path]:
+def escolher_ticker_para_criar_pasta(tickers_alvo: List[str], ticker_consulta: str, ticker_base: str) -> str:
     """
-    Garante que as pastas existam.
-    Regra: se precisar criar, cria sempre com classe (ticker com número),
-    e se não tiver classes, usa o ticker_fallback_classe (ex: KLBN11).
+    Se precisar criar UMA pasta (não existe nenhuma ainda):
+    1) usa ticker_consulta se tiver sufixo numérico (classe)
+    2) senão usa o primeiro ticker_alvo com classe
+    3) fallback final: ticker_base (último recurso, evita quebrar, mas tenta ao máximo criar com classe)
     """
-    pasta_saida.mkdir(parents=True, exist_ok=True)
+    t_cons = _norm(ticker_consulta or "")
+    if _suffix_num(t_cons) is not None:
+        return t_cons
 
-    if not classes:
-        t = _norm(ticker_fallback_classe)
-        p = pasta_saida / t
-        p.mkdir(parents=True, exist_ok=True)
-        return [p]
+    for t in tickers_alvo or []:
+        tn = _norm(t)
+        if _suffix_num(tn) is not None:
+            return tn
 
-    paths: List[Path] = []
-    for t in classes:
-        t = _norm(t)
-        p = pasta_saida / t
-        if not p.exists():
-            p.mkdir(parents=True, exist_ok=True)
-        paths.append(p)
-
-    return paths
+    return _norm(ticker_base)
 
 
 # =============================================================================
@@ -275,7 +291,7 @@ def extrair_fonte_noticia(link: Optional[str], item=None) -> str:
 
 def buscar_noticias_scraping_google(ticker: str, max_itens: int = 30) -> List[Dict]:
     """
-    MODELO SIMPLES, IGUAL AO SEU EXEMPLO:
+    MODELO SIMPLES:
     q=<ticker>&hl=pt-BR&gl=BR&ceid=BR:pt-419
     """
     t = _norm(ticker)
@@ -338,28 +354,39 @@ def buscar_noticias_scraping_google(ticker: str, max_itens: int = 30) -> List[Di
 
 
 # =============================================================================
-# Salvar JSON por classe
+# Salvar JSON (SALVAR NA PASTA EXISTENTE; CRIAR SÓ SE NÃO EXISTIR NENHUMA)
 # =============================================================================
 
-def salvar_noticiario_em_classes(
+def salvar_noticiario_na_pasta_existente_ou_criar(
     ticker_base: str,
     nome_empresa: str,
-    classes: List[str],
+    tickers_alvo: List[str],
     ticker_consulta: str,
     noticias_rss: List[Dict],
     pasta_saida: Path,
-) -> List[Path]:
+) -> Path:
     """
-    Salva em TODAS as classes:
-      balancos/<CLASSE>/noticiario.json
-
-    Deduplica por id com base no json existente de cada classe.
+    ✅ Regra:
+    - Se já existir pasta da empresa em balancos/, salva nela.
+    - Se não existir, cria SOMENTE uma pasta (com classe) e salva nela.
     """
     tb = _norm(ticker_base)
     ne = str(nome_empresa or tb).strip()
 
-    pastas = garantir_pastas_classes(pasta_saida, classes, ticker_fallback_classe=ticker_consulta)
-    salvos: List[Path] = []
+    # 1) tenta reaproveitar pasta já aberta
+    pasta_existente = encontrar_pasta_existente_empresa(tb, pasta_saida)
+
+    if pasta_existente is not None:
+        pasta_destino = pasta_existente
+        ticker_pasta = _norm(pasta_destino.name)
+    else:
+        # 2) não existe nenhuma -> cria uma pasta classe
+        ticker_para_criar = escolher_ticker_para_criar_pasta(tickers_alvo, ticker_consulta, tb)
+        ticker_pasta = _norm(ticker_para_criar)
+        pasta_destino = pasta_saida / ticker_pasta
+        pasta_destino.mkdir(parents=True, exist_ok=True)
+
+    arq = pasta_destino / "noticiario.json"
 
     # padroniza no formato final do Monalytics
     novas: List[Dict] = []
@@ -380,49 +407,45 @@ def salvar_noticiario_em_classes(
             "tipo": "noticia_empresarial",
         })
 
-    for pasta in pastas:
-        ticker_classe = _norm(pasta.name)
-        arq = pasta / "noticiario.json"
+    # carrega existente (resiliente)
+    dados_exist = _ler_json_resiliente(arq)
+    existentes = dados_exist.get("noticias", []) if isinstance(dados_exist, dict) else []
+    if not isinstance(existentes, list):
+        existentes = []
 
-        dados_exist = _ler_json_resiliente(arq)
-        existentes = dados_exist.get("noticias", []) if isinstance(dados_exist, dict) else []
-        if not isinstance(existentes, list):
-            existentes = []
+    # dedupe por id
+    d: Dict[int, Dict] = {}
+    for x in existentes:
+        if isinstance(x, dict) and x.get("id") is not None:
+            try:
+                d[int(x["id"])] = x
+            except Exception:
+                continue
 
-        d: Dict[int, Dict] = {}
-        for x in existentes:
-            if isinstance(x, dict) and x.get("id") is not None:
-                try:
-                    d[int(x["id"])] = x
-                except Exception:
-                    continue
+    for x in novas:
+        d[int(x["id"])] = x
 
-        for x in novas:
-            d[int(x["id"])] = x
+    finais = list(d.values())
+    finais.sort(key=lambda x: x.get("data_hora", ""), reverse=True)
+    finais = finais[:100]
 
-        finais = list(d.values())
-        finais.sort(key=lambda x: x.get("data_hora", ""), reverse=True)
-        finais = finais[:100]
+    payload = {
+        "empresa": {
+            "ticker": ticker_pasta,     # ticker da pasta escolhida
+            "ticker_base": tb,
+            "nome": ne,
+        },
+        "ultima_atualizacao": datetime.now().isoformat(),
+        "total_noticias": len(finais),
+        "fonte": "Google News RSS",
+        "ticker_consulta": _norm(ticker_consulta),
+        "noticias": finais,
+    }
 
-        payload = {
-            "empresa": {
-                "ticker": ticker_classe,
-                "ticker_base": tb,
-                "nome": ne,
-            },
-            "ultima_atualizacao": datetime.now().isoformat(),
-            "total_noticias": len(finais),
-            "fonte": "Google News RSS",
-            "ticker_consulta": _norm(ticker_consulta),
-            "noticias": finais,
-        }
+    with open(arq, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
 
-        with open(arq, "w", encoding="utf-8") as f:
-            json.dump(payload, f, ensure_ascii=False, indent=2)
-
-        salvos.append(arq)
-
-    return salvos
+    return arq
 
 
 # =============================================================================
@@ -496,7 +519,6 @@ def main():
             inicio, fim = map(int, str(args.faixa or "1-50").split("-"))
             df_sel = df_base.iloc[inicio - 1: fim].reset_index(drop=True)
 
-        # usa o primeiro ticker (classe) de cada base como “consulta”
         tickers_alvo = []
         for _, row in df_sel.iterrows():
             tb = _norm(row.get("ticker_base", ""))
@@ -504,10 +526,8 @@ def main():
             if classes:
                 tickers_alvo.append(classes[0])
             else:
-                # fallback: tenta ticker da própria linha
                 tickers_alvo.append(_norm(row.get("ticker", tb)))
 
-    # Se ainda estiver vazio, aborta com mensagem clara
     tickers_alvo = [t for t in tickers_alvo if t]
     if not tickers_alvo:
         print("❌ Nenhuma empresa selecionada com os critérios fornecidos.")
@@ -526,21 +546,23 @@ def main():
 
         tb = extrair_ticker_base(t)
 
-        # classes da empresa:
-        # 1) se mapeamento existe, usa ele
-        # 2) senão, tenta filesystem balancos/
+        # nome (se tiver mapeamento)
         if df_map is not None:
-            classes = listar_classes_por_mapeamento(tb, df_map)
             nome = buscar_nome_empresa_por_mapeamento(tb, df_map)
+            classes_map = listar_classes_por_mapeamento(tb, df_map)
         else:
-            classes = listar_classes_por_filesystem(tb, pasta_saida)
-            nome = tb  # sem mapeamento, não temos nome confiável
+            nome = tb
+            classes_map = []
 
-        # regra: se não achou classes no fs/map, usa o ticker informado como classe (ex: KLBN11)
-        if not classes:
-            classes = [t]
+        # lista de tickers candidatos (para decidir nome de pasta ao criar)
+        tickers_candidatos: List[str] = []
+        # 1) tenta os do mapeamento
+        tickers_candidatos.extend(classes_map)
+        # 2) inclui o ticker consultado como candidato (muito importante)
+        if t not in tickers_candidatos:
+            tickers_candidatos.insert(0, t)
 
-        print(f"[{idx}/{len(tickers_alvo)}] Processando {t} (base {tb}) | classes: {', '.join(classes)}")
+        print(f"[{idx}/{len(tickers_alvo)}] Processando {t} (base {tb})")
 
         noticias = buscar_noticias_scraping_google(t, max_itens=30)
 
@@ -549,16 +571,16 @@ def main():
             erro += 1
             continue
 
-        salvos = salvar_noticiario_em_classes(
+        arq = salvar_noticiario_na_pasta_existente_ou_criar(
             ticker_base=tb,
             nome_empresa=nome,
-            classes=classes,
+            tickers_alvo=tickers_candidatos,
             ticker_consulta=t,
             noticias_rss=noticias,
             pasta_saida=pasta_saida,
         )
 
-        print(f"  ✅ Salvo em {len(salvos)} pasta(s)\n")
+        print(f"  ✅ Salvo em: {arq}\n")
         ok += 1
 
     print(f"✅ Sucesso: {ok} | ❌ Erro: {erro}")
