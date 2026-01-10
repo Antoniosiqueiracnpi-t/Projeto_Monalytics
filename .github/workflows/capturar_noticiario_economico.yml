@@ -2,7 +2,10 @@ name: Capturar Notícias do Mercado
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    # 08:00–20:00 BRT  => 11:00–23:00 UTC
+    - cron: "0 11-23 * * *"
+    # 21:00–22:00 BRT  => 00:00–01:00 UTC (dia UTC seguinte)
+    - cron: "0 0-1 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -26,14 +29,13 @@ jobs:
       - name: 🐍 Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.11"
+          cache: "pip"
 
       - name: 📦 Instalar dependências
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-
 
       - name: 📰 Capturar notícias
         id: captura
@@ -48,18 +50,15 @@ jobs:
             exit 1
           fi
 
-      - name: 📝 Atualizar timestamp
+      - name: 📝 Atualizar timestamp (apenas diagnóstico/telemetria)
         if: steps.captura.outputs.success == 'true'
         run: |
-          # Criar diretório se não existir
           mkdir -p site/data
-          
-          # Gerar timestamp Unix em milissegundos
+
           TIMESTAMP=$(date +%s)000
           DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
           HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
-          
-          # Criar JSON com timestamp
+
           cat > site/data/ultima_atualizacao.json << EOF
           {
             "timestamp": ${TIMESTAMP},
@@ -69,7 +68,7 @@ jobs:
             "versao": "1.0.0"
           }
           EOF
-          
+
           echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
 
       - name: 🔍 Verificar mudanças
@@ -77,7 +76,7 @@ jobs:
         run: |
           echo "📊 Status do repositório:"
           git status
-          
+
           if [ -z "$(git status --porcelain)" ]; then
             echo "ℹ️  Nenhuma alteração detectada"
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -95,7 +94,7 @@ jobs:
 
           git add balancos/NOTICIAS/noticias_mercado.json
           git add site/data/ultima_atualizacao.json
-          
+
           if git diff --staged --quiet; then
             echo "⚠️  Nenhuma alteração staged"
             exit 0
@@ -103,25 +102,23 @@ jobs:
 
           TIMESTAMP=$(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')
           git commit -m "📰 Notícias: ${TIMESTAMP} [skip netlify]"
-          
-          # Push com retry
+
           MAX_RETRIES=5
           RETRY_COUNT=0
-          
+
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
             echo "🔄 Pull antes do push..."
             git fetch origin main
             git rebase origin/main
-            
+
             echo "🚀 Tentando push (${RETRY_COUNT}/${MAX_RETRIES})..."
-            
             if git push origin main; then
               echo "✅ Push realizado com sucesso!"
               exit 0
             else
               RETRY_COUNT=$((RETRY_COUNT + 1))
               echo "⚠️  Tentativa ${RETRY_COUNT} falhou"
-              
+
               if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
                 WAIT_TIME=$((RETRY_COUNT * 10))
                 echo "⏳ Aguardando ${WAIT_TIME}s antes de tentar novamente..."
@@ -129,7 +126,7 @@ jobs:
               fi
             fi
           done
-          
+
           echo "❌ Falha após ${MAX_RETRIES} tentativas"
           exit 1
 
@@ -148,4 +145,3 @@ jobs:
         if: failure()
         run: |
           echo "❌ Workflow falhou!"
-
