@@ -10,7 +10,6 @@ permissions:
   contents: write
 
 concurrency:
-  # IMPORTANTE: group compartilhado evita dois runs simultaneos do feed
   group: noticias-mercado
   cancel-in-progress: true
 
@@ -34,10 +33,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install feedparser pytz
 
-      - name: Atualizar noticias (gera JSON)
-        run: |
-          python src/capturar_noticiario_economico.py
-
       - name: Commit e push (reset + regenerar)
         shell: bash
         run: |
@@ -45,58 +40,52 @@ jobs:
 
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@users.noreply.github.com"
-
-          # Desabilitar rebase automatico
           git config pull.rebase false
 
-          # Se nao houver mudancas locais, sai
-          if git diff --quiet && git diff --cached --quiet; then
-            echo "Sem alteracoes no feed."
-            exit 0
-          fi
+          MAX_TENTATIVAS=8
 
-          # Retry loop
-          for i in 1 2 3 4 5; do
+          for i in $(seq 1 $MAX_TENTATIVAS); do
             echo ""
-            echo "Tentativa $i/5"
-            echo "========================================"
+            echo "======================================="
+            echo "Tentativa $i/$MAX_TENTATIVAS"
+            echo "======================================="
 
-            # 1) Abortar qualquer rebase/merge pendente
+            # Abortar operacoes pendentes
             git rebase --abort 2>/dev/null || true
             git merge --abort 2>/dev/null || true
 
-            # 2) Buscar estado mais recente do origin
+            # Sincronizar com origin
+            echo "Sincronizando com origin/main..."
             git fetch origin main
-
-            # 3) RESET HARD: descarta tudo local e sincroniza com origin
             git reset --hard origin/main
 
-            # 4) Re-executa o script para gerar JSON atualizado
-            echo "Regenerando noticias..."
+            # Rodar script
+            echo "Rodando capturar_noticiario_economico.py..."
             python src/capturar_noticiario_economico.py
 
-            # 5) Adicionar arquivos gerados
-            git add balancos/NOTICIAS/noticias_mercado.json site/data/ultima_atualizacao.json 2>/dev/null || true
+            # Adicionar arquivos
+            git add balancos/NOTICIAS/noticias_mercado.json 2>/dev/null || true
+            git add site/data/ultima_atualizacao.json 2>/dev/null || true
 
-            # 6) Verificar se ha algo para commitar
+            # Verificar se ha mudancas
             if git diff --cached --quiet; then
-              echo "Nada novo para commitar (JSON identico ao origin)."
+              echo "Nada novo para commitar."
               exit 0
             fi
 
-            # 7) Commit
+            # Commit
             TS=$(TZ="America/Sao_Paulo" date +"%Y-%m-%d %H:%M:%S %Z")
             git commit -m "📰 Noticias: ${TS} [skip netlify]"
 
-            # 8) Push direto (sem pull, ja estamos sincronizados)
+            # Push
             if git push origin main; then
               echo "Push realizado com sucesso!"
               exit 0
             else
-              echo "Push falhou (outro commit chegou). Tentando novamente em 10s..."
+              echo "Push falhou. Tentando novamente em 10s..."
               sleep 10
             fi
           done
 
-          echo "Falha apos 5 tentativas. Verifique manualmente."
+          echo "Falha apos $MAX_TENTATIVAS tentativas."
           exit 1
