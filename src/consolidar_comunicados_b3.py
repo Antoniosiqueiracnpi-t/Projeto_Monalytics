@@ -1,5 +1,5 @@
 """
-CONSOLIDADOR DE NOTÍCIAS - Feed Único para Web
+CONSOLIDADOR DE COMUNICADOS B3 - Feed Único para Web
 
 Gera arquivo JSON consolidado com todas as notícias de todas as empresas.
 Ideal para consumo em páginas HTML/frontend.
