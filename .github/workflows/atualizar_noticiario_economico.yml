@@ -38,7 +38,7 @@ jobs:
         run: |
           python src/capturar_noticiario_economico.py
 
-      - name: Commit e push (com retry, sem rebase)
+      - name: Commit e push (estratégia: reset + regenerar)
         shell: bash
         run: |
           set -e
@@ -46,42 +46,57 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@users.noreply.github.com"
 
-          # Se não houver mudanças, sai sem erro
-          if git diff --quiet; then
+          # Desabilitar rebase automático (força merge ou nada)
+          git config pull.rebase false
+
+          # Se não houver mudanças locais, sai
+          if git diff --quiet && git diff --cached --quiet; then
             echo "✅ Sem alterações no feed."
             exit 0
           fi
 
-          # Retry para evitar corrida com outros pushes
+          # Retry loop
           for i in 1 2 3 4 5; do
+            echo ""
             echo "🔄 Tentativa $i/5"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
+            # 1) Abortar qualquer rebase/merge pendente (segurança)
+            git rebase --abort 2>/dev/null || true
+            git merge --abort 2>/dev/null || true
+
+            # 2) Buscar estado mais recente do origin
             git fetch origin main
+
+            # 3) RESET HARD: descarta tudo local e sincroniza com origin
             git reset --hard origin/main
 
-            # Re-roda o script após reset para garantir consistência
+            # 4) Re-executa o script para gerar JSON atualizado
+            echo "🔄 Regenerando notícias..."
             python src/capturar_noticiario_economico.py
 
-            git add balancos/NOTICIAS/noticias_mercado.json site/data/ultima_atualizacao.json || true
+            # 5) Adicionar arquivos gerados
+            git add balancos/NOTICIAS/noticias_mercado.json site/data/ultima_atualizacao.json 2>/dev/null || true
 
-            # Se após re-run não houver mudanças, encerra
+            # 6) Verificar se há algo para commitar
             if git diff --cached --quiet; then
-              echo "✅ Nada para commitar após reset."
+              echo "✅ Nada novo para commitar (JSON idêntico ao origin)."
               exit 0
             fi
 
-            TS=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-            git commit -m "📰 Notícias do Mercado: ${TS} [skip netlify]" || true
+            # 7) Commit
+            TS=$(TZ="America/Sao_Paulo" date +"%Y-%m-%d %H:%M:%S %Z")
+            git commit -m "📰 Notícias: ${TS} [skip netlify]"
 
-            # Push: se falhar, tenta novamente
-            if git push origin HEAD:main; then
-              echo "✅ Push realizado com sucesso."
+            # 8) Push direto (sem pull, já estamos sincronizados)
+            if git push origin main; then
+              echo "✅ Push realizado com sucesso!"
               exit 0
             else
-              echo "⚠️ Push falhou. Nova tentativa em 8s..."
-              sleep 8
+              echo "⚠️ Push falhou (outro commit chegou). Tentando novamente em 10s..."
+              sleep 10
             fi
           done
 
-          echo "❌ Falha ao dar push após 5 tentativas."
+          echo "❌ Falha após 5 tentativas. Verifique manualmente."
           exit 1
