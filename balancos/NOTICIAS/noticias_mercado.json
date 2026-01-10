@@ -1,213 +1,594 @@
 {
-  "ultima_atualizacao": "2026-01-08T18:41:46.138505-03:00",
-  "total_noticias": 17,
+  "ultima_atualizacao": "2026-01-10T13:21:44.000572-03:00",
+  "total_noticias": 39,
+  "fonte": "Google News RSS",
   "portais": {
-    "Investing.com": [
+    "Agência SP": [
       {
-        "id": "97956d341deb",
-        "titulo": "Ações da Simulations Plus caem após lucro do 1º tri ficar abaixo das expectativas",
-        "link": "https://br.investing.com/news/earnings/acoes-da-simulations-plus-caem-apos-lucro-do-1o-tri-ficar-abaixo-das-expectativas-93CH-1794634",
-        "horario": "18:20",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Ações da Simulations Plus caem após lucro do 1º tri ficar abaixo...",
-        "fonte": "Investing.com"
-      },
+        "id": 139982997264435,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 10:17:06",
+        "horario": "10:17",
+        "titulo": "CDHU Móvel amplia acesso a serviços habitacionais e registra quase 19 mil atendimentos em balanço de ações - Agência SP",
+        "descricao": "CDHU Móvel amplia acesso a serviços habitacionais e registra quase 19 mil atendimentos em balanço de ações Agência SP",
+        "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQai1YMFdDRjZDeE5EVFp5S2hzNUZYNG5GUTMzbEZxaS1JRGtGQy0zcVRMV0NOZnQtSE45c0ZBR3RURmozOUdiam1yY0tySzk4WkdaOVZqMHdiLU5OQ2NPaHZfcFRKZ2NlRzRETDhLSDNfWEdyTDF1bjZWdm9FSUJ0a2xXc0ltNU1tTUkzQmhQSWZxb0owZnJMWk1ZTy1kQ0JrNFZDSC12c01yVXZSbUlRbVlWRDhmUkVnZXVYYVg3T1ZQTDBnTlJpemVzLU1HbjdQc09ySzB3?oc=5",
+        "fonte": "Agência SP",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Bolsa",
+        "tags": [
+          "Ações"
+        ]
+      }
+    ],
+    "maraba.pa.gov.br": [
       {
-        "id": "1aca3274e054",
-        "titulo": "Rússia - Ações fecharam o pregão em queda e o Índice MOEX Russia Index recuou 0,98%",
-        "link": "https://br.investing.com/news/stock-market-news/russia--acoes-fecharam-o-pregao-em-queda-e-o-indice-moex-russia-index-recuou-098-1794633",
-        "horario": "18:20",
-        "imagem": "https://i-invdn-com.investing.com/news/LYNXNPEC602WR_M.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Rússia - Ações fecharam o pregão em queda e o Índice MOEX...",
-        "fonte": "Investing.com"
-      },
-      {
-        "id": "9229fd172179",
-        "titulo": "ImmuCell reporta vendas de US$ 7,6 milhões no quarto trimestre e muda foco para First Defense",
-        "link": "https://br.investing.com/news/company-news/immucell-reporta-vendas-de-us-76-milhoes-no-quarto-trimestre-e-muda-foco-para-first-defense-93CH-1794630",
-        "horario": "18:20",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "id": 159274611333702,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 11:57:08",
+        "horario": "11:57",
+        "titulo": "apostas a partir de 1 real - maraba.pa.gov.br",
+        "descricao": "apostas a partir de 1 real maraba.pa.gov.br",
+        "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5NTFc4U2pfTUppcHkycmk3QVVTRS1QdHlxUmdjN2hWVWs1QnJhS3gyRU1YZ2ZWNko3TXFKX09zTm9SVE01MEdMejhVdlZMdWFORWt3c1lNNkJHT1NoRFdsR0luNVdGUm90S1NrSw?oc=5",
+        "fonte": "maraba.pa.gov.br",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
         "categoria": "Geral",
-        "tags": [],
-        "resumo": "ImmuCell reporta vendas de US$ 7,6 milhões no quarto trimestre e muda...",
-        "fonte": "Investing.com"
+        "tags": []
       },
       {
-        "id": "62945ecc8352",
-        "titulo": "Tegoprubart da Eledon mostra resultados promissores em transplantes renais",
-        "link": "https://br.investing.com/news/company-news/tegoprubart-da-eledon-mostra-resultados-promissores-em-transplantes-renais-93CH-1794629",
-        "horario": "18:19",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+        "id": 11258731495592,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 11:02:30",
+        "horario": "11:02",
+        "titulo": "jogo aposta minima 1 real - maraba.pa.gov.br",
+        "descricao": "jogo aposta minima 1 real maraba.pa.gov.br",
+        "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE92Q2RSWEVpUXlsMWw2aVFXTzFZeDFjcHh0aVl5OHVFMS1aWXM0VkhjckRwMmV3bl9TN3RQYUJCUHBfT1FHQzhSTGg3LWsxOWpLY2VHbVN1RENUSDJtbzhWTE5EM3BaRTNneC1z?oc=5",
+        "fonte": "maraba.pa.gov.br",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
         "categoria": "Geral",
-        "tags": [],
-        "resumo": "Tegoprubart da Eledon mostra resultados promissores em transplantes renais",
-        "fonte": "Investing.com"
+        "tags": []
       },
       {
-        "id": "c55b81754545",
-        "titulo": "AXT reduz previsão de receita do Q4 devido a atrasos em licenças de exportação chinesas",
-        "link": "https://br.investing.com/news/company-news/axt-reduz-previsao-de-receita-do-q4-devido-a-atrasos-em-licencas-de-exportacao-chinesas-93CH-1794627",
-        "horario": "18:18",
-        "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "AXT reduz previsão de receita do Q4 devido a atrasos em licenças...",
-        "fonte": "Investing.com"
+        "id": 106855075855638,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 08:24:50",
+        "horario": "08:24",
+        "titulo": "real bet apostas esportivas e jogos online - maraba.pa.gov.br",
+        "descricao": "real bet apostas esportivas e jogos online maraba.pa.gov.br",
+        "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQZWZqSGxtdzk5c3ZIbkJpLWRMeUd5eFRkakQzX3R0dE9NR1RmRnVSb1g2dkhtNGlWSHdzOXJSNnNvUXpDRFNaWEVpWmE0Y2p3dkl6VjM4UTBaR01feU92bl9JTTRhNkM2anJsN2tuZ0VsdnlkNEwwUUZYVl93LURnNQ?oc=5",
+        "fonte": "maraba.pa.gov.br",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      },
+      {
+        "id": 205363873544695,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 08:08:35",
+        "horario": "08:08",
+        "titulo": "1 real no grupo do bicho ganha quanto - maraba.pa.gov.br",
+        "descricao": "1 real no grupo do bicho ganha quanto maraba.pa.gov.br",
+        "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE40Mk1KM2lmSllTTkdtcFlKcE1YLU9aX3M4ajVGbUc0UTZqV1dqVlJCc2pFRVluNlZwbEZwTUwyRVg4M2JGWnpmVWJzNl8xdU9oVEs0aFdubDdycG1aMXVuU2tkXzYydmFYNzNac0pPY1RlVndvR2JodzEyejM?oc=5",
+        "fonte": "maraba.pa.gov.br",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      },
+      {
+        "id": 260177762528734,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 08:08:27",
+        "horario": "08:08",
+        "titulo": "melhores momentos de real madrid hoje - maraba.pa.gov.br",
+        "descricao": "melhores momentos de real madrid hoje maraba.pa.gov.br",
+        "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9vQjg2YW1JMVQ4cExZejVqZVJvcUlEQlkyR1M5X21JNHBQRTFxRTc4R2tSRXpSTGQtaVFGRWFvN3lVZmptQVh4Um9lQk5SLTJZd0FwZE5JYkhyVVhJcEg4dlN0RFJsTVEyem11WTVjTFpqQU5YV0Y4MUFFeTk?oc=5",
+        "fonte": "maraba.pa.gov.br",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      }
+    ],
+    "CNN Brasil": [
+      {
+        "id": 157637114569226,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 11:24:31",
+        "horario": "11:24",
+        "titulo": "Trump pede limite de 10% nas taxas de juros de cartões de crédito - CNN Brasil",
+        "descricao": "Trump pede limite de 10% nas taxas de juros de cartões de crédito CNN Brasil",
+        "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPOXBNVWU2bnZRZ01ROFBjQk5fSldVaVdHSjVhVFM3OTZIUm8tM2tXS1l4bEFIbnVXM3pEelk1YTA4TWItOE1ZeWdOMFdIc1VNbmZHenBXdzZhZHV6QkFVNk9tdFhJRmp1NTB2ZXZYRHktdndSMkx1Nlp3SzhQdzRaUWM4Vk1CLUdfOFRTZTR3b3JfVnBjejM0X1IwVjhSckZBSk1CTi10eUFyd2w3bm9YMlpQdUkzbW5r?oc=5",
+        "fonte": "CNN Brasil",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Economia",
+        "tags": []
+      },
+      {
+        "id": 155267532608131,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 08:33:26",
+        "horario": "08:33",
+        "titulo": "Michelle diz que Bolsonaro sente tontura ao levantar: \"Medo é real\" - CNN Brasil",
+        "descricao": "Michelle diz que Bolsonaro sente tontura ao levantar: \"Medo é real\" CNN Brasil",
+        "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNRWpCZUc5QUY0OVY0QVgxY0VSR0hCdW1oeEJNclVMdVFudGxRNlVjX3VTNDM1b0J6ZHhFcjltSVVneWhvSndUVFRqaElOUE9BeDN3aVJaODVld01OVHEyZU5YYzVtRVBqbUFfU3FITGJhMGlvMUpaUXVDQ29XRktnc0VobnFBM1ZFcWwxdElpbzM2X1diRnhOc2ZZblN4eExvMWRFNkt3?oc=5",
+        "fonte": "CNN Brasil",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      },
+      {
+        "id": 42862020189109,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 06:00:27",
+        "horario": "06:00",
+        "titulo": "Entenda a história da Groenlândia e por que Trump quer a ilha - CNN Brasil",
+        "descricao": "Entenda a história da Groenlândia e por que Trump quer a ilha CNN Brasil",
+        "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNdTZzZjlxaEVCWDRiM09RandVbTV2eDZJMDZsdjFVSzg2V1YyNlVKUWNvOTNRWElpR2N4WGlHaE5oajlyeUFaeUlxUDBROFpFc1Qta0JfcVhaZmsyczdKVUNhUmM5cVBvRzhPM3lUWFVvVjJROU5nSzM2Ql9FbllfT2F1TFhwNlNVUXduY0ZpeVV5NTJsdjBtVXMtMVlGMVRlbllmaFlkakI?oc=5",
+        "fonte": "CNN Brasil",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      },
+      {
+        "id": 231750671796358,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 05:10:20",
+        "horario": "05:10",
+        "titulo": "Menções ao Banco Central aumentaram 464% desde novembro, diz pesquisa - CNN Brasil",
+        "descricao": "Menções ao Banco Central aumentaram 464% desde novembro, diz pesquisa CNN Brasil",
+        "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNUC03cXNBc1czazNOXzVGMm54RFVJTUIySGxDT0pFN2d5a2xRZzlvMHdCVmNfWjREWjR6MDFmVjdSNGpCazNWbHQxYW9MVlhscWdhZlNyRTFwT0VUMVRuT3BiY0pSSGhzeU9XWHRoaFJPTjMtVldGYmI5bkJiOXJmMUI2V1IzckFZdFRXQVNsZndJWWF3X3lteGRTR20tVUxRTWJXY3dyci1SWC1NSzZsSlY4SGFLZw?oc=5",
+        "fonte": "CNN Brasil",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Economia",
+        "tags": []
+      },
+      {
+        "id": 16346813704753,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 05:00:24",
+        "horario": "05:00",
+        "titulo": "Real Soccer x São Paulo: horário e onde assistir ao jogo da Copinha - CNN Brasil",
+        "descricao": "Real Soccer x São Paulo: horário e onde assistir ao jogo da Copinha CNN Brasil",
+        "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPVnFzZnZlUWJ1MjFKemhpMzg1aTlxR2NfY0JtdUY5dFA4M25wOWpuSDRnRV8zODZOS0w2VmNrWXNDcmNHQXlUdmk3MTdMQk9KWVBPZDhQMFQwaHc1NlBUZWFPYVMxamZ2MVpiTTBIVFZUSDFOb2VBTkFRaVN5bV9FUzgzUTlxaTVSMko1bk5SdnlJQTBoOVNwcHZuTmpBaGx0bm4xVUhOQTdvNVBfZWNURGlqQQ?oc=5",
+        "fonte": "CNN Brasil",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      },
+      {
+        "id": 170194303651309,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 03:00:31",
+        "horario": "03:00",
+        "titulo": "Real Oviedo x Bétis: horário e onde assistir ao jogo da LaLiga - CNN Brasil",
+        "descricao": "Real Oviedo x Bétis: horário e onde assistir ao jogo da LaLiga CNN Brasil",
+        "link": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPWnN6eG96VjR2Nnlaa3hhOWVsZ0RJeUhZLVNQUXJvVDJFdUc2Rlg2QkcyOVBEY1hjOV9XUlJoSTFkaWg2Rk4xRmc3akZQYjBwV1RmQWh6cTBmeUF2R3pjd3pRbUlpRlVTbl94Vk1STlRBcDBMYXoycEJBc2hZOFhVek1oSGM3Zi1vaGVWQmh1Sm5zWkNoSnpUVHE0d0dtV2JaNUt6NWsyblFkSHRKQ09sRnZVSG1rRUM4UnJBbG8wQjdBVklEazlDRWpB?oc=5",
+        "fonte": "CNN Brasil",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      }
+    ],
+    "Prefeitura de Cuiabá": [
+      {
+        "id": 96414495887106,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 02:34:31",
+        "horario": "02:34",
+        "titulo": "plataforma que da para depositar 1 real - Prefeitura de Cuiabá",
+        "descricao": "plataforma que da para depositar 1 real Prefeitura de Cuiabá",
+        "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPYUxNTURRa2ktbUhnSk92X2hnQmtNS2tBYWVKRm5QcENxZ2ROY042SmdWdUI2QkxvZXFmN0hSRjBSS0I1eTR4T0J2bmZPZW9tYWJ1Q3VkRDQtRy1MemFSUU9JWXZqbnNfQk8tRm9kcGx6T1FoNFdzU3RPWEsxY2ZYQWNmVEpQZw?oc=5",
+        "fonte": "Prefeitura de Cuiabá",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      }
+    ],
+    "ge": [
+      {
+        "id": 170497871548461,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 04:02:00",
+        "horario": "04:02",
+        "titulo": "Real Madrid tem problemas na zaga para a final da Supercopa da Espanha - ge",
+        "descricao": "Real Madrid tem problemas na zaga para a final da Supercopa da Espanha ge",
+        "link": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxOdWtManl3Tld4bHY1WVZzSjFpMG9Kb0p3NEs1X2JtS2lXcy1QYjU5M1RBVGkxbDI1ZEVnYkVBa212OXZzOFVwUi1qdU5GVVBfQUlxUGFMS3kyY1hKcy1GNXgyN0ttQlg4NjU3ZnNwVUxoUWlWWl9lSGRCaGdsM1lpX19SMzNKSy1FV1VZUGlsUHNsZVppb2VyenBSOEwyd2VURFBmalc5MjVEcGxNeHFaZXpEcVh2czdaQjRqdFU4RFFjaW9DdXhSNXJ1aThNa1V1VHluNi1wY05aT0Y2eUl4dDJ4WktKc3dJVjdTNVIydXdrd1cweGfSAYQCQVVfeXFMTmdWcnhueHRFckc0ZFpydDc4bzBEN1VicUlxUm9oVEtYNzVsVUYtd1R0OUxRY0dsVW1lR1cyM1F4dVFCRldNM3cyaVV4RnRZSl9DXzEtRWhFOEw2RHI3SXRxN0dsU3NwX3FNYzhQMHdYU2p1eE9aUW5TeF95SVdiNEY1Zmo2eGYtSThXVS1rbVdGY19yUWxJMHZPMWF0cWdrc3FwQ1UzY3h1ZzltOVQ1bldNN2VsM1RwVm5rU2ZVc2VHTWFNX3pkRDNVZFFCV091ZVV3S0ZKdlhVb3U1aV9PbF9RMm9rUnJ1cGtyLTkxMi1ia2tTckw4SkZQbnltcXRxNTd3bVg?oc=5",
+        "fonte": "ge",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      }
+    ],
+    "ESPN Brasil": [
+      {
+        "id": 270334070274244,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 11:15:36",
+        "horario": "11:15",
+        "titulo": "Xabi Alonso não descarta Mbappé titular em Barcelona x Real Madrid, mas diz: 'Não somos kamikazes' - ESPN Brasil",
+        "descricao": "Xabi Alonso não descarta Mbappé titular em Barcelona x Real Madrid, mas diz: 'Não somos kamikazes' ESPN Brasil",
+        "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxPNUlJYThRLXBpZ21JX2VhTjVFeTIyMy1hb3VzMzFLV3J2alVXWDZVLWlSTGY0Q2VsMmVpLWNJbkZ2d3M0Tk1zREtQc3pMWGx6d0xCeFZTT2pqc2hvR01jZ3FSbWo0UkpnY0xOSHUyMjNfRWtDalhhU0JMMHk4VjUxMm80ejBNUGdxcF9OWW5XTUloMlVkZjEzbklhT0RIWmRkWWNSak9XWGcwUW5ZamVvQ2dYY19VSGZsVHVVSFJmaUNlLUw2dEJmZVo2WUxSb2RWeWxPWXlVczNTUFZlQlcyeGJPWXRMZw?oc=5",
+        "fonte": "ESPN Brasil",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      }
+    ],
+    "Folha de S.Paulo": [
+      {
+        "id": 258378818395,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 11:55:00",
+        "horario": "11:55",
+        "titulo": "Trump defende que taxas de juros dos cartões de crédito nos EUA sejam limitadas a 10% - Folha de S.Paulo",
+        "descricao": "Trump defende que taxas de juros dos cartões de crédito nos EUA sejam limitadas a 10% Folha de S.Paulo",
+        "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQX2o2VGx3VE9NSnh6Q2ZVWE5kNHY4VktPM3JtMXQ2bUcxVXlIMkptME4zNDBacHdpTGtNUkJFWDZEeVJvYWwzblE3cm5CQUIza3g1RVhkd1liMFRSY2lBRkR4azVqaTZKblNqeE9kTmgyaWdpa0xURS1ZVTJzUlo3ZGFqRzNxNk5yNUtpQXc4NFNMREljWUdlbHpQSF9UNm94VFhvQVFMU0tZMG9BTWszT2VwYTVPZTdVa05PcXpZcnhJWnN4UDgwRDM2a2RZZl9LaGfSAdcBQVVfeXFMT2NJUXFBX29wZkJsVDdmbGpaelExM2xiRWFqMjdRc3dmcHdQV1JHZkxCVmV1c1pRTGh4cXRLZTdSTndCTDhvUFBSUHRoMWRNc0ZmQXlDTDQ1Z1NpcXQ1ZFUybFFqajFIUHYxRFQxLWMwb0ZhUmhkYXk1RmVlYTZYUkFaX0lfZlQ0MDVhTkRmVTBEM0diUDZoUWg5cUJOZGRqUlA0bnY5YVh0c3otTng0TEdRcnBqRW1CZTZzZkxUY0sxcGZfZkNMSUZEMkZRa0FmN1NZRnFDdmc?oc=5",
+        "fonte": "Folha de S.Paulo",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Exterior",
+        "tags": [
+          "EUA"
+        ]
       }
     ],
     "Valor Econômico": [
       {
-        "id": "9cc2f090bfd4",
-        "titulo": "Dólar fecha perto da estabilidade e Ibovespa sobe à espera do 'payroll'",
-        "link": "https://valor.globo.com/financas/ao-vivo/2023/06/16/dolar-avanca-e-ibovespa-recua-em-dia-de-correcao-siga-os-mercados.ghtml",
-        "horario": "18:39",
-        "imagem": "https://s2-valor.glbimg.com/3EaBcz9YXlmLF6CFFgsHxPZRAVk=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2024/9/M/T1tP0lQCW0zPkl6H9VKQ/23opin-200-col-op1-a14-img01.jpg",
-        "categoria": "Mercados",
-        "tags": [
-          "Ibovespa",
-          "Dólar"
-        ],
-        "resumo": "Dólar fecha perto da estabilidade e Ibovespa sobe à espera do 'payroll'",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "3812c9c88d22",
-        "titulo": "Em NY, bolsas fecham sem direção única com queda de 'techs' e alta no setor de defesa",
-        "link": "https://valor.globo.com/financas/noticia/2026/01/08/em-ny-bolsas-fecham-sem-direcao-unica-com-queda-de-techs-e-alta-no-setor-de-defesa.ghtml",
-        "horario": "18:27",
-        "imagem": "https://s2-valor.glbimg.com/ABepnigY0rTkeKlKBuXlA5p2k0U=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2024/n/x/FfPdMTQfS9EtOIir7Zgw/ap24269438190629.jpg",
-        "categoria": "Mercados",
-        "tags": [],
-        "resumo": "Em NY, bolsas fecham sem direção única com queda de 'techs' e...",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "4b641e6d5e45",
-        "titulo": "Juros de curto prazo sobem à espera de IPCA e longos recuam com leilão do Tesouro",
-        "link": "https://valor.globo.com/financas/noticia/2026/01/08/juros-de-curto-prazo-sobem-a-espera-de-ipca-e-longos-recuam-com-leilao-do-tesouro.ghtml",
-        "horario": "18:11",
-        "imagem": "https://s2-valor.glbimg.com/D4cWb3YQRmZ4jzSneyALk6qA5lc=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/B/d/rBRUB5QuGfAApzzXNNEw/juros-percentual-taxas-rdne-pexels.jpg",
-        "categoria": "Commodities",
-        "tags": [
-          "Juros"
-        ],
-        "resumo": "Juros de curto prazo sobem à espera de IPCA e longos recuam...",
-        "fonte": "Valor Econômico"
-      },
-      {
-        "id": "292ca7115838",
-        "titulo": "Após veto de Lula, relator do PL da dosimetria no Senado protocola projeto de anistia",
-        "link": "https://valor.globo.com/politica/noticia/2026/01/08/aps-veto-de-lula-relator-do-pl-da-dosimetria-no-senado-protocola-projeto-de-anistia.ghtml",
-        "horario": "18:07",
-        "imagem": "https://s2-valor.glbimg.com/g22t6-eNLdTlhATl4ApzmPKCIGs=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2022/v/J/5S3LSBTD2OLoBDoRxVAg/esperidiao-amin.jpg",
-        "categoria": "Política",
-        "tags": [
-          "Lula"
-        ],
-        "resumo": "Após veto de Lula, relator do PL da dosimetria no Senado protocola...",
-        "fonte": "Valor Econômico"
-      }
-    ],
-    "InfoMoney": [
-      {
-        "id": "8a802d1a9aff",
-        "titulo": "Vale e CSN Mineração caem com minério, mas siderúrgicas têm desempenho misto",
-        "link": "https://www.infomoney.com.br/mercados/vale-e-siderurgicas-caem-com-realizacao-de-lucros-e-minerio-apos-noticia-da-china/",
-        "horario": "18:36",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2024/04/2024-04-12T115240Z_1_LYNXNPEK3B0GN_RTROPTP_4_CHINA-RIO.jpg?fit=300%2C195&amp;quality=70&amp;strip=all",
-        "categoria": "Commodities",
-        "tags": [],
-        "resumo": "Vale e CSN Mineração caem com minério, mas siderúrgicas têm desempenho misto",
-        "fonte": "InfoMoney"
-      },
-      {
-        "id": "74230971c24b",
-        "titulo": "FII HCTR11 eleva dividendos ao maior nível em 12 meses; veja valor",
-        "link": "https://www.infomoney.com.br/onde-investir/fii-hctr11-eleva-dividendos-ao-maior-nivel-em-12-meses-veja-valor/",
-        "horario": "18:35",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/10/Dinheiro.jpg?fit=300%2C179&amp;quality=70&amp;strip=all",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "FII HCTR11 eleva dividendos ao maior nível em 12 meses; veja valor",
-        "fonte": "InfoMoney"
-      },
-      {
-        "id": "292ea9d57e09",
-        "titulo": "Ações da Azul (AZUL54) caem “impressionantes” 90% com histórico aumento de capital",
-        "link": "https://www.infomoney.com.br/mercados/acoes-da-azul-azul54-caem-impressionantes-70-com-historico-aumento-de-capital/",
-        "horario": "18:30",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2024/10/2024-10-10T123859Z_1_LYNXMPEK990GA_RTROPTP_4_HEALTH-CORONAVIRUS-BRAZIL-AZUL.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
-        "categoria": "Empresas",
-        "tags": [],
-        "resumo": "Ações da Azul (AZUL54) caem “impressionantes” 90% com histórico aumento de capital",
-        "fonte": "InfoMoney"
-      },
-      {
-        "id": "060005337854",
-        "titulo": "Bolsas de NY fecham sem sinal único, com recuo no setor de chips e altas no de defesa",
-        "link": "https://www.infomoney.com.br/mercados/bolsas-de-ny-fecham-sem-sinal-unico-com-recuo-no-setor-de-chips-e-altas-no-de-defesa/",
-        "horario": "18:28",
-        "imagem": "https://www.infomoney.com.br/wp-content/uploads/2024/04/sp-reuters-0104.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
-        "categoria": "Mercados",
-        "tags": [],
-        "resumo": "Bolsas de NY fecham sem sinal único, com recuo no setor de...",
-        "fonte": "InfoMoney"
-      }
-    ],
-    "Money Times": [
-      {
-        "id": "55eb36a36a2e",
-        "titulo": "Copasa (CSMG3) tem alta de 3,5% em volume medido no 4T25",
-        "link": "https://www.moneytimes.com.br/copasa-csmg3-tem-alta-de-35-em-volume-medido-no-4t25/",
-        "horario": "18:38",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Copasa (CSMG3) tem alta de 3,5% em volume medido no 4T25",
-        "fonte": "Money Times"
-      },
-      {
-        "id": "f10b81239d03",
-        "titulo": "Petróleo sobe 3% com notícias da Venezuela e preocupações com oferta de Rússia, Iraque e Irã",
-        "link": "https://www.moneytimes.com.br/petroleo-sobe-3-com-noticias-da-venezuela-e-preocupacoes-com-oferta-de-russia-iraque-e-ira-vtra/",
-        "horario": "18:16",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Internacional",
-        "tags": [
-          "Petróleo",
-          "Venezuela"
-        ],
-        "resumo": "Petróleo sobe 3% com notícias da Venezuela e preocupações com oferta de...",
-        "fonte": "Money Times"
-      },
-      {
-        "id": "08703812b831",
-        "titulo": "Petrobras (PETR4) pode elevar em 80% produção de diesel S-10 em refinaria de SP",
-        "link": "https://www.moneytimes.com.br/petrobras-petr4-pode-elevar-em-80-producao-de-diesel-s-10-em-refinaria-de-sp/",
-        "horario": "18:13",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
-        "categoria": "Geral",
-        "tags": [],
-        "resumo": "Petrobras (PETR4) pode elevar em 80% produção de diesel S-10 em refinaria...",
-        "fonte": "Money Times"
-      },
-      {
-        "id": "8ae7b6e0227c",
-        "titulo": "Ibovespa avança com Petrobras (PETR4) e à espera de IPCA; dólar tem leve alta",
-        "link": "https://www.moneytimes.com.br/ibovespa-8-1-26-lils/",
-        "horario": "18:13",
-        "imagem": "https://www.moneytimes.com.br/wp-content/themes/moneytimes/assets/img/logo-mt.png",
+        "id": 119667079017616,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 08:10:47",
+        "horario": "08:10",
+        "titulo": "Inflação: confira dez gráficos com os destaques do IPCA em 2025 - Valor Econômico",
+        "descricao": "Inflação: confira dez gráficos com os destaques do IPCA em 2025 Valor Econômico",
+        "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQVVpQbklIdElIVEJRa185Vk51elZFSG94NFlKUXdlMXowRWx1OHRNS0d1MWYzWHcyTDdHemUxNElMME8zV2pMZjNsUURKU2wxQWFHbVRTdmZtUWItQ2pjcTFXTWZOQWhQRjlIeW5uNXRSWjhCSGZuems5Y0wtWklPQ3Y0RFUxdWF0YmdDQzEtT2U4RVpCRHZKMF9RRTc1dDA0M0xiNllDTUdFZ9IBuAFBVV95cUxPRXFjOHhRUmNuOHItbFNYN0NkVUVNcGIxRnd1QVpkWE5oa1h6OEZJTVZmRlktc013MkJlQXFOSXhJWVU2YmxhWFJId2RaTlE4b3k2VUlOM2VkUHQwblFlUURaZEVFSnEtMHFmSTgtaENROVI2cUlZSFpwTmFNeUpGVGpMaVAzZ09oSTB2b3FhOE1mMF9jSFRxZ0VSWW5ZbnVaa09hb2Q3OEhIWW1OWFZZaHRReTVTby1a?oc=5",
+        "fonte": "Valor Econômico",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
         "categoria": "Economia",
         "tags": [
-          "Ibovespa",
+          "Inflação"
+        ]
+      },
+      {
+        "id": 151279517270507,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 08:08:28",
+        "horario": "08:08",
+        "titulo": "Inflação fica abaixo do teto da meta em 2025, mas cenário para os preços em 2026 ainda requer atenção - Valor Econômico",
+        "descricao": "Inflação fica abaixo do teto da meta em 2025, mas cenário para os preços em 2026 ainda requer atenção Valor Econômico",
+        "link": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxPamxZMzhHYTltU1d6dXhKenZkVzNUT2JrdHNjMnNhNnd1V3ZrbUhWZEpXTG01bXB5MU5SVGdIT0FjOFRUVGRzZWJBeUxobG52X2oxcFJFUVp5eEczd1laNkZpaUtPR3UzQlpqd3QzMVJBN2hPZnhJMURteVg4UkRIZUh2SS04RjRjV2Z5LVVvMkkySnpneU1fYU9HRlItMEZfT0ZQYThoS25FQVdGYk1Bdy03b2YyQzdwdS1BU19sR01FU0tTc281Z0RQT2NhalU4RURlUmVzWEZDNDBzVlEya1d3R2_SAfMBQVVfeXFMTkxoZE54ZDdndHJxbVg0WWNDTy1DeEozNkFZOXpHRWxZZk5vUUlzbTFhTGhWSWVRcGhTd0ZJUFBVaU1oWXk2cjByMDhzUUFTbWI2bDNrenljSjhhVElPNGkwSm9hNk9LbWNLcFNGcThUUlpwcFIzbzJRRHR3SWJIcmRtSmtFZEZOZ29iRkY4Z3VOV2JjaGVsVlpHcEdfOHV1bHBqQTJpVkdSUE5WaUJHYTQ3V0Q3YzVqS0NVZkJPdUpUYWhnQnNST1h2b1NTZGVrNXk0Z3BUaEp2eFltenB5cjBHbGFFTlh2REtaajktZDhvLUNN?oc=5",
+        "fonte": "Valor Econômico",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Economia",
+        "tags": [
+          "Inflação"
+        ]
+      },
+      {
+        "id": 193092019020054,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 08:01:30",
+        "horario": "08:01",
+        "titulo": "Ouro pode valer 40 vezes mais se dólar perder status de moeda de reserva global - Valor Econômico",
+        "descricao": "Ouro pode valer 40 vezes mais se dólar perder status de moeda de reserva global Valor Econômico",
+        "link": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxPQjZ0alZacXFGZVZJZ3RoSjZpN2ZQSUIxOGMxeXJyNjJmMlMxaDlhZGJsM0ZsVFh5UElkb3dEVFV2cjZNeWtZbWdBbzFpTU5nbkRRYVlBWGU1cGRIUEktOE4zZG1vZlg4YVNfNGYwTWg1OXhnbTZVVkV3LTNyZWQtb1pYdENiQnNrT0ZzSWgzSms4NmNKcnNqU3NBZUs0QlFuSmg3TTdZRExqSE9CMXVDdDQtLURuOWtxSXBHOXdEUURyNEtpUmFuT1lFcFY0MFZ3S2ItSDdJQdIB5gFBVV95cUxNTS0zV0p0WE0teG12VEg1MzYzT1RkNlpRbjdieTlLZFV0VDl0cDhxYXpNcGE5T0FuVWJFRS1EeHdONnZtMHhBdTA5Ml9KQm5yRzlUWGdJM004RXltMUhTVjg1bzVpb3lDWU5MdDZtd2lqbEt5eU1haUhqY1VLRF9ObXRuQndqNjEtM0MwSkRCbW5la0JMcmFvbmJGT1U3RC1WRHlqSnlvNEYzQ0llSzZkLUFRckNsWGJ5RHM3WUVxVndsS3pUVlhYX3pyTFl3TUNXZFgwdlB6YlJwbUxQQVRhWXFJRXZxQQ?oc=5",
+        "fonte": "Valor Econômico",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Economia",
+        "tags": [
           "Dólar"
-        ],
-        "resumo": "Ibovespa avança com Petrobras (PETR4) e à espera de IPCA; dólar tem...",
-        "fonte": "Money Times"
+        ]
+      }
+    ],
+    "Terra": [
+      {
+        "id": 211707473195694,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 12:06:00",
+        "horario": "12:06",
+        "titulo": "Barcelona x Real Madrid: onde assistir, escalações e arbitragem - Terra",
+        "descricao": "Barcelona x Real Madrid: onde assistir, escalações e arbitragem Terra",
+        "link": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxNZTZEdVV6azdhWUxSc3NtaXZoSWFZVkhZLVVKZDRLd0NneXVLVVJQd3hEWV9jeTctYW96cndUeVAxSE9iWkswR0wtVng4WnpGMHRUdk8yMDN0WFlfTUE4SFFyRl9XNkxwTmZFVWE2OG1yeTkyVlVzZzdaaHk3SC1wcGJfV29KUXEzN2NQVExPYlJObDFJRWdqMkhFWXFRdV9LdTA1M3dRMHh0VktOY19UNFNSR2Y5VnJjMU5BN0p5S0h5MzdySVY0RDZWNUo2eXJGS0JyZU9zc1VkNWxMV3FVSy15WXlVM3puLWdTOU9QNkNraDE1NVhYQjFhQWZlN1BsT1hZeWpXR1c?oc=5",
+        "fonte": "Terra",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Bolsa",
+        "tags": [
+          "Ações"
+        ]
+      }
+    ],
+    "Exame": [
+      {
+        "id": 107847759517657,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 11:00:54",
+        "horario": "11:00",
+        "titulo": "Cripto no Brasil avança com foco institucional e infraestrutura - Exame",
+        "descricao": "Cripto no Brasil avança com foco institucional e infraestrutura Exame",
+        "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxObDRFSmktdS1yLVREWGJlUWVyd3NVRHRGOTFGLTJnbkZYM2tjOTFBM01hb0FOa3ZsSTF4ai1GZnBuci1uMnJCYTZJS2kwb0Z1d2pHU2hFcjNGM1JlVTFLOVpYSUg5TEFxeGJxRXhINGFZQjlrUkR4cnhrYmczUFhiUFdja3VxU3VRTVlWLWQ0NnVMVjF1NmlxbGFPWVctdjg?oc=5",
+        "fonte": "Exame",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Cripto",
+        "tags": []
+      },
+      {
+        "id": 26463996394844,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 10:02:42",
+        "horario": "10:02",
+        "titulo": "Alta renda amplia exposição a cripto com ETFs e tokenização - Exame",
+        "descricao": "Alta renda amplia exposição a cripto com ETFs e tokenização Exame",
+        "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQbmJBMFNkclFGWnBqbjlNYk11LUNLYjhBdUZwTDA5OHZzN21GTWV5UG9JeWx0OUFFUWlFQnRpWVk0YnU0MS0yeGlEeEpWSnhrSVc1MXhUMDJxeDM3WmhGXzcyQ2JKNngwSndiN3hiWXFhOVlnWTZiN3E5QTBrZC1WVGwzUG4xaVNaTmIzeFVjcWtQRWZKXzhBNzNn?oc=5",
+        "fonte": "Exame",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Cripto",
+        "tags": []
+      },
+      {
+        "id": 226965640309283,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 09:40:28",
+        "horario": "09:40",
+        "titulo": "São Paulo x Real Soccer: onde assistir e horário pela Copinha - Exame",
+        "descricao": "São Paulo x Real Soccer: onde assistir e horário pela Copinha Exame",
+        "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQRXkyMkhZSVdXY3lDWUQtTVg3WERVMjJVTEVLRnNvNVJMX0lBaUhVSjJHOXM0VUNyNG9wbHhBdkw4SVgzMmloMnFxWk1ZN3RxY090cE5FQXZQTWdjNUg5cWRFd3lLMVNGNXRhSHdiRXRuTXQ1eGloZkh2ajJmcVY4b2lVSllCQ0JXbm45a01Qc0o?oc=5",
+        "fonte": "Exame",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      }
+    ],
+    "G1": [
+      {
+        "id": 19502123630792,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 00:00:56",
+        "horario": "00:00",
+        "titulo": "Veja como ficou a inflação do prato feito em 2025 e o que esperar de 2026 - G1",
+        "descricao": "Veja como ficou a inflação do prato feito em 2025 e o que esperar de 2026 G1",
+        "link": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQRlQxcS1ETXBwY2MxUW42UDJoYTRyS01EYlZrNHhQbGhkWmc5SGN1UmYzcl9XczJWS0lYQ2YtOUQyXzJrc0VZUXJXN29TR2d3c3ozM0VCblV0R0g4VXB1TUl5T1ZOUUZjR29sR0JrVUNOWGgwLUhGMHk4WjJCU2Fwa2lIeWs4dGpyOGJPOUhpSFZ3bzlON3ZZa0JENFM4cTRZT2pwN2d5YzVfUWtSZ3ZMRS13cmk2MkROUjlnVDRfNUQ4ckdKLWZscTF6YTh6M1lCaFJydmV1bkTSAecBQVVfeXFMUDRibGxYNEozcHZ4Ui1sZlhQZHQ1LUlxTmtYemdMZnhUN01Sa21TaEwwOVpteHZsUjRId1V2U0hvRTgxQXRGZFNtSy1VTldTRXNDUl9NNmdBcHJqWXBGMV9tRGtVb01Qd29PcG9VeUFwUktHR2JwdXAtRGdHeW9yTHFSR2Npck1fTXgxWmcySWJlalY2Qkc0RFc0VzVuaDB2T243RmNHWk5NZ2hlRWUzOWtJcEdOUzNjOV9lVXNVd0taVnNPazRlVVJWWGt4cFVleDZTZ0ZnZkp4TXQ3ZG50WnFyM0dscElv?oc=5",
+        "fonte": "G1",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Economia",
+        "tags": [
+          "Inflação"
+        ]
+      }
+    ],
+    "tmc.com.br": [
+      {
+        "id": 251487279659901,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 08:38:12",
+        "horario": "08:38",
+        "titulo": "IPCA 2025: Vitória e Porto Alegre foram as capitais mais caras - tmc.com.br",
+        "descricao": "IPCA 2025: Vitória e Porto Alegre foram as capitais mais caras tmc.com.br",
+        "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPUG1icGhBRWVucDUzaGVLc2VUX0lDbEotOUxCVkdqN0NsSm9tXzlPOUY0LXRNRnVhRVl1VHhLdUFIaVg1eVNiOTlGNVJVckVqOXNvbXkyeEI4djg1eGdKV3BNbHhwczZreVpqZzJmdWI3TFhIdDBpOVUtdkZycGxnSlRHSHhUN3c4WkF1Nk9IXzcwc3dxTVlZelJZREQyQWpyWVd3ZE1UeG5ETzk1N1FidTZn?oc=5",
+        "fonte": "tmc.com.br",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Economia",
+        "tags": [
+          "Inflação"
+        ]
+      }
+    ],
+    "Economic News Brasil": [
+      {
+        "id": 266271572428065,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 10:40:00",
+        "horario": "10:40",
+        "titulo": "Reajuste da aposentadoria fica abaixo da inflação e reduz renda real - Economic News Brasil",
+        "descricao": "Reajuste da aposentadoria fica abaixo da inflação e reduz renda real Economic News Brasil",
+        "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNal94SDhnNGtsMG9FbFBJNjlySFlWci1TcGpzeXJpQ2lfS0pMaXEtLWh6dkVfM2hwTk1YYUFIcVdHN1hGOVJKcUdmYUQxN1JlNjBlZlhtMmUwSThSOGJXcHVBbVVfMkZ3Rm9GTkVHbmJTckNxSGJPMWVYR2JCeXlrU1VYQTduNzJS?oc=5",
+        "fonte": "Economic News Brasil",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Economia",
+        "tags": [
+          "Inflação"
+        ]
+      }
+    ],
+    "Forbes Brasil": [
+      {
+        "id": 255664309338518,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 11:43:46",
+        "horario": "11:43",
+        "titulo": "China Compra Pelo Menos 10 Cargas de Soja dos EUA - Forbes Brasil",
+        "descricao": "China Compra Pelo Menos 10 Cargas de Soja dos EUA Forbes Brasil",
+        "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPSFZjUlU0WGdzNmFtU3d6S2diTHJ2cEtReWNMQ2hTQ0p1VWJZSE16N285MW1sckE0aGZCejE0NGswd25YY3ZkRjVsN0NUdFV6dE5hM3hYX043clV1YW5fa1o1RWVmbnhwa0V1Mk5HU25McUNJWkxaeXNPMHhMSFBuT2ZCTmJmVXhnY3ZDTW1mNEVoSTZ6b1E?oc=5",
+        "fonte": "Forbes Brasil",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Exterior",
+        "tags": [
+          "EUA",
+          "China"
+        ]
+      },
+      {
+        "id": 235440537657000,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 05:00:54",
+        "horario": "05:00",
+        "titulo": "5 Tendências Que os Investidores em Criptomoedas Não Podem Ignorar em 2026 - Forbes Brasil",
+        "descricao": "5 Tendências Que os Investidores em Criptomoedas Não Podem Ignorar em 2026 Forbes Brasil",
+        "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQT3BMZmw4dV9PRHVhQnBhTVJHUi1NNy0xZG9yQkdZaXl3RmJlNWFKVktSVEc2dURMektXNUItcmNiektSbjdoRnRPWFNldGs3U1F3c1VaVHBRb09HNDE3WEJSdFBTcmZOdnc3c3FEaExEcUs3QUJnd2lOQkhOdlBjT0RoZ2I0WHY0YlJsc2RmLUlCOEg3a1drVWc0bkNna3g2a1l2U2hUcnh2Wm01c0hCdHRkRktvcm9ic1E?oc=5",
+        "fonte": "Forbes Brasil",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Cripto",
+        "tags": []
+      }
+    ],
+    "Poder360": [
+      {
+        "id": 127220215392166,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 08:34:06",
+        "horario": "08:34",
+        "titulo": "Entenda por que os EUA querem anexar a Groenlândia - Poder360",
+        "descricao": "Entenda por que os EUA querem anexar a Groenlândia Poder360",
+        "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPX3NFdzFmY2NkWjNfaERtWHF4YWNkbERNMldVTTljX0gyak90bS1Yc3dYck9rWUFsc0tPQThRc05LeWtrU1RXU3ZzbW1OUkJZWnRUUUhHTWxUdGZRV21scWZ1QW4tT2hiQW4zOW5hQTI0S1U1Vm56TFNPTDBBR1MwM1ZLZjBfY1o3anFaUmlKOGdGYk5xUVhLekVoRjUybUJx?oc=5",
+        "fonte": "Poder360",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Exterior",
+        "tags": [
+          "EUA"
+        ]
+      }
+    ],
+    "CartaCapital": [
+      {
+        "id": 101485345841491,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 12:11:00",
+        "horario": "12:11",
+        "titulo": "Vaticano teria negociado asilo a Maduro na Rússia antes de invasão dos EUA, diz jornal - CartaCapital",
+        "descricao": "Vaticano teria negociado asilo a Maduro na Rússia antes de invasão dos EUA, diz jornal CartaCapital",
+        "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOM1VvMTg4TDFsVDMwd1ltalZRakJDV3FiTXYxM1hHMGhHdGt6RkdhZ2RLYnlzbmlwZ1RJbnRSVW9OOEZnTVlMTXlUOXYwMVJwZkpMVktNX1NWc1QyTlpaTy05cTk2LUQyeWM4NG1ZMEthYVZ4eURyX2hRUUM5QXlxTWs3SWtEeGxGXzFWVGhmaVF5U1FfeFJVNFhIRUNoZF9PWEgzZ21IbERXU254STBrQUMzcV9Jak1UTUpOd21Xd3FRZw?oc=5",
+        "fonte": "CartaCapital",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Exterior",
+        "tags": [
+          "EUA"
+        ]
+      }
+    ],
+    "BBC": [
+      {
+        "id": 217422354163520,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 06:33:45",
+        "horario": "06:33",
+        "titulo": "Venezuela: como ataque de Trump coloca diplomacia de Lula 'em apuros' (e o que governo brasileiro pode fazer) - BBC",
+        "descricao": "Venezuela: como ataque de Trump coloca diplomacia de Lula 'em apuros' (e o que governo brasileiro pode fazer) BBC",
+        "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFAyOGRSTHFBVjQ1dk9IU2I4OW1XeTlXQ2dQNEl5UXZKQ3MyUlo4OUV1ZUFqTDJvcmVSR1Q4WlZyWHBPbWZVbExjYlBVR2w1dy1SX3paeC1ocDZCendRa3lMaGRn0gFnQVVfeXFMTUZjZ2RhQnUwV0xpY2pjOWlSVjBUWXlfeFN5azN3VXNRZEFBR0Z5MnNyNklwd2M1TVk2cS12LXRmWTFkY05NWjB5UGRzejNOTGxnVWZHQWlFZXJmdW1aWm5nVlFnNERqOA?oc=5",
+        "fonte": "BBC",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      }
+    ],
+    "TradingView – Acompanhe todos os mercados": [
+      {
+        "id": 4036838747726,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 12:00:00",
+        "horario": "12:00",
+        "titulo": "Colômbia avança na tributação de criptomoedas à medida que padrões globais de declaração se consolidam - TradingView – Acompanhe todos os mercados",
+        "descricao": "Colômbia avança na tributação de criptomoedas à medida que padrões globais de declaração se consolidam TradingView – Acompanhe todos os mercados",
+        "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9XaF9pOU9kdkRrRkYta1hvLXpTZEdXN295VEg3RW9OOGljc1l1MzRVTWxPeVdVdHZUdEI2cDF6U1h1b0V0elZyci1NYVRTV1E3ekpzb3ZBeEotM1BBRzY4bkZjVWhZeVZLbEVod1BDNA?oc=5",
+        "fonte": "TradingView – Acompanhe todos os mercados",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Cripto",
+        "tags": []
+      },
+      {
+        "id": 217124821494644,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 11:00:00",
+        "horario": "11:00",
+        "titulo": "Nasdaq e CME Group unem forças para lançar o Índice de Criptomoedas Nasdaq-CME - TradingView – Acompanhe todos os mercados",
+        "descricao": "Nasdaq e CME Group unem forças para lançar o Índice de Criptomoedas Nasdaq-CME TradingView – Acompanhe todos os mercados",
+        "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1zVUhtekhTbzZMdzI0Vzhhc3ZBem5KcWhHclpzTkxjR3dWa2loNHJSeU5SU05RWnpFNl9hSlhQUzd1ZnNRb3NlUERSRmNuV1p2MDgyNHRGSjJaaDZlOS1KUDk4NTkyMHREV21VREJlaw?oc=5",
+        "fonte": "TradingView – Acompanhe todos os mercados",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Cripto",
+        "tags": []
+      },
+      {
+        "id": 237103195230632,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 09:00:00",
+        "horario": "09:00",
+        "titulo": "Bitcoin testa suporte crucial enquanto touros tentam US$ 101,5 mil embalados por futuros - TradingView – Acompanhe todos os mercados",
+        "descricao": "Bitcoin testa suporte crucial enquanto touros tentam US$ 101,5 mil embalados por futuros TradingView – Acompanhe todos os mercados",
+        "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9jX3Q1YnJucWR4bVlDZ3R0cHFYMWVpUE5mWEJrcDUzOHBVQmVJeG84Y2FhUVRnNy00WklzSlBJWmtlRFNWWDMyN0R2MmdNNFhHbTRJS0FlNUhtQWxMQlhWRmtZVlhob0djNlRya2VDbw?oc=5",
+        "fonte": "TradingView – Acompanhe todos os mercados",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Cripto",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    ],
+    "Portal do Bitcoin": [
+      {
+        "id": 238425993519223,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 12:02:00",
+        "horario": "12:02",
+        "titulo": "Homens armados e mascarados amarram mulher na França e roubam USB com criptomoedas - Portal do Bitcoin",
+        "descricao": "Homens armados e mascarados amarram mulher na França e roubam USB com criptomoedas Portal do Bitcoin",
+        "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPekk4Y2FoZGZ0NkZOVC05SkV4UURCdk56N2pXTnpnUl82WEdGU2VGcm4tWXBIMWF2LTI5YlRRZzFYemNWZHhGNk9pYjN6cV9zS2U0b0hWLUlqV0JIeXJnOVRpYl83eEJ3RHlla3d6VkFtNVhJMlhSN2gwQnB2aDRQTTRaT2pHeUh6b2hrVFpMSXVUZC15cXV5S1ZLVzROLUFZa3l6OWRDLWjSAa4BQVVfeXFMUDRzdm5HZjhpVWFxbThrN1pXMTcxcEVLWEF4TDBielV2YUdtZkFoX0JoVTdfWXUtVFA0eE55aldBNC1PTE1fd2plV2Exd21rdUs4elptMEZRRlZMVUVJVktHRW9HeURWVWZtTUtBZWotaHBkX3dzY1ZjRFo4Zmhfc1NBRGw3YjA2ZFpiWllMYUlBRXZBMjlyR3BEZldkWlBURHV2amtYX3lDSXVtdUZn?oc=5",
+        "fonte": "Portal do Bitcoin",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Cripto",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    ],
+    "BeInCrypto": [
+      {
+        "id": 61226423926625,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 12:33:32",
+        "horario": "12:33",
+        "titulo": "Preço do Ethereum oscila entre risco de 9% e expectativa de 12% - BeInCrypto",
+        "descricao": "Preço do Ethereum oscila entre risco de 9% e expectativa de 12% BeInCrypto",
+        "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOX1EtUHVQVkVROE4tVjRHbHpnNWJWbk9ocXVhY1hMN3hWdEhNUDljTFNMZVhZWldjTzNEX3d0eGpFZVF4aG1ySkVLM0ZFY1BxamxiOUxJeURoTnVWdVNWQlhqUkwwUk9NaGJ4ZWtDR2JhMlprWWtxMjNLRTJhamU1enFJZEdCNE9XSHc?oc=5",
+        "fonte": "BeInCrypto",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Cripto",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    ],
+    "Monitor Mercantil": [
+      {
+        "id": 132406978665830,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 07:01:00",
+        "horario": "07:01",
+        "titulo": "Mercado de stablecoins atinge US$ 311 bilhões em 2025 - Monitor Mercantil",
+        "descricao": "Mercado de stablecoins atinge US$ 311 bilhões em 2025 Monitor Mercantil",
+        "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPbkdOOGxmTl9TVlZMRWw0dUh0NUROclFGT0NaLUJQOXFSR200bU9VOHpJcFp2aWlPX2lmcThEM0s5R3hhUzVTSG1JWmFTU0p4dThjRFhSTlEtbWU4b3ZadjVjSDk3UnhDR1o2RW5SOWZPd0NYckdQV1hua3htcFp4LXA1X2lsVkxZcE40QjZB?oc=5",
+        "fonte": "Monitor Mercantil",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Geral",
+        "tags": []
+      }
+    ],
+    "UFRPE": [
+      {
+        "id": 75722926484921,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 10:57:43",
+        "horario": "10:57",
+        "titulo": "quantos vale um bitcoin - UFRPE",
+        "descricao": "quantos vale um bitcoin UFRPE",
+        "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFBZS3Z2dFBPbkw0SUV5WmdkalV3VlJzSDZsellKRVVXWU0wWktiSnRGSnNTdUFFck5yWUxnZWhmZHpfQjNfS2p6aG9WOTU2N2FtV2gtU2l6VERneUZXaGlQcnMxTQ?oc=5",
+        "fonte": "UFRPE",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Cripto",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    ],
+    "CoinDesk": [
+      {
+        "id": 89934481456992,
+        "data": "2026-01-10",
+        "data_hora": "2026-01-10 02:26:44",
+        "horario": "02:26",
+        "titulo": "Bitcoin a 2,9 milhões de dólares em 2050: VanEck explica sua avaliação base - CoinDesk",
+        "descricao": "Bitcoin a 2,9 milhões de dólares em 2050: VanEck explica sua avaliação base CoinDesk",
+        "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOcGl0NS1PSUdCTkQzd3hxVnpTWm9VNTBYOElCMlJoWjA3Ymt5R0FUV0xTaVB6MXNfWEFMZ3R3V25UZHZ4S2FQR2tLdEgzZnR1dzJrZ1lPWjljZkFjM0dyQTMtS0pGZE0xZmtmN0pudFNhVWRxSEpRZmc3MkNuNjkyU2dCUDQwa2RBNEJIOC1wYWhfR1BndHpnUHZfUXFOakRRZFZwQUZSc0k1RkZ2V1pUTTU2OGNOeUJSU2xpMnJPMUZsVDdzT3ExSW9SQThPQQ?oc=5",
+        "fonte": "CoinDesk",
+        "imagem": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%230b1220%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-size%3D%2742%27%20font-family%3D%27Arial%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3ENot%C3%ADcias%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "categoria": "Cripto",
+        "tags": [
+          "Bitcoin"
+        ]
       }
     ]
   }
