@@ -6554,8 +6554,10 @@ textarea:focus {
 
 
 
-/* =========================== DROPDOWN MENU =========================== */
-/* Adicione este CSS ao final do styles.css ou como arquivo separado */
+/* =========================== DROPDOWN MENU - VERSÃO COMPLETA =========================== */
+/* Cole este arquivo COMPLETO no final do seu styles.css */
+
+/* =========================== DESKTOP =========================== */
 
 /* Item do menu com dropdown */
 .nav-item-dropdown {
@@ -6588,6 +6590,13 @@ textarea:focus {
     list-style: none;
 }
 
+/* Resetar qualquer list-style dos itens */
+.nav-dropdown li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 /* Mostrar dropdown ao hover */
 .nav-item-dropdown:hover .nav-dropdown {
     opacity: 1;
@@ -6604,7 +6613,7 @@ textarea:focus {
 .nav-dropdown-link {
     display: block;
     padding: 0.75rem 1.5rem;
-    color: var(--text-primary);
+    color: #333333;
     text-decoration: none;
     font-size: 0.9rem;
     font-weight: 500;
@@ -6614,36 +6623,101 @@ textarea:focus {
 
 .nav-dropdown-link:hover {
     background: rgba(0, 102, 204, 0.05);
-    border-left-color: var(--primary-color);
-    color: var(--primary-color);
+    border-left-color: #0066cc;
+    color: #0066cc;
     padding-left: 1.75rem;
 }
 
 /* =========================== MOBILE =========================== */
 @media (max-width: 768px) {
-    /* Em mobile, dropdown sempre visível quando menu aberto */
+    /* Garantir que o menu mobile tenha overflow adequado */
+    .nav-menu {
+        overflow-y: auto;
+        max-height: calc(100vh - 80px);
+    }
+
+    /* Garantir que itens do menu não se sobreponham */
+    .nav-menu > li {
+        position: relative;
+        display: block;
+        width: 100%;
+        margin: 0;
+    }
+
+    /* Link principal do menu */
+    .nav-link {
+        display: block;
+        width: 100%;
+        padding: 1rem 1.5rem;
+        text-align: left;
+    }
+
+    /* Item do menu com dropdown no mobile */
+    .nav-item-dropdown {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    /* Link principal "Ações" no mobile */
+    .nav-item-dropdown > .nav-link {
+        display: block;
+        width: 100%;
+        position: relative;
+    }
+
+    /* Em mobile, dropdown sempre visível */
     .nav-dropdown {
-        position: static;
+        position: static !important;
+        width: 100%;
+        min-width: auto;
         opacity: 1;
         visibility: visible;
         transform: none;
         box-shadow: none;
-        background: transparent;
-        margin-top: 0.5rem;
-        padding-left: 1rem;
+        background: rgba(0, 102, 204, 0.03);
+        border-left: 3px solid #0066cc;
+        border-radius: 0 8px 8px 0;
+        margin: 0.5rem 0 0.5rem 1rem;
+        padding: 0.5rem 0;
+        z-index: auto;
     }
 
+    /* Esconder ícone de dropdown no mobile */
     .dropdown-icon {
-        display: none; /* Esconde seta em mobile */
+        display: none !important;
     }
 
+    /* Container dos links do dropdown */
+    .nav-dropdown li {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    /* Links individuais do dropdown */
     .nav-dropdown-link {
-        padding: 0.6rem 1rem;
-        font-size: 0.85rem;
-        border-left: 2px solid rgba(0, 102, 204, 0.2);
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        border-left: none;
+        color: #333333;
+        background: transparent;
+        transition: all 0.2s ease;
     }
 
-    .nav-dropdown-link:hover {
-        padding-left: 1.25rem;
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:active {
+        background: rgba(0, 102, 204, 0.08);
+        padding-left: 1.75rem;
+        color: #0066cc;
+    }
+
+    /* Prevenir sobreposição de elementos */
+    .nav-menu {
+        z-index: 1000;
     }
 }
