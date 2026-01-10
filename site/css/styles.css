@@ -6901,35 +6901,57 @@ textarea:focus {
     padding: 0 !important;
 }
 
-/* Tablet e Desktop pequeno: 2 colunas */
+/* Tablet e Desktop pequeno: 2 colunas com centralização */
 @media (min-width: 769px) and (max-width: 1199px) {
     .indicators-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
+        display: flex !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem !important;
         max-width: 700px;
         margin: 0 auto;
     }
+    
+    .indicators-grid .indicator-card {
+        flex: 0 1 calc(50% - 1rem);
+        max-width: 320px;
+        min-width: 200px;
+    }
 }
 
-/* Desktop médio: 3 colunas (7 cards = 3+3+1 centralizado) */
+/* Desktop médio: 3 colunas com centralização */
 @media (min-width: 1200px) and (max-width: 1399px) {
     .indicators-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
+        display: flex !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem !important;
         max-width: 950px;
         margin: 0 auto;
     }
     
-    /* Centralizar último card se ímpar */
-    .indicator-card:nth-child(7) {
-        grid-column: 2 / 3;
+    .indicators-grid .indicator-card {
+        flex: 0 1 calc(33.333% - 1.5rem);
+        max-width: 300px;
+        min-width: 200px;
     }
 }
 
-/* Desktop grande: 4 colunas */
+/* Desktop grande: 4 colunas com centralização da última linha */
 @media (min-width: 1400px) {
     .indicators-grid {
-        grid-template-columns: repeat(4, 1fr) !important;
+        display: flex !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem !important;
         max-width: 1200px;
         margin: 0 auto;
+    }
+    
+    .indicators-grid .indicator-card {
+        flex: 0 1 calc(25% - 1.5rem);
+        max-width: 280px;
+        min-width: 220px;
     }
 }
 
