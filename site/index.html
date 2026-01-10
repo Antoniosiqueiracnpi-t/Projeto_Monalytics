@@ -240,6 +240,7 @@
                             </div>
                         </div>
     
+
                         <!-- ==================== SLIDE 2: INDICADORES ECONÔMICOS ==================== -->
                         <div class="carousel-slide">
                             <div class="slide-content">
@@ -252,14 +253,14 @@
                                         <p class="slide-subtitle">Principais taxas e índices</p>
                                     </div>
                                 </div>
-    
+                        
                                 <div class="slide-body">
                                     <!-- Loading State -->
                                     <div class="loading-spinner" id="indicadoresLoading">
                                         <i class="fas fa-spinner fa-spin"></i>
                                         <span>Carregando indicadores...</span>
                                     </div>
-    
+                        
                                     <!-- Indicadores Grid -->
                                     <div class="indicators-grid" id="indicadoresGrid" style="display: none;">
                                         <!-- SELIC -->
@@ -273,7 +274,7 @@
                                                 <span class="indicator-sub">Taxa básica de juros</span>
                                             </div>
                                         </div>
-    
+                        
                                         <!-- CDI -->
                                         <div class="indicator-card">
                                             <div class="indicator-icon cdi">
@@ -285,19 +286,55 @@
                                                 <span class="indicator-sub">Certificado de Depósito</span>
                                             </div>
                                         </div>
-    
-                                        <!-- IPCA -->
+                        
+                                        <!-- IPCA MENSAL -->
                                         <div class="indicator-card">
                                             <div class="indicator-icon ipca">
                                                 <i class="fas fa-shopping-cart"></i>
                                             </div>
                                             <div class="indicator-info">
-                                                <span class="indicator-label">IPCA (12m)</span>
-                                                <span class="indicator-value" id="ipcaValor">-</span>
-                                                <span class="indicator-sub" id="ipcaMes">-</span>
+                                                <span class="indicator-label">IPCA (mês)</span>
+                                                <span class="indicator-value" id="ipcaMensalValor">-</span>
+                                                <span class="indicator-sub" id="ipcaMensalMes">-</span>
                                             </div>
                                         </div>
-    
+                        
+                                        <!-- IPCA 12M -->
+                                        <div class="indicator-card">
+                                            <div class="indicator-icon ipca">
+                                                <i class="fas fa-shopping-basket"></i>
+                                            </div>
+                                            <div class="indicator-info">
+                                                <span class="indicator-label">IPCA (12m)</span>
+                                                <span class="indicator-value" id="ipcaAcumValor">-</span>
+                                                <span class="indicator-sub" id="ipcaAcumMes">-</span>
+                                            </div>
+                                        </div>
+                        
+                                        <!-- IGP-M MENSAL -->
+                                        <div class="indicator-card">
+                                            <div class="indicator-icon igpm">
+                                                <i class="fas fa-home"></i>
+                                            </div>
+                                            <div class="indicator-info">
+                                                <span class="indicator-label">IGP-M (mês)</span>
+                                                <span class="indicator-value" id="igpmMensalValor">-</span>
+                                                <span class="indicator-sub" id="igpmMensalMes">-</span>
+                                            </div>
+                                        </div>
+                        
+                                        <!-- IGP-M 12M -->
+                                        <div class="indicator-card">
+                                            <div class="indicator-icon igpm">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <div class="indicator-info">
+                                                <span class="indicator-label">IGP-M (12m)</span>
+                                                <span class="indicator-value" id="igpmAcumValor">-</span>
+                                                <span class="indicator-sub" id="igpmAcumMes">-</span>
+                                            </div>
+                                        </div>
+                        
                                         <!-- DÓLAR -->
                                         <div class="indicator-card">
                                             <div class="indicator-icon dolar">
@@ -310,7 +347,7 @@
                                             </div>
                                         </div>
                                     </div>
-    
+                        
                                     <!-- Timestamp -->
                                     <div class="slide-footer" id="indicadoresFooter" style="display: none;">
                                         <i class="fas fa-clock"></i>
