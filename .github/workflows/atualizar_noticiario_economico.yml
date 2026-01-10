@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: noticias-mercado
   cancel-in-progress: true
 
 permissions:
@@ -16,7 +16,7 @@ permissions:
 jobs:
   noticias:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: 📥 Checkout
@@ -35,29 +35,37 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: 📰 Capturar notícias
-        id: captura
-        continue-on-error: false
+      - name: 📰 Gerar + Commit + Push (sem conflito)
+        shell: bash
         run: |
-          if python src/capturar_noticiario_economico.py; then
-            echo "✅ Script executado com sucesso"
-            echo "success=true" >> $GITHUB_OUTPUT
-          else
-            echo "❌ Erro ao executar script"
-            echo "success=false" >> $GITHUB_OUTPUT
-            exit 1
-          fi
+          set -e
 
-      - name: 📝 Atualizar timestamp (apenas diagnóstico/telemetria)
-        if: steps.captura.outputs.success == 'true'
-        run: |
-          mkdir -p site/data
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-          TIMESTAMP=$(date +%s)000
-          DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
-          HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
+          MAX_RETRIES=6
+          RETRY_COUNT=0
 
-          cat > site/data/ultima_atualizacao.json << EOF
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "═══════════════════════════════════════"
+            echo "🔁 Tentativa $((RETRY_COUNT+1))/$MAX_RETRIES"
+            echo "═══════════════════════════════════════"
+
+            echo "🔄 Sincronizando com origin/main (sem rebase, sem merge)..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "📰 Rodando capturar_noticiario_economico.py..."
+            python src/capturar_noticiario_economico.py
+
+            echo "📝 Atualizando timestamp (diagnóstico/telemetria)..."
+            mkdir -p site/data
+            TIMESTAMP=$(date +%s)000
+            DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
+            HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
+
+            cat > site/data/ultima_atualizacao.json << EOF
           {
             "timestamp": ${TIMESTAMP},
             "data": "${DATA}",
@@ -67,77 +75,30 @@ jobs:
           }
           EOF
 
-          echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
+            echo "🔍 Verificando mudanças..."
+            git add balancos/NOTICIAS/noticias_mercado.json site/data/ultima_atualizacao.json
 
-      - name: 🔍 Verificar mudanças
-        id: verificar
-        run: |
-          echo "📊 Status do repositório:"
-          git status
-
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "ℹ️  Nenhuma alteração detectada"
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "✅ Alterações detectadas:"
-            git status --short
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: 💾 Commit e push
-        if: steps.verificar.outputs.has_changes == 'true'
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-
-          git add balancos/NOTICIAS/noticias_mercado.json
-          git add site/data/ultima_atualizacao.json
-
-          if git diff --staged --quiet; then
-            echo "⚠️  Nenhuma alteração staged"
-            exit 0
-          fi
-
-          TIMESTAMP=$(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')
-          git commit -m "📰 Notícias: ${TIMESTAMP} [skip netlify]"
-
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "🔄 Pull antes do push..."
-            git fetch origin main
-            git rebase origin/main
-
-            echo "🚀 Tentando push (${RETRY_COUNT}/${MAX_RETRIES})..."
-            if git push origin main; then
-              echo "✅ Push realizado com sucesso!"
+            if git diff --staged --quiet; then
+              echo "ℹ️  Sem mudanças para commitar. Encerrando."
               exit 0
-            else
-              RETRY_COUNT=$((RETRY_COUNT + 1))
-              echo "⚠️  Tentativa ${RETRY_COUNT} falhou"
-
-              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-                WAIT_TIME=$((RETRY_COUNT * 10))
-                echo "⏳ Aguardando ${WAIT_TIME}s antes de tentar novamente..."
-                sleep $WAIT_TIME
-              fi
             fi
+
+            TS_COMMIT=$(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')
+            git commit -m "📰 Notícias: ${TS_COMMIT} [skip netlify]"
+
+            echo "🚀 Tentando push..."
+            if git push origin main; then
+              echo "✅ Push OK!"
+              exit 0
+            fi
+
+            echo "⚠️ Push falhou (branch avançou). Vou tentar novamente..."
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            sleep $((RETRY_COUNT * 8))
           done
 
           echo "❌ Falha após ${MAX_RETRIES} tentativas"
           exit 1
-
-      - name: 📊 Resumo da execução
-        if: always()
-        run: |
-          echo "═══════════════════════════════════════"
-          echo "📋 RESUMO DA EXECUÇÃO"
-          echo "═══════════════════════════════════════"
-          echo "Script executado: ${{ steps.captura.outputs.success }}"
-          echo "Mudanças detectadas: ${{ steps.verificar.outputs.has_changes }}"
-          echo "Horário: $(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')"
-          echo "═══════════════════════════════════════"
 
       - name: 🚨 Notificar falha
         if: failure()
