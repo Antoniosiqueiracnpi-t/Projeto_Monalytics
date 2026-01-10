@@ -1,102 +1,107 @@
-name: 📰 Atualizar Noticiario Economico (08h-20h BRT de 1h em 1h)
+name: Atualizar Noticiário Econômico
 
 on:
-  workflow_dispatch:
   schedule:
-    # GitHub cron e UTC. BRT (UTC-3): 08:00-20:00 => 11:00-23:00 UTC
+    # 08:00–20:00 BRT  => 11:00–23:00 UTC
     - cron: "0 11-23 * * *"
+  workflow_dispatch:
+
+# Evita duas rotinas commitando ao mesmo tempo (fila em vez de cancelar)
+concurrency:
+  group: repo-main-write
+  cancel-in-progress: false
 
 permissions:
   contents: write
 
-concurrency:
-  # IMPORTANTE: group compartilhado evita dois runs simultaneos do feed
-  group: noticias-mercado
-  cancel-in-progress: true
-
 jobs:
-  atualizar:
+  noticias:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-      - name: Checkout
+      - name: 📥 Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Python
+      - name: 🐍 Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
-      - name: Install dependencies
+      - name: 📦 Instalar dependências
         run: |
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4 lxml
+          pip install -r requirements.txt
 
-      - name: Atualizar noticias (gera JSON)
-        run: |
-          python src/capturar_noticiario_economico.py
-
-      - name: Commit e push (reset + regenerar)
+      - name: 📰 Gerar + Commit + Push (sem conflito)
         shell: bash
         run: |
           set -e
 
           git config user.name "GitHub Actions Bot"
-          git config user.email "actions@users.noreply.github.com"
+          git config user.email "actions@github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-          # Desabilitar rebase automatico
-          git config pull.rebase false
+          MAX_RETRIES=8
+          RETRY_COUNT=0
 
-          # Se nao houver mudancas locais, sai
-          if git diff --quiet && git diff --cached --quiet; then
-            echo "Sem alteracoes no feed."
-            exit 0
-          fi
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "═══════════════════════════════════════"
+            echo "🔁 Tentativa $((RETRY_COUNT+1))/$MAX_RETRIES"
+            echo "═══════════════════════════════════════"
 
-          # Retry loop
-          for i in 1 2 3 4 5; do
-            echo ""
-            echo "Tentativa $i/5"
-            echo "========================================"
-
-            # 1) Abortar qualquer rebase/merge pendente
-            git rebase --abort 2>/dev/null || true
-            git merge --abort 2>/dev/null || true
-
-            # 2) Buscar estado mais recente do origin
+            echo "🔄 Sincronizando com origin/main (sem rebase, sem merge)..."
             git fetch origin main
-
-            # 3) RESET HARD: descarta tudo local e sincroniza com origin
             git reset --hard origin/main
 
-            # 4) Re-executa o script para gerar JSON atualizado
-            echo "Regenerando noticias..."
+            echo "📰 Rodando capturar_noticiario_economico.py..."
             python src/capturar_noticiario_economico.py
 
-            # 5) Adicionar arquivos gerados
-            git add balancos/NOTICIAS/noticias_mercado.json site/data/ultima_atualizacao.json 2>/dev/null || true
+            echo "📝 Atualizando timestamp (telemetria)..."
+            mkdir -p site/data
+            TIMESTAMP=$(date +%s)000
+            DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
+            HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
 
-            # 6) Verificar se ha algo para commitar
-            if git diff --cached --quiet; then
-              echo "Nada novo para commitar (JSON identico ao origin)."
+            cat > site/data/ultima_atualizacao.json << EOF
+          {
+            "timestamp": ${TIMESTAMP},
+            "data": "${DATA}",
+            "hora": "${HORA}",
+            "fonte": "noticias_mercado",
+            "versao": "1.0.0"
+          }
+          EOF
+
+            echo "🔍 Verificando mudanças..."
+            git add balancos/NOTICIAS/noticias_mercado.json site/data/ultima_atualizacao.json
+
+            if git diff --staged --quiet; then
+              echo "ℹ️  Sem mudanças para commitar. Encerrando."
               exit 0
             fi
 
-            # 7) Commit
-            TS=$(TZ="America/Sao_Paulo" date +"%Y-%m-%d %H:%M:%S %Z")
-            git commit -m "📰 Noticias: ${TS} [skip netlify]"
+            TS_COMMIT=$(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M:%S %Z')
+            git commit -m "📰 Notícias: ${TS_COMMIT} [skip netlify]"
 
-            # 8) Push direto (sem pull, ja estamos sincronizados)
+            echo "🚀 Tentando push..."
             if git push origin main; then
-              echo "Push realizado com sucesso!"
+              echo "✅ Push OK!"
               exit 0
-            else
-              echo "Push falhou (outro commit chegou). Tentando novamente em 10s..."
-              sleep 10
             fi
+
+            echo "⚠️ Push falhou (branch avançou). Vou tentar novamente..."
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            sleep $((RETRY_COUNT * 8))
           done
 
-          echo "Falha apos 5 tentativas. Verifique manualmente."
+          echo "❌ Falha após ${MAX_RETRIES} tentativas"
           exit 1
+
+      - name: 🚨 Notificar falha
+        if: failure()
+        run: |
+          echo "❌ Workflow falhou!"
