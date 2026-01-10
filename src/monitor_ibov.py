@@ -1,7 +1,7 @@
 """
 MONITOR IBOVESPA - VARIAÇÕES DIÁRIAS
 ====================================
-Janeiro 2025
+Janeiro 2026
 
 Monitora variações intraday das ações do IBOVESPA.
 Atualiza a cada 30min (seg-sex, 10h30-18h30).
@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -39,6 +40,7 @@ except ImportError:
 IBOV_TICKERS_CSV = Path("ibov_tickers.csv")
 OUTPUT_DIR = Path("balancos") / "IBOV"
 OUTPUT_FILE = "monitor_diario.json"
+TZ_BRASILIA = ZoneInfo("America/Sao_Paulo")
 
 
 # ======================================================================================
@@ -196,7 +198,7 @@ def processar_ibovespa() -> Dict:
     acoes_estavel = len(df[df['variacao_pct'] == 0])
     
     return {
-        'ultima_atualizacao': datetime.now().isoformat(),
+        'ultima_atualizacao': datetime.now(TZ_BRASILIA).isoformat(timespec="minutes"),
         'total_acoes': len(cotacoes),
         'estatisticas': {
             'variacao_media': round(media_variacao, 2),
