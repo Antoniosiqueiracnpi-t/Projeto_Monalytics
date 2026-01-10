@@ -1,983 +1,232 @@
 {
-  "meta": {
-    "fonte": "Google News RSS",
-    "total_noticias": 59,
-    "total_portais": 35
-  },
-  "portais": {
-    "- Bahia Economica": [
-      {
-        "categoria": "geral",
-        "data": "2025-05-14",
-        "data_hora": "2025-05-14 04:00:00",
-        "descricao": "DÓLAR CAI PARA R$ 5,60 E BOLSA ATINGE RECORDE HISTÓRICO COM ALTA DE 1,76% - Bahia Economica",
-        "fonte": "- Bahia Economica",
-        "horario": "04:00",
-        "id": 161648559594131,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOSjhKNlVIOXNQaHVzdnRwcUE5VldrdURJdXA4SXB5Qk1xSlQ0RWJ4eEZYWlEtZkxKU3l6alRfRC1jcWU3YUl0WWwtTzdJZXVmR0tfMXJtckJmd29QQmpjcFR0OERqSHBVSW51RzJPSWhFaVE0ajNLZ0tOY3hEdnByNHpiTVNubHkwR1B0SlkzdU5RVlVmMVY2MHBZa2N6UHRvWHFIMGRGZHdxN1N6WnZqWDgzSDc?oc=5",
-        "tags": [],
-        "titulo": "DÓLAR CAI PARA R$ 5,60 E BOLSA ATINGE RECORDE HISTÓRICO COM ALTA DE 1,76% - - Bahia Economica"
-      }
-    ],
-    "ADVFN": [
-      {
-        "categoria": "cripto",
-        "data": "2026-01-06",
-        "data_hora": "2026-01-06 01:00:37",
-        "descricao": "Crypto Enters A Pivotal Week For Bitcoin, Ethereum, And Macro Events ADVFN",
-        "fonte": "ADVFN",
-        "horario": "01:00",
-        "id": 207440538247463,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1jTjdjdktyNTNEcWN4b0RJTGE1RUJlSjJ4NHNCaF9uVWpHak51TU1WS3ZOM0JJVVZGTFZXRlN4WUF0eW9kWmVTdHdWejMwVk5ja3lQZUhyeVVMM0k4RkphUzQ3Ql8yM2w0RkE?oc=5",
-        "tags": [
-          "Bitcoin",
-          "Ethereum",
-          "Cripto"
-        ],
-        "titulo": "Crypto Enters A Pivotal Week For Bitcoin, Ethereum, And Macro Events - ADVFN"
-      }
-    ],
-    "Agência Brasil": [
-      {
-        "categoria": "economia",
-        "data": "2025-03-19",
-        "data_hora": "2025-03-19 04:00:00",
-        "descricao": "Copom eleva juros básicos da economia para 14,25% ao ano Agência Brasil",
-        "fonte": "Agência Brasil",
-        "horario": "04:00",
-        "id": 260225495032939,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNbmRkY3lUdm9vQmhYanYxNnk0LUJGWUtOdjE1Z21OcTd2T0Vyb1hONXN2YjZpSTZVbU1TMFU2Sm9qTW1JbDNBWHhlQXUwY29VZ1YtYVI5aWhGWFNNRTZ3N3NGTHJ6dkRUWlJIemdHQjcxRUFMSWQtNTlKVWV4TW45bEtlT2dTRDJfekcyYlE1Y3EyMmxVeG9PM1hnaUN4cnlEaGRfbUg0ZWxGaUR4SGI4ODR3?oc=5",
-        "tags": [
-          "Economia"
-        ],
-        "titulo": "Copom eleva juros básicos da economia para 14,25% ao ano - Agência Brasil"
-      }
-    ],
-    "Agência de Notícias da Indústria": [
-      {
-        "categoria": "economia",
-        "data": "2025-05-07",
-        "data_hora": "2025-05-07 04:00:00",
-        "descricao": "Nova elevação da Selic impõe fardo ainda mais pesado à economia, afirma CNI Agência de Notícias da Indústria",
-        "fonte": "Agência de Notícias da Indústria",
-        "horario": "04:00",
-        "id": 54200777997151,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNUDdqNkd4T0EyRXUxTm1xMm1PbnJpS3VBY1pmWkVVc2hnS0tuRmItdVNTZGdEdVhMN3l4VTJhckxzY1NWTHhyNldMR0U2SFp2ZF9uSm92YWNGeEFwSVdTLXBWRGZyVk1jajdna0JsclI0VERkV1Etb2w4WWhtdDdMMklyRHgxcGR0bjJ5RXI1Wk1ReC03cDJOMmdxc053V1dvR2xjei1YQ0U5QU1aT0tVUjBTU05ZT2lBVTVSbkVMdkNJcXBUOUJ5WVo5bFZLdw?oc=5",
-        "tags": [
-          "Selic",
-          "Economia"
-        ],
-        "titulo": "Nova elevação da Selic impõe fardo ainda mais pesado à economia, afirma CNI - Agência de Notícias da Indústria"
-      }
-    ],
-    "BBC": [
-      {
-        "categoria": "exterior",
-        "data": "2025-09-09",
-        "data_hora": "2025-09-09 04:00:00",
-        "descricao": "Lei Magnitsky e bancos: Brasil não tem 'soberania monetária' para enfrentar Trump, alerta especialista BBC",
-        "fonte": "BBC",
-        "horario": "04:00",
-        "id": 113070793091156,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1EVkxzM3BmU0tkY0dKQ1hTLWNobC1nTmZ1bUl5UU1VTkxwOVU3X2lkeEExb2Q4TE5RM1Jua05BZ2h3Qi13bEJfUWFranNsODQ2TkVBT2hiclNPSmg0anp5dWRB0gFnQVVfeXFMUDVFXzlDRlRHRnFJc3htRUNWRmNQZHZIU0ZPWldGVnA5NGdhTFRtX1RBTFpjUXpndnNqaEltYzVnWDNYOUg4WFJJZXFhWlVNTnRhWnN4OS1vYnFROEVwUnc0TUYtNUE3UQ?oc=5",
-        "tags": [
-          "Exterior"
-        ],
-        "titulo": "Lei Magnitsky e bancos: Brasil não tem 'soberania monetária' para enfrentar Trump, alerta especialista - BBC"
-      },
-      {
-        "categoria": "exterior",
-        "data": "2025-08-27",
-        "data_hora": "2025-08-27 04:00:00",
-        "descricao": "Fim do dólar? Por que moeda vem perdendo força no mundo — e isso pode ser o que Trump quer BBC",
-        "fonte": "BBC",
-        "horario": "04:00",
-        "id": 135106479173943,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9wTDJZdFp6U2N3aXVkNFlEQnhtWDVDLVI1RlYteEVSRzlVOTgtNHFkdWljWnZmR2tLQlZOYzRtbnB1d2JSOUFiUXlyc0ZmbVdFcnNtbS0yYWhHdVdHVzZta3N30gFnQVVfeXFMTUdLcmg5V2RURVphQ191N041ZHVEcGtZeGFoTjJaUU1MdGxfZmpWNUppZk5jTmkwa2NHdUVvMjJxNzVFcWJkN1dLZ1lyMW5kRjFRQm1zWE9RbzJOeXdyV3pBamNJNUZESQ?oc=5",
-        "tags": [
-          "Exterior"
-        ],
-        "titulo": "Fim do dólar? Por que moeda vem perdendo força no mundo — e isso pode ser o que Trump quer - BBC"
-      },
-      {
-        "categoria": "exterior",
-        "data": "2025-07-30",
-        "data_hora": "2025-07-30 04:00:00",
-        "descricao": "Lei Magnitsky: EUA aplicam sanções financeiras contra Alexandre de Moraes BBC",
-        "fonte": "BBC",
-        "horario": "04:00",
-        "id": 227037295408898,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5sYmt1cFMwcnhic0dqZUFvOVp1WUloTkhHejVheDk3OFZEN3FUb3p4WmJqV2duNC1wSjZDVlRfNzJOWERFdFlhLXZEOWNPRzZTSmR6dGc5YWRBOUtndE1nLTJn0gFnQVVfeXFMT3VwQ2lzVFJZSVJCWm1KVlcwM256MTFPc004TFpXTGFraTlhNEo4cWtnd0tDOWdXaFdmTmxiYlRsVFYtRFBmRXpuTmdKOWdNVWt4X2o1R2xEc191ajJjTE5peFNzSldPaw?oc=5",
-        "tags": [
-          "EUA",
-          "Exterior"
-        ],
-        "titulo": "Lei Magnitsky: EUA aplicam sanções financeiras contra Alexandre de Moraes - BBC"
-      },
-      {
-        "categoria": "exterior",
-        "data": "2025-07-09",
-        "data_hora": "2025-07-09 04:00:00",
-        "descricao": "Trump taxa Brasil: a repercussão na imprensa internacional BBC",
-        "fonte": "BBC",
-        "horario": "04:00",
-        "id": 132675601535523,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5TUGVYZW9RWEVCZmNKRkhkbkZhQUZXUWJEeXVGSllxaG9ndkhBRlJjSC1iV1lPS1FXR09ISVpWSTdhZm92WUFHbnRZTGdNNW5OVGJtR1FVUHdsQnFLMkNBWl930gFnQVVfeXFMTkNfa05jekNJOTd0YmdzWnVEcEctWDBKbGNPYXAycFFZNm9lU1FfWjlOMkExNkFTM05ndVlJYUFIdlMzVDVtLTdEenp2dG95bjVWNWlfWmswVWdkMlpaTVg5djlCYjk3bw?oc=5",
-        "tags": [
-          "Exterior"
-        ],
-        "titulo": "Trump taxa Brasil: a repercussão na imprensa internacional - BBC"
-      }
-    ],
-    "Binance": [
-      {
-        "categoria": "cripto",
-        "data": "2026-01-05",
-        "data_hora": "2026-01-05 16:04:39",
-        "descricao": "Notícias de Preços de Cripto 5 de Jan.: Bitcoin, Ethereum, XRP, BNB, Solana, Dogecoin, Cardano, BCH Binance",
-        "fonte": "Binance",
-        "horario": "16:04",
-        "id": 1202684781109,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxONHRRYnN6azFSUzJUR1hlMm1JZFNTd0xOUkVHekY5OU9tLUZxN1puQkRfTVJnUkkwTU9UclVLZXdCOVk5V2VDZnB2RWlXdC02TFhyc0xsUWpiUzJ0MGpNdXFyMTQ5dVcxazAtSG9aMUZxQVcyMTQ4TlFaWVdxaEwtNkV4NHVXQlVFNFFfV2NXWlJCT09EU1RxVHlWSHJPdUZhMzhVZ0VmMUwtcHJpRGVoYWpVVkhRQ21jSVYzbFJXXzlyT1JtNkdyNHZ3LXdfYTFwZmY1SW9BUnU?oc=5",
-        "tags": [
-          "Bitcoin",
-          "Ethereum",
-          "Cripto"
-        ],
-        "titulo": "Notícias de Preços de Cripto 5 de Jan.: Bitcoin, Ethereum, XRP, BNB, Solana, Dogecoin, Cardano, BCH - Binance"
-      }
-    ],
-    "Bora Investir": [
-      {
-        "categoria": "geral",
-        "data": "2025-12-29",
-        "data_hora": "2025-12-29 05:00:00",
-        "descricao": "Ibovespa B3 recua 0,25% mesmo em dia de alta das commodities; dólar vai a R$ 5,57 Bora Investir",
-        "fonte": "Bora Investir",
-        "horario": "05:00",
-        "id": 220518434293880,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPOVI4dkpOZEwyWF9RX0IxZDFaZFoyamZUZDZmcUo3XzJYSUkxdXBwZ1ROVnFpX3FLQVlUc1V4bVZyU19Pbkxic2RsMk10WmRPbV9WVVViWWE1TFAtc2ZIN3pjcl92aHlaYlJpMkt5RW1OVHFqV2VvbndteXdDZDVzUXExbnBRTkRlazVnWHYyRVlzLXE4ZGd0RmRXUHY3NkZCQXRMSEZIN29ERVZjNGJSQkdVbnNGdmZGT0IteEFXVUp6Y2s?oc=5",
-        "tags": [],
-        "titulo": "Ibovespa B3 recua 0,25% mesmo em dia de alta das commodities; dólar vai a R$ 5,57 - Bora Investir"
-      },
-      {
-        "categoria": "bolsa",
-        "data": "2025-10-30",
-        "data_hora": "2025-10-30 04:00:00",
-        "descricao": "Ibovespa B3 renova recorde puxado por Ambev (ABEV3) e Vale (VALE3); dólar vai a R$ 5,38 Bora Investir",
-        "fonte": "Bora Investir",
-        "horario": "04:00",
-        "id": 184338922007243,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNRkoyTlN3UG9QTlR6RnVJcUxLemxyU2s5NVVLcnlqX0lGR2pWcjZnMEpGc2hEQld2dXdyay1lMWJOVWJjR2JhVm1faDZ5UXg4VzlDMWx4M0FJeWhQeF9IUnNLUFNPN1lvY3Z3YlA2T2QxMjVOcmpMQjFWOGFNaHZUay1xdGVXS2hXUWJINkFidFhZQTEyOEZaeGhxNG9taVhaTENBb0hEbXBLSF9RZDlHXzdiOGpwQl96Uzd3TXVfNkk2b09TWDZXUw?oc=5",
-        "tags": [
-          "IBOV",
-          "Bolsa"
-        ],
-        "titulo": "Ibovespa B3 renova recorde puxado por Ambev (ABEV3) e Vale (VALE3); dólar vai a R$ 5,38 - Bora Investir"
-      },
-      {
-        "categoria": "bolsa",
-        "data": "2025-10-22",
-        "data_hora": "2025-10-22 04:00:00",
-        "descricao": "Ibovespa B3 sobe 0,55% puxado por Petrobras, Vale e WEG; dólar fica em R$ 5,39 Bora Investir",
-        "fonte": "Bora Investir",
-        "horario": "04:00",
-        "id": 231371264650581,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPZzJ6MlkxU2hEYmFGZkxobk9KZjBFV2lJU2c4SHpRZklWM09ZaU9vcmJkTGVCR1VrWlVWZ3JnUjBWMFBGcFVkanphZjFOT1Bsd0JUTklFSnRCZUJjUVd3R1l3NHN4bGdkOTVub0hMaUNXZFV5M1pZWlVTUU5BVEVlMERpTWVjWmhnVDIyUDRXVGh2bUtTb2liYlpQdTVTd1JaWWdkODhSbGtoaVl1SHRrQXdkQTBrVVk3QlUxQ2xB?oc=5",
-        "tags": [
-          "IBOV",
-          "Bolsa"
-        ],
-        "titulo": "Ibovespa B3 sobe 0,55% puxado por Petrobras, Vale e WEG; dólar fica em R$ 5,39 - Bora Investir"
-      },
-      {
-        "categoria": "bolsa",
-        "data": "2025-10-14",
-        "data_hora": "2025-10-14 04:00:00",
-        "descricao": "Temporada de balanços: confira o calendário de divulgação dos resultados do terceiro trimestre Bora Investir",
-        "fonte": "Bora Investir",
-        "horario": "04:00",
-        "id": 178981775171059,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNWl9MMEw4a3pMMzhYMFRqMTlvbzRvMlBaNV9Xek1EcWRLVWlNUXJyUDk3NzVzckVvS0NrTkpCeEFlY2h4VzBrSFdSU3JiY2tlOXlwR08tQXF2YnlVbUc2S0l5NU1JRjd1SU40ajRCempJZVl1c19YLVBkc09iYnlWNGlPeUFfNnlPUmlyZEtTMTRfZWgyTjFyOXZ6cTJIeU1wczdYZE5wT2pURlJuNDFaTTlnWml6Ti1VcE10bWppdzVtYmFjdjNaWE8tbi1PSEk?oc=5",
-        "tags": [
-          "Bolsa"
-        ],
-        "titulo": "Temporada de balanços: confira o calendário de divulgação dos resultados do terceiro trimestre - Bora Investir"
-      },
-      {
-        "categoria": "bolsa",
-        "data": "2025-08-06",
-        "data_hora": "2025-08-06 04:00:00",
-        "descricao": "Ibovespa B3 tem alta de 1,04% com maior apetite por risco e balanços positivos; dólar cai a R$ 5,46 Bora Investir",
-        "fonte": "Bora Investir",
-        "horario": "04:00",
-        "id": 24307125748452,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNdHc5OTJaclRNRThweGZWeGJoNFUwZWlybjhOSWN3ZTFITld2MV9zRGhMT3UxQXhmZ0JBTWM5bHpTajZ0TDlDMVBkYW9qdGl4Zk13ZC0yNjMxajA0QTItUWdoa1dpaFotY01SWXgxellTV2ZHZ0lvZDk3MFh1eWlkQ0M1YjZKTFB6UElVSGk4YVhUNDIxczFNTklOZm1SQ3Qya0ttelVhQ3ZGY0NsMDd1UmpzNnJud0hFbjJBbGVONnpsVU8weTZaSHR4cTJYY2FWUUlyVzhVeGl5Tmc?oc=5",
-        "tags": [
-          "IBOV",
-          "Bolsa"
-        ],
-        "titulo": "Ibovespa B3 tem alta de 1,04% com maior apetite por risco e balanços positivos; dólar cai a R$ 5,46 - Bora Investir"
-      },
-      {
-        "categoria": "cripto",
-        "data": "2025-08-05",
-        "data_hora": "2025-08-05 04:00:00",
-        "descricao": "Criptoativos: conheça as diferentes formas de investir em Bitcoin, Ether, Solana na B3 Bora Investir",
-        "fonte": "Bora Investir",
-        "horario": "04:00",
-        "id": 203950940363146,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxNOVRZOXZ0U1RtSW82djg0a200dTlPMWstOEVRaVdEMkxFQzlrSTYycTBDWUNfVkt5cTJha0VFMl9iajNmRDZVOGFERFJEWDZ2T0xfWkE1VWxySTlIZHlwLVNGNVg5VURaTE1QRW9IVVJyVGtZNGs4R3haR0FRa2ZCazZPOTJ2aEx5SXdMeklZbHdxMWlQWm5GVFRTSVIyUU80X08xUUF3X09LTXBHWE1sUlZPMzJpUXdBZ1hBSU51NXdLYjk1RmJ5akFraVZqYUFrYTVWMTg4dXplc2hJUHY5Z0Z5bWNERW9qY1Ffd19lRQ?oc=5",
-        "tags": [
-          "Bitcoin",
-          "Cripto"
-        ],
-        "titulo": "Criptoativos: conheça as diferentes formas de investir em Bitcoin, Ether, Solana na B3 - Bora Investir"
-      },
-      {
-        "categoria": "bolsa",
-        "data": "2025-07-23",
-        "data_hora": "2025-07-23 04:00:00",
-        "descricao": "Temporada de balanços: confira o calendário de divulgação dos resultados do segundo trimestre Bora Investir",
-        "fonte": "Bora Investir",
-        "horario": "04:00",
-        "id": 143170840840520,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxNSTNJWHV3eElWY0locmtpc05oNzcwVmNfYlp6cUc3bkRYQTMyMXhTd3lxMm5ydGEySVNqaHBnQW5tQUV1N3Q3VlVBN1RDbF9OTTVuWVY5dzl6bngyUTlGb1dTU2E4Q2NncGdwYXctOTdXZVpnby1xQllLNk9PYWJDRWZJQ25jYzZhT2lFUXV4OG01ZjNsVF9wNmE5ZzJFeVU0SUFOUzB2Q1VsX0JhcWRTdXBkTUVRTDk5WF9CeXRUc2RiVWd0QUN3MnJhNEw3dTVXNFphT0FPeHlBSTVjRk1jYVZSc195ZU9yT1F5R0ZlanJORkpxcWtLR1pPQ1o?oc=5",
-        "tags": [
-          "Bolsa"
-        ],
-        "titulo": "Temporada de balanços: confira o calendário de divulgação dos resultados do segundo trimestre - Bora Investir"
-      }
-    ],
-    "Brasil 247": [
-      {
-        "categoria": "geral",
-        "data": "2025-10-15",
-        "data_hora": "2025-10-15 04:00:00",
-        "descricao": "Mercados brasileiros fecham em queda leve com dólar em alta e petróleo em retração Brasil 247",
-        "fonte": "Brasil 247",
-        "horario": "04:00",
-        "id": 249894121848463,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOb2NpWlltRXh6cXVHZ19tR19KWVVRRnRZeG1VRzd1VnZqNWxNWkVOcGFZbFpJMnJkMjBWbXhQOWQ2SlRFcTVoVXRZNkdnOThmNmJiZUphWTdCNUR3UktsYklsMkw0RjU1UktTRUtyakRDNXZFUVJIYzdDREpCclpjR0h2YjV6YUMwSWRmXzhiaHJSdklKMU1GSTZtWVk5UUNjbWJaeGFiSXJFUm9mYUU0a1dLOEh3Y1Z2UVp5YVpDeEZkcGtsemc?oc=5",
-        "tags": [],
-        "titulo": "Mercados brasileiros fecham em queda leve com dólar em alta e petróleo em retração - Brasil 247"
-      }
-    ],
-    "CNN Brasil": [
-      {
-        "categoria": "economia",
-        "data": "2025-12-04",
-        "data_hora": "2025-12-04 05:00:00",
-        "descricao": "PIB: Economistas veem espaço para aliviar juro e alertam para gasto público CNN Brasil",
-        "fonte": "CNN Brasil",
-        "horario": "05:00",
-        "id": 135013533839364,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNcDFWVF9PbGJmLUtsSHZEbEw4eXd4blR5RzVwRUdUYlUzUzB5aDhUODZzWlJENHhZanFYNklEdFM4UGJVZlFUeUlERnhQSXByZTV6VlpSYWt4d1lHYlZwaHhVOWp0Y2dtWGNlYnl5dGVDelJMLU5QOFhHSjdESnItRkxuV0wxZ085UGdqemljT3ZxMnVPSWo5TkRpRkM2NURPM3E5b01BcFZKYVRfZ1hZWnpKa1FZWjFQMHpaQ1NuUVBGMDFTdnc?oc=5",
-        "tags": [
-          "PIB",
-          "Economia"
-        ],
-        "titulo": "PIB: Economistas veem espaço para aliviar juro e alertam para gasto público - CNN Brasil"
-      },
-      {
-        "categoria": "exterior",
-        "data": "2025-07-28",
-        "data_hora": "2025-07-28 04:00:00",
-        "descricao": "Acordo comercial entre UE e EUA aumenta pressão sobre Brasil, dizem fontes CNN Brasil",
-        "fonte": "CNN Brasil",
-        "horario": "04:00",
-        "id": 268294533266526,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPN0VORV8zVE9YQjB6QVRLZGhZeHZnelpIaW9HYm5ZS2NGQVpxSDcwQTM4Vlp0dnRuR2lrNTIzdEJuZmx0Y2xRUEE1TUZFamdLNklJN1pWVmlYb2JTMDlCbGVERE1PRzVoUzRyYUdKc3dUOVczYkxrSWhhVDgwTWpiZy1BbmtBN3RtZExUWUdRVF9nMF9FNVcxNktKN1BiZGVaMXB5dnl2eVVGZG1pWmJyYk44RE40RGtD?oc=5",
-        "tags": [
-          "EUA",
-          "Exterior"
-        ],
-        "titulo": "Acordo comercial entre UE e EUA aumenta pressão sobre Brasil, dizem fontes - CNN Brasil"
-      },
-      {
-        "categoria": "exterior",
-        "data": "2025-04-01",
-        "data_hora": "2025-04-01 04:00:00",
-        "descricao": "Coreia e Japão podem retomar exportação de chips para China, afetando EUA CNN Brasil",
-        "fonte": "CNN Brasil",
-        "horario": "04:00",
-        "id": 98693322178916,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPVHNzWEFrZWE5VGlqOFZpSE8tanhNZGd2bm84OU1hNENYWWdKZ3BBdDR0RGk5RGIySXhaamV4V2l0NEpqaFdldkI5VGFHbE04Vkc2S05CY2VMYkFzcEJHRkxHNGFGOTJ1TkVWWkI3ejNDYVhyMmh0ZnFJMVlWNjQ4YlBmSnl2M25DdmtGMDAxeFI5SVh2YVlwREJTT2tHM2I4TE4tTVgzRjlpcEV6aGpBRlhIU0g4aEU?oc=5",
-        "tags": [
-          "EUA",
-          "China",
-          "Exterior"
-        ],
-        "titulo": "Coreia e Japão podem retomar exportação de chips para China, afetando EUA - CNN Brasil"
-      }
-    ],
-    "Cryptonews": [
-      {
-        "categoria": "cripto",
-        "data": "2026-01-09",
-        "data_hora": "2026-01-09 06:58:44",
-        "descricao": "$LIQUID tem como alvo o `imposto de ponte` – Entenda esta pré-venda cripto Cryptonews",
-        "fonte": "Cryptonews",
-        "horario": "06:58",
-        "id": 93176071311929,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOWVdPSmswVnc4dE9SQ0RfZk1qM3lWZVI2RFo1NkRYRWU0SWNGQkVOR0RuSms2RzVDVURFZVAwb0NDWXN1WHdfVWJTNzdRSEdYSUhfVk54MS05eHRTVGdfSVBXSk41MDN1dFRBWnE1R0V1R014MXhqQXZfRHBUT3YtcA?oc=5",
-        "tags": [
-          "Cripto"
-        ],
-        "titulo": "$LIQUID tem como alvo o `imposto de ponte` – Entenda esta pré-venda cripto - Cryptonews"
-      }
-    ],
-    "Estadão E-Investidor": [
-      {
-        "categoria": "geral",
-        "data": "2025-12-18",
-        "data_hora": "2025-12-18 05:00:00",
-        "descricao": "Micron anima ações de tecnologia e impulsiona mercados globais; dólar sobe e commodities avançam Estadão E-Investidor",
-        "fonte": "Estadão E-Investidor",
-        "horario": "05:00",
-        "id": 107402571357597,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPWnNKQTdUY3lqb0tJWVpRRWdpeHMwZ1B0enJndUJGUkEycG9vVzRXMUxXNzBpb0wzN2J1amVULVREX0RSOUdjMFBvM283aG9laThwRU9EaWJCSlR1UGIwT0UwNGZLT0gyQ3cyVXo1Vk1XaldyNEFOcWdDS05KQkl3RmYyY3NFTGFpQWVBLWNpcDg5YkhjYUNFSG53SUPSAaIBQVVfeXFMUGVUcEFOUkFIQ1p5bnJyb0o0dHpDRjRXWnc2eVY2cEI5OTlRNG1DTVNxMTBQb216ZkRBUlhKZEZJLWNFNHozTjF5Q1JwNlZBd1NlS29uUlNNQS1WVmJYczhFWW8tb0FmbG0yRE14TnBZdFRXOW5XWG1JeWRzNlU1WTVPaEJJOVNZRXc5MHp1T3ZzOHRtMUllRE5RdkdOYU5GcGF3?oc=5",
-        "tags": [],
-        "titulo": "Micron anima ações de tecnologia e impulsiona mercados globais; dólar sobe e commodities avançam - Estadão E-Investidor"
-      },
-      {
-        "categoria": "geral",
-        "data": "2025-08-06",
-        "data_hora": "2025-08-06 04:00:00",
-        "descricao": "Tarifaço começa hoje: minério recua, petróleo sobe e mercado aposta em corte de juros Estadão E-Investidor",
-        "fonte": "Estadão E-Investidor",
-        "horario": "04:00",
-        "id": 64723146480162,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNUmRpbnpVNkdNYnpWSFFkQVRFQ0JtX0ZzTEN2MDFVWEdka21SbElpbm9TN2p6eWFETmNBei13a0JIdjA1LWVWaG5MZGtFRnpBNWNiVWZ2aEJJdlh0X09yRDN6V3Z5d0l6dEp3cmNQZjBXdHZtd3FJVWZLbW11dFRsNVJBUGRqM3NyRTZzblhadGU0eF94YkHSAZsBQVVfeXFMTm16RUxJYmxyWmQxa0xhR19lZUt2aEpvRVdyN0NFRXVaS25XQVBpOWdyUi1HMm92VWhZUDgzbXVUeXhxR1MxOUlyN2tmTVNKLV9kUW9OcnBJekpnUzJubGpOLUF3NE5pQXMxNXdmcUt6SHF3ZC1mMHVHaFhXOGZjZXhIUDJSX1ZHNS1NbEthbGZpTEM4dkktSjN3bGM?oc=5",
-        "tags": [],
-        "titulo": "Tarifaço começa hoje: minério recua, petróleo sobe e mercado aposta em corte de juros - Estadão E-Investidor"
-      }
-    ],
-    "Exame": [
-      {
-        "categoria": "cripto",
-        "data": "2026-01-07",
-        "data_hora": "2026-01-07 15:42:49",
-        "descricao": "Morgan Stanley entra com pedido para lançar ETFs de bitcoin e Ethereum Exame",
-        "fonte": "Exame",
-        "horario": "15:42",
-        "id": 127147665582851,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPTmdrS0lfN2g0RlRRUlFtNlRiV1NEUFByNXZ2bnBpOEZfc3Q5Zkt0Smt0VHJSTWxmOS1XM3kxal81cTdBZW9QQ0lwbU1WN3Q4LUhSaThDYWxBUGtkbUxacDNQc0JCeFc3ZUhUZHNPNzBGZG9hT3ZWSXFOajRzc3N5b0s4TVVlNzlHSHRlSnF5S1RLeF85dGhnMmJOTVZXaDFEQnBXZUpNdE4?oc=5",
-        "tags": [
-          "Bitcoin",
-          "Ethereum",
-          "Cripto"
-        ],
-        "titulo": "Morgan Stanley entra com pedido para lançar ETFs de bitcoin e Ethereum - Exame"
-      },
-      {
-        "categoria": "cripto",
-        "data": "2026-01-05",
-        "data_hora": "2026-01-05 16:12:53",
-        "descricao": "Ethereum bate recorde de transações diárias e supera auge de 2021 Exame",
-        "fonte": "Exame",
-        "horario": "16:12",
-        "id": 55151151343177,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOeXdocWlEdnBJYjd4ajlvQXhUM2VnZ3FtM1FpcU5ucEhuSjI5ZVlkRXlNeUVIQWNnUVJtN0U0WGhhYTZpejZQQ0Z2UV9YLUw4VUwxV3VTVnQxekJwRmZBMTJ4aXl4QlhsNmM5RjhEV1o0dFV1Q1g2TjVPQjQ5ck51UWpkTmFPZU5yV3Z3LTNZUGd4UEttNHRDRi1ud0MxdXdyVkE?oc=5",
-        "tags": [
-          "Ethereum",
-          "Cripto"
-        ],
-        "titulo": "Ethereum bate recorde de transações diárias e supera auge de 2021 - Exame"
-      },
-      {
-        "categoria": "economia",
-        "data": "2025-05-31",
-        "data_hora": "2025-05-31 04:00:00",
-        "descricao": "Alta do IOF tem efeito semelhante à da Selic e pressiona inflação, diz Samuel Pessôa Exame",
-        "fonte": "Exame",
-        "horario": "04:00",
-        "id": 31214973359200,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNWFVDNjBTRW9jX240ZVBrRWxfdzhhamMtazFGZ0hoeXNTdng2Qzd6NEZLMW9xSjV1N2FBNFc2WDAzTkhLZlhfZ2lCVWIzLXMzd2VkQjgyUEx6WTN4WHgtcWJibVVRTUNTM2s4dFhhbmtqY21ZUDFtSmxfTE1TMlZ2YWVLMk9vQjc0OHJLbE9neV8waFhnOWQwYTVMZ2I1Z0lzNk1VTzlyNlIySWtxNjU5UA?oc=5",
-        "tags": [
-          "Selic",
-          "Inflação",
-          "Economia"
-        ],
-        "titulo": "Alta do IOF tem efeito semelhante à da Selic e pressiona inflação, diz Samuel Pessôa - Exame"
-      }
-    ],
-    "Forbes Brasil": [
-      {
-        "categoria": "exterior",
-        "data": "2025-07-22",
-        "data_hora": "2025-07-22 04:00:00",
-        "descricao": "Tarifaço: 3 Cenários sobre o Que Pode Acontecer com o Brasil na Guerra Comercial contra os Estados Unidos Forbes Brasil",
-        "fonte": "Forbes Brasil",
-        "horario": "04:00",
-        "id": 92405572434691,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPSWRfZ05BQk1PWVlCWE9iTFVVdWNRV0hWM1NjTkwwN2ktczZRdWxKNWxxYXRkSm1CN3VNNE1UU0R0SDNRUXJIN3VfT0ZqMzJjR1hKcGxoY0ZtU1Jzc19ESnBNamtpUGpkd1ROYnRxWk1FSjlLdHlSLTd1b3MxYjA4S2pPQjZ2SkFTLWQ5VVdQV20tbEZDRndQVFg3SUhBcEtfYTFZVDI2WGczOXdXVm9NSzlVdVpaODlxbmZwbm1ibTFtRVBTWng4TE9Lb012YVN4cFFJY3ZzSjhCOE1OSG5vcjBn?oc=5",
-        "tags": [
-          "Exterior"
-        ],
-        "titulo": "Tarifaço: 3 Cenários sobre o Que Pode Acontecer com o Brasil na Guerra Comercial contra os Estados Unidos - Forbes Brasil"
-      }
-    ],
-    "Forças Terrestres": [
-      {
-        "categoria": "exterior",
-        "data": "2025-07-19",
-        "data_hora": "2025-07-19 04:00:00",
-        "descricao": "EUA sinalizam aumento de sanções contra Brasil Forças Terrestres",
-        "fonte": "Forças Terrestres",
-        "horario": "04:00",
-        "id": 273824750410303,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPWXBJbE5rcFdLYWYyeXFNY1hUYkNDRl8yMU1VbjVybFpUY2N1ME85ODFleElaeFd4bTVYS05OUU54d2ZSY2VYMTZkNzFJRUFzenpoWUROV3Vxd2ttQWN2UXRfTnRyb0xHWndHZ0d6aWdNbUd0cUJZX3BBZnQ1TWdPQ1FZSWdPblVreVFR?oc=5",
-        "tags": [
-          "EUA",
-          "Exterior"
-        ],
-        "titulo": "EUA sinalizam aumento de sanções contra Brasil - Forças Terrestres"
-      }
-    ],
-    "Gazeta do Povo": [
-      {
-        "categoria": "economia",
-        "data": "2025-09-01",
-        "data_hora": "2025-09-01 04:00:00",
-        "descricao": "PIB fraco: juros altos, tarifaço dos EUA e risco fiscal em alta Gazeta do Povo",
-        "fonte": "Gazeta do Povo",
-        "horario": "04:00",
-        "id": 86312034671046,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQajVqQU5ZTUF1dkpPa1VxUS1sOWNaNDJ3el9Tc2pGWGxRdi1DY1FweFF6d1RjZGNvNC1qX1drVzJ3MHZYQ2p4T3o0YTkzZkRnOWxKNUJiZlpsUHUwS0ViZElhelV5ZFR3YnNVZE1NVkRqbS1Xc2tZMDZRcERRMzVCbQ?oc=5",
-        "tags": [
-          "PIB",
-          "Economia"
-        ],
-        "titulo": "PIB fraco: juros altos, tarifaço dos EUA e risco fiscal em alta - Gazeta do Povo"
-      }
-    ],
-    "Genial Analisa": [
-      {
-        "categoria": "geral",
-        "data": "2025-07-10",
-        "data_hora": "2025-07-10 04:00:00",
-        "descricao": "Commodities | Implicações das Tarifas de 50%: Tudo em prol do dólar Genial Analisa",
-        "fonte": "Genial Analisa",
-        "horario": "04:00",
-        "id": 132869131102563,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPbElkazB2bEZBUWF3UW5Zam5FOVlEVWUxUDFLbFRFR3JKMGNsNmd3eGp3bWk3OGNkQkcyeU44MHVtS2dEOThXOExYM2ptNW1xM2ZzLUVJNkxSQW9lc2ZUd1ZjangzVWNYQXl1M21jc3J3a3Nra0s0M00wU1BRZlZ0NUtCUllCczRfRVpCb2Jja2hOUnVvUGlrLURpN2lEdUJxTUhtZVVCZ3dicnFLbVZjb0VDUjdFUzZ1?oc=5",
-        "tags": [],
-        "titulo": "Commodities | Implicações das Tarifas de 50%: Tudo em prol do dólar - Genial Analisa"
-      }
-    ],
-    "InfoMoney": [
-      {
-        "categoria": "bolsa",
-        "data": "2025-10-13",
-        "data_hora": "2025-10-13 04:00:00",
-        "descricao": "Confira o calendário de resultados do 3º trimestre de 2025 da Bolsa brasileira InfoMoney",
-        "fonte": "InfoMoney",
-        "horario": "04:00",
-        "id": 156284093666284,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOanBlT3NGUUpyV0hCSTRVU2ZPelZhazd4eVdBTkNfMjh5RE10cFpJQXBBQTZINTFfUzJEcFpXaEduM21iY21uYkk2aHhXTEcwdHlkcWd3UnFoSzQxNDdCRWVDRzZGZGI3MVo0SEZCakFMeWxISWtaZFRjNFNuOF9qX1J2Sll3cG9DQmhEempHQmbSAZYBQVVfeXFMT1NLU3BRNHRUa2dUOFRYQjFBdjZxM1VaVWZLNmlsblRoLVJPYnJtbV9qczNFU0I2azVCT1gtempIQnZmUWY3cXdMbmtPVU4tTmFfcHNpRkJDWkFSN19tMUpuc0tBcEs2VHlETGhTdWNSeHBpZzFadHltUXJuUmhyRS1jcnRuSFpGdG5tS1pQMDlySHB2ZXdn?oc=5",
-        "tags": [
-          "Bolsa"
-        ],
-        "titulo": "Confira o calendário de resultados do 3º trimestre de 2025 da Bolsa brasileira - InfoMoney"
-      },
-      {
-        "categoria": "cripto",
-        "data": "2025-10-04",
-        "data_hora": "2025-10-04 04:00:00",
-        "descricao": "Bitcoin, Ethereum e outras 6 apostas do mercado cripto para outubro InfoMoney",
-        "fonte": "InfoMoney",
-        "horario": "04:00",
-        "id": 2086653919263,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPMnFsanBXRVVXZlJOZjd1Ykp3SXJ1RnVPYXZWYzYtVG5aTkhIbGVvR2xuOFpfSGp4QklkcmNCNE9qd3RhZklsNXc5TXB2MHluMGhjTVNBdmlYRFl4NTNRQmtUMFU2dkRqeXlqR1lCelVoQy1SUjhWa3dhMVl0NTZUX09jYTFpa1o5RWVGR3lLV2RwVzlJMVU1QWlxOW9aUFJ0dUhlRWVWY0ZBdXhiZkFB0gG0AUFVX3lxTFBzZHQ1emVhZHpLU1IyVUsybnVjakVta0JMT1JvUjljeVI5R2ZkWnNmOU5mZEpld3k1YmdYaVI2c2tkSEZRSFRER0Z4d1N3VjFXakpwelVpaFRPRU5NXy1ZUmVrSVRmSFdMdm9BbTk3M2g2bVp5YXo3MW9IY0J6X01Sdlo5bW9mdThGTmp5aEVENEd4Qk9ZZ2dIRFVQT25pTW9KNzMyS1lzZ2ZZTFRseXp2NlUzLQ?oc=5",
-        "tags": [
-          "Bitcoin",
-          "Ethereum",
-          "Cripto"
-        ],
-        "titulo": "Bitcoin, Ethereum e outras 6 apostas do mercado cripto para outubro - InfoMoney"
-      },
-      {
-        "categoria": "economia",
-        "data": "2025-09-19",
-        "data_hora": "2025-09-19 04:00:00",
-        "descricao": "Governo quer ajuste fiscal para reduzir peso da Selic no controle da inflação InfoMoney",
-        "fonte": "InfoMoney",
-        "horario": "04:00",
-        "id": 273882911090167,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPSlVGNHJZSXRPT2kxUnBnc3BHUWFCYVJiSW9Pb0MxM05Lc0VUVm9WYXRCSkZISWRtRFVjMUt1Y1RrYjlGNnF6ZkptQUUtRjE2aHc3aDI4VmZoMHlpM0RXZDI5RFAxWVREa2RtSHVvRHJJdEVEUTBwMUhybHVmekNDRlkwUUJqQjU3UTRmUmx3amRXdWtpdEo0RG94eGJQMkFIS192QzVGMjc5T09MV3FKRFpoVDJlTXPSAbwBQVVfeXFMT0FRTHl4YnVhTlVKaDlXb1FsTDVhVXIyQ0JtNXkyb1ZsU3VPeDBVQXFOOF96S25Zc0ZsZlhHTlhUa0drVHBfWEN2eHpUMXlLU1hqZ0k4dGhPc0dBNGpfMTZzdklNbDZSN0I0eFhsbi0tMUhGR3dfR19GYXdubS1XS2dfSTBiS3Q5d2loU0VuMWRRWUNTRjR5TUJuazc3cE5VaXpUdHk1dlN6TUdpZlZnQ3VSeTBNTXpQY0twWVE?oc=5",
-        "tags": [
-          "Selic",
-          "Inflação",
-          "Economia"
-        ],
-        "titulo": "Governo quer ajuste fiscal para reduzir peso da Selic no controle da inflação - InfoMoney"
-      },
-      {
-        "categoria": "bolsa",
-        "data": "2025-08-06",
-        "data_hora": "2025-08-06 04:00:00",
-        "descricao": "O que fez o Ibovespa subir mais de 1% no mesmo dia em que o tarifaço entrou em vigor? InfoMoney",
-        "fonte": "InfoMoney",
-        "horario": "04:00",
-        "id": 14498428091647,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNcWFuMXhLeEtIbUxjTmxFSFlUSGhPU2tIbDV4WEVPV2JGVksyc1pZZUtJYW9uLUgxdkZQc0Uxal8zSGFQQlNiR3NXbzJEZk5nMnBWeTJXTVdSV0JJbmNPQTM2bVBtajZqQlFjWVdtUDVXVFV6d25BSzhBNHBxMVVyUExQa1dkbUF3MkJ5OXNaakl2elRsZHNuZS1LQ1ItQ3hWOTNhS3dONXRSVGYwVDduS3V3RDNDVTNSWk1sTFExTdIBxAFBVV95cUxQZlp4NklpM3BUcktOX3RsV1NOenVPYmpPbjJtZmU4MGlnLWh4NzRNT2pFelR4Vzg4YmNNTTQxOWxWZ0lNWng5ZGNnQ3ZlNFFsVnJIUVJpYlZ1WTZ1aExNV2ZJRF81QTR6SUhCLTEtb3hraTJ2ekxrVGR2MGpKcnNkTm91Y052cDNuQzR6c0Jwa0Q4aV9qaEk5ZnhqRGN2NEltczdORFVGTXJEQVBTUXJaVGt6RklMeXNVTDliTnQzT3ItQURH?oc=5",
-        "tags": [
-          "IBOV",
-          "Bolsa"
-        ],
-        "titulo": "O que fez o Ibovespa subir mais de 1% no mesmo dia em que o tarifaço entrou em vigor? - InfoMoney"
-      },
-      {
-        "categoria": "exterior",
-        "data": "2025-08-01",
-        "data_hora": "2025-08-01 04:00:00",
-        "descricao": "Ibovespa hoje tem nova queda, com dados nos EUA e tarifaço; Vale se salva InfoMoney",
-        "fonte": "InfoMoney",
-        "horario": "04:00",
-        "id": 46393636044057,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOdDlERmNxd0J6c21nT0puMEE5Wi1vcEZkbDU0ajY3aUNUcVlHTU03Q2EyUU5sai1vNXU0N3NSUGRDek9QdmVjeUUzeHFoQkl5dGdFZTdicGluRGZ5YkF6THFMNGE5RXBwMENrWW5WUmR6Y1ZyZjZtcUVSTUYwcDl1dTBoeHhUZjZvZTl5UWV5cw?oc=5",
-        "tags": [
-          "EUA",
-          "Exterior"
-        ],
-        "titulo": "Ibovespa hoje tem nova queda, com dados nos EUA e tarifaço; Vale se salva - InfoMoney"
-      },
-      {
-        "categoria": "bolsa",
-        "data": "2025-07-15",
-        "data_hora": "2025-07-15 04:00:00",
-        "descricao": "B3 (B3SA3) entrega dados acima das expectativas, mas bancos mantêm cautela com ação InfoMoney",
-        "fonte": "InfoMoney",
-        "horario": "04:00",
-        "id": 120938594585139,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNNmpwQU5rOUpTMjY5WHhqMWNRTFBqaEd6WXhCV1RGelJVR0NHWGZzWmJTSnk1b0ZxajA2UUpCWGFhOFBrbk8za2I4Z2ZTTXhhSWtYd0JzdDVyNHcyTFNMU3psWC1qSHFwWkNudTc2OFYtZFllV3E3dmItMXRCVExLeHVybFc2dFUzTENxSE1SQjdNMnNKVG12RVdtbmhmM1BGM2EyWU9JZFoydVN3U3F6TmsyaWFUU1RPa1Vr0gHAAUFVX3lxTFA5X2RaaHBRYWN2c1ZRVXFOanV1eXVrR01FNjJVc3FweHhCYkRxVGs4bjJwVWdRMXQxV0VJV1lZOFJlX0lfM1ZGRzRRek5VYnptNE9hUUhwTHRXMFc0WUozTW9RXy01dklVQWppcHlldnFEWFNTdWJEb0FiSzRPU19WMlFLaWtZeGI3VlQ5enk2NnBuTVJEVl9sNTlTei02WWlFc0NYVTdtNUVJaTI3Um1abm05ckhMejlGRlFZMm1fVA?oc=5",
-        "tags": [
-          "Bolsa"
-        ],
-        "titulo": "B3 (B3SA3) entrega dados acima das expectativas, mas bancos mantêm cautela com ação - InfoMoney"
-      },
-      {
-        "categoria": "geral",
-        "data": "2025-04-09",
-        "data_hora": "2025-04-09 04:00:00",
-        "descricao": "Dólar mais fraco ante pares desenvolvidos e real desvalorizado? Como assim? InfoMoney",
-        "fonte": "InfoMoney",
-        "horario": "04:00",
-        "id": 123767214983561,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPVXRQTHN1aVZIMmNjRWpnM0Ftc1JoSFJZZUZGTmwtM3Y5TVJNbm83ejZHTlVWSkUwWDFRM1F1TVI1TklFZU5WSV9LS1dVWmlOdTh6ZzRNeXdBYnRNVnVxZG9scXBTaUhZREl0c3JvSWkyZlAtNXlZRjJYamVEM0o0WUY4a0VwNzVrRDNtT0xLcWRfQkV0U2VZem10VTlUOTJCckVMYWJPWkluLTNjVXh4WUln0gG3AUFVX3lxTE1OTUR6V0xSWkoyZV9UYTlDWjh2WVBtS190b09yMElCdC1TRy1tYVFRYUZFV3k2RW1OR1k1WUJYQWVsVFNHNkhPYnp0YzZDU1kyVVFYZTc1Rk9fUVlWTk9UYTFTUlVWTFhVeUczRlRiSk8xckU1aEU4WTFmSzhZWmZWRkhMR2ptZEdmbnBORjBvaS05dThLLTlLRVhEWUFsMExiaWFQWnVNWjRSNzJPb0xyLUxnbGQyQQ?oc=5",
-        "tags": [],
-        "titulo": "Dólar mais fraco ante pares desenvolvidos e real desvalorizado? Como assim? - InfoMoney"
-      }
-    ],
-    "InvesTalk": [
-      {
-        "categoria": "geral",
-        "data": "2025-03-14",
-        "data_hora": "2025-03-14 04:00:00",
-        "descricao": "Fechamento (14/03) | Ibovespa fecha em forte alta de 2,64% puxada por commodities; dólar cai 0,98%, para R$ 5,74 InvesTalk",
-        "fonte": "InvesTalk",
-        "horario": "04:00",
-        "id": 275200767435621,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE9RTm5YOE1qempXaVlKYTJ1cWhRTDVhLWEycm8wYUxUTHlSWk16c0NYZW0yVUtKYTU2dEdjRjVXM1lpNlpKUnNhUWpuNkFfTmNJbzhCTkFtVUo4UUN3S2E2WnhTbUlJTGFUVTZSVTRJRHlkdw?oc=5",
-        "tags": [],
-        "titulo": "Fechamento (14/03) | Ibovespa fecha em forte alta de 2,64% puxada por commodities; dólar cai 0,98%, para R$ 5,74 - InvesTalk"
-      }
-    ],
-    "Investing.com Brasil - Finanças, Câmbio e Investimentos": [
-      {
-        "categoria": "cripto",
-        "data": "2026-01-05",
-        "data_hora": "2026-01-05 05:00:00",
-        "descricao": "Criptomoedas Promissoras para 2026 Investing.com Brasil - Finanças, Câmbio e Investimentos",
-        "fonte": "Investing.com Brasil - Finanças, Câmbio e Investimentos",
-        "horario": "05:00",
-        "id": 106864863058408,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE16SzNnczFJaFBwSUZoRGdFNnJWcFNHb2Z1T09BSWotX1VleFNyanhuS1JyenV1NjlxOGZFc3JUZG1DQVNuQ01yM1ViNm9YbzlreTdwNk9hQlpzaEZzQ05zLUVPeEwtV2l1b1E2UDJhT2lOdkE?oc=5",
-        "tags": [
-          "Cripto"
-        ],
-        "titulo": "Criptomoedas Promissoras para 2026 - Investing.com Brasil - Finanças, Câmbio e Investimentos"
-      }
-    ],
-    "JOTA Info": [
-      {
-        "categoria": "exterior",
-        "data": "2025-07-22",
-        "data_hora": "2025-07-22 04:00:00",
-        "descricao": "Até onde Donald Trump pode ir nas sanções contra o Brasil? JOTA Info",
-        "fonte": "JOTA Info",
-        "horario": "04:00",
-        "id": 167838626584207,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNV0lFUTJtOWR6SUU1NV9PNERubmJTSVdpbkpyNDY5dG96bUdNd1NEMlJYOHhDbk1jdHhQclR1ZFRTcFVLRzhhRjNBMm44TFFrZGZoRG1wVDhjNEZ0Q1lRRUx1V2J4NEE3LTl2LTI0SERVMWw1Z0FRNmJmNmoxZzZYMC1Rbm91cW9JbWprSS1WY2ZpWWc?oc=5",
-        "tags": [
-          "Exterior"
-        ],
-        "titulo": "Até onde Donald Trump pode ir nas sanções contra o Brasil? - JOTA Info"
-      }
-    ],
-    "Midiamax": [
-      {
-        "categoria": "geral",
-        "data": "2025-02-10",
-        "data_hora": "2025-02-10 05:00:00",
-        "descricao": "Dólar cai com alta de commodities, mas tarifas de Trump estão no foco Midiamax",
-        "fonte": "Midiamax",
-        "horario": "05:00",
-        "id": 206780920017022,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNaGxaOXoyMXp4WE80YXR5eWMzRWd6WVJGMExnRk51MnViX20yM2JfUmNZRDFNbzkzbDlBeVJHRWdQeDBVV0RQVkZzbHZ4dGtubTNEUWFiRjMyWjB0dUdmWDdrVVJDMWdCZHJjLTBsRmtWRHpQcHNZeWk2U0ZfZ2g0b1N5T0o1TWpGY2lxOTdTUk1LcG1hSWx2T1hJdnJwaUtJOFBNQUlWLXU3VnhKZFZfMHhTUXo5RmdG?oc=5",
-        "tags": [],
-        "titulo": "Dólar cai com alta de commodities, mas tarifas de Trump estão no foco - Midiamax"
-      }
-    ],
-    "Money Times": [
-      {
-        "categoria": "economia",
-        "data": "2025-12-15",
-        "data_hora": "2025-12-15 05:00:00",
-        "descricao": "Entre crescimento e tensão: O que 2026 reserva para a economia brasileira Money Times",
-        "fonte": "Money Times",
-        "horario": "05:00",
-        "id": 4583218619178,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxONHMzbWxTUmhJek96VHRvcnhYZl83ZWlMalhuZVVySnNmNUZ0X0k3Mjdvbjk4eXhWaDNlTXRJQ3haTzNNVmJtYjFuQXNVdWw3aXI0WExVNWpONFUzMzJjNzRPMUU5UlNvNGVSazZiTFFVVm44SF9WTkQwMGl3ZVdtRnZCQmNya09lMnl4UDhfNnItNWtDZkhzd1Ryekg2M2VST1J3TTdyaWVmbjZT?oc=5",
-        "tags": [
-          "Economia"
-        ],
-        "titulo": "Entre crescimento e tensão: O que 2026 reserva para a economia brasileira - Money Times"
-      }
-    ],
-    "Nexo Jornal": [
-      {
-        "categoria": "economia",
-        "data": "2025-03-23",
-        "data_hora": "2025-03-23 04:00:00",
-        "descricao": "A inflação resistente, o risco fiscal e os juros em alta no Brasil Nexo Jornal",
-        "fonte": "Nexo Jornal",
-        "horario": "04:00",
-        "id": 104789247569623,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFA3cFFTblVubHh4SFF6RFVyUWRqbEI4UV9YaDMyLUw0N0M5b1h4dEZxelkwSzk1RXBObjZpemZYbk00dXptbmJyTmc4M1k5RmNYaURBX01nU01QTE55eGFjX2x3b1VEb3NBYVZnV2dNMXpwMGZZY2RV?oc=5",
-        "tags": [
-          "Inflação",
-          "Economia"
-        ],
-        "titulo": "A inflação resistente, o risco fiscal e os juros em alta no Brasil - Nexo Jornal"
-      }
-    ],
-    "O Globo": [
-      {
-        "categoria": "economia",
-        "data": "2025-06-24",
-        "data_hora": "2025-06-24 04:00:00",
-        "descricao": "BC adota cautela com inflação fora da meta e PIB, mas prevê efeito futuro de aumento de juros 'rápido e forte' O Globo",
-        "fonte": "O Globo",
-        "horario": "04:00",
-        "id": 78710741898134,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOcGJDR2w2T215UDFJcHRUZ24zRmFrMjlSNFFDbG9ZTWp1R2ZSMEpDaGh4YjlaWkFGNXdsenBwQ2ttM0RIYno4WmZOZVNQeTE0dTB3TXdtc1BMOUFDX0xaNnRGSlpCNG5aWWROSGlPUFBRQjAzbXBQOUZWZGZmaFFxQjFrcVBNbHZoc2I2TFJ3ZVI3SHkxNElRZlRvUF9MZmg5VnRxRnJyLXVJUG9ZZXNHU3lWYUFQZXNWYnN2WVAxMNIBzgFBVV95cUxPcVI2YWtoNDBXYkd1YTFyZl9Zek1kRGtsbjhfMDlLY1VBV0hERkRLNElYdUZvQTBSN2R5eU8zUWoxUUlYTlYtZ2NBZ2JaOTJHMlBhU0k3TlN4bWh6YjZVeVI4bHE5TURzQWJCWDFUMFo2MWVQT2EzdDloVF9NVVRvWS1uS0N6cjk2MjB3RzVJLU5QcGh2M29FZUFRSWVNUVJWUXdSTk0tcE1GSUYzS2ZRQ2dQY0JrU1BRQ1VaSFVmZU5vLVJaNHdLQ1JNenEyQQ?oc=5",
-        "tags": [
-          "Inflação",
-          "PIB",
-          "Economia"
-        ],
-        "titulo": "BC adota cautela com inflação fora da meta e PIB, mas prevê efeito futuro de aumento de juros 'rápido e forte' - O Globo"
-      }
-    ],
-    "Olhar Digital": [
-      {
-        "categoria": "exterior",
-        "data": "2024-08-26",
-        "data_hora": "2024-08-26 04:00:00",
-        "descricao": "\"Guerra dos chips\": China usa data centers no exterior para driblar sanções Olhar Digital",
-        "fonte": "Olhar Digital",
-        "horario": "04:00",
-        "id": 45076978593965,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQc3huYzJXQnpQNHIxNjlrenZtMDlaOV80U2xyYzNrWEpXNE5OYndUdmluYTF5ZXdNSFdidkRiVHZuRHJ3UE5FbGVNY182Q29nZFVZelAwb0xLVFhPcjVaSzNUSElrZHNXWjJvVjF2RlV5bjNPQTNkMDdUeVJJYnpOQ3dzVk02SzZIMzYzdlduMkt3QUl1ZXpfRnRIdElkbXBiUnlaenhBQ0EwamhUb3JSYUZYVE5iREU?oc=5",
-        "tags": [
-          "China",
-          "Exterior"
-        ],
-        "titulo": "\"Guerra dos chips\": China usa data centers no exterior para driblar sanções - Olhar Digital"
-      }
-    ],
-    "Poder360": [
-      {
-        "categoria": "economia",
-        "data": "2025-03-31",
-        "data_hora": "2025-03-31 04:00:00",
-        "descricao": "Mercado mantém projeção da inflação em 5,65% em 2025 Poder360",
-        "fonte": "Poder360",
-        "horario": "04:00",
-        "id": 69936637042097,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQNVMtTDRWQmhudWpIbXd0LXFNbE50Rkl6clI4Z0x2MTctei1PWFlvajhfQnVfaWFlaXB1QmQxU21JMkNVaFUwQ2FDLWZkUWFfeFlzWVI4bmRzaWVSbEhaM1FMNHVZVTl0OG0wV1g3Sks5dHZ5SVdmTExxSHJwbEdJV2czR0xibFJtWlR4UGl3Nl9uVklPV3pDNmJn?oc=5",
-        "tags": [
-          "Inflação",
-          "Economia"
-        ],
-        "titulo": "Mercado mantém projeção da inflação em 5,65% em 2025 - Poder360"
-      }
-    ],
-    "Portal do Bitcoin": [
-      {
-        "categoria": "cripto",
-        "data": "2025-12-05",
-        "data_hora": "2025-12-05 05:00:00",
-        "descricao": "Tom Lee diz como o Ethereum pode chegar a US$ 62 mil em poucos meses Portal do Bitcoin",
-        "fonte": "Portal do Bitcoin",
-        "horario": "05:00",
-        "id": 88805254697192,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPQV9MOVdCU3R5UXFmZjItYktOeUc0Ulo4SG0zMEdvTXN0MGUzT1g1RWE4QnZUUDRNZUVsMEVRaERGcWhlZHhETFBpTW1HQlpQcDVVV2pjaWk5NVlVUmFtMjRPV052YnNlc1pjTjQtU3J0c0J0em82T21RSngxdzhLTjMtNGRGVi1qSzdOSV80NEpDVmg5WTVBYUplaFNSUTB5TzRLbTJR0gGrAUFVX3lxTE1xa1dIWU53cjA0UjlJNExpS3FGTjNMaHNYeEQwMDBSLUpwTkNMX1ZDRS1vWEQzaGZnRm9nc1VFUGwtVUk5ZFIwd0lxSkhBd3hWSF9yNFFKTmxkMTJFSk5wSHNzTGVrekEteVlRbkQyeldUVjBqMzNqNlhJUWdsaXhkNnZXZDFRRndMaHY3VVlpblcyUnVvVVU3d210eDZ5VF9JMTVvRVhRRmR4dw?oc=5",
-        "tags": [
-          "Bitcoin",
-          "Ethereum",
-          "Cripto"
-        ],
-        "titulo": "Tom Lee diz como o Ethereum pode chegar a US$ 62 mil em poucos meses - Portal do Bitcoin"
-      }
-    ],
-    "Seu Dinheiro": [
-      {
-        "categoria": "bolsa",
-        "data": "2025-08-08",
-        "data_hora": "2025-08-08 04:00:00",
-        "descricao": "Selic a 15% ajudou a B3 (B3SA3)? Lucro líquido da dona da bolsa salta 20% de um trimestre para o outro. Saiba o que esperar das ações Seu Dinheiro",
-        "fonte": "Seu Dinheiro",
-        "horario": "04:00",
-        "id": 191987814517208,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiogJBVV95cUxPdk5XZjBzSlo0VTJZaHUtUVZkcWxka2Y5YVMtOEI4Q0RyUGRPVWMyWmlHVjBLOXJCRVN0RTUtaEpDcTh3WlhtSEJCSElyR1lSYXZTOWRNYTUyXzUxenMxNWZmenZUWjN4ZjJ1MGd1NS1VbXB4bV9aeFFZWEtRYXFiUUhoY0NjaTJrS2Q3RERzQ0l3UXdPanhFU1p4ZzBpSHZfcC1mM09OMVdPa1VqMGxvX2s1eDljSlRVQVJ5aWlEOFYycFJMTVV4U0Y2eXpJUTliSl9MN04yR1Foajd3YVR2SlI2VlBwaU9NZHVkdWhuZGdEVVZzODBPd3lVTG5razJZWlozOXJtMVp3QWtxUHBuekRRSzNqYWFvUkp2ekJoVFpHQQ?oc=5",
-        "tags": [
-          "Ações",
-          "Bolsa"
-        ],
-        "titulo": "Selic a 15% ajudou a B3 (B3SA3)? Lucro líquido da dona da bolsa salta 20% de um trimestre para o outro. Saiba o que esperar das ações - Seu Dinheiro"
-      },
-      {
-        "categoria": "cripto",
-        "data": "2025-07-22",
-        "data_hora": "2025-07-22 04:00:00",
-        "descricao": "Bitcoin e ethereum? Que nada: outra criptomoeda 'rouba a cena' e entra no pódio mundial durante a crypto week Seu Dinheiro",
-        "fonte": "Seu Dinheiro",
-        "horario": "04:00",
-        "id": 262400178393541,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxNYWFlZGJhMldwYlJDeFVKQ1RYWmFVdXhPSEdOWDdtd1lGSU9HYm5yT3BHeHh4Zy1PaW9zd1VJbVhoMEhEYzhUVk1xSEo1RHVfOElSTzJqeTFBMUtTQjNib21yaXhONUJ2Sk9CVlIwcE1YUDBUSm1tbnJfLUZLWndkSHEwaFJpT0FONlFfSXFwMmNTNmctZmhzTGRMdHpHSGkycjE1VmhORll3ZFNyRHlQZzBkSWJjV0VRUk5iWlJzVkNjaDhHWXJZdmdfMFR5QjNLc1dmQ2xhdGx5VTlGbmstT1BBcVpqaXgzcTBqdw?oc=5",
-        "tags": [
-          "Bitcoin",
-          "Ethereum",
-          "Cripto"
-        ],
-        "titulo": "Bitcoin e ethereum? Que nada: outra criptomoeda 'rouba a cena' e entra no pódio mundial durante a crypto week - Seu Dinheiro"
-      }
-    ],
-    "SpaceMoney": [
-      {
-        "categoria": "geral",
-        "data": "2026-01-07",
-        "data_hora": "2026-01-07 10:39:20",
-        "descricao": "Dólar hoje: Indicadores dos EUA e commodities ditam o tom dos mercados SpaceMoney",
-        "fonte": "SpaceMoney",
-        "horario": "10:39",
-        "id": 89486251498895,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNV25fMF9kVHBhaEVCRUozN1oyT1I0UHRwbFF6dEF4Q05ib214WGVQYTNuREJoRWNDZ2I4Q3hmdGdzUUxTUno2Zll3TUdJZ0RzTDV6RmNvMnVEbG9sWk9vQUhEN3VtZ2VISFNaM2RORXZCRlA2dktNckdHVVZKR3BhNTFqVUgxbjIya3ZpUDRDR1E3SWktR0wyREptZHZLbncxQXNSZHhScFhrMGRZVzJWRmVPc1VnRXZ1aVVDbw?oc=5",
-        "tags": [],
-        "titulo": "Dólar hoje: Indicadores dos EUA e commodities ditam o tom dos mercados - SpaceMoney"
-      }
-    ],
-    "TradingView – Acompanhe todos os mercados": [
-      {
-        "categoria": "cripto",
-        "data": "2025-12-30",
-        "data_hora": "2025-12-30 07:35:46",
-        "descricao": "BTC, ETH, XRP, SOL Price Drop Ahead of FOMC Meeting TradingView – Acompanhe todos os mercados",
-        "fonte": "TradingView – Acompanhe todos os mercados",
-        "horario": "07:35",
-        "id": 232426778619368,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQY1BHOGl4dmF6TEFpc3k3b0dtNlQ1cnB3aVlaa2ZwSXY0aUtPdFZGRHNtOHE3WHhQY2FnU2R1X0R1VVVmN0RFRE82cjI1NGFyb0NQUE9EbFJHbjlTcTJEbHE4UlpyaFlwTUdLd1FyRmxDQ21nQWV4SVhBcG1YMEpyU2tBa1RrTUhyVGtXNW1pY3c1Wjk3ek1EendhNkVwUjlpNTc2eklwZk5Xd1RhNDBHcA?oc=5",
-        "tags": [
-          "Cripto"
-        ],
-        "titulo": "BTC, ETH, XRP, SOL Price Drop Ahead of FOMC Meeting - TradingView – Acompanhe todos os mercados"
-      }
-    ],
-    "Tribuna do Sertão": [
-      {
-        "categoria": "geral",
-        "data": "2025-12-12",
-        "data_hora": "2025-12-12 05:00:00",
-        "descricao": "Real recua com queda das commodities e dólar forte após ganhos recentes Tribuna do Sertão",
-        "fonte": "Tribuna do Sertão",
-        "horario": "05:00",
-        "id": 96204316368794,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiygFBVV95cUxONUJsYndyUUhKOGNxVmc3WTdVTVJKWDVkQW5peXdTMzZkZVV0ZGR6U0VXa0FVQXA1OG05U0lCdmF4NU5JWER4bGZvT0VOaXowYlVhUWo2ZUxHRmFwVnVQckNhYk5jSWNxd2dqbHF0WXdHNjZiOVd0NU14b1JSUjhzcDBpbEFZTlVFbldJaVl1U3BkNTE3a0lNVm1NSC1ZMk1NcUM5U3JweDF0emJITHNDUmFHN0hqbnJXUXZJazZ3YVVsNkg1c1BvZWpB?oc=5",
-        "tags": [],
-        "titulo": "Real recua com queda das commodities e dólar forte após ganhos recentes - Tribuna do Sertão"
-      }
-    ],
-    "UOL Economia": [
-      {
-        "categoria": "geral",
-        "data": "2025-08-19",
-        "data_hora": "2025-08-19 04:00:00",
-        "descricao": "Dólar sobe com agenda fraca e foco em geopolítica e queda de commodities UOL Economia",
-        "fonte": "UOL Economia",
-        "horario": "04:00",
-        "id": 105002969142876,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQUVBkSHczTVJCY21SN0JaQTgybjFDVlFwR0Rrd3Q3SklNZGNrVjM1V0hpTDh1UEN5WW5fWXg0VUpOZ3hvRldIMEk4THA2RmZKeE9LcnZtYklDQ3VibEl3OEJrQzN3SEwyWWp1dzJ0NGZEQk1aVzl3cVlQUGZpS0ZBLVU0WHBRY3BZejZDWnZLTlJKOGdrZUJUMUNHTkZ6QWROYUlicUJDS3B6ZFJUMzdtR0dFc2w0Y3lBZU9pZ3oyOUxFd0RMenEzc01JM1B2b3FRb2xkdHNITFM?oc=5",
-        "tags": [],
-        "titulo": "Dólar sobe com agenda fraca e foco em geopolítica e queda de commodities - UOL Economia"
-      },
-      {
-        "categoria": "economia",
-        "data": "2025-01-30",
-        "data_hora": "2025-01-30 05:00:00",
-        "descricao": "Com dívida em alta, Brasil está perto de perder o controle sobre a inflação UOL Economia",
-        "fonte": "UOL Economia",
-        "horario": "05:00",
-        "id": 184629652828464,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPZFNTc2NWZmlOUm9JZ2JFaC1EZWZmMEI1RWtnYzI0NVJYYXB4NFhvM3ZkZTBGbXZuTTBQanQ0dDRCY2NBMTZPZllIQmZwVXQ4Z3Z4WFJsSXVBYlREeUs2d0JYLTdwS3pQOUhhS2ZYMVdTVGJFRk1ndUF3Vnk0M3g3c2ExTkJXcVVKUGNXdHNmYWstbkR4NkZ6SkVEZE5YZlduVUhZMzFrWkhFaWM0Qkx2SmNKX2hhYjVodmN3ZmVOY29NQWI5b09scw?oc=5",
-        "tags": [
-          "Inflação",
-          "Economia"
-        ],
-        "titulo": "Com dívida em alta, Brasil está perto de perder o controle sobre a inflação - UOL Economia"
-      }
-    ],
-    "Valor Econômico": [
-      {
-        "categoria": "exterior",
-        "data": "2023-06-16",
-        "data_hora": "2023-06-16 04:00:00",
-        "descricao": "Dólar fecha sessão e semana em queda após 'payroll'; Ibovespa sobe Valor Econômico",
-        "fonte": "Valor Econômico",
-        "horario": "04:00",
-        "id": 153698316905745,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQaUVZZHZUWGJkcmxjWWpuSmxHbWJoRjNhNWVvMnVGREdHelR0RkVMaV9uYjA2SEZkSE5EbTZGOEpJR3cySXFDVEp4XzBOTi03WU15b2dFd21WVXgwQVMwQWpYeE1UeVNENHZJSzdZRTl5VzBKSG04MUR3bkJYamtpVlJLYXNuSWIzeFBBdk81VHYtQUtyc25IWV9wUE9GR2ZCUkd5ZzhmY0xZV3A2MHRna0lOS0VEUWpfQ3RxblZaSTfSAc8BQVVfeXFMTTZ5cFpPSkxWVjU0RXJHTkNOOE9ZeXRERzBXdDBZb3Q0N2ZiZ21BWWhlTnBTeERhS1U2cHpXb2hiWGNibkxQd2FjcXE0QmxIemRrcE91ZGVRa2NydEs3UEc2bHFwNTM0ME9LZUFidy1uZU80SWRaR0VBS29iUlVaRnl6REVodEljVHBod05IcjItZmp1X01TRXZub3MwVEhmeDc1SVM1djZ5cHNJRll1U2lOcVFtc3pmQXRBenZmR0xqdlJSNUdnVWlFbnpQTm4w?oc=5",
-        "tags": [
-          "Exterior"
-        ],
-        "titulo": "Dólar fecha sessão e semana em queda após 'payroll'; Ibovespa sobe - Valor Econômico"
-      }
-    ],
-    "Valor Investe": [
-      {
-        "categoria": "bolsa",
-        "data": "2025-11-28",
-        "data_hora": "2025-11-28 05:00:00",
-        "descricao": "Veja as 10 maiores altas do Ibovespa em novembro Valor Investe",
-        "fonte": "Valor Investe",
-        "horario": "05:00",
-        "id": 164638465119680,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxNbHMxRzZ5VHhjMk1nMGo4RVZZWFQwdUZ0UVdBN2NVUXlNRmlWYnVueXJWbUpRWHJYc24tOFdpUmkyZnprX29FQlFzeDlYZEJBWHJBUE1NVGlTY1ZxZ0RUWTFPWklNQkdkYWpTeHhkelViRmFTYlZtNENGaTlHODliR284WXlLdnlvZXhMNVY4TVRpMGNrRlI4WGlFQXFCVndCX21uTHlyS1ZmRlJmYzdvODJkS25OY0JEclBMLXNCcXB4ajBYZlVYUTFDbXlUMk9fZUs1VE1WVGNfRG1ubnfSAewBQVVfeXFMUHFuYmZpV1ptTlEyZlQyUmdXNGVTOVRTTHdlR3l5WjJLR3AtX25SZUtWZ0tRYnJCMVNkX19YeXVXbWZqeUpxcVpObkVCcjY3RU94Mmw0T01pUWlzbHFfRXhFOV9lRUliTi1zcUIwaWJaajk2THRNT2lkV2FMS2lUZVhUUzBScmhHYmJTSG5VdVBSWjRmWW1FNTc2eWZoalEwS2RPNjVxUDR2YXZvbXdoNy05OXBqYXJTTXloVnE1c19STG43SmY0Um93N2VsRG40bUlTb3dvYXNqNElyRDRzYlNBeHZuVEFPWC1HWUo?oc=5",
-        "tags": [
-          "IBOV",
-          "Bolsa"
-        ],
-        "titulo": "Veja as 10 maiores altas do Ibovespa em novembro - Valor Investe"
-      },
-      {
-        "categoria": "cripto",
-        "data": "2025-10-03",
-        "data_hora": "2025-10-03 04:00:00",
-        "descricao": "Criptos do mês: por que Bitcoin, Ethereum e Solana devem se destacar (de novo) em outubro Valor Investe",
-        "fonte": "Valor Investe",
-        "horario": "04:00",
-        "id": 130523289419261,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxOdGUtZjJsZXFFUGlXLU5WUWpIbTZ6MUt1aEFQMDdWUElXcTFGeEVkbXBNdHZfckRYZDJzOHRqY3h4ZmZNWUlCWEhZZGlJVFAyVHhULTNOMDA3MG1BOXhUSXA4b2Qya0g1Y3hTdkpQSUtaY29vZzEtZnpVWjJaMk1DNW02aEpLLVNuZlJFWGtkLTNQT19UZ19MTEFDcFJwOTUyaF95QVhvZXNzUWowWkVJRFpVRHJ4Q1Q4RWVUNW1uMVVpYnZsaU1nYVJtdHRpTEJwMXR6a25zVnhBUldRRVNoVHVKWTZDWE5TSnFKNTZB0gH8AUFVX3lxTFA1REkyNmhHVXBxTXk0RVdOaVFvRWZfMjRJenZ3TENzUFpMa2hYc0dEZFplM0hQbF9FZXdsc21McDRKX2Ewa3ZZLXdZLXZ2dVdaZ0c3SzlSZU5FMS05ZHFkSENNSTZ0UFUwQWhPcDZvSl9EdXpIS2NuSm43VURxMktRWnZ3V1E1UGJlQk0zU0xValZwbUp0ZjNjZUdrNHJKTGc4UDhFRHM3TzR0cGRHNXVOOVhtcmRFYlhTVHM4T2YyeWVSeEdLdnBKdHRtNzFDVFFPUEVyaWFTV0J4c09jN2NXakhkOTdnSEFKazlzZnc1bE1oX0V5dWZfb3U3RQ?oc=5",
-        "tags": [
-          "Bitcoin",
-          "Ethereum",
-          "Cripto"
-        ],
-        "titulo": "Criptos do mês: por que Bitcoin, Ethereum e Solana devem se destacar (de novo) em outubro - Valor Investe"
-      },
-      {
-        "categoria": "bolsa",
-        "data": "2025-07-22",
-        "data_hora": "2025-07-22 04:00:00",
-        "descricao": "Confira o calendário de resultados do 2º trimestre de 2025 Valor Investe",
-        "fonte": "Valor Investe",
-        "horario": "04:00",
-        "id": 219310147029211,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxQTTF0OHIzbDZjZl8yRWRFbUpHSmxQX29nLVl5ZWtqNE0xY2VBYUxzSm9vSVRzR0Z2VXA3djhoVzBwUFNBS0Q1QXlJRmRtWEFqcl9TTjhSOFlEYjBVY2loWWp2TzZTYXZUOFVUOVNwNkdOZS0tVTVLak1kY2l0eW93anYxNGY0ZkxFY09FMlNJZVVQVWZzQVB5T2xteHB6aVF4YWV3RW5PdDJQQ2lmQ3BJLU1kd1dFVkRrYi1seXBzOHJ6U3BCY1NyYWRiSTRUTV90UnRRU3FKclpNbV8zMTNDeFVwRVo4UdIB9AFBVV95cUxPal9GMWhBU1R5V0d6d1RFejlmTHE4RUFUY09EY3VqWHd5MnF1a3pERHFlZmpjMjFEN1MxamhadklmTEtrSkNpNHlmSXVzVEw2U0lvTGFzamVZT0FOZzBVRTR3ZVlRcUFMT0xwQkxtTFloLVdoVzdHakxpREJOWXBkUkxfZWN2YnVvZEdVMHQtMlZNZkhtaUpsWGhvSkQzcWpCa2ZXQ3QteDhVWlFVcTNpRzRkeklEUElWaGhNMnAzNldwWkhZVi1YRmZPU0ZVQ21tMjc3ejlhcXFadDlFQ2Vaa3FzYlRfVlByT3c2SVhoTDFMX21y?oc=5",
-        "tags": [
-          "Bolsa"
-        ],
-        "titulo": "Confira o calendário de resultados do 2º trimestre de 2025 - Valor Investe"
-      }
-    ],
-    "vermelho.org.br": [
-      {
-        "categoria": "economia",
-        "data": "2025-12-10",
-        "data_hora": "2025-12-10 05:00:00",
-        "descricao": "O Banco Central e a Selic de uma nota só: 15% vermelho.org.br",
-        "fonte": "vermelho.org.br",
-        "horario": "05:00",
-        "id": 192193562139975,
-        "imagem": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
-        "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQa1E1SGtEUkM4a2p0YUNSVTFHYkwzVjA1WW9EeUwwX0dHbHlIc1ctYm1Fbk95T3B4c0NkeGdiWVh1UDlBT2pfc244SWliWC1OOFJuVXBHcU5ibnR3ZUJtaUh6U1EzbVV2TnlwTXNESmN1UUNITlFtcEpyWVI3dEI1cnJCX0psOW1KNXVQVQ?oc=5",
-        "tags": [
-          "Selic",
-          "Economia"
-        ],
-        "titulo": "O Banco Central e a Selic de uma nota só: 15% - vermelho.org.br"
-      }
-    ]
-  },
-  "ultima_atualizacao": "2026-01-10T14:14:12.789654-03:00"
+  "ultima_atualizacao": "2026-01-10 15:21:56",
+  "total_noticias": 20,
+  "fontes": [
+    "InfoMoney",
+    "Investing.com",
+    "Money Times",
+    "Valor Economico"
+  ],
+  "noticias": [
+    {
+      "id": "5b957424409c",
+      "titulo": "Inmet emite alerta de tempestade e vento na Região Sul",
+      "link": "https://www.infomoney.com.br/brasil/inmet-emite-alerta-de-tempestade-e-vento-na-regiao-sul/",
+      "fonte": "InfoMoney",
+      "fonte_emoji": "💠",
+      "horario": "15:16",
+      "data_publicacao": "2026-01-10 15:16:00",
+      "imagem": "https://www.infomoney.com.br/wp-content/uploads/2024/09/rio-grande-do-sul.jpg?fit=300%2C164&amp;quality=70&amp;strip=all",
+      "resumo": "Previsão é chuva de 30 a 60 milímetros por hora The post Inmet emite alerta de tempestade e vento na Região Sul appeared first on InfoMoney."
+    },
+    {
+      "id": "4c44bc856c25",
+      "titulo": "Vitol deve embarcar primeira carga de nafta para Venezuela neste fim de semana",
+      "link": "https://valor.globo.com/empresas/noticia/2026/01/10/vitol-deve-embarcar-primeira-carga-de-nafta-para-venezuela-neste-fim-de-semana.ghtml",
+      "fonte": "Valor Economico",
+      "fonte_emoji": "📈",
+      "horario": "15:10",
+      "data_publicacao": "2026-01-10 15:10:10",
+      "imagem": "https://s2-valor.glbimg.com/pe7xiuSrkcxN-pq_mtFmgTh0n0E=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/C/A/Vj53mPSm6Yr6SdXFNSmw/446705752.jpg",
+      "resumo": "A trading de commodities Vitol deve embarcar a pri..."
+    },
+    {
+      "id": "e1d065533682",
+      "titulo": "Trump assina decreto para proteger receita do petróleo venezuelano em contas nos EUA",
+      "link": "https://www.infomoney.com.br/mundo/trump-assina-decreto-para-proteger-receita-do-petroleo-venezuelano-em-contas-nos-eua/",
+      "fonte": "InfoMoney",
+      "fonte_emoji": "💠",
+      "horario": "14:51",
+      "data_publicacao": "2026-01-10 14:51:00",
+      "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/2026-01-08T115525Z_1_LYNXMPEM070N3_RTROPTP_4_USA-TRUMP.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+      "resumo": "Trump assina decreto para proteger receita do petróleo venezuelano mantida em contas nos EUA The post Trump assina decreto para proteger receita do petróleo venezuelano em contas nos EUA appeared..."
+    },
+    {
+      "id": "18fbdaa0507c",
+      "titulo": "STF pauta para fevereiro julgamentos que podem custar R$ 51,9 bilhões para União",
+      "link": "https://valor.globo.com/legislacao/noticia/2026/01/10/stf-pauta-para-fevereiro-julgamentos-que-podem-custar-r-519-bilhoes-para-uniao.ghtml",
+      "fonte": "Valor Economico",
+      "fonte_emoji": "📈",
+      "horario": "14:46",
+      "data_publicacao": "2026-01-10 14:46:15",
+      "imagem": "https://s2-valor.glbimg.com/EsFT3rfYnuJFe901aqU3Gr3LQbY=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/8/1/fhZ49zTJq1I1ImwJwlog/andre-mendonca-redes.jpg",
+      "resumo": "O Supremo Tribunal Federal (STF) marcou para 25 de..."
+    },
+    {
+      "id": "667479e1f00d",
+      "titulo": "Maior iceberg do mundo está prestes a entrar em colapso, afirma Nasa",
+      "link": "https://www.infomoney.com.br/mundo/maior-iceberg-do-mundo-esta-prestes-a-entrar-em-colapso-afirma-nasa/",
+      "fonte": "InfoMoney",
+      "fonte_emoji": "💠",
+      "horario": "14:46",
+      "data_publicacao": "2026-01-10 14:46:00",
+      "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/iceberg_a23a_tmo_20251226-divulgacao-nasa-1.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+      "resumo": "Imagem do satélite, captada em 26 de dezembro, mostra as partes que restaram do iceberg encharcadas, com extensas poças de água azul derretida visíveis em sua superfície The post Maior iceberg do..."
+    },
+    {
+      "id": "fa1a19c82514",
+      "titulo": "Não houve 'inação' do BC no caso Master, concluem técnicos do TCU em análise preliminar",
+      "link": "https://valor.globo.com/financas/noticia/2026/01/10/nao-houve-inacao-do-bc-no-caso-master-concluem-tecnicos-do-tcu-em-analise-preliminar.ghtml",
+      "fonte": "Valor Economico",
+      "fonte_emoji": "📈",
+      "horario": "14:38",
+      "data_publicacao": "2026-01-10 14:38:12",
+      "imagem": "https://s2-valor.glbimg.com/SdfU3hvKzAciqP-KCSvI8zkS2lE=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2025/c/M/C2b73FQ2e85qmxdVET9w/2025-11-18t173757z-115159487-rc24zhapk2m5-rtrmadp-3-brazil-banco-master.jpg",
+      "resumo": "A security guard stands outside Bank Master (Banco..."
+    },
+    {
+      "id": "643e9d571bdf",
+      "titulo": "Número de prisioneiros libertados na Venezuela sobe para 18, dizem grupos de direitos humanos",
+      "link": "https://valor.globo.com/mundo/noticia/2026/01/10/nmero-de-prisioneiros-libertados-na-venezuela-sobe-para-18-dizem-grupos-de-direitos-humanos.ghtml",
+      "fonte": "Valor Economico",
+      "fonte_emoji": "📈",
+      "horario": "14:33",
+      "data_publicacao": "2026-01-10 14:33:55",
+      "imagem": "https://s2-valor.glbimg.com/p-RYeYiz6TyVo2ZMOO0tYJVVzxg=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/D/C/rEq9YUScKltykQUolOpw/2026-01-03t132926z-132401784-rc2iada1blsr-rtrmadp-3-usa-venezuela-vicepresident.jpg",
+      "resumo": "O número de prisioneiros libertados na Venezuela s..."
+    },
+    {
+      "id": "c5c28c6aa118",
+      "titulo": "Autismo pode ser fruto da evolução biológica do cérebro humano, dizem cientistas",
+      "link": "https://www.infomoney.com.br/saude/autismo-pode-ser-fruto-da-evolucao-biologica-do-cerebro-humano-dizem-cientistas/",
+      "fonte": "InfoMoney",
+      "fonte_emoji": "💠",
+      "horario": "14:28",
+      "data_publicacao": "2026-01-10 14:28:00",
+      "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/09/cerebro-pixabay.jpg?fit=300%2C200&amp;quality=70&amp;strip=all",
+      "resumo": "Transtorno começa a ser reavaliado como um possível produto da seleção de habilidades cognitivas The post Autismo pode ser fruto da evolução biológica do cérebro humano, dizem cientistas appeared..."
+    },
+    {
+      "id": "5198a27ae9ec",
+      "titulo": "Trump assina ordem para proteger receitas vindas de venda do petróleo da Venezuela",
+      "link": "https://valor.globo.com/mundo/noticia/2026/01/10/trump-assina-ordem-para-proteger-receitas-vindas-de-venda-do-petrleo-da-venezuela.ghtml",
+      "fonte": "Valor Economico",
+      "fonte_emoji": "📈",
+      "horario": "14:22",
+      "data_publicacao": "2026-01-10 14:22:04",
+      "imagem": "https://s2-valor.glbimg.com/KhO1xhamGt8fyUmEIFALPkz2Kp0=/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2026/6/j/Tj0OPcSDekEBK7jEXJAw/435605248.jpg",
+      "resumo": "O presidente dos Estados Unidos, Donald Trump, ass..."
+    },
+    {
+      "id": "f4839dbe9be2",
+      "titulo": "Venezuela anuncia retorno de navio petroleiro em operação com EUA",
+      "link": "https://www.infomoney.com.br/mundo/venezuela-anuncia-retorno-de-navio-petroleiro-em-operacao-com-eua/",
+      "fonte": "InfoMoney",
+      "fonte_emoji": "💠",
+      "horario": "14:10",
+      "data_publicacao": "2026-01-10 14:10:00",
+      "imagem": "https://www.infomoney.com.br/wp-content/uploads/2026/01/447247335.jpg?fit=300%2C199&amp;quality=70&amp;strip=all",
+      "resumo": "Trump atribuiu regresso ao \"grande acordo energético\" The post Venezuela anuncia retorno de navio petroleiro em operação com EUA appeared first on InfoMoney."
+    },
+    {
+      "id": "9bd55daacbbe",
+      "titulo": "Trump assina decreto para proteger receita do petróleo venezuelano mantida em contas nos EUA",
+      "link": "https://br.investing.com/news/commodities-news/trump-assina-decreto-para-proteger-receita-do-petroleo-venezuelano-mantida-em-contas-nos-eua-1796108",
+      "fonte": "Investing.com",
+      "fonte_emoji": "⚡",
+      "horario": "14:07",
+      "data_publicacao": "2026-01-10 14:07:31",
+      "imagem": "https://i-invdn-com.investing.com/trkd-images/LYNXMPEM0909J_L.jpg",
+      "resumo": ""
+    },
+    {
+      "id": "ddee9261238c",
+      "titulo": "Zelenskiy diz que principal negociador da Ucrânia conversou com EUA no sábado",
+      "link": "https://br.investing.com/news/world-news/zelenskiy-diz-que-principal-negociador-da-ucrania-conversou-com-eua-nosabado-1796107",
+      "fonte": "Investing.com",
+      "fonte_emoji": "⚡",
+      "horario": "13:42",
+      "data_publicacao": "2026-01-10 13:42:31",
+      "imagem": "https://i-invdn-com.investing.com/trkd-images/LYNXMPEM09095_L.jpg",
+      "resumo": ""
+    },
+    {
+      "id": "17830bf46258",
+      "titulo": "FIIs: EQI aumenta exposição a escritórios e ajusta carteira para janeiro; confira",
+      "link": "https://www.moneytimes.com.br/fiis-eqi-aumenta-exposicao-a-escritorios-e-ajusta-carteira-para-janeiro-confira-igdl/",
+      "fonte": "Money Times",
+      "fonte_emoji": "💰",
+      "horario": "13:00",
+      "data_publicacao": "2026-01-10 13:00:09",
+      "imagem": "",
+      "resumo": "A EQI Research promoveu mudanças em sua carteira recomendada de FIIs para o mês de janeiro, com aumento da exposição ao segmento de escritórios e leve corte na alocação em fundos híbridos. A casa..."
+    },
+    {
+      "id": "d536ae43b17c",
+      "titulo": "Autoridades do Irã sinalizam intensificação da repressão à medida que agitação cresce",
+      "link": "https://br.investing.com/news/world-news/autoridades-do-ira-sinalizam-intensificacao-da-repressao-a-medida-que-agitacao-cresce-1796100",
+      "fonte": "Investing.com",
+      "fonte_emoji": "⚡",
+      "horario": "12:42",
+      "data_publicacao": "2026-01-10 12:42:07",
+      "imagem": "https://i-invdn-com.investing.com/news/news_headline_open_108x81.jpg",
+      "resumo": ""
+    },
+    {
+      "id": "b58cab6cb102",
+      "titulo": "As ganhadoras e perdedoras do agronegócio em 2025 — e onde ‘amarrar o seu boi’ em 2026",
+      "link": "https://www.moneytimes.com.br/as-ganhadoras-e-perdedoras-do-agro-em-2025-saiba-onde-amarrar-seu-boi-em-2026-pads/",
+      "fonte": "Money Times",
+      "fonte_emoji": "💰",
+      "horario": "11:00",
+      "data_publicacao": "2026-01-10 11:00:25",
+      "imagem": "",
+      "resumo": "Se o ano de 2025 foi considerado ruim para o agronegócio, o mesmo também pode ser dito para a maioria das ações do setor. Apenas 3 ações das 12 compiladas pelo Money Times apresentaram uma variação..."
+    },
+    {
+      "id": "31b81fcd1a45",
+      "titulo": "Congresso dos EUA vê chances da Argentina dar o décimo calote de sua história, diz relatório",
+      "link": "https://www.moneytimes.com.br/congresso-dos-eua-ve-chances-da-argentina-dar-o-decimo-calote-de-sua-historia-diz-relatorio-rens/",
+      "fonte": "Money Times",
+      "fonte_emoji": "💰",
+      "horario": "10:47",
+      "data_publicacao": "2026-01-10 10:47:24",
+      "imagem": "",
+      "resumo": "O Congresso dos Estados Unidos publicou um relatório no fim de 2025 sinalizando a possibilidade do calote da dívida externa da Argentina. O documento fazia parte da avaliação do governo..."
+    },
+    {
+      "id": "4f787dfff2f7",
+      "titulo": "Capital com o metro quadrado mais caro do Brasil não é São Paulo nem Rio de Janeiro",
+      "link": "https://www.moneytimes.com.br/capital-com-o-metro-quadrado-mais-caro-do-brasil-nao-e-sao-paulo-nem-rio-de-janeiro-isbl/",
+      "fonte": "Money Times",
+      "fonte_emoji": "💰",
+      "horario": "10:21",
+      "data_publicacao": "2026-01-10 10:21:59",
+      "imagem": "",
+      "resumo": "Quando se fala em imóvel caro no Brasil, o senso comum aponta para São Paulo, Rio de Janeiro e Brasília. No entanto, os números mais recentes do FipeZap contam outra história. Em 2025, Vitória..."
+    },
+    {
+      "id": "35ec901789c8",
+      "titulo": "Patria Investments dispara 58% após sinal de subvalorização do InvestingPro",
+      "link": "https://br.investing.com/news/investment-ideas/patria-investments-dispara-58-apos-sinal-de-subvalorizacao-do-investingpro-93CH-1796084",
+      "fonte": "Investing.com",
+      "fonte_emoji": "⚡",
+      "horario": "08:38",
+      "data_publicacao": "2026-01-10 08:38:26",
+      "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+      "resumo": ""
+    },
+    {
+      "id": "412ff577a5c5",
+      "titulo": "Concessionária brasileira CEG Rio cai 35% após alerta de sobrevalorização do InvestingPro",
+      "link": "https://br.investing.com/news/investment-ideas/concessionaria-brasileira-ceg-rio-cai-35-apos-alerta-de-sobrevalorizacao-do-investingpro-93CH-1796083",
+      "fonte": "Investing.com",
+      "fonte_emoji": "⚡",
+      "horario": "08:36",
+      "data_publicacao": "2026-01-10 08:36:17",
+      "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+      "resumo": ""
+    },
+    {
+      "id": "899cd70700d6",
+      "titulo": "Ações da MindMed disparam 73% desde análise de subvalorização do InvestingPro em maio de 2024",
+      "link": "https://br.investing.com/news/investment-ideas/acoes-da-mindmed-disparam-73-desde-analise-de-subvalorizacao-do-investingpro-em-maio-de-2024-93CH-1796078",
+      "fonte": "Investing.com",
+      "fonte_emoji": "⚡",
+      "horario": "08:08",
+      "data_publicacao": "2026-01-10 08:08:32",
+      "imagem": "https://i-invdn-com.investing.com/news/world_news_2_108x81.jpg",
+      "resumo": ""
+    }
+  ]
 }
