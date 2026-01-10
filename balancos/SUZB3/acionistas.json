@@ -1,0 +1,90 @@
+{
+  "empresa": {
+    "cnpj": "16.404.287/0001-55",
+    "nome": "",
+    "ticker": "SUZB3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 6,
+  "acionistas": [
+    {
+      "nome": "Suzano Holding S.A.",
+      "cpf_cnpj": "60.651.809/0001-05",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 367612329,
+      "percentual_total": 29.081,
+      "acoes_ordinarias": 367612329,
+      "percentual_ordinarias": 29.081,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "DAVID FEFFER",
+      "cpf_cnpj": "882.739.628-49",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 53443973,
+      "percentual_total": 4.228,
+      "acoes_ordinarias": 53443973,
+      "percentual_ordinarias": 4.228,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "DANIEL FEFFER",
+      "cpf_cnpj": "011.769.138-08",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 48077305,
+      "percentual_total": 3.803,
+      "acoes_ordinarias": 48077305,
+      "percentual_ordinarias": 3.803,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "JORGE FEFFER",
+      "cpf_cnpj": "013.965.718-50",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 47687570,
+      "percentual_total": 3.772,
+      "acoes_ordinarias": 47687570,
+      "percentual_ordinarias": 3.772,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "RUBEN FEFFER",
+      "cpf_cnpj": "157.423.548-60",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 46856788,
+      "percentual_total": 3.707,
+      "acoes_ordinarias": 46856788,
+      "percentual_ordinarias": 3.707,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "Alden Fundo de Investimento em Ações",
+      "cpf_cnpj": "04.679.647/0001-42",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 27154744,
+      "percentual_total": 2.148,
+      "acoes_ordinarias": 27154744,
+      "percentual_ordinarias": 2.148,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    }
+  ]
+}
