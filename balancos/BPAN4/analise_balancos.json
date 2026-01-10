@@ -1,0 +1,38 @@
+{
+  "ticker": "BPAN4",
+  "tipo_empresa": "financeira",
+  "ultima_atualizacao": "2026-01-10T18:35:44.714532",
+  "periodo_analisado": {
+    "inicio": "2022T1",
+    "fim": "2025T3",
+    "total_trimestres": 15,
+    "anos": 3.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 15.5,
+      "variacao_total": 65.57,
+      "ultimo_valor": 4366.71
+    },
+    "margens": {
+      "bruta": 45.29,
+      "operacional": 3.91,
+      "liquida": 4.17
+    },
+    "rentabilidade": {
+      "roe_medio": 8.18
+    },
+    "caixa": {},
+    "balanco": {
+      "ativo_total": 68744.88,
+      "patrimonio": 7496.37
+    }
+  },
+  "analise_critica": "BPAN4 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 4.17%). Retorno sobre patrimônio abaixo do esperado (ROE de 8.18%).",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 15.5%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (4.17%)"
+  ]
+}
