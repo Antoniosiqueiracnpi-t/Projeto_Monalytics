@@ -5,28 +5,16 @@ CAPTURA DE NOTICIÁRIO ECONÔMICO (NOTÍCIAS DO MERCADO) - DESACOPLADO DO EMPRES
 - Fonte: Google News RSS (busca por consultas amplas de mercado / macro / bolsa / câmbio / cripto)
 - Saída: balancos/NOTICIAS/noticias_mercado.json
 
-Requisitos de compatibilidade com o site (script.js):
-- JSON deve conter:
-  - ultima_atualizacao (iso)
-  - total_noticias (int)
-  - portais (dict): { "NomePortal": [itens...] }
-
-Cada item (notícia) contém:
-- id (int) estável (sha1 truncado)
-- data (YYYY-MM-DD)
-- data_hora (YYYY-MM-DD HH:MM:SS)
-- horario (HH:MM)  -> usado para ordenação no front
-- titulo (str)
-- descricao (str)
-- link (str)
-- fonte (str)      -> nome do portal (para exibição)
-- imagem (str)     -> URL ou placeholder data-uri (para não quebrar layout)
-- categoria (str)  -> ex: "Bolsa", "Economia", "Exterior", "Cripto", "Geral"
-- tags (list[str]) -> tags curtas
+✅ Imagens:
+- Google News RSS geralmente não traz thumbnail.
+- Então buscamos a imagem na página do artigo via:
+  - og:image / og:image:secure_url
+  - twitter:image
+  - JSON-LD (application/ld+json) -> image
 
 Opcional:
-- Respeita janela de execução 08:00-22:00 (America/Sao_Paulo)
-  - Para forçar execução: export FORCE_RUN=1
+- Respeita janela de execução 08:00-20:00 (America/Sao_Paulo)
+  - Para forçar execução: export FORCE_RUN=1 ou --force
 """
 
 from __future__ import annotations
@@ -40,8 +28,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
-from urllib.parse import urlparse, parse_qs, quote
+from typing import Dict, List, Optional, Tuple, Any
+from urllib.parse import urlparse, parse_qs, quote, urljoin
 
 import requests
 from bs4 import BeautifulSoup
@@ -62,29 +50,24 @@ USER_AGENT = (
 )
 
 HEADERS = {"User-Agent": USER_AGENT}
+TIMEOUT_RSS = 20
+TIMEOUT_ARTIGO = 7
 
-TIMEOUT = 20
 MAX_ITENS_POR_QUERY = 25
-MAX_TOTAL_ITENS = 160          # limite global antes de agrupar
-MAX_ITENS_POR_PORTAL = 18      # limite por portal no JSON final
-MAX_DIAS_LOOKBACK = 1          # preferir hoje; se pouco conteúdo, aceitar ontem
+MAX_TOTAL_ITENS = 160
+MAX_ITENS_POR_PORTAL = 18
+MAX_DIAS_LOOKBACK = 1
 
-# Janela desejada (horário SP)
+# Janela (SP)
 HORA_INICIO = 8
-HORA_FIM = 22  # inclusive
-
+HORA_FIM = 20  # inclusive
 
 # Consultas amplas (ajuste fino aqui se quiser)
 QUERIES = [
-    # Bolsa / B3
     'ibovespa OR "B3" OR "bolsa brasileira" OR ações',
-    # Câmbio / juros
     'dólar OR câmbio OR "real" OR "Banco Central" OR "Copom" OR Selic OR juros',
-    # Inflação / macro
     'IPCA OR inflação OR PIB OR "atividade econômica" OR "economia brasileira"',
-    # Exterior / Fed / risco
     'Fed OR "Treasuries" OR "mercados globais" OR China OR EUA OR "Europa" OR commodities',
-    # Cripto (mantém a categoria viva no bloco)
     'Bitcoin OR criptomoedas OR "cripto" OR Ethereum',
 ]
 
@@ -94,9 +77,6 @@ QUERIES = [
 # =============================================================================
 
 def _get_sp_tz():
-    """
-    Tenta usar IANA (zoneinfo). Se não estiver disponível, usa offset fixo -03:00.
-    """
     try:
         from zoneinfo import ZoneInfo  # py3.9+
         return ZoneInfo("America/Sao_Paulo")
@@ -147,9 +127,6 @@ def limpar_descricao_html(descricao: str, limit: int = 260) -> str:
 
 
 def _placeholder_image_data_uri() -> str:
-    """
-    Placeholder leve (SVG) para não quebrar o layout quando não houver imagem.
-    """
     svg = (
         "<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450'>"
         "<rect width='100%' height='100%' fill='#0b1220'/>"
@@ -164,9 +141,6 @@ PLACEHOLDER_IMG = _placeholder_image_data_uri()
 
 
 def _resolver_url_real_google_news(link: Optional[str]) -> Optional[str]:
-    """
-    Se vier no formato news.google.com com ?url=, tenta extrair a URL real.
-    """
     if not link:
         return link
     try:
@@ -182,12 +156,6 @@ def _resolver_url_real_google_news(link: Optional[str]) -> Optional[str]:
 
 
 def extrair_data_publicacao(item) -> Tuple[str, str, str]:
-    """
-    Retorna:
-    - data (YYYY-MM-DD)
-    - data_hora (YYYY-MM-DD HH:MM:SS)
-    - horario (HH:MM) em TZ_SP
-    """
     try:
         pub = item.find("pubDate")
         if pub and pub.text:
@@ -212,10 +180,6 @@ def extrair_data_publicacao(item) -> Tuple[str, str, str]:
 
 
 def extrair_fonte_noticia(link: Optional[str], item=None) -> str:
-    """
-    - Prioriza <source> do RSS
-    - Fallback: domínio
-    """
     try:
         if item is not None:
             src = item.find("source")
@@ -243,8 +207,6 @@ def extrair_fonte_noticia(link: Optional[str], item=None) -> str:
             "investnews.com.br": "InvestNews",
             "bloomberg.com": "Bloomberg",
             "reuters.com": "Reuters",
-            "wsj.com": "WSJ",
-            "ft.com": "Financial Times",
         }
 
         for d, nome in fontes_conhecidas.items():
@@ -259,13 +221,145 @@ def extrair_fonte_noticia(link: Optional[str], item=None) -> str:
         return "Google News"
 
 
-def extrair_imagem(item, descricao_html: str) -> str:
+# =============================================================================
+# Captura de imagem do artigo (OG/Twitter/JSON-LD)
+# =============================================================================
+
+_session = requests.Session()
+_img_cache: Dict[str, Optional[str]] = {}
+
+
+def _safe_json_loads(s: str) -> Optional[Any]:
+    try:
+        return json.loads(s)
+    except Exception:
+        return None
+
+
+def _extract_image_from_ldjson(obj: Any) -> Optional[str]:
     """
-    Tenta achar imagem:
-    - media:content url=
-    - enclosure url=
-    - <img src="..."> na descrição
-    - fallback placeholder
+    Tenta extrair campo image em JSON-LD.
+    Pode ser string, lista, dict, ou nested.
+    """
+    if obj is None:
+        return None
+
+    # Se é lista, tenta cada item
+    if isinstance(obj, list):
+        for it in obj:
+            r = _extract_image_from_ldjson(it)
+            if r:
+                return r
+        return None
+
+    if isinstance(obj, dict):
+        # campos comuns
+        for key in ("image", "thumbnailUrl", "thumbnailURL"):
+            if key in obj:
+                val = obj.get(key)
+                if isinstance(val, str) and val.strip():
+                    return val.strip()
+                if isinstance(val, list) and val:
+                    for v in val:
+                        if isinstance(v, str) and v.strip():
+                            return v.strip()
+                        if isinstance(v, dict):
+                            u = v.get("url") or v.get("@id")
+                            if isinstance(u, str) and u.strip():
+                                return u.strip()
+                if isinstance(val, dict):
+                    u = val.get("url") or val.get("@id")
+                    if isinstance(u, str) and u.strip():
+                        return u.strip()
+
+        # tenta varrer subestruturas
+        for _, v in obj.items():
+            r = _extract_image_from_ldjson(v)
+            if r:
+                return r
+
+    return None
+
+
+def buscar_imagem_og(url: str) -> Optional[str]:
+    """
+    Faz GET leve e tenta extrair:
+    - og:image / og:image:secure_url
+    - twitter:image
+    - JSON-LD image
+    Retorna URL absoluta.
+    """
+    u = _norm(url)
+    if not u:
+        return None
+
+    if u in _img_cache:
+        return _img_cache[u]
+
+    try:
+        resp = _session.get(u, headers=HEADERS, timeout=TIMEOUT_ARTIGO, allow_redirects=True)
+        ct = (resp.headers.get("Content-Type") or "").lower()
+        if resp.status_code >= 400:
+            _img_cache[u] = None
+            return None
+        if "text/html" not in ct and "application/xhtml+xml" not in ct:
+            _img_cache[u] = None
+            return None
+
+        html = resp.text or ""
+        soup = BeautifulSoup(html, "html.parser")
+
+        # 1) OpenGraph
+        for sel in [
+            ("meta", {"property": "og:image:secure_url"}),
+            ("meta", {"property": "og:image"}),
+            ("meta", {"name": "og:image"}),
+        ]:
+            tag = soup.find(sel[0], sel[1])
+            if tag and tag.get("content"):
+                img = str(tag.get("content")).strip()
+                if img:
+                    _img_cache[u] = urljoin(resp.url, img)
+                    return _img_cache[u]
+
+        # 2) Twitter card
+        for sel in [
+            ("meta", {"name": "twitter:image"}),
+            ("meta", {"property": "twitter:image"}),
+        ]:
+            tag = soup.find(sel[0], sel[1])
+            if tag and tag.get("content"):
+                img = str(tag.get("content")).strip()
+                if img:
+                    _img_cache[u] = urljoin(resp.url, img)
+                    return _img_cache[u]
+
+        # 3) JSON-LD
+        scripts = soup.find_all("script", {"type": "application/ld+json"})
+        for sc in scripts:
+            txt = (sc.string or sc.get_text() or "").strip()
+            if not txt:
+                continue
+            obj = _safe_json_loads(txt)
+            img = _extract_image_from_ldjson(obj)
+            if img:
+                _img_cache[u] = urljoin(resp.url, img)
+                return _img_cache[u]
+
+        _img_cache[u] = None
+        return None
+
+    except Exception:
+        _img_cache[u] = None
+        return None
+
+
+def extrair_imagem(item, descricao_html: str, link_final: str) -> str:
+    """
+    Estratégia:
+    1) media:content / enclosure / <img> na descrição (quando houver)
+    2) se não houver, tenta OG/Twitter/JSON-LD da página do artigo
+    3) fallback placeholder
     """
     # 1) media:content
     try:
@@ -292,22 +386,21 @@ def extrair_imagem(item, descricao_html: str) -> str:
     except Exception:
         pass
 
+    # 4) OG/Twitter/JSON-LD da página do artigo
+    img_og = buscar_imagem_og(link_final)
+    if img_og:
+        return img_og
+
     return PLACEHOLDER_IMG
 
 
 def classificar_categoria_e_tags(titulo: str, descricao: str) -> Tuple[str, List[str]]:
-    """
-    Mantém categorias simples (para não depender do HTML do front):
-      Bolsa / Economia / Exterior / Cripto / Geral
-    """
     txt = f"{titulo} {descricao}".lower()
-
     tags: List[str] = []
 
     def has(*words):
         return any(w in txt for w in words)
 
-    # Cripto
     if has("bitcoin", "cripto", "criptomo", "ethereum", "btc", "eth"):
         cat = "Cripto"
         if "bitcoin" in txt or "btc" in txt:
@@ -316,7 +409,6 @@ def classificar_categoria_e_tags(titulo: str, descricao: str) -> Tuple[str, List
             tags.append("Ethereum")
         return cat, tags[:3]
 
-    # Bolsa
     if has("ibovespa", "b3", "bolsa", "ações", "acoes", "small caps", "blue chips", "índice"):
         cat = "Bolsa"
         if "ibovespa" in txt:
@@ -327,7 +419,6 @@ def classificar_categoria_e_tags(titulo: str, descricao: str) -> Tuple[str, List
             tags.append("Ações")
         return cat, tags[:3]
 
-    # Exterior
     if has("eua", "fed", "powell", "treasur", "dow", "nasdaq", "s&p", "china", "europa", "bce", "boe", "japão", "japao"):
         cat = "Exterior"
         if "fed" in txt:
@@ -338,7 +429,6 @@ def classificar_categoria_e_tags(titulo: str, descricao: str) -> Tuple[str, List
             tags.append("China")
         return cat, tags[:3]
 
-    # Economia (macro, juros, câmbio, inflação, commodities)
     if has("dólar", "dolar", "câmbio", "cambio", "selic", "copom", "juros", "ipca", "infla", "pib",
            "banco central", "commod", "petróleo", "petroleo", "minério", "minerio"):
         cat = "Economia"
@@ -379,7 +469,7 @@ def fetch_rss_google_news(query: str) -> bytes:
         "gl": "BR",
         "ceid": "BR:pt-419",
     }
-    r = requests.get(GOOGLE_NEWS_RSS, params=params, headers=HEADERS, timeout=TIMEOUT)
+    r = _session.get(GOOGLE_NEWS_RSS, params=params, headers=HEADERS, timeout=TIMEOUT_RSS)
     if r.status_code != 200:
         raise RuntimeError(f"HTTP {r.status_code}")
     return r.content
@@ -409,9 +499,9 @@ def coletar_noticias() -> List[Noticia]:
 
                 data, data_hora, horario = extrair_data_publicacao(item)
                 fonte = extrair_fonte_noticia(link, item=item)
-                imagem = extrair_imagem(item, descricao_html)
 
                 categoria, tags = classificar_categoria_e_tags(titulo, descricao)
+                imagem = extrair_imagem(item, descricao_html, link)
 
                 nid = _sha1_id(titulo, link, data_hora)
 
@@ -441,9 +531,6 @@ def coletar_noticias() -> List[Noticia]:
 
 
 def filtrar_por_recencia(noticias: List[Noticia]) -> List[Noticia]:
-    """
-    Preferência: notícias de hoje (TZ_SP). Se ficar muito vazio, aceita ontem também.
-    """
     if not noticias:
         return []
 
@@ -454,7 +541,6 @@ def filtrar_por_recencia(noticias: List[Noticia]) -> List[Noticia]:
     if len(hoje_list) >= 12:
         return hoje_list
 
-    # fallback: hoje + ontem
     return [n for n in noticias if n.data in (hoje, ontem)]
 
 
@@ -464,7 +550,6 @@ def agrupar_por_portal(noticias: List[Noticia]) -> Dict[str, List[dict]]:
         portal = n.fonte or "Google News"
         portais.setdefault(portal, []).append(n)
 
-    # ordenar por data_hora desc e aplicar limite por portal
     out: Dict[str, List[dict]] = {}
     for portal, arr in portais.items():
         arr.sort(key=lambda x: x.data_hora, reverse=True)
@@ -476,7 +561,6 @@ def agrupar_por_portal(noticias: List[Noticia]) -> Dict[str, List[dict]]:
 
 def salvar_json(portais: Dict[str, List[dict]]):
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-
     total = sum(len(v) for v in portais.values())
 
     payload = {
@@ -496,15 +580,17 @@ def salvar_json(portais: Dict[str, List[dict]]):
 
 def main():
     parser = argparse.ArgumentParser(description="Captura noticiário econômico (Notícias do Mercado) via Google News RSS")
-    parser.add_argument("--force", action="store_true", help="Força execução mesmo fora da janela 08-22 (SP)")
+    parser.add_argument("--force", action="store_true", help="Força execução mesmo fora da janela 08-20 (SP)")
     args = parser.parse_args()
 
     force_env = os.getenv("FORCE_RUN", "").strip() == "1"
     now_sp = _now_sp()
 
     if not (args.force or force_env) and not _within_window(now_sp):
-        print(f"⏸️ Fora da janela de execução (SP). Agora: {now_sp.strftime('%Y-%m-%d %H:%M:%S')} | "
-              f"Janela: {HORA_INICIO:02d}:00-{HORA_FIM:02d}:59. Saindo sem erro.")
+        print(
+            f"⏸️ Fora da janela de execução (SP). Agora: {now_sp.strftime('%Y-%m-%d %H:%M:%S')} | "
+            f"Janela: {HORA_INICIO:02d}:00-{HORA_FIM:02d}:59. Saindo sem erro."
+        )
         return
 
     print(f"🕒 Agora (SP): {now_sp.strftime('%Y-%m-%d %H:%M:%S')}")
@@ -515,7 +601,6 @@ def main():
 
     if not noticias:
         print("⚠️ Nenhuma notícia coletada (após filtros).")
-        # ainda assim salva um JSON válido (mantém o front estável)
         salvar_json({})
         print(f"✅ JSON salvo (vazio): {OUTPUT_PATH}")
         return
