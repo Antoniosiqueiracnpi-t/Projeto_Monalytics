@@ -1460,10 +1460,12 @@ class PadronizadorBP:
 
     def _bank_postprocess_horizontal(self, df_out: pd.DataFrame, min_fill: float = 0.70) -> pd.DataFrame:
         """
-        Exclusivo para BANCOS:
+        Exclusivo para BANCOS (BPA/BPP padronizado):
         - Mantém apenas contas principais (nível 1) e primeira subconta (nível 2): ex. '1' e '1.01'
-        - Filtra contas com preenchimento >= min_fill (proporção de períodos com valor)
+        - Filtra contas com preenchimento >= min_fill (proporção de períodos com valor),
+          MAS garante que Patrimônio Líquido nunca seja removido (mesmo se < min_fill)
         - Preenche trimestres faltantes por interpolação (linear) e, nas bordas, ffill/bfill
+        - Normaliza o código do PL para um padrão único ('2.07') no output
         """
         df = df_out.copy()
 
@@ -1490,15 +1492,34 @@ class PadronizadorBP:
         is_lvl2 = cd.str.fullmatch(r"\d+\.\d+")
         df = df[is_lvl1 | is_lvl2].copy()
 
-        # 4) Filtrar por preenchimento mínimo (antes de preencher)
+        # 4) Filtrar por preenchimento mínimo (ANTES de preencher),
+        #    mas preservando Patrimônio Líquido sempre.
+        pl_mask = df["conta"].astype(str).str.contains(r"Patrim[oô]nio\s+L[ií]quido", case=False, na=False)
+
+        # Normaliza o PL para cd_conta fixo (2.07) e nome padrão no output
+        if pl_mask.any():
+            df.loc[pl_mask, "cd_conta"] = "2.07"
+            df.loc[pl_mask, "conta"] = "Patrimônio Líquido Consolidado"
+
         fill_ratio = df[full_period_cols].notna().mean(axis=1)
-        df = df[fill_ratio >= float(min_fill)].copy()
+        keep_mask = (fill_ratio >= float(min_fill)) | pl_mask
+        df = df[keep_mask].copy()
 
         # 5) Interpolação (somente lacunas internas), depois ffill/bfill nas extremidades
         if not df.empty:
             vals = df[full_period_cols].astype(float)
             vals = vals.interpolate(axis=1, limit_area="inside")
             vals = vals.ffill(axis=1).bfill(axis=1)
+
+            # Garantia extra: se PL ainda ficar todo NaN (caso extremo), zera e avisa
+            if "conta" in df.columns:
+                pl_mask2 = df["conta"].astype(str).str.contains(r"Patrim[oô]nio\s+L[ií]quido", case=False, na=False)
+                if pl_mask2.any():
+                    pl_vals = vals.loc[pl_mask2.values, :]
+                    if pl_vals.isna().all(axis=1).any():
+                        print("⚠️ Banco: Patrimônio Líquido sem dados em todos os períodos após preenchimento. Forçando 0.0 para evitar lacunas.")
+                        vals.loc[pl_mask2.values, :] = vals.loc[pl_mask2.values, :].fillna(0.0)
+
             df[full_period_cols] = vals
 
         return df
@@ -1546,9 +1567,8 @@ class PadronizadorBP:
         bpp_anual = self._extract_annual_values(bpp_anu, bpp_schema, fiscal_info)
         bpp_qtot = self._add_t4_from_annual(bpp_qtot, bpp_anual, fiscal_info, bpp_schema)
         bpp_out = self._build_horizontal(bpp_qtot, bpp_schema)
-
-        
-        # 7B. Exclusivo bancos: manter contas nível 1/2 com >=70% e interpolar faltantes
+        # 7B. Exclusivo bancos: reduzir contas (nível 1/2), filtrar >=70%,
+        #     garantir PL sempre presente e preencher lacunas por interpolação
         if _is_banco(ticker):
             bpa_out = self._bank_postprocess_horizontal(bpa_out, min_fill=0.70)
             bpp_out = self._bank_postprocess_horizontal(bpp_out, min_fill=0.70)
