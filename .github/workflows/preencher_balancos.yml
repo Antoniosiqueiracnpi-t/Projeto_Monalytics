@@ -1,0 +1,163 @@
+name: Preencher Balanços com BRAPI
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'Modo de seleção'
+        required: true
+        type: choice
+        options:
+          - 'quantidade'
+          - 'ticker'
+          - 'lista'
+          - 'faixa'
+        default: 'quantidade'
+      quantidade:
+        description: 'Quantidade (modo quantidade): 10, 50, 308=todas'
+        required: false
+        default: '10'
+      ticker:
+        description: 'Ticker único (modo ticker): ex: BBAS3'
+        required: false
+        default: ''
+      lista:
+        description: 'Lista de tickers (modo lista): ex: BBAS3,ITUB4,BBDC4'
+        required: false
+        default: ''
+      faixa:
+        description: 'Faixa (modo faixa): ex: 1-50, 51-150, 151-308'
+        required: false
+        default: '1-50'
+      ano_inicio:
+        description: 'Ano de início para preencher (padrão: 2010)'
+        required: false
+        default: '2010'
+
+jobs:
+  preencher_balancos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180  # 3 horas para processar múltiplos bancos
+    
+    steps:
+      - name: 📥 Baixar código
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Necessário para histórico completo
+          
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          
+      - name: 📦 Instalar bibliotecas
+        run: |
+          pip install --upgrade pip
+          pip install pandas numpy openpyxl requests urllib3
+          
+      - name: ℹ️ Informações do ambiente
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "  PREENCHER BALANÇOS COM BRAPI"
+          echo "  Modo: ${{ github.event.inputs.modo }}"
+          echo "  Ano início: ${{ github.event.inputs.ano_inicio }}"
+          echo "════════════════════════════════════════════════════════════"
+          python --version
+          pip list | grep -E "pandas|numpy|requests"
+          
+      - name: 🚀 Executar preenchimento de balanços
+        env:
+          BRAPI_TOKEN: ${{ secrets.BRAPI_TOKEN }}
+        run: |
+          python src/preencher_balancos.py \
+            --modo "${{ github.event.inputs.modo }}" \
+            --quantidade "${{ github.event.inputs.quantidade }}" \
+            --ticker "${{ github.event.inputs.ticker }}" \
+            --lista "${{ github.event.inputs.lista }}" \
+            --faixa "${{ github.event.inputs.faixa }}" \
+            --ano-inicio "${{ github.event.inputs.ano_inicio }}"
+            
+      - name: 📊 Verificar arquivos modificados
+        id: check_files
+        run: |
+          echo "Arquivos DRE modificados:"
+          find balancos -type f -name "dre_padronizado.csv" -mmin -10 2>/dev/null || echo "Nenhum DRE modificado"
+          
+          echo ""
+          echo "Arquivos BPA modificados:"
+          find balancos -type f -name "bpa_padronizado.csv" -mmin -10 2>/dev/null || echo "Nenhum BPA modificado"
+          
+          echo ""
+          echo "Arquivos BPP modificados:"
+          find balancos -type f -name "bpp_padronizado.csv" -mmin -10 2>/dev/null || echo "Nenhum BPP modificado"
+          
+          # Contar total de arquivos modificados
+          TOTAL=$(find balancos -type f \( -name "dre_padronizado.csv" -o -name "bpa_padronizado.csv" -o -name "bpp_padronizado.csv" \) -mmin -10 2>/dev/null | wc -l)
+          echo "total_files=$TOTAL" >> $GITHUB_OUTPUT
+          echo ""
+          echo "Total de arquivos modificados: $TOTAL"
+          
+      - name: 💾 Salvar no GitHub
+        if: steps.check_files.outputs.total_files != '0'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          
+          # Buscar todos os arquivos padronizados modificados recentemente
+          FILES_DRE=$(find balancos -type f -name "dre_padronizado.csv" -mmin -10 2>/dev/null || true)
+          FILES_BPA=$(find balancos -type f -name "bpa_padronizado.csv" -mmin -10 2>/dev/null || true)
+          FILES_BPP=$(find balancos -type f -name "bpp_padronizado.csv" -mmin -10 2>/dev/null || true)
+          
+          # Adicionar arquivos
+          [ -n "$FILES_DRE" ] && echo "$FILES_DRE" | xargs -r git add
+          [ -n "$FILES_BPA" ] && echo "$FILES_BPA" | xargs -r git add
+          [ -n "$FILES_BPP" ] && echo "$FILES_BPP" | xargs -r git add
+          
+          # Verificar se há mudanças
+          if git diff --staged --quiet; then
+            echo "⚠️ Sem alterações para commitar."
+            exit 0
+          fi
+          
+          # Criar mensagem de commit detalhada
+          MODO="${{ github.event.inputs.modo }}"
+          DATA=$(date +'%Y-%m-%d %H:%M')
+          
+          case "$MODO" in
+            quantidade)
+              QTD="${{ github.event.inputs.quantidade }}"
+              MSG="Balanços preenchidos - $QTD empresas - $DATA"
+              ;;
+            ticker)
+              TICKER="${{ github.event.inputs.ticker }}"
+              MSG="Balanços preenchidos - $TICKER - $DATA"
+              ;;
+            lista)
+              LISTA="${{ github.event.inputs.lista }}"
+              MSG="Balanços preenchidos - Lista: $LISTA - $DATA"
+              ;;
+            faixa)
+              FAIXA="${{ github.event.inputs.faixa }}"
+              MSG="Balanços preenchidos - Faixa $FAIXA - $DATA"
+              ;;
+            *)
+              MSG="Balanços preenchidos via BRAPI - $DATA"
+              ;;
+          esac
+          
+          # Commit e push
+          git commit -m "$MSG"
+          git push
+          
+          echo "✅ Arquivos commitados e enviados com sucesso!"
+          
+      - name: 📝 Resumo da execução
+        if: always()
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "  RESUMO DA EXECUÇÃO"
+          echo "════════════════════════════════════════════════════════════"
+          echo "Modo: ${{ github.event.inputs.modo }}"
+          echo "Status: ${{ job.status }}"
+          echo "Arquivos modificados: ${{ steps.check_files.outputs.total_files }}"
+          echo "════════════════════════════════════════════════════════════"
