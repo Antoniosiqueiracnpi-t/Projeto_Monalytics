@@ -542,21 +542,25 @@ BPP_PADRAO: List[Tuple[str, str]] = [
 # CONTAS BPA - BANCOS (INSTITUIÇÕES FINANCEIRAS)
 # ======================================================================================
 
-# Esquema BASE para bancos - será expandido dinamicamente com contas detectadas
+# ======================================================================================
+# CONTAS BPA - BANCOS (APENAS CONTAS COM >70% PREENCHIMENTO)
+# Baseado em análise de 12 bancos (2016-2025) - Total: 8 contas
+# ======================================================================================
 BPA_BANCOS_BASE: List[Tuple[str, str]] = [
+    # OBRIGATÓRIAS (100% preenchimento)
     ("1", "Ativo Total"),
     ("1.01", "Caixa e Equivalentes de Caixa"),
     ("1.02", "Ativos Financeiros"),
-    ("1.02.01", "Depósito Compulsório Banco Central"),
-    ("1.02.02", "Ativos Financeiros ao Valor Justo através do Resultado"),
-    ("1.02.03", "Ativos Financeiros ao Valor Justo através de ORA"),
-    ("1.02.04", "Ativos Financeiros ao Custo Amortizado"),
-    # Contas de crédito serão adicionadas dinamicamente
-    ("1.03", "Tributos"),
-    ("1.04", "Outros Ativos"),
-    ("1.05", "Investimentos"),
-    ("1.06", "Imobilizado"),
-    ("1.07", "Intangível"),
+    
+    # Subcontas de Ativos Financeiros serão adicionadas dinamicamente pela função
+    # _build_bpa_schema_for_bank(): Operações de Crédito + Provisão PDD
+    
+    # ESSENCIAIS (85-100% preenchimento)
+    ("1.04", "Outros Ativos"),              # 100%
+    ("1.05", "Investimentos"),               # 86.8%
+    ("1.06", "Imobilizado"),                 # 100%
+    ("1.06.01", "Imobilizado de Uso"),       # 87.9%
+    ("1.07", "Intangível"),                  # 100%
 ]
 
 # Manter compatibilidade com código existente
@@ -649,43 +653,41 @@ def _build_bpp_schema_for_bank(df_bpp: pd.DataFrame) -> List[Tuple[str, str]]:
 
 def _build_bpa_schema_for_bank(df_bpa: pd.DataFrame) -> List[Tuple[str, str]]:
     """
-    Constrói esquema BPA dinâmico para bancos baseado nos dados reais.
+    Constrói esquema BPA dinâmico para bancos com contas >70% preenchimento.
     
-    CORREÇÃO: Detecta automaticamente os códigos de:
-    - Operações de Crédito (varia: 1.02.03.04, 1.02.04.04)
-    - Provisão PDD (varia: 1.02.03.06, 1.02.04.05)
+    Baseado em análise de 12 bancos (2016-2025):
+    - 8 contas principais com >70% de preenchimento
+    - Detecta automaticamente códigos de Operações de Crédito e Provisão PDD
     """
-    # Detectar códigos reais
+    # Detectar códigos reais das contas específicas de crédito
     cod_credito = _detect_operacoes_credito(df_bpa)
     cod_provisao = _detect_provisao_pdd(df_bpa)
     
     # Extrair prefixo comum (ex: "1.02.04" de "1.02.04.04")
     prefix_credito = ".".join(cod_credito.split(".")[:-1]) if "." in cod_credito else "1.02.04"
     
+    # SCHEMA PADRONIZADO - APENAS CONTAS >70% PREENCHIMENTO
     schema = [
+        # OBRIGATÓRIAS (100% preenchimento)
         ("1", "Ativo Total"),
         ("1.01", "Caixa e Equivalentes de Caixa"),
         ("1.02", "Ativos Financeiros"),
-        ("1.02.01", "Depósito Compulsório Banco Central"),
-        ("1.02.02", "Ativos Financeiros ao Valor Justo através do Resultado"),
-        ("1.02.03", "Ativos Financeiros ao Valor Justo através de ORA"),
-        ("1.02.04", "Ativos Financeiros ao Custo Amortizado"),
     ]
     
-    # Adicionar conta pai se diferente (ex: 1.02.03 para ITUB4)
-    if prefix_credito not in ["1.02.03", "1.02.04"]:
-        schema.append((prefix_credito, "Empréstimos e Recebíveis"))
+    # Adicionar conta pai de crédito se não for 1.02 (ex: 1.02.04 para estrutura nova)
+    if prefix_credito and prefix_credito != "1.02":
+        schema.append((prefix_credito, "Ativos Financeiros ao Custo Amortizado"))
     
-    # Adicionar contas de crédito detectadas
+    # Adicionar contas de crédito detectadas (específicas de bancos)
     schema.append((cod_credito, "Operações de Crédito"))
     schema.append((cod_provisao, "Provisão para Perdas Esperadas"))
     
-    # Contas finais
+    # ESSENCIAIS (85-100% preenchimento)
     schema.extend([
-        ("1.03", "Tributos"),
         ("1.04", "Outros Ativos"),
         ("1.05", "Investimentos"),
         ("1.06", "Imobilizado"),
+        ("1.06.01", "Imobilizado de Uso"),
         ("1.07", "Intangível"),
     ])
     
@@ -694,11 +696,11 @@ def _build_bpa_schema_for_bank(df_bpa: pd.DataFrame) -> List[Tuple[str, str]]:
 
 def _build_bpp_schema_for_bank_v2(df_bpp: pd.DataFrame) -> List[Tuple[str, str]]:
     """
-    Constrói esquema BPP dinâmico para bancos baseado nos dados reais.
+    Constrói esquema BPP dinâmico para bancos com contas >70% preenchimento.
     
-    CORREÇÃO v2: Detecta automaticamente:
-    - Código do Patrimônio Líquido (2.07 ou 2.08)
-    - Código dos Depósitos (2.02.01 ou 2.03.01)
+    Baseado em análise de 12 bancos (2016-2025):
+    - 11 contas com >70% de preenchimento
+    - Detecta automaticamente: PL (2.07 ou 2.08), Depósitos (2.02.01 ou 2.03.01)
     """
     pl_code = _detect_pl_code_from_data(df_bpp)
     cod_depositos = _detect_depositos(df_bpp)
@@ -706,51 +708,41 @@ def _build_bpp_schema_for_bank_v2(df_bpp: pd.DataFrame) -> List[Tuple[str, str]]
     # Determinar se depósitos estão em 2.02 ou 2.03
     depositos_prefix = cod_depositos.split(".")[1] if "." in cod_depositos else "02"
     
+    # ESTRUTURA PADRONIZADA - APENAS CONTAS >70% PREENCHIMENTO
     schema = [
+        # OBRIGATÓRIAS (100% preenchimento)
         ("2", "Passivo Total"),
-        ("2.01", "Passivos Financeiros ao Valor Justo através do Resultado"),
-        ("2.02", "Passivos Financeiros ao Custo Amortizado"),
+        
+        # ESSENCIAIS (95-100% preenchimento)
+        ("2.02", "Passivos Financeiros ao Custo Amortizado"),  # 99.5%
+        ("2.04", "Passivos Fiscais"),                          # 96.8%
+        ("2.05", "Outros Passivos"),                           # 100%
+        
+        # MUITO UTILIZADAS (85-95% preenchimento)  
+        ("2.03", "Provisões"),                                 # 90.5%
     ]
     
-    # Adicionar Depósitos no local correto
+    # Adicionar Depósitos no local correto (89.8% preenchimento)
     if depositos_prefix == "02":
-        schema.append(("2.02.01", "Depósitos"))
-        schema.extend([
-            ("2.02.02", "Captações no Mercado Aberto"),
-            ("2.02.03", "Recursos Mercado Interfinanceiro"),
-            ("2.02.04", "Outras Captações"),
-            ("2.03", "Provisões"),
-        ])
+        # Inserir após 2.02 - maioria dos bancos
+        schema.insert(2, ("2.02.01", "Depósitos"))
     else:
-        schema.extend([
-            ("2.02.01", "Depósitos"),  # Pode não existir
-            ("2.02.02", "Captações no Mercado Aberto"),
-            ("2.02.03", "Recursos Mercado Interfinanceiro"),
-            ("2.02.04", "Outras Captações"),
-            ("2.03", "Provisões"),
-            ("2.03.01", "Depósitos"),  # ITUB4
-        ])
-    
-    schema.extend([
-        ("2.04", "Passivos Fiscais"),
-        ("2.05", "Outros Passivos"),
-        ("2.06", "Passivos sobre Ativos Não Correntes a Venda"),
-    ])
+        # ITUB4 e similares: Depósitos em 2.03.01
+        schema.append(("2.03.01", "Depósitos"))
     
     # Adicionar conta 2.07 intermediária se PL estiver em 2.08
     pl_num = int(pl_code.split('.')[1]) if '.' in pl_code else 7
     if pl_num > 7:
         schema.append(("2.07", "Passivos sobre Ativos Descontinuados"))
     
-    # Adicionar PL e subcontas
+    # PATRIMÔNIO LÍQUIDO (todas >70% preenchimento)
     schema.extend([
-        (pl_code, "Patrimônio Líquido Consolidado"),
+        (pl_code, "Patrimônio Líquido Consolidado"),                    # 100%
         (f"{pl_code}.01", "Patrimônio Líquido Atribuído ao Controlador"),
-        (f"{pl_code}.01.01", "Capital Social Realizado"),
-        (f"{pl_code}.01.02", "Reservas de Capital"),
-        (f"{pl_code}.01.04", "Reservas de Lucros"),
-        (f"{pl_code}.01.05", "Lucros/Prejuízos Acumulados"),
-        (f"{pl_code}.01.08", "Outros Resultados Abrangentes"),
+        (f"{pl_code}.01.01", "Capital Social Realizado"),               # 96.0%
+        (f"{pl_code}.01.02", "Reservas de Capital"),                    # 75.5%
+        (f"{pl_code}.01.04", "Reservas de Lucros"),                     # 82.5%
+        (f"{pl_code}.01.08", "Outros Resultados Abrangentes"),          # 91.9%
         (f"{pl_code}.02", "Patrimônio Líquido Atribuído aos Não Controladores"),
     ])
     
@@ -1276,6 +1268,110 @@ def _build_quarter_values_adaptive(
 
 
 # ======================================================================================
+# INTERPOLAÇÃO DE TRIMESTRES FALTANTES (EXCLUSIVO PARA BANCOS)
+# ======================================================================================
+
+def _interpolate_missing_quarters(
+    df_quarterly: pd.DataFrame, 
+    schema: List[Tuple[str, str]]
+) -> pd.DataFrame:
+    """
+    Preenche trimestres faltantes por interpolação linear (EXCLUSIVO PARA BANCOS).
+    
+    Estratégia:
+    1. Para cada conta, identifica todos os anos/trimestres presentes no dataset
+    2. Cria grid completo de ano/trimestre/conta
+    3. Preenche valores faltantes usando interpolação linear
+    4. Forward fill para trimestres antes do primeiro valor
+    5. Backward fill para trimestres depois do último valor
+    
+    Args:
+        df_quarterly: DataFrame com colunas ['ano', 'trimestre', 'code', 'valor']
+        schema: Lista de (código, nome) das contas esperadas
+    
+    Returns:
+        DataFrame com todos os trimestres preenchidos
+    """
+    if df_quarterly.empty:
+        return df_quarterly
+    
+    # Garantir colunas necessárias
+    required_cols = ['ano', 'trimestre', 'code', 'valor']
+    if not all(col in df_quarterly.columns for col in required_cols):
+        return df_quarterly
+    
+    df = df_quarterly.copy()
+    
+    # Mapear trimestres para ordem numérica
+    quarter_map = {'T1': 1, 'T2': 2, 'T3': 3, 'T4': 4}
+    
+    # Criar coluna de período ordenável (ano + trimestre_decimal)
+    df['periodo_num'] = df.apply(
+        lambda row: row['ano'] + quarter_map.get(row['trimestre'], 1) / 10.0, 
+        axis=1
+    )
+    
+    # Obter todos os anos e trimestres presentes no dataset
+    anos_unicos = sorted(df['ano'].unique())
+    trimestres_unicos = ['T1', 'T2', 'T3', 'T4']
+    
+    # Criar DataFrame completo com todas combinações ano/trimestre/conta
+    all_periods = []
+    for ano in anos_unicos:
+        for trim in trimestres_unicos:
+            periodo_num = ano + quarter_map[trim] / 10.0
+            for code, _ in schema:
+                all_periods.append({
+                    'ano': ano,
+                    'trimestre': trim,
+                    'code': code,
+                    'periodo_num': periodo_num
+                })
+    
+    df_complete = pd.DataFrame(all_periods)
+    
+    # Merge com dados existentes
+    df_merged = df_complete.merge(
+        df[['ano', 'trimestre', 'code', 'valor', 'periodo_num']],
+        on=['ano', 'trimestre', 'code', 'periodo_num'],
+        how='left',
+        suffixes=('', '_existing')
+    )
+    
+    # Interpolar por conta
+    result_rows = []
+    
+    for code, _ in schema:
+        df_conta = df_merged[df_merged['code'] == code].copy()
+        df_conta = df_conta.sort_values('periodo_num').reset_index(drop=True)
+        
+        if df_conta.empty:
+            continue
+        
+        # Interpolação linear para valores faltantes
+        df_conta['valor'] = df_conta['valor'].interpolate(
+            method='linear',
+            limit_direction='both',  # Interpola em ambas direções
+            limit_area=None  # Sem limite de área
+        )
+        
+        # Se ainda há NaN (conta sem nenhum valor), preencher com 0
+        df_conta['valor'] = df_conta['valor'].fillna(0)
+        
+        result_rows.append(df_conta)
+    
+    if not result_rows:
+        return df_quarterly
+    
+    df_interpolated = pd.concat(result_rows, ignore_index=True)
+    
+    # Remover coluna auxiliar e manter apenas as originais
+    df_interpolated = df_interpolated[['ano', 'trimestre', 'code', 'valor']]
+    
+    return df_interpolated
+
+
+# ======================================================================================
 # CLASSE PRINCIPAL - PADRONIZADOR BP
 # ======================================================================================
 
@@ -1456,6 +1552,11 @@ class PadronizadorBP:
         
         bpa_anual = self._extract_annual_values(bpa_anu, bpa_schema, fiscal_info)
         bpa_qtot = self._add_t4_from_annual(bpa_qtot, bpa_anual, fiscal_info, bpa_schema)
+        
+        # NOVO: Interpolação para bancos (preenche trimestres faltantes)
+        if _is_banco(ticker):
+            bpa_qtot = _interpolate_missing_quarters(bpa_qtot, bpa_schema)
+        
         bpa_out = self._build_horizontal(bpa_qtot, bpa_schema)
         
         # ========== PROCESSAR BPP ==========
@@ -1466,6 +1567,11 @@ class PadronizadorBP:
         
         bpp_anual = self._extract_annual_values(bpp_anu, bpp_schema, fiscal_info)
         bpp_qtot = self._add_t4_from_annual(bpp_qtot, bpp_anual, fiscal_info, bpp_schema)
+        
+        # NOVO: Interpolação para bancos (preenche trimestres faltantes)
+        if _is_banco(ticker):
+            bpp_qtot = _interpolate_missing_quarters(bpp_qtot, bpp_schema)
+        
         bpp_out = self._build_horizontal(bpp_qtot, bpp_schema)
         
         # 8. Salvar - CORREÇÃO: salva na pasta encontrada (variante)
