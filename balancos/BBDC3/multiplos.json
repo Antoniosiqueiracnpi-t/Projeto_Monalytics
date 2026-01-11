@@ -1,5 +1,5 @@
 {
-  "ticker": "BBDC4",
+  "ticker": "BBDC3",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -67,9 +67,10 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
+        "VALOR_MERCADO": 114246730.84,
         "P_L": 2.5573,
         "P_VPA": 0.6748,
-        "DY": 2.8926,
+        "DY": 2.7121,
         "PAYOUT": 14.6036,
         "ROE": 13.3659,
         "ROA": 0.5895,
@@ -80,9 +81,10 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
+        "VALOR_MERCADO": 144141502.29,
         "P_L": 4.75,
         "P_VPA": 0.8124,
-        "DY": 9.1322,
+        "DY": 8.5963,
         "PAYOUT": 85.4375,
         "ROE": 8.9041,
         "ROA": 0.3891,
@@ -93,9 +95,10 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
+        "VALOR_MERCADO": 104483513.6,
         "P_L": 2.8957,
         "P_VPA": 0.5918,
-        "DY": 8.1374,
+        "DY": 7.7873,
         "PAYOUT": 46.3825,
         "ROE": 10.4431,
         "ROA": 0.4389,
@@ -106,9 +109,10 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
+        "VALOR_MERCADO": 169876840.19,
         "P_L": 3.6799,
         "P_VPA": 0.322,
-        "DY": 17.2994,
+        "DY": 5.7762,
         "PAYOUT": 45.4455,
         "ROE": 12.5608,
         "ROA": 0.5116,
@@ -119,15 +123,16 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-11T21:11:09.471705",
+    "data_calculo": "2026-01-11T21:24:16.347289",
     "preco_utilizado": 18.54,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 3824794581,
     "periodo_acoes": "2025T3",
     "multiplos": {
+      "VALOR_MERCADO": 189554200.79,
       "P_L": 4.6005,
       "P_VPA": 0.4026,
-      "DY": 13.8376,
+      "DY": 5.1766,
       "PAYOUT": 45.4455,
       "ROE": 12.5608,
       "ROA": 0.5116,
