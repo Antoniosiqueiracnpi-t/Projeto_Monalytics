@@ -1,0 +1,156 @@
+{
+  "ticker": "BBAS3",
+  "padrao_fiscal": {
+    "tipo": "PADRAO",
+    "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
+    "trimestres_ltm": 4
+  },
+  "metadata": {
+    "P_L": {
+      "nome": "P/L",
+      "categoria": "Valuation",
+      "formula": "Preço / Lucro por Ação LTM",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "P_VPA": {
+      "nome": "P/VPA",
+      "categoria": "Valuation",
+      "formula": "Preço / Valor Patrimonial por Ação",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "DY": {
+      "nome": "Dividend Yield",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Market Cap × 100",
+      "unidade": "%",
+      "usa_preco": true
+    },
+    "PAYOUT": {
+      "nome": "Payout",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Lucro Líquido LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "ROE": {
+      "nome": "ROE",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / PL Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "ROA": {
+      "nome": "ROA",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / Ativo Total Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "MARGEM_LIQUIDA": {
+      "nome": "Margem Líquida",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / Receita Intermediação LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "PL_ATIVOS": {
+      "nome": "PL/Ativos",
+      "categoria": "Estrutura",
+      "formula": "Patrimônio Líquido / Ativo Total × 100",
+      "unidade": "%",
+      "usa_preco": false
+    }
+  },
+  "historico_anual": {
+    "2022": {
+      "periodo_referencia": "2022T4",
+      "multiplos": {
+        "P_L": 1.4514,
+        "P_VPA": 0.2469,
+        "DY": 29.6361,
+        "PAYOUT": 39.9716,
+        "ROE": 18.3038,
+        "ROA": 1.4867,
+        "MARGEM_LIQUIDA": 12.6187,
+        "PL_ATIVOS": 8.1225
+      }
+    },
+    "2023": {
+      "periodo_referencia": "2023T4",
+      "multiplos": {
+        "P_L": 2.3219,
+        "P_VPA": 0.805,
+        "DY": 9.3682,
+        "PAYOUT": 39.4655,
+        "ROE": 19.7035,
+        "ROA": 1.5939,
+        "MARGEM_LIQUIDA": 12.4946,
+        "PL_ATIVOS": 8.0585
+      }
+    },
+    "2024": {
+      "periodo_referencia": "2024T4",
+      "multiplos": {
+        "P_L": 4.9913,
+        "P_VPA": 0.7173,
+        "DY": 7.0193,
+        "PAYOUT": 31.7988,
+        "ROE": 16.3058,
+        "ROA": 1.2815,
+        "MARGEM_LIQUIDA": 10.6658,
+        "PL_ATIVOS": 7.6806
+      }
+    },
+    "2025": {
+      "periodo_referencia": "2025T3",
+      "multiplos": {
+        "P_L": 9.7644,
+        "P_VPA": 0.3358,
+        "DY": 7.8512,
+        "PAYOUT": 31.0205,
+        "ROE": 8.5293,
+        "ROA": 0.6392,
+        "MARGEM_LIQUIDA": 5.2031,
+        "PL_ATIVOS": 7.3659
+      }
+    }
+  },
+  "ltm": {
+    "periodo_referencia": "2025T3",
+    "data_calculo": "2026-01-11T11:03:56.298703",
+    "preco_utilizado": 21.86,
+    "periodo_preco": "2026T1",
+    "acoes_utilizadas": 2860729247,
+    "periodo_acoes": "2025T3",
+    "multiplos": {
+      "P_L": 9.7156,
+      "P_VPA": 0.3341,
+      "DY": 7.8907,
+      "PAYOUT": 31.0205,
+      "ROE": 8.5293,
+      "ROA": 0.6392,
+      "MARGEM_LIQUIDA": 5.2031,
+      "PL_ATIVOS": 7.3659
+    }
+  },
+  "periodos_disponiveis": [
+    "2022T1",
+    "2022T2",
+    "2022T3",
+    "2022T4",
+    "2023T1",
+    "2023T2",
+    "2023T3",
+    "2023T4",
+    "2024T1",
+    "2024T2",
+    "2024T3",
+    "2024T4",
+    "2025T1",
+    "2025T2",
+    "2025T3"
+  ],
+  "erros": []
+}

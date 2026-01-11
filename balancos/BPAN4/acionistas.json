@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "59.285.411/0001-13",
+    "nome": "",
+    "ticker": "BPAN4"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "Banco BTG Pactual S.A.",
+      "cpf_cnpj": "30.306.294/0001-45",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 666061692,
+      "percentual_total": 52.484,
+      "acoes_ordinarias": 327464816,
+      "percentual_ordinarias": 49.8,
+      "acoes_preferenciais": 338596876,
+      "percentual_preferenciais": 55.371,
+      "posicao": 1
+    },
+    {
+      "nome": "Banco Sistema S.A.",
+      "cpf_cnpj": "76.543.115/0001-94",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 330095817,
+      "percentual_total": 26.011,
+      "acoes_ordinarias": 330095817,
+      "percentual_ordinarias": 50.2,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    }
+  ]
+}
