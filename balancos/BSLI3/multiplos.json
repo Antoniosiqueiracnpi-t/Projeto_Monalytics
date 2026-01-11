@@ -1,11 +1,18 @@
 {
-  "ticker": "BSLI4",
+  "ticker": "BSLI3",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
     "trimestres_ltm": 4
   },
   "metadata": {
+    "VALOR_MERCADO": {
+      "nome": "Valor de Mercado",
+      "categoria": "Valuation",
+      "formula": "Preço × Ações (3+4)",
+      "unidade": "R$ mil",
+      "usa_preco": true
+    },
     "P_L": {
       "nome": "P/L",
       "categoria": "Valuation",
@@ -67,10 +74,11 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
+        "VALOR_MERCADO": 6171790.5,
         "P_L": 67.895,
         "P_VPA": 2.7181,
-        "DY": 1.293,
-        "PAYOUT": 87.7882,
+        "DY": 17.3155,
+        "PAYOUT": 1175.6338,
         "ROE": 4.0033,
         "ROA": 0.1099,
         "MARGEM_LIQUIDA": 1.4836,
@@ -80,10 +88,11 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
+        "VALOR_MERCADO": 4421906.37,
         "P_L": 23.3298,
         "P_VPA": 1.9124,
-        "DY": 0.243,
-        "PAYOUT": 5.6696,
+        "DY": 3.2545,
+        "PAYOUT": 75.9261,
         "ROE": 8.2715,
         "ROA": 0.2076,
         "MARGEM_LIQUIDA": 3.8366,
@@ -93,10 +102,11 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
-        "P_L": -0.0058,
+        "VALOR_MERCADO": 3729008.94,
+        "P_L": 11.9896,
         "P_VPA": 1.0547,
-        "DY": 0.1515,
-        "PAYOUT": 1.8163,
+        "DY": 2.0287,
+        "PAYOUT": 24.3232,
         "ROE": 10.6371,
         "ROA": 0.2765,
         "MARGEM_LIQUIDA": 3.4909,
@@ -106,10 +116,11 @@
     "2025": {
       "periodo_referencia": "2025T1",
       "multiplos": {
-        "P_L": -0.0099,
-        "P_VPA": 0.1182,
+        "VALOR_MERCADO": 6417590.35,
+        "P_L": 14.4077,
+        "P_VPA": 1.5827,
         "DY": 1.1788,
-        "PAYOUT": 1.2682,
+        "PAYOUT": 16.9836,
         "ROE": 14.1353,
         "ROA": 0.3679,
         "MARGEM_LIQUIDA": 4.4657,
@@ -119,16 +130,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T1",
-    "data_calculo": "2026-01-11T20:31:09.335523",
+    "data_calculo": "2026-01-11T22:25:13.250854",
     "preco_utilizado": 7.12,
     "periodo_preco": "2026T1",
-    "acoes_utilizadas": 36304650,
-    "periodo_acoes": "2025T1",
+    "acoes_utilizadas": 486181087,
+    "periodo_acoes": "2024T4",
     "multiplos": {
-      "P_L": -0.0053,
-      "P_VPA": 0.0637,
+      "VALOR_MERCADO": 3461609.34,
+      "P_L": 7.7714,
+      "P_VPA": 0.8537,
       "DY": 2.1854,
-      "PAYOUT": 1.2682,
+      "PAYOUT": 16.9836,
       "ROE": 14.1353,
       "ROA": 0.3679,
       "MARGEM_LIQUIDA": 4.4657,

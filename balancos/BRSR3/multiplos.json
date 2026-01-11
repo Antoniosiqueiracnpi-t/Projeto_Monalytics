@@ -1,11 +1,18 @@
 {
-  "ticker": "BRSR6",
+  "ticker": "BRSR3",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
     "trimestres_ltm": 4
   },
   "metadata": {
+    "VALOR_MERCADO": {
+      "nome": "Valor de Mercado",
+      "categoria": "Valuation",
+      "formula": "Preço × Ações (3+4)",
+      "unidade": "R$ mil",
+      "usa_preco": true
+    },
     "P_L": {
       "nome": "P/L",
       "categoria": "Valuation",
@@ -67,7 +74,8 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
-        "P_L": 3.9806,
+        "VALOR_MERCADO": 3353590.71,
+        "P_L": 3.9817,
         "P_VPA": 0.3523,
         "DY": 32.3927,
         "PAYOUT": 128.9793,
@@ -80,7 +88,8 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
-        "P_L": 4.6048,
+        "VALOR_MERCADO": 4670488.53,
+        "P_L": 4.6131,
         "P_VPA": 0.4734,
         "DY": 24.2303,
         "PAYOUT": 111.7775,
@@ -93,7 +102,8 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
-        "P_L": 5.8427,
+        "VALOR_MERCADO": 4253334.56,
+        "P_L": 5.8441,
         "P_VPA": 0.4082,
         "DY": 28.876,
         "PAYOUT": 168.7544,
@@ -106,7 +116,8 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "P_L": 4.2355,
+        "VALOR_MERCADO": 5369834.88,
+        "P_L": 4.2261,
         "P_VPA": 0.4837,
         "DY": 30.4516,
         "PAYOUT": 128.6923,
@@ -119,13 +130,14 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-11T20:31:09.194888",
+    "data_calculo": "2026-01-11T22:25:13.147427",
     "preco_utilizado": 16.7,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 408974477,
-    "periodo_acoes": "2025T3",
+    "periodo_acoes": "2024T4",
     "multiplos": {
-      "P_L": 5.3871,
+      "VALOR_MERCADO": 6829873.77,
+      "P_L": 5.3752,
       "P_VPA": 0.6152,
       "DY": 23.9419,
       "PAYOUT": 128.6923,

@@ -1,8 +1,9 @@
 codigo,nome,categoria,unidade,2022,2023,2024,2025,LTM
-P_L,P/L,Valuation,x,0.2864,0.0001,0.0309,8.5995,13.778
-P_VPA,P/VPA,Valuation,x,1.5673,0.9251,0.8978,0.655,1.0494
-DY,Dividend Yield,Valuation,%,,3.0503,10.7498,12.7153,7.9362
-PAYOUT,Payout,Valuation,%,,15.5918,101.6843,30.1687,30.1687
+VALOR_MERCADO,Valor de Mercado,Valuation,R$ mil,1362902.23,908322.92,962320.57,1861241.2,2982061.63
+P_L,P/L,Valuation,x,28.8189,5.1116,9.4592,6.2901,10.0779
+P_VPA,P/VPA,Valuation,x,1.5673,0.9251,0.8978,1.7364,2.782
+DY,Dividend Yield,Valuation,%,,8.0867,28.4988,12.7153,7.9362
+PAYOUT,Payout,Valuation,%,,41.3356,269.5756,79.9803,79.9803
 ROE,ROE,Rentabilidade,%,5.4383,19.1952,9.9068,55.1493,55.1493
 ROA,ROA,Rentabilidade,%,,,,,
 MARGEM_LIQUIDA,Margem Líquida,Rentabilidade,%,3.2112,8.703,3.6276,5.4479,5.4479
