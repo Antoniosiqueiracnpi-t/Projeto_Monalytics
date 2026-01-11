@@ -20,7 +20,7 @@ BRAPI_TOKEN = os.getenv('BRAPI_TOKEN', '')
 
 # Se não tiver token em variável de ambiente, tentar valor padrão
 if not BRAPI_TOKEN:
-    BRAPI_TOKEN = 'ukQzv8YM3L28VarpcbLDEV'
+    BRAPI_TOKEN = 'eq3dB3MBPiKUnzqa7My7MY'
     print("⚠️  BRAPI_TOKEN não encontrado em variável de ambiente")
     print(f"    Usando token padrão: {BRAPI_TOKEN[:10]}...")
 
