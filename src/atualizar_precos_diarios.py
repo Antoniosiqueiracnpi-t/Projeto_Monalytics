@@ -330,16 +330,31 @@ def processar_atualizacao_diaria(
     print(f"{'='*70}")
     print(f"Data: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"Modo: {modo} | Selecionadas: {len(df_sel)}")
-    print(f"ATENÇÃO: Processa TODAS as classes de ações (ON, PN, UNIT)")
+    print(f"ATENÇÃO: para múltiplos, ignora classe 11 (UNIT). Classe 11 fica só para gráficos (capturar_historico_precos)")
     print(f"{'='*70}\n")
     
-    # CORREÇÃO: Extrair TODOS os tickers individuais (processar cada classe)
-    tickers_processar = []
+    # CORREÇÃO: Extrair tickers individuais (processar cada classe),
+    # mas IGNORAR classe 11 (UNIT) para múltiplos/valuation.
+    tickers_processar: List[str] = []
+    tickers_processados = set()
+   
     for _, row in df_sel.iterrows():
         ticker_str = str(row["ticker"]).upper().strip()
-        # Exemplo: "ITUB3;ITUB4" → ['ITUB3', 'ITUB4']
+   
+        # Ex.: "ITUB3;ITUB4;ITUB11" → ['ITUB3', 'ITUB4']  (UNIT/11 ignora)
         tickers = [t.strip() for t in ticker_str.split(';') if t.strip()]
-        tickers_processar.extend(tickers)
+   
+        # Ignora UNIT/11 apenas para múltiplos (UNIT fica para gráficos em outro job)
+        tickers = [t for t in tickers if not t.endswith("11")]
+   
+        for t in tickers:
+            if t in tickers_processados:
+                continue
+            tickers_processados.add(t)
+            tickers_processar.append(t)
+
+
+
     
     print(f"Total de tickers (incluindo todas as classes): {len(tickers_processar)}")
     print(f"Baixando preços...\n")
