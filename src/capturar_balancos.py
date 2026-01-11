@@ -110,7 +110,7 @@ class CapturaBalancos:
         self.cache_dir = Path(".cvm_cache")
         self.cache_dir.mkdir(exist_ok=True)
 
-        self.ano_inicio = 2015
+        self.ano_inicio = 2010
         self.ano_atual = datetime.now().year
 
         # Consolidado (con). Se quiser individual: False
