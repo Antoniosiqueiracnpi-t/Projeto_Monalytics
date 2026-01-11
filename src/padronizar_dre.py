@@ -1,5 +1,6 @@
 # src/padronizar_dre.py
 from __future__ import annotations
+import re
 
 import argparse
 from dataclasses import dataclass, field
@@ -834,10 +835,63 @@ class PadronizadorDRE:
     checkup_results: List[CheckupResult] = field(default_factory=list)
     _current_ticker: str = field(default="", repr=False)  # Ticker sendo processado
     
-    def _get_current_schema(self) -> List[Tuple[str, str]]:
-        """Retorna o esquema DRE para o ticker atual (banco ou padrão)."""
-        return _get_dre_schema(self._current_ticker)
+    
+def _get_current_schema(self) -> List[Tuple[str, str]]:
+    """Retorna o esquema DRE para o ticker atual.
 
+    Se existir um esquema runtime (construído a partir do próprio DRE consolidado),
+    ele tem prioridade para permitir inclusão de subcontas (1º nível).
+    """
+    if self._runtime_schema is not None and len(self._runtime_schema) > 0:
+        return self._runtime_schema
+    return _get_dre_schema(self._current_ticker)
+
+
+
+def _build_runtime_schema_with_subcontas(self, df_tri: pd.DataFrame) -> List[Tuple[str, str]]:
+    """Constrói esquema runtime com conta principal + 1º nível de subconta."""
+    base_schema = _get_dre_schema(self._current_ticker)
+    base_codes = [c for c, _ in base_schema]
+
+    name_map: Dict[str, str] = {}
+    if df_tri is not None and not df_tri.empty and "cd_conta" in df_tri.columns and "ds_conta" in df_tri.columns:
+        tmp = df_tri[["cd_conta", "ds_conta"]].dropna().copy()
+        tmp["cd_conta"] = tmp["cd_conta"].astype(str).str.strip()
+        tmp["ds_conta"] = tmp["ds_conta"].astype(str).str.strip()
+        for code, g in tmp.groupby("cd_conta", sort=False):
+            try:
+                mode_vals = g["ds_conta"].mode(dropna=True)
+                name_map[code] = str(mode_vals.iloc[0]) if len(mode_vals) > 0 else str(g["ds_conta"].iloc[0])
+            except Exception:
+                name_map[code] = str(g["ds_conta"].iloc[0])
+
+    parent_to_subs: Dict[str, Set[str]] = {c: set() for c in base_codes}
+    if df_tri is not None and not df_tri.empty and "cd_conta" in df_tri.columns:
+        for raw in df_tri["cd_conta"].astype(str).str.strip().unique().tolist():
+            if raw.count(".") == 2:
+                parent = ".".join(raw.split(".")[:2])
+                if parent in parent_to_subs:
+                    parent_to_subs[parent].add(raw)
+
+    def _sort_code(code: str):
+        parts = str(code).split(".")
+        nums = []
+        for p in parts:
+            try:
+                nums.append(int(p))
+            except Exception:
+                nums.append(999)
+        nums = (nums + [999, 999, 999, 999])[:4]
+        return tuple(nums)
+
+    schema_out: List[Tuple[str, str]] = []
+    for parent_code, parent_name in base_schema:
+        schema_out.append((parent_code, name_map.get(parent_code, parent_name)))
+        subs = sorted(list(parent_to_subs.get(parent_code, set())), key=_sort_code)
+        for sub_code in subs:
+            schema_out.append((sub_code, name_map.get(sub_code, "")))
+
+    return schema_out
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
             pasta = get_pasta_balanco(ticker)
             tri_path = pasta / "dre_consolidado.csv"
@@ -905,35 +959,26 @@ class PadronizadorDRE:
     
             return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
 
-    def _filter_empty_quarters(self, qtot: pd.DataFrame, threshold: float = 0.01) -> pd.DataFrame:
-        """
-        Remove trimestres completamente zerados ou com valores insignificantes.
-        
-        Critério: Se TODAS as contas principais têm |valor| < threshold (milhares),
-        o trimestre é considerado vazio e removido.
-        
-        Exemplo: 2021T1 da RECV3 (todas contas = 0.0) seria removido.
-        """
-        main_accounts = ["3.01", "3.03", "3.11"]  # Receita, Lucro Bruto, Lucro Líquido
-        
-        quarters_to_remove = []
-        
-        for (ano, trimestre), g in qtot.groupby(['ano', 'trimestre'], sort=False):
-            main_values = g[g['code'].isin(main_accounts)]['valor'].abs()
-            
-            # Se TODOS os valores principais são zero/insignificantes
-            if (main_values < threshold).all():
-                quarters_to_remove.append((ano, trimestre))
-        
-        if quarters_to_remove:
-            print(f"  ℹ️  Removendo trimestres zerados: {quarters_to_remove}")
-            mask = ~qtot.apply(lambda x: (x['ano'], x['trimestre']) in quarters_to_remove, axis=1)
-            return qtot[mask]
-        
+    
+def _filter_empty_quarters(self, qtot: pd.DataFrame, threshold: float = 0.01) -> pd.DataFrame:
+    """Mantém trimestre vazio e marca valores como NaN para permitir interpolação."""
+    if qtot is None or qtot.empty:
         return qtot
 
+    main_accounts = ["3.01", "3.03", "3.11"]
+    out = qtot.copy()
+    empty_quarters: Set[Tuple[int, str]] = set()
 
-    
+    for (ano, trimestre), g in out.groupby(["ano", "trimestre"], sort=False):
+        main_values = g[g["code"].isin(main_accounts)]["valor"].abs()
+        if main_values.empty or (main_values < threshold).all():
+            empty_quarters.add((int(ano), str(trimestre)))
+
+    if empty_quarters:
+        mask = out.apply(lambda x: (int(x["ano"]), str(x["trimestre"])) in empty_quarters, axis=1)
+        out.loc[mask, "valor"] = np.nan
+
+    return out
 
     def _extract_annual_values(self, df_anu: pd.DataFrame) -> pd.DataFrame:
             """
@@ -1199,6 +1244,60 @@ class PadronizadorDRE:
 
         return pivot.reset_index(drop=True)
 
+
+
+def _postprocess_principal_subcontas_e_interpolar(self, df: pd.DataFrame) -> pd.DataFrame:
+    """Mantém principal+subconta e preenche trimestres faltantes por interpolação."""
+    if df is None or df.empty:
+        return df
+
+    base_cols = ["cd_conta", "ds_conta"]
+    period_cols = [c for c in df.columns if c not in base_cols]
+
+    def _parse(col: str):
+        m = re.match(r"^(\d{4})T([1-4])$", str(col).strip())
+        return (int(m.group(1)), int(m.group(2))) if m else None
+
+    parsed = [(c, _parse(c)) for c in period_cols]
+    parsed = [(c, t) for c, t in parsed if t is not None]
+    if not parsed:
+        return df
+
+    parsed.sort(key=lambda x: (x[1][0], x[1][1]))
+    min_y, min_q = parsed[0][1]
+    max_y, max_q = parsed[-1][1]
+
+    def _next(y, q):
+        return (y, q + 1) if q < 4 else (y + 1, 1)
+
+    full = []
+    y, q = min_y, min_q
+    while True:
+        full.append((y, q))
+        if (y, q) == (max_y, max_q):
+            break
+        y, q = _next(y, q)
+
+    full_cols = [f"{y}T{q}" for y, q in full]
+    out = df.copy()
+    for c in full_cols:
+        if c not in out.columns:
+            out[c] = np.nan
+    out = out[base_cols + full_cols]
+
+    vals = out[full_cols].apply(pd.to_numeric, errors="coerce")
+    vals = vals.interpolate(axis=1, limit_direction="both").ffill(axis=1).bfill(axis=1)
+    out.loc[:, full_cols] = vals.values
+
+    def _keep(code: str) -> bool:
+        s = str(code).strip()
+        if s == EPS_CODE:
+            return True
+        return s.count(".") <= 2
+
+    out = out[out["cd_conta"].apply(_keep)].reset_index(drop=True)
+    out = out[~out[full_cols].isna().all(axis=1)].reset_index(drop=True)
+    return out
     def _validar_sinais_pos_processamento(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         Valida e corrige sinais de contas APÓS construir tabela horizontal.
@@ -1603,6 +1702,8 @@ class PadronizadorDRE:
         # 8. Construir tabela horizontal
         df_out = self._build_horizontal(qiso)
 
+        # NOVO: manter principal + 1º nível de subconta e completar trimestres (interpolação)
+        df_out = self._postprocess_principal_subcontas_e_interpolar(df_out)
         # 8.1 VALIDAR SINAIS PÓS-PROCESSAMENTO
         df_out = self._validar_sinais_pos_processamento(df_out)
         
