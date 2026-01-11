@@ -227,50 +227,55 @@ class CapturadorPrecos:
         
         return pd.DataFrame([result])
 
-    def capturar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
+    def capturar_e_salvar_ticker(self, ticker: str, merge_multiclasses: bool = True) -> Tuple[bool, str]:
         """
         Pipeline completo de captura de preços para um ticker.
-        
+
+        IMPORTANTE (multi-classes no mesmo arquivo/pasta):
+          - Quando merge_multiclasses=True, o arquivo balancos/<PASTA>/precos_trimestrais.csv passa a ter várias linhas,
+            uma por ticker (classe), com a coluna 'Ticker' identificando a linha.
+          - Se existir um arquivo legado (sem coluna 'Ticker'), ele será migrado automaticamente para o novo formato.
+
         Returns:
             ok: True se capturou pelo menos um preço
             msg: Mensagem de status
         """
         ticker = ticker.upper().strip()
         pasta = get_pasta_balanco(ticker)
-        
-        # 1. Extrair períodos e datas (prioriza padronizados)
+
+        # 1) Extrair períodos e datas (prioriza padronizados) - usa a pasta "base" encontrada pelo get_pasta_balanco()
         dates_df = self._extract_quarter_dates_from_padronizado(ticker)
-        
+
         if dates_df.empty:
             return False, "nenhum período encontrado (capture balanços primeiro)"
-        
-        # 2. Converter ticker para formato yfinance
-        ticker_symbol = self._get_ticker_symbol(ticker)
-        
-        # 3. Buscar preços para cada período
+
+        # 2) Determinar símbolo para o Yahoo (ex.: BBDC3.SA)
+        ticker_symbol = self._ticker_to_yahoo_symbol(ticker)
+
+        # 3) Buscar preço para cada data (fim de trimestre)
         results = []
         precos_ok = 0
         precos_fail = 0
         tem_t4 = False
-        
+
         for _, row in dates_df.iterrows():
             target_date = row["data_fim"]
             trimestre = row["trimestre"]
             periodo = row["periodo"]
             ano = row["ano"]
-            
+
             if trimestre == "T4":
                 tem_t4 = True
-            
+
             price = self._fetch_price_for_date(ticker_symbol, target_date)
-            
+
             if price is not None:
                 results.append({
                     "periodo": periodo,
                     "ano": ano,
                     "trimestre": trimestre,
                     "data_fim": target_date,
-                    "preco_fechamento_ajustado": round(price, 2)
+                    "preco_fechamento_ajustado": round(float(price), 2),
                 })
                 precos_ok += 1
             else:
@@ -279,34 +284,76 @@ class CapturadorPrecos:
                     "ano": ano,
                     "trimestre": trimestre,
                     "data_fim": target_date,
-                    "preco_fechamento_ajustado": np.nan
+                    "preco_fechamento_ajustado": np.nan,
                 })
                 precos_fail += 1
-        
-        # 4. Construir tabela horizontal
-        if results:
-            df_temp = pd.DataFrame(results)
-            df_out = self._build_horizontal(df_temp)
-            
-            # 5. Salvar resultado (SOBRESCREVE o arquivo anterior)
-            out_path = pasta / "precos_trimestrais.csv"
-            df_out.to_csv(out_path, index=False, encoding="utf-8")
-            
-            msg_parts = [
-                f"periodos={len(results)}",
-                f"OK={precos_ok}",
-                f"FAIL={precos_fail}"
-            ]
-            
-            if tem_t4:
-                msg_parts.append("T4=✓")
-            
-            msg = f"precos_trimestrais.csv | {' | '.join(msg_parts)}"
-            ok = precos_ok > 0
-            
-            return ok, msg
-        else:
+
+        if not results:
             return False, "nenhum resultado gerado"
+
+        # 4) Construir tabela horizontal (1 linha)
+        df_temp = pd.DataFrame(results)
+        df_out = self._build_horizontal(df_temp)
+
+        # 5) Salvar/mesclar no arquivo (multi-linhas por ticker)
+        out_path = pasta / "precos_trimestrais.csv"
+
+        # Enriquecer com coluna 'Ticker'
+        df_out = df_out.copy()
+        df_out.insert(0, "Ticker", ticker)
+
+        if merge_multiclasses and out_path.exists():
+            try:
+                df_old = pd.read_csv(out_path)
+
+                # Migração automática do formato legado (sem coluna Ticker)
+                if "Ticker" not in df_old.columns:
+                    try:
+                        principal = get_ticker_principal(ticker)
+                    except Exception:
+                        principal = pasta.name.upper()
+                    df_old = df_old.copy()
+                    df_old.insert(0, "Ticker", principal)
+
+                # União de colunas
+                all_cols = list(dict.fromkeys(list(df_old.columns) + list(df_out.columns)))
+
+                def _ensure_cols(df: pd.DataFrame) -> pd.DataFrame:
+                    df2 = df.copy()
+                    for c in all_cols:
+                        if c not in df2.columns:
+                            df2[c] = np.nan
+                    return df2[all_cols]
+
+                df_old = _ensure_cols(df_old)
+                df_out2 = _ensure_cols(df_out)
+
+                # Upsert da linha do ticker
+                mask = df_old["Ticker"].astype(str).str.upper().str.strip() == ticker
+                if mask.any():
+                    df_old.loc[mask, :] = df_out2.iloc[0].values
+                else:
+                    df_old = pd.concat([df_old, df_out2], ignore_index=True)
+
+                # Reordenar colunas: Ticker, Preço_Fechamento, períodos ordenados
+                base_cols = [c for c in ["Ticker", "Preço_Fechamento"] if c in df_old.columns]
+                period_cols = [c for c in df_old.columns if re.fullmatch(r"\d{4}T[1-4]", str(c))]
+                other_cols = [c for c in df_old.columns if c not in base_cols + period_cols]
+                period_cols = sorted(period_cols)
+                df_final = df_old[base_cols + period_cols + other_cols]
+
+                df_final.to_csv(out_path, index=False, encoding="utf-8")
+            except Exception:
+                # Em caso de erro na mesclagem, sobrescreve (mantém no mínimo o ticker atual)
+                df_out.to_csv(out_path, index=False, encoding="utf-8")
+        else:
+            # Novo arquivo no formato multi-linhas
+            df_out.to_csv(out_path, index=False, encoding="utf-8")
+
+        msg_parts = [f"periodos={len(results)}", f"OK={precos_ok}", f"FAIL={precos_fail}"]
+        if tem_t4:
+            msg_parts.append("inclui_T4")
+        return True, " | ".join(msg_parts)
 
 
 def main():
@@ -360,49 +407,51 @@ def main():
 
     ok_count = 0
     err_count = 0
-    tickers_processados = set()
 
     for _, row in df_sel.iterrows():
         ticker_str = str(row["ticker"]).upper().strip()
-    
-        # Para múltiplos/valuation: IGNORAR classe 11 (UNIT).
-        # Ex.: "ITUB3;ITUB4;ITUB11" -> ["ITUB3", "ITUB4"]
-        tickers_raw = [t.strip() for t in ticker_str.split(";") if t.strip()] if ";" in ticker_str else [ticker_str]
-        tickers_filtrados = [t for t in tickers_raw if not t.endswith("11")]
-    
-        if not tickers_filtrados:
-            # Só existe UNIT (ou nada válido) -> não capturamos preços trimestrais (múltiplos ignoram 11)
-            print(f"⏭️ {ticker_str}: ignorado (somente classe 11/UNIT ou vazio)")
-            continue
-    
-        # Evitar capturar o mesmo ticker duas vezes no mesmo job
-        for ticker in tickers_filtrados:
-            if ticker in tickers_processados:
-                continue
-            tickers_processados.add(ticker)
-    
-            pasta = get_pasta_balanco(ticker)
-            if not pasta.exists():
-                err_count += 1
-                print(f"❌ {ticker}: pasta {pasta} não existe")
-                continue
-    
-            try:
-                ok, msg = capturador.capturar_e_salvar_ticker(ticker)
-    
-                if ok:
-                    ok_count += 1
-                    print(f"✅ {ticker}: {msg}")
-                else:
-                    err_count += 1
-                    print(f"⚠️ {ticker}: {msg}")
-    
-            except Exception as e:
-                err_count += 1
-                import traceback
-                print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
-                traceback.print_exc()
 
+        # Capturar TODAS as classes no mesmo arquivo/pasta (evita criar BBDC3/BBDC4/...)
+        tickers = [t.strip().upper() for t in re.split(r"[;,]", ticker_str) if t.strip()]
+        if not tickers:
+            err_count += 1
+            print(f"❌ linha sem ticker válido: {ticker_str}")
+            continue
+
+        # A pasta base é resolvida pelo get_pasta_balanco (reutiliza pasta existente)
+        pasta = get_pasta_balanco(tickers[0])
+        if not pasta.exists():
+            err_count += 1
+            print(f"❌ {ticker}: pasta {pasta} não existe")
+            continue
+
+        try:
+                        # Captura trimestral: inclui classes 3/4 no CSV; ignora 11 para múltiplos
+            ok_all = True
+            msgs = []
+            for t in tickers:
+                ok_t, msg_t = capturador.capturar_e_salvar_ticker(t, merge_multiclasses=True)
+                ok_all = ok_all and ok_t
+                msgs.append(f"{t}: {msg_t}")
+            ok, msg = ok_all, " ; ".join(msgs)
+
+
+            if ok:
+                ok_count += 1
+                print(f"✅ {ticker}: {msg}")
+            else:
+                err_count += 1
+                print(f"⚠️ {ticker}: {msg}")
+
+        except Exception as e:
+            err_count += 1
+            import traceback
+            print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
+            traceback.print_exc()
+
+    print("\n" + "=" * 70)
+    print(f"Finalizado: OK={ok_count} | ERRO={err_count}")
+    print("=" * 70 + "\n")
 
 
 if __name__ == "__main__":
