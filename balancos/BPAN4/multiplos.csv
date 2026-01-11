@@ -1,9 +1,9 @@
 codigo,nome,categoria,unidade,2022,2023,2024,2025,LTM
 P_L,P/L,Valuation,x,7.8166,12.1466,9.3522,13.6447,20.5898
-P_VPA,P/VPA,Valuation,x,1.047,1.429,1.0733,,
+P_VPA,P/VPA,Valuation,x,,,,0.2499,0.377
 DY,Dividend Yield,Valuation,%,0.9126,0.4956,0.7334,3.1041,2.0571
 PAYOUT,Payout,Valuation,%,10.1864,8.883,11.1711,15.2296,15.2296
-ROE,ROE,Rentabilidade,%,9.3806,8.1354,7.0817,,
-ROA,ROA,Rentabilidade,%,1.2014,1.0482,0.8676,0.5786,0.5786
+ROE,ROE,Rentabilidade,%,,,,10.1853,10.1853
+ROA,ROA,Rentabilidade,%,0.6007,0.5241,0.4338,0.2893,0.2893
 MARGEM_LIQUIDA,Margem Líquida,Rentabilidade,%,5.6563,3.8651,4.0377,2.5813,2.5813
-PL_ATIVOS,PL/Ativos,Estrutura,%,12.807,12.9588,11.6227,,
+PL_ATIVOS,PL/Ativos,Estrutura,%,0.0,0.0,0.0,5.5337,5.5337

@@ -1,5 +1,5 @@
 {
-  "ticker": "PINE3",
+  "ticker": "PINE4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -72,9 +72,9 @@
         "DY": null,
         "PAYOUT": null,
         "ROE": 5.4383,
-        "ROA": 0.2953,
+        "ROA": null,
         "MARGEM_LIQUIDA": 3.2112,
-        "PL_ATIVOS": 5.4303
+        "PL_ATIVOS": null
       }
     },
     "2023": {
@@ -85,9 +85,9 @@
         "DY": 3.0503,
         "PAYOUT": 15.5918,
         "ROE": 19.1952,
-        "ROA": 0.972,
+        "ROA": null,
         "MARGEM_LIQUIDA": 8.703,
-        "PL_ATIVOS": 4.7783
+        "PL_ATIVOS": null
       }
     },
     "2024": {
@@ -98,20 +98,20 @@
         "DY": 10.7498,
         "PAYOUT": 101.6843,
         "ROE": 9.9068,
-        "ROA": 0.428,
+        "ROA": null,
         "MARGEM_LIQUIDA": 3.6276,
-        "PL_ATIVOS": 3.9709
+        "PL_ATIVOS": null
       }
     },
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
         "P_L": 8.5995,
-        "P_VPA": null,
+        "P_VPA": 0.655,
         "DY": 12.7153,
         "PAYOUT": 30.1687,
-        "ROE": null,
-        "ROA": 2.0186,
+        "ROE": 55.1493,
+        "ROA": null,
         "MARGEM_LIQUIDA": 5.4479,
         "PL_ATIVOS": null
       }
@@ -119,18 +119,18 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-11T11:03:57.048658",
+    "data_calculo": "2026-01-11T20:31:09.790950",
     "preco_utilizado": 13.17,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 85409105,
     "periodo_acoes": "2025T3",
     "multiplos": {
       "P_L": 13.778,
-      "P_VPA": null,
+      "P_VPA": 1.0494,
       "DY": 7.9362,
       "PAYOUT": 30.1687,
-      "ROE": null,
-      "ROA": 2.0186,
+      "ROE": 55.1493,
+      "ROA": null,
       "MARGEM_LIQUIDA": 5.4479,
       "PL_ATIVOS": null
     }

@@ -68,123 +68,123 @@
       "periodo_referencia": "2018T4",
       "multiplos": {
         "P_L": 2.2594,
-        "P_VPA": 0.9321,
+        "P_VPA": null,
         "DY": null,
         "PAYOUT": null,
-        "ROE": 8.381,
-        "ROA": 1.2657,
+        "ROE": null,
+        "ROA": 0.6329,
         "MARGEM_LIQUIDA": 7.5259,
-        "PL_ATIVOS": 15.1023
+        "PL_ATIVOS": 0.0
       }
     },
     "2019": {
       "periodo_referencia": "2019T4",
       "multiplos": {
         "P_L": 7.2442,
-        "P_VPA": 0.7718,
+        "P_VPA": null,
         "DY": 3.98,
         "PAYOUT": 32.0675,
-        "ROE": 11.6492,
-        "ROA": 2.1104,
+        "ROE": null,
+        "ROA": 1.0552,
         "MARGEM_LIQUIDA": 11.0989,
-        "PL_ATIVOS": 20.7901
+        "PL_ATIVOS": 0.0
       }
     },
     "2020": {
       "periodo_referencia": "2020T4",
       "multiplos": {
         "P_L": 6.5242,
-        "P_VPA": 0.4888,
+        "P_VPA": null,
         "DY": 4.3998,
         "PAYOUT": 28.7994,
-        "ROE": 7.5429,
-        "ROA": 1.299,
+        "ROE": null,
+        "ROA": 0.6495,
         "MARGEM_LIQUIDA": 7.7021,
-        "PL_ATIVOS": 14.7424
+        "PL_ATIVOS": 0.0
       }
     },
     "2021": {
       "periodo_referencia": "2021T4",
       "multiplos": {
         "P_L": 6.6002,
-        "P_VPA": 0.2928,
+        "P_VPA": null,
         "DY": 14.0875,
         "PAYOUT": 91.6307,
-        "ROE": 4.3168,
-        "ROA": 0.5516,
+        "ROE": null,
+        "ROA": 0.2758,
         "MARGEM_LIQUIDA": 3.7498,
-        "PL_ATIVOS": 11.1646
+        "PL_ATIVOS": 0.0
       }
     },
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
         "P_L": 15.0725,
-        "P_VPA": 0.2203,
+        "P_VPA": null,
         "DY": 20.0752,
         "PAYOUT": 279.4991,
-        "ROE": 1.643,
-        "ROA": 0.1658,
+        "ROE": null,
+        "ROA": 0.0829,
         "MARGEM_LIQUIDA": 1.0344,
-        "PL_ATIVOS": 9.2645
+        "PL_ATIVOS": 0.0
       }
     },
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
         "P_L": 5.6583,
-        "P_VPA": 0.3628,
+        "P_VPA": null,
         "DY": 12.3847,
         "PAYOUT": 65.3841,
-        "ROE": 6.9119,
-        "ROA": 0.6505,
+        "ROE": null,
+        "ROA": 0.3253,
         "MARGEM_LIQUIDA": 3.88,
-        "PL_ATIVOS": 9.5616
+        "PL_ATIVOS": 0.0
       }
     },
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
         "P_L": 7.5311,
-        "P_VPA": 0.4328,
+        "P_VPA": null,
         "DY": 12.794,
         "PAYOUT": 87.3472,
-        "ROE": 6.5064,
-        "ROA": 0.6062,
+        "ROE": null,
+        "ROA": 0.3031,
         "MARGEM_LIQUIDA": 3.1951,
-        "PL_ATIVOS": 9.0974
+        "PL_ATIVOS": 0.0
       }
     },
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
         "P_L": 5.496,
-        "P_VPA": 0.4066,
+        "P_VPA": null,
         "DY": 19.2513,
         "PAYOUT": 87.8996,
-        "ROE": 9.0362,
-        "ROA": 0.8778,
+        "ROE": null,
+        "ROA": 0.4389,
         "MARGEM_LIQUIDA": 4.4662,
-        "PL_ATIVOS": 9.5302
+        "PL_ATIVOS": 0.0
       }
     }
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-11T11:03:56.583742",
+    "data_calculo": "2026-01-11T20:31:08.745875",
     "preco_utilizado": 4.89,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 500007354,
     "periodo_acoes": "2025T3",
     "multiplos": {
       "P_L": 7.1859,
-      "P_VPA": 0.5317,
+      "P_VPA": null,
       "DY": 14.7239,
       "PAYOUT": 87.8996,
-      "ROE": 9.0362,
-      "ROA": 0.8778,
+      "ROE": null,
+      "ROA": 0.4389,
       "MARGEM_LIQUIDA": 4.4662,
-      "PL_ATIVOS": 9.5302
+      "PL_ATIVOS": 0.0
     }
   },
   "periodos_disponiveis": [

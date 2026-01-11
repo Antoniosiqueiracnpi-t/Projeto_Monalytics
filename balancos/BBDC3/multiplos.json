@@ -1,5 +1,5 @@
 {
-  "ticker": "BBDC3",
+  "ticker": "BBDC4",
   "padrao_fiscal": {
     "tipo": "PADRAO",
     "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
@@ -72,9 +72,9 @@
         "DY": 2.8926,
         "PAYOUT": 14.6036,
         "ROE": 13.3659,
-        "ROA": 1.179,
+        "ROA": 0.5895,
         "MARGEM_LIQUIDA": 10.3039,
-        "PL_ATIVOS": 8.8208
+        "PL_ATIVOS": 4.4104
       }
     },
     "2023": {
@@ -85,9 +85,9 @@
         "DY": 9.1322,
         "PAYOUT": 85.4375,
         "ROE": 8.9041,
-        "ROA": 0.7782,
+        "ROA": 0.3891,
         "MARGEM_LIQUIDA": 6.4612,
-        "PL_ATIVOS": 8.6647
+        "PL_ATIVOS": 4.3324
       }
     },
     "2024": {
@@ -98,9 +98,9 @@
         "DY": 8.1374,
         "PAYOUT": 46.3825,
         "ROE": 10.4431,
-        "ROA": 0.8778,
+        "ROA": 0.4389,
         "MARGEM_LIQUIDA": 8.2273,
-        "PL_ATIVOS": 8.1634
+        "PL_ATIVOS": 4.0817
       }
     },
     "2025": {
@@ -111,15 +111,15 @@
         "DY": 17.2994,
         "PAYOUT": 45.4455,
         "ROE": 12.5608,
-        "ROA": 1.0232,
+        "ROA": 0.5116,
         "MARGEM_LIQUIDA": 8.5587,
-        "PL_ATIVOS": 7.9965
+        "PL_ATIVOS": 3.9982
       }
     }
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-11T11:03:56.364261",
+    "data_calculo": "2026-01-11T20:31:08.323490",
     "preco_utilizado": 18.54,
     "periodo_preco": "2026T1",
     "acoes_utilizadas": 3824794581,
@@ -130,9 +130,9 @@
       "DY": 13.8376,
       "PAYOUT": 45.4455,
       "ROE": 12.5608,
-      "ROA": 1.0232,
+      "ROA": 0.5116,
       "MARGEM_LIQUIDA": 8.5587,
-      "PL_ATIVOS": 7.9965
+      "PL_ATIVOS": 3.9982
     }
   },
   "periodos_disponiveis": [
