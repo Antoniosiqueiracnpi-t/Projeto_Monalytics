@@ -66,13 +66,17 @@ class CapturadorPrecos:
             ticker_clean = f"{ticker_clean}.SA"
         return ticker_clean
 
-    def _extract_quarter_dates_from_padronizado(self, ticker: str) -> pd.DataFrame:
+    def _ticker_to_yahoo_symbol(self, ticker: str) -> str:
+        """Alias (compatibilidade): converte ticker B3 para símbolo do Yahoo Finance (.SA)."""
+        return self._get_ticker_symbol(ticker)
+
+    def _extract_quarter_dates_from_padronizado(self, ticker: str, pasta_base: Optional[Path] = None) -> pd.DataFrame:
         """
         Extrai períodos dos arquivos padronizados e mapeia para datas de fechamento.
         
         Prioridade: dre_padronizado > bpa_padronizado > bpp_padronizado > dfc_padronizado
         """
-        pasta = get_pasta_balanco(ticker)
+        pasta = pasta_base if pasta_base is not None else get_pasta_balanco(ticker)
         
         # Arquivos padronizados em ordem de prioridade
         arquivos_padronizados = [
@@ -227,7 +231,7 @@ class CapturadorPrecos:
         
         return pd.DataFrame([result])
 
-    def capturar_e_salvar_ticker(self, ticker: str, merge_multiclasses: bool = True) -> Tuple[bool, str]:
+    def capturar_e_salvar_ticker(self, ticker: str, merge_multiclasses: bool = True, pasta_base: Optional[Path] = None) -> Tuple[bool, str]:
         """
         Pipeline completo de captura de preços para um ticker.
 
@@ -241,10 +245,10 @@ class CapturadorPrecos:
             msg: Mensagem de status
         """
         ticker = ticker.upper().strip()
-        pasta = get_pasta_balanco(ticker)
+        pasta = pasta_base if pasta_base is not None else get_pasta_balanco(ticker)
 
         # 1) Extrair períodos e datas (prioriza padronizados) - usa a pasta "base" encontrada pelo get_pasta_balanco()
-        dates_df = self._extract_quarter_dates_from_padronizado(ticker)
+        dates_df = self._extract_quarter_dates_from_padronizado(ticker, pasta_base=pasta)
 
         if dates_df.empty:
             return False, "nenhum período encontrado (capture balanços primeiro)"
@@ -418,19 +422,20 @@ def main():
             print(f"❌ linha sem ticker válido: {ticker_str}")
             continue
 
+        ticker_base = tickers[0]  # ticker principal da pasta (ex.: BBDC3)
         # A pasta base é resolvida pelo get_pasta_balanco (reutiliza pasta existente)
-        pasta = get_pasta_balanco(tickers[0])
+        pasta = get_pasta_balanco(ticker_base)
         if not pasta.exists():
             err_count += 1
-            print(f"❌ {ticker}: pasta {pasta} não existe")
+            print(f"❌ {ticker_base}: pasta {pasta} não existe")
             continue
 
         try:
-                        # Captura trimestral: inclui classes 3/4 no CSV; ignora 11 para múltiplos
+            # Captura trimestral: salva TODAS as classes no mesmo precos_trimestrais.csv (uma linha por ticker/classe)
             ok_all = True
             msgs = []
             for t in tickers:
-                ok_t, msg_t = capturador.capturar_e_salvar_ticker(t, merge_multiclasses=True)
+                ok_t, msg_t = capturador.capturar_e_salvar_ticker(t, merge_multiclasses=True, pasta_base=pasta)
                 ok_all = ok_all and ok_t
                 msgs.append(f"{t}: {msg_t}")
             ok, msg = ok_all, " ; ".join(msgs)
@@ -438,15 +443,15 @@ def main():
 
             if ok:
                 ok_count += 1
-                print(f"✅ {ticker}: {msg}")
+                print(f"✅ {ticker_base}: {msg}")
             else:
                 err_count += 1
-                print(f"⚠️ {ticker}: {msg}")
+                print(f"⚠️ {ticker_base}: {msg}")
 
         except Exception as e:
             err_count += 1
             import traceback
-            print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
+            print(f"❌ {ticker_base}: erro ({type(e).__name__}: {e})")
             traceback.print_exc()
 
     print("\n" + "=" * 70)
