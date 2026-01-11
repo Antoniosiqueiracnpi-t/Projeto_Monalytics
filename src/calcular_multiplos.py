@@ -520,63 +520,130 @@ def _encontrar_periodo_imputacao(df: pd.DataFrame, periodo_req: str) -> Optional
 
     return None
 
-def _obter_preco(dados: DadosEmpresa, periodo: str) -> float:
+def _precos_formato_multiclasse(df: pd.DataFrame) -> bool:
+    """Retorna True se precos_trimestrais.csv estiver no formato multi-classe (com coluna 'Ticker')."""
+    return df is not None and isinstance(df, pd.DataFrame) and ("Ticker" in df.columns)
+
+
+def _ticker_raiz(ticker: str) -> str:
+    m = re.match(r"^([A-Z]{4})", str(ticker or "").upper().strip())
+    return m.group(1) if m else str(ticker or "").upper().strip()[:4]
+
+
+def _ticker_base_para_precos(dados: DadosEmpresa) -> str:
     """
-    Obtém preço da ação no período específico.
-    
-    FORMATO ESPERADO DO CSV:
-    Preço_Fechamento,2015T1,2015T2,...,2025T3
-    Preço de Fechamento Ajustado,2.11,2.12,...,15.56
+    Para múltiplos, a classe 11 (UNIT) deve ser ignorada.
+    - Se o ticker atual termina em 11, tenta usar a classe 3; se não existir, usa a 4.
+    - Caso contrário, usa o próprio ticker.
+    """
+    t = str(dados.ticker or "").upper().strip()
+    if re.match(r"^[A-Z]{4}11$", t):
+        raiz = _ticker_raiz(t)
+        t3, t4 = raiz + "3", raiz + "4"
+        # Se o CSV de preços tiver multi-classe, escolher a primeira disponível entre 3 e 4
+        if dados.precos is not None and _precos_formato_multiclasse(dados.precos):
+            tickers_disp = set(dados.precos["Ticker"].astype(str).str.upper().str.strip().tolist())
+            if t3 in tickers_disp:
+                return t3
+            if t4 in tickers_disp:
+                return t4
+        # fallback sem multi-classe: preferir 3
+        return t3
+    return t
+
+
+def _obter_preco_ticker(dados: DadosEmpresa, ticker: str, periodo: str) -> float:
+    """
+    Obtém preço para um ticker específico dentro do precos_trimestrais.csv.
+
+    Suporta 2 formatos:
+      1) Formato antigo (1 linha): Preço_Fechamento, 2015T1, ...
+      2) Formato multi-classe (várias linhas): Ticker, Preço_Fechamento, 2015T1, ...
     """
     if dados.precos is None:
         return np.nan
-    
-    if periodo not in dados.precos.columns:
+
+    df = dados.precos
+
+    if periodo not in df.columns:
         return np.nan
-    
-    # Buscar valor numérico na coluna do período
-    for idx in range(len(dados.precos)):
-        val = dados.precos.iloc[idx][periodo]
+
+    # Formato multi-classe: filtrar pela coluna Ticker
+    if _precos_formato_multiclasse(df):
+        t = str(ticker or "").upper().strip()
+        sub = df[df["Ticker"].astype(str).str.upper().str.strip() == t]
+        if sub.empty:
+            sub = df
+        # buscar primeiro valor numérico válido
+        for idx in range(len(sub)):
+            val = sub.iloc[idx][periodo]
+            if pd.notna(val):
+                try:
+                    v = float(val)
+                    if np.isfinite(v) and v > 0:
+                        return v
+                except (ValueError, TypeError):
+                    continue
+        return np.nan
+
+    # Formato antigo (sem coluna Ticker)
+    for idx in range(len(df)):
+        val = df.iloc[idx][periodo]
         if pd.notna(val):
             try:
-                preco = float(val)
-                if preco > 0:
-                    return preco
+                v = float(val)
+                if np.isfinite(v) and v > 0:
+                    return v
             except (ValueError, TypeError):
                 continue
-    
     return np.nan
+
+
+def _obter_preco(dados: DadosEmpresa, periodo: str) -> float:
+    """
+    Obtém preço da ação no período específico.
+
+    ✅ Compatível com o formato antigo e com o novo formato multi-classe (coluna 'Ticker').
+    ✅ Se o ticker atual for classe 11 (UNIT), ignora 11 e tenta usar 3/4 (regra de múltiplos).
+    """
+    ticker_base = _ticker_base_para_precos(dados)
+    return _obter_preco_ticker(dados, ticker_base, periodo)
+
+def _obter_preco_atual_ticker(dados: DadosEmpresa, ticker: str) -> Tuple[float, str]:
+    """
+    Obtém o preço mais recente disponível para um ticker específico.
+
+    CORREÇÃO: Busca em TODAS as colunas do CSV de preços,
+    não apenas nos períodos com balanços reportados.
+    """
+    if dados.precos is None:
+        return np.nan, ""
+
+    df = dados.precos
+
+    colunas_precos = _get_colunas_numericas_validas(df)
+    if not colunas_precos:
+        return np.nan, ""
+
+    periodos_ordenados = _ordenar_periodos(colunas_precos)
+
+    for p in reversed(periodos_ordenados):
+        preco = _obter_preco_ticker(dados, ticker, p)
+        if np.isfinite(preco) and preco > 0:
+            return preco, p
+
+    return np.nan, ""
 
 
 def _obter_preco_atual(dados: DadosEmpresa) -> Tuple[float, str]:
     """
     Obtém o preço mais recente disponível.
-    
-    CORREÇÃO: Busca em TODAS as colunas do CSV de preços,
-    não apenas nos períodos com balanços reportados.
-    
-    Returns:
-        (preço, período) - preço mais recente e o período correspondente
-    """
-    if dados.precos is None:
-        return np.nan, ""
-    
-    # Obter TODAS as colunas de período do CSV de preços (não só dados.periodos)
-    colunas_precos = _get_colunas_numericas_validas(dados.precos)
-    
-    if not colunas_precos:
-        return np.nan, ""
-    
-    # Ordenar períodos e percorrer do mais recente ao mais antigo
-    periodos_ordenados = _ordenar_periodos(colunas_precos)
-    
-    for p in reversed(periodos_ordenados):
-        preco = _obter_preco(dados, p)
-        if np.isfinite(preco) and preco > 0:
-            return preco, p
-    
-    return np.nan, ""
 
+    ✅ Compatível com o formato antigo e com o novo formato multi-classe (coluna 'Ticker').
+    ✅ Se o ticker atual for classe 11 (UNIT), ignora 11 e tenta usar 3/4 (regra de múltiplos).
+    """
+    ticker_base = _ticker_base_para_precos(dados)
+    return _obter_preco_atual_ticker(dados, ticker_base)
 
 def _detectar_coluna_especie(df: pd.DataFrame) -> Optional[str]:
     if df is None:
@@ -741,35 +808,158 @@ def _obter_acoes_atual(dados: DadosEmpresa) -> Tuple[float, str]:
 # CÁLCULO DE MARKET CAP E EV - CORRIGIDOS
 # ======================================================================================
 
-def _calcular_market_cap(dados: DadosEmpresa, periodo: str) -> float:
+def _obter_acoes_especie(dados: DadosEmpresa, especie: str, periodo: str) -> float:
     """
-    Calcula Market Cap = Preço × Número de Ações
-    
-    Market Cap (R$ mil) = Preço × Ações / 1000
+    Obtém número de ações por espécie (ON/PN/TOTAL/etc) no período (imputando quando necessário).
     """
-    preco = _obter_preco(dados, periodo)
-    acoes = _obter_acoes(dados, periodo)
-    
-    if np.isfinite(preco) and np.isfinite(acoes) and preco > 0 and acoes > 0:
-        return (preco * acoes) / 1000.0
-    
+    if dados.acoes is None:
+        return np.nan
+
+    df = dados.acoes
+    col_periodos = _get_colunas_numericas_validas(df)
+    if not col_periodos:
+        return np.nan
+
+    # escolher período existente (imputação)
+    periodo_busca = _encontrar_periodo_imputacao(df, periodo)
+    if not periodo_busca:
+        periodo_busca = _ordenar_periodos(col_periodos)[-1]
+
+    col_especie = _detectar_coluna_especie(df)
+    if not col_especie:
+        return np.nan
+
+    esp = str(especie or "").upper().strip()
+    serie = df[col_especie].astype(str).str.upper().str.strip()
+
+    # Preferir match exato; fallback: começa com (ex.: PNA/PNB)
+    mask = serie.eq(esp)
+    if not mask.any():
+        mask = serie.str.startswith(esp)
+
+    if not mask.any():
+        return np.nan
+
+    # pegar primeiro numérico válido
+    vals = df.loc[mask, periodo_busca].values
+    for val in vals:
+        if pd.notna(val):
+            try:
+                v = float(val)
+                if np.isfinite(v) and v > 0:
+                    return v
+            except (ValueError, TypeError):
+                continue
+
     return np.nan
 
+def _calcular_market_cap(dados: DadosEmpresa, periodo: str) -> float:
+    """
+    Calcula Valor de Mercado (Market Cap) como SOMA de classe 3 + 4 quando existirem.
+
+    Regra solicitada:
+      - Valor de Mercado (R$ mil) = (Preço3 × Ações_ON + Preço4 × Ações_PN) / 1000
+      - Classe 11 (UNIT) é ignorada para múltiplos.
+
+    Observação:
+      - A soma 3+4 só é aplicada quando o precos_trimestrais.csv estiver no formato multi-classe
+        (coluna 'Ticker') e houver linhas para as classes 3 e/ou 4.
+      - Caso contrário, cai no fallback antigo (preço do ticker base × ações).
+    """
+    raiz = _ticker_raiz(dados.ticker)
+    t3, t4 = raiz + "3", raiz + "4"
+
+    # Só faz a soma 3+4 se o CSV de preços estiver no formato multi-classe e contiver as classes
+    if dados.precos is not None and _precos_formato_multiclasse(dados.precos):
+        tickers_disp = set(dados.precos["Ticker"].astype(str).str.upper().str.strip().tolist())
+        tem3 = t3 in tickers_disp
+        tem4 = t4 in tickers_disp
+
+        total = 0.0
+        tem_algum = False
+
+        if tem3:
+            preco3 = _obter_preco_ticker(dados, t3, periodo)
+            acoes_on = _obter_acoes_especie(dados, "ON", periodo)
+            if np.isfinite(preco3) and preco3 > 0 and np.isfinite(acoes_on) and acoes_on > 0:
+                total += (preco3 * acoes_on)
+                tem_algum = True
+
+        if tem4:
+            preco4 = _obter_preco_ticker(dados, t4, periodo)
+            acoes_pn = _obter_acoes_especie(dados, "PN", periodo)
+            if np.isfinite(preco4) and preco4 > 0 and np.isfinite(acoes_pn) and acoes_pn > 0:
+                total += (preco4 * acoes_pn)
+                tem_algum = True
+
+        if tem_algum and total > 0:
+            return total / 1000.0  # R$ mil
+
+    # Fallback: comportamento antigo (preço ticker base × ações (TOTAL/ON))
+    preco = _obter_preco(dados, periodo)
+    acoes = _obter_acoes(dados, periodo)
+
+    if np.isfinite(preco) and np.isfinite(acoes) and preco > 0 and acoes > 0:
+        return (preco * acoes) / 1000.0
+
+    return np.nan
 
 def _calcular_market_cap_atual(dados: DadosEmpresa) -> float:
     """
-    Calcula Market Cap usando preço e ações mais recentes.
-    
-    Esta é a função principal para múltiplos de valuation atuais.
+    Calcula Valor de Mercado atual como SOMA de classe 3 + 4 quando existirem.
+
+    - usa o preço mais recente disponível para cada classe (3 e 4)
+    - usa o período mais recente disponível no CSV de ações (acoes_historico)
+    - classe 11 (UNIT) é ignorada para múltiplos
+
+    Observação:
+      - A soma 3+4 só é aplicada quando o precos_trimestrais.csv estiver no formato multi-classe
+        (coluna 'Ticker') e houver linhas para as classes 3 e/ou 4.
+      - Caso contrário, cai no fallback antigo.
     """
+    raiz = _ticker_raiz(dados.ticker)
+    t3, t4 = raiz + "3", raiz + "4"
+
+    # Determinar período mais recente de ações
+    if dados.acoes is not None:
+        col_periodos = _get_colunas_numericas_validas(dados.acoes)
+        periodo_acoes = _ordenar_periodos(col_periodos)[-1] if col_periodos else ""
+    else:
+        periodo_acoes = ""
+
+    if dados.precos is not None and _precos_formato_multiclasse(dados.precos):
+        tickers_disp = set(dados.precos["Ticker"].astype(str).str.upper().str.strip().tolist())
+        tem3 = t3 in tickers_disp
+        tem4 = t4 in tickers_disp
+
+        total = 0.0
+        tem_algum = False
+
+        if tem3:
+            preco3, _ = _obter_preco_atual_ticker(dados, t3)
+            acoes_on = _obter_acoes_especie(dados, "ON", periodo_acoes)
+            if np.isfinite(preco3) and preco3 > 0 and np.isfinite(acoes_on) and acoes_on > 0:
+                total += (preco3 * acoes_on)
+                tem_algum = True
+
+        if tem4:
+            preco4, _ = _obter_preco_atual_ticker(dados, t4)
+            acoes_pn = _obter_acoes_especie(dados, "PN", periodo_acoes)
+            if np.isfinite(preco4) and preco4 > 0 and np.isfinite(acoes_pn) and acoes_pn > 0:
+                total += (preco4 * acoes_pn)
+                tem_algum = True
+
+        if tem_algum and total > 0:
+            return total / 1000.0  # R$ mil
+
+    # Fallback antigo (preço ticker base × ações atuais)
     preco, _ = _obter_preco_atual(dados)
     acoes, _ = _obter_acoes_atual(dados)
-    
+
     if np.isfinite(preco) and np.isfinite(acoes) and preco > 0 and acoes > 0:
         return (preco * acoes) / 1000.0
-    
-    return np.nan
 
+    return np.nan
 
 def _calcular_ev(dados: DadosEmpresa, periodo: str, market_cap: Optional[float] = None) -> float:
     """
@@ -1380,6 +1570,9 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     else:
         market_cap = _calcular_market_cap(dados, periodo)
     
+    # ✅ NOVO: Valor de Mercado (R$ mil)
+    resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+
     ev = _calcular_ev(dados, periodo, market_cap)
 
     # ==================== LUCRO LÍQUIDO LTM (para PAYOUT) ====================
@@ -1852,6 +2045,9 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     else:
         market_cap = _calcular_market_cap(dados, periodo)
     
+    # ✅ NOVO: Valor de Mercado (R$ mil)
+    resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+
     # ==================== VALORES BASE (CONTAS AGREGADAS) ====================
     
     # Lucro Líquido LTM - Conta 3.11 (sempre existe)
@@ -1949,6 +2145,9 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     else:
         market_cap = _calcular_market_cap(dados, periodo)
     
+    # ✅ NOVO: Valor de Mercado (R$ mil)
+    resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+
     ev = _calcular_ev(dados, periodo, market_cap)
     
     # ==================== VALORES BASE - ESPECÍFICOS POR TICKER ====================
@@ -2082,6 +2281,9 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     else:
         market_cap = _calcular_market_cap(dados, periodo)
     
+    # ✅ NOVO: Valor de Mercado (R$ mil)
+    resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+
     # ==================== LUCRO LÍQUIDO - SUPORTA 3.11 E 3.13 ====================
     
     # Tentar ambas as contas (IRBR3 pode usar qualquer uma)
