@@ -1,12 +1,13 @@
 """
 Preencher Balanços Financeiros com BRAPI
-Versão GitHub Actions
+Versão GitHub Actions - com validação de token
 Monalisa Research - Antonio Siqueira
 """
 
 import pandas as pd
 import json
 import urllib.request
+import urllib.error
 from datetime import datetime
 from pathlib import Path
 import sys
@@ -15,7 +16,13 @@ import argparse
 import time
 
 # Token BRAPI - usar variável de ambiente
-BRAPI_TOKEN = os.getenv('BRAPI_TOKEN', 'ukQzv8YM3L28VarpcbLDEV')
+BRAPI_TOKEN = os.getenv('BRAPI_TOKEN', '')
+
+# Se não tiver token em variável de ambiente, tentar valor padrão
+if not BRAPI_TOKEN:
+    BRAPI_TOKEN = 'ukQzv8YM3L28VarpcbLDEV'
+    print("⚠️  BRAPI_TOKEN não encontrado em variável de ambiente")
+    print(f"    Usando token padrão: {BRAPI_TOKEN[:10]}...")
 
 # Mapeamento de contas - igual ao original
 MAPA_DRE = {
@@ -61,8 +68,64 @@ MAPA_BPP = {
 }
 
 
+def validar_token_brapi():
+    """
+    Valida se o token BRAPI está funcionando
+    Testa com PETR4 que é um ticker gratuito
+    """
+    print("\n🔐 Validando token BRAPI...")
+    
+    if not BRAPI_TOKEN:
+        print("❌ Token BRAPI não configurado!")
+        print("\nComo configurar:")
+        print("  1. No GitHub: Settings → Secrets → BRAPI_TOKEN")
+        print("  2. Localmente: export BRAPI_TOKEN='seu_token'")
+        return False
+    
+    # Testar com PETR4 (ação gratuita da BRAPI)
+    url = 'https://brapi.dev/api/quote/PETR4'
+    
+    req = urllib.request.Request(url)
+    req.add_header('Authorization', f'Bearer {BRAPI_TOKEN}')
+    
+    try:
+        with urllib.request.urlopen(req, timeout=10) as response:
+            data = json.loads(response.read().decode())
+            if 'results' in data and len(data['results']) > 0:
+                print(f"✅ Token válido! Testado com PETR4")
+                print(f"   Preço PETR4: R$ {data['results'][0].get('regularMarketPrice', 'N/A')}")
+                return True
+            else:
+                print("⚠️  Token válido mas resposta inesperada")
+                return False
+                
+    except urllib.error.HTTPError as e:
+        print(f"❌ Erro HTTP {e.code}: {e.reason}")
+        
+        if e.code == 401:
+            print("\n🔴 Token inválido ou expirado!")
+            print("\nSoluções:")
+            print("  1. Verificar se o token está correto")
+            print("  2. Gerar novo token em: https://brapi.dev/dashboard")
+            print("  3. Configurar no GitHub: Settings → Secrets → BRAPI_TOKEN")
+            
+        elif e.code == 402:
+            print("\n🔴 Limite de requisições excedido!")
+            print("   Considere upgrade do plano BRAPI")
+            
+        elif e.code == 429:
+            print("\n🔴 Rate limit excedido!")
+            print("   Aguarde alguns minutos e tente novamente")
+        
+        return False
+        
+    except Exception as e:
+        print(f"❌ Erro ao validar token: {e}")
+        return False
+
+
 def buscar_dados_brapi(ticker, modulo='balanceSheetHistoryQuarterly'):
-    """Busca dados na BRAPI"""
+    """Busca dados na BRAPI com tratamento de erros melhorado"""
     url = f'https://brapi.dev/api/quote/{ticker}?modules={modulo}'
     req = urllib.request.Request(url)
     req.add_header('Authorization', f'Bearer {BRAPI_TOKEN}')
@@ -70,6 +133,20 @@ def buscar_dados_brapi(ticker, modulo='balanceSheetHistoryQuarterly'):
     try:
         with urllib.request.urlopen(req, timeout=30) as response:
             return json.loads(response.read().decode())
+            
+    except urllib.error.HTTPError as e:
+        error_msg = f"HTTP {e.code}"
+        
+        try:
+            error_body = json.loads(e.read().decode())
+            if 'message' in error_body:
+                error_msg += f": {error_body['message']}"
+        except:
+            error_msg += f": {e.reason}"
+        
+        print(f"❌ Erro ao buscar {ticker} ({modulo}): {error_msg}")
+        return None
+        
     except Exception as e:
         print(f"❌ Erro ao buscar {ticker}: {e}")
         return None
@@ -125,15 +202,20 @@ def processar_demonstrativo(ticker, df_atual, modulo, tipo, ano_inicio=2010):
     chave = modulo if modulo in result else None
     
     if not chave or not result.get(chave):
+        print(f"  ⚠️  Módulo {modulo} não disponível para {ticker}")
         return None
     
     dados_trimestrais = result[chave]
+    print(f"  📊 Obtidos {len(dados_trimestrais)} trimestres da BRAPI")
     
     # Identificar trimestres faltantes
     trimestres_faltantes = identificar_trimestres_faltantes(df_atual, ano_inicio)
     
     if not trimestres_faltantes:
+        print(f"  ℹ️  Não há trimestres faltantes")
         return df_atual
+    
+    print(f"  📋 Trimestres faltantes: {len(trimestres_faltantes)}")
     
     # Criar cópia
     df_novo = df_atual.copy()
@@ -177,12 +259,16 @@ def processar_demonstrativo(ticker, df_atual, modulo, tipo, ano_inicio=2010):
         
         trimestres_preenchidos.append(trimestre)
     
+    if not trimestres_preenchidos:
+        print(f"  ⚠️  Nenhum trimestre foi preenchido")
+        return df_atual
+    
     # Ordenar colunas
     colunas_trim = sorted([col for col in df_novo.columns if 'T' in str(col)])
     col_desc = 'ds_conta' if tipo == 'dre' else 'conta'
     df_novo = df_novo[['cd_conta', col_desc] + colunas_trim]
     
-    print(f"  ✅ Preenchidos {len(trimestres_preenchidos)} trimestres")
+    print(f"  ✅ Preenchidos {len(trimestres_preenchidos)} trimestres: {', '.join(trimestres_preenchidos[:3])}...")
     
     return df_novo
 
@@ -199,6 +285,7 @@ def processar_ticker(ticker, ano_inicio=2010):
         return False
     
     sucesso = False
+    arquivos_processados = []
     
     # Processar DRE
     dre_path = base_dir / 'dre_padronizado.csv'
@@ -209,10 +296,13 @@ def processar_ticker(ticker, ano_inicio=2010):
             df_dre_novo = processar_demonstrativo(
                 ticker, df_dre, 'incomeStatementHistoryQuarterly', 'dre', ano_inicio
             )
-            if df_dre_novo is not None:
+            if df_dre_novo is not None and not df_dre_novo.equals(df_dre):
                 df_dre_novo.to_csv(dre_path, index=False)
                 print(f"  💾 DRE salvo: {dre_path}")
+                arquivos_processados.append('DRE')
                 sucesso = True
+            elif df_dre_novo is not None:
+                print(f"  ℹ️  DRE já estava completo")
         except Exception as e:
             print(f"  ❌ Erro no DRE: {e}")
     
@@ -225,10 +315,13 @@ def processar_ticker(ticker, ano_inicio=2010):
             df_bpa_novo = processar_demonstrativo(
                 ticker, df_bpa, 'balanceSheetHistoryQuarterly', 'bpa', ano_inicio
             )
-            if df_bpa_novo is not None:
+            if df_bpa_novo is not None and not df_bpa_novo.equals(df_bpa):
                 df_bpa_novo.to_csv(bpa_path, index=False)
                 print(f"  💾 BPA salvo: {bpa_path}")
+                arquivos_processados.append('BPA')
                 sucesso = True
+            elif df_bpa_novo is not None:
+                print(f"  ℹ️  BPA já estava completo")
         except Exception as e:
             print(f"  ❌ Erro no BPA: {e}")
     
@@ -241,15 +334,21 @@ def processar_ticker(ticker, ano_inicio=2010):
             df_bpp_novo = processar_demonstrativo(
                 ticker, df_bpp, 'balanceSheetHistoryQuarterly', 'bpp', ano_inicio
             )
-            if df_bpp_novo is not None:
+            if df_bpp_novo is not None and not df_bpp_novo.equals(df_bpp):
                 df_bpp_novo.to_csv(bpp_path, index=False)
                 print(f"  💾 BPP salvo: {bpp_path}")
+                arquivos_processados.append('BPP')
                 sucesso = True
+            elif df_bpp_novo is not None:
+                print(f"  ℹ️  BPP já estava completo")
         except Exception as e:
             print(f"  ❌ Erro no BPP: {e}")
     
     if sucesso:
         print(f"\n✅ {ticker} processado com sucesso!")
+        print(f"   Arquivos atualizados: {', '.join(arquivos_processados)}")
+    else:
+        print(f"\n⚠️  {ticker} não teve alterações ou houve erros")
     
     return sucesso
 
@@ -330,6 +429,8 @@ def main():
                        help='Faixa de tickers (modo faixa)')
     parser.add_argument('--ano-inicio', type=int, default=2010,
                        help='Ano de início para preencher (padrão: 2010)')
+    parser.add_argument('--validar-token', action='store_true',
+                       help='Apenas validar token e sair')
     
     args = parser.parse_args()
     
@@ -338,9 +439,15 @@ def main():
     print("║  Monalisa Research - Antonio Siqueira                        ║")
     print("╚══════════════════════════════════════════════════════════════╝")
     
-    # Verificar token
-    if BRAPI_TOKEN == 'ukQzv8YM3L28VarpcbLDEV':
-        print("⚠️  Usando token padrão. Configure BRAPI_TOKEN para produção!")
+    # Validar token
+    if not validar_token_brapi():
+        print("\n❌ Falha na validação do token. Abortando.")
+        sys.exit(1)
+    
+    # Se só quer validar, sair aqui
+    if args.validar_token:
+        print("\n✅ Token validado com sucesso!")
+        sys.exit(0)
     
     # Selecionar tickers
     tickers = selecionar_tickers(
@@ -374,12 +481,14 @@ def main():
             else:
                 falhas.append(ticker)
             
-            # Aguardar entre requisições para não sobrecarregar API
+            # Aguardar entre requisições
             if i < len(tickers):
                 time.sleep(2)
                 
         except Exception as e:
             print(f"❌ Erro crítico em {ticker}: {e}")
+            import traceback
+            traceback.print_exc()
             falhas.append(ticker)
     
     # Resumo final
