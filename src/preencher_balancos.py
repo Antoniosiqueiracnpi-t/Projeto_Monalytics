@@ -1,518 +1,284 @@
+#!/usr/bin/env python3
 """
-Preencher Balanços Financeiros com BRAPI
-Versão GitHub Actions - com validação de token
-Monalisa Research - Antonio Siqueira
+Script CORRETO de Preenchimento de DRE com Dados da BRAPI
+Versão 3 - Baseado na estrutura REAL da API
+
+Autor: Claude + Antonio Siqueira
+Data: 2025-01-11
 """
 
-import pandas as pd
-import json
-import urllib.request
-import urllib.error
-from datetime import datetime
-from pathlib import Path
-import sys
 import os
-import argparse
-import time
+import sys
+import pandas as pd
+import numpy as np
+import urllib.request
+import json
+from datetime import datetime
 
-# Token BRAPI - usar variável de ambiente
-BRAPI_TOKEN = os.getenv('BRAPI_TOKEN', '')
+# ============================================================================
+# CONFIGURAÇÃO
+# ============================================================================
 
-# Se não tiver token em variável de ambiente, tentar valor padrão
-if not BRAPI_TOKEN:
-    BRAPI_TOKEN = 'eq3dB3MBPiKUnzqa7My7MY'
-    print("⚠️  BRAPI_TOKEN não encontrado em variável de ambiente")
-    print(f"    Usando token padrão: {BRAPI_TOKEN[:10]}...")
+TOKEN_BRAPI = 'eq3dB3MBPiKUnzqa7My7MY'
+ARQUIVO_EMPRESAS = 'empresas_listadas_bancos.xlsx'
+ARQUIVO_DRE = 'dre_padronizado.csv'
 
-# Mapeamento de contas - igual ao original
-MAPA_DRE = {
-    'financialIntermediationRevenue': ('3.01', 'Receitas de Intermediação Financeira'),
-    'financialIntermediationExpenses': ('3.02', 'Despesas de Intermediação Financeira'),
-    'totalRevenue': ('3.01', 'Receitas de Intermediação Financeira'),
-    'costOfRevenue': ('3.02', 'Despesas de Intermediação Financeira'),
-    'grossProfit': ('3.03', 'Resultado Bruto de Intermediação Financeira'),
-    'operatingExpenses': ('3.04', 'Outras Despesas e Receitas Operacionais'),
-    'sellingGeneralAdministrative': ('3.04', 'Outras Despesas e Receitas Operacionais'),
-    'incomeBeforeTax': ('3.05', 'Resultado antes dos Tributos sobre o Lucro'),
-    'incomeTaxExpense': ('3.06', 'Imposto de Renda e Contribuição Social sobre o Lucro'),
-    'netIncomeFromContinuingOps': ('3.07', 'Lucro ou Prejuízo das Operações Continuadas'),
-    'discontinuedOperations': ('3.08', 'Resultado Líquido das Operações Descontinuadas'),
-    'netIncome': ('3.09', 'Lucro ou Prejuízo antes das Participações e Contribuições Estatutárias'),
-    'netIncomeApplicableToCommonShares': ('3.11', 'Lucro ou Prejuízo Líquido Consolidado do Período'),
-    'basicEarningsPerShare': ('3.99', 'Lucro por Ação (Reais/Ação)'),
-    'dilutedEarningsPerShare': ('3.99', 'Lucro por Ação (Reais/Ação)'),
+# ============================================================================
+# MAPEAMENTO CORRETO - BASEADO NA ESTRUTURA REAL DA BRAPI
+# ============================================================================
+
+MAPEAMENTO_DRE = {
+    # cd_conta: (campo_brapi, operação, descrição)
+    '3.01': ('totalRevenue', 'direto', 'Receitas de Intermediação Financeira'),
+    '3.02': ('costOfRevenue', 'direto', 'Despesas de Intermediação Financeira'),  # JÁ É NEGATIVO!
+    '3.03': ('grossProfit', 'direto', 'Resultado Bruto de Intermediação Financeira'),
+    '3.04': ('operatingIncome', 'calculo', 'Outras Despesas e Receitas Operacionais'),  # operatingIncome - grossProfit
+    '3.05': ('incomeBeforeTax', 'direto', 'Resultado antes dos Tributos sobre o Lucro'),
+    '3.06': ('incomeTaxExpense', 'direto', 'Imposto de Renda e Contribuição Social sobre o Lucro'),
+    '3.07': ('netIncomeFromContinuingOps', 'direto', 'Lucro ou Prejuízo das Operações Continuadas'),
+    '3.08': ('discontinuedOperations', 'direto', 'Resultado Líquido das Operações Descontinuadas'),
+    '3.09': ('incomeBeforeStatutoryParticipationsAndContributions', 'direto', 'Lucro ou Prejuízo antes das Participações e Contribuições Estatutárias'),
+    '3.10': ('profitSharingAndStatutoryContributions', 'direto', 'Participações nos Lucros e Contribuições Estatutárias'),
+    '3.11': ('netIncome', 'calculo', 'Lucro ou Prejuízo Líquido Consolidado do Período'),  # 3.09 - 3.10
+    '3.99': ('basicEarningsPerCommonShare', 'direto', 'Lucro por Ação (Reais/Ação)'),
 }
 
-MAPA_BPA = {
-    'totalAssets': ('1', 'Ativo Total'),
-    'cashAndCashEquivalents': ('1.01', 'Caixa e Equivalentes de Caixa'),
-    'cash': ('1.01', 'Caixa e Equivalentes de Caixa'),
-    'financialAssets': ('1.02', 'Ativos Financeiros'),
-    'taxesToRecover': ('1.03', 'Tributos'),
-    'otherAssets': ('1.04', 'Outros Ativos'),
-    'investments': ('1.05', 'Investimentos'),
-    'propertyPlantEquipment': ('1.06', 'Imobilizado'),
-    'intangibleAssets': ('1.07', 'Intangível'),
-}
+# ============================================================================
+# FUNÇÕES DE BUSCA NA BRAPI
+# ============================================================================
 
-MAPA_BPP = {
-    'totalLiabilities': ('2', 'Passivo Total'),
-    'financialLiabilitiesMeasuredAtFairValueThroughIncome': ('2.01', 'Passivos Financeiros ao Valor Justo através do Resultado'),
-    'financialLiabilitiesAtAmortizedCost': ('2.02', 'Passivos Financeiros ao Custo Amortizado'),
-    'provisions': ('2.03', 'Provisões'),
-    'taxLiabilities': ('2.04', 'Passivos Fiscais'),
-    'otherLiabilities': ('2.05', 'Outros Passivos'),
-    'totalLiab': ('2.06', 'Passivos sobre Ativos Não Correntes a Venda'),
-    'totalStockholderEquity': ('2.07', 'Patrimônio Líquido Consolidado'),
-    'totalEquity': ('2.07', 'Patrimônio Líquido Consolidado'),
-}
-
-
-def validar_token_brapi():
+def buscar_dre_brapi(ticker, token):
     """
-    Valida se o token BRAPI está funcionando
-    Testa com PETR4 que é um ticker gratuito
+    Busca DRE trimestral de um ticker na BRAPI
+    
+    Returns:
+        list: Lista de trimestres com dados da DRE ou None em caso de erro
     """
-    print("\n🔐 Validando token BRAPI...")
-    
-    if not BRAPI_TOKEN:
-        print("❌ Token BRAPI não configurado!")
-        print("\nComo configurar:")
-        print("  1. No GitHub: Settings → Secrets → BRAPI_TOKEN")
-        print("  2. Localmente: export BRAPI_TOKEN='seu_token'")
-        return False
-    
-    # Testar com PETR4 (ação gratuita da BRAPI)
-    url = 'https://brapi.dev/api/quote/PETR4'
+    url = f'https://brapi.dev/api/quote/{ticker}?modules=incomeStatementHistoryQuarterly'
     
     req = urllib.request.Request(url)
-    req.add_header('Authorization', f'Bearer {BRAPI_TOKEN}')
-    
-    try:
-        with urllib.request.urlopen(req, timeout=10) as response:
-            data = json.loads(response.read().decode())
-            if 'results' in data and len(data['results']) > 0:
-                print(f"✅ Token válido! Testado com PETR4")
-                print(f"   Preço PETR4: R$ {data['results'][0].get('regularMarketPrice', 'N/A')}")
-                return True
-            else:
-                print("⚠️  Token válido mas resposta inesperada")
-                return False
-                
-    except urllib.error.HTTPError as e:
-        print(f"❌ Erro HTTP {e.code}: {e.reason}")
-        
-        if e.code == 401:
-            print("\n🔴 Token inválido ou expirado!")
-            print("\nSoluções:")
-            print("  1. Verificar se o token está correto")
-            print("  2. Gerar novo token em: https://brapi.dev/dashboard")
-            print("  3. Configurar no GitHub: Settings → Secrets → BRAPI_TOKEN")
-            
-        elif e.code == 402:
-            print("\n🔴 Limite de requisições excedido!")
-            print("   Considere upgrade do plano BRAPI")
-            
-        elif e.code == 429:
-            print("\n🔴 Rate limit excedido!")
-            print("   Aguarde alguns minutos e tente novamente")
-        
-        return False
-        
-    except Exception as e:
-        print(f"❌ Erro ao validar token: {e}")
-        return False
-
-
-def buscar_dados_brapi(ticker, modulo='balanceSheetHistoryQuarterly'):
-    """Busca dados na BRAPI com tratamento de erros melhorado"""
-    url = f'https://brapi.dev/api/quote/{ticker}?modules={modulo}'
-    req = urllib.request.Request(url)
-    req.add_header('Authorization', f'Bearer {BRAPI_TOKEN}')
+    req.add_header('Authorization', f'Bearer {token}')
     
     try:
         with urllib.request.urlopen(req, timeout=30) as response:
-            return json.loads(response.read().decode())
+            data = json.loads(response.read().decode())
+            
+            if 'results' not in data or not data['results']:
+                print(f"  ❌ Sem resultados para {ticker}")
+                return None
+            
+            result = data['results'][0]
+            
+            if 'incomeStatementHistoryQuarterly' not in result:
+                print(f"  ❌ Módulo DRE não disponível para {ticker}")
+                return None
+            
+            statements = result['incomeStatementHistoryQuarterly']
+            print(f"  ✅ {len(statements)} trimestres encontrados")
+            
+            return statements
             
     except urllib.error.HTTPError as e:
-        error_msg = f"HTTP {e.code}"
-        
-        try:
-            error_body = json.loads(e.read().decode())
-            if 'message' in error_body:
-                error_msg += f": {error_body['message']}"
-        except:
-            error_msg += f": {e.reason}"
-        
-        print(f"❌ Erro ao buscar {ticker} ({modulo}): {error_msg}")
+        print(f"  ❌ Erro HTTP {e.code}: {e.reason}")
         return None
-        
     except Exception as e:
-        print(f"❌ Erro ao buscar {ticker}: {e}")
+        print(f"  ❌ Erro: {e}")
         return None
 
+# ============================================================================
+# FUNÇÕES DE PROCESSAMENTO
+# ============================================================================
 
-def extrair_trimestre_ano(data_str):
-    """Converte YYYY-MM-DD para YYYYTQ"""
+def trimestre_para_coluna(endDate):
+    """
+    Converte data (YYYY-MM-DD) para formato de coluna (YYYYTQ)
+    
+    Exemplos:
+        2024-03-31 → 2024T1
+        2024-06-30 → 2024T2
+        2024-09-30 → 2024T3
+        2024-12-31 → 2024T4
+    """
     try:
-        data = datetime.strptime(data_str, '%Y-%m-%d')
-        trimestre = (data.month - 1) // 3 + 1
-        return f"{data.year}T{trimestre}"
+        data = pd.to_datetime(endDate)
+        ano = data.year
+        mes = data.month
+        
+        if mes <= 3:
+            trimestre = 1
+        elif mes <= 6:
+            trimestre = 2
+        elif mes <= 9:
+            trimestre = 3
+        else:
+            trimestre = 4
+        
+        return f"{ano}T{trimestre}"
     except:
         return None
 
+def calcular_conta_304(dados):
+    """
+    Calcula conta 3.04: Outras Despesas e Receitas Operacionais
+    = operatingIncome - grossProfit
+    """
+    operating = dados.get('operatingIncome')
+    gross = dados.get('grossProfit')
+    
+    if pd.notna(operating) and pd.notna(gross):
+        return operating - gross
+    return None
 
-def identificar_trimestres_faltantes(df_atual, ano_inicio=2010):
-    """Identifica trimestres faltantes"""
-    colunas_trim = [col for col in df_atual.columns if 'T' in str(col) and len(str(col)) == 6]
-    trimestres_existentes = set(colunas_trim)
+def calcular_conta_311(dados):
+    """
+    Calcula conta 3.11: Lucro Líquido Consolidado
+    = incomeBeforeStatutoryParticipationsAndContributions - profitSharingAndStatutoryContributions
     
-    ano_atual = datetime.now().year
-    todos_trimestres = []
+    Se não tiver participações, usa o próprio incomeBeforeStatutory
+    """
+    antes_participacoes = dados.get('incomeBeforeStatutoryParticipationsAndContributions')
+    participacoes = dados.get('profitSharingAndStatutoryContributions')
     
-    for ano in range(ano_inicio, ano_atual + 1):
-        for trim in range(1, 5):
-            todos_trimestres.append(f"{ano}T{trim}")
+    if pd.notna(antes_participacoes):
+        if pd.notna(participacoes):
+            return antes_participacoes - participacoes
+        else:
+            # Se não tem participações, o lucro líquido é igual ao antes das participações
+            return antes_participacoes
     
-    trimestres_faltantes = [t for t in todos_trimestres if t not in trimestres_existentes]
+    # Fallback: tentar netIncome
+    net_income = dados.get('netIncome')
+    if pd.notna(net_income):
+        return net_income
     
-    if trimestres_existentes:
-        ultimo_existente = max(trimestres_existentes)
-        trimestres_faltantes = [t for t in trimestres_faltantes if t < ultimo_existente]
-    
-    return sorted(trimestres_faltantes)
+    return None
 
-
-def mapear_campo_brapi(campo_brapi, tipo_balanco):
-    """Mapeia campo BRAPI para formato padronizado"""
-    mapas = {'dre': MAPA_DRE, 'bpa': MAPA_BPA, 'bpp': MAPA_BPP}
-    mapa = mapas.get(tipo_balanco)
-    return mapa.get(campo_brapi) if mapa else None
-
-
-def processar_demonstrativo(ticker, df_atual, modulo, tipo, ano_inicio=2010):
-    """Processa um demonstrativo (DRE, BPA ou BPP)"""
+def processar_ticker_brapi(ticker, df_dre, ano_inicio=2010):
+    """
+    Processa um ticker: busca dados da BRAPI e preenche no DataFrame
     
-    # Buscar dados
-    dados = buscar_dados_brapi(ticker, modulo)
-    if not dados or 'results' not in dados:
-        return None
+    Args:
+        ticker: Código do ativo
+        df_dre: DataFrame com DRE padronizado
+        ano_inicio: Ano inicial para buscar dados (default: 2010)
     
-    result = dados['results'][0]
-    chave = modulo if modulo in result else None
+    Returns:
+        int: Número de trimestres preenchidos
+    """
+    print(f"\n{'='*80}")
+    print(f"Processando: {ticker}")
+    print(f"{'='*80}")
     
-    if not chave or not result.get(chave):
-        print(f"  ⚠️  Módulo {modulo} não disponível para {ticker}")
-        return None
+    # Buscar dados na BRAPI
+    statements = buscar_dre_brapi(ticker, TOKEN_BRAPI)
     
-    dados_trimestrais = result[chave]
-    print(f"  📊 Obtidos {len(dados_trimestrais)} trimestres da BRAPI")
+    if not statements:
+        return 0
     
-    # Identificar trimestres faltantes
-    trimestres_faltantes = identificar_trimestres_faltantes(df_atual, ano_inicio)
+    trimestres_preenchidos = 0
     
-    if not trimestres_faltantes:
-        print(f"  ℹ️  Não há trimestres faltantes")
-        return df_atual
-    
-    print(f"  📋 Trimestres faltantes: {len(trimestres_faltantes)}")
-    
-    # Criar cópia
-    df_novo = df_atual.copy()
-    
-    # Processar registros
-    trimestres_preenchidos = []
-    for registro in dados_trimestrais:
-        if 'endDate' not in registro:
+    # Processar cada trimestre
+    for stmt in statements:
+        endDate = stmt.get('endDate')
+        
+        if not endDate:
             continue
         
-        trimestre = extrair_trimestre_ano(registro['endDate'])
-        if not trimestre or trimestre not in trimestres_faltantes:
+        # Filtrar por ano
+        ano = int(endDate[:4])
+        if ano < ano_inicio:
             continue
         
-        # Adicionar coluna se não existir
-        if trimestre not in df_novo.columns:
-            df_novo[trimestre] = None
+        coluna = trimestre_para_coluna(endDate)
         
-        # Preencher valores
-        for campo_brapi, valor in registro.items():
-            if campo_brapi == 'endDate' or valor is None:
+        if not coluna or coluna not in df_dre.columns:
+            continue
+        
+        # Preencher cada conta
+        for cd_conta, (campo_brapi, operacao, descricao) in MAPEAMENTO_DRE.items():
+            try:
+                # Verificar se já tem valor
+                linha_idx = df_dre[df_dre['cd_conta'] == cd_conta].index
+                
+                if len(linha_idx) == 0:
+                    continue
+                
+                linha_idx = linha_idx[0]
+                valor_atual = df_dre.loc[linha_idx, coluna]
+                
+                # Só preenche se estiver vazio
+                if pd.notna(valor_atual):
+                    continue
+                
+                # Obter valor
+                if operacao == 'direto':
+                    valor = stmt.get(campo_brapi)
+                elif operacao == 'calculo':
+                    if cd_conta == '3.04':
+                        valor = calcular_conta_304(stmt)
+                    elif cd_conta == '3.11':
+                        valor = calcular_conta_311(stmt)
+                    else:
+                        valor = None
+                else:
+                    valor = None
+                
+                # Preencher
+                if pd.notna(valor):
+                    df_dre.loc[linha_idx, coluna] = valor
+                    trimestres_preenchidos += 1
+                    
+            except Exception as e:
+                print(f"  ⚠️  Erro ao processar {cd_conta} em {coluna}: {e}")
                 continue
-            
-            mapeamento = mapear_campo_brapi(campo_brapi, tipo)
-            if not mapeamento:
-                continue
-            
-            cd_conta, descricao = mapeamento
-            
-            # Nome da coluna de descrição
-            col_desc = 'ds_conta' if tipo == 'dre' else 'conta'
-            
-            # Encontrar linha
-            mask = df_novo['cd_conta'] == cd_conta
-            if mask.any():
-                df_novo.loc[mask, trimestre] = valor
-            else:
-                # Adicionar nova linha
-                nova_linha = {'cd_conta': cd_conta, col_desc: descricao, trimestre: valor}
-                df_novo = pd.concat([df_novo, pd.DataFrame([nova_linha])], ignore_index=True)
-        
-        trimestres_preenchidos.append(trimestre)
     
-    if not trimestres_preenchidos:
-        print(f"  ⚠️  Nenhum trimestre foi preenchido")
-        return df_atual
+    print(f"  ✅ {trimestres_preenchidos} valores preenchidos")
     
-    # Ordenar colunas
-    colunas_trim = sorted([col for col in df_novo.columns if 'T' in str(col)])
-    col_desc = 'ds_conta' if tipo == 'dre' else 'conta'
-    df_novo = df_novo[['cd_conta', col_desc] + colunas_trim]
-    
-    print(f"  ✅ Preenchidos {len(trimestres_preenchidos)} trimestres: {', '.join(trimestres_preenchidos[:3])}...")
-    
-    return df_novo
+    return trimestres_preenchidos
 
-
-def processar_ticker(ticker, ano_inicio=2010):
-    """Processa todos os balanços de um ticker"""
-    print(f"\n{'='*60}")
-    print(f"🏦 Processando {ticker}")
-    print(f"{'='*60}")
-    
-    base_dir = Path('balancos') / ticker
-    if not base_dir.exists():
-        print(f"⚠️  Diretório não encontrado: {base_dir}")
-        return False
-    
-    sucesso = False
-    arquivos_processados = []
-    
-    # Processar DRE
-    dre_path = base_dir / 'dre_padronizado.csv'
-    if dre_path.exists():
-        print(f"\n📊 Processando DRE de {ticker}...")
-        try:
-            df_dre = pd.read_csv(dre_path)
-            df_dre_novo = processar_demonstrativo(
-                ticker, df_dre, 'incomeStatementHistoryQuarterly', 'dre', ano_inicio
-            )
-            if df_dre_novo is not None and not df_dre_novo.equals(df_dre):
-                df_dre_novo.to_csv(dre_path, index=False)
-                print(f"  💾 DRE salvo: {dre_path}")
-                arquivos_processados.append('DRE')
-                sucesso = True
-            elif df_dre_novo is not None:
-                print(f"  ℹ️  DRE já estava completo")
-        except Exception as e:
-            print(f"  ❌ Erro no DRE: {e}")
-    
-    # Processar BPA
-    bpa_path = base_dir / 'bpa_padronizado.csv'
-    if bpa_path.exists():
-        print(f"\n📊 Processando BPA de {ticker}...")
-        try:
-            df_bpa = pd.read_csv(bpa_path)
-            df_bpa_novo = processar_demonstrativo(
-                ticker, df_bpa, 'balanceSheetHistoryQuarterly', 'bpa', ano_inicio
-            )
-            if df_bpa_novo is not None and not df_bpa_novo.equals(df_bpa):
-                df_bpa_novo.to_csv(bpa_path, index=False)
-                print(f"  💾 BPA salvo: {bpa_path}")
-                arquivos_processados.append('BPA')
-                sucesso = True
-            elif df_bpa_novo is not None:
-                print(f"  ℹ️  BPA já estava completo")
-        except Exception as e:
-            print(f"  ❌ Erro no BPA: {e}")
-    
-    # Processar BPP
-    bpp_path = base_dir / 'bpp_padronizado.csv'
-    if bpp_path.exists():
-        print(f"\n📊 Processando BPP de {ticker}...")
-        try:
-            df_bpp = pd.read_csv(bpp_path)
-            df_bpp_novo = processar_demonstrativo(
-                ticker, df_bpp, 'balanceSheetHistoryQuarterly', 'bpp', ano_inicio
-            )
-            if df_bpp_novo is not None and not df_bpp_novo.equals(df_bpp):
-                df_bpp_novo.to_csv(bpp_path, index=False)
-                print(f"  💾 BPP salvo: {bpp_path}")
-                arquivos_processados.append('BPP')
-                sucesso = True
-            elif df_bpp_novo is not None:
-                print(f"  ℹ️  BPP já estava completo")
-        except Exception as e:
-            print(f"  ❌ Erro no BPP: {e}")
-    
-    if sucesso:
-        print(f"\n✅ {ticker} processado com sucesso!")
-        print(f"   Arquivos atualizados: {', '.join(arquivos_processados)}")
-    else:
-        print(f"\n⚠️  {ticker} não teve alterações ou houve erros")
-    
-    return sucesso
-
-
-def obter_lista_tickers():
-    """Obtém lista de todos os tickers disponíveis"""
-    balancos_dir = Path('balancos')
-    if not balancos_dir.exists():
-        return []
-    
-    tickers = []
-    for item in balancos_dir.iterdir():
-        if item.is_dir() and not item.name.startswith('.'):
-            # Verificar se tem pelo menos um arquivo padronizado
-            if any((item / f).exists() for f in ['dre_padronizado.csv', 'bpa_padronizado.csv', 'bpp_padronizado.csv']):
-                tickers.append(item.name)
-    
-    return sorted(tickers)
-
-
-def selecionar_tickers(modo, quantidade=None, ticker=None, lista=None, faixa=None):
-    """Seleciona tickers baseado no modo escolhido"""
-    
-    todos_tickers = obter_lista_tickers()
-    total_disponivel = len(todos_tickers)
-    
-    print(f"\n📋 Total de tickers disponíveis: {total_disponivel}")
-    
-    if modo == 'ticker':
-        if not ticker:
-            print("❌ Modo 'ticker' requer o parâmetro --ticker")
-            return []
-        return [ticker.upper()]
-    
-    elif modo == 'lista':
-        if not lista:
-            print("❌ Modo 'lista' requer o parâmetro --lista")
-            return []
-        return [t.strip().upper() for t in lista.split(',')]
-    
-    elif modo == 'quantidade':
-        qtd = int(quantidade) if quantidade else 10
-        if qtd >= total_disponivel:
-            qtd = total_disponivel
-        return todos_tickers[:qtd]
-    
-    elif modo == 'faixa':
-        if not faixa or '-' not in faixa:
-            print("❌ Modo 'faixa' requer formato: 1-50")
-            return []
-        
-        try:
-            inicio, fim = map(int, faixa.split('-'))
-            inicio = max(1, inicio)
-            fim = min(fim, total_disponivel)
-            return todos_tickers[inicio-1:fim]
-        except ValueError:
-            print("❌ Formato de faixa inválido. Use: 1-50")
-            return []
-    
-    return []
-
+# ============================================================================
+# FUNÇÃO PRINCIPAL
+# ============================================================================
 
 def main():
-    parser = argparse.ArgumentParser(
-        description='Preencher balanços financeiros com dados da BRAPI'
-    )
-    parser.add_argument('--modo', required=True, 
-                       choices=['quantidade', 'ticker', 'lista', 'faixa'],
-                       help='Modo de seleção de tickers')
-    parser.add_argument('--quantidade', default='10',
-                       help='Quantidade de tickers (modo quantidade)')
-    parser.add_argument('--ticker', default='',
-                       help='Ticker único (modo ticker)')
-    parser.add_argument('--lista', default='',
-                       help='Lista de tickers separados por vírgula (modo lista)')
-    parser.add_argument('--faixa', default='1-50',
-                       help='Faixa de tickers (modo faixa)')
-    parser.add_argument('--ano-inicio', type=int, default=2010,
-                       help='Ano de início para preencher (padrão: 2010)')
-    parser.add_argument('--validar-token', action='store_true',
-                       help='Apenas validar token e sair')
+    """
+    Função principal
+    """
+    print("\n" + "="*80)
+    print("PREENCHIMENTO DE DRE COM DADOS DA BRAPI")
+    print("Versão 3 - ESTRUTURA CORRETA")
+    print("="*80)
     
-    args = parser.parse_args()
+    # Verificar arquivos
+    if not os.path.exists(ARQUIVO_EMPRESAS):
+        print(f"\n❌ Arquivo não encontrado: {ARQUIVO_EMPRESAS}")
+        return
     
-    print("╔══════════════════════════════════════════════════════════════╗")
-    print("║  Preencher Balanços Financeiros com BRAPI                   ║")
-    print("║  Monalisa Research - Antonio Siqueira                        ║")
-    print("╚══════════════════════════════════════════════════════════════╝")
+    if not os.path.exists(ARQUIVO_DRE):
+        print(f"\n❌ Arquivo não encontrado: {ARQUIVO_DRE}")
+        return
     
-    # Validar token
-    if not validar_token_brapi():
-        print("\n❌ Falha na validação do token. Abortando.")
-        sys.exit(1)
+    # Carregar dados
+    print(f"\n📂 Carregando dados...")
+    df_empresas = pd.read_excel(ARQUIVO_EMPRESAS)
+    df_dre = pd.read_csv(ARQUIVO_DRE)
     
-    # Se só quer validar, sair aqui
-    if args.validar_token:
-        print("\n✅ Token validado com sucesso!")
-        sys.exit(0)
+    print(f"  ✅ {len(df_empresas)} empresas carregadas")
+    print(f"  ✅ {len(df_dre)} contas no DRE")
     
-    # Selecionar tickers
-    tickers = selecionar_tickers(
-        args.modo,
-        args.quantidade,
-        args.ticker,
-        args.lista,
-        args.faixa
-    )
+    # Processar primeira empresa como teste
+    ticker = df_empresas.iloc[0]['ticker']
     
-    if not tickers:
-        print("❌ Nenhum ticker selecionado!")
-        sys.exit(1)
+    processar_ticker_brapi(ticker, df_dre)
     
-    print(f"\n🎯 Selecionados {len(tickers)} tickers para processar:")
-    for i, t in enumerate(tickers, 1):
-        print(f"  {i:3d}. {t}")
+    # Salvar
+    print(f"\n💾 Salvando arquivo...")
+    df_dre.to_csv(ARQUIVO_DRE, index=False)
+    print(f"  ✅ Arquivo salvo: {ARQUIVO_DRE}")
     
-    print(f"\n⏰ Ano de início: {args.ano_inicio}")
-    print(f"\n{'='*60}")
-    
-    # Processar cada ticker
-    sucessos = []
-    falhas = []
-    
-    for i, ticker in enumerate(tickers, 1):
-        print(f"\n[{i}/{len(tickers)}]")
-        try:
-            if processar_ticker(ticker, args.ano_inicio):
-                sucessos.append(ticker)
-            else:
-                falhas.append(ticker)
-            
-            # Aguardar entre requisições
-            if i < len(tickers):
-                time.sleep(2)
-                
-        except Exception as e:
-            print(f"❌ Erro crítico em {ticker}: {e}")
-            import traceback
-            traceback.print_exc()
-            falhas.append(ticker)
-    
-    # Resumo final
-    print(f"\n{'='*60}")
-    print("📊 RESUMO FINAL")
-    print(f"{'='*60}")
-    print(f"✅ Sucessos: {len(sucessos)}/{len(tickers)}")
-    print(f"❌ Falhas: {len(falhas)}/{len(tickers)}")
-    
-    if sucessos:
-        print(f"\n✅ Processados com sucesso:")
-        for t in sucessos:
-            print(f"  • {t}")
-    
-    if falhas:
-        print(f"\n❌ Falhas:")
-        for t in falhas:
-            print(f"  • {t}")
-    
-    print(f"\n{'='*60}")
-    
-    # Exit code baseado em sucessos
-    sys.exit(0 if sucessos else 1)
-
+    print("\n" + "="*80)
+    print("CONCLUÍDO!")
+    print("="*80)
 
 if __name__ == "__main__":
     main()
