@@ -360,36 +360,49 @@ def main():
 
     ok_count = 0
     err_count = 0
+    tickers_processados = set()
 
     for _, row in df_sel.iterrows():
         ticker_str = str(row["ticker"]).upper().strip()
-        ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
-
-        pasta = get_pasta_balanco(ticker)
-        if not pasta.exists():
-            err_count += 1
-            print(f"❌ {ticker}: pasta {pasta} não existe")
+    
+        # Para múltiplos/valuation: IGNORAR classe 11 (UNIT).
+        # Ex.: "ITUB3;ITUB4;ITUB11" -> ["ITUB3", "ITUB4"]
+        tickers_raw = [t.strip() for t in ticker_str.split(";") if t.strip()] if ";" in ticker_str else [ticker_str]
+        tickers_filtrados = [t for t in tickers_raw if not t.endswith("11")]
+    
+        if not tickers_filtrados:
+            # Só existe UNIT (ou nada válido) -> não capturamos preços trimestrais (múltiplos ignoram 11)
+            print(f"⏭️ {ticker_str}: ignorado (somente classe 11/UNIT ou vazio)")
             continue
-
-        try:
-            ok, msg = capturador.capturar_e_salvar_ticker(ticker)
-
-            if ok:
-                ok_count += 1
-                print(f"✅ {ticker}: {msg}")
-            else:
+    
+        # Evitar capturar o mesmo ticker duas vezes no mesmo job
+        for ticker in tickers_filtrados:
+            if ticker in tickers_processados:
+                continue
+            tickers_processados.add(ticker)
+    
+            pasta = get_pasta_balanco(ticker)
+            if not pasta.exists():
                 err_count += 1
-                print(f"⚠️ {ticker}: {msg}")
+                print(f"❌ {ticker}: pasta {pasta} não existe")
+                continue
+    
+            try:
+                ok, msg = capturador.capturar_e_salvar_ticker(ticker)
+    
+                if ok:
+                    ok_count += 1
+                    print(f"✅ {ticker}: {msg}")
+                else:
+                    err_count += 1
+                    print(f"⚠️ {ticker}: {msg}")
+    
+            except Exception as e:
+                err_count += 1
+                import traceback
+                print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
+                traceback.print_exc()
 
-        except Exception as e:
-            err_count += 1
-            import traceback
-            print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
-            traceback.print_exc()
-
-    print("\n" + "=" * 70)
-    print(f"Finalizado: OK={ok_count} | ERRO={err_count}")
-    print("=" * 70 + "\n")
 
 
 if __name__ == "__main__":
