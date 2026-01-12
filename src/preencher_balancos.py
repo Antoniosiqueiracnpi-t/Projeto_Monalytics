@@ -164,6 +164,8 @@ def is_banco(ticker):
     return ticker.upper() in BANCOS_CONHECIDOS
 
 
+
+
 def validar_token_brapi():
     """
     Valida se o token BRAPI está funcionando
@@ -246,6 +248,40 @@ def buscar_dados_brapi(ticker, modulo='balanceSheetHistoryQuarterly'):
     except Exception as e:
         print(f"❌ Erro ao buscar {ticker}: {e}")
         return None
+
+
+from datetime import datetime
+
+def extrair_trimestre_ano(data_str):
+    """Converte YYYY-MM-DD para YYYYTn."""
+    try:
+        data = datetime.strptime(data_str, '%Y-%m-%d')
+        trimestre = (data.month - 1) // 3 + 1
+        return f"{data.year}T{trimestre}"
+    except (ValueError, TypeError):
+        return None
+
+
+# ✅ COMPAT: o processar_demonstrativo() chama extrair_trimestre(end_date)
+def extrair_trimestre(end_date):
+    """
+    Converte endDate do BRAPI para 'YYYYTn'.
+    Aceita:
+      - 'YYYY-MM-DD'
+      - 'YYYY-MM-DDTHH:MM:SS...'
+      - 'YYYY-MM-DDTHH:MM:SSZ'
+    """
+    if not end_date:
+        return None
+
+    s = str(end_date).strip()
+    if not s:
+        return None
+
+    # Pega só a parte da data (primeiros 10 chars) quando vier com timestamp
+    data_str = s[:10]
+
+    return extrair_trimestre_ano(data_str)
 
 
 def extrair_trimestre_ano(data_str):
