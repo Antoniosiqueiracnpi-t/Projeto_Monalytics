@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "00.000.000/0001-91",
+    "nome": "",
+    "ticker": "BBAS3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "Ministério da Economia / Secretaria do Tesouro Nacional",
+      "cpf_cnpj": "00.394.460/0001-41",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 2865417084,
+      "percentual_total": 50.0,
+      "acoes_ordinarias": 2865417084,
+      "percentual_ordinarias": 50.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    }
+  ]
+}
