@@ -1548,9 +1548,15 @@ class PadronizadorBP:
         pl_mask = conta_s.str.contains(r"Patrim[oô]nio\s+L[ií]quido", case=False, na=False) | cd_s.eq("2.07")
 
         # 4) Filtrar por preenchimento mínimo (ANTES de preencher), preservando PL sempre
-        fill_ratio = df[full_period_cols].notna().mean(axis=1)
+        # ✅ CORREÇÃO: ignorar colunas que estão 100% vazias no dataset (sem dados reais)
+        available_cols = [c for c in full_period_cols if df[c].notna().any()]
+        cols_for_ratio = available_cols if available_cols else full_period_cols
+        
+        fill_ratio = df[cols_for_ratio].notna().mean(axis=1)
+        
         keep_mask = (fill_ratio >= float(min_fill)) | pl_mask
         df = df[keep_mask].copy()
+
 
         if df.empty:
             return df
