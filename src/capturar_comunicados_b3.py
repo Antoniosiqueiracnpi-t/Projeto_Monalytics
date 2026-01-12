@@ -50,24 +50,35 @@ class CapturadorNoticiasB3:
         # se vierem várias classes, todas devem apontar para a mesma base; em dúvida, pega a mais comum
         return Counter(bases).most_common(1)[0][0]
 
-    def _encontrar_pasta_empresa(self, ticker_base: str) -> Path:
+    def encontrar_pasta_empresa(self, ticker_completo: str) -> Path:
         """
-        Busca pasta existente para a empresa (com ou sem número de classe).
-        Prioriza pasta com número. Se não existir, retorna pasta com ticker base.
-
-        Exemplos:
-        - Se existe BBAS3/ -> retorna BBAS3/
-        - Se existe BBAS/ -> retorna BBAS/
-        - Se não existe nenhuma -> retorna BBAS/
+        Busca pasta existente para o ticker completo (com classe).
+        Prioriza pasta exata (BBDC3), depois qualquer com base (BBDC*).
+        Cria nova só se não houver nenhuma.
         """
-        pastas_encontradas = []
-
+        # Lista todas pastas candidatas
+        pastas_candidatas = []
+        ticker_base = self.extrair_ticker_base(ticker_completo)  # Sem número para fallback
+        
         if self.pasta_saida.exists():
             for pasta in self.pasta_saida.iterdir():
                 if pasta.is_dir():
-                    pasta_base = self._extrair_ticker_base(pasta.name)
-                    if pasta_base == ticker_base:
-                        pastas_encontradas.append(pasta)
+                    nome_pasta = pasta.name.upper()
+                    # Prioridade 1: match exato com ticker completo (preserva classe)
+                    if nome_pasta == ticker_completo.upper():
+                        return pasta
+                    # Prioridade 2: pasta cujo base coincide (salva na existente da empresa)
+                    if self.extrair_ticker_base(nome_pasta) == ticker_base:
+                        pastas_candidatas.append(pasta)
+        
+        if pastas_candidatas:
+            # Ordena por nome mais longo primeiro (prefere com classe)
+            pastas_candidatas.sort(key=lambda p: len(p.name), reverse=True)
+            return pastas_candidatas[0]
+        
+        # Cria nova com ticker completo (mantém classe)
+        return self.pasta_saida / ticker_completo
+
 
         if pastas_encontradas:
             # Prioriza pasta com número (ex: BBAS3 ao invés de BBAS)
@@ -205,13 +216,15 @@ class CapturadorNoticiasB3:
 
     def _processar_empresa(self, row: pd.Series, data_inicio: str, data_fim: str) -> bool:
         """Processa e acumula notícias de uma empresa."""
-        ticker_base = row['ticker_base']
+        #ticker_base = row['ticker_base']
+        ticker_completo = row.get('ticker', row.tickerbase)
 
         # Suporta CSV com múltiplas classes na mesma célula (ex: ITUB3;ITUB4)
         tickers_ref = self._split_tickers(row.get('ticker', ''))
 
         # BUSCA PASTA EXISTENTE (com ou sem número de classe)
-        pasta_empresa = self._encontrar_pasta_empresa(ticker_base)
+        #pasta_empresa = self._encontrar_pasta_empresa(ticker_base)
+        pasta_empresa = self.encontrar_pasta_empresa(ticker_completo)
         pasta_empresa.mkdir(exist_ok=True)
 
         print(f"  📁 Pasta: {pasta_empresa.name}")
