@@ -14,6 +14,8 @@ import sys
 import os
 import argparse
 import time
+import re
+import numpy as np
 
 # Token BRAPI - usar variável de ambiente
 BRAPI_TOKEN = os.getenv('BRAPI_TOKEN', '')
@@ -43,62 +45,152 @@ BANCOS_CONHECIDOS = [
 ]
 
 # ============================================================================
-# MAPEAMENTOS ESPECÍFICOS PARA BANCOS
 # ============================================================================
-
+# MAPEAMENTOS ESPECÍFICOS PARA BANCOS
+# ----------------------------------------------------------------------------
+# IMPORTANTE:
+# - `financialIntermediationRevenue` e `financialIntermediationExpenses` NÃO são campos do
+#   módulo `incomeStatementHistoryQuarterly` (DRE). Eles pertencem à DVA (`valueAddedHistoryQuarterly`).
+#   Por isso, usar esses campos no preenchimento do DRE faz com que o script NÃO preencha nada.
+#   (Ver OpenAPI: ValueAddedEntry.*financialIntermediation*).
+# ----------------------------------------------------------------------------
+# Regras:
+# - DRE de bancos usa os campos do IncomeStatementEntry (ex.: totalRevenue, costOfRevenue, grossProfit,
+#   otherOperatingIncomeAndExpenses, incomeBeforeTax, incomeTaxExpense, netIncome...).
+# - BP de bancos usa campos do BalanceSheetEntry (ex.: financialAssets, financialLiabilities..., etc.).
+# ============================================================================
 MAPA_BPA_BANCOS = {
+    # Totais
+    'totalAssets': ('1', 'Ativo Total'),
+
+    # Caixa
     'cash': ('1.01', 'Caixa e Equivalentes de Caixa'),
     'cashAndCashEquivalents': ('1.01', 'Caixa e Equivalentes de Caixa'),
+
+    # Ativos Financeiros (preferir agregado; subcontas entram como fallback)
     'financialAssets': ('1.02', 'Ativos Financeiros'),
-    'currentAndDeferredTaxes': ('1.03', 'Tributos'),
+    'financialAssetsMeasuredAtFairValueThroughProfitOrLoss': ('1.02', 'Ativos Financeiros'),
+    'financialAssetsMeasuredAtFairValueThroughOtherComprehensiveIncome': ('1.02', 'Ativos Financeiros'),
+    'financialAssetsAtAmortizedCost': ('1.02', 'Ativos Financeiros'),
+    'creditsFromOperations': ('1.02', 'Ativos Financeiros'),
+    'securitiesAndCreditsReceivable': ('1.02', 'Ativos Financeiros'),
+    'compulsoryLoansAndDeposits': ('1.02', 'Ativos Financeiros'),
+    'centralBankCompulsoryDeposit': ('1.02', 'Ativos Financeiros'),
+
+    # Tributos (ativo)
     'taxesToRecover': ('1.03', 'Tributos'),
+    'currentAndDeferredTaxes': ('1.03', 'Tributos'),
+    'longTermDeferredTaxes': ('1.03', 'Tributos'),
+    'deferredTaxes': ('1.03', 'Tributos'),
+
+    # Outros Ativos
     'otherAssets': ('1.04', 'Outros Ativos'),
+    'otherCurrentAssets': ('1.04', 'Outros Ativos'),
+    'otherNonCurrentAssets': ('1.04', 'Outros Ativos'),
+    'otherValuesAndAssets': ('1.04', 'Outros Ativos'),
+    'otherOperations': ('1.04', 'Outros Ativos'),
+
+    # Investimentos
     'investments': ('1.05', 'Investimentos'),
+    'longTermInvestments': ('1.05', 'Investimentos'),
+    'investmentProperties': ('1.05', 'Investimentos'),
+    'longTermFinancialInvestmentsMeasuredAtFairValueThroughIncome': ('1.05', 'Investimentos'),
+    'financialInvestmentsMeasuredAtFairValueThroughOtherComprehensiveIncome': ('1.05', 'Investimentos'),
+    'financialInvestmentsMeasuredAtAmortizedCost': ('1.05', 'Investimentos'),
+
+    # Imobilizado / Intangível
     'propertyPlantEquipment': ('1.06', 'Imobilizado'),
     'intangibleAssets': ('1.07', 'Intangível'),
     'intangibleAsset': ('1.07', 'Intangível'),
-    'totalAssets': ('1', 'Ativo Total'),
+    'goodWill': ('1.07', 'Intangível'),
 }
 
 MAPA_BPP_BANCOS = {
+    # Totais
+    'totalLiab': ('2', 'Passivo Total'),
+    'totalLiabilities': ('2', 'Passivo Total'),
+    'totalLiabilitiesNetMinorityInterest': ('2', 'Passivo Total'),
+
+    # Passivos financeiros
     'financialLiabilitiesMeasuredAtFairValueThroughIncome': ('2.01', 'Passivos Financeiros ao Valor Justo através do Resultado'),
     'financialLiabilitiesAtAmortizedCost': ('2.02', 'Passivos Financeiros ao Custo Amortizado'),
+
+    # Provisões
     'provisions': ('2.03', 'Provisões'),
+    'longTermProvisions': ('2.03', 'Provisões'),
+    'otherProvisions': ('2.03', 'Provisões'),
+    'otherLongTermProvisions': ('2.03', 'Provisões'),
+
+    # Obrigações fiscais
     'taxLiabilities': ('2.04', 'Passivos Fiscais'),
+    'taxObligations': ('2.04', 'Passivos Fiscais'),
+    'currentAndDeferredTaxes': ('2.04', 'Passivos Fiscais'),
+
+    # Outros passivos
+    'otherLiab': ('2.05', 'Outros Passivos'),
     'otherLiabilities': ('2.05', 'Outros Passivos'),
+    'otherCurrentLiab': ('2.05', 'Outros Passivos'),
+    'otherObligations': ('2.05', 'Outros Passivos'),
+    'otherLongTermObligations': ('2.05', 'Outros Passivos'),
+    'debitsFromOperations': ('2.05', 'Outros Passivos'),
+    'thirdPartyDeposits': ('2.05', 'Outros Passivos'),
+    'otherDebits': ('2.05', 'Outros Passivos'),
+
+    # Patrimônio Líquido
     'totalStockholderEquity': ('2.07', 'Patrimônio Líquido Consolidado'),
     'shareholdersEquity': ('2.07', 'Patrimônio Líquido Consolidado'),
-    'totalEquity': ('2.07', 'Patrimônio Líquido Consolidado'),
-    'totalLiabilities': ('2', 'Passivo Total'),
-    'totalLiab': ('2', 'Passivo Total'),
+    'controllerShareholdersEquity': ('2.07', 'Patrimônio Líquido Consolidado'),
+    'nonControllingShareholdersEquity': ('2.07', 'Patrimônio Líquido Consolidado'),
 }
 
 MAPA_DRE_BANCOS = {
-    # Campos específicos de bancos (prioridade alta)
-    'financialIntermediationRevenue': ('3.01', 'Receitas de Intermediação Financeira'),
-    'financialIntermediationExpenses': ('3.02', 'Despesas de Intermediação Financeira'),
-    
-    # Campos genéricos (prioridade baixa - fallback)
+    # Receitas / Despesas de intermediação (na BRAPI chegam como DRE genérica)
     'totalRevenue': ('3.01', 'Receitas de Intermediação Financeira'),
     'costOfRevenue': ('3.02', 'Despesas de Intermediação Financeira'),
-    
-    # Campos comuns
     'grossProfit': ('3.03', 'Resultado Bruto de Intermediação Financeira'),
+
+    # Outras receitas/despesas operacionais (preferir o campo agregado)
+    'otherOperatingIncomeAndExpenses': ('3.04', 'Outras Despesas e Receitas Operacionais'),
+    # Fallbacks (se o agregado vier nulo)
+    'otherOperatingIncome': ('3.04', 'Outras Despesas e Receitas Operacionais'),
+    'otherOperatingExpenses': ('3.04', 'Outras Despesas e Receitas Operacionais'),
     'sellingGeneralAdministrative': ('3.04', 'Outras Despesas e Receitas Operacionais'),
-    'operatingExpenses': ('3.04', 'Outras Despesas e Receitas Operacionais'),
+    'totalOperatingExpenses': ('3.04', 'Outras Despesas e Receitas Operacionais'),
+    'administrativeCosts': ('3.04', 'Outras Despesas e Receitas Operacionais'),
+    'financialResult': ('3.04', 'Outras Despesas e Receitas Operacionais'),
+    'equityIncomeResult': ('3.04', 'Outras Despesas e Receitas Operacionais'),
+
+    # Resultado antes/IR/CS
     'incomeBeforeTax': ('3.05', 'Resultado antes dos Tributos sobre o Lucro'),
+
+    # IR/CS (preferir o total agregado; se vier detalhado, aceitamos também)
     'incomeTaxExpense': ('3.06', 'Imposto de Renda e Contribuição Social sobre o Lucro'),
+    'currentTaxes': ('3.06', 'Imposto de Renda e Contribuição Social sobre o Lucro'),
+    'deferredTaxes': ('3.06', 'Imposto de Renda e Contribuição Social sobre o Lucro'),
+
+    # Continuidade / descontinuadas
     'netIncomeFromContinuingOps': ('3.07', 'Lucro ou Prejuízo das Operações Continuadas'),
     'discontinuedOperations': ('3.08', 'Resultado Líquido das Operações Descontinuadas'),
-    'netIncome': ('3.09', 'Lucro ou Prejuízo antes das Participações e Contribuições Estatutárias'),
+
+    # Antes das participações estatutárias / Participações
+    'incomeBeforeStatutoryParticipationsAndContributions': ('3.09', 'Lucro ou Prejuízo antes das Participações e Contribuições Estatutárias'),
+    'profitSharingAndStatutoryContributions': ('3.10', 'Participações e Contribuições Estatutárias'),
+
+    # Lucro líquido
+    'netIncome': ('3.11', 'Lucro ou Prejuízo Líquido Consolidado do Período'),
     'netIncomeApplicableToCommonShares': ('3.11', 'Lucro ou Prejuízo Líquido Consolidado do Período'),
+
+    # LPA
     'earningsPerShare': ('3.99', 'Lucro por Ação (Reais/Ação)'),
     'basicEarningsPerShare': ('3.99', 'Lucro por Ação (Reais/Ação)'),
     'dilutedEarningsPerShare': ('3.99', 'Lucro por Ação (Reais/Ação)'),
+    'basicEarningsPerCommonShare': ('3.99', 'Lucro por Ação (Reais/Ação)'),
+    'basicEarningsPerPreferredShare': ('3.99', 'Lucro por Ação (Reais/Ação)'),
+    'dilutedEarningsPerCommonShare': ('3.99', 'Lucro por Ação (Reais/Ação)'),
+    'dilutedEarningsPerPreferredShare': ('3.99', 'Lucro por Ação (Reais/Ação)'),
 }
 
-# ============================================================================
-# MAPEAMENTOS PARA EMPRESAS NÃO-FINANCEIRAS (mantido do original)
+# MAPEAMENTOS PARA EMPRESAS NÃO-FINANCEIRAS
 # ============================================================================
 
 MAPA_BPA_EMPRESAS = {
@@ -148,22 +240,51 @@ MAPA_DRE_EMPRESAS = {
 }
 
 # Definir prioridade de campos (campos mais específicos têm prioridade)
+# Definir prioridade de campos (campos mais agregados/específicos têm maior prioridade)
+# (Regra do código: só sobrescreve se a prioridade_atual > prioridade_existente)
 PRIORIDADE_CAMPOS = {
-    'financialIntermediationRevenue': 10,
-    'financialIntermediationExpenses': 10,
-    'totalRevenue': 5,
-    'costOfRevenue': 5,
+    # DRE - bancos (agregados primeiro)
+    'otherOperatingIncomeAndExpenses': 10,
+    'incomeBeforeStatutoryParticipationsAndContributions': 10,
+    'profitSharingAndStatutoryContributions': 10,
+    'incomeTaxExpense': 10,
+    'netIncome': 10,
+    'totalRevenue': 8,
+    'costOfRevenue': 8,
+    'grossProfit': 8,
+
+    # DRE - detalhes/fallbacks
+    'financialResult': 6,
+    'administrativeCosts': 5,
+    'sellingGeneralAdministrative': 5,
+    'totalOperatingExpenses': 4,
+    'otherOperatingIncome': 4,
+    'otherOperatingExpenses': 4,
+    'equityIncomeResult': 4,
+    'currentTaxes': 7,
+    'deferredTaxes': 7,
+
+    # BP - bancos (agregado primeiro)
     'financialAssets': 10,
+    'totalStockholderEquity': 10,
+    'shareholdersEquity': 9,
+    'controllerShareholdersEquity': 8,
+    'nonControllingShareholdersEquity': 8,
+    'financialLiabilitiesMeasuredAtFairValueThroughIncome': 10,
+    'financialLiabilitiesAtAmortizedCost': 10,
+    'provisions': 10,
+    'taxLiabilities': 9,
+    'taxObligations': 8,
+
+    # Tributos (ativo)
     'currentAndDeferredTaxes': 8,
     'taxesToRecover': 7,
+    'longTermDeferredTaxes': 7,
 }
-
 
 def is_banco(ticker):
     """Verifica se o ticker é de um banco"""
     return ticker.upper() in BANCOS_CONHECIDOS
-
-
 
 
 def validar_token_brapi():
@@ -250,40 +371,6 @@ def buscar_dados_brapi(ticker, modulo='balanceSheetHistoryQuarterly'):
         return None
 
 
-from datetime import datetime
-
-def extrair_trimestre_ano(data_str):
-    """Converte YYYY-MM-DD para YYYYTn."""
-    try:
-        data = datetime.strptime(data_str, '%Y-%m-%d')
-        trimestre = (data.month - 1) // 3 + 1
-        return f"{data.year}T{trimestre}"
-    except (ValueError, TypeError):
-        return None
-
-
-# ✅ COMPAT: o processar_demonstrativo() chama extrair_trimestre(end_date)
-def extrair_trimestre(end_date):
-    """
-    Converte endDate do BRAPI para 'YYYYTn'.
-    Aceita:
-      - 'YYYY-MM-DD'
-      - 'YYYY-MM-DDTHH:MM:SS...'
-      - 'YYYY-MM-DDTHH:MM:SSZ'
-    """
-    if not end_date:
-        return None
-
-    s = str(end_date).strip()
-    if not s:
-        return None
-
-    # Pega só a parte da data (primeiros 10 chars) quando vier com timestamp
-    data_str = s[:10]
-
-    return extrair_trimestre_ano(data_str)
-
-
 def extrair_trimestre_ano(data_str):
     """Converte YYYY-MM-DD para YYYYTQ"""
     try:
@@ -321,45 +408,38 @@ def identificar_primeiro_trimestre_completo(df_atual):
 
 def identificar_trimestres_faltantes(df_atual, primeiro_trimestre_completo, ano_inicio=2010):
     """
-    Identifica trimestres faltantes entre ano_inicio e primeiro_trimestre_completo.
-
-    Regra (coerente com 'primeiro_trimestre_completo'):
-    - Se a coluna não existe -> faltante
-    - Se a coluna existe mas tem menos de 50% das linhas preenchidas -> tratar como faltante
-      (permite preencher trimestres parcialmente vazios, sem sobrescrever valores existentes)
+    Identifica trimestres faltantes entre ano_inicio e primeiro_trimestre_completo
     """
     if not primeiro_trimestre_completo:
         return []
-
+    
     colunas_trim = [col for col in df_atual.columns if 'T' in str(col) and len(str(col)) == 6]
     trimestres_existentes = set(colunas_trim)
-
+    
+    # Extrair ano e trimestre do primeiro completo
     ano_limite = int(primeiro_trimestre_completo[:4])
     trim_limite = int(primeiro_trimestre_completo[5])
-
+    
+    # Gerar todos os trimestres desde ano_inicio até o primeiro completo
     todos_trimestres = []
     for ano in range(ano_inicio, ano_limite + 1):
         for trim in range(1, 5):
             trimestre = f"{ano}T{trim}"
+            # Parar quando atingir o primeiro trimestre completo
             if ano == ano_limite and trim > trim_limite:
                 break
             todos_trimestres.append(trimestre)
-
-    total_linhas = len(df_atual)
+    
+    # Identificar faltantes (que não existem OU que existem mas estão vazios)
     trimestres_faltantes = []
-
     for t in todos_trimestres:
         if t not in trimestres_existentes:
             trimestres_faltantes.append(t)
-            continue
-
-        # Coluna existe: considerar faltante se estiver "pouco preenchida"
-        preenchidos = df_atual[t].notna().sum()
-        if preenchidos < total_linhas * 0.5:
+        elif t in df_atual.columns and df_atual[t].isna().all():
+            # Trimestre existe mas está completamente vazio
             trimestres_faltantes.append(t)
-
+    
     return sorted(trimestres_faltantes)
-
 
 
 def mapear_campo_brapi(campo_brapi, tipo_balanco, ticker):
@@ -382,18 +462,139 @@ def mapear_campo_brapi(campo_brapi, tipo_balanco, ticker):
     return mapa.get(campo_brapi) if mapa else None
 
 
-def normalizar_valor(valor):
+def normalizar_cd_conta(cd):
+    """Normaliza cd_conta para bater com os CSVs (que vêm como float)."""
+    if cd is None:
+        return ''
+    try:
+        if isinstance(cd, (int, float, np.integer, np.floating)):
+            if pd.isna(cd):
+                return ''
+            n = float(cd)
+            # Inteiros viram '1.0', '2.0' (como nos CSVs)
+            if abs(n - round(n)) < 1e-9:
+                return f"{int(round(n))}.0"
+            # Remove zeros à direita (3.10 -> 3.1) e mantém precisão
+            s = f"{n:.6f}".rstrip('0').rstrip('.')
+            # Garante pelo menos um decimal para manter padrão de float quando aplicável
+            if '.' not in s:
+                s = s + '.0'
+            return s
+        s = str(cd).strip()
+        if s == '' or s.lower() == 'nan':
+            return ''
+        # Se parece número, padroniza semelhante ao caso float
+        if re.fullmatch(r"-?\d+(?:\.\d+)?", s):
+            n = float(s)
+            if abs(n - round(n)) < 1e-9:
+                return f"{int(round(n))}.0"
+            s2 = f"{n:.6f}".rstrip('0').rstrip('.')
+            if '.' not in s2:
+                s2 = s2 + '.0'
+            return s2
+        return s
+    except Exception:
+        return str(cd).strip()
+
+
+def extrair_trimestre(end_date):
+    """Compat: algumas versões chamam `extrair_trimestre` em vez de `extrair_trimestre_ano`."""
+    return extrair_trimestre_ano(end_date)
+
+
+def inferir_fator_escala(dados_trimestrais, df_atual, tipo, ticker):
     """
-    Normaliza valores da BRAPI para o padrão dos arquivos CSV
-    
-    BRAPI retorna valores em unidades (ex: 81013704000)
-    CSV armazena valores em milhares (ex: 81013704.0)
-    
-    Conversão: dividir por 1000
+    Infere o fator de escala da BRAPI comparando com valores já existentes no CSV (trimestres sobrepostos).
+    Retorna 1 (sem conversão) ou 1000 (dividir por 1000), conforme o padrão detectado.
+    """
+    try:
+        if df_atual is None or df_atual.empty:
+            return 1
+
+        # Pré-normalizar cd_conta para lookup rápido
+        df_tmp = df_atual.copy()
+        df_tmp['_cd_norm'] = df_tmp['cd_conta'].apply(normalizar_cd_conta)
+
+        # Campos mais estáveis para comparação
+        if tipo == 'dre':
+            campos_teste = ['totalRevenue', 'netIncome', 'incomeBeforeTax', 'grossProfit']
+        elif tipo == 'bpa':
+            campos_teste = ['totalAssets', 'cash', 'financialAssets']
+        else:  # bpp
+            campos_teste = ['totalLiab', 'totalLiabilities', 'totalStockholderEquity', 'shareholdersEquity']
+
+        ratios = []
+        for registro in dados_trimestrais or []:
+            ed = registro.get('endDate')
+            if not ed:
+                continue
+            tri = extrair_trimestre_ano(ed)
+
+            if tri not in df_tmp.columns:
+                continue
+
+            for campo in campos_teste:
+                if campo not in registro or registro[campo] is None:
+                    continue
+                mapeamento = mapear_campo_brapi(campo, tipo, ticker)
+                if not mapeamento:
+                    continue
+                cd_norm = normalizar_cd_conta(mapeamento[0])
+
+                linha = df_tmp[df_tmp['_cd_norm'] == cd_norm]
+                if linha.empty:
+                    continue
+
+                val_csv = linha.iloc[0].get(tri, None)
+                if val_csv is None or (isinstance(val_csv, float) and pd.isna(val_csv)) or float(val_csv) == 0.0:
+                    continue
+
+                val_brapi = float(registro[campo])
+                r = abs(val_brapi) / max(abs(float(val_csv)), 1e-9)
+                if np.isfinite(r) and r > 0:
+                    ratios.append(r)
+
+        if not ratios:
+            return 1
+
+        med = float(np.median(ratios))
+
+        # Detectores simples
+        if 900 <= med <= 1100:
+            return 1000
+        if 0.9 <= med <= 1.1:
+            return 1
+
+        # Escolher o mais próximo de 1 ou 1000 em escala log
+        import math
+        d1 = abs(math.log(med) - math.log(1))
+        d1000 = abs(math.log(med) - math.log(1000))
+        return 1000 if d1000 < d1 else 1
+    except Exception:
+        return 1
+
+
+def normalizar_valor(valor, fator_escala=1):
+    """
+    Normaliza valores da BRAPI para o padrão dos arquivos CSV.
+
+    - Alguns retornos da BRAPI podem vir em unidade (ex.: 81013704000) enquanto os CSVs armazenam em milhares.
+    - Para evitar suposições erradas, o `fator_escala` é inferido por `inferir_fator_escala()`.
+
+    Se fator_escala=1000 => divide por 1000.
+    Se fator_escala=1 => mantém.
     """
     if valor is None:
         return None
-    
+    try:
+        v = float(valor)
+        fe = float(fator_escala or 1)
+        if fe <= 0:
+            fe = 1.0
+        return v / fe
+    except (ValueError, TypeError):
+        return None
+
     try:
         # Converter para float e dividir por 1000
         valor_float = float(valor)
@@ -424,31 +625,45 @@ def processar_demonstrativo(ticker, df_atual, modulo, tipo, ano_inicio=2010):
     chave = modulo if modulo in result else None
     
     if not chave or not result.get(chave):
+        print(f"  ⚠️  Módulo {modulo} não disponível para {ticker}")
         return None
     
-    registros = result[chave]
-    if not isinstance(registros, list) or len(registros) == 0:
-        return None
+    dados_trimestrais = result[chave]
+    print(f"  📊 Obtidos {len(dados_trimestrais)} trimestres da BRAPI")
     
-    # Identificar trimestres faltantes
-    trimestres_faltantes = identificar_trimestres_faltantes(df_atual, primeiro_trimestre_completo, ano_inicio)
+    # Identificar trimestres faltantes (até o primeiro completo)
+    trimestres_faltantes = identificar_trimestres_faltantes(
+        df_atual, primeiro_trimestre_completo, ano_inicio
+    )
     
     if not trimestres_faltantes:
-        print(f"  ✅ Nenhum trimestre faltante para preencher")
+        print(f"  ℹ️  Não há trimestres faltantes até {primeiro_trimestre_completo}")
         return df_atual
     
-    print(f"  📊 Trimestres faltantes: {len(trimestres_faltantes)}")
+    print(f"  📋 Trimestres faltantes até {primeiro_trimestre_completo}: {len(trimestres_faltantes)}")
+    print(f"     Intervalo: {trimestres_faltantes[0]} até {trimestres_faltantes[-1]}")
     
-    # Organizar dados por trimestre
+    # Criar cópia do DataFrame
+    df_novo = df_atual.copy()
+    
+    # Dicionário para armazenar dados por trimestre
+    # Estrutura: {trimestre: {cd_conta: valor}}
     dados_por_trimestre = {}
+
+    # Inferir fator de escala (1 ou 1000) comparando com trimestres já existentes no CSV
+    fator_escala = inferir_fator_escala(dados_trimestrais, df_atual, tipo, ticker)
+    if fator_escala == 1000:
+        print("  🔎 Escala detectada: BRAPI em unidade → CSV em milhares (dividindo por 1000)")
+    else:
+        print("  🔎 Escala detectada: BRAPI já compatível com CSV (sem divisão)")
+
     
-    for registro in registros:
-        if not isinstance(registro, dict):
+    # Processar registros da BRAPI
+    for registro in dados_trimestrais:
+        if 'endDate' not in registro:
             continue
         
-        end_date = registro.get('endDate')
-        trimestre = extrair_trimestre(end_date)
-        
+        trimestre = extrair_trimestre_ano(registro['endDate'])
         if not trimestre or trimestre not in trimestres_faltantes:
             continue
         
@@ -465,9 +680,10 @@ def processar_demonstrativo(ticker, df_atual, modulo, tipo, ano_inicio=2010):
                 continue
             
             cd_conta, _ = mapeamento
+            cd_conta = normalizar_cd_conta(cd_conta)
             
             # Normalizar valor (dividir por 1000)
-            valor_normalizado = normalizar_valor(valor)
+            valor_normalizado = normalizar_valor(valor, fator_escala)
             if valor_normalizado is None:
                 continue
             
@@ -482,82 +698,66 @@ def processar_demonstrativo(ticker, df_atual, modulo, tipo, ano_inicio=2010):
                 if prioridade_atual <= prioridade_existente:
                     continue
             
+            # Armazenar valor com metadados
             dados_por_trimestre[trimestre][cd_conta] = {
                 'valor': valor_normalizado,
                 'campo': campo_brapi
             }
     
     if not dados_por_trimestre:
-        print(f"  ⚠️  Nenhum dado encontrado para os trimestres faltantes")
+        print(f"  ⚠️  Nenhum dado relevante encontrado na BRAPI")
         return df_atual
     
-    # Criar dataframe novo baseado no atual
-    df_novo = df_atual.copy()
-    
-    # Garantir que colunas de trimestres existam (inserir com None na posição correta)
-    colunas_trim = [col for col in df_novo.columns if 'T' in str(col) and len(str(col)) == 6]
-    
-    for trimestre in trimestres_faltantes:
+    # Adicionar colunas de trimestres se não existirem
+    for trimestre in dados_por_trimestre.keys():
         if trimestre not in df_novo.columns:
-            # Encontrar posição correta baseada na ordenação
-            colunas_trim_ordenadas = sorted(colunas_trim + [trimestre])
-            idx_novo = colunas_trim_ordenadas.index(trimestre)
+            # Inserir coluna na posição correta (ordenada)
+            colunas_trim = [col for col in df_novo.columns if 'T' in str(col) and len(str(col)) == 6]
             
-            if idx_novo == 0:
-                # Inserir no início dos trimestres
+            if not colunas_trim:
+                # Adicionar após as colunas descritivas
                 col_desc = 'ds_conta' if tipo == 'dre' else 'conta'
                 pos = df_novo.columns.get_loc(col_desc) + 1
                 df_novo.insert(pos, trimestre, None)
             else:
-                # Inserir após o trimestre anterior
-                trimestre_anterior = colunas_trim_ordenadas[idx_novo - 1]
-                pos = df_novo.columns.get_loc(trimestre_anterior) + 1
-                df_novo.insert(pos, trimestre, None)
+                # Encontrar posição correta baseada na ordenação
+                colunas_trim_ordenadas = sorted(colunas_trim + [trimestre])
+                idx_novo = colunas_trim_ordenadas.index(trimestre)
+                
+                if idx_novo == 0:
+                    # Inserir no início dos trimestres
+                    col_desc = 'ds_conta' if tipo == 'dre' else 'conta'
+                    pos = df_novo.columns.get_loc(col_desc) + 1
+                    df_novo.insert(pos, trimestre, None)
+                else:
+                    # Inserir após o trimestre anterior
+                    trimestre_anterior = colunas_trim_ordenadas[idx_novo - 1]
+                    pos = df_novo.columns.get_loc(trimestre_anterior) + 1
+                    df_novo.insert(pos, trimestre, None)
     
     # Preencher valores nas linhas EXISTENTES (não adicionar novas linhas)
     trimestres_preenchidos = []
     valores_preenchidos = 0
     
-    def _norm_cd(v):
-        """Normaliza cd_conta para comparação (suporta float/int/str)."""
-        if v is None:
-            return ''
-        try:
-            if pd.isna(v):
-                return ''
-        except Exception:
-            pass
-        s = str(v).strip()
-        # Se veio como float tipo '1.0' -> '1'
-        if s.endswith('.0'):
-            s = s[:-2]
-        # Remove zeros à direita em decimais ('2.0700' -> '2.07')
-        if '.' in s:
-            s = s.rstrip('0').rstrip('.')
-        return s
-    
-    # Pré-computar normalização do cd_conta do DF (evita recomputar a cada conta)
-    cd_norm_series = df_novo['cd_conta'].map(_norm_cd)
-    
+    # Normalizar cd_conta do CSV para bater com os códigos (evita float vs string)
+    df_novo['_cd_norm'] = df_novo['cd_conta'].apply(normalizar_cd_conta)
+
     for trimestre, dados_contas in dados_por_trimestre.items():
         for cd_conta, info in dados_contas.items():
             valor = info['valor']
-            
-            # Encontrar linha existente com este cd_conta (comparação normalizada)
-            cd_alvo = _norm_cd(cd_conta)
-            mask = cd_norm_series == cd_alvo
+
+            # Encontrar linha existente com este cd_conta
+            mask = df_novo['_cd_norm'] == cd_conta
             
             if mask.any():
-                # NÃO sobrescrever valores já existentes: preencher só onde é NaN
-                fill_mask = mask & df_novo[trimestre].isna()
-                if fill_mask.any():
-                    df_novo.loc[fill_mask, trimestre] = valor
-                    valores_preenchidos += int(fill_mask.sum())
+                # Linha existe - preencher valor
+                df_novo.loc[mask, trimestre] = valor
+                valores_preenchidos += 1
             else:
                 # Linha não existe - NÃO ADICIONAR (conforme requisito)
-                # Apenas ignorar se for relevante
-                if cd_conta not in ['1', '2', '3']:
-                    pass
+                # Apenas logar se for relevante
+                if cd_conta not in ['1', '2', '3']:  # Ignorar totais que podem não estar mapeados
+                    pass  # Silenciosamente ignorar
         
         if trimestre not in trimestres_preenchidos:
             trimestres_preenchidos.append(trimestre)
@@ -569,13 +769,16 @@ def processar_demonstrativo(ticker, df_atual, modulo, tipo, ano_inicio=2010):
     # Ordenar colunas: cd_conta, descrição, trimestres ordenados
     col_desc = 'ds_conta' if tipo == 'dre' else 'conta'
     colunas_trim_final = sorted([col for col in df_novo.columns if 'T' in str(col) and len(str(col)) == 6])
+    # Remover coluna auxiliar
+    if '_cd_norm' in df_novo.columns:
+        df_novo = df_novo.drop(columns=['_cd_norm'])
+
     df_novo = df_novo[['cd_conta', col_desc] + colunas_trim_final]
     
     print(f"  ✅ Preenchidos {len(trimestres_preenchidos)} trimestres: {', '.join(trimestres_preenchidos[:5])}{'...' if len(trimestres_preenchidos) > 5 else ''}")
     print(f"  💾 Total de valores preenchidos: {valores_preenchidos}")
     
     return df_novo
-
 
 
 def processar_ticker(ticker, ano_inicio=2010):
