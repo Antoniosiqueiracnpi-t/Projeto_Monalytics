@@ -3312,22 +3312,13 @@ function renderMultiplosSection() {
         const valor = ltm.multiplos[codigo];
         
         if (valor !== undefined && valor !== null) {
-            // ✅ FILTRO ESPECÍFICO PARA INTERMEDIÁRIOS FINANCEIROS
-            if (ehFinanceira) {
-                // REMOVE Margem Líquida para financeiras
-                if (codigo === 'MARGEM_LIQUIDA') {
-                    console.log(`⚠️ Ignorando ${codigo} - não aplicável para financeiras`);
-                    continue; // Pula este múltiplo
-                }
-                // ADICIONA PL_Ativos para financeiras
-                if (codigo === 'PL_ATIVOS') {
+            // ✅ FILTRO ESPECÍFICO: PL_ATIVOS apenas para intermediários financeiros
+            if (codigo === 'PL_ATIVOS') {
+                if (ehFinanceira) {
                     console.log(`✅ Incluindo ${codigo} - específico para financeiras`);
-                }
-            } else {
-                // REMOVE PL_Ativos para NÃO-financeiras
-                if (codigo === 'PL_ATIVOS') {
+                } else {
                     console.log(`⚠️ Ignorando ${codigo} - apenas para financeiras`);
-                    continue; // Pula este múltiplo
+                    continue; // Pula este múltiplo para empresas não-financeiras
                 }
             }
             
@@ -4699,6 +4690,8 @@ const INDICADORES_CONFIG = {
         extra: [
             { code: 'MARGEM_LIQUIDA', label: 'MARGEM LÍQUIDA', type: 'maior_melhor', format: '%', allowNegative: true },
             { code: 'ROA', label: 'ROA', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'PL_ATIVOS', label: 'PL/ATIVOS', type: 'maior_melhor', format: '%', allowNegative: true },
+            { code: 'PAYOUT', label: 'PAYOUT', type: 'equilibrio', format: '%', allowNegative: true },
             { code: 'INDICE_BASILEIA', label: 'BASILEIA', type: 'maior_melhor', format: '%', allowNegative: true },
             { code: 'INDICE_COBERTURA', label: 'COBERTURA', type: 'maior_melhor', format: '%', allowNegative: true }
         ]
@@ -4864,7 +4857,13 @@ function formatarValorComparador(valor, formato) {
     } else if (formato === 'x') {
         return `${num.toFixed(2)}x`;
     } else if (formato === 'R$') {
-        return `R$ ${num.toFixed(2)} B`;
+        // Formata Valor de Mercado (vem em milhares no JSON)
+        const valorMilhoes = num / 1000;
+        if (valorMilhoes >= 1000) {
+            return `R$ ${(valorMilhoes / 1000).toFixed(2)} bi`;
+        } else {
+            return `R$ ${valorMilhoes.toFixed(2)} mi`;
+        }
     }
     
     return num.toFixed(2);
@@ -5183,6 +5182,7 @@ function obterDefIndicador(code) {
         P_VPA: { code: 'P_VPA', label: 'P/VPA', type: 'menor_melhor', format: 'x', allowNegative: false },
         ROE: { code: 'ROE', label: 'ROE', type: 'maior_melhor', format: '%', allowNegative: true },
         DY: { code: 'DY', label: 'DY', type: 'maior_melhor', format: '%', allowNegative: true },
+        VALOR_MERCADO: { code: 'VALOR_MERCADO', label: 'VALOR MERCADO', type: 'maior_melhor', format: 'R$', allowNegative: false },
 
         // Não-financeiras
         EV_EBITDA: { code: 'EV_EBITDA', label: 'EV/EBITDA', type: 'menor_melhor', format: 'x', allowNegative: false },
