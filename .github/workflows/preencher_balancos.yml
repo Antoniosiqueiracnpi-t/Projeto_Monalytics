@@ -65,9 +65,19 @@ jobs:
           python --version
           pip list | grep -E "pandas|numpy|requests"
           
+      - name: 🔐 Validar BRAPI_TOKEN (Secrets)
+        env:
+          BRAPI_TOKEN: ${{ secrets.BRAPI_TOKEN_PRO || secrets.BRAPI_TOKEN }}
+        run: |
+          if [ -z "${BRAPI_TOKEN}" ]; then
+            echo "::error::BRAPI_TOKEN não configurado. Crie o secret BRAPI_TOKEN (ou BRAPI_TOKEN_PRO) no repositório."
+            exit 1
+          fi
+          echo "✅ BRAPI_TOKEN presente (tamanho: ${#BRAPI_TOKEN})"
+
       - name: 🚀 Executar preenchimento de balanços
         env:
-          BRAPI_TOKEN: ${{ secrets.BRAPI_TOKEN }}
+          BRAPI_TOKEN: ${{ secrets.BRAPI_TOKEN_PRO || secrets.BRAPI_TOKEN }}
         run: |
           python src/preencher_balancos.py \
             --modo "${{ github.event.inputs.modo }}" \
