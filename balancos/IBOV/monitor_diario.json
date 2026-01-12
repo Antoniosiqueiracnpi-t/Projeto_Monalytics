@@ -1,0 +1,106 @@
+{
+  "ultima_atualizacao": "2026-01-12T18:47-03:00",
+  "total_acoes": 85,
+  "estatisticas": {
+    "variacao_media": 0.28,
+    "acoes_em_alta": 45,
+    "acoes_em_baixa": 36,
+    "acoes_estaveis": 4
+  },
+  "top_5_altas": [
+    {
+      "ticker": "VAMO3",
+      "variacao_pct": 8.18,
+      "preco_atual": 3.57,
+      "volume": 26626300
+    },
+    {
+      "ticker": "ASAI3",
+      "variacao_pct": 4.55,
+      "preco_atual": 7.36,
+      "volume": 23554800
+    },
+    {
+      "ticker": "BRAV3",
+      "variacao_pct": 4.5,
+      "preco_atual": 17.41,
+      "volume": 11723400
+    },
+    {
+      "ticker": "MBRF3",
+      "variacao_pct": 4.11,
+      "preco_atual": 19.78,
+      "volume": 30843800
+    },
+    {
+      "ticker": "SLCE3",
+      "variacao_pct": 3.22,
+      "preco_atual": 15.05,
+      "volume": 5291800
+    }
+  ],
+  "top_5_baixas": [
+    {
+      "ticker": "CURY3",
+      "variacao_pct": -3.97,
+      "preco_atual": 32.41,
+      "volume": 3310100
+    },
+    {
+      "ticker": "MGLU3",
+      "variacao_pct": -3.38,
+      "preco_atual": 8.58,
+      "volume": 13347200
+    },
+    {
+      "ticker": "SBSP3",
+      "variacao_pct": -3.22,
+      "preco_atual": 127.26,
+      "volume": 3852200
+    },
+    {
+      "ticker": "CEAB3",
+      "variacao_pct": -2.59,
+      "preco_atual": 10.51,
+      "volume": 7060900
+    },
+    {
+      "ticker": "DIRR3",
+      "variacao_pct": -2.44,
+      "preco_atual": 13.58,
+      "volume": 4673000
+    }
+  ],
+  "top_5_volumes": [
+    {
+      "ticker": "RAIZ4",
+      "volume": 53854100,
+      "variacao_pct": 0.0,
+      "preco_atual": 0.85
+    },
+    {
+      "ticker": "MBRF3",
+      "volume": 30843800,
+      "variacao_pct": 4.11,
+      "preco_atual": 19.78
+    },
+    {
+      "ticker": "B3SA3",
+      "volume": 30178100,
+      "variacao_pct": 0.21,
+      "preco_atual": 14.49
+    },
+    {
+      "ticker": "CSAN3",
+      "volume": 29123200,
+      "variacao_pct": 1.35,
+      "preco_atual": 5.25
+    },
+    {
+      "ticker": "VAMO3",
+      "volume": 26626300,
+      "variacao_pct": 8.18,
+      "preco_atual": 3.57
+    }
+  ]
+}
