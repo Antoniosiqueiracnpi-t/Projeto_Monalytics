@@ -3,6 +3,7 @@ CAPTURADOR DE NOTÍCIAS B3 - Execução Diária com busca de pasta existente
 """
 
 import pandas as pd
+import json
 import re
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -15,11 +16,54 @@ from collections import Counter
 
 class CapturadorNoticiasB3:
 
-    def __init__(self, arquivo_mapeamento: str = "mapeamento_b3_consolidado.csv",
-                 pasta_saida: str = "balancos"):
-        self.arquivo_mapeamento = Path(arquivo_mapeamento)
-        self.pasta_saida = Path(pasta_saida)
-        self.pasta_saida.mkdir(exist_ok=True)
+    def __init__(self, pasta_balancos: str = "balancos", arquivo_mapeamento: str = "mapeamento_b3_consolidado.csv"):
+        self.pasta_balancos = Path(pasta_balancos)
+        # Garante existência da pasta base (evita falhas no salvar)
+        self.pasta_balancos.mkdir(parents=True, exist_ok=True)
+    
+        self.empresas_processadas = 0
+        self.total_noticias = 0
+    
+        # Mapa base (4 letras) -> ticker preferencial COM classe (ex.: BBAS -> BBAS3)
+        self._mapa_base_para_ticker_classe = {}
+        try:
+            map_path = Path(arquivo_mapeamento)
+            if map_path.exists():
+                import pandas as pd
+                df_map = pd.read_csv(map_path, sep=';', engine='python')
+                if 'ticker' in df_map.columns:
+                    tickers = (
+                        df_map['ticker']
+                        .astype(str)
+                        .str.strip()
+                        .str.upper()
+                        .dropna()
+                        .unique()
+                        .tolist()
+                    )
+    
+                    # prioridade de classe (ajuste aqui se quiser outra regra)
+                    ordem = {3: 0, 4: 1, 11: 2, 5: 3, 6: 4, 33: 5, 34: 6}
+    
+                    def _prio(t: str):
+                        m = re.search(r'(\d{1,2})$', t)
+                        cls = int(m.group(1)) if m else None
+                        return (ordem.get(cls, 50), cls if cls is not None else 999, t)
+    
+                    por_base = {}
+                    for t in tickers:
+                        m = re.match(r'^([A-Z]{4})', t)
+                        if not m:
+                            continue
+                        base = m.group(1)
+                        por_base.setdefault(base, []).append(t)
+    
+                    for base, arr in por_base.items():
+                        self._mapa_base_para_ticker_classe[base] = sorted(arr, key=_prio)[0]
+        except Exception as e:
+            # Não aborta: consolidador deve funcionar mesmo sem mapeamento
+            print(f"⚠️  Falha ao carregar mapeamento_b3 ({arquivo_mapeamento}): {e}")
+
 
     def _split_tickers(self, tickers_raw: str) -> List[str]:
         """Quebra uma célula que pode vir como 'ITUB3;ITUB4' em uma lista de tickers."""
