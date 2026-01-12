@@ -18,8 +18,10 @@ class CapturadorNoticiasB3:
 
     def __init__(self, pasta_balancos: str = "balancos", arquivo_mapeamento: str = "mapeamento_b3_consolidado.csv"):
         self.pasta_balancos = Path(pasta_balancos)
-        # Garante existência da pasta base (evita falhas no salvar)
         self.pasta_balancos.mkdir(parents=True, exist_ok=True)
+    
+        # ✅ FIX: define o atributo que estava faltando (causa do AttributeError)
+        self.arquivo_mapeamento = arquivo_mapeamento
     
         self.empresas_processadas = 0
         self.total_noticias = 0
@@ -29,7 +31,6 @@ class CapturadorNoticiasB3:
         try:
             map_path = Path(arquivo_mapeamento)
             if map_path.exists():
-                import pandas as pd
                 df_map = pd.read_csv(map_path, sep=';', engine='python')
                 if 'ticker' in df_map.columns:
                     tickers = (
@@ -61,8 +62,8 @@ class CapturadorNoticiasB3:
                     for base, arr in por_base.items():
                         self._mapa_base_para_ticker_classe[base] = sorted(arr, key=_prio)[0]
         except Exception as e:
-            # Não aborta: consolidador deve funcionar mesmo sem mapeamento
             print(f"⚠️  Falha ao carregar mapeamento_b3 ({arquivo_mapeamento}): {e}")
+
 
 
     def _split_tickers(self, tickers_raw: str) -> List[str]:
@@ -96,31 +97,33 @@ class CapturadorNoticiasB3:
 
     def _encontrar_pasta_empresa(self, ticker_base: str) -> Path:
         """
-        Busca pasta existente para a empresa (com ou sem número de classe).
-        Prioriza pasta com número. Se não existir, retorna pasta com ticker base.
-
-        Exemplos:
-        - Se existe BBAS3/ -> retorna BBAS3/
-        - Se existe BBAS/ -> retorna BBAS/
-        - Se não existe nenhuma -> retorna BBAS/
+        Regra:
+        - Se existir QUALQUER pasta da empresa (qualquer classe), usa essa pasta (não cria outra).
+        - Se não existir nenhuma pasta, cria/usa pasta no padrão TICKER+CLASSE conforme mapeamento_b3.
+          Ex.: BBAS -> BBAS3
         """
+        ticker_base = (ticker_base or "").strip().upper()
         pastas_encontradas = []
-
-        if self.pasta_saida.exists():
-            for pasta in self.pasta_saida.iterdir():
+    
+        if self.pasta_balancos.exists():
+            for pasta in self.pasta_balancos.iterdir():
                 if pasta.is_dir():
                     pasta_base = self._extrair_ticker_base(pasta.name)
                     if pasta_base == ticker_base:
                         pastas_encontradas.append(pasta)
-
+    
         if pastas_encontradas:
-            # Prioriza pasta com número (ex: BBAS3 ao invés de BBAS)
-            # Ordena por comprimento decrescente para pegar primeiro as com número
+            # ✅ mantém a regra: se já existe pasta da empresa, usa ela (não cria nova)
+            # (se houver várias, prioriza a "mais longa" — normalmente as com classe tipo BBAS3/KLBN11)
             pastas_encontradas.sort(key=lambda p: len(p.name), reverse=True)
             return pastas_encontradas[0]
+    
+        # ✅ não existe pasta: criar/usar ticker+classe pelo mapeamento
+        ticker_com_classe = self._mapa_base_para_ticker_classe.get(ticker_base, ticker_base)
+    
+        # fallback extra: se o mapeamento não tinha classe e vier base, mantém base
+        return self.pasta_balancos / ticker_com_classe
 
-        # Se não encontrou nenhuma, retorna pasta com ticker base (sem número)
-        return self.pasta_saida / ticker_base
 
     def _carregar_empresas(self) -> pd.DataFrame:
         """Carrega lista de empresas do CSV."""
@@ -301,10 +304,11 @@ class CapturadorNoticiasB3:
 
         todas_noticias = noticias_novas + dados_existentes.get('noticias', [])
         todas_noticias.sort(key=lambda x: x.get('data_hora', ''), reverse=True)
+        ticker_pasta = pasta_empresa.name
 
         dados_finais = {
             "empresa": {
-                "ticker": ticker_base,
+                "ticker": ticker_pasta,
                 "nome": row.get('empresa', ''),
                 "cnpj": row.get('cnpj', '')
             },
@@ -357,7 +361,7 @@ class CapturadorNoticiasB3:
 
         print(f"\n{'='*70}")
         print(f"✅ Processadas: {empresas_processadas}/{len(df_selecionadas)} | Com notícias novas: {empresas_com_noticias}")
-        print(f"💾 Salvos em: {self.pasta_saida}/")
+        print(f"💾 Salvos em: {self.pasta_balancos}/")
         print("="*70)
 
 
