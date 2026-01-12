@@ -2249,6 +2249,165 @@ textarea:focus {
     border-color: var(--accent-color);
 }
 
+/* ============================================
+   NAVEGAÇÃO POR SEÇÕES COM ÍCONES
+   ============================================ */
+
+.empresa-nav-tabs {
+    display: flex;
+    gap: 0;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 12px;
+    padding: 8px;
+    margin: 24px 0;
+    overflow-x: auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.empresa-nav-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.empresa-nav-item {
+    flex: 1;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 12px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    position: relative;
+}
+
+.empresa-nav-item i {
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.empresa-nav-item span {
+    transition: all 0.3s ease;
+}
+
+.empresa-nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+}
+
+.empresa-nav-item:hover i {
+    transform: scale(1.1);
+}
+
+.empresa-nav-item.active {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3), 0 2px 4px -1px rgba(79, 70, 229, 0.2);
+}
+
+.empresa-nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: #4f46e5;
+    border-radius: 3px 3px 0 0;
+}
+
+/* Responsividade para Tablets */
+@media (max-width: 1024px) {
+    .empresa-nav-tabs {
+        gap: 4px;
+        padding: 6px;
+    }
+    
+    .empresa-nav-item {
+        min-width: 100px;
+        padding: 12px 8px;
+        font-size: 0.7rem;
+    }
+    
+    .empresa-nav-item i {
+        font-size: 1.3rem;
+    }
+}
+
+/* Responsividade para Mobile */
+@media (max-width: 768px) {
+    .empresa-nav-tabs {
+        margin: 16px 0;
+        padding: 4px;
+        border-radius: 10px;
+        gap: 2px;
+    }
+    
+    .empresa-nav-item {
+        min-width: 90px;
+        padding: 10px 6px;
+        gap: 6px;
+        font-size: 0.65rem;
+    }
+    
+    .empresa-nav-item i {
+        font-size: 1.2rem;
+    }
+    
+    .empresa-nav-item.active::after {
+        bottom: -4px;
+        width: 30px;
+        height: 2px;
+    }
+}
+
+/* Responsividade para Mobile Pequeno */
+@media (max-width: 480px) {
+    .empresa-nav-tabs {
+        padding: 3px;
+        gap: 1px;
+    }
+    
+    .empresa-nav-item {
+        min-width: 75px;
+        padding: 8px 4px;
+        gap: 4px;
+        font-size: 0.6rem;
+        letter-spacing: 0.02em;
+    }
+    
+    .empresa-nav-item i {
+        font-size: 1.1rem;
+    }
+    
+    .empresa-nav-item span {
+        white-space: nowrap;
+    }
+    
+    .empresa-nav-item:hover {
+        transform: none;
+    }
+    
+    .empresa-nav-item.active::after {
+        display: none;
+    }
+}
+
+/* ============================================ */
+
+
 /* Cards de indicadores */
 .indicadores-cards {
     display: grid;
