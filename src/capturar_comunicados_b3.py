@@ -52,42 +52,33 @@ class CapturadorNoticiasB3:
 
     def encontrar_pasta_empresa(self, ticker_completo: str) -> Path:
         """
-        Busca pasta existente para o ticker completo (com classe).
-        Prioriza pasta exata (BBDC3), depois qualquer com base (BBDC*).
-        Cria nova só se não houver nenhuma.
+        Busca pasta existente para ticker completo (preserva classe: BBDC3).
+        Regra: Usa pasta já aberta da empresa (qualquer classe).
+               Prioriza exata > com base > cria nova com classe.
         """
-        # Lista todas pastas candidatas
+        ticker_base = self.extrair_ticker_base(ticker_completo)
         pastas_candidatas = []
-        ticker_base = self.extrair_ticker_base(ticker_completo)  # Sem número para fallback
         
         if self.pasta_saida.exists():
             for pasta in self.pasta_saida.iterdir():
                 if pasta.is_dir():
                     nome_pasta = pasta.name.upper()
-                    # Prioridade 1: match exato com ticker completo (preserva classe)
+                    # PRIORIDADE 1: Match EXATO (BBDC3 buscando BBDC3)
                     if nome_pasta == ticker_completo.upper():
                         return pasta
-                    # Prioridade 2: pasta cujo base coincide (salva na existente da empresa)
+                    # PRIORIDADE 2: Mesma empresa (base coincide: BBDC4 buscando BBDC3)
                     if self.extrair_ticker_base(nome_pasta) == ticker_base:
                         pastas_candidatas.append(pasta)
         
         if pastas_candidatas:
-            # Ordena por nome mais longo primeiro (prefere com classe)
+            # Prefere nomes mais longos (com classe: BBDC11 > BBDC)
             pastas_candidatas.sort(key=lambda p: len(p.name), reverse=True)
             return pastas_candidatas[0]
         
-        # Cria nova com ticker completo (mantém classe)
-        return self.pasta_saida / ticker_completo
+        # CRIA NOVA com ticker completo (mantém classe)
+        nova_pasta = self.pasta_saida / ticker_completo
+        return nova_pasta
 
-
-        if pastas_encontradas:
-            # Prioriza pasta com número (ex: BBAS3 ao invés de BBAS)
-            # Ordena por comprimento decrescente para pegar primeiro as com número
-            pastas_encontradas.sort(key=lambda p: len(p.name), reverse=True)
-            return pastas_encontradas[0]
-
-        # Se não encontrou nenhuma, retorna pasta com ticker base (sem número)
-        return self.pasta_saida / ticker_base
 
     def _carregar_empresas(self) -> pd.DataFrame:
         """Carrega lista de empresas do CSV."""
@@ -214,79 +205,79 @@ class CapturadorNoticiasB3:
                 return json.load(f)
         return {"noticias": []}
 
-    def _processar_empresa(self, row: pd.Series, data_inicio: str, data_fim: str) -> bool:
-        """Processa e acumula notícias de uma empresa."""
-        #ticker_base = row['ticker_base']
-        ticker_completo = row.get('ticker', row.tickerbase)
-
-        # Suporta CSV com múltiplas classes na mesma célula (ex: ITUB3;ITUB4)
-        tickers_ref = self._split_tickers(row.get('ticker', ''))
-
-        # BUSCA PASTA EXISTENTE (com ou sem número de classe)
-        #pasta_empresa = self._encontrar_pasta_empresa(ticker_base)
+    def processar_empresa(self, row: pd.Series, data_inicio: str, data_fim: str) -> bool:
+        """Processa notícias de uma empresa, salva na pasta correta."""
+        # ticker_base para buscas amplas (sem classe)
+        ticker_base = row.get('ticker_base', '').strip().upper()
+        
+        # ticker_completo para pasta (preserva classe de row['ticker'])
+        ticker_completo = row.get('ticker', ticker_base or '').strip().upper()
+        if not ticker_completo:
+            ticker_completo = ticker_base
+        
+        # Lista com classes para filtro por texto
+        tickers_ref = self.split_tickers(row.get('ticker', ''))
+        
+        # ENCONTRA/CRIA PASTA (nova lógica!)
         pasta_empresa = self.encontrar_pasta_empresa(ticker_completo)
         pasta_empresa.mkdir(exist_ok=True)
-
-        print(f"  📁 Pasta: {pasta_empresa.name}")
-
-        df_noticias = self._buscar_noticias_empresa(ticker_base, data_inicio, data_fim, tickers_ref=tickers_ref)
-
+        print(f"📁 Pasta: {pasta_empresa.name}")
+        
+        df_noticias = self.buscar_noticias_empresa(ticker_base, data_inicio, data_fim, tickers_ref)
         if df_noticias.empty:
             return False
-
-        arquivo_json = pasta_empresa / "noticias.json"
-        dados_existentes = self._carregar_arquivo_existente(arquivo_json)
-
+        
+        arquivo_json = pasta_empresa / 'noticias.json'
+        dados_existentes = self.carregar_arquivo_existente(arquivo_json)
         ids_existentes = {n.get('id') for n in dados_existentes.get('noticias', [])}
-
+        
         noticias_novas = []
         for _, noticia in df_noticias.iterrows():
             noticia_id = noticia.get('id')
-
             if noticia_id and noticia_id in ids_existentes:
                 continue
-
-            data_hora_obj = noticia.get('data_hora')
+            
+            data_hora_obj = noticia.get('datahora')
             if isinstance(data_hora_obj, str):
                 data_hora_obj = pd.to_datetime(data_hora_obj)
-
+            
             noticias_novas.append({
-                "data": data_hora_obj.strftime('%Y-%m-%d') if data_hora_obj else None,
-                "data_hora": data_hora_obj.strftime('%Y-%m-%d %H:%M:%S') if data_hora_obj else None,
-                "titulo": noticia.get('titulo', ''),
-                "headline": noticia.get('headline', ''),
-                "conteudo": noticia.get('conteudo'),
-                "url": noticia.get('url', ''),
-                "id": noticia_id,
-                "categoria": self._classificar_noticia(noticia.get('titulo', ''), noticia.get('headline', ''))
+                'data': data_hora_obj.strftime('%Y-%m-%d') if data_hora_obj else None,
+                'datahora': data_hora_obj.strftime('%Y-%m-%d %H:%M:%S') if data_hora_obj else None,
+                'titulo': noticia.get('titulo'),
+                'headline': noticia.get('headline'),
+                'conteudo': noticia.get('conteudo'),
+                'url': noticia.get('url'),
+                'id': noticia_id,
+                'categoria': self.classificar_noticia(noticia.get('titulo'), noticia.get('headline'))
             })
-
             if noticia_id:
                 ids_existentes.add(noticia_id)
-
+        
         if not noticias_novas:
-            print("  ℹ️ Nenhuma notícia nova (todas já existem)")
+            print("ℹ️ Nenhuma notícia nova (todas já existem)")
             return False
-
+        
         todas_noticias = noticias_novas + dados_existentes.get('noticias', [])
-        todas_noticias.sort(key=lambda x: x.get('data_hora', ''), reverse=True)
-
+        todas_noticias.sort(key=lambda x: x.get('datahora'), reverse=True)
+        
         dados_finais = {
-            "empresa": {
-                "ticker": ticker_base,
-                "nome": row.get('empresa', ''),
-                "cnpj": row.get('cnpj', '')
+            'empresa': {
+                'ticker': ticker_completo,
+                'nome': row.get('empresa'),
+                'cnpj': row.get('cnpj')
             },
-            "ultima_atualizacao": datetime.now().isoformat(),
-            "total_noticias": len(todas_noticias),
-            "noticias": todas_noticias
+            'ultima_atualizacao': datetime.now().isoformat(),
+            'total_noticias': len(todas_noticias),
+            'noticias': todas_noticias
         }
-
+        
         with open(arquivo_json, 'w', encoding='utf-8') as f:
             json.dump(dados_finais, f, ensure_ascii=False, indent=2)
-
-        print(f"  💾 {len(noticias_novas)} nova(s) | Total: {len(todas_noticias)}")
+        
+        print(f"✅ {len(noticias_novas)} novas | Total: {len(todas_noticias)}")
         return True
+
 
     def executar(self, modo: str = 'quantidade', dias_retroativos: int = 1, **kwargs):
         """Executa captura para empresas selecionadas."""
