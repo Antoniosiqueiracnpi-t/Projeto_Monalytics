@@ -285,38 +285,45 @@ def identificar_primeiro_trimestre_completo(df_atual):
 
 def identificar_trimestres_faltantes(df_atual, primeiro_trimestre_completo, ano_inicio=2010):
     """
-    Identifica trimestres faltantes entre ano_inicio e primeiro_trimestre_completo
+    Identifica trimestres faltantes entre ano_inicio e primeiro_trimestre_completo.
+
+    Regra (coerente com 'primeiro_trimestre_completo'):
+    - Se a coluna não existe -> faltante
+    - Se a coluna existe mas tem menos de 50% das linhas preenchidas -> tratar como faltante
+      (permite preencher trimestres parcialmente vazios, sem sobrescrever valores existentes)
     """
     if not primeiro_trimestre_completo:
         return []
-    
+
     colunas_trim = [col for col in df_atual.columns if 'T' in str(col) and len(str(col)) == 6]
     trimestres_existentes = set(colunas_trim)
-    
-    # Extrair ano e trimestre do primeiro completo
+
     ano_limite = int(primeiro_trimestre_completo[:4])
     trim_limite = int(primeiro_trimestre_completo[5])
-    
-    # Gerar todos os trimestres desde ano_inicio até o primeiro completo
+
     todos_trimestres = []
     for ano in range(ano_inicio, ano_limite + 1):
         for trim in range(1, 5):
             trimestre = f"{ano}T{trim}"
-            # Parar quando atingir o primeiro trimestre completo
             if ano == ano_limite and trim > trim_limite:
                 break
             todos_trimestres.append(trimestre)
-    
-    # Identificar faltantes (que não existem OU que existem mas estão vazios)
+
+    total_linhas = len(df_atual)
     trimestres_faltantes = []
+
     for t in todos_trimestres:
         if t not in trimestres_existentes:
             trimestres_faltantes.append(t)
-        elif t in df_atual.columns and df_atual[t].isna().all():
-            # Trimestre existe mas está completamente vazio
+            continue
+
+        # Coluna existe: considerar faltante se estiver "pouco preenchida"
+        preenchidos = df_atual[t].notna().sum()
+        if preenchidos < total_linhas * 0.5:
             trimestres_faltantes.append(t)
-    
+
     return sorted(trimestres_faltantes)
+
 
 
 def mapear_campo_brapi(campo_brapi, tipo_balanco, ticker):
@@ -381,37 +388,31 @@ def processar_demonstrativo(ticker, df_atual, modulo, tipo, ano_inicio=2010):
     chave = modulo if modulo in result else None
     
     if not chave or not result.get(chave):
-        print(f"  ⚠️  Módulo {modulo} não disponível para {ticker}")
         return None
     
-    dados_trimestrais = result[chave]
-    print(f"  📊 Obtidos {len(dados_trimestrais)} trimestres da BRAPI")
+    registros = result[chave]
+    if not isinstance(registros, list) or len(registros) == 0:
+        return None
     
-    # Identificar trimestres faltantes (até o primeiro completo)
-    trimestres_faltantes = identificar_trimestres_faltantes(
-        df_atual, primeiro_trimestre_completo, ano_inicio
-    )
+    # Identificar trimestres faltantes
+    trimestres_faltantes = identificar_trimestres_faltantes(df_atual, primeiro_trimestre_completo, ano_inicio)
     
     if not trimestres_faltantes:
-        print(f"  ℹ️  Não há trimestres faltantes até {primeiro_trimestre_completo}")
+        print(f"  ✅ Nenhum trimestre faltante para preencher")
         return df_atual
     
-    print(f"  📋 Trimestres faltantes até {primeiro_trimestre_completo}: {len(trimestres_faltantes)}")
-    print(f"     Intervalo: {trimestres_faltantes[0]} até {trimestres_faltantes[-1]}")
+    print(f"  📊 Trimestres faltantes: {len(trimestres_faltantes)}")
     
-    # Criar cópia do DataFrame
-    df_novo = df_atual.copy()
-    
-    # Dicionário para armazenar dados por trimestre
-    # Estrutura: {trimestre: {cd_conta: valor}}
+    # Organizar dados por trimestre
     dados_por_trimestre = {}
     
-    # Processar registros da BRAPI
-    for registro in dados_trimestrais:
-        if 'endDate' not in registro:
+    for registro in registros:
+        if not isinstance(registro, dict):
             continue
         
-        trimestre = extrair_trimestre_ano(registro['endDate'])
+        end_date = registro.get('endDate')
+        trimestre = extrair_trimestre(end_date)
+        
         if not trimestre or trimestre not in trimestres_faltantes:
             continue
         
@@ -445,63 +446,82 @@ def processar_demonstrativo(ticker, df_atual, modulo, tipo, ano_inicio=2010):
                 if prioridade_atual <= prioridade_existente:
                     continue
             
-            # Armazenar valor com metadados
             dados_por_trimestre[trimestre][cd_conta] = {
                 'valor': valor_normalizado,
                 'campo': campo_brapi
             }
     
     if not dados_por_trimestre:
-        print(f"  ⚠️  Nenhum dado relevante encontrado na BRAPI")
+        print(f"  ⚠️  Nenhum dado encontrado para os trimestres faltantes")
         return df_atual
     
-    # Adicionar colunas de trimestres se não existirem
-    for trimestre in dados_por_trimestre.keys():
+    # Criar dataframe novo baseado no atual
+    df_novo = df_atual.copy()
+    
+    # Garantir que colunas de trimestres existam (inserir com None na posição correta)
+    colunas_trim = [col for col in df_novo.columns if 'T' in str(col) and len(str(col)) == 6]
+    
+    for trimestre in trimestres_faltantes:
         if trimestre not in df_novo.columns:
-            # Inserir coluna na posição correta (ordenada)
-            colunas_trim = [col for col in df_novo.columns if 'T' in str(col) and len(str(col)) == 6]
+            # Encontrar posição correta baseada na ordenação
+            colunas_trim_ordenadas = sorted(colunas_trim + [trimestre])
+            idx_novo = colunas_trim_ordenadas.index(trimestre)
             
-            if not colunas_trim:
-                # Adicionar após as colunas descritivas
+            if idx_novo == 0:
+                # Inserir no início dos trimestres
                 col_desc = 'ds_conta' if tipo == 'dre' else 'conta'
                 pos = df_novo.columns.get_loc(col_desc) + 1
                 df_novo.insert(pos, trimestre, None)
             else:
-                # Encontrar posição correta baseada na ordenação
-                colunas_trim_ordenadas = sorted(colunas_trim + [trimestre])
-                idx_novo = colunas_trim_ordenadas.index(trimestre)
-                
-                if idx_novo == 0:
-                    # Inserir no início dos trimestres
-                    col_desc = 'ds_conta' if tipo == 'dre' else 'conta'
-                    pos = df_novo.columns.get_loc(col_desc) + 1
-                    df_novo.insert(pos, trimestre, None)
-                else:
-                    # Inserir após o trimestre anterior
-                    trimestre_anterior = colunas_trim_ordenadas[idx_novo - 1]
-                    pos = df_novo.columns.get_loc(trimestre_anterior) + 1
-                    df_novo.insert(pos, trimestre, None)
+                # Inserir após o trimestre anterior
+                trimestre_anterior = colunas_trim_ordenadas[idx_novo - 1]
+                pos = df_novo.columns.get_loc(trimestre_anterior) + 1
+                df_novo.insert(pos, trimestre, None)
     
     # Preencher valores nas linhas EXISTENTES (não adicionar novas linhas)
     trimestres_preenchidos = []
     valores_preenchidos = 0
     
+    def _norm_cd(v):
+        """Normaliza cd_conta para comparação (suporta float/int/str)."""
+        if v is None:
+            return ''
+        try:
+            if pd.isna(v):
+                return ''
+        except Exception:
+            pass
+        s = str(v).strip()
+        # Se veio como float tipo '1.0' -> '1'
+        if s.endswith('.0'):
+            s = s[:-2]
+        # Remove zeros à direita em decimais ('2.0700' -> '2.07')
+        if '.' in s:
+            s = s.rstrip('0').rstrip('.')
+        return s
+    
+    # Pré-computar normalização do cd_conta do DF (evita recomputar a cada conta)
+    cd_norm_series = df_novo['cd_conta'].map(_norm_cd)
+    
     for trimestre, dados_contas in dados_por_trimestre.items():
         for cd_conta, info in dados_contas.items():
             valor = info['valor']
             
-            # Encontrar linha existente com este cd_conta
-            mask = df_novo['cd_conta'] == cd_conta
+            # Encontrar linha existente com este cd_conta (comparação normalizada)
+            cd_alvo = _norm_cd(cd_conta)
+            mask = cd_norm_series == cd_alvo
             
             if mask.any():
-                # Linha existe - preencher valor
-                df_novo.loc[mask, trimestre] = valor
-                valores_preenchidos += 1
+                # NÃO sobrescrever valores já existentes: preencher só onde é NaN
+                fill_mask = mask & df_novo[trimestre].isna()
+                if fill_mask.any():
+                    df_novo.loc[fill_mask, trimestre] = valor
+                    valores_preenchidos += int(fill_mask.sum())
             else:
                 # Linha não existe - NÃO ADICIONAR (conforme requisito)
-                # Apenas logar se for relevante
-                if cd_conta not in ['1', '2', '3']:  # Ignorar totais que podem não estar mapeados
-                    pass  # Silenciosamente ignorar
+                # Apenas ignorar se for relevante
+                if cd_conta not in ['1', '2', '3']:
+                    pass
         
         if trimestre not in trimestres_preenchidos:
             trimestres_preenchidos.append(trimestre)
@@ -519,6 +539,7 @@ def processar_demonstrativo(ticker, df_atual, modulo, tipo, ano_inicio=2010):
     print(f"  💾 Total de valores preenchidos: {valores_preenchidos}")
     
     return df_novo
+
 
 
 def processar_ticker(ticker, ano_inicio=2010):
