@@ -473,6 +473,7 @@ def analisar_empresa(ticker: str, tipo: str, pasta: Path) -> Dict:
                 print(f"  📈 Margem Operacional Média: {margem_operacional}%")
     
     # Margem Líquida (MAIS IMPORTANTE)
+    # Para bancos: usar Receita de Intermediação Financeira
     if len(receita) > 0 and len(lucro_liquido) > 0:
         idx_comum = receita.index.intersection(lucro_liquido.index)
         if len(idx_comum) > 0:
@@ -480,7 +481,10 @@ def analisar_empresa(ticker: str, tipo: str, pasta: Path) -> Dict:
             margens_liq = margens_liq[margens_liq.notna() & np.isfinite(margens_liq)]
             if len(margens_liq) > 0:
                 margem_liquida = round(margens_liq.mean(), 2)
-                print(f"  💎 Margem Líquida Média: {margem_liquida}%")
+                if tipo == 'financeira':
+                    print(f"  💎 Margem Líquida Média (s/ Rec. Intermediação): {margem_liquida}%")
+                else:
+                    print(f"  💎 Margem Líquida Média: {margem_liquida}%")
 
     
     # === MÉTRICAS DE CAIXA (apenas não financeiras) ===
@@ -526,15 +530,51 @@ def analisar_empresa(ticker: str, tipo: str, pasta: Path) -> Dict:
         if len(roes) > 0:
             roe = round(np.mean(roes), 2)
     
+    # === MÉTRICAS ESPECÍFICAS PARA BANCOS/FINANCEIRAS ===
+    roa = None
+    pl_ativos = None
+    
+    if tipo == 'financeira':
+        # ROA (Return on Assets) - Lucro Líquido / Ativo Total Médio
+        if len(lucro_liquido) > 0 and len(ativo_total) > 0:
+            roas = []
+            for periodo in lucro_liquido.index:
+                if periodo in ativo_total.index:
+                    ll = lucro_liquido[periodo]
+                    at = ativo_total[periodo]
+                    if at > 0:
+                        # Anualizar (multiplicar por 4 para ter base anual)
+                        roa_trim = (ll * 4 / at) * 100
+                        roas.append(roa_trim)
+            
+            if len(roas) > 0:
+                roa = round(np.mean(roas), 2)
+                print(f"  📊 ROA Médio: {roa}%")
+        
+        # PL/Ativos - Patrimônio Líquido / Ativo Total (estrutura de capital)
+        if len(patrimonio) > 0 and len(ativo_total) > 0:
+            pl_ativos_list = []
+            for periodo in patrimonio.index:
+                if periodo in ativo_total.index:
+                    pl = patrimonio[periodo]
+                    at = ativo_total[periodo]
+                    if at > 0:
+                        pl_at_trim = (pl / at) * 100
+                        pl_ativos_list.append(pl_at_trim)
+            
+            if len(pl_ativos_list) > 0:
+                pl_ativos = round(np.mean(pl_ativos_list), 2)
+                print(f"  🏦 PL/Ativos Médio: {pl_ativos}%")
+    
     # === ANÁLISE CRÍTICA TEXTUAL ===
     analise_critica = gerar_analise_critica(
         ticker, tipo, receita, lucro_liquido,
         margem_bruta, margem_operacional, margem_liquida,
-        roe, caixa_operacional
+        roe, caixa_operacional, roa, pl_ativos
     )
     
     pontos_fortes, pontos_atencao = identificar_pontos_destaque(
-        receita_cagr, margem_liquida, roe, caixa_operacional
+        receita_cagr, margem_liquida, roe, caixa_operacional, tipo, roa, pl_ativos
     )
     
     # === ESTRUTURA FINAL ===
@@ -560,7 +600,11 @@ def analisar_empresa(ticker: str, tipo: str, pasta: Path) -> Dict:
                 "liquida": margem_liquida
             },
             "rentabilidade": {
-                "roe_medio": roe
+                "roe_medio": roe,
+                "roa_medio": roa if tipo == 'financeira' else None
+            },
+            "estrutura": {
+                "pl_ativos": pl_ativos if tipo == 'financeira' else None
             },
             "caixa": caixa_operacional if caixa_operacional else {},
             "balanco": {
@@ -578,7 +622,8 @@ def gerar_analise_critica(
     ticker: str, tipo: str,
     receita: pd.Series, lucro: pd.Series,
     mg_bruta: Optional[float], mg_op: Optional[float], mg_liq: Optional[float],
-    roe: Optional[float], caixa: Optional[Dict]
+    roe: Optional[float], caixa: Optional[Dict],
+    roa: Optional[float] = None, pl_ativos: Optional[float] = None
 ) -> str:
     """Gera análise crítica em texto."""
     
@@ -596,16 +641,27 @@ def gerar_analise_critica(
         else:
             partes.append(f"{ticker} mantém receita relativamente estável no período.")
     
-    # Margens
-    if mg_liq is not None:
-        if mg_liq > 20:
-            partes.append(f"Destaca-se pela alta rentabilidade, com margem líquida média de {mg_liq}%.")
-        elif mg_liq > 10:
-            partes.append(f"Apresenta rentabilidade saudável com margem líquida de {mg_liq}%.")
-        elif mg_liq > 0:
-            partes.append(f"Opera com margens comprimidas (margem líquida de {mg_liq}%).")
-        else:
-            partes.append(f"Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes.")
+    # Margens (diferente para bancos)
+    if tipo == 'financeira':
+        # Para bancos, margem líquida é sobre receita de intermediação
+        if mg_liq is not None and mg_liq > 0:
+            if mg_liq > 15:
+                partes.append(f"Destaca-se pela alta margem sobre receita de intermediação ({mg_liq}%).")
+            elif mg_liq > 8:
+                partes.append(f"Apresenta margem saudável sobre intermediação financeira ({mg_liq}%).")
+            else:
+                partes.append(f"Opera com margens comprimidas sobre intermediação ({mg_liq}%).")
+    else:
+        # Para empresas normais
+        if mg_liq is not None:
+            if mg_liq > 20:
+                partes.append(f"Destaca-se pela alta rentabilidade, com margem líquida média de {mg_liq}%.")
+            elif mg_liq > 10:
+                partes.append(f"Apresenta rentabilidade saudável com margem líquida de {mg_liq}%.")
+            elif mg_liq > 0:
+                partes.append(f"Opera com margens comprimidas (margem líquida de {mg_liq}%).")
+            else:
+                partes.append(f"Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes.")
     
     # ROE
     if roe is not None:
@@ -616,8 +672,26 @@ def gerar_analise_critica(
         elif roe > 0:
             partes.append(f"Retorno sobre patrimônio abaixo do esperado (ROE de {roe}%).")
     
+    # ROA (apenas para bancos)
+    if tipo == 'financeira' and roa is not None:
+        if roa > 1.0:
+            partes.append(f"Apresenta eficiência operacional adequada (ROA de {roa}%).")
+        elif roa > 0.5:
+            partes.append(f"ROA dentro da média do setor ({roa}%).")
+        elif roa > 0:
+            partes.append(f"ROA abaixo da média do setor financeiro ({roa}%).")
+    
+    # PL/Ativos (apenas para bancos - estrutura de capital)
+    if tipo == 'financeira' and pl_ativos is not None:
+        if pl_ativos > 8:
+            partes.append(f"Estrutura de capital robusta com alto índice PL/Ativos ({pl_ativos}%).")
+        elif pl_ativos > 5:
+            partes.append(f"Estrutura de capital adequada (PL/Ativos de {pl_ativos}%).")
+        else:
+            partes.append(f"Alavancagem elevada - PL/Ativos de {pl_ativos}%.")
+    
     # Caixa (apenas não financeiras)
-    if caixa and 'ultimo' in caixa:
+    if tipo != 'financeira' and caixa and 'ultimo' in caixa:
         if caixa['ultimo'] > 0:
             partes.append(f"Geração de caixa operacional positiva.")
         else:
@@ -630,7 +704,10 @@ def identificar_pontos_destaque(
     receita_cagr: Optional[float],
     margem_liq: Optional[float],
     roe: Optional[float],
-    caixa: Optional[Dict]
+    caixa: Optional[Dict],
+    tipo: str = 'nao_financeira',
+    roa: Optional[float] = None,
+    pl_ativos: Optional[float] = None
 ) -> Tuple[List[str], List[str]]:
     """Identifica pontos fortes e de atenção."""
     
@@ -644,12 +721,18 @@ def identificar_pontos_destaque(
         elif receita_cagr < 0:
             atencao.append(f"Receita em queda (CAGR: {receita_cagr}%)")
     
-    # Margem
+    # Margem (interpretação diferente para bancos)
     if margem_liq is not None:
-        if margem_liq > 15:
-            fortes.append(f"Alta margem de lucro líquido ({margem_liq}%)")
-        elif margem_liq < 5:
-            atencao.append(f"Margem líquida comprimida ({margem_liq}%)")
+        if tipo == 'financeira':
+            if margem_liq > 15:
+                fortes.append(f"Alta margem sobre intermediação ({margem_liq}%)")
+            elif margem_liq < 8:
+                atencao.append(f"Margem sobre intermediação comprimida ({margem_liq}%)")
+        else:
+            if margem_liq > 15:
+                fortes.append(f"Alta margem de lucro líquido ({margem_liq}%)")
+            elif margem_liq < 5:
+                atencao.append(f"Margem líquida comprimida ({margem_liq}%)")
     
     # ROE
     if roe is not None:
@@ -658,8 +741,22 @@ def identificar_pontos_destaque(
         elif roe < 8:
             atencao.append(f"Retorno sobre patrimônio baixo (ROE: {roe}%)")
     
-    # Caixa
-    if caixa and 'ultimo' in caixa:
+    # ROA (apenas bancos)
+    if tipo == 'financeira' and roa is not None:
+        if roa > 1.2:
+            fortes.append(f"Alta eficiência operacional (ROA: {roa}%)")
+        elif roa < 0.5:
+            atencao.append(f"ROA abaixo da média do setor ({roa}%)")
+    
+    # PL/Ativos (apenas bancos - estrutura de capital)
+    if tipo == 'financeira' and pl_ativos is not None:
+        if pl_ativos > 8:
+            fortes.append(f"Estrutura de capital robusta (PL/Ativos: {pl_ativos}%)")
+        elif pl_ativos < 4:
+            atencao.append(f"Alta alavancagem (PL/Ativos: {pl_ativos}%)")
+    
+    # Caixa (apenas não financeiras)
+    if tipo != 'financeira' and caixa and 'ultimo' in caixa:
         if caixa['ultimo'] > 1000:
             fortes.append("Forte geração de caixa operacional")
         elif caixa['ultimo'] < 0:
