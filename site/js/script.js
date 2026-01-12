@@ -4039,6 +4039,14 @@ function formatMultiploValor(valor, unidade) {
         return valor.toFixed(2) + 'x';
     } else if (unidade === 'dias') {
         return Math.round(valor);
+    } else if (unidade === 'R$ mil') {
+        // Formata Valor de Mercado (vem em milhares no JSON)
+        const valorMilhoes = valor / 1000;
+        if (valorMilhoes >= 1000) {
+            return 'R$ ' + (valorMilhoes / 1000).toFixed(2) + ' bi';
+        } else {
+            return 'R$ ' + valorMilhoes.toFixed(2) + ' mi';
+        }
     }
     
     return valor.toFixed(2);
@@ -6812,8 +6820,3 @@ if (document.readyState === 'loading') {
 } else {
   loadDashboardB3();
 }
-
-
-
-
-
