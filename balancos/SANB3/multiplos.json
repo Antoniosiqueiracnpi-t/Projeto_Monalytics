@@ -1,0 +1,366 @@
+{
+  "ticker": "SANB11",
+  "padrao_fiscal": {
+    "tipo": "PADRAO",
+    "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
+    "trimestres_ltm": 4
+  },
+  "metadata": {
+    "VALOR_MERCADO": {
+      "nome": "Valor de Mercado",
+      "categoria": "Valuation",
+      "formula": "Preço × Ações (3+4)",
+      "unidade": "R$ mil",
+      "usa_preco": true
+    },
+    "P_L": {
+      "nome": "P/L",
+      "categoria": "Valuation",
+      "formula": "Preço / Lucro por Ação LTM",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "P_VPA": {
+      "nome": "P/VPA",
+      "categoria": "Valuation",
+      "formula": "Preço / Valor Patrimonial por Ação",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "DY": {
+      "nome": "Dividend Yield",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Market Cap × 100",
+      "unidade": "%",
+      "usa_preco": true
+    },
+    "PAYOUT": {
+      "nome": "Payout",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Lucro Líquido LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "ROE": {
+      "nome": "ROE",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / PL Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "ROA": {
+      "nome": "ROA",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / Ativo Total Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "MARGEM_LIQUIDA": {
+      "nome": "Margem Líquida",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / Receita Intermediação LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "PL_ATIVOS": {
+      "nome": "PL/Ativos",
+      "categoria": "Estrutura",
+      "formula": "Patrimônio Líquido / Ativo Total × 100",
+      "unidade": "%",
+      "usa_preco": false
+    }
+  },
+  "historico_anual": {
+    "2011": {
+      "periodo_referencia": "2011T4",
+      "multiplos": {
+        "VALOR_MERCADO": 1257529946.41,
+        "P_L": 293.7835,
+        "P_VPA": 29.2001,
+        "DY": 0.2806,
+        "PAYOUT": 82.4409,
+        "ROE": 9.9393,
+        "ROA": 1.0094,
+        "MARGEM_LIQUIDA": 14.9912,
+        "PL_ATIVOS": 10.156
+      }
+    },
+    "2012": {
+      "periodo_referencia": "2012T4",
+      "multiplos": {
+        "VALOR_MERCADO": 1233587299.4,
+        "P_L": 436.3752,
+        "P_VPA": 29.2069,
+        "DY": 0.2262,
+        "PAYOUT": 98.7025,
+        "ROE": 6.8413,
+        "ROA": 0.6917,
+        "MARGEM_LIQUIDA": 10.3669,
+        "PL_ATIVOS": 10.068
+      }
+    },
+    "2013": {
+      "periodo_referencia": "2013T4",
+      "multiplos": {
+        "VALOR_MERCADO": 1171594073.32,
+        "P_L": 384.1605,
+        "P_VPA": 27.5134,
+        "DY": 0.2158,
+        "PAYOUT": 82.9078,
+        "ROE": 7.1659,
+        "ROA": 0.6932,
+        "MARGEM_LIQUIDA": 11.4183,
+        "PL_ATIVOS": 9.3103
+      }
+    },
+    "2014": {
+      "periodo_referencia": "2014T4",
+      "multiplos": {
+        "VALOR_MERCADO": 22614764.88,
+        "P_L": 8.3762,
+        "P_VPA": 0.6076,
+        "DY": 37.1905,
+        "PAYOUT": 311.5139,
+        "ROE": 7.1197,
+        "ROA": 0.6049,
+        "MARGEM_LIQUIDA": 9.6867,
+        "PL_ATIVOS": 7.7886
+      }
+    },
+    "2015": {
+      "periodo_referencia": "2015T4",
+      "multiplos": {
+        "VALOR_MERCADO": 30819608.19,
+        "P_L": 6.3142,
+        "P_VPA": 0.7778,
+        "DY": 39.8108,
+        "PAYOUT": 251.3738,
+        "ROE": 12.4072,
+        "ROA": 0.8976,
+        "MARGEM_LIQUIDA": 14.0744,
+        "PL_ATIVOS": 6.7601
+      }
+    },
+    "2016": {
+      "periodo_referencia": "2016T4",
+      "multiplos": {
+        "VALOR_MERCADO": 60577055.37,
+        "P_L": 16.2813,
+        "P_VPA": 1.433,
+        "DY": 1.6436,
+        "PAYOUT": 26.76,
+        "ROE": 9.0677,
+        "ROA": 0.6171,
+        "MARGEM_LIQUIDA": 9.6763,
+        "PL_ATIVOS": 6.8477
+      }
+    },
+    "2017": {
+      "periodo_referencia": "2017T4",
+      "multiplos": {
+        "VALOR_MERCADO": 67966542.4,
+        "P_L": 15.0987,
+        "P_VPA": 1.5843,
+        "DY": 18.1076,
+        "PAYOUT": 273.402,
+        "ROE": 10.6318,
+        "ROA": 0.7311,
+        "MARGEM_LIQUIDA": 12.7951,
+        "PL_ATIVOS": 6.9051
+      }
+    },
+    "2018": {
+      "periodo_referencia": "2018T4",
+      "multiplos": {
+        "VALOR_MERCADO": 96575524.13,
+        "P_L": 15.3369,
+        "P_VPA": 2.1432,
+        "DY": 13.4836,
+        "PAYOUT": 206.7968,
+        "ROE": 14.327,
+        "ROA": 0.945,
+        "MARGEM_LIQUIDA": 18.1615,
+        "PL_ATIVOS": 6.3268
+      }
+    },
+    "2019": {
+      "periodo_referencia": "2019T4",
+      "multiplos": {
+        "VALOR_MERCADO": 116040460.86,
+        "P_L": 14.2067,
+        "P_VPA": 2.4306,
+        "DY": 13.2659,
+        "PAYOUT": 188.4659,
+        "ROE": 17.6176,
+        "ROA": 1.1191,
+        "MARGEM_LIQUIDA": 22.8325,
+        "PL_ATIVOS": 6.3766
+      }
+    },
+    "2020": {
+      "periodo_referencia": "2020T4",
+      "multiplos": {
+        "VALOR_MERCADO": 114589359.64,
+        "P_L": 11.9889,
+        "P_VPA": 2.2352,
+        "DY": 18.1101,
+        "PAYOUT": 217.1196,
+        "ROE": 19.2671,
+        "ROA": 1.1409,
+        "MARGEM_LIQUIDA": 30.8669,
+        "PL_ATIVOS": 5.5505
+      }
+    },
+    "2021": {
+      "periodo_referencia": "2021T4",
+      "multiplos": {
+        "VALOR_MERCADO": 87112103.41,
+        "P_L": 6.339,
+        "P_VPA": 1.642,
+        "DY": 24.4045,
+        "PAYOUT": 154.7007,
+        "ROE": 26.1746,
+        "ROA": 1.4721,
+        "MARGEM_LIQUIDA": 35.2505,
+        "PL_ATIVOS": 5.6985
+      }
+    },
+    "2022": {
+      "periodo_referencia": "2022T4",
+      "multiplos": {
+        "VALOR_MERCADO": 87448843.01,
+        "P_L": 6.7848,
+        "P_VPA": 1.5705,
+        "DY": 19.2256,
+        "PAYOUT": 130.4425,
+        "ROE": 23.7023,
+        "ROA": 1.3447,
+        "MARGEM_LIQUIDA": 22.3675,
+        "PL_ATIVOS": 5.6493
+      }
+    },
+    "2023": {
+      "periodo_referencia": "2023T4",
+      "multiplos": {
+        "VALOR_MERCADO": 105843156.54,
+        "P_L": 11.8724,
+        "P_VPA": 1.8526,
+        "DY": 11.7602,
+        "PAYOUT": 139.622,
+        "ROE": 15.8421,
+        "ROA": 0.8525,
+        "MARGEM_LIQUIDA": 13.9629,
+        "PL_ATIVOS": 5.1446
+      }
+    },
+    "2024": {
+      "periodo_referencia": "2024T4",
+      "multiplos": {
+        "VALOR_MERCADO": 82964998.87,
+        "P_L": 6.9816,
+        "P_VPA": 1.3799,
+        "DY": 14.5592,
+        "PAYOUT": 101.6473,
+        "ROE": 20.2197,
+        "ROA": 1.0091,
+        "MARGEM_LIQUIDA": 17.3182,
+        "PL_ATIVOS": 4.8517
+      }
+    },
+    "2025": {
+      "periodo_referencia": "2025T3",
+      "multiplos": {
+        "VALOR_MERCADO": 107958019.73,
+        "P_L": 9.5956,
+        "P_VPA": 1.7202,
+        "DY": 12.1407,
+        "PAYOUT": 116.4969,
+        "ROE": 18.4192,
+        "ROA": 0.9002,
+        "MARGEM_LIQUIDA": 14.3345,
+        "PL_ATIVOS": 4.953
+      }
+    }
+  },
+  "ltm": {
+    "periodo_referencia": "2025T3",
+    "data_calculo": "2026-01-12T21:30:22.881200",
+    "preco_utilizado": 28.71,
+    "periodo_preco": "2025T3",
+    "acoes_utilizadas": 7498531051,
+    "periodo_acoes": "2024T4",
+    "multiplos": {
+      "VALOR_MERCADO": 107958019.73,
+      "P_L": 9.5956,
+      "P_VPA": 1.7202,
+      "DY": 12.1407,
+      "PAYOUT": 116.4969,
+      "ROE": 18.4192,
+      "ROA": 0.9002,
+      "MARGEM_LIQUIDA": 14.3345,
+      "PL_ATIVOS": 4.953
+    }
+  },
+  "periodos_disponiveis": [
+    "2011T1",
+    "2011T2",
+    "2011T3",
+    "2011T4",
+    "2012T1",
+    "2012T2",
+    "2012T3",
+    "2012T4",
+    "2013T1",
+    "2013T2",
+    "2013T3",
+    "2013T4",
+    "2014T1",
+    "2014T2",
+    "2014T3",
+    "2014T4",
+    "2015T1",
+    "2015T2",
+    "2015T3",
+    "2015T4",
+    "2016T1",
+    "2016T2",
+    "2016T3",
+    "2016T4",
+    "2017T1",
+    "2017T2",
+    "2017T3",
+    "2017T4",
+    "2018T1",
+    "2018T2",
+    "2018T3",
+    "2018T4",
+    "2019T1",
+    "2019T2",
+    "2019T3",
+    "2019T4",
+    "2020T1",
+    "2020T2",
+    "2020T3",
+    "2020T4",
+    "2021T1",
+    "2021T2",
+    "2021T3",
+    "2021T4",
+    "2022T1",
+    "2022T2",
+    "2022T3",
+    "2022T4",
+    "2023T1",
+    "2023T2",
+    "2023T3",
+    "2023T4",
+    "2024T1",
+    "2024T2",
+    "2024T3",
+    "2024T4",
+    "2025T1",
+    "2025T2",
+    "2025T3"
+  ],
+  "erros": []
+}

@@ -1,0 +1,168 @@
+{
+  "ticker": "BEES3",
+  "padrao_fiscal": {
+    "tipo": "PADRAO",
+    "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
+    "trimestres_ltm": 4
+  },
+  "metadata": {
+    "VALOR_MERCADO": {
+      "nome": "Valor de Mercado",
+      "categoria": "Valuation",
+      "formula": "Preço × Ações (3+4)",
+      "unidade": "R$ mil",
+      "usa_preco": true
+    },
+    "P_L": {
+      "nome": "P/L",
+      "categoria": "Valuation",
+      "formula": "Preço / Lucro por Ação LTM",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "P_VPA": {
+      "nome": "P/VPA",
+      "categoria": "Valuation",
+      "formula": "Preço / Valor Patrimonial por Ação",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "DY": {
+      "nome": "Dividend Yield",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Market Cap × 100",
+      "unidade": "%",
+      "usa_preco": true
+    },
+    "PAYOUT": {
+      "nome": "Payout",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Lucro Líquido LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "ROE": {
+      "nome": "ROE",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / PL Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "ROA": {
+      "nome": "ROA",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / Ativo Total Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "MARGEM_LIQUIDA": {
+      "nome": "Margem Líquida",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / Receita Intermediação LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "PL_ATIVOS": {
+      "nome": "PL/Ativos",
+      "categoria": "Estrutura",
+      "formula": "Patrimônio Líquido / Ativo Total × 100",
+      "unidade": "%",
+      "usa_preco": false
+    }
+  },
+  "historico_anual": {
+    "2022": {
+      "periodo_referencia": "2022T4",
+      "multiplos": {
+        "VALOR_MERCADO": 1302862.33,
+        "P_L": 3.5812,
+        "P_VPA": 0.6216,
+        "DY": 29.9286,
+        "PAYOUT": 107.1814,
+        "ROE": 17.3577,
+        "ROA": 0.4694,
+        "MARGEM_LIQUIDA": 7.2273,
+        "PL_ATIVOS": 2.7044
+      }
+    },
+    "2023": {
+      "periodo_referencia": "2023T4",
+      "multiplos": {
+        "VALOR_MERCADO": 2357830.13,
+        "P_L": 7.1611,
+        "P_VPA": 1.0934,
+        "DY": 17.2779,
+        "PAYOUT": 123.7298,
+        "ROE": 15.7454,
+        "ROA": 0.4138,
+        "MARGEM_LIQUIDA": 6.3111,
+        "PL_ATIVOS": 2.5606
+      }
+    },
+    "2024": {
+      "periodo_referencia": "2024T4",
+      "multiplos": {
+        "VALOR_MERCADO": 2249390.14,
+        "P_L": 5.2181,
+        "P_VPA": 0.9668,
+        "DY": 18.75,
+        "PAYOUT": 97.8397,
+        "ROE": 19.3324,
+        "ROA": 0.5472,
+        "MARGEM_LIQUIDA": 9.2652,
+        "PL_ATIVOS": 3.1335
+      }
+    },
+    "2025": {
+      "periodo_referencia": "2025T3",
+      "multiplos": {
+        "VALOR_MERCADO": 2444551.83,
+        "P_L": 7.148,
+        "P_VPA": 0.9977,
+        "DY": 13.3506,
+        "PAYOUT": 95.4297,
+        "ROE": 14.4681,
+        "ROA": 0.4459,
+        "MARGEM_LIQUIDA": 6.676,
+        "PL_ATIVOS": 3.1276
+      }
+    }
+  },
+  "ltm": {
+    "periodo_referencia": "2025T3",
+    "data_calculo": "2026-01-12T21:30:21.055275",
+    "preco_utilizado": 7.73,
+    "periodo_preco": "2025T3",
+    "acoes_utilizadas": 315912860,
+    "periodo_acoes": "2024T4",
+    "multiplos": {
+      "VALOR_MERCADO": 2444551.83,
+      "P_L": 7.148,
+      "P_VPA": 0.9977,
+      "DY": 13.3506,
+      "PAYOUT": 95.4297,
+      "ROE": 14.4681,
+      "ROA": 0.4459,
+      "MARGEM_LIQUIDA": 6.676,
+      "PL_ATIVOS": 3.1276
+    }
+  },
+  "periodos_disponiveis": [
+    "2022T1",
+    "2022T2",
+    "2022T3",
+    "2022T4",
+    "2023T1",
+    "2023T2",
+    "2023T3",
+    "2023T4",
+    "2024T1",
+    "2024T2",
+    "2024T3",
+    "2024T4",
+    "2025T1",
+    "2025T2",
+    "2025T3"
+  ],
+  "erros": []
+}

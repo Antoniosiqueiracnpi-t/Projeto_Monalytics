@@ -1,0 +1,728 @@
+{
+  "ticker": "ABCB4",
+  "total_dividendos": 22.5501,
+  "periodo": "2007-2025",
+  "quantidade_pagamentos": 72,
+  "dividendos": [
+    {
+      "data_com": "2007-12-20",
+      "valor": 0.32,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2007,
+      "mes": 12,
+      "dia": 20,
+      "trimestre": "T4",
+      "data_pagamento": "2007-12-20"
+    },
+    {
+      "data_com": "2007-12-20",
+      "valor": 0.32,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2007,
+      "mes": 12,
+      "dia": 20,
+      "trimestre": "T4",
+      "data_pagamento": "2007-12-20"
+    },
+    {
+      "data_com": "2008-03-31",
+      "valor": 0.12,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2008,
+      "mes": 3,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2008-03-31"
+    },
+    {
+      "data_com": "2008-03-31",
+      "valor": 0.12,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2008,
+      "mes": 3,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2008-03-31"
+    },
+    {
+      "data_com": "2008-06-30",
+      "valor": 0.12,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2008,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2008-06-30"
+    },
+    {
+      "data_com": "2008-06-30",
+      "valor": 0.12,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2008,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2008-06-30"
+    },
+    {
+      "data_com": "2008-09-30",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2008,
+      "mes": 9,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2008-09-30"
+    },
+    {
+      "data_com": "2008-09-30",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2008,
+      "mes": 9,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2008-09-30"
+    },
+    {
+      "data_com": "2008-12-30",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2008,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2008-12-30"
+    },
+    {
+      "data_com": "2008-12-30",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2008,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2008-12-30"
+    },
+    {
+      "data_com": "2009-03-31",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2009,
+      "mes": 3,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2009-03-31"
+    },
+    {
+      "data_com": "2009-03-31",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2009,
+      "mes": 3,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2009-03-31"
+    },
+    {
+      "data_com": "2009-06-30",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2009,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2009-06-30"
+    },
+    {
+      "data_com": "2009-06-30",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2009,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2009-06-30"
+    },
+    {
+      "data_com": "2009-09-30",
+      "valor": 0.12,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2009,
+      "mes": 9,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2009-09-30"
+    },
+    {
+      "data_com": "2009-09-30",
+      "valor": 0.12,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2009,
+      "mes": 9,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2009-09-30"
+    },
+    {
+      "data_com": "2009-12-30",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2009,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2009-12-30"
+    },
+    {
+      "data_com": "2009-12-30",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2009,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2009-12-30"
+    },
+    {
+      "data_com": "2010-03-31",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2010,
+      "mes": 3,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2010-03-31"
+    },
+    {
+      "data_com": "2010-03-31",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2010,
+      "mes": 3,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2010-03-31"
+    },
+    {
+      "data_com": "2010-06-30",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2010,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2010-06-30"
+    },
+    {
+      "data_com": "2010-06-30",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2010,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2010-06-30"
+    },
+    {
+      "data_com": "2010-09-30",
+      "valor": 0.14,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2010,
+      "mes": 9,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2010-09-30"
+    },
+    {
+      "data_com": "2010-09-30",
+      "valor": 0.14,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2010,
+      "mes": 9,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2010-09-30"
+    },
+    {
+      "data_com": "2010-12-30",
+      "valor": 0.14,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2010,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2010-12-30"
+    },
+    {
+      "data_com": "2010-12-30",
+      "valor": 0.14,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2010,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2010-12-30"
+    },
+    {
+      "data_com": "2011-03-31",
+      "valor": 0.14,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2011,
+      "mes": 3,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2011-03-31"
+    },
+    {
+      "data_com": "2011-03-31",
+      "valor": 0.14,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2011,
+      "mes": 3,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2011-03-31"
+    },
+    {
+      "data_com": "2011-06-30",
+      "valor": 0.15,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2011,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2011-06-30"
+    },
+    {
+      "data_com": "2011-06-30",
+      "valor": 0.15,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2011,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2011-06-30"
+    },
+    {
+      "data_com": "2011-09-30",
+      "valor": 0.15,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2011,
+      "mes": 9,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2011-09-30"
+    },
+    {
+      "data_com": "2011-09-30",
+      "valor": 0.15,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2011,
+      "mes": 9,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2011-09-30"
+    },
+    {
+      "data_com": "2011-12-29",
+      "valor": 0.16,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2011,
+      "mes": 12,
+      "dia": 29,
+      "trimestre": "T4",
+      "data_pagamento": "2011-12-29"
+    },
+    {
+      "data_com": "2011-12-29",
+      "valor": 0.16,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2011,
+      "mes": 12,
+      "dia": 29,
+      "trimestre": "T4",
+      "data_pagamento": "2011-12-29"
+    },
+    {
+      "data_com": "2012-07-02",
+      "valor": 0.33,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2012,
+      "mes": 7,
+      "dia": 2,
+      "trimestre": "T3",
+      "data_pagamento": "2012-06-29"
+    },
+    {
+      "data_com": "2012-07-02",
+      "valor": 0.33,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2012,
+      "mes": 7,
+      "dia": 2,
+      "trimestre": "T3",
+      "data_pagamento": "2012-06-29"
+    },
+    {
+      "data_com": "2013-01-02",
+      "valor": 0.308,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2013,
+      "mes": 1,
+      "dia": 2,
+      "trimestre": "T1",
+      "data_pagamento": "2012-12-28"
+    },
+    {
+      "data_com": "2013-01-02",
+      "valor": 0.308,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2013,
+      "mes": 1,
+      "dia": 2,
+      "trimestre": "T1",
+      "data_pagamento": "2012-12-28"
+    },
+    {
+      "data_com": "2013-06-28",
+      "valor": 0.296649,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2013,
+      "mes": 6,
+      "dia": 28,
+      "trimestre": "T2",
+      "data_pagamento": "2013-06-27"
+    },
+    {
+      "data_com": "2013-06-28",
+      "valor": 0.296649,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2013,
+      "mes": 6,
+      "dia": 28,
+      "trimestre": "T2",
+      "data_pagamento": "2013-06-27"
+    },
+    {
+      "data_com": "2013-12-30",
+      "valor": 0.303,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2013,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2013-12-26"
+    },
+    {
+      "data_com": "2013-12-30",
+      "valor": 0.303,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2013,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2013-12-26"
+    },
+    {
+      "data_com": "2014-06-30",
+      "valor": 0.326,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2014,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2014-06-27"
+    },
+    {
+      "data_com": "2014-06-30",
+      "valor": 0.326,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2014,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2014-06-27"
+    },
+    {
+      "data_com": "2014-12-30",
+      "valor": 0.333,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2014,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2014-12-23"
+    },
+    {
+      "data_com": "2014-12-30",
+      "valor": 0.333,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2014,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2014-12-23"
+    },
+    {
+      "data_com": "2015-06-30",
+      "valor": 0.402007,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2015,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2015-06-26"
+    },
+    {
+      "data_com": "2015-12-30",
+      "valor": 0.463004,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2015,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2015-12-28"
+    },
+    {
+      "data_com": "2016-06-30",
+      "valor": 0.548,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2016,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2016-06-27"
+    },
+    {
+      "data_com": "2016-12-29",
+      "valor": 0.539,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2016,
+      "mes": 12,
+      "dia": 29,
+      "trimestre": "T4",
+      "data_pagamento": "2016-12-26"
+    },
+    {
+      "data_com": "2017-06-30",
+      "valor": 0.554,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2017,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2017-06-27"
+    },
+    {
+      "data_com": "2017-12-28",
+      "valor": 0.532,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2017,
+      "mes": 12,
+      "dia": 28,
+      "trimestre": "T4",
+      "data_pagamento": "2017-12-22"
+    },
+    {
+      "data_com": "2018-06-29",
+      "valor": 0.54,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2018,
+      "mes": 6,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2018-06-26"
+    },
+    {
+      "data_com": "2018-12-28",
+      "valor": 0.539,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2018,
+      "mes": 12,
+      "dia": 28,
+      "trimestre": "T4",
+      "data_pagamento": "2018-12-21"
+    },
+    {
+      "data_com": "2019-07-04",
+      "valor": 0.559,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2019,
+      "mes": 7,
+      "dia": 4,
+      "trimestre": "T3",
+      "data_pagamento": "2019-06-28"
+    },
+    {
+      "data_com": "2019-12-30",
+      "valor": 0.491,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2019,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2019-12-20"
+    },
+    {
+      "data_com": "2020-08-12",
+      "valor": 0.158673,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2020,
+      "mes": 8,
+      "dia": 12,
+      "trimestre": "T3",
+      "data_pagamento": "2020-08-07"
+    },
+    {
+      "data_com": "2021-01-06",
+      "valor": 0.338164,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2021,
+      "mes": 1,
+      "dia": 6,
+      "trimestre": "T1",
+      "data_pagamento": "2020-12-30"
+    },
+    {
+      "data_com": "2021-03-31",
+      "valor": 0.213,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2021,
+      "mes": 3,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2021-03-25"
+    },
+    {
+      "data_com": "2021-06-30",
+      "valor": 0.219,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2021,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2021-06-24"
+    },
+    {
+      "data_com": "2021-10-06",
+      "valor": 0.232,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2021,
+      "mes": 10,
+      "dia": 6,
+      "trimestre": "T4",
+      "data_pagamento": "2021-09-30"
+    },
+    {
+      "data_com": "2021-12-30",
+      "valor": 0.252,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2021,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2021-12-24"
+    },
+    {
+      "data_com": "2022-03-31",
+      "valor": 0.313,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2022,
+      "mes": 3,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2022-03-28"
+    },
+    {
+      "data_com": "2022-06-30",
+      "valor": 0.352,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2022,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2022-06-24"
+    },
+    {
+      "data_com": "2022-09-30",
+      "valor": 0.362,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2022,
+      "mes": 9,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2022-09-26"
+    },
+    {
+      "data_com": "2022-12-29",
+      "valor": 0.37,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2022,
+      "mes": 12,
+      "dia": 29,
+      "trimestre": "T4",
+      "data_pagamento": "2022-12-26"
+    },
+    {
+      "data_com": "2023-06-30",
+      "valor": 0.836,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2023,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2023-06-26"
+    },
+    {
+      "data_com": "2023-12-28",
+      "valor": 0.741,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2023,
+      "mes": 12,
+      "dia": 28,
+      "trimestre": "T4",
+      "data_pagamento": "2023-12-22"
+    },
+    {
+      "data_com": "2024-06-28",
+      "valor": 0.785,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2024,
+      "mes": 6,
+      "dia": 28,
+      "trimestre": "T2",
+      "data_pagamento": "2024-06-24"
+    },
+    {
+      "data_com": "2024-12-27",
+      "valor": 0.86,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2024,
+      "mes": 12,
+      "dia": 27,
+      "trimestre": "T4",
+      "data_pagamento": "2024-12-20"
+    },
+    {
+      "data_com": "2025-06-30",
+      "valor": 1.086,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2025,
+      "mes": 6,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2025-06-24"
+    },
+    {
+      "data_com": "2025-12-29",
+      "valor": 1.532,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2025,
+      "mes": 12,
+      "dia": 29,
+      "trimestre": "T4",
+      "data_pagamento": "2025-12-22"
+    }
+  ]
+}

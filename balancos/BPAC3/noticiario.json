@@ -1,0 +1,753 @@
+{
+  "empresa": {
+    "ticker": "BPAC3",
+    "ticker_base": "BPAC",
+    "nome": "BPAC"
+  },
+  "ultima_atualizacao": "2026-01-12T21:28:12.569274",
+  "total_noticias": 74,
+  "fonte": "Google News RSS",
+  "ticker_consulta": "BPAC5",
+  "noticias": [
+    {
+      "id": 278012373817127,
+      "data": "2026-01-05",
+      "data_hora": "2026-01-05 16:29:00",
+      "titulo": "BTG Pactual (BPAC11) amplia presença nos EUA, com aquisição e licença bancária - Investidor10",
+      "descricao": "BTG Pactual (BPAC11) amplia presença nos EUA, com aquisição e licença bancária Investidor10",
+      "fonte": "Investidor10",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOOTM2Z2VlZjFSNGZ6aXlqdjM3WDgyRGQzajFYQ0NJSlZVLUZhaTNaT2pjQ1ZpSlk1MERYU0FUMmtoUG9FbThmUXVGb09KTG5RZDdfTWo3NF9ncWJrNVV0bEJOdWdvajU0TEJmZFRHNU9OT3ZiTDdweWZVZkpHOHZLcXlhSFREWXdIVWhaMGVERmIxdHF3TUJUUmFNVUFwYTBBU3hSLUdTbEJqSVZrWHFXaDRmbE9yTHlHOHJzctIBwgFBVV95cUxNYml5SUJwQUk2ek1aZngxZlk0YVV3eTlFV0NOcVVZX0hNVWZHSnhPOS00NURrRi1zRTlJczV0dWVOcTlKMHhMemM0dnUxR0hVVWpIQm4tNnFKZzBJZlM1dUFnNmluMUtFOUtxeHg4WkRhVk1QTHBsb1NsTVVHNHBiWHRtV2J5WE9KeFBBbDFCUVRYV00wLUpJcEJGZEIwQmZkQnlrems1dU9LVVJmOTJhQktZd1NVU0JKZk5ZV0VKbC1uZw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 249020352146910,
+      "data": "2026-01-05",
+      "data_hora": "2026-01-05 15:32:51",
+      "titulo": "BTG Pactual (BPAC11) amplia presença nos EUA com conclusão da compra do M.Y. Safra Bank e licença bancária para atuar no país - Seu Dinheiro",
+      "descricao": "BTG Pactual (BPAC11) amplia presença nos EUA com conclusão da compra do M.Y. Safra Bank e licença bancária para atuar no país Seu Dinheiro",
+      "fonte": "Seu Dinheiro",
+      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQRjc3TU95U2k0TnctQUJhUjRMN1J5ZFlYbThvR2R6N0U0WWduYU5nNHVTcDZ3ZFVJSTJmRl9FbWpDa0JqWEoteFBoN050cVhETEJnRTcxT2hxdXpSeTRjci1CdWJyT2gtYUVsUEg0NHR1ZlpGNWdfbERBU1J1eVZNSFRpYnhfODJOSmNHLU9jSkNPMlBvdUtCMjBQdm0zM05iOWw0QXZYTmlQTkZudjNPTGE3WWtfYVpkeFBhSjhEaXJhbDZmWno3Rmdn?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 86268592204634,
+      "data": "2026-01-05",
+      "data_hora": "2026-01-05 14:33:00",
+      "titulo": "BTG (BPAC11) aumenta presença nos EUA com licença bancária; veja o que muda - Money Times",
+      "descricao": "BTG (BPAC11) aumenta presença nos EUA com licença bancária; veja o que muda Money Times",
+      "fonte": "Money Times",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOUmhLT3A1WGZxTHNlZmR3LV9JTnJlS0lzeXhBdDNZWEQ4ZmVpcTl5ZE5hOEdjY19jRlAxZk1fNEZabkNLa1hZOEdwT3poc3ZpdWRGQnpnTE0taEd4MGx1b1pOcDZhTEsxM19MaEFva0VXTDVEeldiSGFWbW52TnczaUUzdXA4UjV1bllwbndmUjR2N0JDbEwxQmdB?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 127058120175591,
+      "data": "2025-12-23",
+      "data_hora": "2025-12-23 08:00:00",
+      "titulo": "BTG Pactual (BPAC11) pagará mais uma rodada de juros sobre o capital próprio; veja valores - Money Times",
+      "descricao": "BTG Pactual (BPAC11) pagará mais uma rodada de juros sobre o capital próprio; veja valores Money Times",
+      "fonte": "Money Times",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQSFBIcXZYYW81dngwLWhOek9kNjk2ZzJJenpNTGhrLVprT3d6Nl9nc09hWjZPY2hvRElLeENnc3l3Qk5sYkVRVWMzbHgtTmJpR3loeTVHRTR2WUc1Y2wySHpfZVFTWlBXX3FFM1hkNWJxNV8tSHJQQjlUU19oVDdGZ0d1c3hLQ1JxQkhEZHphdG1xRjdxRm1WVWJaV2pGcDZadWlxX0lGODhMLVNkS0RyUDZaZHhEWGFOZXY3QTBfRkU?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 39817904775702,
+      "data": "2025-12-23",
+      "data_hora": "2025-12-23 08:00:00",
+      "titulo": "BTG Pactual (BPAC11) pagará mais uma rodada de JCP - Investidor10",
+      "descricao": "BTG Pactual (BPAC11) pagará mais uma rodada de JCP Investidor10",
+      "fonte": "Investidor10",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxORm1lY3N3N3dqRExVTC10T3Y2eEJRanZOLUV6VDJjX0xXMzFpbkY2Umk5a0hrWXYyYTJVZ21WZC1vSzRfZEgzTVoxLXB0S1hmcEhYNXBMTnhHNmZwd2RkUGhZaTg4NVljd2lJOVlObWx1cklxUW1wZkJRbmpqNVBha2k2SWdValRGVmFzbG5JRGg5SUJWNE9MadIBngFBVV95cUxQbUE2dm9XTlFUNVR4Tk96UEp2cUFwS0p4S1NkXzdjT0RLaDVBdmxTSFJabFJmY3BlVDAtOV96S01QNTNTNHN4WFpWYkh1bEZ6UFVrQk9rQmQxOVM1eUNrUlhQemptbGc1SUNseTdJNUNSazM1UnA4VzVUVVN0THQ0NllyZjlfcEl1YTBneW9TVHpjZzlqTzZQdnBMd25wZw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 43729261982404,
+      "data": "2025-12-15",
+      "data_hora": "2025-12-15 08:00:00",
+      "titulo": "BTG Pactual (BPAC11) pagará proventos de quase R$ 0,50 por unit; saiba quando - Investidor10",
+      "descricao": "BTG Pactual (BPAC11) pagará proventos de quase R$ 0,50 por unit; saiba quando Investidor10",
+      "fonte": "Investidor10",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNZXlIOG5tVV9qSlJObmY0LV9IbWlGRGVEbHdUT01vRGFQUjRPd2RZcDZTSDFrVk1WbEZHc0dlMDQ5cmcxeFJLMHZScThSWTJvc0JnTGF3Wk96V2ZJREl1NHlPLURKQ0NYOW9oMUJ6T1hSVU96UHFjQzJzNFBnYWhpMmx1QmhBMlA5bUc5ZXdlbk5VanJwcEt2ckxaQjhvRG9nZWJYQmJjVWMzeGtpZmRaZ081RTVaemxWVGfSAb8BQVVfeXFMTzlNck1WS3RaWjBEbHFwOEZvR21VMXNIWUMxZjgtVXo0bFI3T1dqSW1vR25IQlNpSGg2Y0J5NG9HZkZhSTZLdk1kNnk1LWJha1ZGcEJmN1RhcGxDcGRXZlEtakE4SnVQU2pOemlBNnV2VnZfZUxzUTN4Q0puajd2SWtlNk1XeHV0eDBmbVU4NWdOVzRKLTZ3U0NvbnZNX01fVTNLVGFvb05qMjBES3NiR0NmQ0JvQ1lTemF6RVViUnc?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 99804199872250,
+      "data": "2025-12-15",
+      "data_hora": "2025-12-15 08:00:00",
+      "titulo": "BTG (BPAC11) aprova JCP de R$ 0,17 por ação e R$ 0,50 por unit; veja condições - Money Times",
+      "descricao": "BTG (BPAC11) aprova JCP de R$ 0,17 por ação e R$ 0,50 por unit; veja condições Money Times",
+      "fonte": "Money Times",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQSVVGOUNnQnI2OEx1SFVJb2cwY2M5T05zZjhLakVpUm53WGNWWl84V3ZOV3FvbGtYSGFLcjl5al9Md2R4ZTNac0x3RnpBRUJ6cVp1VWhwakJkX1RNVUlxeXVZbmprSmRyQ2tSWTc3QlZDdE84NjJnaDdSNUp0MnhPZzZUU0hVbS1ZemMzUU9mN3hUTmRNb2JMMVVrRl9YZVg4MmpUMw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 94534018580224,
+      "data": "2025-12-15",
+      "data_hora": "2025-12-15 08:00:00",
+      "titulo": "BTG Pactual aprova aumento de capital de R$46,4 bi - TradingView – Acompanhe todos os mercados",
+      "descricao": "BTG Pactual aprova aumento de capital de R$46,4 bi TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBwMkdBZVFOaXM3UlpjaXZMOS1LUi1VaEoxaUlwQVBnall0d0lrTFFvSmowRDZlMGFHa1FQNHVoZ2ptVENHN3ZESkY2UmdMQ1pSVWpvNnB6MVVNSkxDemx0cXFvWmpiVE1SVjFyMzNzbzJJbUtOTkNr?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 151323637290602,
+      "data": "2025-12-15",
+      "data_hora": "2025-12-15 08:00:00",
+      "titulo": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) ajusta relação de troca com Banco PAN para 0,2151 Units para cada 1 ação do Banco PAN - Visno Invest",
+      "descricao": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) ajusta relação de troca com Banco PAN para 0,2151 Units para cada 1 ação do Banco PAN Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxPWFJ3WnFJcnV6T1B1aUtBTkJ0MGZfXzZaZ1BBSHJQUVVoSExpc285V0RPcGZpN2dOaDFpblVNTURINnRpcnh0blppYXZSVTRFWEhVRFF2U3ZuM0M1NHdjWnR5Vk4wdHhpR0kyd1JoZDFvMWdURFRjc3pGNU1PcWZIOHg1c01kZi1RcDNya3VDcU5nYzc5VldFMW5RNG55WlBxZDh2U3VhOXhiMFlmalZjWkxadGZUVlFqdmw4Y2diemJQTFFubExTTWpSVDQ3UmpJNGJpYWNjOGVuQmFIN1VFdnVFa2xaUHhKYlZQSkpxUHQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 25748798598206,
+      "data": "2025-12-15",
+      "data_hora": "2025-12-15 08:00:00",
+      "titulo": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) aprova aumento de capital de R$ 46,4 bi por capitalização de reservas - Visno Invest",
+      "descricao": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) aprova aumento de capital de R$ 46,4 bi por capitalização de reservas Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxOMTdPSndLTVZpUllRSGU4dUdBR2QtQTcwQzBWMU91aVMtUXp6azVnNU84LWlTR3M0bmRaME04ZkZfWmswVEhlYXlvUE9iNkNNM1YxSnBRT3FCYV95TDIxMGIwMVFndW5zVnRXQnhxYzEteGdMcFlheDNDNHRIUUNZRGNrSi1vY1AxVk9KQ3JMTUpMM3NWdWhlWTZvTF9mWWxwczR6cVBEWEZRLUFfYk9EUDBTMjBibFR0UmExcGFwNGtWNW5PQUpmcDN3VXdTV18tTDZ4OHVfOVBHUQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 238091828283988,
+      "data": "2025-12-15",
+      "data_hora": "2025-12-15 08:00:00",
+      "titulo": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) aprova JCP de R$ 0,165007674 por ação e R$ 0,495023022 por Unit; pagamento em 13 de fevereiro de 2026 - Visno Invest",
+      "descricao": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) aprova JCP de R$ 0,165007674 por ação e R$ 0,495023022 por Unit; pagamento em 13 de fevereiro de 2026 Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMigAJBVV95cUxOZmVaVnQ5QjRFLUUybnJzQ0ZZel9rQTBkcUVpaFlwa29CWnE2S2wybjNMSEQtTEJSQkNoaGUyNFEtSjJ5Tm9PcVNwZDhsTmN3R2ZvZ3FqdTN2ZGtqTUsySGVSVk1vN2tVTjVkMjNrZUV5aEh0bllfRElUQnZ1N2ZEOV9qbUFwY3NkaHd4eFlXbl9vcjcyZkFhb2YxS0xwZ3kzN1BiTXVLU1ZfRUtYX3g0MXpCTTRrdllRQTh1TWZxU3RJamZQSmgtZFEwd3ROQkFKTEs1SkUtYVhueUdyaWdYUkhCSFdPMWlNNjNwRkxmZXM0WHhjeEJvdTFCTTdnMWJP?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 168226228863177,
+      "data": "2025-12-15",
+      "data_hora": "2025-12-15 08:00:00",
+      "titulo": "BTG Pactual: Banco Central aprova incorporação de ações do Banco Pan - TradingView – Acompanhe todos os mercados",
+      "descricao": "BTG Pactual: Banco Central aprova incorporação de ações do Banco Pan TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFAyVmZXemI3SXdybTdHMmlsSFhCVTdkMl9qTVU1RTNSMzBIYTFSRDEyRVRSY1VITkZKZmI0SGRVYlgtb053djljS0FXZ2luMGpKRHNGVzRLT1dob1VZd255VFdnRFlOVW1taGxHVHZZTXpJQnAtMFc4?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 20973300724327,
+      "data": "2025-12-11",
+      "data_hora": "2025-12-11 08:00:00",
+      "titulo": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) recebeu aprovações regulatórias para comprar M.Y. Safra Bank nos EUA; fechamento em 2025 - Visno Invest",
+      "descricao": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) recebeu aprovações regulatórias para comprar M.Y. Safra Bank nos EUA; fechamento em 2025 Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxQUWZ2VVVoeDZ3U2NMYnpxeDJlMnIxdWdiQ0ZkeW5EU1BQQ1B5Ymd5YmxHVEg3WEh3R19lQ2VqZlNmTGNHWEtZblNYU0Y5ckpydl9Id1NOc0R1MmRVUHFxT2R6eV9JajRLdUNxYmlFYWlnZjNQNDlsYl9PRFNZUEhRVTFDdHdmckVJcG5ZVWk2dDRMLU5zZ2t4Rk1QMUcyNVlXcWRBeE5FeGpZdkdfOFNPUDVZN1V4czEzNGtvMllsSTVYVmQyU1pBWlZkelp3UU9aRENoeVBnNjE4THJtM3A5RmU5ZGpDbklIVi14d0JINjhWQUE?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 2068627005542,
+      "data": "2025-12-01",
+      "data_hora": "2025-12-01 08:00:00",
+      "titulo": "Safra projeta aumento do lucro do BTG (BPAC11) e estima ROE de 27% pelos próximos dois anos - Estadão E-Investidor",
+      "descricao": "Safra projeta aumento do lucro do BTG (BPAC11) e estima ROE de 27% pelos próximos dois anos Estadão E-Investidor",
+      "fonte": "Estadão E-Investidor",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNYVEyX050dVI3RzczYk1DMmU1X1ZDMWs1UG1LT0xEY1Ytazd2QmZzMVZRS3NoejI2aEEySURwQjctZDM4RTNSRzFDOVNuaDBQeFlvLV9EZTVhYmhlMzNGaFV3ZXplaUtpZFptRS1EaTRRdnFsbzc5ZnBiWUxXTXdYWGRUS3lSS0x0aldrTnFvYlFTZlpwZEtZ0gGcAUFVX3lxTE9uLXVnSzJQV1dnSzktczQyVHVEOTVTc2ZyXzU1T1QtRzQ0aGdjakhZWUJkQzdWOHhnUUtiYU8zazNCd1paTnk5TjcxZW5kR09wTnJLRW5KQ0ZDQUMxMmduWFhpb1EwUVF0M0xRdGQ4ZFdfUGI3NzlSZlh3Wm9qa0xiVDk4OUNHdXY5NUZwN2RFRVRaQm1OWF9DRjBDOA?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 180503979718196,
+      "data": "2025-11-28",
+      "data_hora": "2025-11-28 08:00:00",
+      "titulo": "BTG Pactual (BPAC11) mira expansão estratégica em 2026 - Nord Investimentos",
+      "descricao": "BTG Pactual (BPAC11) mira expansão estratégica em 2026 Nord Investimentos",
+      "fonte": "Nord Investimentos",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOY2gybzJBZ2MxeThXVXYtdGNyc0FqdEFnVVBZdXVSYjBQVXcxZFhUMmMxYUxtcFUxM1BpOFpoTjBKaTRXajhRaEtfRGpyTnluZG1fQktINjB5eXJkR19qeTNFdFJKWGotX3BzeEtFNXJMYlhYUlc5VlR6YTBIcmNiTTU2VmlHeHY1ZHJXS0xqMTU0ZlpM0gGaAUFVX3lxTFA1anRCRFIxcnlNdjNFWkgxOFoyY3ItNHNfbERDdjZHeDNOaVdBdmRhc0xRMVotbFZuR3MybjQzb25idHdWanVQTDA4S1ZGNVk3a0JuVlpBUnFBZHJON3dLOXNxNzhPSXluZ0NrSElER2Y5eHlYdjRZWGVlLTc1ZjdnamV3dU9vZjNEMjE1Vzg2YlUxQ3hTWU4tRGc?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 75202669261830,
+      "data": "2025-11-25",
+      "data_hora": "2025-11-25 08:00:00",
+      "titulo": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) nega negociação citada em notícia e diz não haver fato relevante - Visno Invest",
+      "descricao": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) nega negociação citada em notícia e diz não haver fato relevante Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPNGZ5bEptdG0xWmRiYlFDX2ZWWWl5LTE3ZWxSVW1Ja01RaGpLZnE1bHgxQXBaTk5Da3pteTRZdDBZMEpRdjhhYkJJeS0wVW9TX1UwMFRFUG5WQ3BEbDVSQ2J4NjdNdnJKMVQzeW0zWGpPT2ZZNFEwMUdQeVNzMXlyQXpqemw2N2R0ZDl2VWlNaXlDRTQtdTlfMlNrbnBGVi11WFVvM09oN1lYYVhhY1NWaWs3T2VYMDNSejZPNnhYbHJHX3IyUW12LUhiRWVJOEJ3anpzZjhR?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 41984403453979,
+      "data": "2025-11-25",
+      "data_hora": "2025-11-25 08:00:00",
+      "titulo": "Boletim de Voto a Distância da Assembleia Geral Extraordinária do BTG Pactual - Clube FII News",
+      "descricao": "Boletim de Voto a Distância da Assembleia Geral Extraordinária do BTG Pactual Clube FII News",
+      "fonte": "Clube FII News",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPT2FLTTNIQjVibzBma0pmXy1VaF9aUjBoMXBxYkQwMFJvVnZLMHhHYzVjVWVkcVk2Q3pYYkZnTnphTWNVYVQ1azQyTVlpcXFHdnFpck1TemVYc3lCQXhKSDhqV1g0VEM4RzJ6emFiblpwWDNfem1QdkF5NEhjZzBYNXEzMTEyclNjNTF3TWVOekVuTHBobkpYZERxNTJpdkRORkM0cDFUMG80Q1F3WVE?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 36082309784443,
+      "data": "2025-11-21",
+      "data_hora": "2025-11-21 08:00:00",
+      "titulo": "BTG (BPAC11) diz que zerou exposição ao Master antes da liquidação - Investidor10",
+      "descricao": "BTG (BPAC11) diz que zerou exposição ao Master antes da liquidação Investidor10",
+      "fonte": "Investidor10",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPUHEyX0djaG1IMFB6UVVBenZGVlpVc0JHYnpTam9NTEJJazNJeURXbTBsei1YcUVHMnJNd0psSllLRkN2SmNsMWtaWlFBNXh3LVFGS0dZbDlSZC1fMlkxT0FnOXRvcEYyTzVleVBPajhNeExuUXlveUZMWS13andITkgxSmo1R242aC11U3d2UkpaZ3BrbWxSbnZnbVNvM1VSOURWamlabjdmQTZTOWfSAbMBQVVfeXFMTXBuOUJ0eVoyblpYa09ULTg2SVdNdWVGQlk3ZS02c180VHN2NzJkR0FkVmhpa1p5alhsaVh1M0t4Q3Zobl9nSjU4b3lUMWxVb0JjeVBpZjJFdmFoalRaLWZoUHJjeVZnblB3d2dRTzZQeGlLNl9OWEV0alZEbWk5SEZlNllOcnNWeHBicWRPNmJzbWhvd1FmZHV5Zm5KaEc2aGlYM1VZd0ctcnJES2FXM1g2QkE?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 67334562871259,
+      "data": "2025-11-18",
+      "data_hora": "2025-11-18 08:00:00",
+      "titulo": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) convoca AGE e define troca de 0,2128 Unit por ação do Banco PAN - Visno Invest",
+      "descricao": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) convoca AGE e define troca de 0,2128 Unit por ação do Banco PAN Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNcmp2c0VMOVZuMW5hbUZOcUR1SDNFMU5jQ3lRVXFDN1dPWW4zX2ZrbGIzeXJWbHlqQUY5dlcwVno2T0FDRmE5bDZua0FzN1NKVDN4YlR5U3NKdElVaUpqbkkxS19ERTJrTXZsTUR2Nmx5VV83cnVjOWMwMDRJeTRQZ0RSV25BdG5TdGdwMUE2aE1LMG43alJzMTY5RGROUmxnM29KMnNhWkZIdjgycnp4eEdFMEpvOE9YVFdWbDlocnhTRTlOZjhEMGd2U1NwQ290OG9F?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 118845096852891,
+      "data": "2025-11-12",
+      "data_hora": "2025-11-12 08:00:00",
+      "titulo": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) tem lucro líquido ajustado de R$ 4.538,6 mi no 3T25 - Visno Invest",
+      "descricao": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) tem lucro líquido ajustado de R$ 4.538,6 mi no 3T25 Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOdjBRdVRIaDJ5S3hWVVlhSUNjaV9YandlVEZ1NzJiQmtNYnl2YWtuSEVlb21oUzF5aG5ud3dtak9ZUXU1S3FMMnRKbWREbThhYkdZejlGOWNXc2pORjN0SDhTUGZsZjUzOUIxM3ZvR1NNWER3LTZYTEFMY04tS2ZwSHdpNndURGlVQW00S0FDY0RLcHpxeHJJYVFzNGlHM19NVTdlNWJaNVhveUw4a19VN29PY3g0dkhKMExxZ20taTdUdw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 167789569191685,
+      "data": "2025-11-11",
+      "data_hora": "2025-11-11 08:00:00",
+      "titulo": "BTG Pactual (BPAC11) 3T25: Rentabilidade histórica. Novamente. - InvesTalk",
+      "descricao": "BTG Pactual (BPAC11) 3T25: Rentabilidade histórica. Novamente. InvesTalk",
+      "fonte": "InvesTalk",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1ZdjBYQVZxdUc1Yk8tYzY4NGcxS0ZQS1F0U1RwT0dDVHJjM3YzNGtkQUF3dUx4NEs4M1VhdHFjcDlhUVJpREFDWHhEMmUtbnlUeFhZbDlvWFFtZDZYVWJ2Rml6RQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 16839888737384,
+      "data": "2025-11-11",
+      "data_hora": "2025-11-11 08:00:00",
+      "titulo": "BTG Pactual (BPAC11) dispara lucro em 42% e renova recorde histórico no 3º trimestre - suno.com.br",
+      "descricao": "BTG Pactual (BPAC11) dispara lucro em 42% e renova recorde histórico no 3º trimestre suno.com.br",
+      "fonte": "suno.com.br",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQcTlWS0pGUXJaQVJqQldJbHgwWkxMRlpnU3FRQklpeVhTb0JCd3dIMjBvcUdaNXlYOFV1eTlqcHd2aVBCbTdxMmNDSkpXUTFLX2xGM2gwdmlMWGF2TkJ2YVJIYmtfaTN0aVB3ZWFFeExCS3JaMzlvMEhjSk1mMEtHemh30gGHAUFVX3lxTE90RkJ2Y1JaN3k4d1JCb3VGd1RmNGZyMnBIbVJldkhQS0wtbFNUUWdIdkdBRlp3aU9RRl9XbFYxakRDWldYZVE4VFRNX2lDbzN3TWlOWFZSLUJTZkxzVDNrYVZIcFBEQkMyT3BuVjA2TnlyQkM1N1kySHdsV1ZEd2Y0VUFhOXBKYw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 84614249785873,
+      "data": "2025-11-11",
+      "data_hora": "2025-11-11 08:00:00",
+      "titulo": "BPAC11: resultados do 3T25 surpreendem com lucro e ROE recorde - Nord Investimentos",
+      "descricao": "BPAC11: resultados do 3T25 surpreendem com lucro e ROE recorde Nord Investimentos",
+      "fonte": "Nord Investimentos",
+      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOczlOelBLclJLaVl2Z3hIMHdKaDd4ZFd6QjRZWkVObVRVSFVTWFpqRER5VHQyZzdubjh3MFpKVmVzeE00X2FmVzN0N1FfNHJ4UFJQeTZrV0lzNTlUTk5sc1FfSWtHSDJVN3BMS2tSMmY4SXJUZEJSMU1KSnE5ZjN1YUdPWdIBiAFBVV95cUxOZ2NZODBFNmhiRE5RRThHVDZGZ3JlZWhpRFRsNXRjbmczb3NDME1hMXdjTDRwUU5WSTR6MU4zTjd3QWRqeFlDRkVsTjUzNGdoOWsyN0ctell2cmM0ZVlrVFpBMms4LUF1YnpJUnd1UVgzaHA3cnh1c3hzREZMQUxHWFAwSnhacXY2?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 61696419420167,
+      "data": "2025-11-11",
+      "data_hora": "2025-11-11 08:00:00",
+      "titulo": "BTG Pactual (BPAC11) atinge ROAE de 28,1% no 3T25 - Investidor10",
+      "descricao": "BTG Pactual (BPAC11) atinge ROAE de 28,1% no 3T25 Investidor10",
+      "fonte": "Investidor10",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNSlU1TlNiUkxybHliZEtlQ01YeGp5bVRXWVVIYjhrel9Qa1IzcVJDclJXSlBQZERCSjJ4eG9sSUVSSk9vZlh0TWlEWk56anloUmdjcURjeTNWOFZpYXY5eHp6SWFvQUpuLWYyek05LUpZZkYtSUJ2X1dYdnFmX0tmRDdrWE5wbXhEc0JJR0JRb0drX2FRWEHSAZsBQVVfeXFMTmhjLTZqZ3pOcmx4MVBHOGRXNFlSakFzUnlmSkFuNUc0S3JWUkw3RGsyT3dFR3laV0dER3pIVG11VFdrMEVsVlJRaEZjX3RDajZOa0wxUVBISkhZcXhzSHhVa25WNHhUT0dhUVR4bTVtdWRXWXdWU0NvTXhQR3RsSG4wVHZvUjJndnhZZG5qNVUxalpBNFJOMUxaRU0?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 4547464673084,
+      "data": "2025-11-11",
+      "data_hora": "2025-11-11 08:00:00",
+      "titulo": "BTG Pactual afirma que algum nível de acomodação em ROE deve ser esperado - TradingView – Acompanhe todos os mercados",
+      "descricao": "BTG Pactual afirma que algum nível de acomodação em ROE deve ser esperado TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBkc2cxdTRZdy0xbXZmMlZTS09oV0tSM012NVlNLURiazZpU05mYkhIN3VuaGh5STF6d29fSklxZHJwakRhMEstcVVyQWxLdkRtS0twWXIycEpBN3ZIMUJpSUNKQkpPallPVE9CZjRwa0JpWnNZTnZJ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 188855093349343,
+      "data": "2025-10-31",
+      "data_hora": "2025-10-31 07:00:00",
+      "titulo": "Cosan é autorizada a subscrever ações para Perfin e BTG - MegaWhat",
+      "descricao": "Cosan é autorizada a subscrever ações para Perfin e BTG MegaWhat",
+      "fonte": "MegaWhat",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQZmdNSE1XNVhsUFV1enRKNVVCSzY1OEJJWDVfSzRiQkJhQ1pkZkZ4TjgtWmliWDVGUU56TE9YSkJzb1FTbGFNaFh0aDFWdk52RDVpQnJCaUUxdlEtVWlNb0tUa1EzSmpjVmlDQ2ZZWUZJVmoxOFZfMTd5QTYwQ09CTWdNMTMzM3Jic2dJWWdDWnB5aWY3cUotQ3lFNTB4ZVdZc2Y1bWRLTQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 227095731949984,
+      "data": "2025-10-31",
+      "data_hora": "2025-10-31 07:00:00",
+      "titulo": "BRK Ambiental weighs Brazil public offering - TradingView – Acompanhe todos os mercados",
+      "descricao": "BRK Ambiental weighs Brazil public offering TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPblBFZERsendubURtOVhNQUlHY2Q4VFhqVDQyZUdMY0ZwWHVOMEh1UE1NUkxuTklrRFlLN2hZVzlhWkxia3JiY2tmcWZOUmpMMnRyRUttWjZldkdibEFUeWQtMTJTcUx1X1RuMzFuMkxhYkpKa3NJQXQzYW5kcGgwYm8xWVh4ME5ackl5cld3REJRZVNkWm1VLW9GTFBCZTg1U3FnTE1pZGx3OTVLdE9sV3hR?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 196013334303697,
+      "data": "2025-10-27",
+      "data_hora": "2025-10-27 07:00:00",
+      "titulo": "BTG Pactual (BPAC11) entra no mercado de maquininhas, com o BTG Pay - Investidor10",
+      "descricao": "BTG Pactual (BPAC11) entra no mercado de maquininhas, com o BTG Pay Investidor10",
+      "fonte": "Investidor10",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQcWxRTFcwNTRPbjVNcEhtYTN4SU9uX0FKZDlIbl9WMjFoeUhOWURvdGFoWVFaRW1jU0J5NFk5Wk80emdaMFBlcXJnWlppQ0JxWXlzMnZMQUttX0FsQnREVktLejFaeUFVVUVHVTAtN2dkNnpleC1aMV9SNjRndE5sV28zMHAyN25vcjRSRnZDc3BWd3JWOXlObGNfdkZ2c1ZMQXRxNGZ5VG1DTkpoOXfSAbMBQVVfeXFMTnhXUWtWNnQzREFwWG5YYmJnbzRSZzVMaHlMR3FnTmNnV1BqUlBWWWkybWgtV3JrWWE1RURlMm4zOFItT2pZbXN5VDRHWXVfNXAyWWx5c0ZTREEtT0F3T1lQNDNPekVXVE44Q3JKOUNhdGxMZG9LeEJkM050VkxveFY0bkhKcXpXVkJ4bGxBeUhIc1g2QzMyYkpxZnhmT1hNRHpzdEN2c2taSmtuTWF6ekdoaHM?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 47479386348263,
+      "data": "2025-10-16",
+      "data_hora": "2025-10-16 07:00:00",
+      "titulo": "Ibovespa fecha em queda com BTG entre pressões; WEG sobe - TradingView – Acompanhe todos os mercados",
+      "descricao": "Ibovespa fecha em queda com BTG entre pressões; WEG sobe TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBUanZ3cXZoUEU0UjhYbk5RY3ZiQ2d0X0NRQWRUaTBoTW5pclI1YWJ4REVIamp6RnpkdnRMQ0VaNlQ2Ny0tQk9GQlh2bnFQUXNEOEhXSlVhZl91enRzVUM3OW1VaEZ5THNWTGdCUzd6bTUtQUJ1a0E0?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 130869882072877,
+      "data": "2025-10-14",
+      "data_hora": "2025-10-14 07:00:00",
+      "titulo": "BTG Pactual (BPAC11) propõe incorporar ações do Banco Pan (BPAN4); entenda impactos - suno.com.br",
+      "descricao": "BTG Pactual (BPAC11) propõe incorporar ações do Banco Pan (BPAN4); entenda impactos suno.com.br",
+      "fonte": "suno.com.br",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBJdldiZmJmMWFZdEJVbmhnLWJ3ZmlCTEZOcWxLcEQ4SVM2a2lnWnpJc1NDaUFtT3oyRUMzX29HclpfRkVWUU5ocVpmNzhieWdBQU4xcVZFWXNRWW5UOFVSWDVhUXk5VUlsUGV0Q1B5NWphcHh4REJIa9IBfkFVX3lxTE1RS3V0eGstUmN1YzJDdG5XOXN1MmtWSDRmNnNkcWw0X3NrdlJOb0Q3Q2MxaE5BWkU2bWNvRkg2NlZPcnVyNFRBeVBIR18tRG9fZmVvU0wtVEpiU0VyVmJkTTJlSHY0QTdRNUp0dUVsdktQZVFHZmtscUc3YlVkUQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 68187790437750,
+      "data": "2025-10-14",
+      "data_hora": "2025-10-14 07:00:00",
+      "titulo": "BTG (BPAC11) propõe incorporação de ações do Banco Pan (BPAN4) - InfoMoney",
+      "descricao": "BTG (BPAC11) propõe incorporação de ações do Banco Pan (BPAN4) InfoMoney",
+      "fonte": "InfoMoney",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNaDFxUEY0TjVkR25JbEk4ZDMtMUdZN2dtNWRRcV9VaTRjem5YQWMzWTIwZDRkbmVWcE5OV0czUWk2TGJGaGhkVm10dHU4X1o1QlpyMlVkdHFURnNhSHVZZFJEcVBMMFFiNU0tbXlEMkdSN0Rrblpmd1VSSnZUQ0xBWUhZdTVDZGdrV3ZYcWptVXQydmdoU0dVd0VHQUl0Z9IBowFBVV95cUxPaW5GTE9LaWVpbnR0bG5zTXdlSDQ4djI1MFFQN0hhZ1o4S0syY3UxV084eGliZV90SWhWWWNsVXI2aGxnalctcmRNZjdWelhaY2pibVEyd0VMbkE4aXg1SVJUdXZ6MzhGYV9xM2xFbjJPSXlLV1VSVG1qa1N1bWtIRGNIMG9yOXpYeV95M1ZBSEh2M3d5MEo4em51R1ZBTlBmNHp3?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 55509813453631,
+      "data": "2025-09-29",
+      "data_hora": "2025-09-29 07:00:00",
+      "titulo": "Simpar nega notícia de capitalização pelo BTG Pacual - TradingView – Acompanhe todos os mercados",
+      "descricao": "Simpar nega notícia de capitalização pelo BTG Pacual TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBSNW00OFZVejQ3V0RCN0lXeUc5dzFLX2hoSWswZXhrcFM0MlIyMFh1QjFXMzFkc09FZGlKNUtkaEtsX3hiSmo2Vl8wYmt3UFBJU1Vsa3JKVkQ5RTRSdWV2emFLdDRPcThaSTMzYVpxMzc1clM3WFBr?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 230058662361771,
+      "data": "2025-09-29",
+      "data_hora": "2025-09-29 07:00:00",
+      "titulo": "Simpar nega notícia de capitalização pelo BTG Pacual - TradingView: siga todos los mercados",
+      "descricao": "Simpar nega notícia de capitalização pelo BTG Pacual TradingView: siga todos los mercados",
+      "fonte": "TradingView: siga todos los mercados",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5nRjdNdVZZRmpqMGpOVnhvTU1iT3habzV6T0lHWVRheWZBblRZSWZBQ0NjdU9wZHRTX09ERW1aS1hmdkYxejZTbnE2OGRTQUNfOTZYUFZsMDdZRkN5NXhBV216LVRPVlNDOS1udzJ5aGZwTWRTaVdKaTdBaFQxczQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 163373986369853,
+      "data": "2025-09-26",
+      "data_hora": "2025-09-26 07:00:00",
+      "titulo": "Conheça a ação que pode subir 39%, segundo o BTG Pactual - suno.com.br",
+      "descricao": "Conheça a ação que pode subir 39%, segundo o BTG Pactual suno.com.br",
+      "fonte": "suno.com.br",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxONkZGdUJnZlVhM2VWTEZBSXB6V2h0bnMtbzdSVUlKa3lMSzN3d2hESGJoTWZNQWN1MHkwZWU4SFpFRkRZS1lSRjRUeVVCaHVRek5WVnJzd1owYm5zZGhNdk1hOWFOdXFSeWtjWlVtSGRJMUZ5NmR2cG83LU9vcTdwRFJR0gGHAUFVX3lxTE56OWhvQzNsMUxsZ1p3Zk5TMjVXQnRxZEpERGw3NnF6Y2RpMTlMOUNsVjkyZUhKaHBMT2loR1VhREhoQmJKbUlNM0Z3b0dSQ2FLb2xXTndlU0VrdEZRQ2xEZS0xY0Qyblo5TGhJQmNBS01WbHFLRGNKN1EwX2d5bWlEeGo0S0x4NA?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 85932855647013,
+      "data": "2025-09-17",
+      "data_hora": "2025-09-17 07:00:00",
+      "titulo": "BTG Pactual (BPAC11) 2T25: rentabilidade histórica - InvesTalk",
+      "descricao": "BTG Pactual (BPAC11) 2T25: rentabilidade histórica InvesTalk",
+      "fonte": "InvesTalk",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFBKaGl4VjdabkJUR3NvMXk5SVJiMnlnNXJJZnJGbGtBT1dpcjdXMnJCczE5Sk1tb3BlMXc2SnhOamVVUTFmeloxR3BDWkljYVJrSHlxUkh4UEc4MjBiZDdpUDJUVQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 120405768763269,
+      "data": "2025-09-11",
+      "data_hora": "2025-09-11 07:00:00",
+      "titulo": "BTG (BPAC11) nega envolvimento em possível compra de participação na Cosan (CSAN3) - InfoMoney",
+      "descricao": "BTG (BPAC11) nega envolvimento em possível compra de participação na Cosan (CSAN3) InfoMoney",
+      "fonte": "InfoMoney",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQMThabTR3bGhoSGRUQUZpTUpnN2tfbnFIVWJGd0prVnhCSmFGYkhPbkZWXzNmRDM3OFBPM0t6OU0wd2hkd0FtaFRNX3NGYWJEdGZpdmlid19OUjVsYXJUWHpQY0RscjYtNVNKQmVWWjItSDd3S3NuUGEtanZMNVl2ZzA5dF8wUDZJZTZER1BxSnRqbFRlcW9YajFfd1lQU01BbFhCYi1NY0xka0dvb2hDeTFJUHRFRE9U0gG-AUFVX3lxTE1LRFdNdzgxRkVIUEJmMUpJVGliRFlmVDlkaUxwV0lpQUNyVDhuRXl2RFRtWnhTazlGTUYwWnZuTnVmaHpzRkpHbUZZalFVLVpKZHFVU1dIRUZ6NjJ1V1EwOGlXdzFtOTA2cC1IRi1TX2paN3FFby1Od0RSMk1vMjRjZjg3UmpTMDdxZzZSZWpMSGU0dmE5RzEtSEVFNXRyTzdaOVFNdUd0XzNaRExtQXVleEx0LXR5Ung3WTZuM0E?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 185185856869050,
+      "data": "2025-09-10",
+      "data_hora": "2025-09-10 07:00:00",
+      "titulo": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) diz à CVM não estar envolvido em transação citada por O Globo e não vê fato relevante - Visno Invest",
+      "descricao": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) diz à CVM não estar envolvido em transação citada por O Globo e não vê fato relevante Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxOTFUxVjhvRzFXVHRpYXVXbFBGUVluVWItNHBwNnFUNk8zUndTMVNWcGFaYjNWZGNqUkZJSG9rQ1RXTW1jRHJ4emVZclNRbjlxX21PQnk5VHZSZHMyS0dDS3VGN0JUaGtOUHlYaUlycUx0VmxCNk8yMU14bFZ0cDRacENsWXg4YnhyY2dhTHR2OEhJSDd5bUdzaEx3ZDdYM09OS2NlZVdicVRoRTdEbTcxU3luZ2RqT2ZGaDctN25qTzYtSjdXM0luWlBDc3lMYWtVWWJMd0l0bzBfVFVUU2UxSE0zMG9oZVZ6Nlc4dndBeGQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 187518494604610,
+      "data": "2025-09-09",
+      "data_hora": "2025-09-09 07:00:00",
+      "titulo": "Presidente do BTG, André Esteves, negocia participação na Cosan, diz O Globo - TradingView – Acompanhe todos os mercados",
+      "descricao": "Presidente do BTG, André Esteves, negocia participação na Cosan, diz O Globo TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9seDZtM0QzckZtb3YzZGVGLXE3ZWMtWjJsU2NtTlVzeTZyWDdHZlhtcG44NDRNcnBoLW9vRWVPS1JvajVEVnM3eFJ3TXY3bjVfMk0wTGNYVVVaaHBKWTl6TVNBek9yYVhhVDJHcDFjNUtlLU4tUWow?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 185895797098760,
+      "data": "2025-08-25",
+      "data_hora": "2025-08-25 07:00:00",
+      "titulo": "BTG Pactual anuncia IOF zero para compras internacionais - TradingView – Acompanhe todos os mercados",
+      "descricao": "BTG Pactual anuncia IOF zero para compras internacionais TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9XblpnWWpxcVRHTG9NVHBndkZoYVdaVnR6UkJrX3RRM29qUHRmWndobno1cXlURDFvYVd2RVRKOUZZSzVIeG5BT0M2WWNJenIzS01IWGZ5a0pYMTNmaFQ3RmpzTC1JUW50a0Z4NGU0aGVjZnFUQ1Qw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 8471776402851,
+      "data": "2025-08-19",
+      "data_hora": "2025-08-19 07:00:00",
+      "titulo": "BTG Pactual (BPAC11) volta à lista de ações mais negociadas na B3 em julho. Confira o ranking completo - Bora Investir",
+      "descricao": "BTG Pactual (BPAC11) volta à lista de ações mais negociadas na B3 em julho. Confira o ranking completo Bora Investir",
+      "fonte": "Bora Investir",
+      "url": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxPcGhWWEFBQ0M4NWhXX3YzTGw3WkJza0RMenA1d05ZYjRxcWVsSjE4cVhHdWZmZ2hESC1RU2pERVVLdzBPVU94aVE1TElja1FLbFhlbDQ4c2NWcEdDSldFUmpubDNFcUZzRmpjb2dnb1hpU0pKQ09SaXV3ZkFwWTMwUnV1WTUwT3hNNHMzRi1XUVJ2MW91cDQzN21LVDZvanV1MHdhbnVZWW9SOS1pMXhFcDNZRm5nZGFLeWlBSlFKOXVPUE5EZW81VnZxYnZCNmZKdTZJTDBxUHlzenFLNy15RW1zUUlQT3JUT2JxUzE0VWR5MHpKZEdwN2VyRXBXUQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 144556407124558,
+      "data": "2025-08-18",
+      "data_hora": "2025-08-18 07:00:00",
+      "titulo": "Ação do BTG (BPAC11) volta para ranking de mais negociadas da B3 depois de mais de 1 ano - Valor Investe",
+      "descricao": "Ação do BTG (BPAC11) volta para ranking de mais negociadas da B3 depois de mais de 1 ano Valor Investe",
+      "fonte": "Valor Investe",
+      "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxONjRjR09YdWs2dzhULTNfOWlnelRpOXdEb2x0WWFhNkVzWk5hcEE4U3hZUFJIaU01STNEZzIxSWYtaWJtanZJQlJTY2lrNHRiMkd4SXJ0cXVvX3pTUExJSzNfWG5wNjB5dnBkSUpJdXp6QUFEcXJqVTJCdzVvbm9RTkpMYlRNT3VwbHFZdmhIYlBRdzZWUzJYbzdkMHpJRWQ1MXRKSWYzUVZRejR2bDVHWFpTRDczOUNBaF9wZ1hhdEpDZGV4YlNGX3lMdDQzYXl2SUlORmhEUUxxakdlR3F5Sl9YTXJNbXFNeUpLUHNmZ3hQc19rbWdmQ09ObHo1dUF1UmptT1pWcmE0Q2dfb0Z2btIBnwJBVV95cUxNSjBWNVlmajg0WHQ3Um9DSnl6STBZMkpBRVBuRWZsOHdVQm9kMHZYSEtfN2RiTWZMeXBMLVlZZDBoOUlid25iclFJQkZhcUFsaFlCaUNuV05qZDR3bE04a3Rub1Y2SHZFMVdET2xBT3ZhUHhhRHZ1c1Y0eGJ3bjU2R2FIUkdna2c1NkpSd1Bad01VeEhTMC1GR3MzS24zc1AtVUtzVVJYWE5YTHNuSzFxUmFYWG1YMklrX1JmRS1HTThIN3VUbXRrYnBCb3NhTGNpZnJPMDVZU2prU2F2Z2VfZmxwbEFZVGEtV0x6eERiN29YQnQ3akdDVHM3QVBBbzMyU3BNZTBRLVhBVEdQNUlCSENrdmU3QjY3eWVMMy00cw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 152527862949438,
+      "data": "2025-08-13",
+      "data_hora": "2025-08-13 07:00:00",
+      "titulo": "Alerta Estratégia Radar | Oportunidade Swing Trade Compra BTG Pactual (BPAC11) – start – 13/8/2025 - InvesTalk",
+      "descricao": "Alerta Estratégia Radar | Oportunidade Swing Trade Compra BTG Pactual (BPAC11) – start – 13/8/2025 InvesTalk",
+      "fonte": "InvesTalk",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFB2UkNkdzlIc2lTRFZEWm5TT0pfTjVyVEwtWUl1MFBmbEJBREQ4YXhMYTFwaXhfRENTSE9nMWZxZlRjNi1IbV9uRFpPeUtQWW5IUEN6OGFaYmNJOHh6VGJSeWo3ejdLeWNNeFFuRTU5SzIydnM?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 225157805782776,
+      "data": "2025-08-12",
+      "data_hora": "2025-08-12 07:00:00",
+      "titulo": "Ações do BTG Pactual (BPAC11) batem máxima histórica: saiba o que está por trás da alta - suno.com.br",
+      "descricao": "Ações do BTG Pactual (BPAC11) batem máxima histórica: saiba o que está por trás da alta suno.com.br",
+      "fonte": "suno.com.br",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBRbGEyaXBoR2hLVmx1dVFIVTBCYlhFR3BWX2VsSHUyaW00eHktcDJ4OXlmXzB3ZXB4UWszRmoxdDRCX0VrY0xja1gxeWxtUFFQYkFtWUVSTjY0SGxtLVlrcDNhaWZQSm1TOEJ6dDVRN1RyNHZpdWpabmZGSzU1NlXSAYQBQVVfeXFMTjRuMmRXeDlEelpQbzZhVEdla0tSU2pPSDl2b0RQYU1MN1B1a1REYlg0QVdpbkdqTktZdG96S1dwWEJRelhCOHpqYWhKRTBqOVNadWNXdXVmLTk4bk1yaF9meXpTMDItQUR6eVdqOGJOQmRHbk5jTGZ5cmhMeUh1b3JXaENj?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 116042421843490,
+      "data": "2025-08-12",
+      "data_hora": "2025-08-12 07:00:00",
+      "titulo": "O que explica a disparada de BPAC11 após o resultado do 2º trimestre - InfoMoney",
+      "descricao": "O que explica a disparada de BPAC11 após o resultado do 2º trimestre InfoMoney",
+      "fonte": "InfoMoney",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPUlFldU1kbWwtTWxWTkxhVlJHSEIyLXp6ekFqc1Z3RmtzYjNfTXdYU2VveTBrbGhrVWhmXzFGYmctUm5tRlFMbU8wTUNNdktZQVBZUXFnMFNNLWh0QzNDUlpNTHpRcmg3Rk9oNGFIaXZnQ1psRndOV1lmUV9kNzFlcW1HWWxUUFQ4RGlSSDE4U09SQ0VTc1h2RDFKLTE0MmNLZ2NrT1YzY0hVdHPSAbABQVVfeXFMTWl4TVN3V0tTX2F2OWlMTEF3eEdEYnlKMG9SNWRZeF9TRllId2JONEZxNmdwSDRPcFM0a2RIeTZ1Z1pfS0NtSk1vLVVEazI5TjRTSlQtLTFBeDYyZ2pOaXhaU04xS0Uwc3ZMNGw3X2luVVhzdlJuSkw0cnR1Ui1FaGQzWEdxRzZsU3pZbEZyYWVQdzM0X3l6dnVJTHpBOS1ON0hGYVNMdWRHV09ta3NyS04?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 216806344746252,
+      "data": "2025-08-12",
+      "data_hora": "2025-08-12 07:00:00",
+      "titulo": "Ações do BTG Pactual (BPAC11) batem máxima histórica após balanço do 2T25 - Nord Investimentos",
+      "descricao": "Ações do BTG Pactual (BPAC11) batem máxima histórica após balanço do 2T25 Nord Investimentos",
+      "fonte": "Nord Investimentos",
+      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQa2UyNHVWTHhRUFZuay1KcGpQLVFIc0Exdm5KN3dhN2QtSWtfV1F4VF9BNDNnRDZTbmdmRnhmQTRiVDVJNy1mc3BhYWs3bFJWTnh5ZDlfRWJNclJMTTYzQ3BiWmRtYVhLQmZZS0ZoZThBanotajVESW9QY2dCSzdTN21ia9IBiAFBVV95cUxPbks3Wnh1RGUxMWtXc3B5M1NRb3pFWmY4Q3FVZ2VoQWRzYnlKTUxQQ3ZyMTg4WUc4U1ZTNFFiYW0yUXAtQVhDMEpIbkpuZmdhSno5Rk5ra0d4ZkRHQUdvT3pBMEJ0cVlyVTB5bUJ6cVdnV3NYRm5hZmZKTnJxWGxIU0V2VnRNM1BV?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 176169172320393,
+      "data": "2025-08-12",
+      "data_hora": "2025-08-12 07:00:00",
+      "titulo": "Batendo recordes: BTG Pactual (BPAC11) tem maior alta diária desde 2020 após balanço - InvesTalk",
+      "descricao": "Batendo recordes: BTG Pactual (BPAC11) tem maior alta diária desde 2020 após balanço InvesTalk",
+      "fonte": "InvesTalk",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPZUlUUHNWYk9tZ1FZQXFZT2preHhOa2dXZWt5XzlBZDBiMkZENVp1Rl9lUHZoR3l1NHRsT09TUWxTdFRueWNMalVfeERZVElmRDNMWExIRTJvc0JBSlBJaWVFU0t6RmpNLXlzdWszemd1Vm9ON1pPa1RmLUxYQVpDTHhTem1lN0VtcXowMUw4b1FCSnRGU3F0ODB5ZjVNeEprdm5UaS01c3VldUVqNVFUSG1ZVE5JM1FfVUR4YmlKRmxjZHV0?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 260282050950971,
+      "data": "2025-08-12",
+      "data_hora": "2025-08-12 07:00:00",
+      "titulo": "Lucro do BTG Pactual (BPAC11) cresce 42% no 2T25, para R$ 4,2 bilhões - Investidor10",
+      "descricao": "Lucro do BTG Pactual (BPAC11) cresce 42% no 2T25, para R$ 4,2 bilhões Investidor10",
+      "fonte": "Investidor10",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOdENMNDU0T3RtVnIwYUkyX1ZSR0l6RUtQYzU5T2x6NE0yTzk1X0l6X3ptWEl3cXpPZUtpSTJkbkV6X1dUZEZKaVVYc2cwSGF4UEt6UDFNY2JleFNWdHk4RjdKQWQxaDNvSVlsVDJXaUtrRGtHNTBjTmNmLTRQVlJSUHZDYnd6ZTN1dllsYVdJcURBamUzY1RmcXh0bkV0ZUJPX2MwNzhmU0JCY2RkbXfSAbMBQVVfeXFMTVhCWlpRWmY3M1VoWWYtN1FjR0tCV3R6YzNneDZtYUNJYlhzbWdPMW5QMngzcUhmWk9hOU9EOTQ5czcxNU1TSmxTZ0RDamZzZHdXeTRmN2VmUjgxd1FYWmVSenptMjJTQVRYU1R1T0x0N1lMU1Y1NHRsQTlQRDVuQ3FfNTJKdE5YTGQyOXE0V0ZUV3N4VGpCRU1IN05SOUNJNV9KcDVwOXA0Yko4ejc5ZUZRNGc?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 194000735593254,
+      "data": "2025-08-12",
+      "data_hora": "2025-08-12 07:00:00",
+      "titulo": "Lucro do BTG Pactual (BPAC11) cresce 42% no 2T25. Veja os valores - suno.com.br",
+      "descricao": "Lucro do BTG Pactual (BPAC11) cresce 42% no 2T25. Veja os valores suno.com.br",
+      "fonte": "suno.com.br",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE03NGptdWd2aWFabU12cHVSVDBlU21odkRlYkMxTHpOaVpTdDJEU2E1N0pCVlZISnJDOXhLQmNlSXNmUHBVMC1KdlM3V0hEdzN4R18zel9GdHZhQURGdGl0SXNCUUE4cWdZVGZ0VHFHb2NqemticFHSAXtBVV95cUxPSUE4MF9WVzh5aDBEZGIxWDlBN25ybW1GeW51UDhIdURZVUlNZFdaWTNGRGpEbDFuYTY0RzBhVEVWaUVZYlZEY2pFQ3Zyd25ZTlY5dVp2aS01NkpZd2NnVmhCVXZLWHJVYlVrYnVZWFptVzJpRktucnhIY1U?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 193050475267081,
+      "data": "2025-08-12",
+      "data_hora": "2025-08-12 07:00:00",
+      "titulo": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) reporta lucro líquido ajustado de R$4.182,1 milhões no 2T25 - Visno Invest",
+      "descricao": "Banco BTG Pactual (BPAC3, BPAC5, BPAC11) reporta lucro líquido ajustado de R$4.182,1 milhões no 2T25 Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOcWlfRU12OVJObGtzeFRiQkl4bVVDQUtwdUctcEp6SkJ2RDhWa2dBY0tsTUhpOV9ieEduY29SakxQSFBDRi1Xb2ZQTzlOSmM4ald6UUFwelNyNVhSaUlSNElMZG8tWG5IVWJBc21objVFdENOcXJCZlZnOTlIQ0FUM3ZjdFpBeG9kWGI1VGpVblpwS25KaTNYbE4yNFZDUnIxa011cnBURlRncklWNVVhQV9KUVJTM3hPMERpQWZhcWN6UmNUU0RFLXN4U3I?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 264613121413336,
+      "data": "2025-08-06",
+      "data_hora": "2025-08-06 07:00:00",
+      "titulo": "BTG Pactual (BPAC11) pagará R$ 0,20 por ação em JCP - Investidor10",
+      "descricao": "BTG Pactual (BPAC11) pagará R$ 0,20 por ação em JCP Investidor10",
+      "fonte": "Investidor10",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxORElfNnhJS3dZYzNNbkRGYkVGLUlsbkhZRjcwTkl4d3FQekZPMlBUV182bDlTWVRXSmFHbXpTMzNWcW0zb0R3R1BqZzJHMlR1VTJhU3JWV3Vfb0tScEZmM1J0SXBxb29kSEFSNVVoSWtZSlo0NU5DTzVwVXp5Wm1zcmQtakIwUWh2OFFVcWpxZ3Z3Vi1Ja3BXetIBngFBVV95cUxPMC1QMHNmbHJhZTZmdWdLY2tNbTRtV3JYOVFsNjhKRVUxbTZCc1NscXN2YjVJZXVtUkxXSlVWdzR1RElOLUtMYUlETzhwU2JTaFEtZ2tXVExKcFZ3Ym5kejF2LUxSenZDT0xDWUtRRThMbl9keHdFVkprY3cwYjNLWGhiT2RQN3hoMHhOTGFwN0oyb2gxZWFUcjl4TVdDQQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 163541277886808,
+      "data": "2025-07-28",
+      "data_hora": "2025-07-28 07:00:00",
+      "titulo": "BTG Pactual to buy HSBC's Uruguay operation for $175 million - TradingView – Acompanhe todos os mercados",
+      "descricao": "BTG Pactual to buy HSBC's Uruguay operation for $175 million TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPYWYtWVRwYXJ4WEhkYjlrV0VZVGF2Z1cycng2LUlleHhhSFV1QzNrcXVjdVUxeE9Sc21ad2Jua0JhVWI0YWJieXVWcW5MbzN0OHFkWmxDUlo5d0MzckluUnRTQk1zX2dfd0pQME5EMjFFaVdyZlhVMmJrblBEaHJuWjZwUU9iYkIycDRUODN6bkJIWWpNbFRidEJxNEZyNWQ2ZjJIXzJiNU5UdjVZR2ctWHl0SG5TSXc4QnJDVGY4WjBFbVJHS0hueDhVT0pHTEE?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 66936120464997,
+      "data": "2025-07-03",
+      "data_hora": "2025-07-03 07:00:00",
+      "titulo": "BTG Pactual aumenta participação na Light; WNT reduz - TradingView – Acompanhe todos os mercados",
+      "descricao": "BTG Pactual aumenta participação na Light; WNT reduz TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBpQU04b1ltYTRFVXVDSTBBamF5SlRrV2FUQjBBN0FDQkRDOENsb3RQbHVoUlc2ZFQ5Sl9wNEMwbEZFa1Z5T044bXVkS2tYYUcwV21sVUJlMW9DMDBfV1dmT2IxakYxOEpDTkMtQk5xYmJfd1VMd2hj?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 96157921210835,
+      "data": "2025-05-27",
+      "data_hora": "2025-05-27 07:00:00",
+      "titulo": "Brasileña BTG Pactual compra activos al accionista mayoritario de Banco Master - TradingView – Acompanhe todos os mercados",
+      "descricao": "Brasileña BTG Pactual compra activos al accionista mayoritario de Banco Master TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9uTU45OTRSRGNaSUZ4UUNvWDJmdUhlZ09SZVZPLWJlNlhIek44SjNXeENMU05vZ0ZiTHplSUktMWZhaUt4LU1xdnVQRWtlRl9mdGhkUWtoWEoweFExblprcEJpOWttYS1SN0EwTWc3RUswMzdVR0x5dnBlSEdFOTg?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 259119279224023,
+      "data": "2025-05-27",
+      "data_hora": "2025-05-27 07:00:00",
+      "titulo": "BTG Pactual adquire 15% da Light e 8% da Méliuz em operação de R$ 1,5 bi - Visno Invest",
+      "descricao": "BTG Pactual adquire 15% da Light e 8% da Méliuz em operação de R$ 1,5 bi Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPNFJQTWEwTFphdDNPZDR0YjRNeUcydExfSzNpdDJRRW9pNXdhTFVSUWtUaHNsYmxBeGU3ZEFPSjk1b2hTNFZGLWx0VVJKeXBGM3JyaFhxTFU1TzZUMFZhVVZNcVVjV0xNeFdDNm9GcFFsMk82YmlWRUc1d3ozR3hGam96REw0MGZHSDY1dHE3OF92a2FLbEtIeWZKaGhaa2F2QkJySTYwWGQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 125871453506422,
+      "data": "2025-05-12",
+      "data_hora": "2025-05-12 07:00:00",
+      "titulo": "BTG Pactual (BPAC11) 1T25: mix de receitas compensa sazonalidade - InvesTalk",
+      "descricao": "BTG Pactual (BPAC11) 1T25: mix de receitas compensa sazonalidade InvesTalk",
+      "fonte": "InvesTalk",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5hVkF1bEFfdVZqaFVfUUp1bWhTSGJReW9CN3A1MjdKTUl0Nk1yX19vdEs4R3lmY0JJTEVwR09na1hzYnFReEpFaXVfMjhuYm5vbGItYjdpUEl5d25YMDBxVHlJUQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 14799119652335,
+      "data": "2025-05-12",
+      "data_hora": "2025-05-12 07:00:00",
+      "titulo": "BTG Pactual espera retomar crescimento em sales & trading, mas ambiente é desafiador - TradingView: siga todos los mercados",
+      "descricao": "BTG Pactual espera retomar crescimento em sales & trading, mas ambiente é desafiador TradingView: siga todos los mercados",
+      "fonte": "TradingView: siga todos los mercados",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE0tSl9GbDBXeE4zTnh4STFxVWhwcE1waVVaSDM3UkJ4VEJ0YzBMdnZIczd1VVJxWHZndzZwVFhleHZWWUVWbzYtT1RoQm1CandxdklESE1LLUREVF81MV9vNERjc2Y0NGc1dXVHUDUwaHJ5Y2NIcHdqYk51Zi1INHM?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 134799268903196,
+      "data": "2025-05-09",
+      "data_hora": "2025-05-09 07:00:00",
+      "titulo": "BTG Pactual nega conhecimento sobre oscilação de 5% nas units - Visno Invest",
+      "descricao": "BTG Pactual nega conhecimento sobre oscilação de 5% nas units Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNX1g5MkdSOXhLWXFheDJIQXFmOWc2dUVBUXVkWlo4ZURBQWZ2bnliTWxqY3BQX3RUV01PZ2I3WXlkUlY5YnREYURHcVJLYUZzb0tHcHd2MTk4V3B2S1dzTzJlUEY4eC1pNktWNEozbDlBYUZWbWhvcS0tZGhpRGhqYXhpVUVRcWY4X2tGTmFMQXVES2ZRQ3o3clFaLUJ6dw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 220691304906252,
+      "data": "2025-04-14",
+      "data_hora": "2025-04-14 07:00:00",
+      "titulo": "BTG Pactual adquire JGP Gestão e amplia área de Family Office - Visno Invest",
+      "descricao": "BTG Pactual adquire JGP Gestão e amplia área de Family Office Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPUTN3R1RhMjVIMEtiVnFybW01UmlGN19NaFR5d1djNktidlVwbHphZlBXT2pfVHdjMHQ4RnJveUlCNmV2UF85VkFGajBWMUJ0TnBDN0VwSEEwV0s4N2tVZ2dCTFRfbUM3VU9yTVFxRmhrWEo3c3gxanpfSkJmTVJvYlRzZFJhRHJZNjhIdjFpNXQtT2JWaHhRRjhEWWt3NTg?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 52398121531324,
+      "data": "2025-04-01",
+      "data_hora": "2025-04-01 07:00:00",
+      "titulo": "BTG Pactual confirma análise de oportunidades de consolidação no mercado - Visno Invest",
+      "descricao": "BTG Pactual confirma análise de oportunidades de consolidação no mercado Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOX1RVWWtZYjd5UVliYU13anVlb19ub29nX2VWVWxPSlJuRFVMSDNQOTNLakR6LTNmbFBZRTJiM21VYjJlUEFUM19rZm9xdUhhWVhsWkJvWGFZTG9mQjVUWW10UU5iaXNyd0VtYlZCektkQ25iSms1S3pzcFJ0N242Z3BBaklXMUc2UnhIdjlJVEF1Q2g0czllTi1aN0dfRjNCeE1jWG4wTUdreHdzUXc?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 145385953283430,
+      "data": "2025-03-27",
+      "data_hora": "2025-03-27 07:00:00",
+      "titulo": "BTG Pactual anuncia mudança de instituição escrituradora de ações - Visno Invest",
+      "descricao": "BTG Pactual anuncia mudança de instituição escrituradora de ações Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQX0xqZ2NPVTlVWmp4X1F3cjNNTmNlRFhFbEtGRkVLdGwwS2Vta2tJSUZMc19FY0VaM2NFOFB2dlk2YXc3SkJxazVaR25BcDZUWTBwaWlaUGMwUjNJd0Y0ZzhMaF9sdzA2dk1vOWh1SGVoT0g3VkFHOGR5SHUydU9IVFlfSEdyTXBjdEk2aVFWdHN3T1hENi1BOWlyUEd0LWtlX05FUw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 87296775996760,
+      "data": "2025-02-14",
+      "data_hora": "2025-02-14 08:00:00",
+      "titulo": "BTG Pactual (BPAC11) paga dividendos hoje (14) - suno.com.br",
+      "descricao": "BTG Pactual (BPAC11) paga dividendos hoje (14) suno.com.br",
+      "fonte": "suno.com.br",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOYm9fTmJwTlFOOG8wT1VpWUtpWnJYS1pnVC1GZVJXQ013WmtuaVNadFNQSmk5VHhTVUtELU1tRWlHTGE3WGs5bmQzUzFIbXg4NnVBU0l1cHZMdG50cUc5VURvTng2R01TX0c0eEFwMHhkV3hDTHp5alB0LUt5YjgzS1ljRUIwUkduaEHSAY8BQVVfeXFMT0pwQ0swMVAxYVdhZDFDY1ZDaThqWmJZdUtVc3dRQ1l2YlJPQTF6RWtidHJ6cTlDN2NUMVhRdE96VHNkOVZwSUpkRzY2dmYtRHpBQ016b2hPR3RHbGpra3podW16cDJOLUFNU05FREhObnpqRVhwc09QUnhpcHdZcnBHSWh0d05YSVlFNmxxemc?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 231543089085627,
+      "data": "2025-02-10",
+      "data_hora": "2025-02-10 08:00:00",
+      "titulo": "BTG Pactual (BPAC11): o que analistas dizem sobre o balanço? - suno.com.br",
+      "descricao": "BTG Pactual (BPAC11): o que analistas dizem sobre o balanço? suno.com.br",
+      "fonte": "suno.com.br",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE53dndya09VMnRSbW1YeV93VHBJTWJHU3RxUVBORGtxeVZPelNhd3ljQ3VnendfWFRBMXZWc1lJOW9uOVVuOUdwd2ItUEVHS1Y4elQ0eXBZMTRoRUlkdVJ3MXdyWlVUSER0d0VsUEVuN0ctaGEzZTliZdIBfkFVX3lxTE5lMDZDVTNTbjZ1RW1MNDJJY1I4enIxXzI4VnFBaVM1MHR6RHoyMWxiVlJmVTNVc3hEeGF1UWk4MWpaSl9uX3BlUlY0QzF4dU8xYTRkWmVjMlladnlEdjkzR2dnNUhRY2ZEanNCd3JLbmtYUlNkb2NCaVpxZFNMUQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 250757405331905,
+      "data": "2025-02-10",
+      "data_hora": "2025-02-10 08:00:00",
+      "titulo": "BTG Pactual registra lucro recorde de R$ 12,3 bilhões em 2024 - Visno Invest",
+      "descricao": "BTG Pactual registra lucro recorde de R$ 12,3 bilhões em 2024 Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOYnNPNUt4bHV6cG9TNjU4OS1zeGdvNDdEMWlfS3UxMXZacFRiYm9uNktqMTFyU3lJNXNPMXpJdVFkN2diSGFnS3I0WHpERXg1QUx5Wms0MXc1OHlsVko2M2d4ZVRZVlMwYk81UVFMQXp0dVN4TExmX1JqdDBHUlRVZFo3SEoyVkFid3JwX0dSRkQ5ZHZOUVAtOUdwd1g?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 271768422005756,
+      "data": "2025-02-09",
+      "data_hora": "2025-02-09 08:00:00",
+      "titulo": "Dividendos da semana: Santander (SANB11), BTG Pactual (BPAC11) e JHSF (JHSF3) e mais 3 empresas pagam acionistas; veja as datas e valores - Estadão E-Investidor",
+      "descricao": "Dividendos da semana: Santander (SANB11), BTG Pactual (BPAC11) e JHSF (JHSF3) e mais 3 empresas pagam acionistas; veja as datas e valores Estadão E-Investidor",
+      "fonte": "Estadão E-Investidor",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOeGRyVEd3dkR6a2RqSGZsWlFCbncwUDBmYlhnOEFDOXI1WTB6Sk81VnBrendsMDJUcFY0MEJBNEQzTlpfcmY3ZlRTR0hMQ2RqcExVSGpRTnFuYWhZRFRyR1RxUTVCV1FFaHdwaVo1RlZEa1lEZVlKWDhqbUpSSmgyeHhxakxhUDZ2WTJCRG5MOUlsUGUzM19vMEYxWF80aENlS2lRMWRFMGFGTlg1RlhQMDVVNlZhQS1yQ1hFc0k3TFg2d9IBxwFBVV95cUxPVGNPSlNKUDM2TG16SlpmeTUxNVp2aUNQZFduTlg3am5IOXBKRDk3WDlRWUVvQzN2ZGhkcVlPMERFRzBibC1QMzcybFVTcGpXZ3RYQjRuZzQyTjFrR211a1NJenlxMGxvd2RLYjlPVGc5S1dJMDNxTE1rXy1GMEhFeEZCYnZUTDc0dUF3M2I1QWtyVUs1M2wxbFhDNUtMNnVhVV9RckpmdWtXSXNmbHNrTXFSOHFWekMxeEk4TTBJWHdJaklsT2Iw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 99189353161235,
+      "data": "2025-01-24",
+      "data_hora": "2025-01-24 08:00:00",
+      "titulo": "BTG Pactual e XP devem demonstrar aumento de lucros no trimestre - Safra",
+      "descricao": "BTG Pactual e XP devem demonstrar aumento de lucros no trimestre Safra",
+      "fonte": "Safra",
+      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9TdERyaHlrZkVzVzdSRkZ3MUhxRmhKREVhb2RJbjl3d3dNYjlsUzBRNmRyamRsNERnV0VFWGY0cXdZcGI2bndlRDJDR045QWhNSGtaVmNMUVFqaTc1Q0hhN0V6TmhiRTJWZEkxXzJ2S3lnZ2NYNzFLSEhBUlBlUQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 133969463036744,
+      "data": "2024-08-09",
+      "data_hora": "2024-08-09 07:00:00",
+      "titulo": "Dividendos hoje: BTG Pactual (BPAC11) remunera acionistas; veja quem recebe - Estadão E-Investidor",
+      "descricao": "Dividendos hoje: BTG Pactual (BPAC11) remunera acionistas; veja quem recebe Estadão E-Investidor",
+      "fonte": "Estadão E-Investidor",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQZm10ck9lVDgxTDdkNjI3c3drbWdyQlFzWkctNXBBY1FfTjVqazFicTRPdlBadm10R0lac3N5T0tZWUJKLW9Hek15TXREdXN2aEZiWnNTSk4yN0I5Ykt4eFdSOTNRYmxoaDg1eGtLcklwcWNJTDlQUkRmNlhEalRwYTROMERKM3dGOEktWVVhdWF5RVZKTk5KclMyZmJHODFsakNCWjQ0c9IBrAFBVV95cUxPVkg4bkgwem1feEgwN2tqTVpZM0Q3N3dHbTZrNXYzWGFDa1VWc2Z2Nk1MbG9BdEt0LXFUZWxiWEhsQmdNeGhDUGc5S2l4THJCQm11VTJxTUg2dlN6c25wYWVsQmgxRWFzVjVCNE5QVjd2ZUh0VHp3LVV2eXBzcmRHcnBCd2kzTHZ1anFlLTR4eGhHd1RMSUMyWWNsZkhzQWRMdms4S2VZcVJlTmho?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 31405133615071,
+      "data": "2024-08-05",
+      "data_hora": "2024-08-05 07:00:00",
+      "titulo": "Banco BTG Pactual esclarece sobre emissão de dívida de empresa do grupo - Visno Invest",
+      "descricao": "Banco BTG Pactual esclarece sobre emissão de dívida de empresa do grupo Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPOG9mdEtyak9XdEswbkhBY0ZDblI2cmkzMzVXTEZLbVQwSEJMTWVFN0VoRVdiV0J0RnNaeURZNENMd3hOSWY2TmRLcUg0U0FYQThNYzlpYUVPWnhuUl82R3lzcUU3bHdkRWNJaVBwX2s0NENtd0ZvRWRNWU1XTUpITHZ6WEVYYzU1YmdpdzZBUWVTcE5tZGdKN3VKTTJGaUh6UG9pSk9Wc0w5ai1t?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 202307271409067,
+      "data": "2024-06-28",
+      "data_hora": "2024-06-28 07:00:00",
+      "titulo": "BTG Pactual aprova distribuição de juros sobre capital próprio - Visno Invest",
+      "descricao": "BTG Pactual aprova distribuição de juros sobre capital próprio Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOblZac0d2S2hCU1Y1YTUyY1VNTURlS0M3VE9fMERFRnZrZ1pnc0RseHAtR3NRb3FQUXdGdm9Vdnh0NDQtMDhZWFBwcFBSdk5qMlBJSUpZYU9SSWwtY0g1aElLTmNqVE9uZGFUYkFDd3NGX2V4b3lHY1lSdkhURDVFeGtmemtVSnBRcUdOUUZHTUZrUUlQdll5RFE4WTR6QS1N?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 277376393473573,
+      "data": "2024-06-27",
+      "data_hora": "2024-06-27 07:00:00",
+      "titulo": "BTG Pactual assina documentos para adquirir banco nos EUA - Visno Invest",
+      "descricao": "BTG Pactual assina documentos para adquirir banco nos EUA Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNZHNMc2N1Qy1RX0lXcFI0WW5MRkx2bGVrckQxUVgyaXdiY3hGX3lSRmVJcHFwMHlXd0VmMkh3RWRBV3dkR1pMXy0tSGpzZnR5TDROak44dVZJRFNfZlBjMDcybTJVd0huc3BMOE1NWlhqMEs0NngyR0NwS1Zibzc3MzNiaUk1TFd4VEUzdWFUeDc5MUlTdDVMTFRB?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 146513506705404,
+      "data": "2024-04-03",
+      "data_hora": "2024-04-03 07:00:00",
+      "titulo": "BTG Pactual emitiu Notas no valor de US$ 500 milhões - Visno Invest",
+      "descricao": "BTG Pactual emitiu Notas no valor de US$ 500 milhões Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxONzlMSWNfNVJlNHlDZzhlblpmaVlLUURkOU5JM0JlRUdEaTN5TjBBWUZWNzI5Mjk0eXg5WlZtQVVHQjF1VUNvekI0eEJVcGFodmRMNVAyVFFHWnhZWHgwbnZxSmpGbDBZeGUwRnR2aUlVQlNyVF9uS09ZS19tTHZxdU1YVlRZeGJtSEUzSzJ1eDE?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 139204713792461,
+      "data": "2024-02-01",
+      "data_hora": "2024-02-01 08:00:00",
+      "titulo": "Agenda de dividendos de fevereiro: Petrobras, Santander e Klabin pagam neste mês; veja lista - InfoMoney",
+      "descricao": "Agenda de dividendos de fevereiro: Petrobras, Santander e Klabin pagam neste mês; veja lista InfoMoney",
+      "fonte": "InfoMoney",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOc0pDTDhrMkJJc2k3Y3NpSEFGN1pJbUFVNDlEX2NpMUVLVU5ISFgySW9lR0Njb2l4SzB5U01WWDFORjdDOFBQTURkcVdETGNfMThHYUUwWjV1ZXZneG4xWk5XOVdLWnVxeGdpTlhTSnpFT0E1WFYyaDZSTmVaMHM0STdXOTRoYllyNVHSAY8BQVVfeXFMTjlsbXdycWRZRS1vVXM2Q3BqWUxuWlNlU09kSE1uZWYwNXhtY2dRZFZlenJVcGxxX0JqTGl0YjRwUU1rUHFyRFBVdWNHYTRqRS1YX2NSS041VVhsZll2WTRlbVdZT0hKTnVTczJ3OHNNeVlESkNpOC1EVlFsemd5b0c5cDRqaEktRGVQRmpfTlU?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 161283416048783,
+      "data": "2021-11-09",
+      "data_hora": "2021-11-09 08:00:00",
+      "titulo": "BTG Pactual (BPAC11) tem recordes no lucro líquido e na receita do 3T21 - suno.com.br",
+      "descricao": "BTG Pactual (BPAC11) tem recordes no lucro líquido e na receita do 3T21 suno.com.br",
+      "fonte": "suno.com.br",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPd0VwWDYteTBtb2JscTNWMEJySExSMGktWm11RWxDVzJFMzdaY25XTm5JVmlkOXRwWHRhWWhobTFEVmxJZklBRlctT01DRXB0d2Y1MjFkRlF1ak14UDhGdGF2c3lBTlRpdUUtazFwTE5Lb3dJU3lwVjlLaUN1d3dNN0pyZDZFMS16eXF3b0oxdWRxVGNpdmRqdzFFaXZ4WWtyV2dPeVh30gGrAUFVX3lxTE5ub2Fhc2txY1UybnFZbDctT0ZOSDlrNVR4bHNJLXNQRFFEZTlmcmZNeGtaZnEtWmp0WmN2M3ZqSDJhajdnZTdsZkRrR1JoNUplVWczVXVqMjVTTnBaTUxkd1E0cjBXcGFjdE1TRXBYRWVjd2c1NnB0bWFKam1XUk5qMHVDZWlPcjJ5cENTWE40V0dJM2xyMXctWGdOZWRUVlRVTV9OX1pLUWx0OA?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 140349999392087,
+      "data": "2021-07-05",
+      "data_hora": "2021-07-05 07:00:00",
+      "titulo": "BTG (BPAC3) é 'um dos melhores nomes do setor financeiro'; Safra enxerga upside de 13% - suno.com.br",
+      "descricao": "BTG (BPAC3) é 'um dos melhores nomes do setor financeiro'; Safra enxerga upside de 13% suno.com.br",
+      "fonte": "suno.com.br",
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPaHJPbmZYSWdiUDE4V2dhd2dDTXZvZDRheGZ2WHhsRjBidjNjR05ncy11VDI1UXRMdHVLeHhUS1FBemR4bjVETmc2bVdpZGEyRnRZUFlVZlF1d2JlWDN1SFpaS2lvejhkRkdfMGFQWHkyV3gybDRSVFl6TlJvQmkyZUJaU3ZaM3g2UjVfaFF5LW9hcXfSAZgBQVVfeXFMTklCcU9iRXVWTUt1bU1DYXVzM3dPR1JvY2thbW1BSnVyTU1TQWhldU1kSmxGYjUwd0NQRjY0ejREUUt4Q1Q3REk5ajNtU1dXNVpHdGR6bGN3VGlUcmo2SHdPNk1XcGNqVHBSZC01NmtJT3ZvNXJmR2dSa00zeGhJRlNhS0RzcEtKN0VHNlhfcU1nbEhNcUFQYmQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 203276148923150,
+      "data": "2020-06-30",
+      "data_hora": "2020-06-30 07:00:00",
+      "titulo": "BTG Pactual (BPAC11) levanta R$ 2,65 bi em follow on - suno.com.br",
+      "descricao": "BTG Pactual (BPAC11) levanta R$ 2,65 bi em follow on suno.com.br",
+      "fonte": "suno.com.br",
+      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTFBWODdlWEtCVHVPdUdmdTE2Z2hIQnBoTFhoMkFiQWRvWmRIZUQwZDNybGp1Y2xuUDlpVmQ4ZGxGX3ZEOFFRaDZOT1B0SnpIaW9Tc3dqOHJyaGFrZXRORzNFM3h0NzIyZzZ3MjYtcUtHRE5FQdIBd0FVX3lxTE1oRDBDSzFjRHd5LUxSUzlCdDUtZTFqUzM5ZGs2V1NOWHlSZ0Y3SVJCU2pyMThBQUZ1UzVtaHVaR2RKbjVNQ3ltaUxBZUYtVEVkaUo5Szg4QmRvQmladlIya2Z2UHpVRFJ2OTN1bDdWbFJUdGliQ1pz?oc=5",
+      "tipo": "noticia_empresarial"
+    }
+  ]
+}
