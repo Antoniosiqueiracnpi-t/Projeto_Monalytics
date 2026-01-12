@@ -1805,58 +1805,45 @@ def main():
     parser.add_argument("--faixa", default="1-50")
     parser.add_argument("--no-checkup", action="store_true", help="Não salvar relatório de check-up")
     args = parser.parse_args()
-
     # Tentar carregar mapeamento consolidado, fallback para original
     df = load_mapeamento_consolidado()
     df = df[df["cnpj"].notna()].reset_index(drop=True)
-
     if args.modo == "quantidade":
         limite = int(args.quantidade)
         df_sel = df.head(limite)
-
     elif args.modo == "ticker":
         ticker_upper = args.ticker.upper()
         df_sel = df[df["ticker"].str.upper().str.contains(ticker_upper, case=False, na=False, regex=False)]
-
     elif args.modo == "lista":
         tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
         mask = df["ticker"].str.upper().apply(
             lambda x: any(t in x for t in tickers) if pd.notna(x) else False
         )
         df_sel = df[mask]
-
     elif args.modo == "faixa":
         inicio, fim = map(int, args.faixa.split("-"))
         df_sel = df.iloc[inicio - 1 : fim]
-
     else:
         df_sel = df.head(10)
-
     print(f"\n>>> JOB: PADRONIZAR DRE <<<")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
     print("Saída: balancos/<TICKER>/dre_padronizado.csv + dre_checkup.csv\n")
-
     pad = PadronizadorDRE()
-
     ok_count = 0
     warn_count = 0
     err_count = 0
     irregular_count = 0
-
     salvar_checkup = not args.no_checkup
-
     for _, row in df_sel.iterrows():
         ticker_str = str(row["ticker"]).upper().strip()
         ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
-
         pasta = get_pasta_balanco(ticker)
         if not pasta.exists():
             err_count += 1
             print(f"❌ {ticker}: pasta {pasta} não existe (captura ausente)")
             continue
-
         try:
-            ok, msg = pad.padronizar_e_salvar_ticker(ticker, salvar_checkup=salvar_checkup)
+            ok, msg = pad.padronizar(ticker, salvar_checkup=salvar_checkup)
             
             if "IRREGULAR" in msg:
                 irregular_count += 1
@@ -1867,7 +1854,6 @@ def main():
             else:
                 warn_count += 1
                 print(f"⚠️ {ticker}: {msg}")
-
         except FileNotFoundError as e:
             err_count += 1
             print(f"❌ {ticker}: arquivos ausentes ({e})")
@@ -1876,13 +1862,10 @@ def main():
             import traceback
             print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
             traceback.print_exc()
-
     print("\n" + "="*70)
     print(f"Finalizado: OK={ok_count} | WARN(DIVERGE)>0={warn_count} | ERRO={err_count}")
     if irregular_count > 0:
         print(f"            Anos fiscais irregulares: {irregular_count} (check-up pulado)")
     print("="*70 + "\n")
-
-
 if __name__ == "__main__":
     main()
