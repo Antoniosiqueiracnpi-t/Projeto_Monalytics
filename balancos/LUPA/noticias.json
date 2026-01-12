@@ -1,0 +1,31 @@
+{
+  "empresa": {
+    "ticker": "LUPA",
+    "nome": "LUPATECH S.A.",
+    "cnpj": "89.463.822/0001-12"
+  },
+  "ultima_atualizacao": "2026-01-12T11:26:13.665461",
+  "total_noticias": 2,
+  "noticias": [
+    {
+      "data": "2025-12-29",
+      "data_hora": "2025-12-29 08:00:05",
+      "titulo": "NM)  Fato Relevante  29/12/25",
+      "headline": "LUPATECH (LUPA-NM) - Fato Relevante - 29/12/25",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3185558&agencia=18&dataNoticia=2025-12-29%2008:00:05",
+      "id": 3185558,
+      "categoria": "Fato Relevante"
+    },
+    {
+      "data": "2025-12-18",
+      "data_hora": "2025-12-18 18:22:45",
+      "titulo": "NM)  Outros Comunicados ao Mercado  18/12/25",
+      "headline": "LUPATECH (LUPA-NM) - Outros Comunicados ao Mercado - 18/12/25",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3177012&agencia=18&dataNoticia=2025-12-18%2018:22:45",
+      "id": 3177012,
+      "categoria": "Aviso"
+    }
+  ]
+}

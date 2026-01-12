@@ -1,0 +1,41 @@
+{
+  "empresa": {
+    "ticker": "ABEV",
+    "nome": "AMBEV S/A",
+    "cnpj": "07.526.557/0001-00"
+  },
+  "ultima_atualizacao": "2026-01-12T11:22:39.129439",
+  "total_noticias": 3,
+  "noticias": [
+    {
+      "data": "2026-01-09",
+      "data_hora": "2026-01-09 18:10:22",
+      "titulo": " VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "headline": "AMBEV S/A (ABEV) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200597&agencia=18&dataNoticia=2026-01-09%2018:10:22",
+      "id": 3200597,
+      "categoria": "Outros"
+    },
+    {
+      "data": "2026-01-05",
+      "data_hora": "2026-01-05 18:03:18",
+      "titulo": " Data prevista para assembleia geral  30/04/26",
+      "headline": "AMBEV S/A (ABEV) - Data prevista para assembleia geral - 30/04/26",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193319&agencia=18&dataNoticia=2026-01-05%2018:03:18",
+      "id": 3193319,
+      "categoria": "Governança"
+    },
+    {
+      "data": "2025-12-23",
+      "data_hora": "2025-12-23 08:00:08",
+      "titulo": " Transacao entre Partes Relacionadas  22/12/25",
+      "headline": "AMBEV S/A (ABEV) - Transacao entre Partes Relacionadas - 22/12/25",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3181880&agencia=18&dataNoticia=2025-12-23%2008:00:08",
+      "id": 3181880,
+      "categoria": "Outros"
+    }
+  ]
+}
