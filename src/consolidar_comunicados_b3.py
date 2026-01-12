@@ -81,6 +81,18 @@ class ConsolidadorNoticias:
                 
                 empresa_info = dados['empresa']
                 ticker = empresa_info['ticker']
+              
+                # Normaliza ticker para sempre ter classe quando o JSON vier sem (ex.: 'BBAS' -> 'BBAS3')
+                try:
+                    t_norm = str(ticker).strip().upper()
+                    if t_norm and not re.search(r'\d{1,2}$', t_norm):
+                        base = t_norm[:4]
+                        if base in self._mapa_base_para_ticker_classe:
+                            ticker = self._mapa_base_para_ticker_classe[base]
+                            empresa_info['ticker'] = ticker
+                except Exception:
+                    pass
+              
                 
                 self.empresas_processadas += 1
                 
