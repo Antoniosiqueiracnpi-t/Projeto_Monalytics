@@ -1,0 +1,35 @@
+{
+  "ultima_atualizacao": "2026-01-12T12:54:09.404730+00:00",
+  "indicadores": {
+    "selic": {
+      "taxa_anual": 15.0,
+      "taxa_decimal": 0.15,
+      "formato": "15.00%"
+    },
+    "cdi": {
+      "taxa_anual": 14.9,
+      "taxa_decimal": 0.149,
+      "formato": "14.90%"
+    },
+    "ipca": {
+      "taxa_mensal": 0.33,
+      "taxa_acumulada_12m": 4.26,
+      "mes_referencia": "2025-12",
+      "formato_mensal": "0.33%",
+      "formato_acumulado": "4.26%"
+    },
+    "igpm": {
+      "taxa_mensal": -0.01,
+      "taxa_acumulada_12m": 0.1,
+      "mes_referencia": "2025-12",
+      "formato_mensal": "-0.01%",
+      "formato_acumulado": "0.10%"
+    },
+    "dolar": {
+      "cotacao_compra": 5.3701,
+      "formato_compra": "R$ 5.3701",
+      "data_referencia": "2026-01-09",
+      "fonte": "BCB-Alternativo"
+    }
+  }
+}
