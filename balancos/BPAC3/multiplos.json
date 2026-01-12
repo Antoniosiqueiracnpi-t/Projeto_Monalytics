@@ -76,13 +76,13 @@
       "multiplos": {
         "VALOR_MERCADO": 182188662.64,
         "P_L": 31.5048,
-        "P_VPA": null,
+        "P_VPA": 5.0976,
         "DY": 4.9836,
         "PAYOUT": 157.0074,
-        "ROE": null,
+        "ROE": 16.1805,
         "ROA": 0.8831,
         "MARGEM_LIQUIDA": 35.5906,
-        "PL_ATIVOS": 0.0
+        "PL_ATIVOS": 5.4578
       }
     },
     "2023": {
@@ -90,13 +90,13 @@
       "multiplos": {
         "VALOR_MERCADO": 275732776.62,
         "P_L": 39.731,
-        "P_VPA": null,
+        "P_VPA": 7.2255,
         "DY": 3.6716,
         "PAYOUT": 145.8748,
-        "ROE": null,
+        "ROE": 19.3568,
         "ROA": 1.0803,
         "MARGEM_LIQUIDA": 41.6567,
-        "PL_ATIVOS": 0.0
+        "PL_ATIVOS": 5.6944
       }
     },
     "2024": {
@@ -104,13 +104,13 @@
       "multiplos": {
         "VALOR_MERCADO": 211926798.63,
         "P_L": 27.3311,
-        "P_VPA": null,
+        "P_VPA": 4.5974,
         "DY": 5.4343,
         "PAYOUT": 148.5248,
-        "ROE": null,
+        "ROE": 18.126,
         "ROA": 0.9683,
         "MARGEM_LIQUIDA": 31.969,
-        "PL_ATIVOS": 0.0
+        "PL_ATIVOS": 5.0732
       }
     },
     "2025": {
@@ -118,19 +118,19 @@
       "multiplos": {
         "VALOR_MERCADO": 396876351.63,
         "P_L": 37.1426,
-        "P_VPA": null,
+        "P_VPA": 7.2121,
         "DY": 3.6908,
         "PAYOUT": 137.0855,
-        "ROE": null,
+        "ROE": 20.9117,
         "ROA": 1.1345,
         "MARGEM_LIQUIDA": 38.4108,
-        "PL_ATIVOS": 0.0
+        "PL_ATIVOS": 5.5234
       }
     }
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-12T12:33:17.408819",
+    "data_calculo": "2026-01-12T12:51:42.320267",
     "preco_utilizado": 47.67,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 11506119928,
@@ -138,13 +138,13 @@
     "multiplos": {
       "VALOR_MERCADO": 396876351.63,
       "P_L": 37.1426,
-      "P_VPA": null,
+      "P_VPA": 7.2121,
       "DY": 3.6908,
       "PAYOUT": 137.0855,
-      "ROE": null,
+      "ROE": 20.9117,
       "ROA": 1.1345,
       "MARGEM_LIQUIDA": 38.4108,
-      "PL_ATIVOS": 0.0
+      "PL_ATIVOS": 5.5234
     }
   },
   "periodos_disponiveis": [
