@@ -2,7 +2,7 @@
 """
 Calculadora de Múltiplos Financeiros para Empresas Não-Financeiras
 ==================================================================
-VERSÃO CORRIGIDA - Janeiro 2026
+VERSÃO CORRIGIDA - Janeiro 2025
 
 Calcula 22 múltiplos organizados em 5 categorias (empresas não-financeiras):
 - Valuation (7): P/L, P/VPA, EV/EBITDA, EV/EBIT, EV/Receita, DY, Payout
@@ -2091,9 +2091,6 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
 
     # ✅ Expor Valor de Mercado (R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
-    
-    # Detectar código do PL dinamicamente (2.07 ou 2.08)
-    pl_code = _detectar_codigo_pl_banco(dados.bpp)
     
     ev = _calcular_ev(dados, periodo, market_cap)
     
