@@ -790,12 +790,12 @@ def processar_ticker(ticker, ano_inicio=2010):
     base_dir = Path('balancos') / ticker
     if not base_dir.exists():
         print(f"⚠️  Diretório não encontrado: {base_dir}")
-        return False
+        return False  # erro real
     
-    sucesso = False
-    arquivos_processados = []
+    houve_erro = False
+    houve_alteracao = False
+    arquivos_atualizados = []
     
-    # Lista de demonstrativos para processar
     demonstrativos = [
         ('dre', 'dre_padronizado.csv', 'incomeStatementHistoryQuarterly'),
         ('bpa', 'bpa_padronizado.csv', 'balanceSheetHistoryQuarterly'),
@@ -804,56 +804,56 @@ def processar_ticker(ticker, ano_inicio=2010):
     
     for tipo, arquivo, modulo in demonstrativos:
         arquivo_path = base_dir / arquivo
-        
         if not arquivo_path.exists():
             continue
         
         print(f"\n📊 Processando {tipo.upper()} de {ticker}...")
         
         try:
-            # Ler arquivo atual
             df_atual = pd.read_csv(arquivo_path)
             linhas_originais = len(df_atual)
             
             print(f"  📁 Arquivo atual: {linhas_originais} linhas")
             
-            # Processar demonstrativo
             df_novo = processar_demonstrativo(ticker, df_atual, modulo, tipo, ano_inicio)
             
-            if df_novo is not None:
-                linhas_finais = len(df_novo)
-                
-                # VALIDAÇÃO: Número de linhas deve ser EXATAMENTE o mesmo
-                if linhas_finais != linhas_originais:
-                    print(f"  ⚠️  ERRO: Número de linhas mudou! Original={linhas_originais}, Novo={linhas_finais}")
-                    print(f"  ❌ Abortando salvamento do {tipo.upper()} para preservar estrutura")
-                    continue
-                
-                # Verificar se houve mudanças
-                if not df_novo.equals(df_atual):
-                    # Salvar arquivo
-                    df_novo.to_csv(arquivo_path, index=False)
-                    print(f"  💾 {tipo.upper()} salvo: {arquivo_path}")
-                    print(f"  ✅ Estrutura preservada: {linhas_finais} linhas mantidas")
-                    arquivos_processados.append(tipo.upper())
-                    sucesso = True
-                else:
-                    print(f"  ℹ️  {tipo.upper()} já estava completo")
-            else:
+            if df_novo is None:
                 print(f"  ⚠️  {tipo.upper()} não foi processado")
-                
+                continue
+            
+            linhas_finais = len(df_novo)
+            if linhas_finais != linhas_originais:
+                print(f"  ⚠️  Estrutura alterada ({linhas_originais} → {linhas_finais})")
+                print(f"  ❌ Abortando salvamento do {tipo.upper()} para preservar estrutura")
+                continue
+            
+            if not df_novo.equals(df_atual):
+                df_novo.to_csv(arquivo_path, index=False)
+                print(f"  💾 {tipo.upper()} salvo: {arquivo_path}")
+                print(f"  ✅ Estrutura preservada: {linhas_finais} linhas mantidas")
+                arquivos_atualizados.append(tipo.upper())
+                houve_alteracao = True
+            else:
+                print(f"  ℹ️  {tipo.upper()} sem alterações (já estava completo)")
+        
         except Exception as e:
+            houve_erro = True
             print(f"  ❌ Erro no {tipo.upper()}: {e}")
             import traceback
             traceback.print_exc()
     
-    if sucesso:
-        print(f"\n✅ {ticker} processado com sucesso!")
-        print(f"   Arquivos atualizados: {', '.join(arquivos_processados)}")
-    else:
-        print(f"\n⚠️  {ticker} não teve alterações ou houve erros")
+    if houve_erro:
+        print(f"\n❌ {ticker} finalizado com ERROS")
+        return False
     
-    return sucesso
+    if houve_alteracao:
+        print(f"\n✅ {ticker} processado com sucesso!")
+        print(f"   Arquivos atualizados: {', '.join(arquivos_atualizados)}")
+    else:
+        print(f"\n✅ {ticker} processado com sucesso (sem alterações)")
+    
+    return True
+
 
 
 def obter_lista_tickers():
@@ -1030,7 +1030,7 @@ def main():
     print(f"\n{'='*60}")
     
     # Exit code baseado em sucessos
-    sys.exit(0 if sucessos else 1)
+    sys.exit(1 if falhas else 0)
 
 
 if __name__ == "__main__":
