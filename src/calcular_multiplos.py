@@ -520,6 +520,102 @@ def _encontrar_periodo_imputacao(df: pd.DataFrame, periodo_req: str) -> Optional
 
     return None
 
+
+def _detectar_coluna_ticker_precos(df: pd.DataFrame) -> Optional[str]:
+    """Detecta coluna de ticker no precos_trimestrais.csv (quando multi-classes)."""
+    if df is None:
+        return None
+    for c in ["Ticker", "ticker", "TICKER"]:
+        if c in df.columns:
+            return c
+    return None
+
+
+def _gerar_variantes_ticker(ticker: str) -> List[str]:
+    """
+    Gera variantes comuns do ticker (3/4/5/6/11/33/34) para fallback de busca.
+    Ex.: 'ITUB4' -> ['ITUB4','ITUB3','ITUB5','ITUB6','ITUB11','ITUB33','ITUB34']
+    """
+    t = str(ticker or "").upper().strip()
+    if not t:
+        return []
+
+    m = re.match(r"^([A-Z]{4})(\d+)?$", t)
+    if not m:
+        return [t]
+
+    base = m.group(1)
+    variantes = ["3", "4", "5", "6", "11", "33", "34"]
+
+    out = [t]
+    for v in variantes:
+        cand = f"{base}{v}"
+        if cand not in out:
+            out.append(cand)
+    return out
+
+
+def _filtrar_precos_por_ticker(df: pd.DataFrame, ticker: str) -> pd.DataFrame:
+    """
+    Filtra o dataframe de preços para um ticker (com fallback para variantes).
+    Regra CRÍTICA: se não encontrar o ticker (nem variantes), retorna DF vazio (não usa 'df' inteiro),
+    evitando pegar preço de outra empresa por acidente.
+    """
+    if df is None or df.empty:
+        return df
+
+    col_ticker = _detectar_coluna_ticker_precos(df)
+    if not col_ticker:
+        return df
+
+    alvo = str(ticker or "").upper().strip()
+    serie = df[col_ticker].astype(str).str.upper().str.strip()
+
+    for cand in _gerar_variantes_ticker(alvo):
+        sub = df.loc[serie.eq(cand)]
+        if not sub.empty:
+            return sub.copy()
+
+    # não achou ticker nem variantes -> vazio (mais seguro que usar df inteiro)
+    return df.iloc[0:0].copy()
+
+
+def _filtrar_tipo_preco(df_local: pd.DataFrame) -> pd.DataFrame:
+    """
+    Seleciona a linha correta de preço quando existir 'Preço de Fechamento' e '... Ajustado'.
+
+    Prioridade:
+      1) Fechamento NÃO ajustado (contém 'fech' e NÃO contém 'ajust')
+      2) Qualquer linha com 'fech'
+      3) Sem filtro (fallback)
+    """
+    if df_local is None or df_local.empty:
+        return df_local
+
+    # candidatos comuns no seu projeto
+    candidatos = ["Preço_Fechamento", "Preco_Fechamento", "TIPO_PRECO", "tipo_preco", "Tipo", "tipo"]
+    col_tipo = None
+    for c in candidatos:
+        if c in df_local.columns and df_local[c].dtype == object:
+            col_tipo = c
+            break
+
+    if not col_tipo:
+        return df_local
+
+    tipo = df_local[col_tipo].astype(str).str.strip().str.lower()
+    m_fech = tipo.str.contains("fech")
+    m_aj = tipo.str.contains("ajust")
+
+    m_nao_aj = m_fech & (~m_aj)
+    if m_nao_aj.any():
+        return df_local.loc[m_nao_aj].copy()
+    if m_fech.any():
+        return df_local.loc[m_fech].copy()
+
+    return df_local
+
+
 def _obter_preco(dados: DadosEmpresa, periodo: str, ticker_preco: Optional[str] = None) -> float:
     """
     Obtém preço da ação no período específico.
@@ -535,99 +631,49 @@ def _obter_preco(dados: DadosEmpresa, periodo: str, ticker_preco: Optional[str] 
         BBDC3,Preço de Fechamento Ajustado,....
         BBDC4,Preço de Fechamento Ajustado,....
 
-    Args:
-        dados: Dados da empresa
-        periodo: ex. "2024T4"
-        ticker_preco: ticker específico (ex. "BBDC4"). Se None, usa dados.ticker.
+    CORREÇÕES IMPORTANTES:
+    - Não usa 'df' inteiro como fallback quando ticker não é encontrado (evita preço de outra empresa).
+    - Prioriza linha de 'Fechamento' não-ajustado quando existir também 'Ajustado'.
     """
     if dados.precos is None or dados.precos.empty:
         return np.nan
 
     df = dados.precos
-
-    # Detectar coluna de ticker (formato multi-classes)
-    col_ticker = None
-    for c in ["Ticker", "ticker", "TICKER"]:
-        if c in df.columns:
-            col_ticker = c
-            break
-
     if periodo not in df.columns:
         return np.nan
 
-    # Se multi-classes, filtrar pelo ticker desejado
-    if col_ticker:
-        alvo = (ticker_preco or dados.ticker or "")
-        alvo = str(alvo).upper().strip()
-        sub = df[df[col_ticker].astype(str).str.upper().str.strip() == alvo]
-        if sub.empty:
-            # fallback: se não achou, tenta usar a 1ª linha numérica disponível
-            sub = df
-        df_use = sub
-    else:
-        df_use = df
+    # Filtrar por ticker (se multi-classes)
+    alvo = (ticker_preco or dados.ticker or "")
+    df_use = _filtrar_precos_por_ticker(df, alvo)
+    if df_use is None or df_use.empty:
+        return np.nan
 
-    # ==================== SELEÇÃO DO PREÇO (CORREÇÃO) ====================
-    # Objetivo: alinhar múltiplos com plataformas como StatusInvest/Investidor10.
-    # Se existir mais de uma linha de preço (ex.: "Preço de Fechamento" e "Ajustado"),
-    # preferir SEMPRE o "Preço de Fechamento" (não-ajustado).
-    df_sel = df_use
-    col_tipo = None
-    for c in ["Preço_Fechamento", "Preco_Fechamento", "PRECO_FECHAMENTO", "tipo_preco", "Tipo", "tipo"]:
-        if c in df_sel.columns:
-            col_tipo = c
-            break
+    # Selecionar linha de preço (não-ajustado > ajustado)
+    df_use = _filtrar_tipo_preco(df_use)
 
-    if col_tipo:
-        tipo = df_sel[col_tipo].astype(str).str.strip().str.lower()
-        mask_fech = tipo.str.contains(r"pre[çc]o\s*de\s*fechamento", regex=True)
-        mask_aj = tipo.str.contains(r"ajust", regex=True)
-
-        # não-ajustado primeiro
-        if (mask_fech & ~mask_aj).any():
-            df_sel = df_sel.loc[mask_fech & ~mask_aj].copy()
-        elif mask_fech.any():
-            df_sel = df_sel.loc[mask_fech].copy()
-        elif mask_aj.any():
-            df_sel = df_sel.loc[mask_aj].copy()
-
-    # Buscar valor numérico na coluna do período
-    s = pd.to_numeric(df_sel[periodo], errors="coerce")
+    s = pd.to_numeric(df_use[periodo], errors="coerce")
     if s.notna().any():
-        # pega o primeiro valor numérico válido
         return float(s.dropna().iloc[0])
 
     return np.nan
-
 
 
 def _obter_preco_atual(dados: DadosEmpresa, ticker_preco: Optional[str] = None) -> Tuple[float, str]:
     """
     Obtém o preço mais recente disponível (último trimestre com dado numérico).
 
-    Suporta formato antigo e multi-classes (com coluna Ticker).
+    CORREÇÃO: se o ticker não existir no arquivo (nem variantes), retorna NaN (não usa outra empresa).
     """
     if dados.precos is None or dados.precos.empty:
         return np.nan, ""
 
     df = dados.precos
 
-    # Detectar coluna de ticker
-    col_ticker = None
-    for c in ["Ticker", "ticker", "TICKER"]:
-        if c in df.columns:
-            col_ticker = c
-            break
-
-    if col_ticker:
-        alvo = (ticker_preco or dados.ticker or "")
-        alvo = str(alvo).upper().strip()
-        sub = df[df[col_ticker].astype(str).str.upper().str.strip() == alvo]
-        if sub.empty:
-            sub = df
-        df_use = sub
-    else:
-        df_use = df
+    # Se multi-classes, filtrar por ticker (com variantes)
+    alvo = (ticker_preco or dados.ticker or "")
+    df_use = _filtrar_precos_por_ticker(df, alvo)
+    if df_use is None or df_use.empty:
+        return np.nan, ""
 
     colunas_precos = _get_colunas_numericas_validas(df_use)
     if not colunas_precos:
@@ -639,7 +685,6 @@ def _obter_preco_atual(dados: DadosEmpresa, ticker_preco: Optional[str] = None) 
             return preco, p
 
     return np.nan, ""
-
 
 
 def _detectar_coluna_especie(df: pd.DataFrame) -> Optional[str]:
@@ -1512,8 +1557,13 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     else:
         market_cap = _calcular_market_cap(dados, periodo)
 
-    # ✅ Expor Valor de Mercado (R$ mil)
+    # ✅ Expor Valor de Mercado (R$ mil) - padrão interno do projeto (alinha com DFs da CVM em R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+
+    # ✅ Extras para alinhamento com plataformas (que exibem em R$ / bilhões)
+    # OBS: mantém "VALOR_MERCADO" intacto para não quebrar dependências existentes.
+    resultado["VALOR_MERCADO_R$"] = _normalizar_valor(market_cap * 1000.0, decimals=2)
+    resultado["VALOR_MERCADO_B"] = _normalizar_valor((market_cap * 1000.0) / 1e9, decimals=2)
     
     ev = _calcular_ev(dados, periodo, market_cap)
 
@@ -1533,21 +1583,14 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     else:
         preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
 
-    # ✅ Alinhamento com StatusInvest/Investidor10:
-    # Preferir múltiplos baseados em Valor de Mercado (Market Cap) quando disponível,
-    # pois é robusto para empresas multi-classe e evita distorções com UNIT/11.
-    p_l_vm = _safe_divide(market_cap, ll_ltm)  # ambos em R$ mil
-    p_l_preco = _safe_divide(preco_pl, eps_ltm)
-    resultado["P_L"] = _normalizar_valor(p_l_vm if np.isfinite(p_l_vm) else p_l_preco)
+    resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, eps_ltm))
 
     # Obter Patrimônio Líquido (usado em P/VPA, ROIC, Dív.Líq/PL)
     pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
 
     # P/VPA = Preço / VPA (PL / Ações)
     vpa = (pl * 1000.0) / acoes_ref if np.isfinite(pl) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
-    p_vpa_vm = _safe_divide(market_cap, pl)  # ambos em R$ mil
-    p_vpa_preco = _safe_divide(preco_pl, vpa)
-    resultado["P_VPA"] = _normalizar_valor(p_vpa_vm if np.isfinite(p_vpa_vm) else p_vpa_preco)
+    resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
     ebitda_ltm = _calcular_ebitda_ltm(dados, periodo)
     resultado["EV_EBITDA"] = _normalizar_valor(_safe_divide(ev, ebitda_ltm))
@@ -1565,22 +1608,31 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     # Dividend Yield (padrão clássico) = (Dividendos por Ação LTM / Preço) × 100
     # dividendos_ltm está em R$ mil (total); converter para R$/ação usando acoes_ref
     dps_ltm = (dividendos_ltm * 1000.0) / acoes_ref if np.isfinite(dividendos_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
-    dy_vm = _safe_divide(dividendos_ltm, market_cap) * 100 if np.isfinite(market_cap) and market_cap > 0 else np.nan
-    dy_preco = _safe_divide(dps_ltm, preco_pl) * 100
-    resultado["DY"] = _normalizar_valor(dy_vm if np.isfinite(dy_vm) else dy_preco)
+    resultado["DY"] = _normalizar_valor(_safe_divide(dps_ltm, preco_pl) * 100)
 
     # Payout (padrão clássico) = Dividendos por Ação / EPS × 100
-    payout_vm = _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
-    payout_preco = _safe_divide(dps_ltm, eps_ltm) * 100
-    resultado["PAYOUT"] = _normalizar_valor(payout_vm if np.isfinite(payout_vm) else payout_preco)
+    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dps_ltm, eps_ltm) * 100)
     
     # ==================== RENTABILIDADE ====================
     
+    # ✅ CORREÇÃO: anualização (LTM) é SOMA dos trimestres, não média.
+    # Para ROE/ROA, usamos preferencialmente denominadores PONTUAIS do período,
+    # com fallback para a média (pontual vs 4T atrás) apenas se o pontual estiver indisponível.
+
+    pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
     pl_medio = _obter_valor_medio(dados, dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
-    resultado["ROE"] = _normalizar_valor(_safe_divide(ll_ltm, pl_medio) * 100)
-    
+    den_pl = pl if np.isfinite(pl) and pl > 0 else pl_medio
+    resultado["ROE"] = _normalizar_valor(
+        _safe_divide(ll_ltm, den_pl) * 100 if np.isfinite(den_pl) and den_pl > 0 else np.nan
+    )
+
+    at = _obter_valor_pontual(dados.bpa, CONTAS_BPA["ativo_total"], periodo)
     at_medio = _obter_valor_medio(dados, dados.bpa, CONTAS_BPA["ativo_total"], periodo)
-    resultado["ROA"] = _normalizar_valor(_safe_divide(ll_ltm, at_medio) * 100)
+    den_at = at if np.isfinite(at) and at > 0 else at_medio
+    resultado["ROA"] = _normalizar_valor(
+        _safe_divide(ll_ltm, den_at) * 100 if np.isfinite(den_at) and den_at > 0 else np.nan
+    )
+
     
     # ROIC = NOPAT / Capital Investido
     nopat = ebit_ltm * (1 - TAXA_IR_NOPAT) if np.isfinite(ebit_ltm) else np.nan
@@ -2025,8 +2077,13 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
         market_cap = _calcular_market_cap(dados, periodo)
 
 
-    # ✅ Expor Valor de Mercado (R$ mil)
+    # ✅ Expor Valor de Mercado (R$ mil) - padrão interno do projeto (alinha com DFs da CVM em R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+
+    # ✅ Extras para alinhamento com plataformas (que exibem em R$ / bilhões)
+    # OBS: mantém "VALOR_MERCADO" intacto para não quebrar dependências existentes.
+    resultado["VALOR_MERCADO_R$"] = _normalizar_valor(market_cap * 1000.0, decimals=2)
+    resultado["VALOR_MERCADO_B"] = _normalizar_valor((market_cap * 1000.0) / 1e9, decimals=2)
     
     # ==================== VALORES BASE (CONTAS AGREGADAS) ====================
     
@@ -2054,12 +2111,7 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     else:
         preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
 
-    # ✅ Alinhamento com StatusInvest/Investidor10:
-    # Preferir múltiplos baseados em Valor de Mercado (Market Cap) quando disponível,
-    # pois é robusto para empresas multi-classe e evita distorções com UNIT/11.
-    p_l_vm = _safe_divide(market_cap, ll_ltm)  # ambos em R$ mil
-    p_l_preco = _safe_divide(preco_pl, eps_ltm)
-    resultado["P_L"] = _normalizar_valor(p_l_vm if np.isfinite(p_l_vm) else p_l_preco)
+    resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, eps_ltm))
 
     # Patrimônio Líquido - Código detectado automaticamente (2.07 ou 2.08)
     pl = _obter_valor_pontual(dados.bpp, pl_code, periodo)
@@ -2067,32 +2119,31 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
 
     # P/VPA = Preço / VPA (PL / Ações)
     vpa = (pl * 1000.0) / acoes_ref if np.isfinite(pl) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
-    p_vpa_vm = _safe_divide(market_cap, pl)  # ambos em R$ mil
-    p_vpa_preco = _safe_divide(preco_pl, vpa)
-    resultado["P_VPA"] = _normalizar_valor(p_vpa_vm if np.isfinite(p_vpa_vm) else p_vpa_preco)
+    resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
     # Dividend Yield (padrão clássico) = (Dividendos por Ação LTM / Preço) × 100
     dps_ltm = (dividendos_ltm * 1000.0) / acoes_ref if np.isfinite(dividendos_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
-    dy_vm = _safe_divide(dividendos_ltm, market_cap) * 100 if np.isfinite(market_cap) and market_cap > 0 else np.nan
-    dy_preco = _safe_divide(dps_ltm, preco_pl) * 100
-    resultado["DY"] = _normalizar_valor(dy_vm if np.isfinite(dy_vm) else dy_preco)
+    resultado["DY"] = _normalizar_valor(_safe_divide(dps_ltm, preco_pl) * 100)
 
     # Payout (padrão clássico) = Dividendos por Ação / EPS × 100
-    payout_vm = _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
-    payout_preco = _safe_divide(dps_ltm, eps_ltm) * 100
-    resultado["PAYOUT"] = _normalizar_valor(payout_vm if np.isfinite(payout_vm) else payout_preco)
+    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dps_ltm, eps_ltm) * 100)
     
     # ==================== RENTABILIDADE (3 MÚLTIPLOS) ====================
     
-    # ROE = (Lucro Líquido LTM / PL Médio) × 100
+    # ✅ CORREÇÃO: anualização (LTM) é SOMA dos trimestres, não média.
+    # Para ROE/ROA, usamos preferencialmente denominadores PONTUAIS do período,
+    # com fallback para a média (pontual vs 4T atrás) apenas se o pontual estiver indisponível.
+
+    den_pl = pl if np.isfinite(pl) and pl > 0 else pl_medio
     resultado["ROE"] = _normalizar_valor(
-        _safe_divide(ll_ltm, pl_medio) * 100 if np.isfinite(pl_medio) and pl_medio > 0 else np.nan
+        _safe_divide(ll_ltm, den_pl) * 100 if np.isfinite(den_pl) and den_pl > 0 else np.nan
     )
-    
-    # ROA = (Lucro Líquido LTM / Ativo Total Médio) × 100
+
+    den_at = at if np.isfinite(at) and at > 0 else at_medio
     resultado["ROA"] = _normalizar_valor(
-        _safe_divide(ll_ltm, at_medio) * 100 if np.isfinite(at_medio) and at_medio > 0 else np.nan
+        _safe_divide(ll_ltm, den_at) * 100 if np.isfinite(den_at) and den_at > 0 else np.nan
     )
+
     
     # Margem Líquida = (Lucro Líquido LTM / Receita Intermediação LTM) × 100
     resultado["MARGEM_LIQUIDA"] = _normalizar_valor(
@@ -2135,8 +2186,13 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
         market_cap = _calcular_market_cap(dados, periodo)
 
 
-    # ✅ Expor Valor de Mercado (R$ mil)
+    # ✅ Expor Valor de Mercado (R$ mil) - padrão interno do projeto (alinha com DFs da CVM em R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+
+    # ✅ Extras para alinhamento com plataformas (que exibem em R$ / bilhões)
+    # OBS: mantém "VALOR_MERCADO" intacto para não quebrar dependências existentes.
+    resultado["VALOR_MERCADO_R$"] = _normalizar_valor(market_cap * 1000.0, decimals=2)
+    resultado["VALOR_MERCADO_B"] = _normalizar_valor((market_cap * 1000.0) / 1e9, decimals=2)
     
     ev = _calcular_ev(dados, periodo, market_cap)
     
@@ -2189,12 +2245,7 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     else:
         preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
 
-    # ✅ Alinhamento com StatusInvest/Investidor10:
-    # Preferir múltiplos baseados em Valor de Mercado (Market Cap) quando disponível,
-    # pois é robusto para empresas multi-classe e evita distorções com UNIT/11.
-    p_l_vm = _safe_divide(market_cap, ll_ltm)  # ambos em R$ mil
-    p_l_preco = _safe_divide(preco_pl, eps_ltm)
-    resultado["P_L"] = _normalizar_valor(p_l_vm if np.isfinite(p_l_vm) else p_l_preco)
+    resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, eps_ltm))
 
     # Patrimônio Líquido - Código detectado automaticamente (2.07 ou 2.08)
     pl = _obter_valor_pontual(dados.bpp, pl_code, periodo)
@@ -2202,20 +2253,14 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
 
     # P/VPA = Preço / VPA (PL / Ações)
     vpa = (pl * 1000.0) / acoes_ref if np.isfinite(pl) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
-    p_vpa_vm = _safe_divide(market_cap, pl)  # ambos em R$ mil
-    p_vpa_preco = _safe_divide(preco_pl, vpa)
-    resultado["P_VPA"] = _normalizar_valor(p_vpa_vm if np.isfinite(p_vpa_vm) else p_vpa_preco)
+    resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
     # Dividend Yield (padrão clássico) = (Dividendos por Ação LTM / Preço) × 100
     dps_ltm = (dividendos_ltm * 1000.0) / acoes_ref if np.isfinite(dividendos_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
-    dy_vm = _safe_divide(dividendos_ltm, market_cap) * 100 if np.isfinite(market_cap) and market_cap > 0 else np.nan
-    dy_preco = _safe_divide(dps_ltm, preco_pl) * 100
-    resultado["DY"] = _normalizar_valor(dy_vm if np.isfinite(dy_vm) else dy_preco)
+    resultado["DY"] = _normalizar_valor(_safe_divide(dps_ltm, preco_pl) * 100)
 
     # Payout (padrão clássico) = Dividendos por Ação / EPS × 100
-    payout_vm = _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
-    payout_preco = _safe_divide(dps_ltm, eps_ltm) * 100
-    resultado["PAYOUT"] = _normalizar_valor(payout_vm if np.isfinite(payout_vm) else payout_preco)
+    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dps_ltm, eps_ltm) * 100)
     
     # EV/Receita = Enterprise Value / Receita LTM (CORRIGIDO!)
     resultado["EV_RECEITA"] = _normalizar_valor(_safe_divide(ev, receita_ltm))
@@ -2223,15 +2268,17 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     # ==================== RENTABILIDADE (4 MÚLTIPLOS) ====================
     
     # ROE = (Lucro Líquido LTM / PL Médio) × 100
+    den_pl = pl if np.isfinite(pl) and pl > 0 else pl_medio
     resultado["ROE"] = _normalizar_valor(
-        _safe_divide(ll_ltm, pl_medio) * 100 if np.isfinite(pl_medio) and pl_medio > 0 else np.nan
+        _safe_divide(ll_ltm, den_pl) * 100 if np.isfinite(den_pl) and den_pl > 0 else np.nan
     )
-    
+
     # ROA = (Lucro Líquido LTM / Ativo Total Médio) × 100
+    den_at = at if np.isfinite(at) and at > 0 else at_medio
     resultado["ROA"] = _normalizar_valor(
-        _safe_divide(ll_ltm, at_medio) * 100 if np.isfinite(at_medio) and at_medio > 0 else np.nan
+        _safe_divide(ll_ltm, den_at) * 100 if np.isfinite(den_at) and den_at > 0 else np.nan
     )
-    
+
     # Margem Líquida = (Lucro Líquido LTM / Receita LTM) × 100 (CORRIGIDO!)
     resultado["MARGEM_LIQUIDA"] = _normalizar_valor(
         _safe_divide(ll_ltm, receita_ltm) * 100 if np.isfinite(receita_ltm) and receita_ltm > 0 else np.nan
@@ -2281,8 +2328,13 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
         market_cap = _calcular_market_cap(dados, periodo)
 
 
-    # ✅ Expor Valor de Mercado (R$ mil)
+    # ✅ Expor Valor de Mercado (R$ mil) - padrão interno do projeto (alinha com DFs da CVM em R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+
+    # ✅ Extras para alinhamento com plataformas (que exibem em R$ / bilhões)
+    # OBS: mantém "VALOR_MERCADO" intacto para não quebrar dependências existentes.
+    resultado["VALOR_MERCADO_R$"] = _normalizar_valor(market_cap * 1000.0, decimals=2)
+    resultado["VALOR_MERCADO_B"] = _normalizar_valor((market_cap * 1000.0) / 1e9, decimals=2)
     
     # ==================== LUCRO LÍQUIDO - SUPORTA 3.11 E 3.13 ====================
     
@@ -2385,12 +2437,7 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     else:
         preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
 
-    # ✅ Alinhamento com StatusInvest/Investidor10:
-    # Preferir múltiplos baseados em Valor de Mercado (Market Cap) quando disponível,
-    # pois é robusto para empresas multi-classe e evita distorções com UNIT/11.
-    p_l_vm = _safe_divide(market_cap, ll_ltm)  # ambos em R$ mil
-    p_l_preco = _safe_divide(preco_pl, eps_ltm)
-    resultado["P_L"] = _normalizar_valor(p_l_vm if np.isfinite(p_l_vm) else p_l_preco)
+    resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, eps_ltm))
 
     # ✅ ADICIONAR: Obter PL (usado em P/VPA, ROE, ROA, PL/Ativos)
     pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
@@ -2398,31 +2445,27 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
 
     # P/VPA = Preço / VPA (PL / Ações)
     vpa = (pl * 1000.0) / acoes_ref if np.isfinite(pl) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
-    p_vpa_vm = _safe_divide(market_cap, pl)  # ambos em R$ mil
-    p_vpa_preco = _safe_divide(preco_pl, vpa)
-    resultado["P_VPA"] = _normalizar_valor(p_vpa_vm if np.isfinite(p_vpa_vm) else p_vpa_preco)
+    resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
     # Dividend Yield (padrão clássico) = (Dividendos por Ação LTM / Preço) × 100
     dps_ltm = (dividendos_ltm * 1000.0) / acoes_ref if np.isfinite(dividendos_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
-    dy_vm = _safe_divide(dividendos_ltm, market_cap) * 100 if np.isfinite(market_cap) and market_cap > 0 else np.nan
-    dy_preco = _safe_divide(dps_ltm, preco_pl) * 100
-    resultado["DY"] = _normalizar_valor(dy_vm if np.isfinite(dy_vm) else dy_preco)
+    resultado["DY"] = _normalizar_valor(_safe_divide(dps_ltm, preco_pl) * 100)
 
     # Payout (padrão clássico) = Dividendos por Ação / EPS × 100
-    payout_vm = _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
-    payout_preco = _safe_divide(dps_ltm, eps_ltm) * 100
-    resultado["PAYOUT"] = _normalizar_valor(payout_vm if np.isfinite(payout_vm) else payout_preco)
+    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dps_ltm, eps_ltm) * 100)
     
     # ==================== RENTABILIDADE (2 MÚLTIPLOS) ====================
     
+    den_pl = pl if np.isfinite(pl) and pl > 0 else pl_medio
     resultado["ROE"] = _normalizar_valor(
-        _safe_divide(ll_ltm, pl_medio) * 100 if np.isfinite(pl_medio) and pl_medio > 0 else np.nan
+        _safe_divide(ll_ltm, den_pl) * 100 if np.isfinite(den_pl) and den_pl > 0 else np.nan
     )
-    
+
+    den_at = at if np.isfinite(at) and at > 0 else at_medio
     resultado["ROA"] = _normalizar_valor(
-        _safe_divide(ll_ltm, at_medio) * 100 if np.isfinite(at_medio) and at_medio > 0 else np.nan
+        _safe_divide(ll_ltm, den_at) * 100 if np.isfinite(den_at) and den_at > 0 else np.nan
     )
-    
+
     # ==================== ESTRUTURA (1 MÚLTIPLO) ====================
     
     resultado["PL_ATIVOS"] = _normalizar_valor(
