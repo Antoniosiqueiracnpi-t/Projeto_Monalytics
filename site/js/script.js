@@ -227,6 +227,117 @@ document.addEventListener('DOMContentLoaded', () => {
 */
 
 // =========================== RESIZE HANDLER ===========================
+
+// =========================== NAVEGAÇÃO POR SEÇÕES ===========================
+/**
+ * Gerencia a navegação por seções na análise de ações
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const navItems = document.querySelectorAll('.empresa-nav-item');
+    
+    if (!navItems || navItems.length === 0) return;
+    
+    // Função para atualizar link ativo
+    function setActiveNavItem(targetSection) {
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('data-section') === targetSection) {
+                item.classList.add('active');
+            }
+        });
+    }
+    
+    // Clique nos links de navegação
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            const section = item.getAttribute('data-section');
+            let targetElement = null;
+            
+            // Mapear seção para elemento DOM
+            switch(section) {
+                case 'indicadores':
+                    targetElement = document.querySelector('.indicadores-cards');
+                    break;
+                case 'cotacao':
+                    targetElement = document.querySelector('.grafico-container');
+                    break;
+                case 'empresa':
+                    targetElement = document.querySelector('.empresa-info-card');
+                    break;
+                case 'multiplos':
+                    targetElement = document.getElementById('multiplosSection');
+                    break;
+                case 'dividendos':
+                    targetElement = document.getElementById('dividendosHistoricoSection');
+                    break;
+                case 'comparador':
+                    targetElement = document.getElementById('comparadorAcoesSection');
+                    break;
+            }
+            
+            if (targetElement) {
+                // Scroll suave para seção
+                const headerOffset = 100;
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Atualizar link ativo
+                setActiveNavItem(section);
+            }
+        });
+    });
+    
+    // Scroll spy - detecta seção visível e atualiza navegação
+    let ticking = false;
+    
+    function updateNavOnScroll() {
+        const scrollPosition = window.scrollY + 150;
+        
+        // Elementos das seções
+        const sections = [
+            { name: 'comparador', element: document.getElementById('comparadorAcoesSection') },
+            { name: 'dividendos', element: document.getElementById('dividendosHistoricoSection') },
+            { name: 'multiplos', element: document.getElementById('multiplosSection') },
+            { name: 'empresa', element: document.querySelector('.empresa-info-card') },
+            { name: 'cotacao', element: document.querySelector('.grafico-container') },
+            { name: 'indicadores', element: document.querySelector('.indicadores-cards') }
+        ];
+        
+        // Encontrar seção ativa
+        for (const section of sections) {
+            if (section.element) {
+                const rect = section.element.getBoundingClientRect();
+                const elementTop = rect.top + window.pageYOffset;
+                const elementBottom = elementTop + rect.height;
+                
+                if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
+                    setActiveNavItem(section.name);
+                    break;
+                }
+            }
+        }
+        
+        ticking = false;
+    }
+    
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateNavOnScroll();
+            });
+            ticking = true;
+        }
+    });
+});
+
+// =========================== RESIZE HANDLER (continuação) ===========================
 /**
  * Gerencia mudanças no tamanho da janela
  * Fecha menu mobile se viewport aumentar
