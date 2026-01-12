@@ -835,959 +835,960 @@ class PadronizadorDRE:
     pasta_balancos: Path = Path("balancos")
     checkup_results: List[CheckupResult] = field(default_factory=list)
     _current_ticker: str = field(default="", repr=False)  # Ticker sendo processado
+    _runtime_schema: Optional[List[Tuple[str, str]]] = field(default=None, repr=False)
     
     
-def _get_current_schema(self) -> List[Tuple[str, str]]:
-    """Retorna o esquema DRE para o ticker atual.
+    def _get_current_schema(self) -> List[Tuple[str, str]]:
+        """Retorna o esquema DRE para o ticker atual.
 
-    Se existir um esquema runtime (construído a partir do próprio DRE consolidado),
-    ele tem prioridade para permitir inclusão de subcontas (1º nível).
-    """
-    if self._runtime_schema is not None and len(self._runtime_schema) > 0:
-        return self._runtime_schema
-    return _get_dre_schema(self._current_ticker)
+        Se existir um esquema runtime (construído a partir do próprio DRE consolidado),
+        ele tem prioridade para permitir inclusão de subcontas (1º nível).
+        """
+        if self._runtime_schema is not None and len(self._runtime_schema) > 0:
+            return self._runtime_schema
+        return _get_dre_schema(self._current_ticker)
 
 
 
-def _build_runtime_schema_with_subcontas(self, df_tri: pd.DataFrame) -> List[Tuple[str, str]]:
-    """Constrói esquema runtime com conta principal + 1º nível de subconta."""
-    base_schema = _get_dre_schema(self._current_ticker)
-    base_codes = [c for c, _ in base_schema]
+    def _build_runtime_schema_with_subcontas(self, df_tri: pd.DataFrame) -> List[Tuple[str, str]]:
+        """Constrói esquema runtime com conta principal + 1º nível de subconta."""
+        base_schema = _get_dre_schema(self._current_ticker)
+        base_codes = [c for c, _ in base_schema]
 
-    name_map: Dict[str, str] = {}
-    if df_tri is not None and not df_tri.empty and "cd_conta" in df_tri.columns and "ds_conta" in df_tri.columns:
-        tmp = df_tri[["cd_conta", "ds_conta"]].dropna().copy()
-        tmp["cd_conta"] = tmp["cd_conta"].astype(str).str.strip()
-        tmp["ds_conta"] = tmp["ds_conta"].astype(str).str.strip()
-        for code, g in tmp.groupby("cd_conta", sort=False):
-            try:
-                mode_vals = g["ds_conta"].mode(dropna=True)
-                name_map[code] = str(mode_vals.iloc[0]) if len(mode_vals) > 0 else str(g["ds_conta"].iloc[0])
-            except Exception:
-                name_map[code] = str(g["ds_conta"].iloc[0])
+        name_map: Dict[str, str] = {}
+        if df_tri is not None and not df_tri.empty and "cd_conta" in df_tri.columns and "ds_conta" in df_tri.columns:
+            tmp = df_tri[["cd_conta", "ds_conta"]].dropna().copy()
+            tmp["cd_conta"] = tmp["cd_conta"].astype(str).str.strip()
+            tmp["ds_conta"] = tmp["ds_conta"].astype(str).str.strip()
+            for code, g in tmp.groupby("cd_conta", sort=False):
+                try:
+                    mode_vals = g["ds_conta"].mode(dropna=True)
+                    name_map[code] = str(mode_vals.iloc[0]) if len(mode_vals) > 0 else str(g["ds_conta"].iloc[0])
+                except Exception:
+                    name_map[code] = str(g["ds_conta"].iloc[0])
 
-    parent_to_subs: Dict[str, Set[str]] = {c: set() for c in base_codes}
-    if df_tri is not None and not df_tri.empty and "cd_conta" in df_tri.columns:
-        for raw in df_tri["cd_conta"].astype(str).str.strip().unique().tolist():
-            if raw.count(".") == 2:
-                parent = ".".join(raw.split(".")[:2])
-                if parent in parent_to_subs:
-                    parent_to_subs[parent].add(raw)
+        parent_to_subs: Dict[str, Set[str]] = {c: set() for c in base_codes}
+        if df_tri is not None and not df_tri.empty and "cd_conta" in df_tri.columns:
+            for raw in df_tri["cd_conta"].astype(str).str.strip().unique().tolist():
+                if raw.count(".") == 2:
+                    parent = ".".join(raw.split(".")[:2])
+                    if parent in parent_to_subs:
+                        parent_to_subs[parent].add(raw)
 
-    def _sort_code(code: str):
-        parts = str(code).split(".")
-        nums = []
-        for p in parts:
-            try:
-                nums.append(int(p))
-            except Exception:
-                nums.append(999)
-        nums = (nums + [999, 999, 999, 999])[:4]
-        return tuple(nums)
+        def _sort_code(code: str):
+            parts = str(code).split(".")
+            nums = []
+            for p in parts:
+                try:
+                    nums.append(int(p))
+                except Exception:
+                    nums.append(999)
+            nums = (nums + [999, 999, 999, 999])[:4]
+            return tuple(nums)
 
-    schema_out: List[Tuple[str, str]] = []
-    for parent_code, parent_name in base_schema:
-        schema_out.append((parent_code, name_map.get(parent_code, parent_name)))
-        subs = sorted(list(parent_to_subs.get(parent_code, set())), key=_sort_code)
-        for sub_code in subs:
-            schema_out.append((sub_code, name_map.get(sub_code, "")))
+        schema_out: List[Tuple[str, str]] = []
+        for parent_code, parent_name in base_schema:
+            schema_out.append((parent_code, name_map.get(parent_code, parent_name)))
+            subs = sorted(list(parent_to_subs.get(parent_code, set())), key=_sort_code)
+            for sub_code in subs:
+                schema_out.append((sub_code, name_map.get(sub_code, "")))
 
-    return schema_out
+        return schema_out
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
-            pasta = get_pasta_balanco(ticker)
-            tri_path = pasta / "dre_consolidado.csv"
-            anu_path = pasta / "dre_anual.csv"
+                pasta = get_pasta_balanco(ticker)
+                tri_path = pasta / "dre_consolidado.csv"
+                anu_path = pasta / "dre_anual.csv"
         
-            if not tri_path.exists():
-                raise FileNotFoundError(f"Arquivo não encontrado: {tri_path}")
-            if not anu_path.exists():
-                raise FileNotFoundError(f"Arquivo não encontrado: {anu_path}")
+                if not tri_path.exists():
+                    raise FileNotFoundError(f"Arquivo não encontrado: {tri_path}")
+                if not anu_path.exists():
+                    raise FileNotFoundError(f"Arquivo não encontrado: {anu_path}")
         
-            df_tri = pd.read_csv(tri_path)
-            df_anu = pd.read_csv(anu_path)
+                df_tri = pd.read_csv(tri_path)
+                df_anu = pd.read_csv(anu_path)
         
-            for df in (df_tri, df_anu):
-                df["cd_conta"] = df["cd_conta"].astype(str).str.strip()
-                df["ds_conta"] = df["ds_conta"].astype(str).str.strip()
-                df["valor_mil"] = _ensure_numeric(df["valor_mil"])
-                df["data_fim"] = _to_datetime(df, "data_fim")
+                for df in (df_tri, df_anu):
+                    df["cd_conta"] = df["cd_conta"].astype(str).str.strip()
+                    df["ds_conta"] = df["ds_conta"].astype(str).str.strip()
+                    df["valor_mil"] = _ensure_numeric(df["valor_mil"])
+                    df["data_fim"] = _to_datetime(df, "data_fim")
         
-            df_tri = df_tri.dropna(subset=["data_fim"])
-            df_anu = df_anu.dropna(subset=["data_fim"])
+                df_tri = df_tri.dropna(subset=["data_fim"])
+                df_anu = df_anu.dropna(subset=["data_fim"])
             
-            # ADAPTAÇÃO: Para empresas mar-fev com trimestre vazio, inferir do mês
-            if _is_ano_fiscal_mar_fev(ticker):
-                # Verificar se coluna trimestre está vazia ou ausente
-                if "trimestre" not in df_tri.columns:
-                    df_tri["trimestre"] = ""
+                # ADAPTAÇÃO: Para empresas mar-fev com trimestre vazio, inferir do mês
+                if _is_ano_fiscal_mar_fev(ticker):
+                    # Verificar se coluna trimestre está vazia ou ausente
+                    if "trimestre" not in df_tri.columns:
+                        df_tri["trimestre"] = ""
                 
-                # Preencher trimestres vazios baseado no mês
-                mask_vazio = df_tri["trimestre"].isna() | (df_tri["trimestre"].astype(str).str.strip() == "")
-                if mask_vazio.any():
-                    df_tri.loc[mask_vazio, "trimestre"] = df_tri.loc[mask_vazio, "data_fim"].apply(_infer_quarter_mar_fev)
+                    # Preencher trimestres vazios baseado no mês
+                    mask_vazio = df_tri["trimestre"].isna() | (df_tri["trimestre"].astype(str).str.strip() == "")
+                    if mask_vazio.any():
+                        df_tri.loc[mask_vazio, "trimestre"] = df_tri.loc[mask_vazio, "data_fim"].apply(_infer_quarter_mar_fev)
         
-            return df_tri, df_anu
+                return df_tri, df_anu
 
     def _build_quarter_totals(self, df_tri: pd.DataFrame) -> pd.DataFrame:
-            """
-            Constrói totais trimestrais preservando trimestres originais.
+                """
+                Constrói totais trimestrais preservando trimestres originais.
             
-            IMPORTANTE: Para empresas com ano fiscal mar-fev, usa ano fiscal
-            (não ano calendário) para agrupar corretamente.
-            """
-            dre_schema = self._get_current_schema()
-            target_codes = [c for c, _ in dre_schema]
-            wanted_prefixes = tuple([c + "." for c in target_codes] + [EPS_CODE + "."])
+                IMPORTANTE: Para empresas com ano fiscal mar-fev, usa ano fiscal
+                (não ano calendário) para agrupar corretamente.
+                """
+                dre_schema = self._get_current_schema()
+                target_codes = [c for c, _ in dre_schema]
+                wanted_prefixes = tuple([c + "." for c in target_codes] + [EPS_CODE + "."])
     
-            mask = (
-                df_tri["cd_conta"].isin(target_codes + [EPS_CODE])
-                | df_tri["cd_conta"].astype(str).str.startswith(wanted_prefixes)
-            )
-            df = df_tri[mask].copy()
+                mask = (
+                    df_tri["cd_conta"].isin(target_codes + [EPS_CODE])
+                    | df_tri["cd_conta"].astype(str).str.startswith(wanted_prefixes)
+                )
+                df = df_tri[mask].copy()
             
-            # ADAPTAÇÃO: Para empresas mar-fev, usar ano fiscal
-            if _is_ano_fiscal_mar_fev(self._current_ticker):
-                df["ano"] = df["data_fim"].apply(_get_fiscal_year_mar_fev)
-            else:
-                df["ano"] = df["data_fim"].dt.year
+                # ADAPTAÇÃO: Para empresas mar-fev, usar ano fiscal
+                if _is_ano_fiscal_mar_fev(self._current_ticker):
+                    df["ano"] = df["data_fim"].apply(_get_fiscal_year_mar_fev)
+                else:
+                    df["ano"] = df["data_fim"].dt.year
             
-            rows = []
-            for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
-                for code, _name in dre_schema:
-                    v = _pick_value_for_base_code(g, code)
-                    rows.append((int(ano), str(trimestre), code, v))
-                rows.append((int(ano), str(trimestre), EPS_CODE, _compute_eps_value(g)))
+                rows = []
+                for (ano, trimestre), g in df.groupby(["ano", "trimestre"], sort=False):
+                    for code, _name in dre_schema:
+                        v = _pick_value_for_base_code(g, code)
+                        rows.append((int(ano), str(trimestre), code, v))
+                    rows.append((int(ano), str(trimestre), EPS_CODE, _compute_eps_value(g)))
     
-            return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
+                return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
 
     
-def _filter_empty_quarters(self, qtot: pd.DataFrame, threshold: float = 0.01) -> pd.DataFrame:
-    """Mantém trimestre vazio e marca valores como NaN para permitir interpolação."""
-    if qtot is None or qtot.empty:
-        return qtot
+    def _filter_empty_quarters(self, qtot: pd.DataFrame, threshold: float = 0.01) -> pd.DataFrame:
+        """Mantém trimestre vazio e marca valores como NaN para permitir interpolação."""
+        if qtot is None or qtot.empty:
+            return qtot
 
-    main_accounts = ["3.01", "3.03", "3.11"]
-    out = qtot.copy()
-    empty_quarters: Set[Tuple[int, str]] = set()
+        main_accounts = ["3.01", "3.03", "3.11"]
+        out = qtot.copy()
+        empty_quarters: Set[Tuple[int, str]] = set()
 
-    for (ano, trimestre), g in out.groupby(["ano", "trimestre"], sort=False):
-        main_values = g[g["code"].isin(main_accounts)]["valor"].abs()
-        if main_values.empty or (main_values < threshold).all():
-            empty_quarters.add((int(ano), str(trimestre)))
+        for (ano, trimestre), g in out.groupby(["ano", "trimestre"], sort=False):
+            main_values = g[g["code"].isin(main_accounts)]["valor"].abs()
+            if main_values.empty or (main_values < threshold).all():
+                empty_quarters.add((int(ano), str(trimestre)))
 
-    if empty_quarters:
-        mask = out.apply(lambda x: (int(x["ano"]), str(x["trimestre"])) in empty_quarters, axis=1)
-        out.loc[mask, "valor"] = np.nan
-
-    return out
-
-    def _extract_annual_values(self, df_anu: pd.DataFrame) -> pd.DataFrame:
-            """
-            Extrai valores anuais para comparação no check-up, incluindo EPS.
-            
-            IMPORTANTE: Para empresas com ano fiscal mar-fev, usa ano fiscal.
-            """
-            dre_schema = self._get_current_schema()
-            target_codes = [c for c, _ in dre_schema]
-            wanted_prefixes = tuple([c + "." for c in target_codes] + [EPS_CODE + "."])
-    
-            mask = (
-                df_anu["cd_conta"].isin(target_codes + [EPS_CODE])
-                | df_anu["cd_conta"].astype(str).str.startswith(wanted_prefixes)
-            )
-            df = df_anu[mask].copy()
-            
-            # ADAPTAÇÃO: Para empresas mar-fev, usar ano fiscal
-            if _is_ano_fiscal_mar_fev(self._current_ticker):
-                df["ano"] = df["data_fim"].apply(_get_fiscal_year_mar_fev)
-            else:
-                df["ano"] = df["data_fim"].dt.year
-    
-            rows = []
-            for ano, g in df.groupby("ano", sort=False):
-                for code, _name in dre_schema:
-                    v = _pick_value_for_base_code(g, code)
-                    rows.append((int(ano), code, v))
-                # Incluir EPS anual
-                eps_val = _compute_eps_value(g)
-                rows.append((int(ano), EPS_CODE, eps_val))
-    
-            return pd.DataFrame(rows, columns=["ano", "code", "anual_val"])
-
-    def _detect_cumulative_years(
-        self,
-        qtot: pd.DataFrame,
-        anual: pd.DataFrame,
-        fiscal_info: FiscalYearInfo,
-        base_code_for_detection: str = "3.01",
-        ratio_threshold: float = 1.10,
-    ) -> Dict[int, bool]:
-        """
-        Detecta se o trimestral está acumulado (YTD) por ano usando 3.01.
-        
-        IMPORTANTE: Só faz sentido para empresas com ano fiscal PADRÃO.
-        Para empresas irregulares, retorna dict vazio (não tenta converter).
-        """
-        # Para ano fiscal irregular, não tenta detectar acumulado
-        if not fiscal_info.is_standard:
-            return {}
-        
-        anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
-        out: Dict[int, bool] = {}
-
-        for ano, g in qtot[qtot["code"] == base_code_for_detection].groupby("ano"):
-            a = anual_map.get((int(ano), base_code_for_detection), np.nan)
-            if not np.isfinite(a) or a == 0:
-                continue
-            s = float(np.nansum(g["valor"].values))
-            out[int(ano)] = bool(np.isfinite(s) and abs(s) > abs(a) * ratio_threshold)
+        if empty_quarters:
+            mask = out.apply(lambda x: (int(x["ano"]), str(x["trimestre"])) in empty_quarters, axis=1)
+            out.loc[mask, "valor"] = np.nan
 
         return out
 
-    def _to_isolated_quarters(
-        self, 
-        qtot: pd.DataFrame, 
-        cumulative_years: Dict[int, bool],
-        fiscal_info: FiscalYearInfo
-    ) -> pd.DataFrame:
-        """
-        Converte dados acumulados (YTD) para trimestres isolados quando necessário.
-        
-        Para empresas com ano fiscal IRREGULAR: preserva valores originais.
-        """
-        out_rows = []
+    def _extract_annual_values(self, df_anu: pd.DataFrame) -> pd.DataFrame:
+                """
+                Extrai valores anuais para comparação no check-up, incluindo EPS.
+            
+                IMPORTANTE: Para empresas com ano fiscal mar-fev, usa ano fiscal.
+                """
+                dre_schema = self._get_current_schema()
+                target_codes = [c for c, _ in dre_schema]
+                wanted_prefixes = tuple([c + "." for c in target_codes] + [EPS_CODE + "."])
+    
+                mask = (
+                    df_anu["cd_conta"].isin(target_codes + [EPS_CODE])
+                    | df_anu["cd_conta"].astype(str).str.startswith(wanted_prefixes)
+                )
+                df = df_anu[mask].copy()
+            
+                # ADAPTAÇÃO: Para empresas mar-fev, usar ano fiscal
+                if _is_ano_fiscal_mar_fev(self._current_ticker):
+                    df["ano"] = df["data_fim"].apply(_get_fiscal_year_mar_fev)
+                else:
+                    df["ano"] = df["data_fim"].dt.year
+    
+                rows = []
+                for ano, g in df.groupby("ano", sort=False):
+                    for code, _name in dre_schema:
+                        v = _pick_value_for_base_code(g, code)
+                        rows.append((int(ano), code, v))
+                    # Incluir EPS anual
+                    eps_val = _compute_eps_value(g)
+                    rows.append((int(ano), EPS_CODE, eps_val))
+    
+                return pd.DataFrame(rows, columns=["ano", "code", "anual_val"])
 
-        for (ano, code), g in qtot.groupby(["ano", "code"], sort=False):
-            g = g.copy()
-            g["qord"] = g["trimestre"].apply(_quarter_order)
-            g = g.sort_values("qord")
-
-            vals = g["valor"].values.astype(float)
-            qs = g["trimestre"].tolist()
-
-            # Só converte se:
-            # 1. Ano detectado como acumulado
-            # 2. Não é EPS (EPS nunca é acumulado)
-            # 3. Empresa tem ano fiscal padrão
-            if (cumulative_years.get(int(ano), False) and 
-                code != EPS_CODE and 
-                fiscal_info.is_standard):
-                qords = g["qord"].values
-                # só converte se for sequência contínua (1,2,3... ou 1,2,3,4)
-                if len(qords) >= 2 and np.array_equal(qords, np.arange(1, len(qords) + 1)):
-                    iso = []
-                    prev = None
-                    for v in vals:
-                        iso.append(v if prev is None else (v - prev))
-                        prev = v
-                    vals = np.array(iso, dtype=float)
-
-            for tq, v in zip(qs, vals):
-                out_rows.append((int(ano), tq, code, float(v) if np.isfinite(v) else np.nan))
-
-        return pd.DataFrame(out_rows, columns=["ano", "trimestre", "code", "valor"])
-
-    def _add_t4_from_annual_when_missing(
-            self, 
-            qiso: pd.DataFrame, 
+    def _detect_cumulative_years(
+            self,
+            qtot: pd.DataFrame,
             anual: pd.DataFrame,
+            fiscal_info: FiscalYearInfo,
+            base_code_for_detection: str = "3.01",
+            ratio_threshold: float = 1.10,
+        ) -> Dict[int, bool]:
+            """
+            Detecta se o trimestral está acumulado (YTD) por ano usando 3.01.
+        
+            IMPORTANTE: Só faz sentido para empresas com ano fiscal PADRÃO.
+            Para empresas irregulares, retorna dict vazio (não tenta converter).
+            """
+            # Para ano fiscal irregular, não tenta detectar acumulado
+            if not fiscal_info.is_standard:
+                return {}
+        
+            anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
+            out: Dict[int, bool] = {}
+
+            for ano, g in qtot[qtot["code"] == base_code_for_detection].groupby("ano"):
+                a = anual_map.get((int(ano), base_code_for_detection), np.nan)
+                if not np.isfinite(a) or a == 0:
+                    continue
+                s = float(np.nansum(g["valor"].values))
+                out[int(ano)] = bool(np.isfinite(s) and abs(s) > abs(a) * ratio_threshold)
+
+            return out
+
+    def _to_isolated_quarters(
+            self, 
+            qtot: pd.DataFrame, 
+            cumulative_years: Dict[int, bool],
             fiscal_info: FiscalYearInfo
         ) -> pd.DataFrame:
             """
-            Adiciona T4 calculado quando faltante.
-            
-            CASOS:
-            1. Ano fiscal PADRÃO (jan-dez): T4 = Anual - (T1 + T2 + T3)
-            2. Ano fiscal MAR-FEV (CAML3 etc.): T4 = Anual - (T1 + T2 + T3) usando ano fiscal
-            3. Outros irregulares: NÃO adiciona trimestres artificiais
-            
-            REGRA: T4 = Anual - (T1 + T2 + T3) para TODAS as contas, incluindo EPS.
+            Converte dados acumulados (YTD) para trimestres isolados quando necessário.
+        
+            Para empresas com ano fiscal IRREGULAR: preserva valores originais.
             """
-            # CASO 1: Ano fiscal padrão - comportamento original
-            # CASO 2: Ano fiscal mar-fev - permite cálculo de T4
-            # CASO 3: Outros irregulares - não cria T4
+            out_rows = []
+
+            for (ano, code), g in qtot.groupby(["ano", "code"], sort=False):
+                g = g.copy()
+                g["qord"] = g["trimestre"].apply(_quarter_order)
+                g = g.sort_values("qord")
+
+                vals = g["valor"].values.astype(float)
+                qs = g["trimestre"].tolist()
+
+                # Só converte se:
+                # 1. Ano detectado como acumulado
+                # 2. Não é EPS (EPS nunca é acumulado)
+                # 3. Empresa tem ano fiscal padrão
+                if (cumulative_years.get(int(ano), False) and 
+                    code != EPS_CODE and 
+                    fiscal_info.is_standard):
+                    qords = g["qord"].values
+                    # só converte se for sequência contínua (1,2,3... ou 1,2,3,4)
+                    if len(qords) >= 2 and np.array_equal(qords, np.arange(1, len(qords) + 1)):
+                        iso = []
+                        prev = None
+                        for v in vals:
+                            iso.append(v if prev is None else (v - prev))
+                            prev = v
+                        vals = np.array(iso, dtype=float)
+
+                for tq, v in zip(qs, vals):
+                    out_rows.append((int(ano), tq, code, float(v) if np.isfinite(v) else np.nan))
+
+            return pd.DataFrame(out_rows, columns=["ano", "trimestre", "code", "valor"])
+
+    def _add_t4_from_annual_when_missing(
+                self, 
+                qiso: pd.DataFrame, 
+                anual: pd.DataFrame,
+                fiscal_info: FiscalYearInfo
+            ) -> pd.DataFrame:
+                """
+                Adiciona T4 calculado quando faltante.
             
-            is_mar_fev = _is_ano_fiscal_mar_fev(self._current_ticker)
+                CASOS:
+                1. Ano fiscal PADRÃO (jan-dez): T4 = Anual - (T1 + T2 + T3)
+                2. Ano fiscal MAR-FEV (CAML3 etc.): T4 = Anual - (T1 + T2 + T3) usando ano fiscal
+                3. Outros irregulares: NÃO adiciona trimestres artificiais
             
-            if not fiscal_info.is_standard and not is_mar_fev:
-                # Outros irregulares: não criar trimestres artificiais
-                return qiso
+                REGRA: T4 = Anual - (T1 + T2 + T3) para TODAS as contas, incluindo EPS.
+                """
+                # CASO 1: Ano fiscal padrão - comportamento original
+                # CASO 2: Ano fiscal mar-fev - permite cálculo de T4
+                # CASO 3: Outros irregulares - não cria T4
             
-            dre_schema = self._get_current_schema()
-            anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
-            out = qiso.copy()
+                is_mar_fev = _is_ano_fiscal_mar_fev(self._current_ticker)
+            
+                if not fiscal_info.is_standard and not is_mar_fev:
+                    # Outros irregulares: não criar trimestres artificiais
+                    return qiso
+            
+                dre_schema = self._get_current_schema()
+                anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
+                out = qiso.copy()
     
-            # Lista completa de códigos: DRE + EPS
-            all_codes = [c for c, _ in dre_schema] + [EPS_CODE]
+                # Lista completa de códigos: DRE + EPS
+                all_codes = [c for c, _ in dre_schema] + [EPS_CODE]
     
-            for ano in sorted(out["ano"].unique()):
-                g = out[out["ano"] == ano]
-                quarters = set(g["trimestre"].unique())
+                for ano in sorted(out["ano"].unique()):
+                    g = out[out["ano"] == ano]
+                    quarters = set(g["trimestre"].unique())
     
-                if "T4" in quarters:
-                    continue
-                if not {"T1", "T2", "T3"}.issubset(quarters):
-                    continue
-    
-                new_rows = []
-                for code in all_codes:
-                    a = anual_map.get((int(ano), code), np.nan)
-                    if not np.isfinite(a):
+                    if "T4" in quarters:
                         continue
-                    s = g[(g["code"] == code) & (g["trimestre"].isin(["T1", "T2", "T3"]))]["valor"].sum(skipna=True)
-                    t4_val = float(a - s)
-                    
-                    # Para EPS: normalizar valores com escala errada
-                    if code == EPS_CODE and np.isfinite(t4_val):
-                        if abs(t4_val) > 100:
-                            t4_val = t4_val / 1000.0
-                    
-                    new_rows.append((int(ano), "T4", code, t4_val))
+                    if not {"T1", "T2", "T3"}.issubset(quarters):
+                        continue
     
-                if new_rows:
-                    out = pd.concat([out, pd.DataFrame(new_rows, columns=out.columns)], ignore_index=True)
+                    new_rows = []
+                    for code in all_codes:
+                        a = anual_map.get((int(ano), code), np.nan)
+                        if not np.isfinite(a):
+                            continue
+                        s = g[(g["code"] == code) & (g["trimestre"].isin(["T1", "T2", "T3"]))]["valor"].sum(skipna=True)
+                        t4_val = float(a - s)
+                    
+                        # Para EPS: normalizar valores com escala errada
+                        if code == EPS_CODE and np.isfinite(t4_val):
+                            if abs(t4_val) > 100:
+                                t4_val = t4_val / 1000.0
+                    
+                        new_rows.append((int(ano), "T4", code, t4_val))
     
-            return out
+                    if new_rows:
+                        out = pd.concat([out, pd.DataFrame(new_rows, columns=out.columns)], ignore_index=True)
+    
+                return out
 
     def _fill_lucro_liquido_banco(self, qiso: pd.DataFrame) -> pd.DataFrame:
-        """
-        Para bancos: preenche 3.11 (Lucro Líquido) com valor de 3.09 quando vazio.
+            """
+            Para bancos: preenche 3.11 (Lucro Líquido) com valor de 3.09 quando vazio.
         
-        PROBLEMA: DRE de bancos tem Lucro Líquido em 3.09, mas o esquema padrão
-        espera em 3.11 para cálculo de múltiplos.
+            PROBLEMA: DRE de bancos tem Lucro Líquido em 3.09, mas o esquema padrão
+            espera em 3.11 para cálculo de múltiplos.
         
-        SOLUÇÃO: Copiar 3.09 → 3.11 quando 3.11 estiver vazio/NaN.
-        """
-        if not _is_banco(self._current_ticker):
-            return qiso
+            SOLUÇÃO: Copiar 3.09 → 3.11 quando 3.11 estiver vazio/NaN.
+            """
+            if not _is_banco(self._current_ticker):
+                return qiso
         
-        out = qiso.copy()
+            out = qiso.copy()
         
-        # Verificar se 3.11 existe no DataFrame
-        has_311 = '3.11' in out['code'].values
-        has_309 = '3.09' in out['code'].values
+            # Verificar se 3.11 existe no DataFrame
+            has_311 = '3.11' in out['code'].values
+            has_309 = '3.09' in out['code'].values
         
-        if not has_309:
-            return out
+            if not has_309:
+                return out
         
-        # Para cada combinação (ano, trimestre), verificar e copiar
-        new_rows = []
+            # Para cada combinação (ano, trimestre), verificar e copiar
+            new_rows = []
         
-        for (ano, trimestre), g in out.groupby(['ano', 'trimestre'], sort=False):
-            val_309 = g.loc[g['code'] == '3.09', 'valor'].values
-            val_311 = g.loc[g['code'] == '3.11', 'valor'].values
+            for (ano, trimestre), g in out.groupby(['ano', 'trimestre'], sort=False):
+                val_309 = g.loc[g['code'] == '3.09', 'valor'].values
+                val_311 = g.loc[g['code'] == '3.11', 'valor'].values
             
-            # Se 3.09 tem valor
-            if len(val_309) > 0 and pd.notna(val_309[0]) and val_309[0] != 0:
-                # Se 3.11 não existe ou está vazio
-                if len(val_311) == 0 or pd.isna(val_311[0]) or val_311[0] == 0:
-                    new_rows.append({
-                        'ano': ano,
-                        'trimestre': trimestre,
-                        'code': '3.11',
-                        'valor': float(val_309[0])
-                    })
+                # Se 3.09 tem valor
+                if len(val_309) > 0 and pd.notna(val_309[0]) and val_309[0] != 0:
+                    # Se 3.11 não existe ou está vazio
+                    if len(val_311) == 0 or pd.isna(val_311[0]) or val_311[0] == 0:
+                        new_rows.append({
+                            'ano': ano,
+                            'trimestre': trimestre,
+                            'code': '3.11',
+                            'valor': float(val_309[0])
+                        })
         
-        if new_rows:
-            # Remover linhas 3.11 vazias existentes
-            out = out[~((out['code'] == '3.11') & (out['valor'].isna() | (out['valor'] == 0)))]
-            # Adicionar novas linhas com valores de 3.09
-            out = pd.concat([out, pd.DataFrame(new_rows)], ignore_index=True)
+            if new_rows:
+                # Remover linhas 3.11 vazias existentes
+                out = out[~((out['code'] == '3.11') & (out['valor'].isna() | (out['valor'] == 0)))]
+                # Adicionar novas linhas com valores de 3.09
+                out = pd.concat([out, pd.DataFrame(new_rows)], ignore_index=True)
         
-        return out    
+            return out    
     
 
     def _build_horizontal(self, qiso: pd.DataFrame) -> pd.DataFrame:
-        """
-        Constrói tabela horizontal (períodos como colunas).
-        Aplica normalização de valores para evitar erros de ponto flutuante.
-        Usa esquema DRE correto (banco ou padrão) baseado no ticker.
-        """
-        dre_schema = self._get_current_schema()
+            """
+            Constrói tabela horizontal (períodos como colunas).
+            Aplica normalização de valores para evitar erros de ponto flutuante.
+            Usa esquema DRE correto (banco ou padrão) baseado no ticker.
+            """
+            dre_schema = self._get_current_schema()
         
-        periods = (
-            qiso[["ano", "trimestre"]]
-            .drop_duplicates()
-            .assign(qord=lambda x: x["trimestre"].apply(_quarter_order))
-            .sort_values(["ano", "qord"])
-        )
+            periods = (
+                qiso[["ano", "trimestre"]]
+                .drop_duplicates()
+                .assign(qord=lambda x: x["trimestre"].apply(_quarter_order))
+                .sort_values(["ano", "qord"])
+            )
 
-        col_labels = [f"{int(r.ano)}{r.trimestre}" for r in periods.itertuples(index=False)]
-        ordered_cols = [(int(r.ano), r.trimestre) for r in periods.itertuples(index=False)]
+            col_labels = [f"{int(r.ano)}{r.trimestre}" for r in periods.itertuples(index=False)]
+            ordered_cols = [(int(r.ano), r.trimestre) for r in periods.itertuples(index=False)]
 
-        pivot = qiso.pivot_table(
-            index="code",
-            columns=["ano", "trimestre"],
-            values="valor",
-            aggfunc="first",
-        ).reindex(columns=ordered_cols)
+            pivot = qiso.pivot_table(
+                index="code",
+                columns=["ano", "trimestre"],
+                values="valor",
+                aggfunc="first",
+            ).reindex(columns=ordered_cols)
 
-        idx_codes = [c for c, _ in dre_schema] + [EPS_CODE]
-        pivot = pivot.reindex(idx_codes)
-        pivot.columns = col_labels
+            idx_codes = [c for c, _ in dre_schema] + [EPS_CODE]
+            pivot = pivot.reindex(idx_codes)
+            pivot.columns = col_labels
 
-        # Normalizar valores numéricos para evitar erros de ponto flutuante
-        # EPS usa 8 casas decimais, demais usam 3 casas
-        for col in col_labels:
-            for idx in pivot.index:
-                val = pivot.at[idx, col]
-                if pd.notna(val):
-                    decimals = 8 if idx == EPS_CODE else 3
-                    pivot.at[idx, col] = _normalize_value(float(val), decimals)
+            # Normalizar valores numéricos para evitar erros de ponto flutuante
+            # EPS usa 8 casas decimais, demais usam 3 casas
+            for col in col_labels:
+                for idx in pivot.index:
+                    val = pivot.at[idx, col]
+                    if pd.notna(val):
+                        decimals = 8 if idx == EPS_CODE else 3
+                        pivot.at[idx, col] = _normalize_value(float(val), decimals)
 
-        names = {c: n for c, n in dre_schema}
-        names[EPS_CODE] = EPS_LABEL
+            names = {c: n for c, n in dre_schema}
+            names[EPS_CODE] = EPS_LABEL
         
-        # Inserir código e nome da conta como colunas separadas
-        # cd_conta como string para preservar formatação (ex: 3.10 não virar 3.1)
-        pivot.insert(0, "ds_conta", [names.get(c, '') for c in pivot.index])
-        pivot.insert(0, "cd_conta", [str(c) for c in pivot.index])
+            # Inserir código e nome da conta como colunas separadas
+            # cd_conta como string para preservar formatação (ex: 3.10 não virar 3.1)
+            pivot.insert(0, "ds_conta", [names.get(c, '') for c in pivot.index])
+            pivot.insert(0, "cd_conta", [str(c) for c in pivot.index])
 
-        return pivot.reset_index(drop=True)
+            return pivot.reset_index(drop=True)
 
 
 
-def _postprocess_principal_subcontas_e_interpolar(self, df: pd.DataFrame) -> pd.DataFrame:
-    """Mantém principal+subconta e preenche trimestres faltantes por interpolação."""
-    if df is None or df.empty:
-        return df
-
-    base_cols = ["cd_conta", "ds_conta"]
-    period_cols = [c for c in df.columns if c not in base_cols]
-
-    def _parse(col: str):
-        m = re.match(r"^(\d{4})T([1-4])$", str(col).strip())
-        return (int(m.group(1)), int(m.group(2))) if m else None
-
-    parsed = [(c, _parse(c)) for c in period_cols]
-    parsed = [(c, t) for c, t in parsed if t is not None]
-    if not parsed:
-        return df
-
-    parsed.sort(key=lambda x: (x[1][0], x[1][1]))
-    min_y, min_q = parsed[0][1]
-    max_y, max_q = parsed[-1][1]
-
-    def _next(y, q):
-        return (y, q + 1) if q < 4 else (y + 1, 1)
-
-    full = []
-    y, q = min_y, min_q
-    while True:
-        full.append((y, q))
-        if (y, q) == (max_y, max_q):
-            break
-        y, q = _next(y, q)
-
-    full_cols = [f"{y}T{q}" for y, q in full]
-    out = df.copy()
-    for c in full_cols:
-        if c not in out.columns:
-            out[c] = np.nan
-    out = out[base_cols + full_cols]
-
-    vals = out[full_cols].apply(pd.to_numeric, errors="coerce")
-    vals = vals.interpolate(axis=1, limit_direction="both").ffill(axis=1).bfill(axis=1)
-    out.loc[:, full_cols] = vals.values
-
-    def _keep(code: str) -> bool:
-        s = str(code).strip()
-        if s == EPS_CODE:
-            return True
-        return s.count(".") <= 2
-
-    out = out[out["cd_conta"].apply(_keep)].reset_index(drop=True)
-    out = out[~out[full_cols].isna().all(axis=1)].reset_index(drop=True)
-    return out
-    def _validar_sinais_pos_processamento(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Valida e corrige sinais de contas APÓS construir tabela horizontal.
-        
-        OBJETIVO: Corrigir valores que escaparam da validação inicial em _pick_value_for_base_code.
-        
-        CONTAS VALIDADAS:
-        - 3.01 (Receita): deve ser POSITIVO
-        - 3.06.01 (Receitas Financeiras): deve ser POSITIVO
-        - 3.06.02 (Despesas Financeiras): deve ser NEGATIVO
-        - 3.04 (Despesas Operacionais): deve ser NEGATIVO
-        - 3.04.02 (Despesas Administrativas): deve ser NEGATIVO
-        - 3.04.05 (Outras Despesas): deve ser NEGATIVO
-        - 3.08 (IR/CSLL): deve ser NEGATIVO
-        
-        Args:
-            df: DataFrame horizontal (cd_conta, ds_conta, períodos)
-        
-        Returns:
-            DataFrame com sinais corrigidos
-        """
-        df = df.copy()
-        
-        # Dicionário: {conta: sinal_esperado}
-        contas_validar = {
-            "3.01": "positivo",      # Receita de Vendas
-            "3.06.01": "positivo",   # Receitas Financeiras
-            "3.06.02": "negativo",   # Despesas Financeiras
-            "3.04": "negativo",      # Despesas/Receitas Operacionais
-            "3.04.02": "negativo",   # Despesas Administrativas
-            "3.04.05": "negativo",   # Outras Despesas Operacionais
-            "3.08": "negativo"       # IR/CSLL
-        }
-        
-        # Colunas de períodos (ignorar cd_conta e ds_conta)
-        colunas_periodos = [c for c in df.columns if c not in ["cd_conta", "ds_conta"]]
-        
-        if not colunas_periodos:
+    def _postprocess_principal_subcontas_e_interpolar(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Mantém principal+subconta e preenche trimestres faltantes por interpolação."""
+        if df is None or df.empty:
             return df
+
+        base_cols = ["cd_conta", "ds_conta"]
+        period_cols = [c for c in df.columns if c not in base_cols]
+
+        def _parse(col: str):
+            m = re.match(r"^(\d{4})T([1-4])$", str(col).strip())
+            return (int(m.group(1)), int(m.group(2))) if m else None
+
+        parsed = [(c, _parse(c)) for c in period_cols]
+        parsed = [(c, t) for c, t in parsed if t is not None]
+        if not parsed:
+            return df
+
+        parsed.sort(key=lambda x: (x[1][0], x[1][1]))
+        min_y, min_q = parsed[0][1]
+        max_y, max_q = parsed[-1][1]
+
+        def _next(y, q):
+            return (y, q + 1) if q < 4 else (y + 1, 1)
+
+        full = []
+        y, q = min_y, min_q
+        while True:
+            full.append((y, q))
+            if (y, q) == (max_y, max_q):
+                break
+            y, q = _next(y, q)
+
+        full_cols = [f"{y}T{q}" for y, q in full]
+        out = df.copy()
+        for c in full_cols:
+            if c not in out.columns:
+                out[c] = np.nan
+        out = out[base_cols + full_cols]
+
+        vals = out[full_cols].apply(pd.to_numeric, errors="coerce")
+        vals = vals.interpolate(axis=1, limit_direction="both").ffill(axis=1).bfill(axis=1)
+        out.loc[:, full_cols] = vals.values
+
+        def _keep(code: str) -> bool:
+            s = str(code).strip()
+            if s == EPS_CODE:
+                return True
+            return s.count(".") <= 2
+
+        out = out[out["cd_conta"].apply(_keep)].reset_index(drop=True)
+        out = out[~out[full_cols].isna().all(axis=1)].reset_index(drop=True)
+        return out
+    def _validar_sinais_pos_processamento(self, df: pd.DataFrame) -> pd.DataFrame:
+            """
+            Valida e corrige sinais de contas APÓS construir tabela horizontal.
         
-        # Iterar sobre cada conta que precisa validação
-        for idx, row in df.iterrows():
-            cd_conta = str(row["cd_conta"])
+            OBJETIVO: Corrigir valores que escaparam da validação inicial em _pick_value_for_base_code.
+        
+            CONTAS VALIDADAS:
+            - 3.01 (Receita): deve ser POSITIVO
+            - 3.06.01 (Receitas Financeiras): deve ser POSITIVO
+            - 3.06.02 (Despesas Financeiras): deve ser NEGATIVO
+            - 3.04 (Despesas Operacionais): deve ser NEGATIVO
+            - 3.04.02 (Despesas Administrativas): deve ser NEGATIVO
+            - 3.04.05 (Outras Despesas): deve ser NEGATIVO
+            - 3.08 (IR/CSLL): deve ser NEGATIVO
+        
+            Args:
+                df: DataFrame horizontal (cd_conta, ds_conta, períodos)
+        
+            Returns:
+                DataFrame com sinais corrigidos
+            """
+            df = df.copy()
+        
+            # Dicionário: {conta: sinal_esperado}
+            contas_validar = {
+                "3.01": "positivo",      # Receita de Vendas
+                "3.06.01": "positivo",   # Receitas Financeiras
+                "3.06.02": "negativo",   # Despesas Financeiras
+                "3.04": "negativo",      # Despesas/Receitas Operacionais
+                "3.04.02": "negativo",   # Despesas Administrativas
+                "3.04.05": "negativo",   # Outras Despesas Operacionais
+                "3.08": "negativo"       # IR/CSLL
+            }
+        
+            # Colunas de períodos (ignorar cd_conta e ds_conta)
+            colunas_periodos = [c for c in df.columns if c not in ["cd_conta", "ds_conta"]]
+        
+            if not colunas_periodos:
+                return df
+        
+            # Iterar sobre cada conta que precisa validação
+            for idx, row in df.iterrows():
+                cd_conta = str(row["cd_conta"])
             
-            if cd_conta not in contas_validar:
-                continue
-            
-            sinal_esperado = contas_validar[cd_conta]
-            
-            # Validar cada período
-            for col in colunas_periodos:
-                valor = row[col]
-                
-                # Pular valores nulos ou zeros
-                if pd.isna(valor) or valor == 0:
+                if cd_conta not in contas_validar:
                     continue
+            
+                sinal_esperado = contas_validar[cd_conta]
+            
+                # Validar cada período
+                for col in colunas_periodos:
+                    valor = row[col]
                 
-                # Aplicar correção se necessário
-                if sinal_esperado == "positivo" and valor < 0:
-                    df.at[idx, col] = -valor
-                    print(f"    🔧 Corrigindo {cd_conta} ({col}): {valor} → {-valor}")
+                    # Pular valores nulos ou zeros
+                    if pd.isna(valor) or valor == 0:
+                        continue
                 
-                elif sinal_esperado == "negativo" and valor > 0:
-                    df.at[idx, col] = -valor
-                    print(f"    🔧 Corrigindo {cd_conta} ({col}): {valor} → {-valor}")
+                    # Aplicar correção se necessário
+                    if sinal_esperado == "positivo" and valor < 0:
+                        df.at[idx, col] = -valor
+                        print(f"    🔧 Corrigindo {cd_conta} ({col}): {valor} → {-valor}")
+                
+                    elif sinal_esperado == "negativo" and valor > 0:
+                        df.at[idx, col] = -valor
+                        print(f"    🔧 Corrigindo {cd_conta} ({col}): {valor} → {-valor}")
         
-        return df
+            return df
 
 
     def _fill_resultado_operacoes_continuadas(self, qiso: pd.DataFrame) -> pd.DataFrame:
-        """
-        Preenche 3.09 com 3.11 quando vazio.
-        """
-        out = qiso.copy()
+            """
+            Preenche 3.09 com 3.11 quando vazio.
+            """
+            out = qiso.copy()
         
-        has_309 = '3.09' in out['code'].values
-        has_311 = '3.11' in out['code'].values
+            has_309 = '3.09' in out['code'].values
+            has_311 = '3.11' in out['code'].values
         
-        if not has_311 or not has_309:
-            return out
+            if not has_311 or not has_309:
+                return out
         
-        new_rows = []
+            new_rows = []
         
-        for (ano, trimestre), g in out.groupby(['ano', 'trimestre'], sort=False):
-            val_311 = g.loc[g['code'] == '3.11', 'valor'].values
-            val_309 = g.loc[g['code'] == '3.09', 'valor'].values
+            for (ano, trimestre), g in out.groupby(['ano', 'trimestre'], sort=False):
+                val_311 = g.loc[g['code'] == '3.11', 'valor'].values
+                val_309 = g.loc[g['code'] == '3.09', 'valor'].values
             
-            if len(val_311) > 0 and pd.notna(val_311[0]) and val_311[0] != 0:
-                if len(val_309) == 0 or pd.isna(val_309[0]) or val_309[0] == 0:
-                    new_rows.append({
-                        'ano': ano,
-                        'trimestre': trimestre,
-                        'code': '3.09',
-                        'valor': float(val_311[0])
-                    })
+                if len(val_311) > 0 and pd.notna(val_311[0]) and val_311[0] != 0:
+                    if len(val_309) == 0 or pd.isna(val_309[0]) or val_309[0] == 0:
+                        new_rows.append({
+                            'ano': ano,
+                            'trimestre': trimestre,
+                            'code': '3.09',
+                            'valor': float(val_311[0])
+                        })
         
-        if new_rows:
-            out = out[~((out['code'] == '3.09') & (out['valor'].isna() | (out['valor'] == 0)))]
-            out = pd.concat([out, pd.DataFrame(new_rows)], ignore_index=True)
+            if new_rows:
+                out = out[~((out['code'] == '3.09') & (out['valor'].isna() | (out['valor'] == 0)))]
+                out = pd.concat([out, pd.DataFrame(new_rows)], ignore_index=True)
         
-        return out    
+            return out    
     
 
     def _carregar_acoes_por_ano(self, pasta_ticker: Path) -> Dict[int, int]:
-        """
-        Carrega quantidade de ações por ano do arquivo acoes_historico.csv.
-        """
-        arquivo = pasta_ticker / "acoes_historico.csv"
+            """
+            Carrega quantidade de ações por ano do arquivo acoes_historico.csv.
+            """
+            arquivo = pasta_ticker / "acoes_historico.csv"
         
-        if not arquivo.exists():
-            return {}
+            if not arquivo.exists():
+                return {}
         
-        try:
-            df = pd.read_csv(arquivo, encoding="utf-8-sig")
+            try:
+                df = pd.read_csv(arquivo, encoding="utf-8-sig")
             
-            # Verificar estrutura
-            if df.empty or "especie" not in df.columns:
-                if "Espécie_Acao" in df.columns:
-                    df = df.rename(columns={"Espécie_Acao": "especie"})
-                else:
+                # Verificar estrutura
+                if df.empty or "especie" not in df.columns:
+                    if "Espécie_Acao" in df.columns:
+                        df = df.rename(columns={"Espécie_Acao": "especie"})
+                    else:
+                        return {}
+            
+                # Pegar linha TOTAL
+                linha_total = df[df["especie"].str.upper() == "TOTAL"]
+            
+                if linha_total.empty:
+                    linha_total = df[df["especie"].str.upper() == "ON"]
+            
+                if linha_total.empty:
                     return {}
             
-            # Pegar linha TOTAL
-            linha_total = df[df["especie"].str.upper() == "TOTAL"]
+                # Extrair quantidade por ano
+                acoes_por_ano = {}
             
-            if linha_total.empty:
-                linha_total = df[df["especie"].str.upper() == "ON"]
-            
-            if linha_total.empty:
-                return {}
-            
-            # Extrair quantidade por ano
-            acoes_por_ano = {}
-            
-            for col in df.columns:
-                if col == "especie":
-                    continue
+                for col in df.columns:
+                    if col == "especie":
+                        continue
                 
-                try:
-                    ano = int(col[:4])
-                    qtd = int(linha_total[col].iloc[0])
+                    try:
+                        ano = int(col[:4])
+                        qtd = int(linha_total[col].iloc[0])
                     
-                    if qtd > 0:
-                        acoes_por_ano[ano] = qtd
-                except (ValueError, IndexError, TypeError):
-                    continue
+                        if qtd > 0:
+                            acoes_por_ano[ano] = qtd
+                    except (ValueError, IndexError, TypeError):
+                        continue
             
-            return acoes_por_ano
+                return acoes_por_ano
         
-        except Exception as e:
-            print(f"    ⚠️ Erro ao carregar ações: {e}")
-            return {}
+            except Exception as e:
+                print(f"    ⚠️ Erro ao carregar ações: {e}")
+                return {}
     
     def _get_acoes_com_fallback(self, ano: int, acoes_por_ano: Dict[int, int]) -> Optional[int]:
-        """
-        Obtém quantidade de ações para um ano com fallback para anos anteriores.
-        """
-        if not acoes_por_ano:
+            """
+            Obtém quantidade de ações para um ano com fallback para anos anteriores.
+            """
+            if not acoes_por_ano:
+                return None
+        
+            # Tentar ano exato
+            if ano in acoes_por_ano:
+                return acoes_por_ano[ano]
+        
+            # Fallback: tentar anos anteriores
+            for ano_fallback in range(ano - 1, ano - 11, -1):
+                if ano_fallback in acoes_por_ano:
+                    return acoes_por_ano[ano_fallback]
+        
+            # Último recurso: pegar ano mais recente
+            if acoes_por_ano:
+                ano_mais_recente = max(acoes_por_ano.keys())
+                return acoes_por_ano[ano_mais_recente]
+        
             return None
-        
-        # Tentar ano exato
-        if ano in acoes_por_ano:
-            return acoes_por_ano[ano]
-        
-        # Fallback: tentar anos anteriores
-        for ano_fallback in range(ano - 1, ano - 11, -1):
-            if ano_fallback in acoes_por_ano:
-                return acoes_por_ano[ano_fallback]
-        
-        # Último recurso: pegar ano mais recente
-        if acoes_por_ano:
-            ano_mais_recente = max(acoes_por_ano.keys())
-            return acoes_por_ano[ano_mais_recente]
-        
-        return None
     
     def _calcular_lpa_quando_zerado(
-        self, 
-        df_horizontal: pd.DataFrame, 
-        pasta_ticker: Path
-    ) -> Tuple[pd.DataFrame, int]:
-        """
-        Calcula Lucro Por Ação (LPA) quando linha 3.99 está zerada.
-        """
-        df = df_horizontal.copy()
+            self, 
+            df_horizontal: pd.DataFrame, 
+            pasta_ticker: Path
+        ) -> Tuple[pd.DataFrame, int]:
+            """
+            Calcula Lucro Por Ação (LPA) quando linha 3.99 está zerada.
+            """
+            df = df_horizontal.copy()
         
-        # Verificar se linha 3.99 existe
-        idx_lpa = df[df["cd_conta"] == EPS_CODE].index
-        idx_ll = df[df["cd_conta"] == "3.11"].index
+            # Verificar se linha 3.99 existe
+            idx_lpa = df[df["cd_conta"] == EPS_CODE].index
+            idx_ll = df[df["cd_conta"] == "3.11"].index
         
-        if len(idx_lpa) == 0 or len(idx_ll) == 0:
-            return df, 0
+            if len(idx_lpa) == 0 or len(idx_ll) == 0:
+                return df, 0
         
-        idx_lpa = idx_lpa[0]
-        idx_ll = idx_ll[0]
+            idx_lpa = idx_lpa[0]
+            idx_ll = idx_ll[0]
         
-        # Carregar quantidade de ações por ano
-        acoes_por_ano = self._carregar_acoes_por_ano(pasta_ticker)
+            # Carregar quantidade de ações por ano
+            acoes_por_ano = self._carregar_acoes_por_ano(pasta_ticker)
         
-        if not acoes_por_ano:
-            return df, 0
+            if not acoes_por_ano:
+                return df, 0
         
-        # Colunas de períodos
-        colunas_periodos = [c for c in df.columns if c not in ["cd_conta", "ds_conta"]]
+            # Colunas de períodos
+            colunas_periodos = [c for c in df.columns if c not in ["cd_conta", "ds_conta"]]
         
-        if not colunas_periodos:
-            return df, 0
+            if not colunas_periodos:
+                return df, 0
         
-        # Processar cada período
-        periodos_calculados = 0
+            # Processar cada período
+            periodos_calculados = 0
         
-        for col in colunas_periodos:
-            try:
-                ano = int(col[:4])
-            except (ValueError, TypeError):
-                continue
+            for col in colunas_periodos:
+                try:
+                    ano = int(col[:4])
+                except (ValueError, TypeError):
+                    continue
             
-            # Verificar se LPA está zerado/vazio
-            lpa_atual = df.at[idx_lpa, col]
+                # Verificar se LPA está zerado/vazio
+                lpa_atual = df.at[idx_lpa, col]
             
-            if pd.notna(lpa_atual) and lpa_atual != 0:
-                continue
+                if pd.notna(lpa_atual) and lpa_atual != 0:
+                    continue
             
-            # Obter lucro líquido (em milhares)
-            lucro_liquido_mil = df.at[idx_ll, col]
+                # Obter lucro líquido (em milhares)
+                lucro_liquido_mil = df.at[idx_ll, col]
             
-            if pd.isna(lucro_liquido_mil):
-                continue
+                if pd.isna(lucro_liquido_mil):
+                    continue
             
-            # Obter quantidade de ações do ano (com fallback)
-            qtd_acoes = self._get_acoes_com_fallback(ano, acoes_por_ano)
+                # Obter quantidade de ações do ano (com fallback)
+                qtd_acoes = self._get_acoes_com_fallback(ano, acoes_por_ano)
             
-            if qtd_acoes is None or qtd_acoes == 0:
-                continue
+                if qtd_acoes is None or qtd_acoes == 0:
+                    continue
             
-            # CÁLCULO DO LPA
-            lucro_liquido_reais = float(lucro_liquido_mil) * 1000
-            lpa_calculado = lucro_liquido_reais / float(qtd_acoes)
-            lpa_final = round(lpa_calculado, 8)
+                # CÁLCULO DO LPA
+                lucro_liquido_reais = float(lucro_liquido_mil) * 1000
+                lpa_calculado = lucro_liquido_reais / float(qtd_acoes)
+                lpa_final = round(lpa_calculado, 8)
             
-            # Atualizar DataFrame
-            df.at[idx_lpa, col] = lpa_final
-            periodos_calculados += 1
+                # Atualizar DataFrame
+                df.at[idx_lpa, col] = lpa_final
+                periodos_calculados += 1
         
-        return df, periodos_calculados
+            return df, periodos_calculados
     
 
     def _checkup_linha_a_linha(
-            self, 
-            qiso: pd.DataFrame, 
-            anual: pd.DataFrame,
-            fiscal_info: FiscalYearInfo,
-            tolerancia_percentual: float = 0.1  # 0.1% de tolerância
-        ) -> Tuple[List[CheckupResult], int, int, int, int]:
-            """
-            Realiza check-up LINHA A LINHA comparando soma trimestral vs anual.
+                self, 
+                qiso: pd.DataFrame, 
+                anual: pd.DataFrame,
+                fiscal_info: FiscalYearInfo,
+                tolerancia_percentual: float = 0.1  # 0.1% de tolerância
+            ) -> Tuple[List[CheckupResult], int, int, int, int]:
+                """
+                Realiza check-up LINHA A LINHA comparando soma trimestral vs anual.
             
-            CASOS:
-            1. Ano fiscal PADRÃO: check-up normal
-            2. Ano fiscal MAR-FEV: check-up normal (já com ano fiscal correto)
-            3. Outros IRREGULAR: check-up é PULADO
-            """
-            dre_schema = self._get_current_schema()
-            results: List[CheckupResult] = []
+                CASOS:
+                1. Ano fiscal PADRÃO: check-up normal
+                2. Ano fiscal MAR-FEV: check-up normal (já com ano fiscal correto)
+                3. Outros IRREGULAR: check-up é PULADO
+                """
+                dre_schema = self._get_current_schema()
+                results: List[CheckupResult] = []
             
-            diverge_count = 0
-            incompleto_count = 0
-            sem_anual_count = 0
-            irregular_skip_count = 0
+                diverge_count = 0
+                incompleto_count = 0
+                sem_anual_count = 0
+                irregular_skip_count = 0
     
-            is_mar_fev = _is_ano_fiscal_mar_fev(self._current_ticker)
+                is_mar_fev = _is_ano_fiscal_mar_fev(self._current_ticker)
     
-            # Para empresas com ano fiscal IRREGULAR (exceto mar-fev): pular check-up
-            if not fiscal_info.is_standard and not is_mar_fev:
-                for ano in sorted(qiso["ano"].unique()):
-                    for code, _name in dre_schema:
-                        g_code = qiso[(qiso["ano"] == ano) & (qiso["code"] == code)]
-                        soma_tri = float(g_code["valor"].sum(skipna=True))
+                # Para empresas com ano fiscal IRREGULAR (exceto mar-fev): pular check-up
+                if not fiscal_info.is_standard and not is_mar_fev:
+                    for ano in sorted(qiso["ano"].unique()):
+                        for code, _name in dre_schema:
+                            g_code = qiso[(qiso["ano"] == ano) & (qiso["code"] == code)]
+                            soma_tri = float(g_code["valor"].sum(skipna=True))
                         
+                            results.append(CheckupResult(
+                                code=code,
+                                ano=int(ano),
+                                soma_trimestral=soma_tri,
+                                valor_anual=np.nan,
+                                diferenca=np.nan,
+                                percentual_diff=np.nan,
+                                status="IRREGULAR_SKIP"
+                            ))
+                            irregular_skip_count += 1
+                
+                    return results, diverge_count, incompleto_count, sem_anual_count, irregular_skip_count
+    
+                # Para empresas com ano fiscal PADRÃO ou MAR-FEV: fazer check-up normal
+                anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
+                expected_quarters = {"T1", "T2", "T3", "T4"}
+    
+                for ano in sorted(qiso["ano"].unique()):
+                    g_ano = qiso[qiso["ano"] == ano]
+                    quarters_present = set(g_ano["trimestre"].unique())
+                
+                    for code, _name in dre_schema:
+                        anual_val = anual_map.get((int(ano), code), np.nan)
+                    
+                        # Soma trimestral
+                        g_code = g_ano[g_ano["code"] == code]
+                        soma_tri = float(g_code["valor"].sum(skipna=True))
+                    
+                        # Determinar status
+                        if not np.isfinite(anual_val):
+                            status = "SEM_ANUAL"
+                            sem_anual_count += 1
+                            diferenca = np.nan
+                            percentual = np.nan
+                        elif not expected_quarters.issubset(quarters_present):
+                            status = "INCOMPLETO"
+                            incompleto_count += 1
+                            diferenca = soma_tri - anual_val
+                            percentual = (diferenca / abs(anual_val) * 100) if anual_val != 0 else np.nan
+                        else:
+                            diferenca = soma_tri - anual_val
+                            percentual = (diferenca / abs(anual_val) * 100) if anual_val != 0 else 0.0
+                        
+                            # Verificar tolerância
+                            if abs(percentual) <= tolerancia_percentual:
+                                status = "OK"
+                            else:
+                                status = "DIVERGE"
+                                diverge_count += 1
+                    
                         results.append(CheckupResult(
                             code=code,
                             ano=int(ano),
                             soma_trimestral=soma_tri,
-                            valor_anual=np.nan,
-                            diferenca=np.nan,
-                            percentual_diff=np.nan,
-                            status="IRREGULAR_SKIP"
+                            valor_anual=anual_val,
+                            diferenca=diferenca,
+                            percentual_diff=percentual,
+                            status=status
                         ))
-                        irregular_skip_count += 1
-                
+    
                 return results, diverge_count, incompleto_count, sem_anual_count, irregular_skip_count
-    
-            # Para empresas com ano fiscal PADRÃO ou MAR-FEV: fazer check-up normal
-            anual_map = anual.set_index(["ano", "code"])["anual_val"].to_dict()
-            expected_quarters = {"T1", "T2", "T3", "T4"}
-    
-            for ano in sorted(qiso["ano"].unique()):
-                g_ano = qiso[qiso["ano"] == ano]
-                quarters_present = set(g_ano["trimestre"].unique())
-                
-                for code, _name in dre_schema:
-                    anual_val = anual_map.get((int(ano), code), np.nan)
-                    
-                    # Soma trimestral
-                    g_code = g_ano[g_ano["code"] == code]
-                    soma_tri = float(g_code["valor"].sum(skipna=True))
-                    
-                    # Determinar status
-                    if not np.isfinite(anual_val):
-                        status = "SEM_ANUAL"
-                        sem_anual_count += 1
-                        diferenca = np.nan
-                        percentual = np.nan
-                    elif not expected_quarters.issubset(quarters_present):
-                        status = "INCOMPLETO"
-                        incompleto_count += 1
-                        diferenca = soma_tri - anual_val
-                        percentual = (diferenca / abs(anual_val) * 100) if anual_val != 0 else np.nan
-                    else:
-                        diferenca = soma_tri - anual_val
-                        percentual = (diferenca / abs(anual_val) * 100) if anual_val != 0 else 0.0
-                        
-                        # Verificar tolerância
-                        if abs(percentual) <= tolerancia_percentual:
-                            status = "OK"
-                        else:
-                            status = "DIVERGE"
-                            diverge_count += 1
-                    
-                    results.append(CheckupResult(
-                        code=code,
-                        ano=int(ano),
-                        soma_trimestral=soma_tri,
-                        valor_anual=anual_val,
-                        diferenca=diferenca,
-                        percentual_diff=percentual,
-                        status=status
-                    ))
-    
-            return results, diverge_count, incompleto_count, sem_anual_count, irregular_skip_count
 
     def _generate_checkup_report(
-        self, 
-        results: List[CheckupResult],
-        fiscal_info: FiscalYearInfo
-    ) -> pd.DataFrame:
-        """Gera relatório de check-up em formato DataFrame."""
-        rows = []
-        for r in results:
-            rows.append({
-                "ano": r.ano,
-                "codigo": r.code,
-                "soma_trimestral": r.soma_trimestral,
-                "valor_anual": r.valor_anual,
-                "diferenca": r.diferenca,
-                "diff_%": r.percentual_diff,
-                "status": r.status
-            })
+            self, 
+            results: List[CheckupResult],
+            fiscal_info: FiscalYearInfo
+        ) -> pd.DataFrame:
+            """Gera relatório de check-up em formato DataFrame."""
+            rows = []
+            for r in results:
+                rows.append({
+                    "ano": r.ano,
+                    "codigo": r.code,
+                    "soma_trimestral": r.soma_trimestral,
+                    "valor_anual": r.valor_anual,
+                    "diferenca": r.diferenca,
+                    "diff_%": r.percentual_diff,
+                    "status": r.status
+                })
         
-        df = pd.DataFrame(rows)
-        return df
+            df = pd.DataFrame(rows)
+            return df
 
     def padronizar_e_salvar_ticker(self, ticker: str, salvar_checkup: bool = True) -> Tuple[bool, str]:
-        """
-        Padroniza DRE de um ticker e salva resultado.
-        Agora usa get_pasta_balanco() para garantir pasta correta.
-        """
-        ticker = ticker.upper().strip()
-        self._current_ticker = ticker
-        pasta = get_pasta_balanco(ticker)
+            """
+            Padroniza DRE de um ticker e salva resultado.
+            Agora usa get_pasta_balanco() para garantir pasta correta.
+            """
+            ticker = ticker.upper().strip()
+            self._current_ticker = ticker
+            pasta = get_pasta_balanco(ticker)
     
-        # 1. Carregar dados
-        df_tri, df_anu = self._load_inputs(ticker)
+            # 1. Carregar dados
+            df_tri, df_anu = self._load_inputs(ticker)
         
-        # 2. DETECTAR PADRÃO FISCAL (CRÍTICO!)
-        fiscal_info = _detect_fiscal_year_pattern(df_tri, df_anu, ticker)
+            # 2. DETECTAR PADRÃO FISCAL (CRÍTICO!)
+            fiscal_info = _detect_fiscal_year_pattern(df_tri, df_anu, ticker)
         
-        # 3. Construir totais trimestrais (preserva originais)
-        qtot = self._build_quarter_totals(df_tri)
-        qtot = self._filter_empty_quarters(qtot)        
+            # 3. Construir totais trimestrais (preserva originais)
+            qtot = self._build_quarter_totals(df_tri)
+            qtot = self._filter_empty_quarters(qtot)        
         
-        # 4. Extrair valores anuais
-        anu = self._extract_annual_values(df_anu)
+            # 4. Extrair valores anuais
+            anu = self._extract_annual_values(df_anu)
         
-        # 5. Detectar e converter dados acumulados (YTD) - só para padrão
-        cumulative_years = self._detect_cumulative_years(qtot, anu, fiscal_info)
-        qiso = self._to_isolated_quarters(qtot, cumulative_years, fiscal_info)
+            # 5. Detectar e converter dados acumulados (YTD) - só para padrão
+            cumulative_years = self._detect_cumulative_years(qtot, anu, fiscal_info)
+            qiso = self._to_isolated_quarters(qtot, cumulative_years, fiscal_info)
     
-        # 6. Adicionar T4 quando faltante (APENAS para ano fiscal padrão)
-        qiso = self._add_t4_from_annual_when_missing(qiso, anu, fiscal_info)
+            # 6. Adicionar T4 quando faltante (APENAS para ano fiscal padrão)
+            qiso = self._add_t4_from_annual_when_missing(qiso, anu, fiscal_info)
         
-        # 6.1 BANCOS: Copiar 3.09 → 3.11 (Lucro Líquido)
-        qiso = self._fill_lucro_liquido_banco(qiso)
+            # 6.1 BANCOS: Copiar 3.09 → 3.11 (Lucro Líquido)
+            qiso = self._fill_lucro_liquido_banco(qiso)
 
-        # 6.2 NÃO-FINANCEIRAS: Copiar 3.11 → 3.09 quando vazio
-        qiso = self._fill_resultado_operacoes_continuadas(qiso)        
+            # 6.2 NÃO-FINANCEIRAS: Copiar 3.11 → 3.09 quando vazio
+            qiso = self._fill_resultado_operacoes_continuadas(qiso)        
         
-        # 7. Ordenar
-        qiso = qiso.assign(qord=qiso["trimestre"].apply(_quarter_order)).sort_values(["ano", "qord", "code"])
-        qiso = qiso.drop(columns=["qord"])
+            # 7. Ordenar
+            qiso = qiso.assign(qord=qiso["trimestre"].apply(_quarter_order)).sort_values(["ano", "qord", "code"])
+            qiso = qiso.drop(columns=["qord"])
         
-        # 8. Construir tabela horizontal
-        df_out = self._build_horizontal(qiso)
+            # 8. Construir tabela horizontal
+            df_out = self._build_horizontal(qiso)
 
-        # NOVO: manter principal + 1º nível de subconta e completar trimestres (interpolação)
-        df_out = self._postprocess_principal_subcontas_e_interpolar(df_out)
-        # 8.1 VALIDAR SINAIS PÓS-PROCESSAMENTO
-        df_out = self._validar_sinais_pos_processamento(df_out)
+            # NOVO: manter principal + 1º nível de subconta e completar trimestres (interpolação)
+            df_out = self._postprocess_principal_subcontas_e_interpolar(df_out)
+            # 8.1 VALIDAR SINAIS PÓS-PROCESSAMENTO
+            df_out = self._validar_sinais_pos_processamento(df_out)
         
-        # 8.2 CALCULAR LPA QUANDO ZERADO
-        lpa_calculados = 0
-        try:
-            df_out, lpa_calculados = self._calcular_lpa_quando_zerado(df_out, pasta)
-            if lpa_calculados > 0:
-                print(f"  ℹ️  LPA calculado para {lpa_calculados} período(s)")
-        except Exception as e:
-            print(f"  ⚠️ Erro ao calcular LPA: {e}")
-        
-        # 9. CHECK-UP LINHA A LINHA
-        checkup_results, diverge, incompleto, sem_anual, irregular_skip = self._checkup_linha_a_linha(
-            qiso, anu, fiscal_info
-        )
-        self.checkup_results = checkup_results
-        
-        # 10. Salvar arquivos
-        pasta.mkdir(parents=True, exist_ok=True)
-        
-        # Arquivo principal
-        out_path = pasta / "dre_padronizado.csv"
-        df_out.to_csv(out_path, index=False, encoding="utf-8")
-        
-        # Relatório de check-up (SEMPRE salva se solicitado)
-        checkup_saved = False
-        if salvar_checkup:
+            # 8.2 CALCULAR LPA QUANDO ZERADO
+            lpa_calculados = 0
             try:
-                checkup_df = self._generate_checkup_report(checkup_results, fiscal_info)
-                checkup_path = pasta / "dre_checkup.csv"
-                
-                # Salvar com cabeçalho informativo
-                with open(checkup_path, 'w', encoding='utf-8') as f:
-                    f.write(f"# Padrão Fiscal: {fiscal_info.description}\n")
-                    f.write(f"# Trimestres encontrados: {sorted(fiscal_info.quarters_pattern)}\n")
-                    f.write(f"# Data geração: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-                
-                checkup_df.to_csv(checkup_path, index=False, encoding="utf-8", mode='a')
-                checkup_saved = True
+                df_out, lpa_calculados = self._calcular_lpa_quando_zerado(df_out, pasta)
+                if lpa_calculados > 0:
+                    print(f"  ℹ️  LPA calculado para {lpa_calculados} período(s)")
             except Exception as e:
-                print(f"  ⚠️ Erro ao salvar check-up: {e}")
+                print(f"  ⚠️ Erro ao calcular LPA: {e}")
         
-        # 11. Construir mensagem de retorno
-        is_mar_fev = _is_ano_fiscal_mar_fev(ticker)
-        if fiscal_info.is_standard:
-            fiscal_status = "PADRÃO"
-        elif is_mar_fev:
-            fiscal_status = "MAR-FEV"
-        else:
-            fiscal_status = "IRREGULAR"
-        tipo_dre = "BANCO" if _is_banco(ticker) else "PADRÃO"
+            # 9. CHECK-UP LINHA A LINHA
+            checkup_results, diverge, incompleto, sem_anual, irregular_skip = self._checkup_linha_a_linha(
+                qiso, anu, fiscal_info
+            )
+            self.checkup_results = checkup_results
         
-        # Para ano fiscal padrão OU mar-fev: mostrar resultados do check-up
-        if fiscal_info.is_standard or is_mar_fev:
-            msg_parts = [
-                f"tipo={tipo_dre}",
-                f"fiscal={fiscal_status}",
-                f"DIVERGE={diverge}",
-                f"INCOMPLETO={incompleto}",
-                f"SEM_ANUAL={sem_anual}"
-            ]
-            ok = (diverge == 0)
-        else:
-            # Outros irregulares: pular check-up
-            msg_parts = [
-                f"tipo={tipo_dre}",
-                f"fiscal={fiscal_status}",
-                f"CHECK-UP=PULADO",
-                f"trimestres={sorted(fiscal_info.quarters_pattern)}"
-            ]
-            ok = True
+            # 10. Salvar arquivos
+            pasta.mkdir(parents=True, exist_ok=True)
         
-        if checkup_saved:
-            msg_parts.append("checkup=SALVO")
+            # Arquivo principal
+            out_path = pasta / "dre_padronizado.csv"
+            df_out.to_csv(out_path, index=False, encoding="utf-8")
         
-        # Adicionar info de LPA calculado
-        if lpa_calculados > 0:
-            msg_parts.append(f"LPA={lpa_calculados}períodos")
+            # Relatório de check-up (SEMPRE salva se solicitado)
+            checkup_saved = False
+            if salvar_checkup:
+                try:
+                    checkup_df = self._generate_checkup_report(checkup_results, fiscal_info)
+                    checkup_path = pasta / "dre_checkup.csv"
+                
+                    # Salvar com cabeçalho informativo
+                    with open(checkup_path, 'w', encoding='utf-8') as f:
+                        f.write(f"# Padrão Fiscal: {fiscal_info.description}\n")
+                        f.write(f"# Trimestres encontrados: {sorted(fiscal_info.quarters_pattern)}\n")
+                        f.write(f"# Data geração: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                
+                    checkup_df.to_csv(checkup_path, index=False, encoding="utf-8", mode='a')
+                    checkup_saved = True
+                except Exception as e:
+                    print(f"  ⚠️ Erro ao salvar check-up: {e}")
         
-        msg = f"dre_padronizado.csv | {' | '.join(msg_parts)}"
+            # 11. Construir mensagem de retorno
+            is_mar_fev = _is_ano_fiscal_mar_fev(ticker)
+            if fiscal_info.is_standard:
+                fiscal_status = "PADRÃO"
+            elif is_mar_fev:
+                fiscal_status = "MAR-FEV"
+            else:
+                fiscal_status = "IRREGULAR"
+            tipo_dre = "BANCO" if _is_banco(ticker) else "PADRÃO"
         
-        return ok, msg
+            # Para ano fiscal padrão OU mar-fev: mostrar resultados do check-up
+            if fiscal_info.is_standard or is_mar_fev:
+                msg_parts = [
+                    f"tipo={tipo_dre}",
+                    f"fiscal={fiscal_status}",
+                    f"DIVERGE={diverge}",
+                    f"INCOMPLETO={incompleto}",
+                    f"SEM_ANUAL={sem_anual}"
+                ]
+                ok = (diverge == 0)
+            else:
+                # Outros irregulares: pular check-up
+                msg_parts = [
+                    f"tipo={tipo_dre}",
+                    f"fiscal={fiscal_status}",
+                    f"CHECK-UP=PULADO",
+                    f"trimestres={sorted(fiscal_info.quarters_pattern)}"
+                ]
+                ok = True
+        
+            if checkup_saved:
+                msg_parts.append("checkup=SALVO")
+        
+            # Adicionar info de LPA calculado
+            if lpa_calculados > 0:
+                msg_parts.append(f"LPA={lpa_calculados}períodos")
+        
+            msg = f"dre_padronizado.csv | {' | '.join(msg_parts)}"
+        
+            return ok, msg
 
 
 
@@ -1805,45 +1806,58 @@ def main():
     parser.add_argument("--faixa", default="1-50")
     parser.add_argument("--no-checkup", action="store_true", help="Não salvar relatório de check-up")
     args = parser.parse_args()
+
     # Tentar carregar mapeamento consolidado, fallback para original
     df = load_mapeamento_consolidado()
     df = df[df["cnpj"].notna()].reset_index(drop=True)
+
     if args.modo == "quantidade":
         limite = int(args.quantidade)
         df_sel = df.head(limite)
+
     elif args.modo == "ticker":
         ticker_upper = args.ticker.upper()
         df_sel = df[df["ticker"].str.upper().str.contains(ticker_upper, case=False, na=False, regex=False)]
+
     elif args.modo == "lista":
         tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
         mask = df["ticker"].str.upper().apply(
             lambda x: any(t in x for t in tickers) if pd.notna(x) else False
         )
         df_sel = df[mask]
+
     elif args.modo == "faixa":
         inicio, fim = map(int, args.faixa.split("-"))
         df_sel = df.iloc[inicio - 1 : fim]
+
     else:
         df_sel = df.head(10)
+
     print(f"\n>>> JOB: PADRONIZAR DRE <<<")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
     print("Saída: balancos/<TICKER>/dre_padronizado.csv + dre_checkup.csv\n")
+
     pad = PadronizadorDRE()
+
     ok_count = 0
     warn_count = 0
     err_count = 0
     irregular_count = 0
+
     salvar_checkup = not args.no_checkup
+
     for _, row in df_sel.iterrows():
         ticker_str = str(row["ticker"]).upper().strip()
         ticker = ticker_str.split(';')[0] if ';' in ticker_str else ticker_str
+
         pasta = get_pasta_balanco(ticker)
         if not pasta.exists():
             err_count += 1
             print(f"❌ {ticker}: pasta {pasta} não existe (captura ausente)")
             continue
+
         try:
-            ok, msg = pad.padronizar(ticker, salvar_checkup=salvar_checkup)
+            ok, msg = pad.padronizar_e_salvar_ticker(ticker, salvar_checkup=salvar_checkup)
             
             if "IRREGULAR" in msg:
                 irregular_count += 1
@@ -1854,6 +1868,7 @@ def main():
             else:
                 warn_count += 1
                 print(f"⚠️ {ticker}: {msg}")
+
         except FileNotFoundError as e:
             err_count += 1
             print(f"❌ {ticker}: arquivos ausentes ({e})")
@@ -1862,10 +1877,13 @@ def main():
             import traceback
             print(f"❌ {ticker}: erro ({type(e).__name__}: {e})")
             traceback.print_exc()
+
     print("\n" + "="*70)
     print(f"Finalizado: OK={ok_count} | WARN(DIVERGE)>0={warn_count} | ERRO={err_count}")
     if irregular_count > 0:
         print(f"            Anos fiscais irregulares: {irregular_count} (check-up pulado)")
     print("="*70 + "\n")
+
+
 if __name__ == "__main__":
     main()
