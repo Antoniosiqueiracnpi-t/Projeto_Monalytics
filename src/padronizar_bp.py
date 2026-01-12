@@ -1466,10 +1466,18 @@ class PadronizadorBP:
           MAS garante que Patrimônio Líquido nunca seja removido (mesmo se < min_fill)
         - Preenche trimestres faltantes por interpolação (linear) e, nas bordas, ffill/bfill
         - Normaliza o código do PL para um padrão único ('2.07') no output
+
+        ✅ CORREÇÃO CRÍTICA:
+        Quando o PL original é 2.08, o schema pode inserir uma conta 2.07 "Passivos sobre Ativos Descontinuados".
+        Se o PL for normalizado para 2.07 sem tratar isso, ficam DUAS linhas 2.07 e o pipeline pode capturar a errada.
+        Esta função remove a 2.07 "Passivos..." (quando aplicável) e garante unicidade do cd_conta.
         """
         df = df_out.copy()
 
         meta_cols = ["cd_conta", "conta"]
+        if df.empty or any(c not in df.columns for c in meta_cols):
+            return df
+
         period_cols = [c for c in df.columns if c not in meta_cols]
 
         # 1) Garantir colunas contínuas de períodos (caso falte um trimestre no dataset)
@@ -1492,37 +1500,78 @@ class PadronizadorBP:
         is_lvl2 = cd.str.fullmatch(r"\d+\.\d+")
         df = df[is_lvl1 | is_lvl2].copy()
 
-        # 4) Filtrar por preenchimento mínimo (ANTES de preencher),
-        #    mas preservando Patrimônio Líquido sempre.
-        pl_mask = df["conta"].astype(str).str.contains(r"Patrim[oô]nio\s+L[ií]quido", case=False, na=False)
+        if df.empty:
+            return df
 
-        # Normaliza o PL para cd_conta fixo (2.07) e nome padrão no output
+        # -----------------------------
+        # ✅ DETECÇÃO/PROTEÇÃO DO PL
+        # -----------------------------
+        conta_s = df["conta"].astype(str)
+        cd_s = df["cd_conta"].astype(str).str.strip()
+
+        pl_mask = conta_s.str.contains(r"Patrim[oô]nio\s+L[ií]quido", case=False, na=False)
+        # Caso raríssimo: descrição não bate, mas código do PL está explícito
+        pl_mask = pl_mask | cd_s.eq("2.07") | cd_s.eq("2.08")
+
+        # (A) Se PL veio em 2.08 e existe a linha 2.07 "Passivos sobre Ativos Descontinuados",
+        #     remover essa 2.07 para evitar colisão quando normalizarmos o PL para 2.07.
+        #     Isso só faz sentido para BPP (contas 2.*).
+        is_bpp_like = cd_s.str.startswith("2")
+        passivos_descont_mask = (
+            is_bpp_like
+            & cd_s.eq("2.07")
+            & conta_s.str.contains(r"Passivos\s+sobre\s+Ativos\s+Descontinuados", case=False, na=False)
+        )
+
+        pl_in_208 = (pl_mask & cd_s.eq("2.08")).any()
+        if pl_in_208 and passivos_descont_mask.any():
+            df = df[~passivos_descont_mask].copy()
+            conta_s = df["conta"].astype(str)
+            cd_s = df["cd_conta"].astype(str).str.strip()
+            pl_mask = conta_s.str.contains(r"Patrim[oô]nio\s+L[ií]quido", case=False, na=False) | cd_s.eq("2.08") | cd_s.eq("2.07")
+
+        # (B) Normaliza o PL para cd_conta fixo 2.07 e nome padrão no output
         if pl_mask.any():
             df.loc[pl_mask, "cd_conta"] = "2.07"
             df.loc[pl_mask, "conta"] = "Patrimônio Líquido Consolidado"
 
+        # (C) Garantir unicidade do cd_conta (evita “pegar a linha errada” no cálculo de múltiplos)
+        #     Se ainda houver duplicatas, preferir a linha do PL quando cd_conta=2.07.
+        df["__is_pl"] = df["conta"].astype(str).str.contains(r"Patrim[oô]nio\s+L[ií]quido", case=False, na=False)
+        # ordena para manter o PL como "primeiro" em caso de duplicata
+        df = df.sort_values(by=["cd_conta", "__is_pl"], ascending=[True, False]).drop_duplicates(subset=["cd_conta"], keep="first")
+        df = df.drop(columns=["__is_pl"])
+
+        # Recalcular máscaras após dedupe
+        conta_s = df["conta"].astype(str)
+        cd_s = df["cd_conta"].astype(str).str.strip()
+        pl_mask = conta_s.str.contains(r"Patrim[oô]nio\s+L[ií]quido", case=False, na=False) | cd_s.eq("2.07")
+
+        # 4) Filtrar por preenchimento mínimo (ANTES de preencher), preservando PL sempre
         fill_ratio = df[full_period_cols].notna().mean(axis=1)
         keep_mask = (fill_ratio >= float(min_fill)) | pl_mask
         df = df[keep_mask].copy()
 
+        if df.empty:
+            return df
+
         # 5) Interpolação (somente lacunas internas), depois ffill/bfill nas extremidades
-        if not df.empty:
-            vals = df[full_period_cols].astype(float)
-            vals = vals.interpolate(axis=1, limit_area="inside")
-            vals = vals.ffill(axis=1).bfill(axis=1)
+        vals = df[full_period_cols].astype(float)
+        vals = vals.interpolate(axis=1, limit_area="inside")
+        vals = vals.ffill(axis=1).bfill(axis=1)
 
-            # Garantia extra: se PL ainda ficar todo NaN (caso extremo), zera e avisa
-            if "conta" in df.columns:
-                pl_mask2 = df["conta"].astype(str).str.contains(r"Patrim[oô]nio\s+L[ií]quido", case=False, na=False)
-                if pl_mask2.any():
-                    pl_vals = vals.loc[pl_mask2.values, :]
-                    if pl_vals.isna().all(axis=1).any():
-                        print("⚠️ Banco: Patrimônio Líquido sem dados em todos os períodos após preenchimento. Forçando 0.0 para evitar lacunas.")
-                        vals.loc[pl_mask2.values, :] = vals.loc[pl_mask2.values, :].fillna(0.0)
+        # 6) Garantir que o PL exista e não esteja vazio (edge cases)
+        #    Aqui, como cd_conta=2.07 é único e é PL, não há risco de preencher a conta errada.
+        if "2.07" in df["cd_conta"].astype(str).values:
+            pl_mask2 = df["cd_conta"].astype(str).str.strip().eq("2.07")
+            pl_vals = vals.loc[pl_mask2.values, :]
+            if not pl_vals.empty and pl_vals.isna().all(axis=1).any():
+                print("⚠️ Banco: Patrimônio Líquido sem períodos após preenchimento. Forçando 0.0 para evitar lacunas.")
+                vals.loc[pl_mask2.values, :] = vals.loc[pl_mask2.values, :].fillna(0.0)
 
-            df[full_period_cols] = vals
-
+        df[full_period_cols] = vals
         return df
+
 
     def padronizar_e_salvar_ticker(self, ticker: str) -> Tuple[bool, str]:
         """Pipeline completo de padronização do BP (BPA + BPP)."""
