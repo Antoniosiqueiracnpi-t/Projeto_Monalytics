@@ -366,22 +366,43 @@ def _carregar_csv_padronizado(path: Path) -> Optional[pd.DataFrame]:
 
 
 def _extrair_valor_conta(df: pd.DataFrame, cd_conta: str, periodo: str) -> float:
-    """Extrai valor de uma conta específica em um período."""
+    """Extrai valor de uma conta específica em um período (robusto a cd_conta duplicado)."""
     if df is None or periodo not in df.columns:
         return np.nan
-    
-    mask_exata = df['cd_conta'] == cd_conta
+
+    if 'cd_conta' not in df.columns:
+        return np.nan
+
+    cd = str(cd_conta).strip()
+    cd_series = df['cd_conta'].astype(str).str.strip()
+
+    mask_exata = cd_series == cd
     if mask_exata.any():
-        val = df.loc[mask_exata, periodo].values[0]
-        return float(val) if pd.notna(val) else np.nan
-    
-    mask_sub = df['cd_conta'].str.startswith(cd_conta + '.')
+        sub = df.loc[mask_exata].copy()
+
+        # Se houver duplicidade, tentar escolher a linha correta por descrição (especialmente PL)
+        if len(sub) > 1 and 'conta' in sub.columns:
+            conta_norm = sub['conta'].astype(str).str.lower()
+            is_pl = conta_norm.str.contains('patrimônio líquido') | conta_norm.str.contains('patrimonio liquido')
+            if is_pl.any():
+                vals = pd.to_numeric(sub.loc[is_pl, periodo], errors='coerce')
+                val = vals.dropna().iloc[0] if not vals.dropna().empty else np.nan
+                return float(val) if np.isfinite(val) else np.nan
+
+        # Fallback robusto: soma tudo que bateu no cd_conta (evita values[0] “errado”)
+        vals = pd.to_numeric(sub[periodo], errors='coerce')
+        soma = vals.sum(skipna=True)
+        return float(soma) if np.isfinite(soma) else np.nan
+
+    # Match por “subcontas”
+    mask_sub = cd_series.str.startswith(cd + '.')
     if mask_sub.any():
         vals = pd.to_numeric(df.loc[mask_sub, periodo], errors='coerce')
         soma = vals.sum(skipna=True)
         return float(soma) if np.isfinite(soma) else np.nan
-    
+
     return np.nan
+
 
 
 def _buscar_conta_flexivel(df: pd.DataFrame, codigos: List[str], periodo: str) -> float:
