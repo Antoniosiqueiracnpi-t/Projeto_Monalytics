@@ -1,0 +1,168 @@
+{
+  "ticker": "BBAS3",
+  "padrao_fiscal": {
+    "tipo": "PADRAO",
+    "descricao": "Ano fiscal padrão (jan-dez) com T1-T4",
+    "trimestres_ltm": 4
+  },
+  "metadata": {
+    "VALOR_MERCADO": {
+      "nome": "Valor de Mercado",
+      "categoria": "Valuation",
+      "formula": "Preço × Ações (3+4)",
+      "unidade": "R$ mil",
+      "usa_preco": true
+    },
+    "P_L": {
+      "nome": "P/L",
+      "categoria": "Valuation",
+      "formula": "Preço / Lucro por Ação LTM",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "P_VPA": {
+      "nome": "P/VPA",
+      "categoria": "Valuation",
+      "formula": "Preço / Valor Patrimonial por Ação",
+      "unidade": "x",
+      "usa_preco": true
+    },
+    "DY": {
+      "nome": "Dividend Yield",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Market Cap × 100",
+      "unidade": "%",
+      "usa_preco": true
+    },
+    "PAYOUT": {
+      "nome": "Payout",
+      "categoria": "Valuation",
+      "formula": "Dividendos LTM / Lucro Líquido LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "ROE": {
+      "nome": "ROE",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / PL Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "ROA": {
+      "nome": "ROA",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / Ativo Total Médio × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "MARGEM_LIQUIDA": {
+      "nome": "Margem Líquida",
+      "categoria": "Rentabilidade",
+      "formula": "Lucro Líquido LTM / Receita Intermediação LTM × 100",
+      "unidade": "%",
+      "usa_preco": false
+    },
+    "PL_ATIVOS": {
+      "nome": "PL/Ativos",
+      "categoria": "Estrutura",
+      "formula": "Patrimônio Líquido / Ativo Total × 100",
+      "unidade": "%",
+      "usa_preco": false
+    }
+  },
+  "historico_anual": {
+    "2022": {
+      "periodo_referencia": "2022T4",
+      "multiplos": {
+        "VALOR_MERCADO": 40259109.13,
+        "P_L": 1.3487,
+        "P_VPA": 0.2469,
+        "DY": 59.3694,
+        "PAYOUT": 80.0741,
+        "ROE": 18.3038,
+        "ROA": 0.7434,
+        "MARGEM_LIQUIDA": 12.6187,
+        "PL_ATIVOS": 4.0612
+      }
+    },
+    "2023": {
+      "periodo_referencia": "2023T4",
+      "multiplos": {
+        "VALOR_MERCADO": 139717733.9,
+        "P_L": 4.2127,
+        "P_VPA": 0.805,
+        "DY": 18.767,
+        "PAYOUT": 79.0604,
+        "ROE": 19.7035,
+        "ROA": 0.7969,
+        "MARGEM_LIQUIDA": 12.4946,
+        "PL_ATIVOS": 4.0293
+      }
+    },
+    "2024": {
+      "periodo_referencia": "2024T4",
+      "multiplos": {
+        "VALOR_MERCADO": 132153032.96,
+        "P_L": 4.5302,
+        "P_VPA": 0.7173,
+        "DY": 14.0616,
+        "PAYOUT": 63.7018,
+        "ROE": 16.3058,
+        "ROA": 0.6408,
+        "MARGEM_LIQUIDA": 10.6658,
+        "PL_ATIVOS": 3.8403
+      }
+    },
+    "2025": {
+      "periodo_referencia": "2025T3",
+      "multiplos": {
+        "VALOR_MERCADO": 125906423.86,
+        "P_L": 7.9151,
+        "P_VPA": 0.6728,
+        "DY": 7.8512,
+        "PAYOUT": 62.1427,
+        "ROE": 8.5293,
+        "ROA": 0.3196,
+        "MARGEM_LIQUIDA": 5.2031,
+        "PL_ATIVOS": 3.6829
+      }
+    }
+  },
+  "ltm": {
+    "periodo_referencia": "2025T3",
+    "data_calculo": "2026-01-12T11:48:56.789820",
+    "preco_utilizado": 21.86,
+    "periodo_preco": "2026T1",
+    "acoes_utilizadas": 5730834040,
+    "periodo_acoes": "2024T4",
+    "multiplos": {
+      "VALOR_MERCADO": 125276032.11,
+      "P_L": 7.8755,
+      "P_VPA": 0.6694,
+      "DY": 7.8907,
+      "PAYOUT": 62.1427,
+      "ROE": 8.5293,
+      "ROA": 0.3196,
+      "MARGEM_LIQUIDA": 5.2031,
+      "PL_ATIVOS": 3.6829
+    }
+  },
+  "periodos_disponiveis": [
+    "2022T1",
+    "2022T2",
+    "2022T3",
+    "2022T4",
+    "2023T1",
+    "2023T2",
+    "2023T3",
+    "2023T4",
+    "2024T1",
+    "2024T2",
+    "2024T3",
+    "2024T4",
+    "2025T1",
+    "2025T2",
+    "2025T3"
+  ],
+  "erros": []
+}
