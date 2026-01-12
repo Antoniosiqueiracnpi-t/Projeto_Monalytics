@@ -1,0 +1,40 @@
+{
+  "ticker": "PINE4",
+  "tipo_empresa": "financeira",
+  "ultima_atualizacao": "2026-01-12T13:54:57.791553",
+  "periodo_analisado": {
+    "inicio": "2011T1",
+    "fim": "2025T3",
+    "total_trimestres": 59,
+    "anos": 14.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 15.08,
+      "variacao_total": 666.32,
+      "ultimo_valor": 1242.06
+    },
+    "margens": {
+      "bruta": 18.81,
+      "operacional": 8.94,
+      "liquida": 8.39
+    },
+    "rentabilidade": {
+      "roe_medio": 9.61,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {},
+    "balanco": {
+      "ativo_total": null,
+      "patrimonio": 1071.92
+    }
+  },
+  "analise_critica": "PINE4 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta margem saudável sobre intermediação financeira (8.39%). Retorno sobre patrimônio abaixo do esperado (ROE de 9.61%).",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 15.08%)"
+  ],
+  "pontos_atencao": []
+}

@@ -1,0 +1,41 @@
+{
+  "ticker": "BBDC4",
+  "tipo_empresa": "financeira",
+  "ultima_atualizacao": "2026-01-12T13:54:57.464341",
+  "periodo_analisado": {
+    "inicio": "2022T1",
+    "fim": "2025T3",
+    "total_trimestres": 15,
+    "anos": 3.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.35,
+      "variacao_total": 41.14,
+      "ultimo_valor": 70374.06
+    },
+    "margens": {
+      "bruta": 32.24,
+      "operacional": 8.1,
+      "liquida": 8.48
+    },
+    "rentabilidade": {
+      "roe_medio": 11.4,
+      "roa_medio": 0.98
+    },
+    "estrutura": {
+      "pl_ativos": 8.58
+    },
+    "caixa": {},
+    "balanco": {
+      "ativo_total": 2202774.72,
+      "patrimonio": 176144.43
+    }
+  },
+  "analise_critica": "BBDC4 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta margem saudável sobre intermediação financeira (8.48%). Retorno sobre patrimônio adequado (ROE de 11.4%). ROA dentro da média do setor (0.98%). Estrutura de capital robusta com alto índice PL/Ativos (8.58%).",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.35%)",
+    "Estrutura de capital robusta (PL/Ativos: 8.58%)"
+  ],
+  "pontos_atencao": []
+}

@@ -1,0 +1,42 @@
+{
+  "ticker": "SANB4",
+  "tipo_empresa": "financeira",
+  "ultima_atualizacao": "2026-01-12T13:54:57.852772",
+  "periodo_analisado": {
+    "inicio": "2011T1",
+    "fim": "2025T3",
+    "total_trimestres": 59,
+    "anos": 14.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.88,
+      "variacao_total": 243.21,
+      "ultimo_valor": 40505.74
+    },
+    "margens": {
+      "bruta": 51.22,
+      "operacional": 16.14,
+      "liquida": 16.76
+    },
+    "rentabilidade": {
+      "roe_medio": 13.9,
+      "roa_medio": 1.78
+    },
+    "estrutura": {
+      "pl_ativos": 13.77
+    },
+    "caixa": {},
+    "balanco": {
+      "ativo_total": 1263370.22,
+      "patrimonio": 125149.26
+    }
+  },
+  "analise_critica": "SANB4 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta margem sobre receita de intermediação (16.76%). Retorno sobre patrimônio adequado (ROE de 13.9%). Apresenta eficiência operacional adequada (ROA de 1.78%). Estrutura de capital robusta com alto índice PL/Ativos (13.77%).",
+  "pontos_fortes": [
+    "Alta margem sobre intermediação (16.76%)",
+    "Alta eficiência operacional (ROA: 1.78%)",
+    "Estrutura de capital robusta (PL/Ativos: 13.77%)"
+  ],
+  "pontos_atencao": []
+}

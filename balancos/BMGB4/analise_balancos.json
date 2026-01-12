@@ -1,0 +1,44 @@
+{
+  "ticker": "BMGB4",
+  "tipo_empresa": "financeira",
+  "ultima_atualizacao": "2026-01-12T13:54:57.551504",
+  "periodo_analisado": {
+    "inicio": "2018T1",
+    "fim": "2025T3",
+    "total_trimestres": 31,
+    "anos": 7.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 15.89,
+      "variacao_total": 202.22,
+      "ultimo_valor": 2028.14
+    },
+    "margens": {
+      "bruta": 51.62,
+      "operacional": 3.77,
+      "liquida": 5.58
+    },
+    "rentabilidade": {
+      "roe_medio": 7.32,
+      "roa_medio": 0.97
+    },
+    "estrutura": {
+      "pl_ativos": 12.62
+    },
+    "caixa": {},
+    "balanco": {
+      "ativo_total": 48255.44,
+      "patrimonio": 4598.82
+    }
+  },
+  "analise_critica": "BMGB4 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas sobre intermediação (5.58%). Retorno sobre patrimônio abaixo do esperado (ROE de 7.32%). ROA dentro da média do setor (0.97%). Estrutura de capital robusta com alto índice PL/Ativos (12.62%).",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 15.89%)",
+    "Estrutura de capital robusta (PL/Ativos: 12.62%)"
+  ],
+  "pontos_atencao": [
+    "Margem sobre intermediação comprimida (5.58%)",
+    "Retorno sobre patrimônio baixo (ROE: 7.32%)"
+  ]
+}

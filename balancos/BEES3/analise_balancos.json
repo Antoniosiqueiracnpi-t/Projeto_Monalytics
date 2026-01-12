@@ -1,0 +1,43 @@
+{
+  "ticker": "BEES4",
+  "tipo_empresa": "financeira",
+  "ultima_atualizacao": "2026-01-12T13:54:57.498870",
+  "periodo_analisado": {
+    "inicio": "2022T1",
+    "fim": "2025T3",
+    "total_trimestres": 15,
+    "anos": 3.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 12.29,
+      "variacao_total": 50.04,
+      "ultimo_valor": 1453.27
+    },
+    "margens": {
+      "bruta": 28.78,
+      "operacional": 10.11,
+      "liquida": 7.25
+    },
+    "rentabilidade": {
+      "roe_medio": 16.61,
+      "roa_medio": 0.92
+    },
+    "estrutura": {
+      "pl_ativos": 5.53
+    },
+    "caixa": {},
+    "balanco": {
+      "ativo_total": 39131.8,
+      "patrimonio": 2447.74
+    }
+  },
+  "analise_critica": "BEES4 mantém receita relativamente estável no período. Opera com margens comprimidas sobre intermediação (7.25%). Gera excelente retorno sobre o patrimônio (ROE médio de 16.61%). ROA dentro da média do setor (0.92%). Estrutura de capital adequada (PL/Ativos de 5.53%).",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 12.29%)",
+    "Excelente retorno sobre patrimônio (ROE: 16.61%)"
+  ],
+  "pontos_atencao": [
+    "Margem sobre intermediação comprimida (7.25%)"
+  ]
+}
