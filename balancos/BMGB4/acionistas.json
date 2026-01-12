@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "61.186.680/0001-74",
+    "nome": "",
+    "ticker": "BMGB4"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "BMG Participações S.A.",
+      "cpf_cnpj": "13.844.313/0001-78",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 158640349,
+      "percentual_total": 26.48,
+      "acoes_ordinarias": 158640349,
+      "percentual_ordinarias": 41.438,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "RIVAGE PARTICIPAÇÕES S.A.",
+      "cpf_cnpj": "38.258.177/0001-65",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 63154447,
+      "percentual_total": 10.542,
+      "acoes_ordinarias": 53242662,
+      "percentual_ordinarias": 13.907,
+      "acoes_preferenciais": 9911785,
+      "percentual_preferenciais": 4.583,
+      "posicao": 2
+    },
+    {
+      "nome": "ÁGUA BOA PARTICIPAÇÕES S.A.",
+      "cpf_cnpj": "38.240.193/0001-20",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 63157948,
+      "percentual_total": 10.542,
+      "acoes_ordinarias": 53242724,
+      "percentual_ordinarias": 13.907,
+      "acoes_preferenciais": 9915224,
+      "percentual_preferenciais": 4.585,
+      "posicao": 3
+    },
+    {
+      "nome": "SÃO JUDAS TADEU PARTICIPAÇÕES S.A.",
+      "cpf_cnpj": "38.243.371/0001-77",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 62788210,
+      "percentual_total": 10.481,
+      "acoes_ordinarias": 53246496,
+      "percentual_ordinarias": 13.908,
+      "acoes_preferenciais": 9541714,
+      "percentual_preferenciais": 4.412,
+      "posicao": 4
+    },
+    {
+      "nome": "RAJ Participações S.A.",
+      "cpf_cnpj": "22.711.619/0001-47",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 52020372,
+      "percentual_total": 8.683,
+      "acoes_ordinarias": 17304735,
+      "percentual_ordinarias": 4.52,
+      "acoes_preferenciais": 34715637,
+      "percentual_preferenciais": 16.053,
+      "posicao": 5
+    },
+    {
+      "nome": "JOÃO ANNES GUIMARÃES",
+      "cpf_cnpj": "373.022.306-25",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 37351124,
+      "percentual_total": 6.235,
+      "acoes_ordinarias": 18941333,
+      "percentual_ordinarias": 4.948,
+      "acoes_preferenciais": 18409791,
+      "percentual_preferenciais": 8.513,
+      "posicao": 6
+    },
+    {
+      "nome": "ANTÔNIO MOURÃO GUIMARÃES NETO",
+      "cpf_cnpj": "325.371.236-20",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 29556437,
+      "percentual_total": 4.934,
+      "acoes_ordinarias": 20311559,
+      "percentual_ordinarias": 5.306,
+      "acoes_preferenciais": 9244878,
+      "percentual_preferenciais": 4.275,
+      "posicao": 7
+    },
+    {
+      "nome": "ESPÓLIO FLAVIO PENTAGNA GUIMARÃES",
+      "cpf_cnpj": "000.679.706-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4858156,
+      "percentual_total": 0.811,
+      "acoes_ordinarias": 1,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 4858155,
+      "percentual_preferenciais": 2.247,
+      "posicao": 8
+    },
+    {
+      "nome": "ÂNGELA ANNES GUIMARÃES",
+      "cpf_cnpj": "375.156.836-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 812074,
+      "percentual_total": 0.136,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 812074,
+      "percentual_preferenciais": 0.376,
+      "posicao": 9
+    },
+    {
+      "nome": "RICARDO ANNES GUIMARÃES",
+      "cpf_cnpj": "421.402.186-04",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 370107,
+      "percentual_total": 0.062,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 370107,
+      "percentual_preferenciais": 0.171,
+      "posicao": 10
+    }
+  ]
+}
