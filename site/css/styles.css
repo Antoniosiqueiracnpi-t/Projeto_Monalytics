@@ -3023,6 +3023,10 @@ textarea:focus {
     background: linear-gradient(135deg, #ec4899, #f472b6);
 }
 
+.categoria-icon.estrutura {
+    background: linear-gradient(135deg, #06b6d4, #22d3ee);
+}
+
 .categoria-titulo {
     font-size: 1.3rem;
     font-weight: 700;
