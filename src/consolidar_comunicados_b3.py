@@ -37,206 +37,215 @@ import json
 from pathlib import Path
 from datetime import datetime
 from collections import Counter
-from typing import List, Dict
+from typing import Dict
 
 
 class ConsolidadorNoticias:
     """
     Consolida todas as notícias individuais em um único JSON.
     """
-    
+
     def __init__(self, pasta_balancos: str = "balancos"):
         self.pasta_balancos = Path(pasta_balancos)
         self.empresas_processadas = 0
         self.total_noticias = 0
-    
+
     def consolidar(self) -> Dict:
         """
         Consolida todas as notícias em uma única estrutura.
         """
-        print("="*70)
+        print("=" * 70)
         print("📊 CONSOLIDANDO NOTÍCIAS PARA WEB")
-        print("="*70)
-        
+        print("=" * 70)
+
         # Buscar todos os arquivos noticias.json
         arquivos_noticias = list(self.pasta_balancos.glob("*/noticias.json"))
-        
+
         if not arquivos_noticias:
             print("⚠️  Nenhum arquivo de notícias encontrado")
             return self._estrutura_vazia()
-        
+
         print(f"\n📁 Arquivos encontrados: {len(arquivos_noticias)}")
-        
+
         # Coletar todas as notícias
         feed = []
         categorias = Counter()
         tickers = Counter()
         periodo_min = None
         periodo_max = None
-        
+
         for arquivo in arquivos_noticias:
             try:
-                with open(arquivo, 'r', encoding='utf-8') as f:
+                with open(arquivo, "r", encoding="utf-8") as f:
                     dados = json.load(f)
-                
-                empresa_info = dados['empresa']
-                ticker = empresa_info['ticker']
-              
-                # Normaliza ticker para sempre ter classe quando o JSON vier sem (ex.: 'BBAS' -> 'BBAS3')
-                try:
-                    t_norm = str(ticker).strip().upper()
-                    if t_norm and not re.search(r'\d{1,2}$', t_norm):
-                        base = t_norm[:4]
-                        if base in self._mapa_base_para_ticker_classe:
-                            ticker = self._mapa_base_para_ticker_classe[base]
-                            empresa_info['ticker'] = ticker
-                except Exception:
-                    pass
-              
-                
+
+                # ✅ Robustez: empresa pode vir ausente ou diferente
+                empresa_info = dados.get("empresa", {}) or {}
+
+                # ✅ CORREÇÃO CIRÚRGICA (DEFINITIVA):
+                # O ticker canônico deve ser SEMPRE o nome da pasta: balancos/<TICKER>/noticias.json
+                # Isso evita dependência de mapa externo inexistente e garante classe correta.
+                ticker_pasta = arquivo.parent.name.strip().upper()
+
+                # Fallback (caso o JSON tenha ticker, mas o ideal é a pasta)
+                ticker_json = str(empresa_info.get("ticker", "")).strip().upper()
+
+                ticker = ticker_pasta or ticker_json
+                empresa_info["ticker"] = ticker
+
+                # Se ainda estiver vazio, segue mas registra
+                if not ticker:
+                    ticker = "DESCONHECIDO"
+                    empresa_info["ticker"] = ticker
+
                 self.empresas_processadas += 1
-                
+
+                noticias = dados.get("noticias", []) or []
+
                 # Processar cada notícia
-                for noticia in dados['noticias']:
+                for noticia in noticias:
+                    # Garantir chaves mínimas sem quebrar
+                    data_n = noticia.get("data", "")
+                    titulo_n = noticia.get("titulo", "")
+                    headline_n = noticia.get("headline", "")
+                    categoria_n = noticia.get("categoria", "")
+                    url_n = noticia.get("url", "")
+
                     # Adicionar informação da empresa à notícia
                     item_feed = {
-                        'data': noticia['data'],
-                        'hora': self._extrair_hora(noticia.get('titulo', '')),
-                        'empresa': {
-                            'ticker': ticker,
-                            'nome': empresa_info['nome'],
-                            'cnpj': empresa_info.get('cnpj', '')
+                        "data": data_n,
+                        "hora": self._extrair_hora(titulo_n),
+                        "empresa": {
+                            "ticker": ticker,
+                            "nome": empresa_info.get("nome", ""),
+                            "cnpj": empresa_info.get("cnpj", ""),
                         },
-                        'noticia': {
-                            'titulo': noticia['titulo'],
-                            'headline': noticia['headline'],
-                            'categoria': noticia['categoria'],
-                            'url': noticia['url']
-                        }
+                        "noticia": {
+                            "titulo": titulo_n,
+                            "headline": headline_n,
+                            "categoria": categoria_n,
+                            "url": url_n,
+                        },
                     }
-                    
+
                     feed.append(item_feed)
-                    categorias[noticia['categoria']] += 1
+                    categorias[categoria_n] += 1
                     tickers[ticker] += 1
                     self.total_noticias += 1
-                    
-                    # Atualizar range de datas
-                    data = noticia['data']
-                    if periodo_min is None or data < periodo_min:
-                        periodo_min = data
-                    if periodo_max is None or data > periodo_max:
-                        periodo_max = data
-                
-                print(f"  ✅ {ticker}: {len(dados['noticias'])} notícias")
-                
+
+                    # Atualizar range de datas (mantendo como string YYYY-MM-DD, se vier)
+                    if data_n:
+                        if periodo_min is None or data_n < periodo_min:
+                            periodo_min = data_n
+                        if periodo_max is None or data_n > periodo_max:
+                            periodo_max = data_n
+
+                print(f"  ✅ {ticker}: {len(noticias)} notícias")
+
             except Exception as e:
                 print(f"  ❌ Erro ao processar {arquivo}: {e}")
                 continue
-        
+
         # Ordenar feed por data (mais recente primeiro)
-        feed.sort(key=lambda x: (x['data'], x['hora']), reverse=True)
-        
+        feed.sort(key=lambda x: (x.get("data", ""), x.get("hora", "")), reverse=True)
+
         # Criar estrutura consolidada
+        now = datetime.now()
         consolidado = {
-            'meta': {
-                'ultima_atualizacao': datetime.now().isoformat() + 'Z',
-                'data_atualizacao': datetime.now().strftime('%Y-%m-%d'),
-                'hora_atualizacao': datetime.now().strftime('%H:%M:%S'),
-                'total_empresas': self.empresas_processadas,
-                'total_noticias': self.total_noticias,
-                'periodo': {
-                    'inicio': periodo_min,
-                    'fim': periodo_max
-                }
+            "meta": {
+                "ultima_atualizacao": now.isoformat() + "Z",
+                "data_atualizacao": now.strftime("%Y-%m-%d"),
+                "hora_atualizacao": now.strftime("%H:%M:%S"),
+                "total_empresas": self.empresas_processadas,
+                "total_noticias": self.total_noticias,
+                "periodo": {"inicio": periodo_min, "fim": periodo_max},
             },
-            'estatisticas': {
-                'por_categoria': dict(categorias.most_common()),
-                'por_ticker': dict(tickers.most_common(20)),  # Top 20
-                'top_categorias': [
-                    {'categoria': cat, 'total': count}
+            "estatisticas": {
+                "por_categoria": dict(categorias.most_common()),
+                "por_ticker": dict(tickers.most_common(20)),  # Top 20
+                "top_categorias": [
+                    {"categoria": cat, "total": count}
                     for cat, count in categorias.most_common(10)
                 ],
-                'top_empresas': [
-                    {'ticker': ticker, 'total': count}
-                    for ticker, count in tickers.most_common(10)
-                ]
+                "top_empresas": [
+                    {"ticker": t, "total": count} for t, count in tickers.most_common(10)
+                ],
             },
-            'feed': feed
+            "feed": feed,
         }
-        
+
         # Estatísticas
-        print(f"\n{'='*70}")
-        print(f"📊 ESTATÍSTICAS:")
-        print(f"{'='*70}")
+        print(f"\n{'=' * 70}")
+        print("📊 ESTATÍSTICAS:")
+        print(f"{'=' * 70}")
         print(f"✅ Empresas processadas: {self.empresas_processadas}")
         print(f"✅ Total de notícias: {self.total_noticias}")
         print(f"✅ Período: {periodo_min} a {periodo_max}")
-        
-        print(f"\n📈 TOP 5 CATEGORIAS:")
+
+        print("\n📈 TOP 5 CATEGORIAS:")
         for i, (cat, count) in enumerate(categorias.most_common(5), 1):
             print(f"  {i}. {cat}: {count} notícias")
-        
-        print(f"\n📈 TOP 5 EMPRESAS:")
-        for i, (ticker, count) in enumerate(tickers.most_common(5), 1):
-            print(f"  {i}. {ticker}: {count} notícias")
-        
+
+        print("\n📈 TOP 5 EMPRESAS:")
+        for i, (t, count) in enumerate(tickers.most_common(5), 1):
+            print(f"  {i}. {t}: {count} notícias")
+
         return consolidado
-    
+
     def _extrair_hora(self, titulo: str) -> str:
         """
         Extrai hora do título se disponível.
         Retorna '00:00:00' como padrão.
         """
         import re
-        # Tentar extrair hora do formato DD/MM/AAAA HH:MM
-        match = re.search(r'(\d{2}):(\d{2})', titulo)
+
+        # Tentar extrair hora do formato DD/MM/AAAA HH:MM (ou qualquer HH:MM no título)
+        match = re.search(r"(\d{2}):(\d{2})", str(titulo or ""))
         if match:
             return f"{match.group(1)}:{match.group(2)}:00"
         return "00:00:00"
-    
+
     def _estrutura_vazia(self) -> Dict:
         """Retorna estrutura vazia quando não há notícias."""
+        now = datetime.now()
         return {
-            'meta': {
-                'ultima_atualizacao': datetime.now().isoformat() + 'Z',
-                'data_atualizacao': datetime.now().strftime('%Y-%m-%d'),
-                'hora_atualizacao': datetime.now().strftime('%H:%M:%S'),
-                'total_empresas': 0,
-                'total_noticias': 0,
-                'periodo': {
-                    'inicio': None,
-                    'fim': None
-                }
+            "meta": {
+                "ultima_atualizacao": now.isoformat() + "Z",
+                "data_atualizacao": now.strftime("%Y-%m-%d"),
+                "hora_atualizacao": now.strftime("%H:%M:%S"),
+                "total_empresas": 0,
+                "total_noticias": 0,
+                "periodo": {"inicio": None, "fim": None},
             },
-            'estatisticas': {
-                'por_categoria': {},
-                'por_ticker': {},
-                'top_categorias': [],
-                'top_empresas': []
+            "estatisticas": {
+                "por_categoria": {},
+                "por_ticker": {},
+                "top_categorias": [],
+                "top_empresas": [],
             },
-            'feed': []
+            "feed": [],
         }
-    
+
     def salvar(self, dados: Dict, arquivo: str = "feed_noticias.json"):
         """
         Salva JSON consolidado.
         """
         output_path = self.pasta_balancos / arquivo
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
+
+        with open(output_path, "w", encoding="utf-8") as f:
             json.dump(dados, f, ensure_ascii=False, indent=2)
-        
+
         # Calcular tamanho
         tamanho_kb = output_path.stat().st_size / 1024
-        
-        print(f"\n{'='*70}")
-        print(f"✅ ARQUIVO GERADO COM SUCESSO!")
-        print(f"{'='*70}")
+
+        print(f"\n{'=' * 70}")
+        print("✅ ARQUIVO GERADO COM SUCESSO!")
+        print(f"{'=' * 70}")
         print(f"📁 Local: {output_path}")
         print(f"📊 Tamanho: {tamanho_kb:.2f} KB")
         print(f"🌐 URL: balancos/{arquivo}")
-        print(f"{'='*70}\n")
-        
+        print(f"{'=' * 70}\n")
+
         return output_path
 
 
@@ -244,15 +253,16 @@ class ConsolidadorNoticias:
 # MAIN
 # ============================================================================
 
+
 def main():
     consolidador = ConsolidadorNoticias()
-    
+
     # Consolidar todas as notícias
     dados = consolidador.consolidar()
-    
+
     # Salvar JSON único
     consolidador.salvar(dados)
-    
+
     print("✅ Consolidação concluída!")
     print("💡 Arquivo pronto para consumo em páginas HTML")
     print("💡 Atualização diária automática via GitHub Actions\n")
