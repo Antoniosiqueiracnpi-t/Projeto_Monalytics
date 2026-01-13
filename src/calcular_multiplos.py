@@ -431,38 +431,131 @@ def carregar_dados_empresa(ticker: str) -> DadosEmpresa:
 # ✅ CORREÇÃO 2: FILTRO DE COLUNAS SUJAS
 # ======================================================================================
 
-def _get_colunas_numericas_validas(df: pd.DataFrame) -> List[str]:
+def _get_colunas_numericas_validas(self, df: pd.DataFrame):
     """
-    ✅ CORREÇÃO 2: Retorna apenas colunas de período que contêm NÚMEROS válidos.
-
-    Problema: BEEF3 tem coluna "2026T1" com valores "ON", "TOTAL" (texto)
-    Solução: Testa se a coluna tem pelo menos 1 valor numérico válido
-
-    Exemplo:
-        2026T1: ["ON", "TOTAL"] → EXCLUÍDA (100% texto)
-        2025T4: ["15.50", "TOTAL"] → INCLUÍDA (tem número)
-
-    Args:
-        df: DataFrame com colunas de períodos
-
-    Returns:
-        Lista ordenada de períodos com dados numéricos
+    Retorna colunas do tipo 'YYYYT1..YYYYT4' que possuem ao menos 1 número finito válido.
+    (Protege contra colunas 'período' contaminadas com strings.)
     """
-    if df is None:
+    if df is None or df.empty:
         return []
 
-    # Candidatas: colunas que parecem períodos (formato YYYYTX)
-    candidatas = [c for c in df.columns if _parse_periodo(c)[0] > 0]
-
-    validas = []
-    for c in candidatas:
-        # Tenta converter para numérico
-        s = pd.to_numeric(df[c], errors='coerce')
-        # Se tiver PELO MENOS 1 número válido, a coluna é válida
+    pad = re.compile(r"^\d{4}T[1-4]$", re.IGNORECASE)
+    cols = []
+    for c in df.columns:
+        if not pad.match(str(c)):
+            continue
+        s = pd.to_numeric(df[c], errors="coerce")
+        s = s.replace([np.inf, -np.inf], np.nan)
         if s.notna().any():
-            validas.append(c)
+            cols.append(str(c))
+    return cols
 
-    return _ordenar_periodos(validas)
+
+def _aplicar_divisor_contabil(self, df: pd.DataFrame, divisor: float):
+    """
+    Divide APENAS colunas trimestrais numéricas (YYYYT*) por 'divisor'.
+    Não mexe em cd_conta/conta/especie etc.
+    """
+    if df is None or df.empty or not divisor or divisor == 1:
+        return
+
+    cols = self._get_colunas_numericas_validas(df)
+    if not cols:
+        return
+
+    for c in cols:
+        df[c] = pd.to_numeric(df[c], errors="coerce") / float(divisor)
+
+
+def _inferir_divisor_escala_nao_financeira(self, market_cap_mil: float, ativo_total: float, patrimonio_liquido: float):
+    """
+    Infere divisor (potências de 10) para trazer BPA/BPP/DRE/DFC para a MESMA unidade do MarketCap (R$ mil no seu pipeline).
+    Heurística: após escala, Ativo/MC e PL/MC devem cair em faixas plausíveis para não-financeiras.
+    """
+    if not market_cap_mil or market_cap_mil <= 0:
+        return 1.0
+
+    # Usa valores absolutos só para inferir escala (PL pode ser negativo em casos específicos)
+    ativo = abs(ativo_total) if ativo_total is not None and np.isfinite(ativo_total) else None
+    pl    = abs(patrimonio_liquido) if patrimonio_liquido is not None and np.isfinite(patrimonio_liquido) else None
+
+    # Se não tem nada útil, não mexe
+    if not ativo and not pl:
+        return 1.0
+
+    # candidatos (inclui 1e10 porque é o padrão típico quando BP veio absurdamente inflado)
+    candidatos = [1, 1e3, 1e6, 1e9, 1e10, 1e11, 1e12, 1e13]
+
+    def penalidade(r, low, high):
+        if r is None or (not np.isfinite(r)) or r <= 0:
+            return 1e9
+        if low <= r <= high:
+            return 0.0
+        if r < low:
+            return abs(math.log10(low / r))
+        return abs(math.log10(r / high))
+
+    # Faixas-alvo (não-financeiras):
+    # - PL/MC: tipicamente 0.03..3 (P/VPA ~ 0.33..33)
+    # - Ativo/MC: tipicamente 0.05..10
+    best_div = 1.0
+    best_score = 1e18
+
+    for d in candidatos:
+        r_pl = (pl / d) / market_cap_mil if pl else None
+        r_at = (ativo / d) / market_cap_mil if ativo else None
+
+        score = 0.0
+        # dá mais peso pro PL (impacta diretamente P/VPA e vários checks de consistência)
+        score += 2.0 * penalidade(r_pl, 0.03, 3.0) if r_pl is not None else 0.0
+        score += 1.0 * penalidade(r_at, 0.05, 10.0) if r_at is not None else 0.0
+
+        if score < best_score:
+            best_score = score
+            best_div = float(d)
+
+    # Só aplica se realmente precisar (muito fora da curva)
+    # Se best_div != 1 e melhorou bem, escala
+    return best_div if best_div != 1.0 else 1.0
+
+
+def _corrigir_escala_contabil_nao_financeira(self, dados, ticker: str, periodo_ref: str):
+    """
+    Correção central:
+    - Só roda para NÃO-FINANCEIRAS (não altera bancos/seguradoras/holding seguros).
+    - Se BPA/BPP (e por consequência DRE/DFC) estiverem em escala absurda,
+      aplica divisor consistente para alinhar com MarketCap (R$ mil).
+    """
+    # Não mexe nos financeiros (mantém como está, conforme seu pedido)
+    t = str(ticker or "").strip().upper()
+    if self._is_banco(t) or self._is_seguradora_operacional(t) or self._is_holding_seguros(t):
+        return 1.0
+
+    # MarketCap no padrão do seu pipeline (R$ mil)
+    mc_mil = self._calcular_market_cap_atual(dados, t)
+    if not mc_mil or mc_mil <= 0:
+        return 1.0
+
+    # Ativo Total (BPA) e PL (BPP) no período_ref
+    ativo_total = self._buscar_conta_flexivel(getattr(dados, "bpa", None), ["1"], periodo_ref)
+    # PL: em não-financeiras costuma ser 2.03, mas mantém fallback
+    patrimonio_liquido = self._buscar_conta_flexivel(getattr(dados, "bpp", None), ["2.03", "2.07", "2.08"], periodo_ref)
+
+    divisor = self._inferir_divisor_escala_nao_financeira(mc_mil, ativo_total, patrimonio_liquido)
+
+    if divisor and divisor != 1.0:
+        self._aplicar_divisor_contabil(getattr(dados, "dre", None), divisor)
+        self._aplicar_divisor_contabil(getattr(dados, "bpa", None), divisor)
+        self._aplicar_divisor_contabil(getattr(dados, "bpp", None), divisor)
+        self._aplicar_divisor_contabil(getattr(dados, "dfc", None), divisor)
+
+    # opcional: deixa rastreável (não interfere em nada)
+    try:
+        setattr(dados, "escala_contabil_divisor", divisor)
+    except Exception:
+        pass
+
+    return divisor
 
 
 # ======================================================================================
@@ -2573,6 +2666,13 @@ def processar_ticker(ticker: str, salvar: bool = True) -> Tuple[bool, str, Optio
     # >>>>>> SEM EXCLUSÃO - AGORA SUPORTAMOS SEGURADORAS <<<<
     
     dados = carregar_dados_empresa(ticker_upper)
+
+    # período contábil de referência (o mesmo que você usa pro LTM)
+    periodo_ref = (dados.periodos[-1] if getattr(dados, "periodos", None) else None)
+    
+    if periodo_ref:
+        self._corrigir_escala_contabil_nao_financeira(dados, ticker, periodo_ref)
+    
     
     if dados.erros:
         erros_str = "; ".join(dados.erros)
