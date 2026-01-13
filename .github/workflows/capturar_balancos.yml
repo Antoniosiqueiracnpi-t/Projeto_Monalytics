@@ -14,44 +14,51 @@ on:
           - 'lista'
           - 'faixa'
         default: 'quantidade'
-      
+
       quantidade:
         description: 'Quantidade (modo quantidade): 10, 50, 308=todas'
         required: false
         default: '10'
-      
+
       ticker:
         description: 'Ticker único (modo ticker): ex: PETR4'
         required: false
         default: ''
-      
+
       lista:
         description: 'Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4'
         required: false
         default: ''
-      
+
       faixa:
         description: 'Faixa (modo faixa): ex: 1-50, 51-150, 151-308'
         required: false
         default: '1-50'
 
+# Evita conflito de push quando outro workflow também commita no main
+concurrency:
+  group: capturar-balancos-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   capturar:
     runs-on: ubuntu-latest
     timeout-minutes: 120
-    
+
     steps:
     - name: 📥 Baixar código
       uses: actions/checkout@v3
-    
+      with:
+        fetch-depth: 0
+
     - name: 🐍 Configurar Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-    
+
     - name: 📦 Instalar bibliotecas
       run: pip install pandas requests
-    
+
     - name: 🚀 Executar captura
       run: |
         python src/capturar_balancos.py \
@@ -60,11 +67,46 @@ jobs:
           --ticker "${{ github.event.inputs.ticker }}" \
           --lista "${{ github.event.inputs.lista }}" \
           --faixa "${{ github.event.inputs.faixa }}"
-    
-    - name: 💾 Salvar no GitHub
+
+    - name: 💾 Salvar no GitHub (safe rebase)
+      shell: bash
       run: |
+        set -e
+
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
+
+        BRANCH="${GITHUB_REF_NAME:-main}"
+        git checkout "$BRANCH"
+
         git add balancos/
-        git diff --quiet && git diff --staged --quiet || git commit -m "Balanços atualizados - $(date +'%Y-%m-%d')"
-        git push
+
+        # Se não houver mudanças, sai com sucesso
+        if git diff --cached --quiet; then
+          echo "✅ Sem mudanças para commit."
+          exit 0
+        fi
+
+        git commit -m "Balanços atualizados - $(date +'%Y-%m-%d')"
+
+        # Rebase com o remoto para evitar rejeição "fetch first"
+        git fetch origin "$BRANCH"
+
+        git rebase "origin/$BRANCH" || {
+          echo "⚠️ Rebase falhou. Recovery (stash -> reset -> pop)..."
+          git rebase --abort || true
+
+          git stash push -u -m "actions-autostash" || true
+          git reset --hard "origin/$BRANCH"
+          git stash pop || true
+
+          git add balancos/
+          if git diff --cached --quiet; then
+            echo "✅ Após recovery, sem mudanças para commit."
+            exit 0
+          fi
+
+          git commit -m "Balanços atualizados - $(date +'%Y-%m-%d')"
+        }
+
+        git push origin "HEAD:$BRANCH"
