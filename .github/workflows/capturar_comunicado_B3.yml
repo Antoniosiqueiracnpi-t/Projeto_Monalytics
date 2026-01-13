@@ -33,6 +33,7 @@ on:
         description: 'Período de busca em dias'
         required: false
         default: '30'
+
   schedule:
     # 08:00 BRT (UTC-3) = 11:00 UTC
     - cron: '0 11 * * 1-5'
@@ -45,8 +46,8 @@ jobs:
     runs-on: ubuntu-latest
 
     concurrency:
-      group: noticias-workflow
-      cancel-in-progress: false
+      group: capturar-comunicados-b3
+      cancel-in-progress: true
 
     steps:
       - name: Checkout código
@@ -55,7 +56,7 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Sincronizar com origin/main (evita divergência/force)
+      - name: Sincronizar com origin/main (evita divergência/forced-update)
         run: |
           git fetch origin main
           git checkout main
@@ -72,9 +73,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas requests finbr
 
-      - name: Executar captura de notícias
+      - name: Executar captura de comunicados B3
         run: |
-          if [ "${{ github.event_name }}" == "schedule" ]; then
+          if [ "${{ github.event_name }}" = "schedule" ]; then
             echo "🤖 Execução automática (seg-sex 08:00 BRT): capturando TODAS as empresas"
             python src/capturar_comunicados_b3.py --modo faixa --faixa 1-999 --dias 30
           else
@@ -88,12 +89,7 @@ jobs:
               --dias "${{ github.event.inputs.dias }}"
           fi
 
-      - name: Consolidar Comunicados em JSON único
-        run: |
-          echo "📊 Consolidando notícias para feed web..."
-          python src/consolidar_comunicados_b3.py
-
-      - name: 📝 Atualizar timestamp
+      - name: 📝 Atualizar timestamp (web)
         run: |
           mkdir -p site/data
 
@@ -113,7 +109,7 @@ jobs:
 
           echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
 
-      - name: Commit e Push resultados
+      - name: Commit e Push resultados (apenas noticias.json + timestamp)
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
@@ -122,13 +118,12 @@ jobs:
 
           file_pattern: |
             balancos/*/noticias.json
-            balancos/feed_noticias.json
             site/data/ultima_atualizacao.json
 
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
 
-          # já fizemos fetch/reset acima — evita o action alterar refs e gerar divergência
+          # ✅ IMPORTANTÍSSIMO: não usar pull/push_options (isso estava quebrando e forçando divergência)
           skip_fetch: true
           skip_checkout: true
           skip_dirty_check: false
