@@ -1,106 +1,106 @@
 {
-  "ultima_atualizacao": "2026-01-13T17:32-03:00",
+  "ultima_atualizacao": "2026-01-13T18:28-03:00",
   "total_acoes": 85,
   "estatisticas": {
-    "variacao_media": -1.37,
-    "acoes_em_alta": 15,
-    "acoes_em_baixa": 70,
-    "acoes_estaveis": 0
+    "variacao_media": -1.29,
+    "acoes_em_alta": 17,
+    "acoes_em_baixa": 65,
+    "acoes_estaveis": 3
   },
   "top_5_altas": [
     {
       "ticker": "PETR3",
-      "variacao_pct": 3.63,
-      "preco_atual": 33.11,
-      "volume": 13709700
+      "variacao_pct": 3.41,
+      "preco_atual": 33.04,
+      "volume": 16182600
     },
     {
       "ticker": "PETR4",
-      "variacao_pct": 2.77,
-      "preco_atual": 31.2,
-      "volume": 45403600
+      "variacao_pct": 2.57,
+      "preco_atual": 31.14,
+      "volume": 54097200
     },
     {
       "ticker": "GGBR4",
-      "variacao_pct": 2.68,
-      "preco_atual": 21.82,
-      "volume": 10182900
+      "variacao_pct": 1.93,
+      "preco_atual": 21.66,
+      "volume": 13494400
     },
     {
       "ticker": "GOAU4",
-      "variacao_pct": 2.04,
-      "preco_atual": 9.49,
-      "volume": 13173400
+      "variacao_pct": 1.83,
+      "preco_atual": 9.47,
+      "volume": 16550700
     },
     {
-      "ticker": "MRVE3",
-      "variacao_pct": 1.75,
-      "preco_atual": 8.12,
-      "volume": 13669100
+      "ticker": "CSNA3",
+      "variacao_pct": 1.31,
+      "preco_atual": 10.05,
+      "volume": 7114000
     }
   ],
   "top_5_baixas": [
     {
       "ticker": "HAPV3",
-      "variacao_pct": -7.27,
-      "preco_atual": 14.15,
-      "volume": 17883200
+      "variacao_pct": -8.39,
+      "preco_atual": 13.98,
+      "volume": 19834400
     },
     {
       "ticker": "YDUQ3",
-      "variacao_pct": -4.83,
-      "preco_atual": 12.41,
-      "volume": 1955300
+      "variacao_pct": -4.75,
+      "preco_atual": 12.42,
+      "volume": 2737800
     },
     {
       "ticker": "VIVA3",
-      "variacao_pct": -4.79,
-      "preco_atual": 29.44,
-      "volume": 4148300
-    },
-    {
-      "ticker": "RAIL3",
-      "variacao_pct": -4.3,
-      "preco_atual": 14.25,
-      "volume": 10989900
+      "variacao_pct": -4.59,
+      "preco_atual": 29.5,
+      "volume": 5127700
     },
     {
       "ticker": "MGLU3",
-      "variacao_pct": -4.08,
-      "preco_atual": 8.23,
-      "volume": 25596600
+      "variacao_pct": -4.43,
+      "preco_atual": 8.2,
+      "volume": 28401900
+    },
+    {
+      "ticker": "RAIL3",
+      "variacao_pct": -3.9,
+      "preco_atual": 14.31,
+      "volume": 14860200
     }
   ],
   "top_5_volumes": [
     {
+      "ticker": "CSAN3",
+      "volume": 86373400,
+      "variacao_pct": -2.1,
+      "preco_atual": 5.14
+    },
+    {
       "ticker": "PETR4",
-      "volume": 45403600,
-      "variacao_pct": 2.77,
-      "preco_atual": 31.2
+      "volume": 54097200,
+      "variacao_pct": 2.57,
+      "preco_atual": 31.14
+    },
+    {
+      "ticker": "BBAS3",
+      "volume": 39315600,
+      "variacao_pct": -3.06,
+      "preco_atual": 21.2
     },
     {
       "ticker": "RAIZ4",
-      "volume": 35393200,
+      "volume": 37881100,
       "variacao_pct": -2.35,
       "preco_atual": 0.83
     },
     {
-      "ticker": "COGN3",
-      "volume": 30089400,
-      "variacao_pct": -2.19,
-      "preco_atual": 3.57
-    },
-    {
-      "ticker": "ABEV3",
-      "volume": 27916200,
-      "variacao_pct": 0.36,
-      "preco_atual": 13.95
-    },
-    {
-      "ticker": "BBAS3",
-      "volume": 27650000,
-      "variacao_pct": -2.93,
-      "preco_atual": 21.23
+      "ticker": "ITSA4",
+      "volume": 33856900,
+      "variacao_pct": -0.33,
+      "preco_atual": 11.96
     }
   ]
 }
