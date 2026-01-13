@@ -53,45 +53,26 @@ def extrair_ticker_inteligente(tickers_str):
     """
     Extrai o ticker mais adequado para busca na CVM.
     Prioriza: ON (código 3) > PN (código 4) > UNIT (código 11)
-
-    Args:
-        tickers_str: String com tickers separados por ';' (ex: "SAPR11;SAPR3;SAPR4")
-
-    Returns:
-        str: Ticker selecionado segundo a prioridade
     """
-    # Remove aspas e espaços, depois faz split por ponto-e-vírgula
-    tickers = [t.strip().strip('"') for t in tickers_str.split(';')]
+    tickers = [t.strip().strip('"') for t in str(tickers_str).split(';') if str(t).strip()]
 
-    # Prioridade 1: Busca ticker ON (termina com 3)
     for ticker in tickers:
-        if ticker.endswith('3') and not ticker.endswith('11'):  # Evita confusão com UNIT11
+        if ticker.endswith('3') and not ticker.endswith('11'):
             return ticker
 
-    # Prioridade 2: Busca ticker PN (termina com 4)
     for ticker in tickers:
         if ticker.endswith('4'):
             return ticker
 
-    # Prioridade 3: Busca ticker UNIT (termina com 11)
     for ticker in tickers:
         if ticker.endswith('11'):
             return ticker
 
-    # Fallback: retorna o primeiro ticker disponível
-    return tickers[0] if tickers else tickers_str
+    return tickers[0] if tickers else str(tickers_str).strip().upper()
 
 
 def get_pasta_balanco(ticker: str) -> Path:
-    """
-    Retorna Path da pasta de balanços usando ticker inteligente.
-
-    Args:
-        ticker: Qualquer ticker
-
-    Returns:
-        Path para pasta de balanços
-    """
+    """Retorna Path da pasta de balanços usando ticker inteligente."""
     ticker_clean = extrair_ticker_inteligente(ticker)
     return Path("balancos") / ticker_clean
 
@@ -130,8 +111,8 @@ class CapturaBalancos:
         if doc not in ("ITR", "DFP"):
             raise ValueError("doc deve ser 'ITR' ou 'DFP'")
 
-        # Respeita o que existe no Dados Abertos:
-        # DFP começa em 2010; ITR começa em 2011
+        # Disponibilidade dos zips no Dados Abertos:
+        # DFP: 2010+ | ITR: 2011+
         if doc == "DFP" and ano < 2010:
             raise FileNotFoundError("DFP estruturado (ZIP) indisponível antes de 2010 (Dados Abertos CVM).")
         if doc == "ITR" and ano < 2011:
@@ -150,11 +131,9 @@ class CapturaBalancos:
             except Exception:
                 return False
 
-        # Se já existe e é válido, usa cache
         if _zip_valido(dest):
             return dest
 
-        # Se existe mas está inválido, apaga e baixa de novo
         if dest.exists():
             try:
                 dest.unlink()
@@ -164,7 +143,6 @@ class CapturaBalancos:
         r = requests.get(url, timeout=180)
         r.raise_for_status()
 
-        # grava atômico (evita zip “meio baixado”)
         tmp = dest.with_suffix(".zip.tmp")
         tmp.write_bytes(r.content)
 
@@ -215,8 +193,7 @@ class CapturaBalancos:
             print(f"[AVISO] Falha ao baixar ZIP {doc} {ano}: {e}")
             return None
 
-        df = self._ler_csv_do_zip(zip_path, alvo)
-        return df
+        return self._ler_csv_do_zip(zip_path, alvo)
 
     # ------------------------- HELPERS -------------------------
 
@@ -225,14 +202,18 @@ class CapturaBalancos:
         dig = re.sub(r"\D", "", str(cnpj))
         return dig.zfill(14)
 
-    def _filtrar_empresa_ultimo(self, df: pd.DataFrame, cnpj_digits: str) -> pd.DataFrame:
+    def _filtrar_empresa(self, df: pd.DataFrame, cnpj_digits: str, doc: str) -> pd.DataFrame:
+        """
+        Filtra empresa por CNPJ e aplica regra de ORDEM_EXERC:
+          - DFP: mantém apenas ÚLTIMO
+          - ITR: mantém ÚLTIMO + PENÚLTIMO + ANTEPENÚLTIMO (para não perder comparativos)
+        """
         if df is None or df.empty:
             return df.iloc[0:0]
 
         if "CNPJ_CIA" not in df.columns:
             return df.iloc[0:0]
 
-        # CNPJ sempre com 14 dígitos (evita perder anos por zeros à esquerda)
         cnpj_col = (
             df["CNPJ_CIA"]
             .astype(str)
@@ -244,16 +225,43 @@ class CapturaBalancos:
         if df.empty:
             return df
 
-        if "ORDEM_EXERC" in df.columns:
-            ordv = df["ORDEM_EXERC"].astype(str).str.upper()
-            df = df[ordv.isin(["ÚLTIMO", "ULTIMO"])].copy()
-            if df.empty:
-                return df
-
         if "DT_FIM_EXERC" not in df.columns:
             return df.iloc[0:0]
 
         df["DT_FIM_EXERC"] = df["DT_FIM_EXERC"].astype(str)
+
+        doc = str(doc).upper().strip()
+
+        if "ORDEM_EXERC" in df.columns:
+            ordv = df["ORDEM_EXERC"].astype(str).str.upper()
+
+            if doc == "DFP":
+                df = df[ordv.isin(["ÚLTIMO", "ULTIMO"])].copy()
+            else:
+                # ITR: mantém também comparativos (importante p/ alguns emissores, ex.: BBAS)
+                df = df[ordv.isin(["ÚLTIMO", "ULTIMO", "PENÚLTIMO", "PENULTIMO", "ANTEPENÚLTIMO", "ANTEPENULTIMO"])].copy()
+
+        return df
+
+    def _add_ordem_prioridade(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Cria coluna interna __ordem__ para resolver duplicidades:
+          ÚLTIMO (3) > PENÚLTIMO (2) > ANTEPENÚLTIMO (1) > outros (0)
+        """
+        if df is None or df.empty:
+            return df
+
+        if "ORDEM_EXERC" not in df.columns:
+            df["__ordem__"] = 0
+            return df
+
+        ordv = df["ORDEM_EXERC"].astype(str).str.upper()
+        mapa = {
+            "ÚLTIMO": 3, "ULTIMO": 3,
+            "PENÚLTIMO": 2, "PENULTIMO": 2,
+            "ANTEPENÚLTIMO": 1, "ANTEPENULTIMO": 1,
+        }
+        df["__ordem__"] = ordv.map(mapa).fillna(0).astype(int)
         return df
 
     def _add_trimestre_itr(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -267,10 +275,26 @@ class CapturaBalancos:
             df["VALOR_MIL"] = pd.NA
             return df
 
-        # Normaliza número pt-BR (ex: "1.234.567,89" -> "1234567.89")
-        s = df["VL_CONTA"].astype(str)
-        s = s.str.replace(".", "", regex=False).str.replace(",", ".", regex=False)
-        df["VL_CONTA"] = pd.to_numeric(s, errors="coerce")
+        s = df["VL_CONTA"].astype(str).str.strip()
+
+        # Se vier em notação científica (E/e), NÃO remover pontos
+        sci = s.str.contains(r"[eE]", na=False)
+
+        s_sci = s[sci].str.replace(",", ".", regex=False)
+
+        # Não-científico: se tiver vírgula, assume pt-BR (remove milhar '.' e troca ',' por '.')
+        s_n = s[~sci]
+        tem_virg = s_n.str.contains(",", na=False)
+        s_n1 = s_n.copy()
+        s_n1[tem_virg] = s_n1[tem_virg].str.replace(".", "", regex=False).str.replace(",", ".", regex=False)
+        # se não tiver vírgula, deixa como está (evita quebrar "1234.56" ou "1234")
+        # (se por acaso vier "1.234" sem vírgula, é ambíguo; manter é o menor risco)
+
+        s_final = s.copy()
+        s_final[sci] = s_sci
+        s_final[~sci] = s_n1
+
+        df["VL_CONTA"] = pd.to_numeric(s_final, errors="coerce")
 
         # respeita ESCALA_MOEDA quando existir (UNIDADE/MIL)
         if "ESCALA_MOEDA" in df.columns:
@@ -288,27 +312,49 @@ class CapturaBalancos:
             req = ["DT_FIM_EXERC", "TRIMESTRE", "CD_CONTA", "DS_CONTA", "VALOR_MIL"]
             if not all(c in df.columns for c in req):
                 return df.iloc[0:0]
+
             out = df[req].copy()
-            out.columns = ["data_fim", "trimestre", "cd_conta", "ds_conta", "valor_mil"]
+            # coluna interna de prioridade (se existir)
+            if "__ordem__" in df.columns:
+                out["__ordem__"] = df["__ordem__"].values
+            else:
+                out["__ordem__"] = 0
+
+            out.columns = ["data_fim", "trimestre", "cd_conta", "ds_conta", "valor_mil", "__ordem__"]
             return out
 
         # anual (DFP): não tem trimestre -> fixamos como T4 para padronizar seu pipeline
         req = ["DT_FIM_EXERC", "CD_CONTA", "DS_CONTA", "VALOR_MIL"]
         if not all(c in df.columns for c in req):
             return df.iloc[0:0]
+
         out = df[req].copy()
         out["TRIMESTRE"] = "T4"
-        out = out[["DT_FIM_EXERC", "TRIMESTRE", "CD_CONTA", "DS_CONTA", "VALOR_MIL"]]
-        out.columns = ["data_fim", "trimestre", "cd_conta", "ds_conta", "valor_mil"]
+
+        if "__ordem__" in df.columns:
+            out["__ordem__"] = df["__ordem__"].values
+        else:
+            out["__ordem__"] = 0
+
+        out = out[["DT_FIM_EXERC", "TRIMESTRE", "CD_CONTA", "DS_CONTA", "VALOR_MIL", "__ordem__"]]
+        out.columns = ["data_fim", "trimestre", "cd_conta", "ds_conta", "valor_mil", "__ordem__"]
         return out
 
     def _consolidar(self, frames: list[pd.DataFrame]) -> pd.DataFrame:
         consolidado = pd.concat(frames, ignore_index=True)
-        consolidado = consolidado.sort_values(["data_fim", "cd_conta"])
+
+        if "__ordem__" not in consolidado.columns:
+            consolidado["__ordem__"] = 0
+
+        consolidado = consolidado.sort_values(["data_fim", "cd_conta", "__ordem__"])
         consolidado = consolidado.drop_duplicates(
             subset=["data_fim", "trimestre", "cd_conta"],
             keep="last"
         )
+
+        # remove coluna interna
+        consolidado = consolidado.drop(columns=["__ordem__"], errors="ignore")
+
         return consolidado
 
     # ------------------------- PROCESSAMENTO -------------------------
@@ -317,13 +363,11 @@ class CapturaBalancos:
         print(f"\n{'='*50}")
         print(f"📊 {ticker} (CNPJ: {cnpj})")
 
-        # Usar get_pasta_balanco para garantir pasta correta
         pasta = get_pasta_balanco(ticker)
         pasta.mkdir(exist_ok=True)
 
         cnpj_digits = self._cnpj_digits(cnpj)
 
-        # Ajustes mínimos para evitar warnings e respeitar disponibilidade dos zips
         inicio_dfp = max(self.ano_inicio, 2010)
         inicio_itr = max(self.ano_inicio, 2011)
 
@@ -335,10 +379,11 @@ class CapturaBalancos:
                 if df is None or df.empty:
                     continue
 
-                df = self._filtrar_empresa_ultimo(df, cnpj_digits)
+                df = self._filtrar_empresa(df, cnpj_digits, doc="ITR")
                 if df.empty:
                     continue
 
+                df = self._add_ordem_prioridade(df)
                 df = self._add_trimestre_itr(df)
                 df = self._valor_em_mil(df)
                 out = self._padronizar(df, trimestral=True)
@@ -362,10 +407,11 @@ class CapturaBalancos:
                 if df is None or df.empty:
                     continue
 
-                df = self._filtrar_empresa_ultimo(df, cnpj_digits)
+                df = self._filtrar_empresa(df, cnpj_digits, doc="DFP")
                 if df.empty:
                     continue
 
+                df = self._add_ordem_prioridade(df)
                 df = self._valor_em_mil(df)
                 out = self._padronizar(df, trimestral=False)
                 if out.empty:
@@ -387,9 +433,6 @@ class CapturaBalancos:
         """
         Processa um lote de empresas selecionadas.
         INTELIGÊNCIA: Sempre usa ticker ON (3) ou PN (4) para buscar na CVM.
-
-        Args:
-            df_sel: DataFrame com empresas selecionadas (colunas: ticker, cnpj)
         """
         print(f"\n🚀 Processando {len(df_sel)} empresas...\n")
 
@@ -398,7 +441,6 @@ class CapturaBalancos:
 
         for _, row in df_sel.iterrows():
             try:
-                # Aplicar inteligência de seleção de ticker
                 ticker_str = str(row["ticker"]).strip().upper()
                 ticker_cvm = extrair_ticker_inteligente(ticker_str)
 
@@ -416,9 +458,6 @@ class CapturaBalancos:
 
 
 def main():
-    """
-    Função principal com suporte a argumentos CLI.
-    """
     parser = argparse.ArgumentParser(
         description="Captura balanços das empresas B3 (ITR e DFP)"
     )
@@ -450,18 +489,15 @@ def main():
     )
     args = parser.parse_args()
 
-    # Carregar mapeamento (tenta consolidado, fallback para original)
     df = load_mapeamento_consolidado()
     df = df[df["cnpj"].notna()].reset_index(drop=True)
 
-    # Seleção baseada no modo
     if args.modo == "quantidade":
         limite = int(args.quantidade)
         df_sel = df.head(limite)
 
     elif args.modo == "ticker":
         ticker_upper = args.ticker.upper()
-        # Buscar ticker em qualquer posição da string de tickers
         df_sel = df[df["ticker"].str.upper().str.contains(
             ticker_upper,
             case=False,
@@ -480,7 +516,6 @@ def main():
             print("❌ Lista de tickers vazia.")
             sys.exit(1)
 
-        # Buscar cada ticker em qualquer posição
         mask = df["ticker"].str.upper().apply(
             lambda x: any(t in x for t in tickers) if pd.notna(x) else False
         )
@@ -505,7 +540,6 @@ def main():
     else:
         df_sel = df.head(10)
 
-    # Exibir informações do job
     print(f"\n{'='*70}")
     print(f">>> JOB: CAPTURAR BALANÇOS (ITR + DFP) <<<")
     print(f"{'='*70}")
@@ -517,7 +551,6 @@ def main():
     print(f"Inteligência: Prioriza ON (3) > PN (4) > outros")
     print(f"{'='*70}\n")
 
-    # Processar
     captura = CapturaBalancos()
     captura.processar_lote(df_sel)
 
