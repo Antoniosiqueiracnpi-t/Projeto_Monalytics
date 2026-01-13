@@ -1,9 +1,9 @@
 {
   "ticker": "CBAV3",
-  "ultima_atualizacao": "2026-01-12T23:04:10.878634",
+  "ultima_atualizacao": "2026-01-13T23:03:08.888821",
   "periodo": {
     "inicio": "2021-07-16",
-    "fim": "2026-01-09"
+    "fim": "2026-01-12"
   },
   "dados": [
     {
@@ -12325,16 +12325,27 @@
       "mm20": 6.99,
       "mm50": 6.01,
       "mm200": 4.69
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 8.61,
+      "maxima": 9.05,
+      "minima": 8.57,
+      "fechamento": 9.05,
+      "volume": 5043100,
+      "mm20": 7.13,
+      "mm50": 6.08,
+      "mm200": 4.72
     }
   ],
   "estatisticas": {
-    "total_dias": 1120,
+    "total_dias": 1121,
     "preco_inicial": 10.84,
-    "preco_atual": 8.65,
-    "variacao_periodo": -20.17,
+    "preco_atual": 9.05,
+    "variacao_periodo": -16.48,
     "maxima_periodo": 21.37,
     "minima_periodo": 2.84,
-    "volume_medio": 4306657,
+    "volume_medio": 4307314,
     "tendencia": "alta"
   }
 }

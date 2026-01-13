@@ -1,22 +1,11 @@
 {
   "ticker": "BIOM3",
-  "ultima_atualizacao": "2026-01-12T23:04:07.803081",
+  "ultima_atualizacao": "2026-01-13T23:03:07.117476",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 16.86,
-      "maxima": 16.86,
-      "minima": 16.27,
-      "fechamento": 16.53,
-      "volume": 25650,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 16.53,
@@ -222,7 +211,7 @@
       "minima": 15.24,
       "fechamento": 15.86,
       "volume": 19651,
-      "mm20": 15.89,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 14.5,
       "volume": 16858,
       "mm20": 14.57,
-      "mm50": 15.25,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 12721,
       "mm20": 14.45,
       "mm50": 13.85,
-      "mm200": 15.02
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -13898,16 +13887,27 @@
       "mm20": 7.61,
       "mm50": 7.57,
       "mm200": 8.35
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 7.23,
+      "maxima": 7.32,
+      "minima": 6.92,
+      "fechamento": 7.03,
+      "volume": 102300,
+      "mm20": 7.5,
+      "mm50": 7.54,
+      "mm200": 8.34
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 16.53,
-    "preco_atual": 7.06,
-    "variacao_periodo": -57.3,
+    "preco_inicial": 16.44,
+    "preco_atual": 7.03,
+    "variacao_periodo": -57.23,
     "maxima_periodo": 20.19,
     "minima_periodo": 3.51,
-    "volume_medio": 44892,
-    "tendencia": "indefinida"
+    "volume_medio": 44953,
+    "tendencia": "baixa"
   }
 }

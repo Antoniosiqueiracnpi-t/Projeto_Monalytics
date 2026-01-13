@@ -1,22 +1,11 @@
 {
   "ticker": "CPLE5",
-  "ultima_atualizacao": "2026-01-12T23:02:52.827662",
+  "ultima_atualizacao": "2026-01-13T23:02:23.298352",
   "periodo": {
-    "inicio": "2020-12-14",
+    "inicio": "2020-12-15",
     "fim": "2025-12-19"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 4.31,
-      "maxima": 4.31,
-      "minima": 4.31,
-      "fechamento": 4.31,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 4.31,
@@ -222,7 +211,7 @@
       "minima": 4.55,
       "fechamento": 4.55,
       "volume": 0,
-      "mm20": 4.44,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 4.55,
       "volume": 0,
       "mm20": 4.55,
-      "mm50": 4.5,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 105,
       "mm20": 40.08,
       "mm50": 34.97,
-      "mm200": 16.12
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -7263,7 +7252,7 @@
       "fechamento": 28.94,
       "volume": 0,
       "mm20": 28.08,
-      "mm50": 25.48,
+      "mm50": 25.49,
       "mm200": 22.58
     },
     {
@@ -13769,13 +13758,13 @@
     }
   ],
   "estatisticas": {
-    "total_dias": 1251,
+    "total_dias": 1250,
     "preco_inicial": 4.31,
     "preco_atual": 13.58,
     "variacao_periodo": 214.86,
     "maxima_periodo": 46.79,
     "minima_periodo": 4.31,
-    "volume_medio": 230772,
+    "volume_medio": 230956,
     "tendencia": "indefinida"
   }
 }

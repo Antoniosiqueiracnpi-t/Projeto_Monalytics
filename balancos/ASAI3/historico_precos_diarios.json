@@ -1,9 +1,9 @@
 {
   "ticker": "ASAI3",
-  "ultima_atualizacao": "2026-01-12T23:01:59.433805",
+  "ultima_atualizacao": "2026-01-13T23:01:48.322489",
   "periodo": {
     "inicio": "2021-03-01",
-    "fim": "2026-01-09"
+    "fim": "2026-01-12"
   },
   "dados": [
     {
@@ -13370,16 +13370,27 @@
       "mm20": 7.42,
       "mm50": 8.37,
       "mm200": 9.26
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 7.04,
+      "maxima": 7.43,
+      "minima": 6.91,
+      "fechamento": 7.36,
+      "volume": 23554800,
+      "mm20": 7.39,
+      "mm50": 8.35,
+      "mm200": 9.26
     }
   ],
   "estatisticas": {
-    "total_dias": 1215,
+    "total_dias": 1216,
     "preco_inicial": 13.56,
-    "preco_atual": 7.04,
-    "variacao_periodo": -48.08,
+    "preco_atual": 7.36,
+    "variacao_periodo": -45.72,
     "maxima_periodo": 20.38,
     "minima_periodo": 4.98,
-    "volume_medio": 14356014,
+    "volume_medio": 14363579,
     "tendencia": "baixa"
   }
 }

@@ -1,22 +1,11 @@
 {
   "ticker": "AERI3",
-  "ultima_atualizacao": "2026-01-12T23:03:51.416851",
+  "ultima_atualizacao": "2026-01-13T23:02:55.235887",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 146.29,
-      "maxima": 150.68,
-      "minima": 143.9,
-      "fechamento": 146.49,
-      "volume": 109070,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 146.49,
@@ -222,7 +211,7 @@
       "minima": 246.14,
       "fechamento": 256.91,
       "volume": 341275,
-      "mm20": 193.98,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 191.93,
       "volume": 277570,
       "mm20": 219.99,
-      "mm50": 215.15,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 136850,
       "mm20": 163.1,
       "mm50": 165.05,
-      "mm200": 187.25
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -13898,16 +13887,27 @@
       "mm20": 3.34,
       "mm50": 3.78,
       "mm200": 4.08
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 3.28,
+      "maxima": 3.29,
+      "minima": 3.22,
+      "fechamento": 3.28,
+      "volume": 43500,
+      "mm20": 3.3,
+      "mm50": 3.77,
+      "mm200": 4.08
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 146.49,
+    "preco_inicial": 145.89,
     "preco_atual": 3.28,
-    "variacao_periodo": -97.76,
+    "variacao_periodo": -97.75,
     "maxima_periodo": 261.69,
     "minima_periodo": 3.17,
-    "volume_medio": 265907,
+    "volume_medio": 265855,
     "tendencia": "baixa"
   }
 }

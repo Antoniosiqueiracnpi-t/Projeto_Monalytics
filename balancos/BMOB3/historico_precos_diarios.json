@@ -1,9 +1,9 @@
 {
   "ticker": "BMOB3",
-  "ultima_atualizacao": "2026-01-12T23:04:27.232654",
+  "ultima_atualizacao": "2026-01-13T23:03:18.681065",
   "periodo": {
     "inicio": "2021-02-11",
-    "fim": "2026-01-09"
+    "fim": "2026-01-12"
   },
   "dados": [
     {
@@ -13480,16 +13480,27 @@
       "mm20": 23.06,
       "mm50": 23.11,
       "mm200": 19.65
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 22.21,
+      "maxima": 22.21,
+      "minima": 21.86,
+      "fechamento": 21.86,
+      "volume": 380800,
+      "mm20": 22.95,
+      "mm50": 23.13,
+      "mm200": 19.69
     }
   ],
   "estatisticas": {
-    "total_dias": 1225,
+    "total_dias": 1226,
     "preco_inicial": 17.47,
-    "preco_atual": 22.21,
-    "variacao_periodo": 27.1,
+    "preco_atual": 21.86,
+    "variacao_periodo": 25.1,
     "maxima_periodo": 25.76,
     "minima_periodo": 8.65,
-    "volume_medio": 549177,
+    "volume_medio": 549040,
     "tendencia": "indefinida"
   }
 }

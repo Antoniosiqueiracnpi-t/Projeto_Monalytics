@@ -1,22 +1,11 @@
 {
   "ticker": "RAIL3",
-  "ultima_atualizacao": "2026-01-12T23:05:15.252050",
+  "ultima_atualizacao": "2026-01-13T23:03:54.082881",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 17.92,
-      "maxima": 18.25,
-      "minima": 17.62,
-      "fechamento": 17.62,
-      "volume": 8612000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 17.62,
@@ -222,7 +211,7 @@
       "minima": 19.54,
       "fechamento": 19.7,
       "volume": 7145300,
-      "mm20": 18.61,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 17.38,
       "volume": 13410700,
       "mm20": 18.98,
-      "mm50": 19.0,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 7966800,
       "mm20": 16.78,
       "mm50": 17.78,
-      "mm200": 18.88
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -13898,16 +13887,27 @@
       "mm20": 14.95,
       "mm50": 15.59,
       "mm200": 16.4
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 14.73,
+      "maxima": 15.21,
+      "minima": 14.73,
+      "fechamento": 14.89,
+      "volume": 14943500,
+      "mm20": 14.91,
+      "mm50": 15.57,
+      "mm200": 16.39
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 17.62,
-    "preco_atual": 14.83,
-    "variacao_periodo": -15.82,
+    "preco_inicial": 18.52,
+    "preco_atual": 14.89,
+    "variacao_periodo": -19.6,
     "maxima_periodo": 22.98,
     "minima_periodo": 14.11,
-    "volume_medio": 12084408,
+    "volume_medio": 12089421,
     "tendencia": "baixa"
   }
 }

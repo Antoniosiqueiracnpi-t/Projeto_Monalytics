@@ -1,22 +1,11 @@
 {
   "ticker": "LIGT3",
-  "ultima_atualizacao": "2026-01-12T23:03:07.527463",
+  "ultima_atualizacao": "2026-01-13T23:02:30.981851",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 22.18,
-      "maxima": 22.53,
-      "minima": 22.11,
-      "fechamento": 22.25,
-      "volume": 1484420,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 22.25,
@@ -222,7 +211,7 @@
       "minima": 22.34,
       "fechamento": 22.74,
       "volume": 1029600,
-      "mm20": 22.41,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 16.92,
       "volume": 4792900,
       "mm20": 19.27,
-      "mm50": 20.69,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1225000,
       "mm20": 13.39,
       "mm50": 13.97,
-      "mm200": 17.07
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -13898,16 +13887,27 @@
       "mm20": 4.64,
       "mm50": 5.2,
       "mm200": 5.64
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 4.81,
+      "maxima": 4.89,
+      "minima": 4.63,
+      "fechamento": 4.66,
+      "volume": 859600,
+      "mm20": 4.63,
+      "mm50": 5.19,
+      "mm200": 5.64
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 22.25,
-    "preco_atual": 4.77,
-    "variacao_periodo": -78.56,
+    "preco_inicial": 22.48,
+    "preco_atual": 4.66,
+    "variacao_periodo": -79.27,
     "maxima_periodo": 23.42,
     "minima_periodo": 1.92,
-    "volume_medio": 2914465,
+    "volume_medio": 2913970,
     "tendencia": "indefinida"
   }
 }

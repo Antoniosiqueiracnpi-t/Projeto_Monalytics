@@ -1,22 +1,11 @@
 {
   "ticker": "AXIA6",
-  "ultima_atualizacao": "2026-01-12T23:02:44.743910",
+  "ultima_atualizacao": "2026-01-13T23:02:17.559060",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 20.27,
-      "maxima": 20.46,
-      "minima": 19.77,
-      "fechamento": 19.83,
-      "volume": 2505722,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 19.83,
@@ -222,7 +211,7 @@
       "minima": 18.28,
       "fechamento": 18.86,
       "volume": 3130322,
-      "mm20": 18.91,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 18.15,
       "volume": 6700365,
       "mm20": 17.26,
-      "mm50": 17.76,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1788936,
       "mm20": 22.13,
       "mm50": 22.51,
-      "mm200": 21.32
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -8853,7 +8842,7 @@
     {
       "data": "2024-03-12",
       "abertura": 30.99,
-      "maxima": 31.44,
+      "maxima": 31.45,
       "minima": 30.73,
       "fechamento": 31.18,
       "volume": 1047397,
@@ -13898,16 +13887,27 @@
       "mm20": 52.98,
       "mm50": 50.86,
       "mm200": 38.83
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 54.02,
+      "maxima": 54.69,
+      "minima": 53.87,
+      "fechamento": 54.19,
+      "volume": 1338200,
+      "mm20": 53.0,
+      "mm50": 51.07,
+      "mm200": 38.94
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 19.83,
-    "preco_atual": 54.63,
-    "variacao_periodo": 175.55,
+    "preco_inicial": 20.17,
+    "preco_atual": 54.19,
+    "variacao_periodo": 168.72,
     "maxima_periodo": 55.62,
     "minima_periodo": 14.92,
-    "volume_medio": 2904983,
+    "volume_medio": 2904059,
     "tendencia": "alta"
   }
 }

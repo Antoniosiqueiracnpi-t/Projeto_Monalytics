@@ -1,22 +1,11 @@
 {
   "ticker": "LREN3",
-  "ultima_atualizacao": "2026-01-12T23:02:10.796745",
+  "ultima_atualizacao": "2026-01-13T23:01:55.906407",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 30.33,
-      "maxima": 31.1,
-      "minima": 30.18,
-      "fechamento": 30.63,
-      "volume": 5688318,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 30.63,
@@ -222,7 +211,7 @@
       "minima": 28.36,
       "fechamento": 29.55,
       "volume": 8994664,
-      "mm20": 29.49,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 25.45,
       "volume": 15030826,
       "mm20": 26.91,
-      "mm50": 28.34,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 14527865,
       "mm20": 24.85,
       "mm50": 26.39,
-      "mm200": 28.63
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -3432,7 +3421,7 @@
       "abertura": 18.49,
       "maxima": 18.52,
       "minima": 17.58,
-      "fechamento": 18.41,
+      "fechamento": 18.4,
       "volume": 17137560,
       "mm20": 18.59,
       "mm50": 19.29,
@@ -10040,7 +10029,7 @@
     },
     {
       "data": "2024-08-14",
-      "abertura": 13.18,
+      "abertura": 13.19,
       "maxima": 13.61,
       "minima": 13.17,
       "fechamento": 13.61,
@@ -13898,16 +13887,27 @@
       "mm20": 13.56,
       "mm50": 14.27,
       "mm200": 15.3
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 13.21,
+      "maxima": 13.41,
+      "minima": 13.07,
+      "fechamento": 13.41,
+      "volume": 7372100,
+      "mm20": 13.55,
+      "mm50": 14.24,
+      "mm200": 15.31
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 30.63,
-    "preco_atual": 13.3,
-    "variacao_periodo": -56.57,
+    "preco_inicial": 31.29,
+    "preco_atual": 13.41,
+    "variacao_periodo": -57.15,
     "maxima_periodo": 33.58,
     "minima_periodo": 9.72,
-    "volume_medio": 16816185,
+    "volume_medio": 16817518,
     "tendencia": "baixa"
   }
 }

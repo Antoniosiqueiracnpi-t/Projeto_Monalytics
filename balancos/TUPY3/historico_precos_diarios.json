@@ -1,22 +1,11 @@
 {
   "ticker": "TUPY3",
-  "ultima_atualizacao": "2026-01-12T23:04:07.433308",
+  "ultima_atualizacao": "2026-01-13T23:03:06.792714",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 18.32,
-      "maxima": 19.24,
-      "minima": 18.26,
-      "fechamento": 18.52,
-      "volume": 1557900,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 18.52,
@@ -222,7 +211,7 @@
       "minima": 19.22,
       "fechamento": 19.43,
       "volume": 994600,
-      "mm20": 18.89,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 18.54,
       "volume": 1337300,
       "mm20": 18.44,
-      "mm50": 18.66,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -945,7 +934,7 @@
       "data": "2021-04-23",
       "abertura": 20.01,
       "maxima": 20.33,
-      "minima": 19.66,
+      "minima": 19.67,
       "fechamento": 20.13,
       "volume": 1208500,
       "mm20": 19.0,
@@ -2204,7 +2193,7 @@
       "volume": 606700,
       "mm20": 17.15,
       "mm50": 18.09,
-      "mm200": 19.09
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -13898,16 +13887,27 @@
       "mm20": 12.04,
       "mm50": 12.32,
       "mm200": 15.72
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 11.65,
+      "maxima": 11.73,
+      "minima": 11.56,
+      "fechamento": 11.65,
+      "volume": 1171000,
+      "mm20": 12.02,
+      "mm50": 12.29,
+      "mm200": 15.69
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 18.52,
+    "preco_inicial": 18.69,
     "preco_atual": 11.65,
-    "variacao_periodo": -37.1,
+    "variacao_periodo": -37.67,
     "maxima_periodo": 27.6,
     "minima_periodo": 11.55,
-    "volume_medio": 800965,
+    "volume_medio": 800659,
     "tendencia": "baixa"
   }
 }

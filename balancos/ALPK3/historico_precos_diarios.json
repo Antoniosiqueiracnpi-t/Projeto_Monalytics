@@ -1,22 +1,11 @@
 {
   "ticker": "ALPK3",
-  "ultima_atualizacao": "2026-01-12T23:04:40.931081",
+  "ultima_atualizacao": "2026-01-13T23:03:29.830860",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 9.23,
-      "maxima": 9.35,
-      "minima": 9.02,
-      "fechamento": 9.28,
-      "volume": 69700,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 9.28,
@@ -222,7 +211,7 @@
       "minima": 9.02,
       "fechamento": 9.02,
       "volume": 260700,
-      "mm20": 9.19,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 7.6,
       "volume": 69000,
       "mm20": 8.47,
-      "mm50": 8.82,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 25400,
       "mm20": 6.16,
       "mm50": 6.38,
-      "mm200": 7.81
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -13898,16 +13887,27 @@
       "mm20": 4.54,
       "mm50": 4.37,
       "mm200": 3.47
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 4.65,
+      "maxima": 4.65,
+      "minima": 4.5,
+      "fechamento": 4.57,
+      "volume": 111800,
+      "mm20": 4.55,
+      "mm50": 4.38,
+      "mm200": 3.48
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 9.28,
-    "preco_atual": 4.6,
-    "variacao_periodo": -50.43,
+    "preco_inicial": 9.16,
+    "preco_atual": 4.57,
+    "variacao_periodo": -50.11,
     "maxima_periodo": 9.55,
     "minima_periodo": 1.11,
-    "volume_medio": 172156,
+    "volume_medio": 172189,
     "tendencia": "alta"
   }
 }

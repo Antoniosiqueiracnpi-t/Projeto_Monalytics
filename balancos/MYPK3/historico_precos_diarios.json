@@ -1,22 +1,11 @@
 {
   "ticker": "MYPK3",
-  "ultima_atualizacao": "2026-01-12T23:01:58.218176",
+  "ultima_atualizacao": "2026-01-13T23:01:47.364950",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 11.67,
-      "maxima": 11.93,
-      "minima": 11.09,
-      "fechamento": 11.1,
-      "volume": 1783700,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 11.1,
@@ -222,7 +211,7 @@
       "minima": 11.67,
       "fechamento": 12.39,
       "volume": 2221800,
-      "mm20": 11.5,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 9.89,
       "volume": 2104100,
       "mm20": 10.58,
-      "mm50": 11.11,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 2071100,
       "mm20": 13.0,
       "mm50": 12.17,
-      "mm200": 11.51
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -2837,7 +2826,7 @@
       "data": "2021-12-30",
       "abertura": 12.38,
       "maxima": 12.82,
-      "minima": 12.31,
+      "minima": 12.32,
       "fechamento": 12.75,
       "volume": 2335800,
       "mm20": 12.33,
@@ -13898,16 +13887,27 @@
       "mm20": 9.99,
       "mm50": 10.23,
       "mm200": 11.84
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 10.01,
+      "maxima": 10.11,
+      "minima": 9.77,
+      "fechamento": 10.11,
+      "volume": 1477400,
+      "mm20": 10.0,
+      "mm50": 10.22,
+      "mm200": 11.83
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 11.1,
-    "preco_atual": 9.95,
-    "variacao_periodo": -10.4,
+    "preco_inicial": 11.25,
+    "preco_atual": 10.11,
+    "variacao_periodo": -10.15,
     "maxima_periodo": 16.22,
     "minima_periodo": 9.03,
-    "volume_medio": 1461631,
-    "tendencia": "baixa"
+    "volume_medio": 1461388,
+    "tendencia": "indefinida"
   }
 }

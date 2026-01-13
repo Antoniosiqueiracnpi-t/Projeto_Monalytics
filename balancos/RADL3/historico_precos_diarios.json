@@ -1,22 +1,11 @@
 {
   "ticker": "RADL3",
-  "ultima_atualizacao": "2026-01-12T23:02:03.253113",
+  "ultima_atualizacao": "2026-01-13T23:01:51.667369",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 21.88,
-      "maxima": 22.16,
-      "minima": 21.7,
-      "fechamento": 22.09,
-      "volume": 3778251,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 22.09,
@@ -222,7 +211,7 @@
       "minima": 22.05,
       "fechamento": 22.8,
       "volume": 6905277,
-      "mm20": 22.09,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 20.15,
       "volume": 10917117,
       "mm20": 21.83,
-      "mm50": 22.11,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -1120,7 +1109,7 @@
     {
       "data": "2021-05-17",
       "abertura": 22.63,
-      "maxima": 23.61,
+      "maxima": 23.62,
       "minima": 22.57,
       "fechamento": 23.45,
       "volume": 5984821,
@@ -2204,7 +2193,7 @@
       "volume": 4352780,
       "mm20": 22.03,
       "mm50": 22.52,
-      "mm200": 22.53
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -13898,16 +13887,27 @@
       "mm20": 23.57,
       "mm50": 22.41,
       "mm200": 17.93
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 23.97,
+      "maxima": 24.07,
+      "minima": 23.47,
+      "fechamento": 23.72,
+      "volume": 7813100,
+      "mm20": 23.59,
+      "mm50": 22.5,
+      "mm200": 17.95
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 22.09,
-    "preco_atual": 23.96,
-    "variacao_periodo": 8.45,
+    "preco_inicial": 22.16,
+    "preco_atual": 23.72,
+    "variacao_periodo": 7.06,
     "maxima_periodo": 28.58,
     "minima_periodo": 12.95,
-    "volume_medio": 7631308,
+    "volume_medio": 7634503,
     "tendencia": "alta"
   }
 }

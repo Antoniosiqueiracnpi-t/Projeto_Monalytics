@@ -1,9 +1,9 @@
 {
   "ticker": "CMIN3",
-  "ultima_atualizacao": "2026-01-12T23:04:11.300707",
+  "ultima_atualizacao": "2026-01-13T23:03:09.200563",
   "periodo": {
     "inicio": "2021-02-22",
-    "fim": "2026-01-09"
+    "fim": "2026-01-12"
   },
   "dados": [
     {
@@ -13425,16 +13425,27 @@
       "mm20": 5.44,
       "mm50": 5.5,
       "mm200": 5.2
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 5.52,
+      "maxima": 5.61,
+      "minima": 5.46,
+      "fechamento": 5.57,
+      "volume": 5184200,
+      "mm20": 5.44,
+      "mm50": 5.5,
+      "mm200": 5.2
     }
   ],
   "estatisticas": {
-    "total_dias": 1220,
+    "total_dias": 1221,
     "preco_inicial": 5.01,
-    "preco_atual": 5.5,
-    "variacao_periodo": 9.85,
+    "preco_atual": 5.57,
+    "variacao_periodo": 11.25,
     "maxima_periodo": 6.49,
     "minima_periodo": 2.02,
-    "volume_medio": 8357551,
+    "volume_medio": 8354952,
     "tendencia": "indefinida"
   }
 }

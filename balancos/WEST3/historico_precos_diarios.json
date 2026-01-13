@@ -1,9 +1,9 @@
 {
   "ticker": "WEST3",
-  "ultima_atualizacao": "2026-01-12T23:05:17.772947",
+  "ultima_atualizacao": "2026-01-13T23:03:56.165394",
   "periodo": {
     "inicio": "2021-02-12",
-    "fim": "2026-01-09"
+    "fim": "2026-01-12"
   },
   "dados": [
     {
@@ -13469,16 +13469,27 @@
       "mm20": 5.72,
       "mm50": 5.66,
       "mm200": 4.88
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 5.62,
+      "maxima": 5.62,
+      "minima": 5.49,
+      "fechamento": 5.54,
+      "volume": 800,
+      "mm20": 5.73,
+      "mm50": 5.65,
+      "mm200": 4.88
     }
   ],
   "estatisticas": {
-    "total_dias": 1224,
+    "total_dias": 1225,
     "preco_inicial": 115.9,
-    "preco_atual": 5.62,
-    "variacao_periodo": -95.15,
+    "preco_atual": 5.54,
+    "variacao_periodo": -95.22,
     "maxima_periodo": 121.8,
     "minima_periodo": 3.55,
-    "volume_medio": 45626,
+    "volume_medio": 45589,
     "tendencia": "indefinida"
   }
 }

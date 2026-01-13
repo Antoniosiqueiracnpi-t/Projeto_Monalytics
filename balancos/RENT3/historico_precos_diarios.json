@@ -1,22 +1,11 @@
 {
   "ticker": "RENT3",
-  "ultima_atualizacao": "2026-01-12T23:02:38.965214",
+  "ultima_atualizacao": "2026-01-13T23:02:13.259229",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 55.05,
-      "maxima": 55.31,
-      "minima": 54.12,
-      "fechamento": 54.34,
-      "volume": 2232464,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 54.34,
@@ -222,7 +211,7 @@
       "minima": 60.66,
       "fechamento": 63.56,
       "volume": 5644758,
-      "mm20": 58.01,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 50.38,
       "volume": 9573774,
       "mm20": 55.54,
-      "mm50": 57.06,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 4550328,
       "mm20": 48.96,
       "mm50": 49.76,
-      "mm200": 53.64
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -7005,9 +6994,9 @@
     {
       "data": "2023-07-07",
       "abertura": 62.36,
-      "maxima": 63.67,
+      "maxima": 63.66,
       "minima": 62.27,
-      "fechamento": 63.13,
+      "fechamento": 63.12,
       "volume": 5801441,
       "mm20": 60.69,
       "mm50": 57.66,
@@ -13898,16 +13887,27 @@
       "mm20": 44.46,
       "mm50": 43.27,
       "mm200": 38.97
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 43.06,
+      "maxima": 43.34,
+      "minima": 41.96,
+      "fechamento": 42.9,
+      "volume": 7569800,
+      "mm20": 44.38,
+      "mm50": 43.35,
+      "mm200": 39.03
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 54.34,
-    "preco_atual": 43.21,
-    "variacao_periodo": -20.49,
+    "preco_inicial": 55.56,
+    "preco_atual": 42.9,
+    "variacao_periodo": -22.78,
     "maxima_periodo": 64.84,
     "minima_periodo": 26.24,
-    "volume_medio": 7807808,
+    "volume_medio": 7812034,
     "tendencia": "indefinida"
   }
 }

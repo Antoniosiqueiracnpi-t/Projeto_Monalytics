@@ -1,22 +1,11 @@
 {
   "ticker": "BEES4",
-  "ultima_atualizacao": "2026-01-12T23:03:34.356148",
+  "ultima_atualizacao": "2026-01-13T23:02:45.848155",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 3.44,
-      "maxima": 3.6,
-      "minima": 3.44,
-      "fechamento": 3.56,
-      "volume": 4620,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 3.56,
@@ -222,7 +211,7 @@
       "minima": 3.72,
       "fechamento": 3.72,
       "volume": 2090,
-      "mm20": 3.69,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 3.46,
       "volume": 3740,
       "mm20": 3.63,
-      "mm50": 3.67,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 2200,
       "mm20": 3.76,
       "mm50": 3.73,
-      "mm200": 3.67
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -13898,13 +13887,24 @@
       "mm20": 7.89,
       "mm50": 7.66,
       "mm200": 7.51
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 8.25,
+      "maxima": 8.28,
+      "minima": 8.18,
+      "fechamento": 8.23,
+      "volume": 5100,
+      "mm20": 7.92,
+      "mm50": 7.67,
+      "mm200": 7.52
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 3.56,
-    "preco_atual": 8.25,
-    "variacao_periodo": 131.45,
+    "preco_inicial": 3.55,
+    "preco_atual": 8.23,
+    "variacao_periodo": 132.08,
     "maxima_periodo": 9.73,
     "minima_periodo": 3.37,
     "volume_medio": 5570,

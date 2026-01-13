@@ -1,9 +1,9 @@
 {
   "ticker": "RDOR3",
-  "ultima_atualizacao": "2026-01-12T23:04:40.593543",
+  "ultima_atualizacao": "2026-01-13T23:03:29.604481",
   "periodo": {
     "inicio": "2020-12-15",
-    "fim": "2026-01-09"
+    "fim": "2026-01-12"
   },
   "dados": [
     {
@@ -13887,16 +13887,27 @@
       "mm20": 41.26,
       "mm50": 41.41,
       "mm200": 34.79
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 41.0,
+      "maxima": 41.37,
+      "minima": 40.82,
+      "fechamento": 41.16,
+      "volume": 3199500,
+      "mm20": 41.29,
+      "mm50": 41.45,
+      "mm200": 34.87
     }
   ],
   "estatisticas": {
-    "total_dias": 1262,
+    "total_dias": 1263,
     "preco_inicial": 55.81,
-    "preco_atual": 41.19,
-    "variacao_periodo": -26.2,
+    "preco_atual": 41.16,
+    "variacao_periodo": -26.25,
     "maxima_periodo": 64.24,
     "minima_periodo": 17.39,
-    "volume_medio": 4982865,
+    "volume_medio": 4981453,
     "tendencia": "indefinida"
   }
 }

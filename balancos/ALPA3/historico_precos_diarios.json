@@ -1,22 +1,11 @@
 {
   "ticker": "ALPA4",
-  "ultima_atualizacao": "2026-01-12T23:04:54.925110",
+  "ultima_atualizacao": "2026-01-13T23:03:39.519302",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 33.67,
-      "maxima": 34.11,
-      "minima": 33.38,
-      "fechamento": 33.38,
-      "volume": 783204,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 33.38,
@@ -222,7 +211,7 @@
       "minima": 33.14,
       "fechamento": 34.27,
       "volume": 1032796,
-      "mm20": 34.07,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 29.57,
       "volume": 1555199,
       "mm20": 31.44,
-      "mm50": 33.02,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2078,7 +2067,7 @@
       "data": "2021-09-20",
       "abertura": 47.14,
       "maxima": 47.14,
-      "minima": 45.58,
+      "minima": 45.59,
       "fechamento": 46.75,
       "volume": 2064392,
       "mm20": 47.98,
@@ -2204,7 +2193,7 @@
       "volume": 2373631,
       "mm20": 46.04,
       "mm50": 47.41,
-      "mm200": 38.36
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -13898,16 +13887,27 @@
       "mm20": 11.85,
       "mm50": 10.83,
       "mm200": 8.43
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 12.9,
+      "maxima": 13.3,
+      "minima": 12.84,
+      "fechamento": 13.17,
+      "volume": 2564800,
+      "mm20": 11.96,
+      "mm50": 10.91,
+      "mm200": 8.47
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 33.38,
-    "preco_atual": 12.87,
-    "variacao_periodo": -61.44,
+    "preco_inicial": 33.88,
+    "preco_atual": 13.17,
+    "variacao_periodo": -61.13,
     "maxima_periodo": 51.05,
     "minima_periodo": 5.06,
-    "volume_medio": 3603781,
+    "volume_medio": 3605192,
     "tendencia": "alta"
   }
 }
