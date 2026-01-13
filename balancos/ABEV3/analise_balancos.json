@@ -1,0 +1,45 @@
+{
+  "ticker": "ABEV3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-13T11:08:13.524112",
+  "periodo_analisado": {
+    "inicio": "2013T2",
+    "fim": "2025T3",
+    "total_trimestres": 50,
+    "anos": 12.5
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.7,
+      "variacao_total": 177.85,
+      "ultimo_valor": 208472620000000.0
+    },
+    "margens": {
+      "bruta": 57.58,
+      "operacional": 30.58,
+      "liquida": 21.85
+    },
+    "rentabilidade": {
+      "roe_medio": 19.95,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 50652291632653.06,
+      "ultimo": 111983560000000.0
+    },
+    "balanco": {
+      "ativo_total": 1407549950000000.0,
+      "patrimonio": 927284120000000.0
+    }
+  },
+  "analise_critica": "ABEV3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 21.85%. Gera excelente retorno sobre o patrimônio (ROE médio de 19.95%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (21.85%)",
+    "Excelente retorno sobre patrimônio (ROE: 19.95%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

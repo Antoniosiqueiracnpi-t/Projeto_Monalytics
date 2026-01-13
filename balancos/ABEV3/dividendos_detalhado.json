@@ -1,0 +1,388 @@
+{
+  "ticker": "ABEV3",
+  "total_dividendos": 8.0688,
+  "periodo": "2014-2025",
+  "quantidade_pagamentos": 38,
+  "dividendos": [
+    {
+      "data_com": "2014-01-14",
+      "valor": 0.1,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 1,
+      "dia": 14,
+      "trimestre": "T1",
+      "data_pagamento": "2014-01-06"
+    },
+    {
+      "data_com": "2014-01-14",
+      "valor": 0.154,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2014,
+      "mes": 1,
+      "dia": 14,
+      "trimestre": "T1",
+      "data_pagamento": "2014-01-06"
+    },
+    {
+      "data_com": "2014-04-02",
+      "valor": 0.06,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 4,
+      "dia": 2,
+      "trimestre": "T2",
+      "data_pagamento": "2014-03-25"
+    },
+    {
+      "data_com": "2014-04-02",
+      "valor": 0.07,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 4,
+      "dia": 2,
+      "trimestre": "T2",
+      "data_pagamento": "2014-03-25"
+    },
+    {
+      "data_com": "2014-07-28",
+      "valor": 0.06,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 7,
+      "dia": 28,
+      "trimestre": "T3",
+      "data_pagamento": "2014-07-14"
+    },
+    {
+      "data_com": "2014-07-28",
+      "valor": 0.1,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2014,
+      "mes": 7,
+      "dia": 28,
+      "trimestre": "T3",
+      "data_pagamento": "2014-07-14"
+    },
+    {
+      "data_com": "2014-10-27",
+      "valor": 0.22,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 10,
+      "dia": 27,
+      "trimestre": "T4",
+      "data_pagamento": "2014-10-15"
+    },
+    {
+      "data_com": "2014-12-30",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2014,
+      "mes": 12,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2014-12-22"
+    },
+    {
+      "data_com": "2015-01-07",
+      "valor": 0.096,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2015,
+      "mes": 1,
+      "dia": 7,
+      "trimestre": "T1",
+      "data_pagamento": "2014-12-31"
+    },
+    {
+      "data_com": "2015-02-27",
+      "valor": 0.03,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2015,
+      "mes": 2,
+      "dia": 27,
+      "trimestre": "T1",
+      "data_pagamento": "2015-02-23"
+    },
+    {
+      "data_com": "2015-02-27",
+      "valor": 0.06,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2015,
+      "mes": 2,
+      "dia": 27,
+      "trimestre": "T1",
+      "data_pagamento": "2015-02-23"
+    },
+    {
+      "data_com": "2015-06-01",
+      "valor": 0.1,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2015,
+      "mes": 6,
+      "dia": 1,
+      "trimestre": "T2",
+      "data_pagamento": "2015-05-13"
+    },
+    {
+      "data_com": "2015-09-08",
+      "valor": 0.15,
+      "tipo": "DIVIDENDO",
+      "ano": 2015,
+      "mes": 9,
+      "dia": 8,
+      "trimestre": "T3",
+      "data_pagamento": "2015-08-28"
+    },
+    {
+      "data_com": "2015-12-21",
+      "valor": 0.15,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2015,
+      "mes": 12,
+      "dia": 21,
+      "trimestre": "T4",
+      "data_pagamento": "2015-12-01"
+    },
+    {
+      "data_com": "2016-01-29",
+      "valor": 0.13,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2016,
+      "mes": 1,
+      "dia": 29,
+      "trimestre": "T1",
+      "data_pagamento": "2016-01-15"
+    },
+    {
+      "data_com": "2016-07-11",
+      "valor": 0.13,
+      "tipo": "DIVIDENDO",
+      "ano": 2016,
+      "mes": 7,
+      "dia": 11,
+      "trimestre": "T3",
+      "data_pagamento": "2016-06-24"
+    },
+    {
+      "data_com": "2016-10-31",
+      "valor": 0.16,
+      "tipo": "DIVIDENDO",
+      "ano": 2016,
+      "mes": 10,
+      "dia": 31,
+      "trimestre": "T4",
+      "data_pagamento": "2016-10-19"
+    },
+    {
+      "data_com": "2016-12-21",
+      "valor": 0.22,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2016,
+      "mes": 12,
+      "dia": 21,
+      "trimestre": "T4",
+      "data_pagamento": "2016-12-01"
+    },
+    {
+      "data_com": "2017-01-23",
+      "valor": 0.07,
+      "tipo": "DIVIDENDO",
+      "ano": 2017,
+      "mes": 1,
+      "dia": 23,
+      "trimestre": "T1",
+      "data_pagamento": "2016-12-22"
+    },
+    {
+      "data_com": "2017-06-23",
+      "valor": 0.16,
+      "tipo": "DIVIDENDO",
+      "ano": 2017,
+      "mes": 6,
+      "dia": 23,
+      "trimestre": "T2",
+      "data_pagamento": "2017-05-16"
+    },
+    {
+      "data_com": "2017-12-18",
+      "valor": 0.31,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2017,
+      "mes": 12,
+      "dia": 18,
+      "trimestre": "T4",
+      "data_pagamento": "2017-12-01"
+    },
+    {
+      "data_com": "2018-01-31",
+      "valor": 0.07,
+      "tipo": "DIVIDENDO",
+      "ano": 2018,
+      "mes": 1,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2017-12-21"
+    },
+    {
+      "data_com": "2018-06-15",
+      "valor": 0.16,
+      "tipo": "DIVIDENDO",
+      "ano": 2018,
+      "mes": 6,
+      "dia": 15,
+      "trimestre": "T2",
+      "data_pagamento": "2018-05-15"
+    },
+    {
+      "data_com": "2018-12-18",
+      "valor": 0.32,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2018,
+      "mes": 12,
+      "dia": 18,
+      "trimestre": "T4",
+      "data_pagamento": "2018-12-03"
+    },
+    {
+      "data_com": "2019-12-19",
+      "valor": 0.4906,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2019,
+      "mes": 12,
+      "dia": 19,
+      "trimestre": "T4",
+      "data_pagamento": "2019-12-02"
+    },
+    {
+      "data_com": "2020-12-17",
+      "valor": 0.4137,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2020,
+      "mes": 12,
+      "dia": 17,
+      "trimestre": "T4",
+      "data_pagamento": "2020-12-09"
+    },
+    {
+      "data_com": "2021-01-13",
+      "valor": 0.0767,
+      "tipo": "DIVIDENDO",
+      "ano": 2021,
+      "mes": 1,
+      "dia": 13,
+      "trimestre": "T1",
+      "data_pagamento": "2020-12-21"
+    },
+    {
+      "data_com": "2021-12-17",
+      "valor": 0.4702,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2021,
+      "mes": 12,
+      "dia": 17,
+      "trimestre": "T4",
+      "data_pagamento": "2021-12-09"
+    },
+    {
+      "data_com": "2021-12-17",
+      "valor": 0.1334,
+      "tipo": "DIVIDENDO",
+      "ano": 2021,
+      "mes": 12,
+      "dia": 17,
+      "trimestre": "T4",
+      "data_pagamento": "2021-12-09"
+    },
+    {
+      "data_com": "2022-12-19",
+      "valor": 0.7623,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2022,
+      "mes": 12,
+      "dia": 19,
+      "trimestre": "T4",
+      "data_pagamento": "2022-12-06"
+    },
+    {
+      "data_com": "2023-12-19",
+      "valor": 0.7302,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2023,
+      "mes": 12,
+      "dia": 19,
+      "trimestre": "T4",
+      "data_pagamento": "2023-12-12"
+    },
+    {
+      "data_com": "2024-12-19",
+      "valor": 0.4228,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 12,
+      "dia": 19,
+      "trimestre": "T4",
+      "data_pagamento": "2024-12-11"
+    },
+    {
+      "data_com": "2024-12-19",
+      "valor": 0.2448,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2024,
+      "mes": 12,
+      "dia": 19,
+      "trimestre": "T4",
+      "data_pagamento": "2024-12-11"
+    },
+    {
+      "data_com": "2025-03-14",
+      "valor": 0.1276,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 3,
+      "dia": 14,
+      "trimestre": "T1",
+      "data_pagamento": "2025-02-25"
+    },
+    {
+      "data_com": "2025-05-15",
+      "valor": 0.128,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 5,
+      "dia": 15,
+      "trimestre": "T2",
+      "data_pagamento": "2025-05-07"
+    },
+    {
+      "data_com": "2025-08-07",
+      "valor": 0.1283,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 8,
+      "dia": 7,
+      "trimestre": "T3",
+      "data_pagamento": "2025-07-30"
+    },
+    {
+      "data_com": "2025-12-18",
+      "valor": 0.269,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2025,
+      "mes": 12,
+      "dia": 18,
+      "trimestre": "T4",
+      "data_pagamento": "2025-12-09"
+    },
+    {
+      "data_com": "2025-12-18",
+      "valor": 0.4612,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 12,
+      "dia": 18,
+      "trimestre": "T4",
+      "data_pagamento": "2025-12-09"
+    }
+  ]
+}
