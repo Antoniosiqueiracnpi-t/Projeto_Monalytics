@@ -1,0 +1,46 @@
+{
+  "ticker": "KLBN4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-13T16:26:52.582038",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 12.75,
+      "variacao_total": 542.65,
+      "ultimo_valor": 5426.47
+    },
+    "margens": {
+      "bruta": 39.69,
+      "operacional": 26.34,
+      "liquida": 15.65
+    },
+    "rentabilidade": {
+      "roe_medio": 23.22,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 966.75,
+      "ultimo": 5539.92
+    },
+    "balanco": {
+      "ativo_total": 62163.68,
+      "patrimonio": 14671.6
+    }
+  },
+  "analise_critica": "KLBN4 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 15.65%. Gera excelente retorno sobre o patrimônio (ROE médio de 23.22%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 12.75%)",
+    "Alta margem de lucro líquido (15.65%)",
+    "Excelente retorno sobre patrimônio (ROE: 23.22%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}
