@@ -42,7 +42,6 @@ permissions:
   contents: write
 
 concurrency:
-  # Evita dois workflows concorrendo para commitar/push no main
   group: noticiario-empresarial-main
   cancel-in-progress: false
 
@@ -68,74 +67,72 @@ jobs:
 
       - name: Buscar lista de tickers
         id: get-tickers
+        shell: bash
         run: |
+          set -euo pipefail
+
           if [ ! -f "mapeamento_b3_consolidado.csv" ]; then
             echo "❌ Arquivo mapeamento_b3_consolidado.csv não encontrado"
             echo "TICKERS=" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          # Extrai lista completa de tickers do CSV (delimitador ;)
-          # ✅ FIX: split universal (vírgula, ponto-e-vírgula e espaços) para nunca gerar "AAAA3;AAAA4"
+          # ✅ split universal: vírgula, ponto-e-vírgula e espaços
           TODOS_TICKERS=$(python3 -c "
-          import csv, io, re
-          tickers = []
-          with open('mapeamento_b3_consolidado.csv', 'r', encoding='utf-8') as f:
-              content = f.read()
-              if content.startswith('\\ufeff'):
-                  content = content.lstrip('\\ufeff')
-          reader = csv.DictReader(io.StringIO(content), delimiter=';')
-          for row in reader:
-              s = (row.get('ticker') or '').strip()
-              if not s:
-                  continue
-              for tok in re.split(r'[,;\\s]+', s):
-                  tok = tok.strip().upper()
-                  if tok and tok not in tickers:
-                      tickers.append(tok)
-          print(' '.join(tickers))
-          ")
+import csv, io, re
+tickers = []
+with open('mapeamento_b3_consolidado.csv','r',encoding='utf-8') as f:
+    content = f.read()
+    if content.startswith('\\ufeff'):
+        content = content.lstrip('\\ufeff')
+reader = csv.DictReader(io.StringIO(content), delimiter=';')
+for row in reader:
+    s = (row.get('ticker') or '').strip()
+    if not s:
+        continue
+    for tok in re.split(r'[,;\\s]+', s):
+        tok = tok.strip().upper()
+        if tok and tok not in tickers:
+            tickers.append(tok)
+print(' '.join(tickers))
+")
 
           MODO="${{ github.event.inputs.modo }}"
 
-          if [ -z "$MODO" ]; then
-            # Execução agendada: roda tudo
+          if [ -z "${MODO:-}" ]; then
             TICKERS_SELECIONADOS="$TODOS_TICKERS"
 
-          elif [ "$MODO" == "quantidade" ]; then
+          elif [ "$MODO" = "quantidade" ]; then
             QTD="${{ github.event.inputs.quantidade }}"
-            if [ -z "$QTD" ]; then QTD="10"; fi
+            QTD="${QTD:-10}"
             TICKERS_SELECIONADOS=$(echo "$TODOS_TICKERS" | tr ' ' '\n' | sed '/^$/d' | head -n "$QTD" | tr '\n' ' ')
 
-          elif [ "$MODO" == "ticker" ]; then
+          elif [ "$MODO" = "ticker" ]; then
             TICKER_INPUT="${{ github.event.inputs.ticker }}"
-            if [ -n "$TICKER_INPUT" ]; then
-              # Sanitiza: se vier "AAAA3;AAAA4" por engano, pega o primeiro token
-              TICKERS_SELECIONADOS=$(echo "$TICKER_INPUT" | tr ',; ' '\n' | sed '/^$/d' | head -n 1 | tr '\n' ' ')
-            else
+            if [ -z "${TICKER_INPUT:-}" ]; then
               echo "❌ Ticker não fornecido no modo ticker"
               echo "TICKERS=" >> "$GITHUB_OUTPUT"
               exit 1
             fi
+            # Sanitiza caso venha "AAAA3;AAAA4"
+            TICKERS_SELECIONADOS=$(echo "$TICKER_INPUT" | tr ',; ' '\n' | sed '/^$/d' | head -n 1 | tr '\n' ' ')
 
-          elif [ "$MODO" == "lista" ]; then
+          elif [ "$MODO" = "lista" ]; then
             LISTA_INPUT="${{ github.event.inputs.lista }}"
-            if [ -n "$LISTA_INPUT" ]; then
-              # Split universal
-              TICKERS_SELECIONADOS=$(echo "$LISTA_INPUT" | tr ',; ' '\n' | sed '/^$/d' | tr '\n' ' ')
-            else
+            if [ -z "${LISTA_INPUT:-}" ]; then
               echo "❌ Lista de tickers não fornecida no modo lista"
               echo "TICKERS=" >> "$GITHUB_OUTPUT"
               exit 1
             fi
+            TICKERS_SELECIONADOS=$(echo "$LISTA_INPUT" | tr ',; ' '\n' | sed '/^$/d' | tr '\n' ' ')
 
-          elif [ "$MODO" == "faixa" ]; then
+          elif [ "$MODO" = "faixa" ]; then
             FAIXA_INPUT="${{ github.event.inputs.faixa }}"
-            if [ -z "$FAIXA_INPUT" ]; then FAIXA_INPUT="1-50"; fi
+            FAIXA_INPUT="${FAIXA_INPUT:-1-50}"
             INICIO=$(echo "$FAIXA_INPUT" | cut -d'-' -f1)
             FIM=$(echo "$FAIXA_INPUT" | cut -d'-' -f2)
 
-            if [ -z "$INICIO" ] || [ -z "$FIM" ]; then
+            if [ -z "${INICIO:-}" ] || [ -z "${FIM:-}" ]; then
               echo "❌ Faixa inválida: $FAIXA_INPUT"
               echo "TICKERS=" >> "$GITHUB_OUTPUT"
               exit 1
@@ -148,21 +145,23 @@ jobs:
             exit 1
           fi
 
-          # Normaliza para maiúsculo e remove vazios
           TICKERS_SELECIONADOS=$(echo "$TICKERS_SELECIONADOS" | tr ' ' '\n' | sed '/^$/d' | tr '[:lower:]' '[:upper:]' | tr '\n' ' ')
           echo "✅ Tickers selecionados: $(echo "$TICKERS_SELECIONADOS" | wc -w)"
           echo "TICKERS=$TICKERS_SELECIONADOS" >> "$GITHUB_OUTPUT"
 
       - name: Executar atualização do noticiário (por ticker)
+        shell: bash
         run: |
+          set -euo pipefail
+
           TICKERS="${{ steps.get-tickers.outputs.TICKERS }}"
 
-          if [ -z "$TICKERS" ]; then
+          if [ -z "${TICKERS:-}" ]; then
             echo "⚠️ Nenhum ticker para processar"
             exit 0
           fi
 
-          TOTAL=$(echo "$TICKERS" | wc -w)
+          TOTAL=$(echo "$TICKERS" | wc -w | tr -d ' ')
           CONTADOR=0
           SUCESSO=0
           ERRO=0
@@ -171,7 +170,6 @@ jobs:
             CONTADOR=$((CONTADOR + 1))
             echo "[$CONTADOR/$TOTAL] Processando $TICKER..."
 
-            # ✅ chamada correta para argparse
             if python src/capturar_noticiario_empresarial.py --modo ticker --ticker "$TICKER"; then
               SUCESSO=$((SUCESSO + 1))
             else
@@ -180,13 +178,13 @@ jobs:
           done
 
           echo "✅ Sucesso: $SUCESSO | ❌ Erro: $ERRO"
-          # Se quiser falhar quando houver erros:
-          # if [ "$ERRO" -gt 0 ]; then exit 1; fi
 
       - name: Verificar mudanças (sem alterar o index)
         id: check-changes
+        shell: bash
         run: |
-          # Detecta apenas alterações nos noticiario.json dentro de balancos/<PASTA>/noticiario.json
+          set -euo pipefail
+
           CHANGED=$(git status --porcelain | awk '{print $2}' | grep -E '^balancos/[^/]+/noticiario\.json$' || true)
 
           if [ -z "$CHANGED" ]; then
@@ -199,17 +197,18 @@ jobs:
             echo "✅ $COUNT arquivo(s) noticiario.json com mudanças"
           fi
 
-      - name: Commit e Push (rebase com autostash + retry)
+      - name: Commit e Push (rebase com autostash + retry) - FIX EOF
         if: steps.check-changes.outputs.HAS_CHANGES == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
         run: |
-          set -e
+          set -euo pipefail
 
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions Bot"
 
-          # Stage APENAS aqui (não antes), para permitir rebase/pull sem "index sujo"
+          # Stage apenas aqui
           git add balancos/*/noticiario.json 2>/dev/null || true
 
           if git diff --cached --quiet; then
@@ -219,8 +218,7 @@ jobs:
 
           DATA_ATUAL=$(TZ='America/Sao_Paulo' date +'%d/%m/%Y %H:%M')
           MODO="${{ github.event.inputs.modo }}"
-
-          if [ -z "$MODO" ]; then
+          if [ -z "${MODO:-}" ]; then
             COMMIT_MSG="Atualização automática de noticiário empresarial - $DATA_ATUAL"
           else
             COMMIT_MSG="Atualização de noticiário (modo: $MODO) - $DATA_ATUAL"
@@ -228,6 +226,38 @@ jobs:
 
           git commit -m "$COMMIT_MSG"
 
-          # Rebase/push com retry para lidar com pushes concorrentes
-          PUSH_OK=false
-          for TENTATIVA in
+          PUSH_OK="false"
+          for TENTATIVA in 1 2 3; do
+            echo "🔄 Pull --rebase tentativa $TENTATIVA/3..."
+            if ! git pull --rebase --autostash origin main; then
+              echo "❌ Pull --rebase falhou (conflito). Abortando."
+              git rebase --abort || true
+              exit 1
+            fi
+
+            echo "🚀 Push tentativa $TENTATIVA/3..."
+            if git push origin HEAD:main; then
+              echo "✅ Push realizado com sucesso"
+              PUSH_OK="true"
+              break
+            fi
+
+            echo "⚠️ Push rejeitado (branch avançou). Tentando novamente..."
+            sleep $((TENTATIVA * 5))
+          done
+
+          if [ "$PUSH_OK" != "true" ]; then
+            echo "❌ Falha ao dar push após 3 tentativas."
+            exit 1
+          fi
+
+      - name: Resumo final
+        if: always()
+        shell: bash
+        run: |
+          echo "Execução finalizada"
+          if [ "${{ steps.check-changes.outputs.HAS_CHANGES }}" = "true" ]; then
+            echo "Status: Noticiário atualizado com sucesso"
+          else
+            echo "Status: Nenhuma atualização detectada"
+          fi
