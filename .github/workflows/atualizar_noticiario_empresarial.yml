@@ -71,22 +71,28 @@ jobs:
         run: |
           if [ ! -f "mapeamento_b3_consolidado.csv" ]; then
             echo "❌ Arquivo mapeamento_b3_consolidado.csv não encontrado"
-            echo "TICKERS=" >> $GITHUB_OUTPUT
+            echo "TICKERS=" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
+          # Extrai lista completa de tickers do CSV (delimitador ;)
+          # ✅ FIX: split universal (vírgula, ponto-e-vírgula e espaços) para nunca gerar "AAAA3;AAAA4"
           TODOS_TICKERS=$(python3 -c "
-          import csv, io
-          with open('mapeamento_b3_consolidado.csv','r',encoding='utf-8') as f:
-              content=f.read()
-              if content.startswith('\ufeff'):
-                  content=content.lstrip('\ufeff')
-          reader=csv.DictReader(io.StringIO(content), delimiter=';')
-          tickers=[]
+          import csv, io, re
+          tickers = []
+          with open('mapeamento_b3_consolidado.csv', 'r', encoding='utf-8') as f:
+              content = f.read()
+              if content.startswith('\\ufeff'):
+                  content = content.lstrip('\\ufeff')
+          reader = csv.DictReader(io.StringIO(content), delimiter=';')
           for row in reader:
-              t=(row.get('ticker') or '').strip().upper()
-              if t and t not in tickers:
-                  tickers.append(t)
+              s = (row.get('ticker') or '').strip()
+              if not s:
+                  continue
+              for tok in re.split(r'[,;\\s]+', s):
+                  tok = tok.strip().upper()
+                  if tok and tok not in tickers:
+                      tickers.append(tok)
           print(' '.join(tickers))
           ")
 
@@ -99,25 +105,27 @@ jobs:
           elif [ "$MODO" == "quantidade" ]; then
             QTD="${{ github.event.inputs.quantidade }}"
             if [ -z "$QTD" ]; then QTD="10"; fi
-            TICKERS_SELECIONADOS=$(echo "$TODOS_TICKERS" | tr ' ' '\n' | head -n "$QTD" | tr '\n' ' ')
+            TICKERS_SELECIONADOS=$(echo "$TODOS_TICKERS" | tr ' ' '\n' | sed '/^$/d' | head -n "$QTD" | tr '\n' ' ')
 
           elif [ "$MODO" == "ticker" ]; then
             TICKER_INPUT="${{ github.event.inputs.ticker }}"
             if [ -n "$TICKER_INPUT" ]; then
-              TICKERS_SELECIONADOS="$TICKER_INPUT"
+              # Sanitiza: se vier "AAAA3;AAAA4" por engano, pega o primeiro token
+              TICKERS_SELECIONADOS=$(echo "$TICKER_INPUT" | tr ',; ' '\n' | sed '/^$/d' | head -n 1 | tr '\n' ' ')
             else
               echo "❌ Ticker não fornecido no modo ticker"
-              echo "TICKERS=" >> $GITHUB_OUTPUT
+              echo "TICKERS=" >> "$GITHUB_OUTPUT"
               exit 1
             fi
 
           elif [ "$MODO" == "lista" ]; then
             LISTA_INPUT="${{ github.event.inputs.lista }}"
             if [ -n "$LISTA_INPUT" ]; then
-              TICKERS_SELECIONADOS=$(echo "$LISTA_INPUT" | tr ',' ' ')
+              # Split universal
+              TICKERS_SELECIONADOS=$(echo "$LISTA_INPUT" | tr ',; ' '\n' | sed '/^$/d' | tr '\n' ' ')
             else
               echo "❌ Lista de tickers não fornecida no modo lista"
-              echo "TICKERS=" >> $GITHUB_OUTPUT
+              echo "TICKERS=" >> "$GITHUB_OUTPUT"
               exit 1
             fi
 
@@ -129,20 +137,21 @@ jobs:
 
             if [ -z "$INICIO" ] || [ -z "$FIM" ]; then
               echo "❌ Faixa inválida: $FAIXA_INPUT"
-              echo "TICKERS=" >> $GITHUB_OUTPUT
+              echo "TICKERS=" >> "$GITHUB_OUTPUT"
               exit 1
             fi
 
-            TICKERS_SELECIONADOS=$(echo "$TODOS_TICKERS" | tr ' ' '\n' | sed -n "${INICIO},${FIM}p" | tr '\n' ' ')
+            TICKERS_SELECIONADOS=$(echo "$TODOS_TICKERS" | tr ' ' '\n' | sed '/^$/d' | sed -n "${INICIO},${FIM}p" | tr '\n' ' ')
           else
             echo "❌ Modo inválido: $MODO"
-            echo "TICKERS=" >> $GITHUB_OUTPUT
+            echo "TICKERS=" >> "$GITHUB_OUTPUT"
             exit 1
           fi
 
-          TICKERS_SELECIONADOS=$(echo "$TICKERS_SELECIONADOS" | tr ' ' '\n' | sed '/^$/d' | tr '\n' ' ')
+          # Normaliza para maiúsculo e remove vazios
+          TICKERS_SELECIONADOS=$(echo "$TICKERS_SELECIONADOS" | tr ' ' '\n' | sed '/^$/d' | tr '[:lower:]' '[:upper:]' | tr '\n' ' ')
           echo "✅ Tickers selecionados: $(echo "$TICKERS_SELECIONADOS" | wc -w)"
-          echo "TICKERS=$TICKERS_SELECIONADOS" >> $GITHUB_OUTPUT
+          echo "TICKERS=$TICKERS_SELECIONADOS" >> "$GITHUB_OUTPUT"
 
       - name: Executar atualização do noticiário (por ticker)
         run: |
@@ -162,7 +171,7 @@ jobs:
             CONTADOR=$((CONTADOR + 1))
             echo "[$CONTADOR/$TOTAL] Processando $TICKER..."
 
-            # ✅ CHAMADA CORRETA PARA ARGPARSE
+            # ✅ chamada correta para argparse
             if python src/capturar_noticiario_empresarial.py --modo ticker --ticker "$TICKER"; then
               SUCESSO=$((SUCESSO + 1))
             else
@@ -171,19 +180,22 @@ jobs:
           done
 
           echo "✅ Sucesso: $SUCESSO | ❌ Erro: $ERRO"
+          # Se quiser falhar quando houver erros:
+          # if [ "$ERRO" -gt 0 ]; then exit 1; fi
 
       - name: Verificar mudanças (sem alterar o index)
         id: check-changes
         run: |
-          CHANGED=$(git status --porcelain | awk '{print $2}' | grep -E '^balancos/.+/noticiario\.json$' || true)
+          # Detecta apenas alterações nos noticiario.json dentro de balancos/<PASTA>/noticiario.json
+          CHANGED=$(git status --porcelain | awk '{print $2}' | grep -E '^balancos/[^/]+/noticiario\.json$' || true)
 
           if [ -z "$CHANGED" ]; then
-            echo "HAS_CHANGES=false" >> $GITHUB_OUTPUT
+            echo "HAS_CHANGES=false" >> "$GITHUB_OUTPUT"
             echo "⚠️ Nenhuma mudança detectada"
           else
             COUNT=$(echo "$CHANGED" | wc -l | tr -d ' ')
-            echo "HAS_CHANGES=true" >> $GITHUB_OUTPUT
-            echo "ARQUIVOS_MODIFICADOS=$COUNT" >> $GITHUB_OUTPUT
+            echo "HAS_CHANGES=true" >> "$GITHUB_OUTPUT"
+            echo "ARQUIVOS_MODIFICADOS=$COUNT" >> "$GITHUB_OUTPUT"
             echo "✅ $COUNT arquivo(s) noticiario.json com mudanças"
           fi
 
@@ -197,10 +209,9 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions Bot"
 
-          # Agora sim: stage APENAS aqui (não antes), para o index ficar limpo até este momento
+          # Stage APENAS aqui (não antes), para permitir rebase/pull sem "index sujo"
           git add balancos/*/noticiario.json 2>/dev/null || true
 
-          # Se por algum motivo não tiver nada staged, sai limpo
           if git diff --cached --quiet; then
             echo "⚠️ Nada para commitar após git add"
             exit 0
@@ -217,38 +228,6 @@ jobs:
 
           git commit -m "$COMMIT_MSG"
 
-          # Pull/rebase após commit (index limpo), com autostash para segurança
+          # Rebase/push com retry para lidar com pushes concorrentes
           PUSH_OK=false
-          for TENTATIVA in 1 2 3; do
-            echo "🔄 Rebase/Pull tentativa $TENTATIVA/3..."
-            git pull --rebase --autostash origin main || {
-              echo "❌ Pull --rebase falhou (conflito). Abortando para evitar corrupção."
-              git rebase --abort || true
-              exit 1
-            }
-
-            echo "🚀 Push tentativa $TENTATIVA/3..."
-            if git push origin HEAD:main; then
-              echo "✅ Push realizado com sucesso"
-              PUSH_OK=true
-              break
-            fi
-
-            echo "⚠️ Push rejeitado (branch avançou). Tentando novamente..."
-            sleep $((TENTATIVA*5))
-          done
-
-          if [ "$PUSH_OK" != "true" ]; then
-            echo "❌ Falha ao dar push após 3 tentativas."
-            exit 1
-          fi
-
-      - name: Resumo final
-        if: always()
-        run: |
-          echo "Execução finalizada"
-          if [ "${{ steps.check-changes.outputs.HAS_CHANGES }}" == "true" ]; then
-            echo "Status: Noticiário atualizado com sucesso"
-          else
-            echo "Status: Nenhuma atualização detectada"
-          fi
+          for TENTATIVA in
