@@ -3,31 +3,40 @@ name: Atualizar Noticiário Empresarial
 on:
   schedule:
     # 08:00 (Brasília) = 11:00 UTC | Segunda a Sexta
-    - cron: '0 11 * * 1-5'
+    - cron: "0 11 * * 1-5"
+
   workflow_dispatch:
     inputs:
       modo:
-        description: 'Modo de seleção'
+        description: "Modo de seleção"
         required: true
         type: choice
-        options: ['quantidade', 'ticker', 'lista', 'faixa']
-        default: 'quantidade'
+        options:
+          - quantidade
+          - ticker
+          - lista
+          - faixa
+        default: quantidade
+
       quantidade:
-        description: 'Quantidade (modo quantidade): 10, 50, 308=todas'
+        description: "Quantidade (modo quantidade): 10, 50, 308=todas"
         required: false
-        default: '10'
+        default: "10"
+
       ticker:
-        description: 'Ticker único (modo ticker): ex: PETR4'
+        description: "Ticker único (modo ticker): ex: PETR4"
         required: false
-        default: ''
+        default: ""
+
       lista:
-        description: 'Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4'
+        description: "Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4"
         required: false
-        default: ''
+        default: ""
+
       faixa:
-        description: 'Faixa (modo faixa): ex: 1-50, 51-150, 151-308'
+        description: "Faixa (modo faixa): ex: 1-50, 51-150, 151-308"
         required: false
-        default: '1-50'
+        default: "1-50"
 
 permissions:
   contents: write
@@ -49,7 +58,7 @@ jobs:
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Instalar dependências
         shell: bash
@@ -70,7 +79,7 @@ jobs:
             exit 0
           fi
 
-          # ✅ Split universal (vírgula, ponto-e-vírgula, espaços) via Python
+          # ✅ Split universal (vírgula, ponto-e-vírgula, espaços) via Python (heredoc seguro)
           TODOS_TICKERS="$(python3 - <<'PY'
 import csv, io, re
 tickers = []
@@ -96,48 +105,45 @@ PY
           if [ -z "${MODO:-}" ]; then
             # Execução agendada: roda tudo
             TICKERS_SELECIONADOS="$TODOS_TICKERS"
-
-          elif [ "$MODO" = "quantidade" ]; then
-            QTD="${{ github.event.inputs.quantidade }}"
-            QTD="${QTD:-10}"
-            TICKERS_SELECIONADOS="$(echo "$TODOS_TICKERS" | tr ' ' '\n' | sed '/^$/d' | head -n "$QTD" | tr '\n' ' ')"
-
-          elif [ "$MODO" = "ticker" ]; then
-            TICKER_INPUT="${{ github.event.inputs.ticker }}"
-            if [ -z "${TICKER_INPUT:-}" ]; then
-              echo "❌ Ticker não fornecido no modo ticker"
-              echo "TICKERS=" >> "$GITHUB_OUTPUT"
-              exit 1
-            fi
-            # Sanitiza: se vier "AAAA3;AAAA4", pega o primeiro token
-            TICKERS_SELECIONADOS="$(echo "$TICKER_INPUT" | tr ',; ' '\n' | sed '/^$/d' | head -n 1 | tr '\n' ' ')"
-
-          elif [ "$MODO" = "lista" ]; then
-            LISTA_INPUT="${{ github.event.inputs.lista }}"
-            if [ -z "${LISTA_INPUT:-}" ]; then
-              echo "❌ Lista de tickers não fornecida no modo lista"
-              echo "TICKERS=" >> "$GITHUB_OUTPUT"
-              exit 1
-            fi
-            TICKERS_SELECIONADOS="$(echo "$LISTA_INPUT" | tr ',; ' '\n' | sed '/^$/d' | tr '\n' ' ')"
-
-          elif [ "$MODO" = "faixa" ]; then
-            FAIXA_INPUT="${{ github.event.inputs.faixa }}"
-            FAIXA_INPUT="${FAIXA_INPUT:-1-50}"
-            INICIO="$(echo "$FAIXA_INPUT" | cut -d'-' -f1)"
-            FIM="$(echo "$FAIXA_INPUT" | cut -d'-' -f2)"
-
-            if [ -z "${INICIO:-}" ] || [ -z "${FIM:-}" ]; then
-              echo "❌ Faixa inválida: $FAIXA_INPUT"
-              echo "TICKERS=" >> "$GITHUB_OUTPUT"
-              exit 1
-            fi
-
-            TICKERS_SELECIONADOS="$(echo "$TODOS_TICKERS" | tr ' ' '\n' | sed '/^$/d' | sed -n "${INICIO},${FIM}p" | tr '\n' ' ')"
           else
-            echo "❌ Modo inválido: $MODO"
-            echo "TICKERS=" >> "$GITHUB_OUTPUT"
-            exit 1
+            if [ "$MODO" = "quantidade" ]; then
+              QTD="${{ github.event.inputs.quantidade }}"
+              QTD="${QTD:-10}"
+              TICKERS_SELECIONADOS="$(echo "$TODOS_TICKERS" | tr ' ' '\n' | sed '/^$/d' | head -n "$QTD" | tr '\n' ' ')"
+            elif [ "$MODO" = "ticker" ]; then
+              TICKER_INPUT="${{ github.event.inputs.ticker }}"
+              if [ -z "${TICKER_INPUT:-}" ]; then
+                echo "❌ Ticker não fornecido no modo ticker"
+                echo "TICKERS=" >> "$GITHUB_OUTPUT"
+                exit 1
+              fi
+              TICKERS_SELECIONADOS="$(echo "$TICKER_INPUT" | tr ',; ' '\n' | sed '/^$/d' | head -n 1 | tr '\n' ' ')"
+            elif [ "$MODO" = "lista" ]; then
+              LISTA_INPUT="${{ github.event.inputs.lista }}"
+              if [ -z "${LISTA_INPUT:-}" ]; then
+                echo "❌ Lista de tickers não fornecida no modo lista"
+                echo "TICKERS=" >> "$GITHUB_OUTPUT"
+                exit 1
+              fi
+              TICKERS_SELECIONADOS="$(echo "$LISTA_INPUT" | tr ',; ' '\n' | sed '/^$/d' | tr '\n' ' ')"
+            elif [ "$MODO" = "faixa" ]; then
+              FAIXA_INPUT="${{ github.event.inputs.faixa }}"
+              FAIXA_INPUT="${FAIXA_INPUT:-1-50}"
+              INICIO="$(echo "$FAIXA_INPUT" | cut -d'-' -f1)"
+              FIM="$(echo "$FAIXA_INPUT" | cut -d'-' -f2)"
+
+              if [ -z "${INICIO:-}" ] || [ -z "${FIM:-}" ]; then
+                echo "❌ Faixa inválida: $FAIXA_INPUT"
+                echo "TICKERS=" >> "$GITHUB_OUTPUT"
+                exit 1
+              fi
+
+              TICKERS_SELECIONADOS="$(echo "$TODOS_TICKERS" | tr ' ' '\n' | sed '/^$/d' | sed -n "${INICIO},${FIM}p" | tr '\n' ' ')"
+            else
+              echo "❌ Modo inválido: $MODO"
+              echo "TICKERS=" >> "$GITHUB_OUTPUT"
+              exit 1
+            fi
           fi
 
           TICKERS_SELECIONADOS="$(echo "$TICKERS_SELECIONADOS" | tr ' ' '\n' | sed '/^$/d' | tr '[:lower:]' '[:upper:]' | tr '\n' ' ')"
@@ -163,6 +169,7 @@ PY
           for TICKER in $TICKERS; do
             CONTADOR=$((CONTADOR + 1))
             echo "[$CONTADOR/$TOTAL] Processando $TICKER..."
+
             if python src/capturar_noticiario_empresarial.py --modo ticker --ticker "$TICKER"; then
               SUCESSO=$((SUCESSO + 1))
             else
@@ -177,6 +184,7 @@ PY
         shell: bash
         run: |
           set -euo pipefail
+
           CHANGED="$(git status --porcelain | awk '{print $2}' | grep -E '^balancos/[^/]+/noticiario\.json$' || true)"
           if [ -z "$CHANGED" ]; then
             echo "HAS_CHANGES=false" >> "$GITHUB_OUTPUT"
@@ -199,7 +207,6 @@ PY
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions Bot"
 
-          # Stage apenas aqui
           git add balancos/*/noticiario.json 2>/dev/null || true
 
           if git diff --cached --quiet; then
@@ -209,6 +216,7 @@ PY
 
           DATA_ATUAL="$(TZ='America/Sao_Paulo' date +'%d/%m/%Y %H:%M')"
           MODO="${{ github.event.inputs.modo }}"
+
           if [ -z "${MODO:-}" ]; then
             COMMIT_MSG="Atualização automática de noticiário empresarial - $DATA_ATUAL"
           else
