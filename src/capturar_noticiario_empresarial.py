@@ -45,9 +45,34 @@ def _norm(s: str) -> str:
     return str(s or "").strip().upper()
 
 
+_TICKER_TOKEN_RE = re.compile(r"^[A-Z]{4}\d{1,2}$")  # PETR4, KLBN11, AURA33 etc.
+_TICKER_LETTERS_RE = re.compile(r"^[A-Z]{4,}$")     # IBOV, INDICADORES etc.
+
+def normalizar_ticker_unico(valor: str) -> str:
+    """
+    Garante que nunca retornaremos um "ticker agregado" tipo 'CASN3;CASN4'.
+    - Split por vírgula/;/espaço
+    - Prioriza tokens válidos (AAAA+numero) e depois tokens só letras (IBOV etc.)
+    """
+    tokens = _split_tickers(valor)
+    if not tokens:
+        return _norm(valor)
+
+    for tok in tokens:
+        if _TICKER_TOKEN_RE.match(tok):
+            return tok
+
+    for tok in tokens:
+        if _TICKER_LETTERS_RE.match(tok):
+            return tok
+
+    return tokens[0]
+
+
 def extrair_ticker_base(ticker: str) -> str:
-    """Remove números finais do ticker (PETR4 -> PETR)."""
-    return re.sub(r"\d+$", "", _norm(ticker))
+    """Remove números finais do ticker (PETR4 -> PETR). Sempre sanitiza antes."""
+    t = normalizar_ticker_unico(ticker)
+    return re.sub(r"\d+$", "", _norm(t))
 
 
 def _split_tickers(s: str) -> List[str]:
@@ -74,8 +99,9 @@ def _ler_json_resiliente(path: Path) -> Dict:
 
 
 def _suffix_num(ticker: str) -> Optional[int]:
-    """Retorna sufixo numérico do ticker (KLBN11 -> 11)."""
-    m = re.search(r"(\d+)$", _norm(ticker))
+    """Retorna sufixo numérico do ticker (KLBN11 -> 11). Sempre sanitiza antes."""
+    t = normalizar_ticker_unico(ticker)
+    m = re.search(r"(\d+)$", _norm(t))
     if not m:
         return None
     try:
@@ -91,7 +117,8 @@ def _suffix_num(ticker: str) -> Optional[int]:
 def load_mapeamento_consolidado() -> Optional[pd.DataFrame]:
     """
     Tenta carregar mapeamento.
-    Se não existir, retorna None (o script continua funcionando em modo ticker/lista).
+    ✅ FIX DEFINITIVO: se o campo 'ticker' vier com múltiplos tickers (ex: 'CASN3;CASN4'),
+    explode para múltiplas linhas, garantindo ticker SEMPRE unitário.
     """
     csv_consolidado = Path("mapeamento_b3_consolidado.csv")
     csv_original = Path("mapeamento_final_b3_completo_utf8.csv")
@@ -100,15 +127,31 @@ def load_mapeamento_consolidado() -> Optional[pd.DataFrame]:
         if p.exists():
             try:
                 df = pd.read_csv(p, sep=";", encoding="utf-8-sig", dtype=str)
-                if "ticker" in df.columns:
-                    df = df[df["ticker"].notna()].copy()
-                    df["ticker"] = df["ticker"].astype(str).apply(_norm)
-                    df["ticker_base"] = df["ticker"].apply(extrair_ticker_base)
-                    return df
+                if "ticker" not in df.columns:
+                    continue
+
+                df = df[df["ticker"].notna()].copy()
+                df["ticker"] = df["ticker"].astype(str)
+
+                # explode: "CASN3;CASN4" -> ["CASN3","CASN4"]
+                df["ticker"] = df["ticker"].apply(lambda x: _split_tickers(x))
+                df = df.explode("ticker")
+
+                df = df[df["ticker"].notna()].copy()
+                df["ticker"] = df["ticker"].astype(str).apply(_norm)
+                df = df[df["ticker"].str.len() > 0].copy()
+
+                # garante que nunca fica "CASN3;CASN4" aqui
+                df["ticker"] = df["ticker"].apply(normalizar_ticker_unico)
+
+                df["ticker_base"] = df["ticker"].apply(extrair_ticker_base)
+                df = df.drop_duplicates(subset=["ticker"]).reset_index(drop=True)
+                return df
             except Exception:
                 continue
 
     return None
+
 
 
 def listar_classes_por_mapeamento(ticker_base: str, df_map: pd.DataFrame) -> List[str]:
@@ -141,14 +184,15 @@ def buscar_nome_empresa_por_mapeamento(ticker_base: str, df_map: pd.DataFrame) -
 
 def encontrar_pasta_existente_empresa(ticker_base: str, pasta_saida: Path) -> Optional[Path]:
     """
-    Procura em balancos/ qualquer pasta já existente cuja base seja ticker_base.
-    Retorna a "melhor" pasta (preferência determinística):
-      1) mais dígitos no sufixo numérico (ex: 11 > 4)
-      2) maior sufixo numérico (ex: 11 > 6 > 5 > 4 > 3)
-      3) nome mais longo
-      4) ordem alfabética reversa (para determinismo)
+    Procura em balancos/ qualquer pasta já existente cuja base seja ticker_base (independente da classe).
+
+    ✅ FIX DEFINITIVO:
+    - Sanitiza ticker_base (evita bases quebradas quando vier algo como 'CASN3;CASN4')
+    - Ignora pastas com nomes inválidos (contendo ';' ou ',')
+    - Se houver MAIS de uma pasta (ex: BBDC3 e BBDC4), prioriza a "pasta já usada" pela presença
+      de arquivos característicos (multiplos, preços, padronizados etc.)
     """
-    tb = _norm(ticker_base)
+    tb = extrair_ticker_base(ticker_base)
 
     if not pasta_saida.exists():
         return None
@@ -158,40 +202,89 @@ def encontrar_pasta_existente_empresa(ticker_base: str, pasta_saida: Path) -> Op
         if not p.is_dir():
             continue
         name = _norm(p.name)
+
+        # ignora lixo tipo "CASN3;CASN4"
+        if ";" in name or "," in name:
+            continue
+
         if extrair_ticker_base(name) == tb:
             candidatos.append(p)
 
     if not candidatos:
         return None
 
-    def rank(p: Path) -> Tuple[int, int, int, str]:
+    # "pasta já usada" = a que tem mais arquivos relevantes (indicador de pasta principal)
+    arquivos_relevantes = [
+        "multiplos.json",
+        "precos_trimestrais.csv",
+        "bpa_padronizado.csv",
+        "bpp_padronizado.csv",
+        "dre_padronizado.csv",
+        "dfc_padronizado.csv",
+    ]
+
+    def score_pasta(p: Path) -> int:
+        return sum(1 for f in arquivos_relevantes if (p / f).exists())
+
+    def rank(p: Path) -> Tuple[int, int, int, int, str]:
         name = _norm(p.name)
+        s = score_pasta(p)
         suf = re.search(r"(\d+)$", name)
         suf_digits = len(suf.group(1)) if suf else 0
         suf_num = int(suf.group(1)) if suf else -1
-        return (suf_digits, suf_num, len(name), name)
+        # 1) mais arquivos relevantes
+        # 2) mais dígitos
+        # 3) maior sufixo
+        # 4) nome mais longo
+        # 5) determinismo
+        return (s, suf_digits, suf_num, len(name), name)
 
     candidatos.sort(key=rank, reverse=True)
     return candidatos[0]
 
 
+
 def escolher_ticker_para_criar_pasta(tickers_alvo: List[str], ticker_consulta: str, ticker_base: str) -> str:
     """
     Se precisar criar UMA pasta (não existe nenhuma ainda):
-    1) usa ticker_consulta se tiver sufixo numérico (classe)
-    2) senão usa o primeiro ticker_alvo com classe
-    3) fallback final: ticker_base (último recurso, evita quebrar, mas tenta ao máximo criar com classe)
+    ✅ FIX DEFINITIVO:
+    - Sanitiza candidatos (nunca retorna 'AAAA3;AAAA4')
+    - Prefere classes padrão quando disponíveis: 3, 4, 11, 33, 34 (e depois outras)
+    - Se não existir nenhum candidato com número, fallback: ticker_base + '3' (padrão B3)
     """
-    t_cons = _norm(ticker_consulta or "")
-    if _suffix_num(t_cons) is not None:
-        return t_cons
+    preferencia = [3, 4, 11, 33, 34, 5, 6]
 
-    for t in tickers_alvo or []:
-        tn = _norm(t)
-        if _suffix_num(tn) is not None:
-            return tn
+    candidatos: List[str] = []
 
-    return _norm(ticker_base)
+    # ticker_consulta pode vir contaminado (ex: "CASN3;CASN4")
+    candidatos.extend(_split_tickers(ticker_consulta))
+
+    for t in (tickers_alvo or []):
+        candidatos.extend(_split_tickers(t))
+
+    # normaliza e mantém únicos
+    candidatos = [normalizar_ticker_unico(c) for c in candidatos if c and str(c).strip()]
+    candidatos = list(dict.fromkeys([_norm(c) for c in candidatos]))
+
+    # pega só os que têm sufixo numérico
+    cand_com_classe = [c for c in candidatos if _suffix_num(c) is not None]
+
+    if cand_com_classe:
+        def key(c: str):
+            s = _suffix_num(c) or 999
+            idx = preferencia.index(s) if s in preferencia else 999
+            return (idx, s, c)
+
+        cand_com_classe.sort(key=key)
+        return cand_com_classe[0]
+
+    tb = _norm(ticker_base)
+    # se ticker_base for "CASN" -> "CASN3" como padrão
+    if re.match(r"^[A-Z]{4}$", tb):
+        return f"{tb}3"
+
+    return tb
+
 
 
 # =============================================================================
@@ -539,7 +632,7 @@ def main():
     erro = 0
 
     for idx, t in enumerate(tickers_alvo, 1):
-        t = _norm(t)
+        t = normalizar_ticker_unico(t)
         if not t:
             erro += 1
             continue
