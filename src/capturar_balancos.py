@@ -25,21 +25,21 @@ def load_mapeamento_consolidado() -> pd.DataFrame:
     """Carrega CSV de mapeamento (tenta consolidado, fallback para original)."""
     csv_consolidado = "mapeamento_b3_consolidado.csv"
     csv_original = "mapeamento_final_b3_completo_utf8.csv"
-    
+
     # Tentar CSV consolidado primeiro
     if Path(csv_consolidado).exists():
         try:
             return pd.read_csv(csv_consolidado, sep=";", encoding="utf-8-sig")
         except Exception:
             pass
-    
+
     # Fallback para CSV original
     if Path(csv_original).exists():
         try:
             return pd.read_csv(csv_original, sep=";", encoding="utf-8-sig")
         except Exception:
             pass
-    
+
     # Último fallback
     try:
         return pd.read_csv(csv_original, sep=";")
@@ -53,31 +53,31 @@ def extrair_ticker_inteligente(tickers_str):
     """
     Extrai o ticker mais adequado para busca na CVM.
     Prioriza: ON (código 3) > PN (código 4) > UNIT (código 11)
-    
+
     Args:
         tickers_str: String com tickers separados por ';' (ex: "SAPR11;SAPR3;SAPR4")
-    
+
     Returns:
         str: Ticker selecionado segundo a prioridade
     """
     # Remove aspas e espaços, depois faz split por ponto-e-vírgula
     tickers = [t.strip().strip('"') for t in tickers_str.split(';')]
-    
+
     # Prioridade 1: Busca ticker ON (termina com 3)
     for ticker in tickers:
         if ticker.endswith('3') and not ticker.endswith('11'):  # Evita confusão com UNIT11
             return ticker
-    
+
     # Prioridade 2: Busca ticker PN (termina com 4)
     for ticker in tickers:
         if ticker.endswith('4'):
             return ticker
-    
+
     # Prioridade 3: Busca ticker UNIT (termina com 11)
     for ticker in tickers:
         if ticker.endswith('11'):
             return ticker
-    
+
     # Fallback: retorna o primeiro ticker disponível
     return tickers[0] if tickers else tickers_str
 
@@ -85,10 +85,10 @@ def extrair_ticker_inteligente(tickers_str):
 def get_pasta_balanco(ticker: str) -> Path:
     """
     Retorna Path da pasta de balanços usando ticker inteligente.
-    
+
     Args:
         ticker: Qualquer ticker
-    
+
     Returns:
         Path para pasta de balanços
     """
@@ -124,21 +124,58 @@ class CapturaBalancos:
     def _download_zip(self, doc: str, ano: int) -> Path:
         """
         doc: 'ITR' ou 'DFP'
+        Cache robusto: se ZIP estiver corrompido/incompleto, rebaixa automaticamente.
         """
         doc = doc.upper().strip()
         if doc not in ("ITR", "DFP"):
             raise ValueError("doc deve ser 'ITR' ou 'DFP'")
 
+        # Respeita o que existe no Dados Abertos:
+        # DFP começa em 2010; ITR começa em 2011
+        if doc == "DFP" and ano < 2010:
+            raise FileNotFoundError("DFP estruturado (ZIP) indisponível antes de 2010 (Dados Abertos CVM).")
+        if doc == "ITR" and ano < 2011:
+            raise FileNotFoundError("ITR estruturado (ZIP) indisponível antes de 2011 (Dados Abertos CVM).")
+
         prefix = "itr_cia_aberta" if doc == "ITR" else "dfp_cia_aberta"
         url = f"https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/{doc}/DADOS/{prefix}_{ano}.zip"
         dest = self.cache_dir / f"{prefix}_{ano}.zip"
 
-        if dest.exists() and dest.stat().st_size > 0:
+        def _zip_valido(p: Path) -> bool:
+            try:
+                if not p.exists() or p.stat().st_size < 1024:
+                    return False
+                with zipfile.ZipFile(p) as z:
+                    return z.testzip() is None
+            except Exception:
+                return False
+
+        # Se já existe e é válido, usa cache
+        if _zip_valido(dest):
             return dest
+
+        # Se existe mas está inválido, apaga e baixa de novo
+        if dest.exists():
+            try:
+                dest.unlink()
+            except Exception:
+                pass
 
         r = requests.get(url, timeout=180)
         r.raise_for_status()
-        dest.write_bytes(r.content)
+
+        # grava atômico (evita zip “meio baixado”)
+        tmp = dest.with_suffix(".zip.tmp")
+        tmp.write_bytes(r.content)
+
+        if not _zip_valido(tmp):
+            try:
+                tmp.unlink()
+            except Exception:
+                pass
+            raise zipfile.BadZipFile(f"ZIP inválido baixado da CVM: {url}")
+
+        tmp.replace(dest)
         return dest
 
     def _ler_csv_do_zip(self, zip_path: Path, alvo_csv: str) -> pd.DataFrame | None:
@@ -184,7 +221,9 @@ class CapturaBalancos:
     # ------------------------- HELPERS -------------------------
 
     def _cnpj_digits(self, cnpj: str) -> str:
-        return re.sub(r"\D", "", str(cnpj))
+        # Normaliza para 14 dígitos (corrige casos onde o mapeamento vem como número e perde zeros)
+        dig = re.sub(r"\D", "", str(cnpj))
+        return dig.zfill(14)
 
     def _filtrar_empresa_ultimo(self, df: pd.DataFrame, cnpj_digits: str) -> pd.DataFrame:
         if df is None or df.empty:
@@ -193,7 +232,14 @@ class CapturaBalancos:
         if "CNPJ_CIA" not in df.columns:
             return df.iloc[0:0]
 
-        cnpj_col = df["CNPJ_CIA"].astype(str).str.replace(r"\D", "", regex=True)
+        # CNPJ sempre com 14 dígitos (evita perder anos por zeros à esquerda)
+        cnpj_col = (
+            df["CNPJ_CIA"]
+            .astype(str)
+            .str.replace(r"\D", "", regex=True)
+            .str.zfill(14)
+        )
+
         df = df[cnpj_col == cnpj_digits].copy()
         if df.empty:
             return df
@@ -221,7 +267,10 @@ class CapturaBalancos:
             df["VALOR_MIL"] = pd.NA
             return df
 
-        df["VL_CONTA"] = pd.to_numeric(df["VL_CONTA"], errors="coerce")
+        # Normaliza número pt-BR (ex: "1.234.567,89" -> "1234567.89")
+        s = df["VL_CONTA"].astype(str)
+        s = s.str.replace(".", "", regex=False).str.replace(",", ".", regex=False)
+        df["VL_CONTA"] = pd.to_numeric(s, errors="coerce")
 
         # respeita ESCALA_MOEDA quando existir (UNIDADE/MIL)
         if "ESCALA_MOEDA" in df.columns:
@@ -274,10 +323,14 @@ class CapturaBalancos:
 
         cnpj_digits = self._cnpj_digits(cnpj)
 
+        # Ajustes mínimos para evitar warnings e respeitar disponibilidade dos zips
+        inicio_dfp = max(self.ano_inicio, 2010)
+        inicio_itr = max(self.ano_inicio, 2011)
+
         for demo in self.demos:
             # -------- TRIMESTRAL (ITR) --------
             dados_tri = []
-            for ano in range(self.ano_inicio, self.ano_atual + 1):
+            for ano in range(inicio_itr, self.ano_atual + 1):
                 df = self.baixar_doc("ITR", ano, demo, consolidado=self.consolidado)
                 if df is None or df.empty:
                     continue
@@ -304,7 +357,7 @@ class CapturaBalancos:
 
             # -------- ANUAL (DFP) --------
             dados_anual = []
-            for ano in range(self.ano_inicio, self.ano_atual + 1):
+            for ano in range(inicio_dfp, self.ano_atual + 1):
                 df = self.baixar_doc("DFP", ano, demo, consolidado=self.consolidado)
                 if df is None or df.empty:
                     continue
@@ -334,7 +387,7 @@ class CapturaBalancos:
         """
         Processa um lote de empresas selecionadas.
         INTELIGÊNCIA: Sempre usa ticker ON (3) ou PN (4) para buscar na CVM.
-        
+
         Args:
             df_sel: DataFrame com empresas selecionadas (colunas: ticker, cnpj)
         """
@@ -348,7 +401,7 @@ class CapturaBalancos:
                 # Aplicar inteligência de seleção de ticker
                 ticker_str = str(row["ticker"]).strip().upper()
                 ticker_cvm = extrair_ticker_inteligente(ticker_str)
-                
+
                 self.processar_empresa(ticker_cvm, row["cnpj"])
                 ok_count += 1
             except Exception as e:
@@ -376,23 +429,23 @@ def main():
         help="Modo de seleção: quantidade, ticker, lista, faixa",
     )
     parser.add_argument(
-        "--quantidade", 
-        default="10", 
+        "--quantidade",
+        default="10",
         help="Quantidade de empresas (modo quantidade)"
     )
     parser.add_argument(
-        "--ticker", 
-        default="", 
+        "--ticker",
+        default="",
         help="Ticker específico (modo ticker): ex: PETR4"
     )
     parser.add_argument(
-        "--lista", 
-        default="", 
+        "--lista",
+        default="",
         help="Lista de tickers (modo lista): ex: PETR4,VALE3,ITUB4"
     )
     parser.add_argument(
-        "--faixa", 
-        default="1-50", 
+        "--faixa",
+        default="1-50",
         help="Faixa de linhas (modo faixa): ex: 1-50, 51-150"
     )
     args = parser.parse_args()
@@ -410,29 +463,29 @@ def main():
         ticker_upper = args.ticker.upper()
         # Buscar ticker em qualquer posição da string de tickers
         df_sel = df[df["ticker"].str.upper().str.contains(
-            ticker_upper, 
-            case=False, 
-            na=False, 
+            ticker_upper,
+            case=False,
+            na=False,
             regex=False
         )]
-        
+
         if df_sel.empty:
             print(f"❌ Ticker '{args.ticker}' não encontrado no mapeamento.")
             sys.exit(1)
 
     elif args.modo == "lista":
         tickers = [t.strip().upper() for t in args.lista.split(",") if t.strip()]
-        
+
         if not tickers:
             print("❌ Lista de tickers vazia.")
             sys.exit(1)
-        
+
         # Buscar cada ticker em qualquer posição
         mask = df["ticker"].str.upper().apply(
             lambda x: any(t in x for t in tickers) if pd.notna(x) else False
         )
         df_sel = df[mask]
-        
+
         if df_sel.empty:
             print(f"❌ Nenhum ticker da lista encontrado: {', '.join(tickers)}")
             sys.exit(1)
@@ -441,7 +494,7 @@ def main():
         try:
             inicio, fim = map(int, args.faixa.split("-"))
             df_sel = df.iloc[inicio - 1: fim]
-            
+
             if df_sel.empty:
                 print(f"❌ Faixa {args.faixa} está fora do range disponível (1-{len(df)}).")
                 sys.exit(1)
