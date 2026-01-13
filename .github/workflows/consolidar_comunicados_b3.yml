@@ -13,12 +13,12 @@ jobs:
   consolidar:
     runs-on: ubuntu-latest
 
-    # roda sempre que o capturador terminar com sucesso (manual OU schedule)
+    # ✅ roda se o capturador terminou com sucesso (manual OU schedule) e em main
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
 
     concurrency:
       group: consolidar-comunicados-b3
-      cancel-in-progress: false
+      cancel-in-progress: true
 
     steps:
       - name: Checkout
@@ -27,7 +27,7 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Sincronizar com origin/main (evita divergência/force)
+      - name: Sincronizar com origin/main (evita divergência/forced-update)
         run: |
           git fetch origin main
           git checkout main
@@ -65,18 +65,6 @@ jobs:
           echo "📊 Consolidando comunicados..."
           python src/consolidar_comunicados_b3.py
 
-      - name: Validar feed consolidado
-        if: env.noticias_exists == 'true'
-        run: |
-          if [ -f "balancos/feed_noticias.json" ]; then
-            echo "✅ Feed consolidado gerado: balancos/feed_noticias.json"
-            echo "💾 Tamanho:"
-            du -h balancos/feed_noticias.json | cut -f1
-          else
-            echo "❌ Feed não foi gerado."
-            exit 1
-          fi
-
       - name: 📝 Atualizar timestamp de consolidação
         if: env.noticias_exists == 'true'
         run: |
@@ -98,7 +86,7 @@ jobs:
 
           echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
 
-      - name: Commit e Push
+      - name: Commit e Push (apenas feed + timestamp consolidação)
         if: env.noticias_exists == 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
