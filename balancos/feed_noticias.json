@@ -1,10 +1,10 @@
 {
   "meta": {
-    "ultima_atualizacao": "2026-01-13T12:29:29.372382Z",
+    "ultima_atualizacao": "2026-01-13T16:32:05.004290Z",
     "data_atualizacao": "2026-01-13",
-    "hora_atualizacao": "12:29:29",
-    "total_empresas": 24,
-    "total_noticias": 599,
+    "hora_atualizacao": "16:32:05",
+    "total_empresas": 25,
+    "total_noticias": 604,
     "periodo": {
       "inicio": "2025-12-15",
       "fim": "2026-01-13"
@@ -12,10 +12,10 @@
   },
   "estatisticas": {
     "por_categoria": {
-      "Governança": 280,
-      "Outros": 192,
-      "Aviso": 90,
-      "Fato Relevante": 36,
+      "Governança": 281,
+      "Outros": 193,
+      "Aviso": 92,
+      "Fato Relevante": 37,
       "Resultados": 1
     },
     "por_ticker": {
@@ -43,19 +43,19 @@
     "top_categorias": [
       {
         "categoria": "Governança",
-        "total": 280
+        "total": 281
       },
       {
         "categoria": "Outros",
-        "total": 192
+        "total": 193
       },
       {
         "categoria": "Aviso",
-        "total": 90
+        "total": 92
       },
       {
         "categoria": "Fato Relevante",
-        "total": 36
+        "total": 37
       },
       {
         "categoria": "Resultados",
@@ -920,6 +920,21 @@
       "data": "2026-01-09",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "KLBN3",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "KLABIN S/A (KLBN-N2) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200510&agencia=18&dataNoticia=2026-01-09%2018:02:10"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "BMGB4",
         "nome": "BANCO BMG S.A.",
         "cnpj": "61.186.680/0001-74"
@@ -1649,6 +1664,21 @@
         "headline": "COPASA (CSMG-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196644&agencia=18&dataNoticia=2026-01-07%2019:04:37"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN3",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Data prevista para assembleia geral  07/04/26",
+        "headline": "KLABIN S/A (KLBN-N2) - Data prevista para assembleia geral - 07/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195401&agencia=18&dataNoticia=2026-01-07%2009:02:36"
       }
     },
     {
@@ -8969,6 +8999,51 @@
         "headline": "BOA SAFRA (SOJA-NM) - Ata Reuniao do Conselho de Administracao - 15/12/25",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3171338&agencia=18&dataNoticia=2025-12-15%2019:37:53"
+      }
+    },
+    {
+      "data": "2025-12-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN3",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Fato Relevante  08/12/25 (N)",
+        "headline": "KLABIN S/A (KLBN-N2) - Fato Relevante - 08/12/25 (N)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3171171&agencia=18&dataNoticia=2025-12-15%2018:56:57"
+      }
+    },
+    {
+      "data": "2025-12-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN3",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Outros Comunicados ao Mercado  15/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Outros Comunicados ao Mercado - 15/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3171097&agencia=18&dataNoticia=2025-12-15%2018:34:58"
+      }
+    },
+    {
+      "data": "2025-12-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "KLBN3",
+        "nome": "KLABIN S.A.",
+        "cnpj": "89.637.490/0001-45"
+      },
+      "noticia": {
+        "titulo": "N2)  Outros Comunicados ao Mercado  15/12/25",
+        "headline": "KLABIN S/A (KLBN-N2) - Outros Comunicados ao Mercado - 15/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3171085&agencia=18&dataNoticia=2025-12-15%2018:31:45"
       }
     },
     {
