@@ -34,15 +34,16 @@ on:
         required: false
         default: '30'
   schedule:
-    # GitHub Actions usa UTC no cron.
-    # 08:00 BRT (Brasília, UTC-3) = 11:00 UTC
+    # 08:00 BRT (UTC-3) = 11:00 UTC
     - cron: '0 11 * * 1-5'
+
+permissions:
+  contents: write
 
 jobs:
   capturar-noticias:
     runs-on: ubuntu-latest
 
-    # ✅ Prevenir execuções paralelas
     concurrency:
       group: noticias-workflow
       cancel-in-progress: false
@@ -51,7 +52,15 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # ✅ Buscar histórico completo (ajuda no rebase)
+          ref: main
+          fetch-depth: 0
+
+      - name: Sincronizar com origin/main (evita divergência/force)
+        run: |
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
+          git status
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -87,11 +96,11 @@ jobs:
       - name: 📝 Atualizar timestamp
         run: |
           mkdir -p site/data
-          
+
           TIMESTAMP=$(date +%s)000
           DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
           HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
-          
+
           cat > site/data/ultima_atualizacao.json << EOF
           {
             "timestamp": ${TIMESTAMP},
@@ -101,30 +110,25 @@ jobs:
             "versao": "1.0.0"
           }
           EOF
-          
+
           echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
 
       - name: Commit e Push resultados
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
+          branch: main
           commit_message: |
             📰 Atualizar Comunicados B3 (${{ github.event_name == 'schedule' && 'automático 8h BRT' || 'manual' }} - ${{ github.run_number }}) [skip netlify]
-          
+
           file_pattern: |
             balancos/*/noticias.json
             balancos/feed_noticias.json
             site/data/ultima_atualizacao.json
-          
+
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
-          
-          # ✅ Pull com rebase antes de push
-          pull: '--rebase --autostash'
-          
-          # ✅ Push seguro (só sobrescreve se remote não mudou desde último fetch)
-          push_options: '--force-with-lease'
-          
-          # ✅ Pular se não houver mudanças
+
+          # já fizemos fetch/reset acima — evita o action alterar refs e gerar divergência
+          skip_fetch: true
+          skip_checkout: true
           skip_dirty_check: false
-          skip_fetch: false
-          skip_checkout: false
