@@ -1,22 +1,11 @@
 {
   "ticker": "AGRO3",
-  "ultima_atualizacao": "2026-01-12T23:01:47.743609",
+  "ultima_atualizacao": "2026-01-13T22:38:40.494695",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 15.85,
-      "maxima": 16.21,
-      "minima": 15.77,
-      "fechamento": 16.18,
-      "volume": 197700,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 16.18,
@@ -222,7 +211,7 @@
       "minima": 16.87,
       "fechamento": 17.36,
       "volume": 254700,
-      "mm20": 16.14,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 14.2,
       "volume": 656600,
       "mm20": 14.57,
-      "mm50": 15.56,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 606700,
       "mm20": 18.19,
       "mm50": 17.68,
-      "mm200": 17.22
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -13898,16 +13887,27 @@
       "mm20": 20.04,
       "mm50": 19.82,
       "mm200": 19.98
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 20.15,
+      "maxima": 20.15,
+      "minima": 19.92,
+      "fechamento": 20.14,
+      "volume": 117800,
+      "mm20": 20.04,
+      "mm50": 19.83,
+      "mm200": 19.98
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 16.18,
-    "preco_atual": 20.15,
-    "variacao_periodo": 24.51,
+    "preco_inicial": 16.22,
+    "preco_atual": 20.14,
+    "variacao_periodo": 24.16,
     "maxima_periodo": 25.45,
     "minima_periodo": 13.5,
-    "volume_medio": 479470,
+    "volume_medio": 479406,
     "tendencia": "indefinida"
   }
 }

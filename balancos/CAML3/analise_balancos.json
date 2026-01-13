@@ -1,0 +1,46 @@
+{
+  "ticker": "CAML3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-13T22:39:01.447003",
+  "periodo_analisado": {
+    "inicio": "2016T1",
+    "fim": "2025T2",
+    "total_trimestres": 38,
+    "anos": 9.5
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.99,
+      "variacao_total": 162.24,
+      "ultimo_valor": 2979.67
+    },
+    "margens": {
+      "bruta": 22.34,
+      "operacional": 7.1,
+      "liquida": 4.46
+    },
+    "rentabilidade": {
+      "roe_medio": 13.07,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 63.5,
+      "ultimo": -407.32
+    },
+    "balanco": {
+      "ativo_total": 11340.16,
+      "patrimonio": 3430.04
+    }
+  },
+  "analise_critica": "CAML3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 4.46%). Retorno sobre patrimônio adequado (ROE de 13.07%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.99%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (4.46%)",
+    "Queima de caixa operacional"
+  ]
+}

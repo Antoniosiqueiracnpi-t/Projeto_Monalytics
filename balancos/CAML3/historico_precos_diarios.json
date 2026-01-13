@@ -1,22 +1,11 @@
 {
   "ticker": "CAML3",
-  "ultima_atualizacao": "2026-01-12T23:01:54.507018",
+  "ultima_atualizacao": "2026-01-13T22:38:40.924388",
   "periodo": {
-    "inicio": "2020-12-14",
-    "fim": "2026-01-09"
+    "inicio": "2020-12-15",
+    "fim": "2026-01-12"
   },
   "dados": [
-    {
-      "data": "2020-12-14",
-      "abertura": 9.75,
-      "maxima": 9.91,
-      "minima": 9.48,
-      "fechamento": 9.52,
-      "volume": 2206800,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-15",
       "abertura": 9.52,
@@ -222,7 +211,7 @@
       "minima": 9.49,
       "fechamento": 9.56,
       "volume": 2032900,
-      "mm20": 9.31,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 8.75,
       "volume": 1980700,
       "mm20": 8.99,
-      "mm50": 9.12,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1592100,
       "mm20": 8.06,
       "mm50": 7.83,
-      "mm200": 8.4
+      "mm200": null
     },
     {
       "data": "2021-10-06",
@@ -13898,16 +13887,27 @@
       "mm20": 5.47,
       "mm50": 5.56,
       "mm200": 4.86
+    },
+    {
+      "data": "2026-01-12",
+      "abertura": 5.76,
+      "maxima": 5.93,
+      "minima": 5.71,
+      "fechamento": 5.93,
+      "volume": 1240000,
+      "mm20": 5.49,
+      "mm50": 5.57,
+      "mm200": 4.87
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 9.52,
-    "preco_atual": 5.75,
-    "variacao_periodo": -39.58,
+    "preco_inicial": 9.33,
+    "preco_atual": 5.93,
+    "variacao_periodo": -36.43,
     "maxima_periodo": 9.6,
     "minima_periodo": 3.3,
-    "volume_medio": 1291606,
+    "volume_medio": 1290840,
     "tendencia": "indefinida"
   }
 }
