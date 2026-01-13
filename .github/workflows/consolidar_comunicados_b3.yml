@@ -13,11 +13,9 @@ jobs:
   consolidar:
     runs-on: ubuntu-latest
 
-    # ✅ Só roda se o capturador terminou com sucesso
-    # ✅ E só quando o capturador foi disparado pelo agendamento (schedule)
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'schedule' }}
+    # roda sempre que o capturador terminar com sucesso (manual OU schedule)
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
 
-    # ✅ Previne concorrência (se por algum motivo houver sobreposição)
     concurrency:
       group: consolidar-comunicados-b3
       cancel-in-progress: false
@@ -26,7 +24,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
+
+      - name: Sincronizar com origin/main (evita divergência/force)
+        run: |
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
+          git status
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -34,7 +40,6 @@ jobs:
           python-version: '3.11'
 
       - name: Verificar arquivos de comunicados (noticias.json)
-        id: check_files
         run: |
           echo "📁 Verificando arquivos individuais..."
           ARQUIVOS=$(find balancos -type f -name "noticias.json" 2>/dev/null | wc -l | tr -d ' ')
@@ -93,10 +98,11 @@ jobs:
 
           echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
 
-      - name: Commit e Push (com rebase)
+      - name: Commit e Push
         if: env.noticias_exists == 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
+          branch: main
           commit_message: |
             📰 Consolidar feed comunicados B3 (auto pós-captura) - ${{ github.run_number }} [skip netlify]
 
@@ -107,12 +113,9 @@ jobs:
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
 
-          pull: '--rebase --autostash'
-          push_options: '--force-with-lease'
-
+          skip_fetch: true
+          skip_checkout: true
           skip_dirty_check: false
-          skip_fetch: false
-          skip_checkout: false
 
       - name: Resumo
         if: always()
