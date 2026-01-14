@@ -9,6 +9,8 @@ from typing import Dict, List, Optional, Set, Tuple, Any
 
 import numpy as np
 import pandas as pd
+import logging
+from pathlib import Path
 
 # ======================================================================================
 # DETECÇÃO INTELIGENTE DE CONTAS BANCÁRIAS
@@ -958,14 +960,18 @@ def _quarter_order(q: str) -> int:
     return {"T1": 1, "T2": 2, "T3": 3, "T4": 4}.get(q, 99)
 
 
-def _normalizar_escala_monetaria(valor: float) -> float:
+def _normalizar_escala_monetaria(valor: float, divisor: float = 1.0) -> float:
     """
-    Converte valores da CVM para milhares de reais (padrão BR).
-    Divisor: 10 bilhões (10.000.000.000)
+    Converte valores da CVM usando divisor detectado automaticamente.
+    
+    Args:
+        valor: Valor a ser convertido
+        divisor: Fator de divisão detectado (1.0 ou 10_000_000_000)
     """
     if not np.isfinite(valor) or valor == 0:
         return valor
-    return valor / 10_000_000_000  # 10 bilhões
+    return valor / divisor
+
 
 def _normalize_value(v: float, decimals: int = 3) -> float:
     """Arredondamento de precisão"""
@@ -1285,6 +1291,116 @@ def _build_quarter_values_adaptive(
     
     return pd.DataFrame(rows, columns=["ano", "trimestre", "code", "valor"])
 
+# ======================================================================================
+# DETECÇÃO AUTOMÁTICA DE ESCALA E VALIDAÇÃO
+# ======================================================================================
+
+def detectar_escala_automatica(df, coluna_valor='valor_mil'):
+    """
+    Detecta automaticamente a escala dos valores no DataFrame.
+    
+    Retorna:
+        dict: {
+            'divisor': float - Fator de divisão (1.0 ou 10_000_000_000),
+            'justificativa': str - Razão da decisão,
+            'magnitude_p50': float - Mediana da magnitude,
+            'magnitude_max': float - Máxima magnitude
+        }
+    """
+    # Filtrar valores não-zero
+    valores = df[df[coluna_valor] != 0][coluna_valor].dropna()
+    
+    if len(valores) == 0:
+        return {
+            'divisor': 1.0,
+            'justificativa': 'SEM_DADOS',
+            'magnitude_p50': None,
+            'magnitude_max': None
+        }
+    
+    # Calcular magnitudes (log10 dos valores absolutos)
+    valores_abs = valores.abs()
+    mag_p50 = np.log10(valores_abs.quantile(0.50))
+    mag_max = np.log10(valores_abs.max())
+    
+    # Lógica de detecção
+    if mag_p50 > 15:
+        # Claramente em centavos (notação científica)
+        divisor = 10_000_000_000
+        justificativa = "NOTACAO_CIENTIFICA"
+        
+    elif mag_p50 < 9:
+        # Claramente já em milhares
+        divisor = 1.0
+        justificativa = "JA_EM_MILHARES"
+        
+    elif 9 <= mag_p50 <= 15:
+        # Zona cinza - usar magnitude máxima para decidir
+        if mag_max > 14:
+            divisor = 10_000_000_000
+            justificativa = "ZONA_CINZA_CONVERTIDO"
+        else:
+            divisor = 1.0
+            justificativa = "ZONA_CINZA_MANTIDO"
+    else:
+        divisor = 1.0
+        justificativa = "PADRAO"
+    
+    return {
+        'divisor': divisor,
+        'justificativa': justificativa,
+        'magnitude_p50': round(mag_p50, 2),
+        'magnitude_max': round(mag_max, 2)
+    }
+
+
+def validar_balanco(df_periodo, periodo_str="?"):
+    """
+    Valida se Ativo Total = Passivo Total para um período específico.
+    
+    Args:
+        df_periodo: DataFrame com dados de um período (já filtrado)
+        periodo_str: String identificando o período (para log)
+    
+    Retorna:
+        dict com 'valido', 'ativo', 'passivo', 'diff', 'diff_percent'
+    """
+    try:
+        # Buscar Ativo Total (cd_conta = "1")
+        ativo_rows = df_periodo[df_periodo['cd_conta'] == '1']
+        ativo = float(ativo_rows['valor_mil'].iloc[0]) if not ativo_rows.empty else 0.0
+        
+        # Buscar Passivo Total (cd_conta = "2")
+        passivo_rows = df_periodo[df_periodo['cd_conta'] == '2']
+        passivo = float(passivo_rows['valor_mil'].iloc[0]) if not passivo_rows.empty else 0.0
+        
+        # Calcular diferença
+        diff = abs(ativo - passivo)
+        diff_percent = (diff / ativo * 100) if ativo != 0 else 0.0
+        
+        # Tolerância de 1%
+        valido = diff_percent <= 1.0
+        
+        return {
+            'valido': valido,
+            'ativo': ativo,
+            'passivo': passivo,
+            'diff': diff,
+            'diff_percent': diff_percent,
+            'periodo': periodo_str
+        }
+        
+    except Exception as e:
+        return {
+            'valido': False,
+            'ativo': 0,
+            'passivo': 0,
+            'diff': 0,
+            'diff_percent': 0,
+            'periodo': periodo_str,
+            'erro': str(e)
+        }
+
 
 # ======================================================================================
 # CLASSE PRINCIPAL - PADRONIZADOR BP
@@ -1310,6 +1426,45 @@ class PadronizadorBP:
             df["ds_conta"] = df["ds_conta"].astype(str).str.strip()
             df["valor_mil"] = _ensure_numeric(df["valor_mil"])
             df["data_fim"] = _to_datetime(df, "data_fim")
+
+        # ✅ DETECÇÃO AUTOMÁTICA DE ESCALA
+        escala_bpa_tri = detectar_escala_automatica(bpa_tri)
+        escala_bpa_anu = detectar_escala_automatica(bpa_anu)
+        escala_bpp_tri = detectar_escala_automatica(bpp_tri)
+        escala_bpp_anu = detectar_escala_automatica(bpp_anu)
+        
+        # Usar o maior divisor detectado (mais conservador)
+        divisor_bpa = max(escala_bpa_tri['divisor'], escala_bpa_anu['divisor'])
+        divisor_bpp = max(escala_bpp_tri['divisor'], escala_bpp_anu['divisor'])
+        
+        # Aplicar conversão se necessário
+        if divisor_bpa != 1.0:
+            bpa_tri["valor_mil"] = bpa_tri["valor_mil"] / divisor_bpa
+            bpa_anu["valor_mil"] = bpa_anu["valor_mil"] / divisor_bpa
+            print(f"    Escala BPA: {escala_bpa_tri['justificativa']} (P50={escala_bpa_tri['magnitude_p50']}, divisor={divisor_bpa:,.0f})")
+        
+        if divisor_bpp != 1.0:
+            bpp_tri["valor_mil"] = bpp_tri["valor_mil"] / divisor_bpp
+            bpp_anu["valor_mil"] = bpp_anu["valor_mil"] / divisor_bpp
+            print(f"    Escala BPP: {escala_bpp_tri['justificativa']} (P50={escala_bpp_tri['magnitude_p50']}, divisor={divisor_bpp:,.0f})")
+        
+        # ✅ VALIDAÇÃO PATRIMONIAL
+        periodos_bpa = bpa_tri.groupby(['data_fim', 'trimestre'])
+        validacoes = []
+        
+        for (data_fim, trimestre), grupo in periodos_bpa:
+            periodo_str = f"{data_fim} ({trimestre})"
+            val = validar_balanco(grupo, periodo_str)
+            validacoes.append(val)
+            
+            if not val['valido']:
+                print(f"    ⚠️ Desbalanço {periodo_str}: Ativo={val['ativo']:,.0f} vs Passivo={val['passivo']:,.0f} (Diff: {val['diff_percent']:.2f}%)")
+        
+        # Estatísticas de validação
+        validos = sum(1 for v in validacoes if v['valido'])
+        total = len(validacoes)
+        if total > 0:
+            print(f"    Validação: {validos}/{total} períodos balanceados ({validos/total*100:.1f}%)")        
     
         bpa_tri = bpa_tri.dropna(subset=["data_fim"])
         bpa_anu = bpa_anu.dropna(subset=["data_fim"])
@@ -1418,10 +1573,7 @@ class PadronizadorBP:
         
         # Pipeline de normalização: escala monetária → precisão numérica
         qdata["valor"] = qdata["valor"].apply(
-            lambda x: _normalize_value(
-                _normalizar_escala_monetaria(x),  # Agora com divisor correto
-                decimals=3
-            )
+            lambda x: _normalize_value(x, decimals=3)
         )
     
         piv = qdata.pivot_table(
