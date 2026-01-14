@@ -1533,7 +1533,8 @@ def _calcular_receita_ltm_holding_cxse3(dados: DadosEmpresa, periodo_fim: str) -
 # CALCULADORA DE MÚLTIPLOS - EMPRESAS NÃO-FINANCEIRAS (22 MÚLTIPLOS)
 # ======================================================================================
 
-def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True) -> Dict[str, Optional[float]]:
+def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = False, ticker_classe: Optional[str] = None) -> Dict[str, Optional[float]]:
+    
     """
     Calcula todos os 22 múltiplos para um período específico (empresas não-financeiras).
     
@@ -2472,7 +2473,8 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
 # GERADOR DE HISTÓRICO ANUALIZADO
 # ======================================================================================
 
-def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
+def gerar_historico_anualizado(dados: DadosEmpresa, ticker_classe: Optional[str] = None) -> Dict[str, Any]:
+    
     """Gera histórico de múltiplos anualizado."""
     if not dados.periodos or dados.padrao_fiscal is None:
         return {"erro": "Dados insuficientes", "ticker": dados.ticker}
@@ -2508,13 +2510,14 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
 
         # Determinar qual função de cálculo usar (mantém a lógica existente)
         if _is_banco(dados.ticker):
-            multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_classe=ticker_classe)
         elif _is_holding_seguros(dados.ticker):
-            multiplos = calcular_multiplos_holding_seguros(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_holding_seguros(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_classe=ticker_classe)
         elif _is_seguradora_operacional(dados.ticker):
-            multiplos = calcular_multiplos_seguradora(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_seguradora(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_classe=ticker_classe)
         else:
-            multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_classe=ticker_classe)
+
 
         historico_anual[ano] = {
             "periodo_referencia": periodo_referencia,
@@ -2536,13 +2539,14 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
 
     # LTM usa preço MAIS RECENTE disponível (usar_preco_atual=True)
     if _is_banco(dados.ticker):
-        multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True)
+        multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True, ticker_classe=ticker_classe)
     elif _is_holding_seguros(dados.ticker):
-        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=True)
+        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=True, ticker_classe=ticker_classe)
     elif _is_seguradora_operacional(dados.ticker):
-        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=True)
+        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=True, ticker_classe=ticker_classe)
     else:
-        multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True)
+        multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True, ticker_classe=ticker_classe)
+
 
     
 
