@@ -958,11 +958,17 @@ def _quarter_order(q: str) -> int:
     return {"T1": 1, "T2": 2, "T3": 3, "T4": 4}.get(q, 99)
 
 
+def _normalizar_escala_monetaria(valor: float) -> float:
+    """Conversão de unidade (centavos → R$ mil)"""
+    if not np.isfinite(valor) or valor == 0:
+        return valor
+    return valor / 10_000_000
+
 def _normalize_value(v: float, decimals: int = 3) -> float:
+    """Arredondamento de precisão"""
     if not np.isfinite(v):
         return np.nan
     return round(float(v), decimals)
-
 
 def _pick_value_for_code(group: pd.DataFrame, code: str) -> float:
     exact = group[group["cd_conta"] == code]
@@ -970,6 +976,8 @@ def _pick_value_for_code(group: pd.DataFrame, code: str) -> float:
         v = _ensure_numeric(exact["valor_mil"]).iloc[0]
         return float(v) if np.isfinite(v) else np.nan
     return np.nan
+
+
 
 
 # ======================================================================================
@@ -1397,32 +1405,44 @@ class PadronizadorBP:
         qdata: pd.DataFrame, 
         schema: List[Tuple[str, str]]
     ) -> pd.DataFrame:
-        """Constrói tabela horizontal (períodos como colunas)."""
+        """
+        Constrói tabela horizontal (períodos como colunas).
+        Aplica conversão de escala monetária (centavos CVM → R$ mil)
+        e normalização de precisão numérica.
+        """
         qdata = qdata.copy()
         qdata["periodo"] = qdata["ano"].astype(str) + qdata["trimestre"]
-        qdata["valor"] = qdata["valor"].apply(lambda x: _normalize_value(x, 3))
-
+        
+        # Pipeline de normalização: escala monetária → precisão numérica
+        qdata["valor"] = qdata["valor"].apply(
+            lambda x: _normalize_value(
+                _normalizar_escala_monetaria(x), 
+                decimals=3
+            )
+        )
+    
         piv = qdata.pivot_table(
             index="code", columns="periodo", values="valor", aggfunc="first"
         )
-
+    
         def sort_key(p):
             try:
                 return (int(p[:4]), _quarter_order(p[4:]))
             except:
                 return (9999, 99)
-
+    
         cols = sorted(piv.columns, key=sort_key)
         piv = piv[cols]
-
+    
         code_order = {c: i for i, (c, _) in enumerate(schema)}
         piv = piv.reindex(sorted(piv.index, key=lambda x: code_order.get(x, 999)))
-
+    
         code_to_name = {c: n for c, n in schema}
         piv.insert(0, "conta", piv.index.map(lambda x: code_to_name.get(x, x)))
         piv = piv.reset_index().rename(columns={"code": "cd_conta"})
-
+    
         return piv
+
 
     @staticmethod
     def _period_to_tuple(periodo: str) -> Tuple[int, int]:
