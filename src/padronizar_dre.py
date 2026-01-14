@@ -720,6 +720,130 @@ def _compute_eps_value(group: pd.DataFrame) -> float:
 
     return float(values_by_class.get("ON", values_by_class.get("PN", np.nan)))
 
+# ======================================================================================
+# DETECÇÃO AUTOMÁTICA DE ESCALA E VALIDAÇÃO
+# ======================================================================================
+
+def detectar_escala_automatica(df, coluna_valor='valor_mil'):
+    """
+    Detecta automaticamente a escala dos valores no DataFrame.
+    
+    Retorna:
+        dict: {
+            'divisor': float - Fator de divisão (1.0 ou 10_000_000_000),
+            'justificativa': str - Razão da decisão,
+            'magnitude_p50': float - Mediana da magnitude,
+            'magnitude_max': float - Máxima magnitude
+        }
+    """
+    # Filtrar valores não-zero
+    valores = df[df[coluna_valor] != 0][coluna_valor].dropna()
+    
+    if len(valores) == 0:
+        return {
+            'divisor': 1.0,
+            'justificativa': 'SEM_DADOS',
+            'magnitude_p50': None,
+            'magnitude_max': None
+        }
+    
+    # Calcular magnitudes (log10 dos valores absolutos)
+    valores_abs = valores.abs()
+    mag_p50 = np.log10(valores_abs.quantile(0.50))
+    mag_max = np.log10(valores_abs.max())
+    
+    # Lógica de detecção
+    if mag_p50 > 15:
+        # Claramente em centavos (notação científica)
+        divisor = 10_000_000_000
+        justificativa = "NOTACAO_CIENTIFICA"
+        
+    elif mag_p50 < 9:
+        # Claramente já em milhares
+        divisor = 1.0
+        justificativa = "JA_EM_MILHARES"
+        
+    elif 9 <= mag_p50 <= 15:
+        # Zona cinza - usar magnitude máxima para decidir
+        if mag_max > 14:
+            divisor = 10_000_000_000
+            justificativa = "ZONA_CINZA_CONVERTIDO"
+        else:
+            divisor = 1.0
+            justificativa = "ZONA_CINZA_MANTIDO"
+    else:
+        divisor = 1.0
+        justificativa = "PADRAO"
+    
+    return {
+        'divisor': divisor,
+        'justificativa': justificativa,
+        'magnitude_p50': round(mag_p50, 2),
+        'magnitude_max': round(mag_max, 2)
+    }
+
+
+def validar_dre_coerencia(df_periodo, periodo_str="?"):
+    """
+    Valida coerência da DRE para um período específico.
+    Verifica se: Resultado Bruto (3.03) = Receita (3.01) + Custo (3.02)
+    
+    Args:
+        df_periodo: DataFrame com dados de um período (já filtrado)
+        periodo_str: String identificando o período (para log)
+    
+    Retorna:
+        dict com 'valido', 'receita', 'custo', 'resultado_bruto', 'calculado', 'diff', 'diff_percent'
+    """
+    try:
+        # Buscar Receita (3.01)
+        receita_rows = df_periodo[df_periodo['cd_conta'] == '3.01']
+        receita = float(receita_rows['valor_mil'].iloc[0]) if not receita_rows.empty else 0.0
+        
+        # Buscar Custo (3.02) - já deve estar negativo
+        custo_rows = df_periodo[df_periodo['cd_conta'] == '3.02']
+        custo = float(custo_rows['valor_mil'].iloc[0]) if not custo_rows.empty else 0.0
+        
+        # Buscar Resultado Bruto (3.03)
+        resultado_rows = df_periodo[df_periodo['cd_conta'] == '3.03']
+        resultado_bruto = float(resultado_rows['valor_mil'].iloc[0]) if not resultado_rows.empty else 0.0
+        
+        # Calcular resultado esperado
+        resultado_calculado = receita + custo  # custo já é negativo
+        
+        # Calcular diferença
+        diff = abs(resultado_bruto - resultado_calculado)
+        diff_percent = (diff / abs(receita) * 100) if receita != 0 else 0.0
+        
+        # Tolerância de 1%
+        valido = diff_percent <= 1.0
+        
+        return {
+            'valido': valido,
+            'receita': receita,
+            'custo': custo,
+            'resultado_bruto': resultado_bruto,
+            'calculado': resultado_calculado,
+            'diff': diff,
+            'diff_percent': diff_percent,
+            'periodo': periodo_str
+        }
+        
+    except Exception as e:
+        return {
+            'valido': False,
+            'receita': 0,
+            'custo': 0,
+            'resultado_bruto': 0,
+            'calculado': 0,
+            'diff': 0,
+            'diff_percent': 0,
+            'periodo': periodo_str,
+            'erro': str(e)
+        }
+
+
+
 
 # ======================================================================================
 # DETECTOR DE ANO FISCAL IRREGULAR
@@ -894,6 +1018,7 @@ class PadronizadorDRE:
                 schema_out.append((sub_code, name_map.get(sub_code, "")))
 
         return schema_out
+        
     def _load_inputs(self, ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
                 pasta = get_pasta_balanco(ticker)
                 tri_path = pasta / "dre_consolidado.csv"
@@ -915,6 +1040,38 @@ class PadronizadorDRE:
         
                 df_tri = df_tri.dropna(subset=["data_fim"])
                 df_anu = df_anu.dropna(subset=["data_fim"])
+
+                # ✅ DETECÇÃO AUTOMÁTICA DE ESCALA
+                escala_dre_tri = detectar_escala_automatica(dftri)
+                escala_dre_anu = detectar_escala_automatica(dfanu)
+                
+                # Usar o maior divisor detectado (mais conservador)
+                divisor_dre = max(escala_dre_tri['divisor'], escala_dre_anu['divisor'])
+                
+                # Aplicar conversão se necessário
+                if divisor_dre != 1.0:
+                    dftri["valor_mil"] = dftri["valor_mil"] / divisor_dre
+                    dfanu["valor_mil"] = dfanu["valor_mil"] / divisor_dre
+                    print(f"    Escala DRE: {escala_dre_tri['justificativa']} (P50={escala_dre_tri['magnitude_p50']}, divisor={divisor_dre:,.0f})")
+                
+                # ✅ VALIDAÇÃO DE COERÊNCIA (Receita + Custo = Resultado Bruto)
+                periodos_dre = dftri.groupby(['data_fim', 'trimestre'])
+                validacoes = []
+                
+                for (data_fim, trimestre), grupo in periodos_dre:
+                    periodo_str = f"{data_fim} ({trimestre})"
+                    val = validar_dre_coerencia(grupo, periodo_str)
+                    validacoes.append(val)
+                    
+                    if not val['valido'] and val.get('receita', 0) != 0:
+                        print(f"    ⚠️ Incoerência DRE {periodo_str}: Receita={val['receita']:,.0f} + Custo={val['custo']:,.0f} ≠ Resultado={val['resultado_bruto']:,.0f} (Diff: {val['diff_percent']:.2f}%)")
+                
+                # Estatísticas de validação
+                validos = sum(1 for v in validacoes if v['valido'])
+                total = len(validacoes)
+                if total > 0:
+                    print(f"    Validação: {validos}/{total} períodos coerentes ({validos/total*100:.1f}%)")        
+        
             
                 # ADAPTAÇÃO: Para empresas mar-fev com trimestre vazio, inferir do mês
                 if _is_ano_fiscal_mar_fev(ticker):
@@ -1808,9 +1965,6 @@ class PadronizadorDRE:
         msg = f"dre_padronizado.csv | {' | '.join(msg_parts)}"
         
         return ok, msg
-
-
-
 
 
 # ======================================================================================
