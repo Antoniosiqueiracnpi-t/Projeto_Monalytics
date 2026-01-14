@@ -733,7 +733,8 @@ class PadronizadorDFC:
     
         pasta = get_pasta_balanco(ticker)
         out_path = pasta / "dfc_padronizado.csv"
-        df_out.to_csv(out_path, index=False, encoding="utf-8")
+        #df_out.to_csv(out_path, index=False, encoding="utf-8")
+        df_out.to_csv(out_path, index=False, encoding="utf-8", float_format='%.3f')
     
         # MODIFICADO: Mensagem para empresas mar-fev
         if fiscal_info.is_mar_fev:
