@@ -1663,132 +1663,152 @@ class PadronizadorDRE:
             return df
 
     def padronizar_e_salvar_ticker(self, ticker: str, salvar_checkup: bool = True) -> Tuple[bool, str]:
-            """
-            Padroniza DRE de um ticker e salva resultado.
-            Agora usa get_pasta_balanco() para garantir pasta correta.
-            """
-            ticker = ticker.upper().strip()
-            self._current_ticker = ticker
-            pasta = get_pasta_balanco(ticker)
+        """
+        Padroniza DRE de um ticker e salva resultado.
+        Agora usa get_pasta_balanco() para garantir pasta correta.
+        """
+        ticker = ticker.upper().strip()
+        self._current_ticker = ticker
+        pasta = get_pasta_balanco(ticker)
     
-            # 1. Carregar dados
-            df_tri, df_anu = self._load_inputs(ticker)
+        # 1. Carregar dados
+        df_tri, df_anu = self._load_inputs(ticker)
         
-            # 2. DETECTAR PADRÃO FISCAL (CRÍTICO!)
-            fiscal_info = _detect_fiscal_year_pattern(df_tri, df_anu, ticker)
+        # 2. DETECTAR PADRÃO FISCAL (CRÍTICO!)
+        fiscal_info = _detect_fiscal_year_pattern(df_tri, df_anu, ticker)
         
-            # 3. Construir totais trimestrais (preserva originais)
-            qtot = self._build_quarter_totals(df_tri)
-            qtot = self._filter_empty_quarters(qtot)        
+        # 3. Construir totais trimestrais (preserva originais)
+        qtot = self._build_quarter_totals(df_tri)
+        qtot = self._filter_empty_quarters(qtot)        
         
-            # 4. Extrair valores anuais
-            anu = self._extract_annual_values(df_anu)
+        # 4. Extrair valores anuais
+        anu = self._extract_annual_values(df_anu)
         
-            # 5. Detectar e converter dados acumulados (YTD) - só para padrão
-            cumulative_years = self._detect_cumulative_years(qtot, anu, fiscal_info)
-            qiso = self._to_isolated_quarters(qtot, cumulative_years, fiscal_info)
+        # 5. Detectar e converter dados acumulados (YTD) - só para padrão
+        cumulative_years = self._detect_cumulative_years(qtot, anu, fiscal_info)
+        qiso = self._to_isolated_quarters(qtot, cumulative_years, fiscal_info)
     
-            # 6. Adicionar T4 quando faltante (APENAS para ano fiscal padrão)
-            qiso = self._add_t4_from_annual_when_missing(qiso, anu, fiscal_info)
+        # 6. Adicionar T4 quando faltante (APENAS para ano fiscal padrão)
+        qiso = self._add_t4_from_annual_when_missing(qiso, anu, fiscal_info)
         
-            # 6.1 BANCOS: Copiar 3.09 → 3.11 (Lucro Líquido)
-            qiso = self._fill_lucro_liquido_banco(qiso)
-
-            # 6.2 NÃO-FINANCEIRAS: Copiar 3.11 → 3.09 quando vazio
-            qiso = self._fill_resultado_operacoes_continuadas(qiso)        
+        # 6.1 BANCOS: Copiar 3.09 → 3.11 (Lucro Líquido)
+        qiso = self._fill_lucro_liquido_banco(qiso)
+    
+        # 6.2 NÃO-FINANCEIRAS: Copiar 3.11 → 3.09 quando vazio
+        qiso = self._fill_resultado_operacoes_continuadas(qiso)        
         
-            # 7. Ordenar
-            qiso = qiso.assign(qord=qiso["trimestre"].apply(_quarter_order)).sort_values(["ano", "qord", "code"])
-            qiso = qiso.drop(columns=["qord"])
+        # 7. Ordenar
+        qiso = qiso.assign(qord=qiso["trimestre"].apply(_quarter_order)).sort_values(["ano", "qord", "code"])
+        qiso = qiso.drop(columns=["qord"])
         
-            # 8. Construir tabela horizontal
-            df_out = self._build_horizontal(qiso)
-
-            # NOVO: manter principal + 1º nível de subconta e completar trimestres (interpolação)
-            df_out = self._postprocess_principal_subcontas_e_interpolar(df_out)
-            # 8.1 VALIDAR SINAIS PÓS-PROCESSAMENTO
-            df_out = self._validar_sinais_pos_processamento(df_out)
+        # 8. Construir tabela horizontal
+        df_out = self._build_horizontal(qiso)
+    
+        # NOVO: manter principal + 1º nível de subconta e completar trimestres (interpolação)
+        df_out = self._postprocess_principal_subcontas_e_interpolar(df_out)
         
-            # 8.2 CALCULAR LPA QUANDO ZERADO
-            lpa_calculados = 0
-            try:
-                df_out, lpa_calculados = self._calcular_lpa_quando_zerado(df_out, pasta)
-                if lpa_calculados > 0:
-                    print(f"  ℹ️  LPA calculado para {lpa_calculados} período(s)")
-            except Exception as e:
-                print(f"  ⚠️ Erro ao calcular LPA: {e}")
+        # 8.1 VALIDAR SINAIS PÓS-PROCESSAMENTO
+        df_out = self._validar_sinais_pos_processamento(df_out)
         
-            # 9. CHECK-UP LINHA A LINHA
-            checkup_results, diverge, incompleto, sem_anual, irregular_skip = self._checkup_linha_a_linha(
-                qiso, anu, fiscal_info
-            )
-            self.checkup_results = checkup_results
-        
-            # 10. Salvar arquivos
-            pasta.mkdir(parents=True, exist_ok=True)
-        
-            # Arquivo principal
-            out_path = pasta / "dre_padronizado.csv"
-            df_out.to_csv(out_path, index=False, encoding="utf-8")
-        
-            # Relatório de check-up (SEMPRE salva se solicitado)
-            checkup_saved = False
-            if salvar_checkup:
-                try:
-                    checkup_df = self._generate_checkup_report(checkup_results, fiscal_info)
-                    checkup_path = pasta / "dre_checkup.csv"
-                
-                    # Salvar com cabeçalho informativo
-                    with open(checkup_path, 'w', encoding='utf-8') as f:
-                        f.write(f"# Padrão Fiscal: {fiscal_info.description}\n")
-                        f.write(f"# Trimestres encontrados: {sorted(fiscal_info.quarters_pattern)}\n")
-                        f.write(f"# Data geração: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-                
-                    checkup_df.to_csv(checkup_path, index=False, encoding="utf-8", mode='a')
-                    checkup_saved = True
-                except Exception as e:
-                    print(f"  ⚠️ Erro ao salvar check-up: {e}")
-        
-            # 11. Construir mensagem de retorno
-            is_mar_fev = _is_ano_fiscal_mar_fev(ticker)
-            if fiscal_info.is_standard:
-                fiscal_status = "PADRÃO"
-            elif is_mar_fev:
-                fiscal_status = "MAR-FEV"
-            else:
-                fiscal_status = "IRREGULAR"
-            tipo_dre = "BANCO" if _is_banco(ticker) else "PADRÃO"
-        
-            # Para ano fiscal padrão OU mar-fev: mostrar resultados do check-up
-            if fiscal_info.is_standard or is_mar_fev:
-                msg_parts = [
-                    f"tipo={tipo_dre}",
-                    f"fiscal={fiscal_status}",
-                    f"DIVERGE={diverge}",
-                    f"INCOMPLETO={incompleto}",
-                    f"SEM_ANUAL={sem_anual}"
-                ]
-                ok = (diverge == 0)
-            else:
-                # Outros irregulares: pular check-up
-                msg_parts = [
-                    f"tipo={tipo_dre}",
-                    f"fiscal={fiscal_status}",
-                    f"CHECK-UP=PULADO",
-                    f"trimestres={sorted(fiscal_info.quarters_pattern)}"
-                ]
-                ok = True
-        
-            if checkup_saved:
-                msg_parts.append("checkup=SALVO")
-        
-            # Adicionar info de LPA calculado
+        # 8.2 CALCULAR LPA QUANDO ZERADO
+        lpa_calculados = 0
+        try:
+            df_out, lpa_calculados = self._calcular_lpa_quando_zerado(df_out, pasta)
             if lpa_calculados > 0:
-                msg_parts.append(f"LPA={lpa_calculados}períodos")
+                print(f"  ℹ️  LPA calculado para {lpa_calculados} período(s)")
+        except Exception as e:
+            print(f"  ⚠️ Erro ao calcular LPA: {e}")
         
-            msg = f"dre_padronizado.csv | {' | '.join(msg_parts)}"
+        # 9. CHECK-UP LINHA A LINHA
+        checkup_results, diverge, incompleto, sem_anual, irregular_skip = self._checkup_linha_a_linha(
+            qiso, anu, fiscal_info
+        )
+        self.checkup_results = checkup_results
         
-            return ok, msg
+        # ============================================================================
+        # 9.5 FORMATAR EPS COMO STRING PARA PRESERVAR 8 CASAS DECIMAIS
+        # ============================================================================
+        # Converte EPS (3.99) de float para string formatada com 8 decimais
+        # Isso evita que float_format='%.3f' force 3 decimais no EPS ao salvar CSV
+        idx_lpa = df_out[df_out["cd_conta"] == EPS_CODE].index
+        if len(idx_lpa) > 0:
+            colunas_periodos = [c for c in df_out.columns if c not in ["cd_conta", "ds_conta"]]
+            for col in colunas_periodos:
+                val = df_out.at[idx_lpa[0], col]
+                if pd.notna(val):
+                    try:
+                        # Converter para string com 8 casas decimais
+                        df_out.at[idx_lpa[0], col] = f"{float(val):.8f}"
+                    except (ValueError, TypeError):
+                        pass  # Manter valor original se conversão falhar
+        # ============================================================================
+        
+        # 10. Salvar arquivos
+        pasta.mkdir(parents=True, exist_ok=True)
+        
+        # Arquivo principal - com float_format para evitar notação científica
+        out_path = pasta / "dre_padronizado.csv"
+        df_out.to_csv(out_path, index=False, encoding="utf-8", float_format='%.3f')
+        
+        # Relatório de check-up (SEMPRE salva se solicitado)
+        checkup_saved = False
+        if salvar_checkup:
+            try:
+                checkup_df = self._generate_checkup_report(checkup_results, fiscal_info)
+                checkup_path = pasta / "dre_checkup.csv"
+                
+                # Salvar com cabeçalho informativo
+                with open(checkup_path, 'w', encoding='utf-8') as f:
+                    f.write(f"# Padrão Fiscal: {fiscal_info.description}\n")
+                    f.write(f"# Trimestres encontrados: {sorted(fiscal_info.quarters_pattern)}\n")
+                    f.write(f"# Data geração: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                
+                checkup_df.to_csv(checkup_path, index=False, encoding="utf-8", mode='a', float_format='%.3f')
+                checkup_saved = True
+            except Exception as e:
+                print(f"  ⚠️ Erro ao salvar check-up: {e}")
+        
+        # 11. Construir mensagem de retorno
+        is_mar_fev = _is_ano_fiscal_mar_fev(ticker)
+        if fiscal_info.is_standard:
+            fiscal_status = "PADRÃO"
+        elif is_mar_fev:
+            fiscal_status = "MAR-FEV"
+        else:
+            fiscal_status = "IRREGULAR"
+        tipo_dre = "BANCO" if _is_banco(ticker) else "PADRÃO"
+        
+        # Para ano fiscal padrão OU mar-fev: mostrar resultados do check-up
+        if fiscal_info.is_standard or is_mar_fev:
+            msg_parts = [
+                f"tipo={tipo_dre}",
+                f"fiscal={fiscal_status}",
+                f"DIVERGE={diverge}",
+                f"INCOMPLETO={incompleto}",
+                f"SEM_ANUAL={sem_anual}"
+            ]
+            ok = (diverge == 0)
+        else:
+            # Outros irregulares: pular check-up
+            msg_parts = [
+                f"tipo={tipo_dre}",
+                f"fiscal={fiscal_status}",
+                f"CHECK-UP=PULADO",
+                f"trimestres={sorted(fiscal_info.quarters_pattern)}"
+            ]
+            ok = True
+        
+        if checkup_saved:
+            msg_parts.append("checkup=SALVO")
+        
+        # Adicionar info de LPA calculado
+        if lpa_calculados > 0:
+            msg_parts.append(f"LPA={lpa_calculados}períodos")
+        
+        msg = f"dre_padronizado.csv | {' | '.join(msg_parts)}"
+        
+        return ok, msg
+
 
 
 
