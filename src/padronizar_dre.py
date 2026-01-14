@@ -1042,20 +1042,20 @@ class PadronizadorDRE:
                 df_anu = df_anu.dropna(subset=["data_fim"])
 
                 # ✅ DETECÇÃO AUTOMÁTICA DE ESCALA
-                escala_dre_tri = detectar_escala_automatica(dftri)
-                escala_dre_anu = detectar_escala_automatica(dfanu)
+                escala_dre_tri = detectar_escala_automatica(df_tri)
+                escala_dre_anu = detectar_escala_automatica(df_anu)
                 
                 # Usar o maior divisor detectado (mais conservador)
                 divisor_dre = max(escala_dre_tri['divisor'], escala_dre_anu['divisor'])
                 
                 # Aplicar conversão se necessário
                 if divisor_dre != 1.0:
-                    dftri["valor_mil"] = dftri["valor_mil"] / divisor_dre
-                    dfanu["valor_mil"] = dfanu["valor_mil"] / divisor_dre
+                    df_tri["valor_mil"] = df_tri["valor_mil"] / divisor_dre
+                    df_anu["valor_mil"] = df_anu["valor_mil"] / divisor_dre
                     print(f"    Escala DRE: {escala_dre_tri['justificativa']} (P50={escala_dre_tri['magnitude_p50']}, divisor={divisor_dre:,.0f})")
                 
                 # ✅ VALIDAÇÃO DE COERÊNCIA (Receita + Custo = Resultado Bruto)
-                periodos_dre = dftri.groupby(['data_fim', 'trimestre'])
+                periodos_dre = df_tri.groupby(['data_fim', 'trimestre'])
                 validacoes = []
                 
                 for (data_fim, trimestre), grupo in periodos_dre:
