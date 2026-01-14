@@ -520,32 +520,46 @@ def _encontrar_periodo_imputacao(df: pd.DataFrame, periodo_req: str) -> Optional
 
     return None
 
+def _obter_acoes_para_classe(dados: DadosEmpresa, classe: str, periodo: str) -> float:
+    """
+    Obtém quantidade de ações adaptada por classe:
+    - ON → apenas ações ON
+    - PN → apenas ações PN
+    - UNIT (11) → soma ON + PN (pacote)
+    """
+    classe = classe.upper().strip()
+
+    on = _obter_acoes_especie(dados, "ON", periodo)
+    pn = _obter_acoes_especie(dados, "PN", periodo)
+
+    # Caso KLBN11 → pacote ON+PN
+    if classe.endswith("11"):
+        return (on if np.isfinite(on) else 0) + (pn if np.isfinite(pn) else 0)
+
+    # KLBN3 → ON
+    if classe.endswith("3"):
+        return on
+
+    # KLBN4 → PN
+    if classe.endswith("4"):
+        return pn
+
+    # fallback
+    return _obter_acoes(dados, periodo)
+
+
+
 def _obter_preco(dados: DadosEmpresa, periodo: str, ticker_preco: Optional[str] = None) -> float:
     """
-    Obtém preço da ação no período específico.
-
-    Suporta 2 formatos de precos_trimestrais.csv:
-
-    (A) Formato antigo (1 linha):
-        Preço_Fechamento,2015T1,2015T2,...
-        Preço de Fechamento Ajustado,2.11,2.12,...
-
-    (B) Formato multi-classes (várias linhas, coluna Ticker):
-        Ticker,Preço_Fechamento,2015T1,2015T2,...
-        BBDC3,Preço de Fechamento Ajustado,....
-        BBDC4,Preço de Fechamento Ajustado,....
-
-    Args:
-        dados: Dados da empresa
-        periodo: ex. "2024T4"
-        ticker_preco: ticker específico (ex. "BBDC4"). Se None, usa dados.ticker.
+    Obtém preço da ação da classe desejada no período.
+    Sempre filtra pelo ticker_preco (KLBN3, KLBN4, KLBN11).
     """
     if dados.precos is None or dados.precos.empty:
         return np.nan
 
     df = dados.precos
 
-    # Detectar coluna de ticker (formato multi-classes)
+    # Identifica coluna Ticker
     col_ticker = None
     for c in ["Ticker", "ticker", "TICKER"]:
         if c in df.columns:
@@ -555,25 +569,22 @@ def _obter_preco(dados: DadosEmpresa, periodo: str, ticker_preco: Optional[str] 
     if periodo not in df.columns:
         return np.nan
 
-    # Se multi-classes, filtrar pelo ticker desejado
+    # Se tiver coluna de ticker, fizltrar estritamente
     if col_ticker:
-        alvo = (ticker_preco or dados.ticker or "")
-        alvo = str(alvo).upper().strip()
+        alvo = (ticker_preco or "").upper().strip()
         sub = df[df[col_ticker].astype(str).str.upper().str.strip() == alvo]
         if sub.empty:
-            # fallback: se não achou, tenta usar a 1ª linha numérica disponível
-            sub = df
+            return np.nan
         df_use = sub
     else:
         df_use = df
 
-    # Buscar valor numérico na coluna do período
     s = pd.to_numeric(df_use[periodo], errors="coerce")
     if s.notna().any():
-        # pega o primeiro valor numérico válido
         return float(s.dropna().iloc[0])
 
     return np.nan
+
 
 
 
