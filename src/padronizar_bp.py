@@ -1631,8 +1631,11 @@ class PadronizadorBP:
         # 8. Salvar - CORREÇÃO: salva na pasta encontrada (variante)
         pasta = get_pasta_balanco(ticker, self.pasta_balancos)
         
-        bpa_out.to_csv(pasta / "bpa_padronizado.csv", index=False, encoding="utf-8")
-        bpp_out.to_csv(pasta / "bpp_padronizado.csv", index=False, encoding="utf-8")
+        #bpa_out.to_csv(pasta / "bpa_padronizado.csv", index=False, encoding="utf-8")
+        #bpp_out.to_csv(pasta / "bpp_padronizado.csv", index=False, encoding="utf-8")
+
+        bpa_out.to_csv(pasta / "bpa_padronizado.csv", index=False, encoding="utf-8", float_format='%.3f')
+        bpp_out.to_csv(pasta / "bpp_padronizado.csv", index=False, encoding="utf-8", float_format='%.3f')        
         
         # 9. Mensagem de retorno
         fiscal_status = "MAR-FEV" if fiscal_info.is_mar_fev else ("PADRÃO" if fiscal_info.is_standard else "IRREGULAR")
