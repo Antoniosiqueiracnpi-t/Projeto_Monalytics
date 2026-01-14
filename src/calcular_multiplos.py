@@ -2652,119 +2652,117 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
 # ======================================================================================
 
 
-def gerar_historico_anualizado(dados: DadosEmpresa, ticker_preco: Optional[str] = None, ticker_saida: Optional[str] = None) -> Dict[str, Any]:
-    """Gera histórico de múltiplos anualizado."""
+def gerar_historico_anualizado(
+    dados: DadosEmpresa,
+    ticker_preco: Optional[str] = None,
+    ticker_saida: Optional[str] = None
+) -> Dict[str, Any]:
+    """Gera histórico de múltiplos anualizado (anual + LTM), respeitando ticker de preço por classe."""
     if not dados.periodos or dados.padrao_fiscal is None:
-        return {"erro": "Dados insuficientes", "ticker": dados.ticker}
+        return {"erro": "Dados insuficientes", "ticker": getattr(dados, "ticker", "")}
 
-    # Ticker efetivo de saída (novo padrão: arquivos por classe)
+    # Ticker efetivo de saída (nome do arquivo/identificação)
     ticker_out = (ticker_saida or getattr(dados, "ticker", "") or "").upper().strip()
+    tpreco = (ticker_preco or ticker_out or getattr(dados, "ticker", "") or "").upper().strip()
 
+    # Agrupar períodos por ano
     periodos_por_ano: Dict[int, List[str]] = {}
     for p in dados.periodos:
         ano, tri = _parse_periodo(p)
         if ano > 0:
-            if ano not in periodos_por_ano:
-                periodos_por_ano[ano] = []
-            periodos_por_ano[ano].append(p)
+            periodos_por_ano.setdefault(ano, []).append(p)
 
-    historico_anual: Dict[int, Dict[str, Any]] = {}
+    anos_ordenados = sorted(periodos_por_ano.keys())
+    historico: Dict[str, Dict[str, Optional[float]]] = {}
 
-    # Mantém ano_atual (pode ser útil para debug/metadata), mas o histórico anual NÃO deve usar preço atual
-    ano_atual = datetime.now().year
-
-    for ano in sorted(periodos_por_ano.keys()):
+    # ==================== HISTÓRICO ANUAL ====================
+    for ano in anos_ordenados:
         periodos_ano = _ordenar_periodos(periodos_por_ano[ano])
+        if not periodos_ano:
+            continue
 
-        # Regra do período de referência do ANO:
-        # - Se existir T4 do ano, usa T4 (ano fechado)
-        # - Caso contrário (ano não fechado), usa o último trimestre reportado (ex.: 2025T3)
+        # período de referência: T4 se existir, senão último disponível do ano
         periodo_t4 = f"{ano}T4"
-        if periodo_t4 in periodos_ano:
-            periodo_referencia = periodo_t4
-        else:
-            periodo_referencia = periodos_ano[-1]
+        periodo_referencia = periodo_t4 if periodo_t4 in periodos_ano else periodos_ano[-1]
 
-        # ✅ CORREÇÃO: histórico anual sempre usa preço do período de referência (não "preço atual")
-        # Isso garante que, ao anualizar (T1–T3 ano + T4 ano anterior), o preço usado é do último trimestre reportado.
+        # histórico anual SEMPRE usa preço do próprio período (não "preço atual")
         usar_preco_atual_hist = False
 
-        # Determinar qual função de cálculo usar (mantém a lógica existente)
+        # Escolha do tipo de empresa (mantém lógica original), MAS repassando ticker_preco
         if _is_banco(dados.ticker):
-            multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_banco(
+                dados,
+                periodo_referencia,
+                usar_preco_atual=usar_preco_atual_hist,
+                ticker_preco=tpreco
+            )
         elif _is_holding_seguros(dados.ticker):
-            multiplos = calcular_multiplos_holding_seguros(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_holding_seguros(
+                dados,
+                periodo_referencia,
+                usar_preco_atual=usar_preco_atual_hist,
+                ticker_preco=tpreco
+            )
         elif _is_seguradora_operacional(dados.ticker):
-            multiplos = calcular_multiplos_seguradora(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_seguradora(
+                dados,
+                periodo_referencia,
+                usar_preco_atual=usar_preco_atual_hist,
+                ticker_preco=tpreco
+            )
         else:
-            multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_periodo(
+                dados,
+                periodo_referencia,
+                usar_preco_atual=usar_preco_atual_hist,
+                ticker_preco=tpreco
+            )
 
-        historico_anual[ano] = {
-            "periodo_referencia": periodo_referencia,
-            "multiplos": multiplos
-        }
+        historico[str(ano)] = multiplos
 
-    # LTM: Sempre usar último período disponível com preço atual (mantém comportamento atual)
+    # ==================== LTM ====================
     ultimo_periodo = dados.periodos[-1]
+    usar_preco_atual_ltm = True
 
-    #if _is_banco(dados.ticker):
-    #    multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=False)
-    #elif _is_holding_seguros(dados.ticker):
-    #    multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=False)
-    #elif _is_seguradora_operacional(dados.ticker):
-    #    multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=False)
-    #else:
-    #    multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=False)
-    
-
-    # LTM usa preço MAIS RECENTE disponível (usar_preco_atual=True)
     if _is_banco(dados.ticker):
-        multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True)
+        ltm = calcular_multiplos_banco(
+            dados,
+            ultimo_periodo,
+            usar_preco_atual=usar_preco_atual_ltm,
+            ticker_preco=tpreco
+        )
     elif _is_holding_seguros(dados.ticker):
-        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=True)
+        ltm = calcular_multiplos_holding_seguros(
+            dados,
+            ultimo_periodo,
+            usar_preco_atual=usar_preco_atual_ltm,
+            ticker_preco=tpreco
+        )
     elif _is_seguradora_operacional(dados.ticker):
-        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=True)
+        ltm = calcular_multiplos_seguradora(
+            dados,
+            ultimo_periodo,
+            usar_preco_atual=usar_preco_atual_ltm,
+            ticker_preco=tpreco
+        )
     else:
-        multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True)
+        ltm = calcular_multiplos_periodo(
+            dados,
+            ultimo_periodo,
+            usar_preco_atual=usar_preco_atual_ltm,
+            ticker_preco=tpreco
+        )
 
-    
-
-    # Informações de preço e ações utilizados (LTM)
-    preco_atual, periodo_preco = _obter_preco_atual(dados, ticker_preco=ticker_preco)
-    acoes_atual, periodo_acoes = _obter_acoes_atual(dados)
-    # Ajustar ações ao ticker de preço (ex.: UNIT -> quantidade de UNIT)
-    if periodo_acoes:
-        acoes_eq, _, _ = _ajustar_acoes_para_ticker_preco(dados, periodo_acoes, ticker_preco)
-        if np.isfinite(acoes_eq) and acoes_eq > 0:
-            acoes_atual = acoes_eq
-
+    # ==================== SAÍDA ====================
     return {
         "ticker": ticker_out,
-        "ticker_preco": (ticker_preco or ticker_out).upper().strip(),
-        "padrao_fiscal": {
-            "tipo": dados.padrao_fiscal.tipo,
-            "descricao": dados.padrao_fiscal.descricao,
-            "trimestres_ltm": dados.padrao_fiscal.trimestres_ltm
-        },
-        "metadata": (
-            MULTIPLOS_BANCOS_METADATA if _is_banco(dados.ticker)
-            else MULTIPLOS_HOLDINGS_SEGUROS_METADATA if _is_holding_seguros(dados.ticker)
-            else MULTIPLOS_SEGURADORAS_METADATA if _is_seguradora_operacional(dados.ticker)
-            else MULTIPLOS_METADATA
-        ),
-        "historico_anual": historico_anual,
-        "ltm": {
-            "periodo_referencia": ultimo_periodo,
-            "data_calculo": datetime.now().isoformat(),
-            "preco_utilizado": _normalizar_valor(preco_atual, 2),
-            "periodo_preco": periodo_preco,
-            "acoes_utilizadas": int(acoes_atual) if np.isfinite(acoes_atual) else None,
-            "periodo_acoes": periodo_acoes,
-            "multiplos": multiplos_ltm
-        },
-        "periodos_disponiveis": dados.periodos,
-        "erros": dados.erros
+        "ticker_preco": tpreco,
+        "padrao_fiscal": dados.padrao_fiscal.tipo if dados.padrao_fiscal else None,
+        "ultimo_periodo": ultimo_periodo,
+        "historico_anual": historico,
+        "ltm": ltm,
     }
+
 
 
 
