@@ -959,10 +959,13 @@ def _quarter_order(q: str) -> int:
 
 
 def _normalizar_escala_monetaria(valor: float) -> float:
-    """Conversão de unidade (centavos → R$ mil)"""
+    """
+    Converte valores da CVM para milhares de reais (padrão BR).
+    Divisor: 10 bilhões (10.000.000.000)
+    """
     if not np.isfinite(valor) or valor == 0:
         return valor
-    return valor / 10_000_000
+    return valor / 10_000_000_000  # 10 bilhões
 
 def _normalize_value(v: float, decimals: int = 3) -> float:
     """Arredondamento de precisão"""
@@ -1407,7 +1410,7 @@ class PadronizadorBP:
     ) -> pd.DataFrame:
         """
         Constrói tabela horizontal (períodos como colunas).
-        Aplica conversão de escala monetária (centavos CVM → R$ mil)
+        Aplica conversão de escala monetária (CVM → R$ mil)
         e normalização de precisão numérica.
         """
         qdata = qdata.copy()
@@ -1416,7 +1419,7 @@ class PadronizadorBP:
         # Pipeline de normalização: escala monetária → precisão numérica
         qdata["valor"] = qdata["valor"].apply(
             lambda x: _normalize_value(
-                _normalizar_escala_monetaria(x), 
+                _normalizar_escala_monetaria(x),  # Agora com divisor correto
                 decimals=3
             )
         )
@@ -1442,6 +1445,7 @@ class PadronizadorBP:
         piv = piv.reset_index().rename(columns={"code": "cd_conta"})
     
         return piv
+
 
 
     @staticmethod
