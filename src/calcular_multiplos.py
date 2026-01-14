@@ -2698,15 +2698,16 @@ def gerar_historico_anualizado(dados: DadosEmpresa, ticker_preco: Optional[str] 
         # Isso garante que, ao anualizar (T1–T3 ano + T4 ano anterior), o preço usado é do último trimestre reportado.
         usar_preco_atual_hist = False
 
+        # ✅ CORREÇÃO APLICADA: Propagar ticker_preco para todas as funções de cálculo
         # Determinar qual função de cálculo usar (mantém a lógica existente)
         if _is_banco(dados.ticker):
-            multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_preco=ticker_preco)
         elif _is_holding_seguros(dados.ticker):
-            multiplos = calcular_multiplos_holding_seguros(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_holding_seguros(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_preco=ticker_preco)
         elif _is_seguradora_operacional(dados.ticker):
-            multiplos = calcular_multiplos_seguradora(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_seguradora(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_preco=ticker_preco)
         else:
-            multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
+            multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_preco=ticker_preco)
 
         historico_anual[ano] = {
             "periodo_referencia": periodo_referencia,
@@ -2716,27 +2717,16 @@ def gerar_historico_anualizado(dados: DadosEmpresa, ticker_preco: Optional[str] 
     # LTM: Sempre usar último período disponível com preço atual (mantém comportamento atual)
     ultimo_periodo = dados.periodos[-1]
 
-    #if _is_banco(dados.ticker):
-    #    multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=False)
-    #elif _is_holding_seguros(dados.ticker):
-    #    multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=False)
-    #elif _is_seguradora_operacional(dados.ticker):
-    #    multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=False)
-    #else:
-    #    multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=False)
-    
-
+    # ✅ CORREÇÃO APLICADA: Propagar ticker_preco para todas as funções de cálculo do LTM
     # LTM usa preço MAIS RECENTE disponível (usar_preco_atual=True)
     if _is_banco(dados.ticker):
-        multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True)
+        multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True, ticker_preco=ticker_preco)
     elif _is_holding_seguros(dados.ticker):
-        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=True)
+        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=True, ticker_preco=ticker_preco)
     elif _is_seguradora_operacional(dados.ticker):
-        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=True)
+        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=True, ticker_preco=ticker_preco)
     else:
-        multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True)
-
-    
+        multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True, ticker_preco=ticker_preco)    
 
     # Informações de preço e ações utilizados (LTM)
     preco_atual, periodo_preco = _obter_preco_atual(dados, ticker_preco=ticker_preco)
@@ -2774,6 +2764,7 @@ def gerar_historico_anualizado(dados: DadosEmpresa, ticker_preco: Optional[str] 
         "periodos_disponiveis": dados.periodos,
         "erros": dados.erros
     }
+
 
 
 
