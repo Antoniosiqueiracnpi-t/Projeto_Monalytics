@@ -2661,6 +2661,9 @@ def gerar_historico_anualizado(dados: DadosEmpresa, ticker_preco: Optional[str] 
     if not dados.periodos or dados.padrao_fiscal is None:
         return {"erro": "Dados insuficientes", "ticker": dados.ticker}
 
+    # Ticker efetivo de saída (novo padrão: arquivos por classe)
+    ticker_out = (ticker_saida or getattr(dados, "ticker", "") or "").upper().strip()
+
     periodos_por_ano: Dict[int, List[str]] = {}
     for p in dados.periodos:
         ano, tri = _parse_periodo(p)
