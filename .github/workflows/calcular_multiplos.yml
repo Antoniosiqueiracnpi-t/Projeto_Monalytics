@@ -50,12 +50,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     
-    # ✅ CORREÇÃO 1: Permissão de escrita no repositório
     permissions:
       contents: write
 
     steps:
-      # ✅ CORREÇÃO 2: Checkout completo com histórico
       - name: 📥 Baixar código
         uses: actions/checkout@v3
         with:
@@ -136,13 +134,34 @@ jobs:
           echo "JSON: $JSON_COUNT arquivos"
           echo "CSV: $CSV_COUNT arquivos"
 
-      # ✅ CORREÇÃO 3: Lógica de commit e push melhorada
+      # ✅ CORREÇÃO CIRÚRGICA: Pull ANTES do commit + Stash seguro
       - name: 💾 Commit e Push
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-          # Adicionar TODOS os arquivos multiplos.* (modificados ou novos)
+          # ====================================================================
+          # PASSO 1: Sincronizar com remote ANTES de qualquer mudança
+          # ====================================================================
+          echo "🔄 Sincronizando com remote..."
+          
+          # Fazer stash de TODAS as mudanças locais (tracked + untracked)
+          git add -A
+          git stash --include-untracked || echo "Sem mudanças para stash"
+          
+          # Pull sem rebase (fast-forward quando possível)
+          git pull origin main --no-rebase || {
+            echo "⚠️ Pull falhou, tentando reset..."
+            git fetch origin
+            git reset --hard origin/main
+          }
+          
+          # Recuperar mudanças do stash
+          git stash pop || echo "Stash vazio"
+
+          # ====================================================================
+          # PASSO 2: Adicionar APENAS arquivos de múltiplos
+          # ====================================================================
           git add balancos/*/multiplos.json balancos/*/multiplos.csv 2>/dev/null || true
 
           # Verificar se há mudanças no staging area
@@ -151,46 +170,92 @@ jobs:
             exit 0
           fi
 
-          # Contar e listar arquivos modificados
+          # ====================================================================
+          # PASSO 3: Commit com metadados
+          # ====================================================================
           CHANGED_COUNT=$(git diff --cached --name-only | wc -l)
           echo "📊 Arquivos alterados: $CHANGED_COUNT"
           
           echo "📝 Primeiros 10 arquivos:"
           git diff --cached --name-only | head -10
 
-          # Preparar mensagem de commit baseada no trigger
+          # Mensagem de commit baseada no trigger
           TRIGGER="${{ github.event_name }}"
           DATE=$(date +'%Y-%m-%d %H:%M UTC')
           
-          if [ "$TRIGGER" == "push" ]; then
-            MSG="🤖 Múltiplos atualizados (auto) - $DATE"
-          elif [ "$TRIGGER" == "schedule" ]; then
-            MSG="📅 Múltiplos atualizados (semanal) - $DATE"
-          else
-            MSG="🔢 Múltiplos calculados (manual) - $DATE"
-          fi
+          case "$TRIGGER" in
+            "push")
+              MSG="🤖 Múltiplos atualizados (auto) - $DATE"
+              ;;
+            "schedule")
+              MSG="📅 Múltiplos atualizados (semanal) - $DATE"
+              ;;
+            *)
+              MSG="🔢 Múltiplos calculados (manual) - $DATE"
+              ;;
+          esac
 
           git commit -m "$MSG"
-          
-          # Push com retry automático
-          MAX_RETRIES=3
+
+          # ====================================================================
+          # PASSO 4: Push com retry inteligente (pull entre tentativas)
+          # ====================================================================
+          MAX_RETRIES=5
           RETRY_COUNT=0
+          SLEEP_TIME=3
           
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            if git push origin HEAD; then
+            echo "📤 Tentativa de push $((RETRY_COUNT + 1))/$MAX_RETRIES..."
+            
+            if git push origin HEAD:main; then
               echo "✅ Push realizado com sucesso!"
               exit 0
             else
               RETRY_COUNT=$((RETRY_COUNT + 1))
-              echo "⚠️ Push falhou. Tentativa $RETRY_COUNT de $MAX_RETRIES..."
               
               if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-                echo "🔄 Tentando rebase..."
-                sleep 5
-                git pull --rebase origin main
+                echo "⚠️ Push falhou. Aguardando ${SLEEP_TIME}s antes de tentar novamente..."
+                sleep $SLEEP_TIME
+                
+                # Sincronizar novamente com remote (sem perder commit local)
+                echo "🔄 Sincronizando com remote (rebase)..."
+                git fetch origin
+                git rebase origin/main || {
+                  echo "❌ Rebase falhou. Abortando e tentando merge..."
+                  git rebase --abort
+                  git pull origin main --no-rebase --no-edit
+                }
+                
+                # Aumentar tempo de espera progressivamente
+                SLEEP_TIME=$((SLEEP_TIME + 2))
               fi
             fi
           done
           
           echo "❌ Push falhou após $MAX_RETRIES tentativas"
+          echo "💡 Possível conflito com outro workflow. Verifique os logs."
           exit 1
+
+      # ✅ STEP FINAL: Resumo da execução
+      - name: 📋 Resumo da Execução
+        if: always()
+        run: |
+          echo "=========================================="
+          echo "🎯 RESUMO DA EXECUÇÃO"
+          echo "=========================================="
+          echo "Trigger: ${{ github.event_name }}"
+          echo "Modo: ${{ steps.detect_mode.outputs.mode }}"
+          
+          if [ "${{ steps.detect_mode.outputs.mode }}" == "auto" ]; then
+            echo "Tickers processados: ${{ steps.detect_mode.outputs.tickers }}"
+          else
+            echo "Modo manual: ${{ github.event.inputs.modo || 'quantidade' }}"
+          fi
+          
+          echo ""
+          echo "📊 Múltiplos finais no repositório:"
+          JSON_COUNT=$(find balancos -type f -name "multiplos.json" 2>/dev/null | wc -l || echo "0")
+          CSV_COUNT=$(find balancos -type f -name "multiplos.csv" 2>/dev/null | wc -l || echo "0")
+          echo "JSON: $JSON_COUNT arquivos"
+          echo "CSV: $CSV_COUNT arquivos"
+          echo "=========================================="
