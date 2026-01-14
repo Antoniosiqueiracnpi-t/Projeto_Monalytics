@@ -248,6 +248,136 @@ def _compute_deprec_amort_value(group: pd.DataFrame) -> float:
     total = _ensure_numeric(deprec_rows["valor_mil"]).sum()
     return float(total) if np.isfinite(total) else np.nan
 
+# ======================================================================================
+# DETECÇÃO AUTOMÁTICA DE ESCALA E VALIDAÇÃO
+# ======================================================================================
+
+def detectar_escala_automatica(df, coluna_valor='valor_mil'):
+    """
+    Detecta automaticamente a escala dos valores no DataFrame.
+    
+    Retorna:
+        dict: {
+            'divisor': float - Fator de divisão (1.0 ou 10_000_000_000),
+            'justificativa': str - Razão da decisão,
+            'magnitude_p50': float - Mediana da magnitude,
+            'magnitude_max': float - Máxima magnitude
+        }
+    """
+    # Filtrar valores não-zero
+    valores = df[df[coluna_valor] != 0][coluna_valor].dropna()
+    
+    if len(valores) == 0:
+        return {
+            'divisor': 1.0,
+            'justificativa': 'SEM_DADOS',
+            'magnitude_p50': None,
+            'magnitude_max': None
+        }
+    
+    # Calcular magnitudes (log10 dos valores absolutos)
+    valores_abs = valores.abs()
+    mag_p50 = np.log10(valores_abs.quantile(0.50))
+    mag_max = np.log10(valores_abs.max())
+    
+    # Lógica de detecção
+    if mag_p50 > 15:
+        divisor = 10_000_000_000
+        justificativa = "NOTACAO_CIENTIFICA"
+    elif mag_p50 < 9:
+        divisor = 1.0
+        justificativa = "JA_EM_MILHARES"
+    elif 9 <= mag_p50 <= 15:
+        if mag_max > 14:
+            divisor = 10_000_000_000
+            justificativa = "ZONA_CINZA_CONVERTIDO"
+        else:
+            divisor = 1.0
+            justificativa = "ZONA_CINZA_MANTIDO"
+    else:
+        divisor = 1.0
+        justificativa = "PADRAO"
+    
+    return {
+        'divisor': divisor,
+        'justificativa': justificativa,
+        'magnitude_p50': round(mag_p50, 2),
+        'magnitude_max': round(mag_max, 2)
+    }
+
+
+def validar_dfc_coerencia(df_periodo, periodo_str="?"):
+    """
+    Valida coerência do DFC para um período específico.
+    Verifica se: 6.05 (Variação Caixa) = 6.01 (Operacional) + 6.02 (Investimento) + 6.03 (Financiamento) + 6.04 (Cambial)
+    
+    Args:
+        df_periodo: DataFrame com dados de um período (já filtrado)
+        periodo_str: String identificando o período (para log)
+    
+    Retorna:
+        dict com 'valido', 'operacional', 'investimento', 'financiamento', 'cambial', 'variacao_caixa', 'calculado', 'diff', 'diff_percent'
+    """
+    try:
+        # Buscar componentes do fluxo de caixa
+        fc_oper_rows = df_periodo[df_periodo['cd_conta'] == '6.01']
+        fc_oper = float(fc_oper_rows['valor_mil'].iloc[0]) if not fc_oper_rows.empty else 0.0
+        
+        fc_invest_rows = df_periodo[df_periodo['cd_conta'] == '6.02']
+        fc_invest = float(fc_invest_rows['valor_mil'].iloc[0]) if not fc_invest_rows.empty else 0.0
+        
+        fc_financ_rows = df_periodo[df_periodo['cd_conta'] == '6.03']
+        fc_financ = float(fc_financ_rows['valor_mil'].iloc[0]) if not fc_financ_rows.empty else 0.0
+        
+        fc_cambial_rows = df_periodo[df_periodo['cd_conta'] == '6.04']
+        fc_cambial = float(fc_cambial_rows['valor_mil'].iloc[0]) if not fc_cambial_rows.empty else 0.0
+        
+        # Buscar Variação de Caixa (6.05)
+        var_caixa_rows = df_periodo[df_periodo['cd_conta'] == '6.05']
+        var_caixa = float(var_caixa_rows['valor_mil'].iloc[0]) if not var_caixa_rows.empty else 0.0
+        
+        # Calcular variação esperada
+        var_calculada = fc_oper + fc_invest + fc_financ + fc_cambial
+        
+        # Calcular diferença
+        diff = abs(var_caixa - var_calculada)
+        
+        # Usar maior valor absoluto como base para percentual
+        base = max(abs(var_caixa), abs(var_calculada), 1.0)
+        diff_percent = (diff / base * 100) if base != 0 else 0.0
+        
+        # Tolerância de 1%
+        valido = diff_percent <= 1.0
+        
+        return {
+            'valido': valido,
+            'operacional': fc_oper,
+            'investimento': fc_invest,
+            'financiamento': fc_financ,
+            'cambial': fc_cambial,
+            'variacao_caixa': var_caixa,
+            'calculado': var_calculada,
+            'diff': diff,
+            'diff_percent': diff_percent,
+            'periodo': periodo_str
+        }
+        
+    except Exception as e:
+        return {
+            'valido': False,
+            'operacional': 0,
+            'investimento': 0,
+            'financiamento': 0,
+            'cambial': 0,
+            'variacao_caixa': 0,
+            'calculado': 0,
+            'diff': 0,
+            'diff_percent': 0,
+            'periodo': periodo_str,
+            'erro': str(e)
+        }
+
+
 
 # ======================================================================================
 # DETECTOR DE ANO FISCAL IRREGULAR
@@ -361,6 +491,38 @@ class PadronizadorDFC:
     
         df_tri = df_tri.dropna(subset=["data_fim"])
         df_anu = df_anu.dropna(subset=["data_fim"])
+
+        # ✅ DETECÇÃO AUTOMÁTICA DE ESCALA
+        escala_dfc_tri = detectar_escala_automatica(df_tri)
+        escala_dfc_anu = detectar_escala_automatica(df_anu)
+        
+        # Usar o maior divisor detectado (mais conservador)
+        divisor_dfc = max(escala_dfc_tri['divisor'], escala_dfc_anu['divisor'])
+        
+        # Aplicar conversão se necessário
+        if divisor_dfc != 1.0:
+            df_tri["valor_mil"] = df_tri["valor_mil"] / divisor_dfc
+            df_anu["valor_mil"] = df_anu["valor_mil"] / divisor_dfc
+            print(f"    Escala DFC: {escala_dfc_tri['justificativa']} (P50={escala_dfc_tri['magnitude_p50']}, divisor={divisor_dfc:,.0f})")
+        
+        # ✅ VALIDAÇÃO DE COERÊNCIA (6.01 + 6.02 + 6.03 + 6.04 = 6.05)
+        periodos_dfc = df_tri.groupby(['data_fim', 'trimestre'])
+        validacoes = []
+        
+        for (data_fim, trimestre), grupo in periodos_dfc:
+            periodo_str = f"{data_fim} ({trimestre})"
+            val = validar_dfc_coerencia(grupo, periodo_str)
+            validacoes.append(val)
+            
+            if not val['valido'] and abs(val.get('variacao_caixa', 0)) > 1:
+                print(f"    ⚠️ Incoerência DFC {periodo_str}: 6.05={val['variacao_caixa']:,.0f} ≠ Calculado={val['calculado']:,.0f} (Diff: {val['diff_percent']:.2f}%)")
+        
+        # Estatísticas de validação
+        validos = sum(1 for v in validacoes if v['valido'])
+        total = len(validacoes)
+        if total > 0:
+            print(f"    Validação: {validos}/{total} períodos coerentes ({validos/total*100:.1f}%)")       
+    
     
         # NOVO: Preencher trimestres vazios para empresas mar-fev
         if _is_mar_fev_company(ticker):
@@ -369,6 +531,7 @@ class PadronizadorDFC:
                 df_tri["trimestre"] = df_tri["data_fim"].apply(_infer_quarter_mar_fev)
     
         return df_tri, df_anu
+        
 
     def _build_quarter_totals(self, df_tri: pd.DataFrame, fiscal_info: FiscalYearInfo) -> pd.DataFrame:
         """
