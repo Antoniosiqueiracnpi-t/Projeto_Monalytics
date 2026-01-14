@@ -463,7 +463,7 @@ def processar_ticker(ticker: str, anos: int = ANOS_HISTORICO) -> Tuple[bool, str
         (sucesso, mensagem)
     """
     try:
-        # Determinar pasta
+        # Determinar pasta (reutiliza pasta existente ou cria nova)
         if ticker == "IBOV":
             pasta = Path("balancos") / "IBOV"
         else:
@@ -490,8 +490,8 @@ def processar_ticker(ticker: str, anos: int = ANOS_HISTORICO) -> Tuple[bool, str
         # Converter para JSON
         dados_json = df_para_json(df, ticker)
         
-        # Salvar
-        arquivo = pasta / "historico_precos_diarios.json"
+        # ✅ CORREÇÃO: Salvar com nome específico incluindo a classe
+        arquivo = pasta / f"historico_precos_{ticker}.json"
         with open(arquivo, 'w', encoding='utf-8') as f:
             json.dump(dados_json, f, ensure_ascii=False, indent=2)
         
@@ -501,12 +501,13 @@ def processar_ticker(ticker: str, anos: int = ANOS_HISTORICO) -> Tuple[bool, str
         preco_atual = stats.get('preco_atual', 0)
         variacao = stats.get('variacao_periodo', 0)
         
-        msg = f"{total_dias} dias | R$ {preco_atual} | Δ {variacao:+.1f}%"
+        msg = f"{total_dias} dias | R$ {preco_atual} | Δ {variacao:+.1f}% → {pasta.name}/{arquivo.name}"
         
         return True, msg
         
     except Exception as e:
         return False, f"{type(e).__name__}: {str(e)[:50]}"
+
 
 
 # ======================================================================================
