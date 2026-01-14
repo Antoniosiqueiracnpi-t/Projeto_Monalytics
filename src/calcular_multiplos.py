@@ -930,21 +930,70 @@ def _melhor_periodo(periodos_validos: List[str], periodo_req: str) -> Optional[s
 
 
 
-def _obter_acoes(dados: DadosEmpresa, periodo: str) -> float:
+def _ticker_numero(t: str) -> str:
+    # extrai o sufixo numérico do ticker (ex.: KLBN11 -> "11", BPAC5 -> "5")
+    t = (t or "").upper().strip().replace(".SA", "")
+    if len(t) < 5:
+        return ""
+    return "".join(ch for ch in t[4:] if ch.isdigit())
+
+
+def _classe_por_ticker_preco(ticker_preco: str) -> str:
     """
-    Obtém número de ações no período específico.
+    Retorna uma classe lógica para fins de ações:
+      - "ON"  -> finais 3
+      - "PN"  -> finais 4/5/6/7/8 (PNs alternativas)
+      - "UNIT"-> finais 11
+      - "OUTRO"-> demais (ex.: 33, BDRs, etc.)
+    """
+    n = _ticker_numero(ticker_preco)
+    if n == "3":
+        return "ON"
+    if n in {"4", "5", "6", "7", "8"}:
+        return "PN"
+    if n == "11":
+        return "UNIT"
+    return "OUTRO"
 
-    ✅ Regra geral do projeto:
-    - Para múltiplos, priorizar ON+PN (ignorar UNIT/11 quando possível).
-    - Se o período não existir na tabela de ações, usar imputação (período mais próximo),
-      evitando cair no período mais antigo.
 
-    Retorna ações em UNIDADES.
+def _obter_acoes(dados: DadosEmpresa, periodo: str, ticker_preco: Optional[str] = None,
+                fator_unit: Optional[float] = None) -> float:
+    """
+    Obtém número de ações (UNIDADES) no período.
+
+    - Se ticker_preco=None -> comportamento antigo (total ON+PN, ignorando UNIT)
+    - Se ticker_preco=ON/PN -> retorna ações da espécie correspondente
+    - Se ticker_preco=UNIT (11) -> retorna (ON+PN)/fator_unit  (UNIT como “pacote”)
     """
     if dados.acoes is None or dados.acoes.empty:
         return np.nan
 
+    if not ticker_preco:
+        # comportamento antigo do projeto
+        return _obter_acoes_total_ex11(dados, periodo)
+
+    classe = _classe_por_ticker_preco(ticker_preco)
+
+    if classe == "ON":
+        a_on = _obter_acoes_especie(dados, "ON", periodo)
+        return a_on if np.isfinite(a_on) and a_on > 0 else _obter_acoes_total_ex11(dados, periodo)
+
+    if classe == "PN":
+        a_pn = _obter_acoes_especie(dados, "PN", periodo)
+        return a_pn if np.isfinite(a_pn) and a_pn > 0 else _obter_acoes_total_ex11(dados, periodo)
+
+    if classe == "UNIT":
+        total = _obter_acoes_total_ex11(dados, periodo)  # ON+PN (exclui UNIT)
+        if not (np.isfinite(total) and total > 0):
+            return np.nan
+        if fator_unit and np.isfinite(fator_unit) and fator_unit > 0:
+            return float(total / fator_unit)
+        # sem fator_unit: fallback (não quebra execução)
+        return float(total)
+
+    # OUTRO: sem regra universal -> fallback seguro
     return _obter_acoes_total_ex11(dados, periodo)
+
 
 
 
@@ -972,171 +1021,118 @@ def _obter_acoes_atual(dados: DadosEmpresa) -> Tuple[float, str]:
 
 
 
-def _calcular_market_cap(dados: DadosEmpresa, periodo: str, ticker_preco: Optional[str] = None) -> float:
+def _calcular_market_cap(dados: DadosEmpresa, periodo: str,
+                         ticker_preco: Optional[str] = None,
+                         fator_unit: Optional[float] = None) -> float:
     """
-    Calcula Market Cap (R$ mil) para um período.
+    Market Cap (R$ mil).
 
-    Modos:
-    - ticker_preco=None: mantém a regra "empresa" (VM = p_ON*a_ON + p_PN*a_PN), usando preços do PERÍODO.
-    - ticker_preco informada:
-        * classe 3  -> VM = preço(ticker_preco) × ações ON
-        * classe 4/5/6/7/8 -> VM = preço(ticker_preco) × ações PN
-        * classe 11 (UNIT) -> VM = preço(ticker_preco) × ações equivalentes em UNIT
-        * demais -> VM = preço(ticker_preco) × ações ON+PN (fallback)
-
-    Observação:
-    - Ações são obtidas com imputação via _obter_acoes_especie/_obter_acoes_total_ex11.
-    - Preço do período usa a coluna do próprio período; se faltar, cai no último preço disponível.
+    - ticker_preco=None: comportamento atual (VM empresa via ON+PN, com seleção robusta de tickers)
+    - ticker_preco=KLBN3: VM = Preço(KLBN3) * Ações(ON)
+    - ticker_preco=KLBN4: VM = Preço(KLBN4) * Ações(PN)
+    - ticker_preco=KLBN11: VM = Preço(KLBN11) * (Ações(ON+PN)/fator_unit)
     """
-    periodo = str(periodo or "").upper().strip()
-    if not periodo:
-        return np.nan
-
-    # helper: preço do período com fallback robusto
-    def preco_periodo(t: Optional[str]) -> float:
-        p = _obter_preco(dados, periodo, ticker_preco=t)
-        if np.isfinite(p) and p > 0:
-            return float(p)
-        p2, _ = _obter_preco_atual(dados, ticker_preco=t)
-        return float(p2) if np.isfinite(p2) else np.nan
-
-    # modo classe específica
-    if ticker_preco:
-        tpx = str(ticker_preco).upper().strip()
-        classe = _extrair_classe_ticker(tpx)
-        p = preco_periodo(tpx)
-
-        if not (np.isfinite(p) and p > 0):
+    # === modo antigo (empresa) ===
+    if not ticker_preco:
+        ticker = (dados.ticker or "").upper().strip()
+        if len(ticker) < 4:
             return np.nan
 
-        if classe == "11":
-            a_equiv, _, _ = _ajustar_acoes_para_ticker_preco(dados, periodo, tpx)
-            if np.isfinite(a_equiv) and a_equiv > 0:
-                return float((p * a_equiv) / 1000.0)
-            return np.nan
+        raiz = ticker[:4]
+        ticker_on = _selecionar_ticker_preco_multi(dados, raiz, ["3"])
+        ticker_pn = _selecionar_ticker_preco_multi(dados, raiz, ["4", "5", "6", "7", "8"])
 
-        if classe == "3":
-            a = _obter_acoes_especie(dados, "ON", periodo)
-        elif classe in {"4", "5", "6", "7", "8"}:
-            a = _obter_acoes_especie(dados, "PN", periodo)
-        else:
-            a = _obter_acoes_total_ex11(dados, periodo)
+        p_on = _obter_preco(dados, periodo, ticker_preco=ticker_on) if ticker_on else np.nan
+        p_pn = _obter_preco(dados, periodo, ticker_preco=ticker_pn) if ticker_pn else np.nan
 
-        if np.isfinite(a) and a > 0:
-            return float((p * a) / 1000.0)
+        a_on = _obter_acoes_especie(dados, "ON", periodo)
+        a_pn = _obter_acoes_especie(dados, "PN", periodo)
+
+        parts: List[float] = []
+        if np.isfinite(p_on) and p_on > 0 and np.isfinite(a_on) and a_on > 0:
+            parts.append(p_on * a_on)
+        if np.isfinite(p_pn) and p_pn > 0 and np.isfinite(a_pn) and a_pn > 0:
+            parts.append(p_pn * a_pn)
+
+        if parts:
+            return float(sum(parts) / 1000.0)
+
+        # fallback compat
+        preco = _obter_preco(dados, periodo)
+        acoes = _obter_acoes(dados, periodo)
+        if np.isfinite(preco) and preco > 0 and np.isfinite(acoes) and acoes > 0:
+            return float((preco * acoes) / 1000.0)
         return np.nan
 
-    # modo empresa (ON + PN)
-    ticker = (dados.ticker or "").upper().strip()
-    if len(ticker) < 4:
-        return np.nan
+    # === modo por classe ===
+    preco = _obter_preco(dados, periodo, ticker_preco=ticker_preco)
+    acoes = _obter_acoes(dados, periodo, ticker_preco=ticker_preco, fator_unit=fator_unit)
 
-    raiz = ticker[:4]
-    ticker_on = _selecionar_ticker_preco_multi(dados, raiz, ["3"])
-    ticker_pn = _selecionar_ticker_preco_multi(dados, raiz, ["4", "5", "6", "7", "8"])
-
-    p_on = preco_periodo(ticker_on) if ticker_on else np.nan
-    p_pn = preco_periodo(ticker_pn) if ticker_pn else np.nan
-
-    a_on = _obter_acoes_especie(dados, "ON", periodo)
-    a_pn = _obter_acoes_especie(dados, "PN", periodo)
-
-    parts: List[float] = []
-    if np.isfinite(p_on) and p_on > 0 and np.isfinite(a_on) and a_on > 0:
-        parts.append(p_on * a_on)
-    if np.isfinite(p_pn) and p_pn > 0 and np.isfinite(a_pn) and a_pn > 0:
-        parts.append(p_pn * a_pn)
-
-    if parts:
-        return float(sum(parts) / 1000.0)
-
-    # fallback compatível: total × preço do ticker base
-    p = preco_periodo(None)
-    a = _obter_acoes_total_ex11(dados, periodo)
-    if np.isfinite(p) and p > 0 and np.isfinite(a) and a > 0:
-        return float((p * a) / 1000.0)
-
-    return np.nan
-
-
-def _calcular_market_cap_atual(dados: DadosEmpresa, ticker_preco: Optional[str] = None) -> float:
-    """
-    Calcula Valor de Mercado (Market Cap) atual em R$ mil.
-
-    Modos:
-    - ticker_preco=None: VM da empresa = (Preço_ON × Ações_ON) + (Preço_PN × Ações_PN)
-    - ticker_preco informada:
-        * classe 3  -> VM = preço(ticker_preco) × ações ON
-        * classe 4/5/6/7/8 -> VM = preço(ticker_preco) × ações PN
-        * classe 11 (UNIT) -> VM = preço(ticker_preco) × ações equivalentes em UNIT
-        * demais -> VM = preço(ticker_preco) × ações ON+PN (fallback)
-
-    Observação: mantém compatibilidade quando ticker_preco não é informada.
-    """
-    # modo classe específica
-    if ticker_preco:
-        tpx = str(ticker_preco).upper().strip()
-        classe = _extrair_classe_ticker(tpx)
-        p, periodo_p = _obter_preco_atual(dados, ticker_preco=tpx)
-        if not (np.isfinite(p) and p > 0):
-            return np.nan
-
-        if classe == "11":
-            a_equiv, _, _ = _ajustar_acoes_para_ticker_preco(dados, periodo_p or "9999T4", tpx)
-            if np.isfinite(a_equiv) and a_equiv > 0:
-                return float((p * a_equiv) / 1000.0)
-            return np.nan
-
-        if classe == "3":
-            a = _obter_acoes_especie(dados, "ON", periodo_p or "9999T4")
-        elif classe in {"4", "5", "6", "7", "8"}:
-            a = _obter_acoes_especie(dados, "PN", periodo_p or "9999T4")
-        else:
-            a = _obter_acoes_total_ex11(dados, periodo_p or "9999T4")
-
-        if np.isfinite(a) and a > 0:
-            return float((p * a) / 1000.0)
-        return np.nan
-
-    # modo empresa (ON + PN) - comportamento original
-    ticker = (dados.ticker or "").upper().strip()
-    if len(ticker) < 4:
-        return np.nan
-
-    raiz = ticker[:4]
-
-    ticker_on = _selecionar_ticker_preco_multi(dados, raiz, ["3"])
-    ticker_pn = _selecionar_ticker_preco_multi(dados, raiz, ["4", "5", "6", "7", "8"])
-
-    p_on, periodo_on = _obter_preco_atual(dados, ticker_preco=ticker_on) if ticker_on else (np.nan, "")
-    p_pn, periodo_pn = _obter_preco_atual(dados, ticker_preco=ticker_pn) if ticker_pn else (np.nan, "")
-
-    # referência de período para ações (usa o mais recente entre preços disponíveis)
-    periodo_ref = ""
-    if dados.precos is not None and not dados.precos.empty:
-        col_periodos = _get_colunas_numericas_validas(dados.precos)
-        if col_periodos:
-            periodo_ref = col_periodos[-1]
-
-    a_on = _obter_acoes_especie(dados, "ON", periodo_ref or "9999T4")
-    a_pn = _obter_acoes_especie(dados, "PN", periodo_ref or "9999T4")
-
-    parts: List[float] = []
-    if np.isfinite(p_on) and p_on > 0 and np.isfinite(a_on) and a_on > 0:
-        parts.append(p_on * a_on)
-    if np.isfinite(p_pn) and p_pn > 0 and np.isfinite(a_pn) and a_pn > 0:
-        parts.append(p_pn * a_pn)
-
-    if parts:
-        return float(sum(parts) / 1000.0)
-
-    # Fallback compatível
-    preco, periodo_p = _obter_preco_atual(dados)
-    acoes = _obter_acoes(dados, periodo_ref or "9999T4")
     if np.isfinite(preco) and preco > 0 and np.isfinite(acoes) and acoes > 0:
         return float((preco * acoes) / 1000.0)
 
     return np.nan
+
+
+def _calcular_market_cap_atual(dados: DadosEmpresa,
+                               ticker_preco: Optional[str] = None,
+                               fator_unit: Optional[float] = None) -> float:
+    """
+    Market Cap atual (R$ mil).
+    Mesmo critério do _calcular_market_cap, porém com preço atual.
+    """
+    if not ticker_preco:
+        # mantém seu comportamento atual (empresa via ON/PN)
+        ticker = (dados.ticker or "").upper().strip()
+        if len(ticker) < 4:
+            return np.nan
+
+        raiz = ticker[:4]
+        ticker_on = _selecionar_ticker_preco_multi(dados, raiz, ["3"])
+        ticker_pn = _selecionar_ticker_preco_multi(dados, raiz, ["4", "5", "6", "7", "8"])
+
+        p_on, _ = _obter_preco_atual(dados, ticker_preco=ticker_on) if ticker_on else (np.nan, "")
+        p_pn, _ = _obter_preco_atual(dados, ticker_preco=ticker_pn) if ticker_pn else (np.nan, "")
+
+        periodo_ref = ""
+        if dados.precos is not None and not dados.precos.empty:
+            cols = _get_colunas_numericas_validas(dados.precos)
+            if cols:
+                periodo_ref = cols[-1]
+
+        a_on = _obter_acoes_especie(dados, "ON", periodo_ref or "9999T4")
+        a_pn = _obter_acoes_especie(dados, "PN", periodo_ref or "9999T4")
+
+        parts: List[float] = []
+        if np.isfinite(p_on) and p_on > 0 and np.isfinite(a_on) and a_on > 0:
+            parts.append(p_on * a_on)
+        if np.isfinite(p_pn) and p_pn > 0 and np.isfinite(a_pn) and a_pn > 0:
+            parts.append(p_pn * a_pn)
+
+        if parts:
+            return float(sum(parts) / 1000.0)
+
+        preco_base, _ = _obter_preco_atual(dados)
+        acoes_base, _p = _obter_acoes_atual(dados)
+        if np.isfinite(preco_base) and preco_base > 0 and np.isfinite(acoes_base) and acoes_base > 0:
+            return float((preco_base * acoes_base) / 1000.0)
+        return np.nan
+
+    # por classe
+    preco_atual, _ = _obter_preco_atual(dados, ticker_preco=ticker_preco)
+    # usar o período mais recente de ações, para não depender de DRE
+    acoes_atual, periodo_acoes = _obter_acoes_atual(dados)
+    # reaproveita a lógica do _obter_acoes por classe usando esse período
+    if periodo_acoes:
+        acoes = _obter_acoes(dados, periodo_acoes, ticker_preco=ticker_preco, fator_unit=fator_unit)
+    else:
+        acoes = _obter_acoes(dados, "9999T4", ticker_preco=ticker_preco, fator_unit=fator_unit)
+
+    if np.isfinite(preco_atual) and preco_atual > 0 and np.isfinite(acoes) and acoes > 0:
+        return float((preco_atual * acoes) / 1000.0)
+
+    return np.nan
+
 
 
 def _calcular_ev(dados: DadosEmpresa, periodo: str, market_cap: Optional[float] = None) -> float:
