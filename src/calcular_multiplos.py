@@ -2616,65 +2616,79 @@ def _detectar_classes_disponiveis(dados: DadosEmpresa) -> List[str]:
     return sorted(classes)
 
 
-def processar_ticker(
-    ticker: str,
-    pasta_saida: Path,
-    usar_preco_atual: bool = False
-) -> None:
+def processar_ticker(ticker: str, salvar: bool = True) -> Tuple[bool, str, Optional[Dict]]:
     """
-    Processa um ticker e gera múltiplos para CADA classe.
+    Processa um ticker e calcula todos os múltiplos.
+
+    Args:
+        ticker: Código do ticker (ex: KLBN3, KLBN4, KLBN11)
+        salvar: Se True, salva os arquivos JSON e CSV (padrão: True)
+
+    Returns:
+        Tupla (sucesso, mensagem, resultado_dict)
     """
-    print(f"\n{'='*70}")
-    print(f"🔄 Processando: {ticker}")
-    print(f"{'='*70}")
+    ticker_upper = ticker.upper().strip()
 
-    try:
-        # Carrega dados
-        dados = carregar_dados_empresa(ticker, pasta_saida)
+    # Carrega dados da empresa
+    dados = carregar_dados_empresa(ticker_upper)
 
-        if not dados:
-            print(f"❌ Não foi possível carregar dados para {ticker}")
-            return
+    if dados.erros:
+        erros_str = "; ".join(dados.erros)
+        return False, f"Erros ao carregar: {erros_str}", None
 
-        # Detecta classes disponíveis
-        classes = _detectar_classes_disponiveis(dados)
+    if not dados.periodos:
+        return False, "Nenhum período disponível", None
 
-        if not classes:
-            print(f"⚠️ Nenhuma classe detectada para {ticker}")
-            return
+    # Gera histórico anualizado de múltiplos
+    resultado = gerar_historico_anualizado(dados)
 
-        print(f"✅ Classes encontradas: {classes}")
+    # ========================================
+    # SALVAMENTO CONDICIONAL
+    # ========================================
+    if salvar:
+        pasta = get_pasta_balanco(ticker_upper)
+        pasta.mkdir(parents=True, exist_ok=True)
 
-        # Processa CADA classe separadamente
-        for classe in classes:
-            print(f"\n📊 Calculando múltiplos para {classe}...")
+        # Salva JSON
+        output_path = pasta / "multiplos.json"
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(resultado, f, ensure_ascii=False, indent=2, default=str)
 
-            # Calcula múltiplos específicos da classe
-            multiplos = calcular_multiplos_periodo(
-                dados,
-                periodo="2025T4",  # ou período mais recente
-                usar_preco_atual=usar_preco_atual,
-                ticker_classe=classe  # ← PASSAMOS A CLASSE
-            )
+        # Salva CSV
+        csv_path = pasta / "multiplos.csv"
+        _salvar_csv_historico(resultado, csv_path)
 
-            # Salva JSON com nome específico da classe
-            json_path = pasta_saida / f"multiplos_{classe}.json"
-            with open(json_path, 'w', encoding='utf-8') as f:
-                json.dump(multiplos, f, indent=2, ensure_ascii=False)
+        print(f"💾 Arquivos salvos: {output_path.name}, {csv_path.name}")
 
-            print(f"✅ Salvo: {json_path}")
+    # ========================================
+    # METADADOS DO RESULTADO
+    # ========================================
+    n_anos = len(resultado.get("historico_anual", {}))
+    padrao = resultado.get("padrao_fiscal", {}).get("tipo", "?")
+    ultimo = resultado.get("ltm", {}).get("periodo_referencia", "?")
+    preco = resultado.get("ltm", {}).get("preco_utilizado", "?")
 
-            # Salva CSV com nome específico da classe
-            csv_path = pasta_saida / f"multiplos_{classe}.csv"
-            df_multiplos = pd.DataFrame([multiplos])
-            df_multiplos.to_csv(csv_path, index=False, encoding='utf-8')
+    # Identifica tipo de empresa
+    if _is_banco(ticker_upper):
+        tipo_empresa = "BANCO"
+        n_multiplos = len(MULTIPLOS_BANCOS_METADATA)
+    elif _is_holding_seguro(ticker_upper):
+        tipo_empresa = "HOLDING_SEGURO"
+        n_multiplos = len(MULTIPLOS_HOLDINGS_SEGUROS_METADATA)
+    elif _is_seguradora(ticker_upper):
+        tipo_empresa = "SEGURADORA"
+        n_multiplos = len(MULTIPLOS_SEGURADORAS_METADATA)
+    else:
+        tipo_empresa = "GERAL"
+        n_multiplos = len(MULTIPLOS_METADATA)
 
-            print(f"✅ Salvo: {csv_path}")
+    msg = (
+        f"OK | {n_anos} anos | fiscal={padrao} | LTM={ultimo} | "
+        f"Preço=R${preco} | Tipo={tipo_empresa} | {n_multiplos} múltiplos"
+    )
 
-    except Exception as e:
-        print(f"❌ Erro ao processar {ticker}: {e}")
-        import traceback
-        traceback.print_exc()
+    return True, msg, resultado
+
 
 
 def _salvar_csv_historico(resultado: Dict, path: Path):
