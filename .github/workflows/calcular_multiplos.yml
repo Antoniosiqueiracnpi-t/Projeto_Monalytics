@@ -49,7 +49,7 @@ jobs:
   calcular_multiplos:
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    
+
     permissions:
       contents: write
 
@@ -76,11 +76,11 @@ jobs:
           # Se foi trigger por push, processar apenas os tickers alterados
           if [ "${{ github.event_name }}" == "push" ]; then
             echo "mode=auto" >> $GITHUB_OUTPUT
-            
+
             # Extrair tickers dos arquivos alterados
             CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "")
             TICKERS=""
-            
+
             for file in $CHANGED_FILES; do
               if [[ "$file" == balancos/*/*.csv ]]; then
                 TICKER=$(echo "$file" | cut -d'/' -f2)
@@ -93,7 +93,7 @@ jobs:
                 fi
               fi
             done
-            
+
             echo "tickers=$TICKERS" >> $GITHUB_OUTPUT
             echo "Tickers detectados: $TICKERS"
           else
@@ -118,23 +118,30 @@ jobs:
             --modo "lista" \
             --lista "${{ steps.detect_mode.outputs.tickers }}"
 
-      - name: 📊 Validar saídas geradas
+      - name: 📊 Validar saídas geradas (novo padrão por classe)
         run: |
-          echo "=== Arquivos JSON gerados ==="
-          find balancos -type f -name "multiplos.json" | head -20
-          
+          echo "=== Arquivos JS gerados (multiplos_*.js) ==="
+          find balancos -type f -name "multiplos_*.js" | head -30 || true
+
           echo ""
-          echo "=== Arquivos CSV gerados ==="
-          find balancos -type f -name "multiplos.csv" | head -20
-          
+          echo "=== Arquivos CSV gerados (multiplos_*.csv) ==="
+          find balancos -type f -name "multiplos_*.csv" | head -30 || true
+
           echo ""
-          echo "=== Contagem total ==="
-          JSON_COUNT=$(find balancos -type f -name "multiplos.json" | wc -l)
-          CSV_COUNT=$(find balancos -type f -name "multiplos.csv" | wc -l)
-          echo "JSON: $JSON_COUNT arquivos"
+          echo "=== Contagem total (novo padrão) ==="
+          JS_COUNT=$(find balancos -type f -name "multiplos_*.js" 2>/dev/null | wc -l || echo "0")
+          CSV_COUNT=$(find balancos -type f -name "multiplos_*.csv" 2>/dev/null | wc -l || echo "0")
+          echo "JS:  $JS_COUNT arquivos"
           echo "CSV: $CSV_COUNT arquivos"
 
-      # ✅ CORREÇÃO CIRÚRGICA: Pull ANTES do commit + Stash seguro
+          echo ""
+          echo "=== (Legado, se existir) ==="
+          LEG_JSON=$(find balancos -type f -name "multiplos.json" 2>/dev/null | wc -l || echo "0")
+          LEG_CSV=$(find balancos -type f -name "multiplos.csv" 2>/dev/null | wc -l || echo "0")
+          echo "JSON legado: $LEG_JSON arquivos"
+          echo "CSV legado:  $LEG_CSV arquivos"
+
+      # ✅ Pull ANTES do commit + Stash seguro
       - name: 💾 Commit e Push
         run: |
           git config user.name "GitHub Actions"
@@ -144,27 +151,27 @@ jobs:
           # PASSO 1: Sincronizar com remote ANTES de qualquer mudança
           # ====================================================================
           echo "🔄 Sincronizando com remote..."
-          
-          # Fazer stash de TODAS as mudanças locais (tracked + untracked)
+
           git add -A
           git stash --include-untracked || echo "Sem mudanças para stash"
-          
-          # Pull sem rebase (fast-forward quando possível)
+
           git pull origin main --no-rebase || {
             echo "⚠️ Pull falhou, tentando reset..."
             git fetch origin
             git reset --hard origin/main
           }
-          
-          # Recuperar mudanças do stash
+
           git stash pop || echo "Stash vazio"
 
           # ====================================================================
-          # PASSO 2: Adicionar APENAS arquivos de múltiplos
+          # PASSO 2: Adicionar APENAS arquivos de múltiplos (novo padrão)
           # ====================================================================
+          # Novo padrão por classe:
+          git add balancos/*/multiplos_*.js balancos/*/multiplos_*.csv 2>/dev/null || true
+
+          # (Opcional) Legado, se ainda existir em alguma pasta:
           git add balancos/*/multiplos.json balancos/*/multiplos.csv 2>/dev/null || true
 
-          # Verificar se há mudanças no staging area
           if git diff --cached --quiet; then
             echo "✅ Sem alterações nos múltiplos. Nada para commitar."
             exit 0
@@ -175,14 +182,13 @@ jobs:
           # ====================================================================
           CHANGED_COUNT=$(git diff --cached --name-only | wc -l)
           echo "📊 Arquivos alterados: $CHANGED_COUNT"
-          
-          echo "📝 Primeiros 10 arquivos:"
-          git diff --cached --name-only | head -10
 
-          # Mensagem de commit baseada no trigger
+          echo "📝 Primeiros 15 arquivos:"
+          git diff --cached --name-only | head -15
+
           TRIGGER="${{ github.event_name }}"
           DATE=$(date +'%Y-%m-%d %H:%M UTC')
-          
+
           case "$TRIGGER" in
             "push")
               MSG="🤖 Múltiplos atualizados (auto) - $DATE"
@@ -203,21 +209,20 @@ jobs:
           MAX_RETRIES=5
           RETRY_COUNT=0
           SLEEP_TIME=3
-          
+
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
             echo "📤 Tentativa de push $((RETRY_COUNT + 1))/$MAX_RETRIES..."
-            
+
             if git push origin HEAD:main; then
               echo "✅ Push realizado com sucesso!"
               exit 0
             else
               RETRY_COUNT=$((RETRY_COUNT + 1))
-              
+
               if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
                 echo "⚠️ Push falhou. Aguardando ${SLEEP_TIME}s antes de tentar novamente..."
                 sleep $SLEEP_TIME
-                
-                # Sincronizar novamente com remote (sem perder commit local)
+
                 echo "🔄 Sincronizando com remote (rebase)..."
                 git fetch origin
                 git rebase origin/main || {
@@ -225,18 +230,16 @@ jobs:
                   git rebase --abort
                   git pull origin main --no-rebase --no-edit
                 }
-                
-                # Aumentar tempo de espera progressivamente
+
                 SLEEP_TIME=$((SLEEP_TIME + 2))
               fi
             fi
           done
-          
+
           echo "❌ Push falhou após $MAX_RETRIES tentativas"
           echo "💡 Possível conflito com outro workflow. Verifique os logs."
           exit 1
 
-      # ✅ STEP FINAL: Resumo da execução
       - name: 📋 Resumo da Execução
         if: always()
         run: |
@@ -245,17 +248,24 @@ jobs:
           echo "=========================================="
           echo "Trigger: ${{ github.event_name }}"
           echo "Modo: ${{ steps.detect_mode.outputs.mode }}"
-          
+
           if [ "${{ steps.detect_mode.outputs.mode }}" == "auto" ]; then
             echo "Tickers processados: ${{ steps.detect_mode.outputs.tickers }}"
           else
             echo "Modo manual: ${{ github.event.inputs.modo || 'quantidade' }}"
           fi
-          
+
           echo ""
-          echo "📊 Múltiplos finais no repositório:"
-          JSON_COUNT=$(find balancos -type f -name "multiplos.json" 2>/dev/null | wc -l || echo "0")
-          CSV_COUNT=$(find balancos -type f -name "multiplos.csv" 2>/dev/null | wc -l || echo "0")
-          echo "JSON: $JSON_COUNT arquivos"
+          echo "📊 Múltiplos finais no repositório (novo padrão):"
+          JS_COUNT=$(find balancos -type f -name "multiplos_*.js" 2>/dev/null | wc -l || echo "0")
+          CSV_COUNT=$(find balancos -type f -name "multiplos_*.csv" 2>/dev/null | wc -l || echo "0")
+          echo "JS:  $JS_COUNT arquivos"
           echo "CSV: $CSV_COUNT arquivos"
+
+          echo ""
+          echo "📎 (Legado, se existir):"
+          LEG_JSON=$(find balancos -type f -name "multiplos.json" 2>/dev/null | wc -l || echo "0")
+          LEG_CSV=$(find balancos -type f -name "multiplos.csv" 2>/dev/null | wc -l || echo "0")
+          echo "JSON legado: $LEG_JSON arquivos"
+          echo "CSV legado:  $LEG_CSV arquivos"
           echo "=========================================="
