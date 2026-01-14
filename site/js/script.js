@@ -2792,37 +2792,60 @@ let multiplosChart = null;
 /**
  * Carrega dados de múltiplos da empresa
  */
+/**
+ * Carrega dados de múltiplos da empresa
+ * ✅ AJUSTE CIRÚRGICO: Busca multiplos_{TICKER}.json específico
+ */
 async function loadMultiplosData(ticker) {
     try {
         console.log(`📊 Carregando múltiplos de ${ticker}...`);
         
+        // Normaliza ticker digitado
         const tickerNorm = normalizarTicker(ticker);
-        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item.ticker) === tickerNorm);
+        
+        // Busca info da empresa no mapeamento
+        const empresaInfo = mapeamentoB3.find(
+            item => normalizarTicker(item.ticker) === tickerNorm
+        );
         
         if (!empresaInfo) {
             throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
         }
         
+        // ✅ MANTÉM tickerPasta para determinar a pasta base
         const tickerPasta = obterTickerPasta(ticker);
         const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
+        
+        // ✅ AJUSTE CIRÚRGICO: Usa ticker específico no nome do arquivo
+        const multiplosUrl = 
+            `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${timestamp}`;
+        
+        console.log(`📡 Carregando múltiplos: ${multiplosUrl}`);
+        
+        const response = await fetch(multiplosUrl, {
+            cache: 'no-store',
+            mode: 'cors'
+        });
         
         if (!response.ok) {
-            // ✅ NOVO: Se não encontrar multiplos.json, avisa mas não quebra
             console.warn(`⚠️ Múltiplos não encontrados para ${ticker} (HTTP ${response.status})`);
             document.getElementById('multiplosSection').style.display = 'none';
-            return;  // ✅ Retorna sem quebrar o fluxo
+            return;
         }
         
         multiplosData = await response.json();
-        console.log(`✅ Múltiplos carregados: ${Object.keys(multiplosData.ltm.multiplos).length}`);
+        
+        console.log(`✅ Múltiplos carregados: ${Object.keys(multiplosData.ltm.multiplos).length} indicadores`);
+        
+        // Renderiza seção
         renderMultiplosSection();
         
     } catch (error) {
-        console.error('Erro ao carregar múltiplos:', error);
+        console.error('❌ Erro ao carregar múltiplos:', error);
         document.getElementById('multiplosSection').style.display = 'none';
     }
 }
+
 
 
 
@@ -3445,22 +3468,39 @@ let currentDividendosPeriod = 5; // 5 ou 10 anos
 /**
  * Carrega DY atual do arquivo multiplos.json
  */
+/**
+ * Carrega DY atual do arquivo multiplos_{TICKER}.json
+ * ✅ AJUSTE CIRÚRGICO: Busca arquivo específico por ticker
+ */
 async function carregarDYAtual(ticker) {
     try {
+        // Normaliza ticker digitado
         const tickerNorm = normalizarTicker(ticker);
         
-        // Busca info da empresa no mapeamento (comparação normalizada)
-        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === tickerNorm);
+        // Busca info da empresa no mapeamento
+        const empresaInfo = mapeamentoB3.find(
+            item => normalizarTicker(item && item.ticker) === tickerNorm
+        );
         
         if (!empresaInfo) {
             throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
         }
+        
+        // ✅ MANTÉM tickerPasta para determinar a pasta base
         const tickerPasta = obterTickerPasta(ticker);
         
-        console.log(`🔍 Buscando DY em multiplos.json (ticker: ${tickerPasta})...`);
+        console.log(`🔍 Buscando DY em multiplos_${tickerNorm}.json (pasta: ${tickerPasta})...`);
         
         const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
+        
+        // ✅ AJUSTE CIRÚRGICO: Usa ticker específico no nome do arquivo
+        const multiplosUrl = 
+            `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${timestamp}`;
+        
+        const response = await fetch(multiplosUrl, {
+            cache: 'no-store',
+            mode: 'cors'
+        });
         
         if (response.ok) {
             const multiplosData = await response.json();
@@ -3484,7 +3524,7 @@ async function carregarDYAtual(ticker) {
                 return 0;
             }
         } else {
-            console.log(`⚠️ Arquivo multiplos.json não encontrado (${response.status})`);
+            console.log(`⚠️ Arquivo multiplos_${tickerNorm}.json não encontrado (${response.status})`);
             if (dividendosHistoricoData) {
                 dividendosHistoricoData.dy_atual = 0;
             }
@@ -3500,25 +3540,43 @@ async function carregarDYAtual(ticker) {
     }
 }
 
+
 /**
  * Carrega DY histórico do arquivo multiplos.json
  */
+/**
+ * Carrega DY histórico do arquivo multiplos_{TICKER}.json
+ * ✅ AJUSTE CIRÚRGICO: Busca arquivo específico por ticker
+ */
 async function carregarDYHistorico(ticker) {
     try {
+        // Normaliza ticker digitado
         const tickerNorm = normalizarTicker(ticker);
         
-        // Busca info da empresa no mapeamento (comparação normalizada)
-        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === tickerNorm);
+        // Busca info da empresa no mapeamento
+        const empresaInfo = mapeamentoB3.find(
+            item => normalizarTicker(item && item.ticker) === tickerNorm
+        );
         
         if (!empresaInfo) {
             throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
         }
+        
+        // ✅ MANTÉM tickerPasta para determinar a pasta base
         const tickerPasta = obterTickerPasta(ticker);
         
-        console.log(`📈 Buscando DY histórico em multiplos.json (ticker: ${tickerPasta})...`);
+        console.log(`📈 Buscando DY histórico em multiplos_${tickerNorm}.json (pasta: ${tickerPasta})...`);
         
         const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
+        
+        // ✅ AJUSTE CIRÚRGICO: Usa ticker específico no nome do arquivo
+        const multiplosUrl = 
+            `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${timestamp}`;
+        
+        const response = await fetch(multiplosUrl, {
+            cache: 'no-store',
+            mode: 'cors'
+        });
         
         if (response.ok) {
             const multiplosData = await response.json();
@@ -3537,18 +3595,22 @@ async function carregarDYHistorico(ticker) {
                     
                     if (anoObj) {
                         anoObj.dy_percent = dyAno;
-                        console.log(`   ✅ ${ano}: ${dyAno.toFixed(2)}%`);
+                        console.log(`   ✅ ${ano}: DY ${dyAno.toFixed(2)}%`);
                     }
                 }
             }
             
             console.log('✅ DY histórico atualizado de multiplos.json');
+            
+        } else {
+            console.log(`⚠️ Arquivo multiplos_${tickerNorm}.json não encontrado (${response.status})`);
         }
         
     } catch (error) {
         console.warn('⚠️ Erro ao carregar DY histórico:', error);
     }
 }
+
 
 
 /**
