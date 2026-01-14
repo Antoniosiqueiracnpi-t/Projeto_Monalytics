@@ -178,11 +178,29 @@ def _pick_value_for_code(group: pd.DataFrame, code: str) -> float:
 # ======================================================================================
 
 DEPREC_PATTERNS = [
+    # Depreciação + Depleção + Amortização (TODOS OS 3 TERMOS)
+    r"deprecia[çc][aã]o\s*,?\s*deple[çc][aã]o\s*(e|ou|,)\s*amortiza[çc][aã]o",
+    r"deprecia[çc][aã]o\s*,?\s*amortiza[çc][aã]o\s*(e|ou|,)\s*deple[çc][aã]o",
+    r"deple[çc][aã]o\s*,?\s*deprecia[çc][aã]o\s*(e|ou|,)\s*amortiza[çc][aã]o",
+    r"amortiza[çc][aã]o\s*,?\s*deprecia[çc][aã]o\s*(e|ou|,)\s*deple[çc][aã]o",
+    
+    # Depreciação + Depleção (sem Amortização)
+    r"deprecia[çc][aã]o\s*(e|ou)\s*deple[çc][aã]o",
+    r"deple[çc][aã]o\s*(e|ou)\s*deprecia[çc][aã]o",
+    
+    # Depleção + Amortização (sem Depreciação)
+    r"deple[çc][aã]o\s*(e|ou)\s*amortiza[çc][aã]o",
+    r"amortiza[çc][aã]o\s*(e|ou)\s*deple[çc][aã]o",
+    
+    # Depleção isolada
+    r"^deple[çc][oõ]es?\s*$",
+    r"^deple[çc][aã]o\s*$",
+    
     # Depreciação + Amortização (padrões existentes)
     r"deprecia[çc][aã]o\s*(e|ou)?\s*amortiza[çc][aã]o",
     r"amortiza[çc][aã]o\s*(e|ou)?\s*deprecia[çc][aã]o",
     
-    # Depreciação + Amortização + Impairment (NOVO)
+    # Depreciação + Amortização + Impairment
     r"deprecia[çc][aã]o\s*,?\s*amortiza[çc][aã]o\s*(e|ou)\s*(impairment|redução ao valor recuper[aá]vel)",
     r"deprecia[çc][aã]o\s*,?\s*(impairment|redução ao valor recuper[aá]vel)\s*(e|ou)\s*amortiza[çc][aã]o",
     r"amortiza[çc][aã]o\s*,?\s*deprecia[çc][aã]o\s*(e|ou)\s*(impairment|redução ao valor recuper[aá]vel)",
@@ -208,9 +226,10 @@ DEPREC_PATTERNS = [
     r"deprec\.\s*(e|ou)?\s*amort\.",
     r"d&a",
     r"deprec\s*/\s*amort",
-    r"d\s*,?\s*a\s*(e|ou)?\s*i",  # NOVO: D, A e I
-    r"d&a&i",  # NOVO: D&A&I
+    r"d\s*,?\s*a\s*(e|ou)?\s*i",
+    r"d&a&i",
 ]
+
 
 DEPREC_REGEX = [re.compile(p, re.IGNORECASE) for p in DEPREC_PATTERNS]
 
