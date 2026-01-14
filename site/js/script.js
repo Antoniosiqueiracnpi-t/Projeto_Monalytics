@@ -459,7 +459,7 @@ const DATA_PATHS = {
 const NOTICIAS_MERCADO_PATH = 'balancos/NOTICIAS/noticias_mercado.json';
 const DIVIDENDOS_PATH = 'agenda_dividendos_acoes_investidor10.json';
 const MAPEAMENTO_B3_PATH = 'mapeamento_b3_consolidado.csv';
-const IBOV_PATH = 'balancos/IBOV/historico_precos_diarios.json';
+const IBOV_PATH = 'balancos/IBOV/historico_precos_IBOV.json';
 
 let currentSlide = 0;
 const totalSlides = 3;
@@ -2410,7 +2410,7 @@ function parseCSVLine(csvText, delimiter = ';') {
 async function loadMapeamentoB3() {
     try {
         const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/${MAPEAMENTO_B3_PATH}?t=${timestamp}`);
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/historico_precos_${ticker}.json?t=${timestamp}`);
         const csvText = await response.text();
         
         console.log('📥 Carregando mapeamento B3...');
