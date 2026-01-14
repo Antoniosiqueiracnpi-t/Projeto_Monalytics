@@ -520,110 +520,120 @@ def _encontrar_periodo_imputacao(df: pd.DataFrame, periodo_req: str) -> Optional
 
     return None
 
-def _obter_acoes_para_classe(dados: DadosEmpresa, classe: str, periodo: str) -> float:
+def _obter_acoes_para_classe(
+    dados: DadosEmpresa,
+    ticker_classe: str,
+    periodo: str
+) -> float:
     """
-    Obtém quantidade de ações adaptada por classe:
-    - ON → apenas ações ON
-    - PN → apenas ações PN
-    - UNIT (11) → soma ON + PN (pacote)
+    Obtém quantidade de ações adaptada por classe.
+
+    KLBN3 → apenas ON
+    KLBN4 → apenas PN
+    KLBN11 → ON + PN (pacote)
     """
-    classe = classe.upper().strip()
+    classe = str(ticker_classe).upper().strip()
 
     on = _obter_acoes_especie(dados, "ON", periodo)
     pn = _obter_acoes_especie(dados, "PN", periodo)
 
-    # Caso KLBN11 → pacote ON+PN
+    # UNIT = pacote ON + PN
     if classe.endswith("11"):
-        return (on if np.isfinite(on) else 0) + (pn if np.isfinite(pn) else 0)
+        total = (on if np.isfinite(on) else 0) + (pn if np.isfinite(pn) else 0)
+        return total if total > 0 else np.nan
 
-    # KLBN3 → ON
+    # KLBN3 = ON
     if classe.endswith("3"):
-        return on
+        return on if np.isfinite(on) else np.nan
 
-    # KLBN4 → PN
+    # KLBN4 = PN
     if classe.endswith("4"):
-        return pn
+        return pn if np.isfinite(pn) else np.nan
 
-    # fallback
+    # Fallback
     return _obter_acoes(dados, periodo)
 
 
 
-def _obter_preco(dados: DadosEmpresa, periodo: str, ticker_preco: Optional[str] = None) -> float:
+def _obter_preco(
+    dados: DadosEmpresa,
+    periodo: str,
+    ticker_classe: Optional[str] = None
+) -> float:
     """
-    Obtém preço da ação da classe desejada no período.
-    Sempre filtra pelo ticker_preco (KLBN3, KLBN4, KLBN11).
+    Obtém preço da classe específica no período.
+
+    Args:
+        dados: Dados da empresa
+        periodo: Período (ex: "2025T4")
+        ticker_classe: Classe (ex: "KLBN3", "KLBN4", "KLBN11")
+
+    Returns:
+        Preço de fechamento ajustado
     """
     if dados.precos is None or dados.precos.empty:
         return np.nan
 
     df = dados.precos
 
-    # Identifica coluna Ticker
+    # Identifica coluna de ticker
     col_ticker = None
     for c in ["Ticker", "ticker", "TICKER"]:
         if c in df.columns:
             col_ticker = c
             break
 
+    # Filtra pela classe específica
+    if col_ticker and ticker_classe:
+        alvo = str(ticker_classe).upper().strip()
+        df_filtrado = df[df[col_ticker].astype(str).str.upper().str.strip() == alvo]
+        if df_filtrado.empty:
+            print(f"⚠️ Nenhum preço encontrado para {ticker_classe} no período {periodo}")
+            return np.nan
+        df = df_filtrado
+
+    # Busca o período
     if periodo not in df.columns:
         return np.nan
 
-    # Se tiver coluna de ticker, fizltrar estritamente
-    if col_ticker:
-        alvo = (ticker_preco or "").upper().strip()
-        sub = df[df[col_ticker].astype(str).str.upper().str.strip() == alvo]
-        if sub.empty:
-            return np.nan
-        df_use = sub
-    else:
-        df_use = df
-
-    s = pd.to_numeric(df_use[periodo], errors="coerce")
-    if s.notna().any():
-        return float(s.dropna().iloc[0])
+    preco = pd.to_numeric(df[periodo], errors="coerce")
+    if preco.notna().any():
+        return float(preco.dropna().iloc[0])
 
     return np.nan
 
 
-
-
-def _obter_preco_atual(dados: DadosEmpresa, ticker_preco: Optional[str] = None) -> Tuple[float, str]:
+def _obter_preco_atual(
+    dados: DadosEmpresa,
+    ticker_classe: Optional[str] = None
+) -> Tuple[float, str]:
     """
-    Obtém o preço mais recente disponível (último trimestre com dado numérico).
-
-    Suporta formato antigo e multi-classes (com coluna Ticker).
+    Obtém o último preço válido da classe.
     """
     if dados.precos is None or dados.precos.empty:
         return np.nan, ""
 
     df = dados.precos
 
-    # Detectar coluna de ticker
+    # Filtra por classe
     col_ticker = None
     for c in ["Ticker", "ticker", "TICKER"]:
         if c in df.columns:
             col_ticker = c
             break
 
-    if col_ticker:
-        alvo = (ticker_preco or dados.ticker or "")
-        alvo = str(alvo).upper().strip()
-        sub = df[df[col_ticker].astype(str).str.upper().str.strip() == alvo]
-        if sub.empty:
-            sub = df
-        df_use = sub
-    else:
-        df_use = df
+    if col_ticker and ticker_classe:
+        alvo = str(ticker_classe).upper().strip()
+        df = df[df[col_ticker].astype(str).str.upper().str.strip() == alvo]
+        if df.empty:
+            return np.nan, ""
 
-    colunas_precos = _get_colunas_numericas_validas(df_use)
-    if not colunas_precos:
-        return np.nan, ""
-
-    for p in reversed(colunas_precos):
-        preco = _obter_preco(dados, p, ticker_preco=ticker_preco)
+    # Busca coluna mais recente com preço válido
+    colunas = _get_colunas_numericas_validas(df)
+    for periodo in reversed(colunas):
+        preco = _obter_preco(dados, periodo, ticker_classe=ticker_classe)
         if np.isfinite(preco) and preco > 0:
-            return preco, p
+            return preco, periodo
 
     return np.nan, ""
 
@@ -680,36 +690,34 @@ def _detectar_coluna_especie(df: pd.DataFrame) -> Optional[str]:
     return None
 
 
-def _obter_acoes_especie(dados: DadosEmpresa, especie: str, periodo: str) -> float:
+def _obter_acoes_especie(
+    dados: DadosEmpresa,
+    especie: str,
+    periodo: str
+) -> float:
     """
-    Obtém ações de uma espécie específica (ex.: 'ON', 'PN') no período.
-
-    Usa _encontrar_periodo_imputacao para selecionar a melhor coluna de período,
-    evitando cair em períodos antigos quando a coluna não existe (ex.: 2025T3).
+    Obtém quantidade de ações de uma espécie (ON ou PN).
     """
     if dados.acoes is None or dados.acoes.empty:
         return np.nan
 
     df = dados.acoes
-    col_especie = _detectar_coluna_especie(df)
-    if not col_especie:
+
+    # Busca linha da espécie
+    especie_upper = str(especie).upper().strip()
+    linhas = df[df.iloc[:, 0].astype(str).str.upper().str.strip() == especie_upper]
+
+    if linhas.empty:
         return np.nan
 
-    # Escolher coluna de período (imputação)
-    periodo_busca = _encontrar_periodo_imputacao(df, periodo)
-    if not periodo_busca:
-        col_periodos = _get_colunas_numericas_validas(df)
-        if not col_periodos:
-            return np.nan
-        periodo_busca = col_periodos[-1]
-
-    serie = df[col_especie].astype(str).str.upper().str.strip()
-    mask = serie.eq(str(especie).upper().strip())
-    if not mask.any():
+    if periodo not in df.columns:
         return np.nan
 
-    val = pd.to_numeric(df.loc[mask, periodo_busca], errors="coerce").iloc[0]
-    return float(val) if pd.notna(val) else np.nan
+    valor = pd.to_numeric(linhas[periodo], errors="coerce")
+    if valor.notna().any():
+        return float(valor.dropna().iloc[0])
+
+    return np.nan
 
 
 def _obter_acoes_total_ex11(dados: DadosEmpresa, periodo: str) -> float:
@@ -1531,177 +1539,182 @@ def _calcular_receita_ltm_holding_cxse3(dados: DadosEmpresa, periodo_fim: str) -
 # CALCULADORA DE MÚLTIPLOS - EMPRESAS NÃO-FINANCEIRAS (22 MÚLTIPLOS)
 # ======================================================================================
 
-def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True) -> Dict[str, Optional[float]]:
+def _calcular_market_cap_classe(
+    dados: DadosEmpresa,
+    periodo: str,
+    ticker_classe: str
+) -> float:
     """
-    Calcula todos os 22 múltiplos para um período específico (empresas não-financeiras).
-    
+    Market Cap específico da classe:
+    - KLBN3 → preço KLBN3 × ações ON
+    - KLBN4 → preço KLBN4 × ações PN
+    - KLBN11 → preço KLBN11 × (ON + PN)
+    """
+    preco = _obter_preco(dados, periodo, ticker_classe=ticker_classe)
+    acoes = _obter_acoes_para_classe(dados, ticker_classe, periodo)
+
+    if np.isfinite(preco) and preco > 0 and np.isfinite(acoes) and acoes > 0:
+        return float(preco * acoes / 1000.0)
+
+    return np.nan
+
+
+def calcular_multiplos_periodo(
+    dados: DadosEmpresa,
+    periodo: str,
+    usar_preco_atual: bool = False,
+    ticker_classe: Optional[str] = None  # ← NOVO PARÂMETRO
+) -> Dict[str, Optional[float]]:
+    """
+    Calcula múltiplos financeiros para uma classe específica de ticker.
+
     Args:
         dados: Dados da empresa
-        periodo: Período de referência para dados contábeis
-        usar_preco_atual: Se True, usa preço mais recente para valuation
-    
+        periodo: Período de referência (ex: "2025T4")
+        usar_preco_atual: Se True, usa preço atual; senão, usa preço do período
+        ticker_classe: Classe específica (ex: "KLBN3", "KLBN4", "KLBN11")
+
     Returns:
-        Dicionário com todos os múltiplos calculados
+        Dicionário com 22 múltiplos calculados
     """
-    resultado: Dict[str, Optional[float]] = {}
-    
-    # ==================== MARKET CAP E EV ====================
-    
-    if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados)
-    else:
-        market_cap = _calcular_market_cap(dados, periodo)
 
-    # ✅ Expor Valor de Mercado (R$ mil)
-    resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
-    
-    ev = _calcular_ev(dados, periodo, market_cap)
+    # Se não especificou classe, tenta extrair do ticker_preco
+    if not ticker_classe and hasattr(dados, 'ticker_preco'):
+        ticker_classe = dados.ticker_preco
 
-    # ==================== LUCRO LÍQUIDO LTM (para PAYOUT) ====================
-    
-    ll_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["lucro_liquido"], periodo)
-    
-    # ==================== VALUATION ====================
-    
-    # P/L = Preço / EPS (Lucro Líquido LTM / Ações)
-    # ✅ Alinha com o padrão clássico (Investidor10): EPS = Lucro Líquido LTM / Ações (ON+PN quando possível)
-    acoes_ref = _obter_acoes(dados, periodo)
+    if not ticker_classe:
+        ticker_classe = "KLBN3"  # fallback
 
-    # EPS LTM:
-    # ✅ Preferir "Lucro por Ação (3.99)" quando existir, pois já embute a média ponderada de ações
-    # e tende a bater melhor com StatusInvest/Investidor10.
-    eps_ltm = _calcular_ltm(dados, dados.dre, "3.99", periodo)
-    if not (np.isfinite(eps_ltm) and eps_ltm != 0):
-        eps_ltm = (ll_ltm * 1000.0) / acoes_ref if np.isfinite(ll_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
+    resultado = {}
 
-    if usar_preco_atual:
-        preco_pl, periodo_preco_pl = _obter_preco_atual(dados)
-    else:
-        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
+    try:
+        # ========== PREÇO E MARKET CAP (ESPECÍFICO DA CLASSE) ==========
 
-    resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, eps_ltm))
+        if usar_preco_atual:
+            preco, periodo_preco = _obter_preco_atual(dados, ticker_classe=ticker_classe)
+        else:
+            preco = _obter_preco(dados, periodo, ticker_classe=ticker_classe)
+            periodo_preco = periodo
 
-    # Obter Patrimônio Líquido (usado em P/VPA, ROIC, Dív.Líq/PL)
-    pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
+        # Ações adaptadas por classe
+        acoes_ref = _obter_acoes_para_classe(dados, ticker_classe, periodo)
 
-    # P/VPA = Preço / VPA (PL / Ações)
-    vpa = (pl * 1000.0) / acoes_ref if np.isfinite(pl) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
-    resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
-    
-    ebitda_ltm = _calcular_ebitda_ltm(dados, periodo)
-    resultado["EV_EBITDA"] = _normalizar_valor(_safe_divide(ev, ebitda_ltm))
-    
-    ebit_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["ebit"], periodo)
-    resultado["EV_EBIT"] = _normalizar_valor(_safe_divide(ev, ebit_ltm))
-    
-    receita_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["receita"], periodo)
-    resultado["EV_RECEITA"] = _normalizar_valor(_safe_divide(ev, receita_ltm))
-    
-    # ==================== DIVIDENDOS ====================
-    
-    dividendos_ltm = _calcular_dividendos_ltm(dados, periodo)
-    
-    # Dividend Yield (padrão clássico) = (Dividendos por Ação LTM / Preço) × 100
-    # dividendos_ltm está em R$ mil (total); converter para R$/ação usando acoes_ref
-    dps_ltm = (dividendos_ltm * 1000.0) / acoes_ref if np.isfinite(dividendos_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
-    resultado["DY"] = _normalizar_valor(_safe_divide(dps_ltm, preco_pl) * 100)
+        # Market Cap específico da classe
+        market_cap = _calcular_market_cap_classe(dados, periodo, ticker_classe)
 
-    # Payout (padrão clássico) = Dividendos por Ação / EPS × 100
-    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dps_ltm, eps_ltm) * 100)
-    
-    # ==================== RENTABILIDADE ====================
-    
-    pl_medio = _obter_valor_medio(dados, dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
-    resultado["ROE"] = _normalizar_valor(_safe_divide(ll_ltm, pl_medio) * 100)
-    
-    at_medio = _obter_valor_medio(dados, dados.bpa, CONTAS_BPA["ativo_total"], periodo)
-    resultado["ROA"] = _normalizar_valor(_safe_divide(ll_ltm, at_medio) * 100)
-    
-    # ROIC = NOPAT / Capital Investido
-    nopat = ebit_ltm * (1 - TAXA_IR_NOPAT) if np.isfinite(ebit_ltm) else np.nan
-    
-    emp_cp = _obter_valor_pontual(dados.bpp, CONTAS_BPP["emprestimos_cp"], periodo, ["2.01.04"])
-    emp_lp = _obter_valor_pontual(dados.bpp, CONTAS_BPP["emprestimos_lp"], periodo, ["2.02.01"])
-    caixa = _obter_valor_pontual(dados.bpa, CONTAS_BPA["caixa"], periodo)
-    aplic = _obter_valor_pontual(dados.bpa, CONTAS_BPA["aplicacoes"], periodo)
-    
-    emp_cp_val = emp_cp if np.isfinite(emp_cp) else 0
-    emp_lp_val = emp_lp if np.isfinite(emp_lp) else 0
-    caixa_val = caixa if np.isfinite(caixa) else 0
-    aplic_val = aplic if np.isfinite(aplic) else 0
-    
-    divida_liquida_calc = emp_cp_val + emp_lp_val - caixa_val - aplic_val
-    capital_investido = pl + divida_liquida_calc if np.isfinite(pl) else np.nan
-    resultado["ROIC"] = _normalizar_valor(_safe_divide(nopat, capital_investido) * 100)
-    
-    resultado["MARGEM_EBITDA"] = _normalizar_valor(_safe_divide(ebitda_ltm, receita_ltm) * 100)
-    resultado["MARGEM_LIQUIDA"] = _normalizar_valor(_safe_divide(ll_ltm, receita_ltm) * 100)
-    
-    # ==================== ENDIVIDAMENTO ====================
-    
-    divida_bruta = emp_cp_val + emp_lp_val
-    resultado["DIV_LIQ_EBITDA"] = _normalizar_valor(_safe_divide(divida_liquida_calc, ebitda_ltm))
-    resultado["DIV_LIQ_PL"] = _normalizar_valor(_safe_divide(divida_liquida_calc, pl))
-    
-    #resultado_fin = _calcular_ltm(dados, dados.dre, CONTAS_DRE["resultado_financeiro"], periodo)
-    #desp_fin = abs(resultado_fin) if np.isfinite(resultado_fin) and resultado_fin < 0 else np.nan
+        resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap)
 
-    desp_fin_ltm = _calcular_ltm(dados, dados.dre, "3.06.02", periodo)
-    desp_fin = abs(desp_fin_ltm) if np.isfinite(desp_fin_ltm) else np.nan
-    resultado["ICJ"] = _normalizar_valor(_safe_divide(ebit_ltm, desp_fin))
-    
-    resultado["COMPOSICAO_DIVIDA"] = _normalizar_valor(_safe_divide(emp_cp_val, divida_bruta) * 100)
-    
-    # ==================== LIQUIDEZ ====================
-    
-    ac = _obter_valor_pontual(dados.bpa, CONTAS_BPA["ativo_circulante"], periodo)
-    pc = _obter_valor_pontual(dados.bpp, CONTAS_BPP["passivo_circulante"], periodo)
-    estoques = _obter_valor_pontual(dados.bpa, CONTAS_BPA["estoques"], periodo)
-    rlp = _obter_valor_pontual(dados.bpa, CONTAS_BPA["realizavel_lp"], periodo, ["1.02.01"])
-    pnc = _obter_valor_pontual(dados.bpp, CONTAS_BPP["passivo_nao_circulante"], periodo)
-    
-    resultado["LIQ_CORRENTE"] = _normalizar_valor(_safe_divide(ac, pc))
-    
-    estoques_val = estoques if np.isfinite(estoques) else 0
-    resultado["LIQ_SECA"] = _normalizar_valor(_safe_divide(ac - estoques_val, pc))
-    
-    rlp_val = rlp if np.isfinite(rlp) else 0
-    pnc_val = pnc if np.isfinite(pnc) else 0
-    resultado["LIQ_GERAL"] = _normalizar_valor(_safe_divide(ac + rlp_val, pc + pnc_val))
-    
-    # ==================== EFICIÊNCIA ====================
-    
-    at = _obter_valor_pontual(dados.bpa, CONTAS_BPA["ativo_total"], periodo)
-    resultado["GIRO_ATIVO"] = _normalizar_valor(_safe_divide(receita_ltm, at))
-    
-    ativos_bio = _obter_valor_pontual(dados.bpa, CONTAS_BPA["ativos_biologicos"], periodo)
-    ativos_bio_val = ativos_bio if np.isfinite(ativos_bio) else 0
-    cpv_ltm = _calcular_ltm(dados, dados.dre, CONTAS_DRE["cpv"], periodo)
-    cpv_ltm_abs = abs(cpv_ltm) if np.isfinite(cpv_ltm) else np.nan
-    
-    estoque_total = estoques_val + ativos_bio_val
-    resultado["PME"] = _normalizar_valor(_safe_divide(estoque_total * 360, cpv_ltm_abs))
-    
-    contas_receber = _obter_valor_pontual(dados.bpa, CONTAS_BPA["contas_receber"], periodo, ["1.01.03"])
-    contas_receber_val = contas_receber if np.isfinite(contas_receber) else 0
-    pmr = _safe_divide(contas_receber_val * 360, receita_ltm) if np.isfinite(receita_ltm) else np.nan
-    
-    fornecedores = _obter_valor_pontual(dados.bpp, CONTAS_BPP["fornecedores"], periodo, ["2.01.02"])
-    fornecedores_val = fornecedores if np.isfinite(fornecedores) else 0
-    pmp = _safe_divide(fornecedores_val * 360, cpv_ltm_abs) if np.isfinite(cpv_ltm_abs) else np.nan
-    
-    pme_val = resultado["PME"] if resultado["PME"] is not None else np.nan
-    if np.isfinite(pmr) and np.isfinite(pme_val) and np.isfinite(pmp):
-        resultado["CICLO_CAIXA"] = _normalizar_valor(pmr + pme_val - pmp)
-    else:
-        resultado["CICLO_CAIXA"] = None
-    
-    ncg_ativo = ac - caixa_val - aplic_val if np.isfinite(ac) else np.nan
-    ncg_passivo = pc - emp_cp_val if np.isfinite(pc) else np.nan
-    ncg = ncg_ativo - ncg_passivo if np.isfinite(ncg_ativo) and np.isfinite(ncg_passivo) else np.nan
-    resultado["NCG_RECEITA"] = _normalizar_valor(_safe_divide(ncg, receita_ltm) * 100)
-    
-    return resultado
+        # ========== MÚLTIPLOS DE VALUATION ==========
+
+        # P/L
+        eps_ltm = _calcular_ltm(dados, dados.dre, "3.99", periodo)
+        if not (np.isfinite(eps_ltm) and eps_ltm != 0):
+            ll_ltm = _calcular_ltm(dados, dados.dre, "3.11", periodo)
+            eps_ltm = (ll_ltm * 1000.0) / acoes_ref if acoes_ref > 0 else np.nan
+
+        resultado["P_L"] = _normalizar_valor(_safe_divide(preco, eps_ltm))
+
+        # P/VPA
+        pl = _obter_valor_flexivel(dados, dados.bpp, "2.03", periodo)
+        vpa = _safe_divide((pl * 1000.0), acoes_ref) if acoes_ref > 0 else np.nan
+        resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco, vpa))
+
+        # EV/EBITDA
+        ebitda_ltm = _calcular_ebitda_ltm(dados, periodo)
+        div_liq = _calcular_divida_liquida(dados, periodo)
+        ev = market_cap + div_liq if np.isfinite(market_cap) and np.isfinite(div_liq) else np.nan
+        resultado["EV_EBITDA"] = _normalizar_valor(_safe_divide(ev, ebitda_ltm))
+
+        # EV/EBIT
+        ebit_ltm = _calcular_ltm(dados, dados.dre, "3.05", periodo)
+        resultado["EV_EBIT"] = _normalizar_valor(_safe_divide(ev, ebit_ltm))
+
+        # EV/RECEITA
+        receita_ltm = _calcular_ltm(dados, dados.dre, "3.01", periodo)
+        resultado["EV_RECEITA"] = _normalizar_valor(_safe_divide(ev, receita_ltm))
+
+        # ========== MÚLTIPLOS DE DIVIDENDOS ==========
+
+        dividendos_ltm = _calcular_ltm(dados, dados.dividendos, "Dividendos_Pagos", periodo)
+        dps = (dividendos_ltm * 1000.0) / acoes_ref if acoes_ref > 0 else np.nan
+
+        resultado["DY"] = _normalizar_valor(_safe_divide(dps / preco * 100, 1) if preco > 0 else np.nan)
+        resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dps / eps_ltm * 100, 1) if eps_ltm > 0 else np.nan)
+
+        # ========== MÚLTIPLOS DE RENTABILIDADE ==========
+
+        ll_ltm = _calcular_ltm(dados, dados.dre, "3.11", periodo)
+        pl_atual = _obter_valor_flexivel(dados, dados.bpp, "2.03", periodo)
+        pl_anterior = _obter_valor_flexivel(dados, dados.bpp, "2.03", _periodo_anterior(periodo))
+        pl_medio = (pl_atual + pl_anterior) / 2 if np.isfinite(pl_atual) and np.isfinite(pl_anterior) else pl_atual
+
+        resultado["ROE"] = _normalizar_valor(_safe_divide(ll_ltm / pl_medio * 100, 1) if pl_medio > 0 else np.nan)
+
+        ativo_total_atual = _obter_valor_flexivel(dados, dados.bpa, "1", periodo)
+        ativo_total_anterior = _obter_valor_flexivel(dados, dados.bpa, "1", _periodo_anterior(periodo))
+        ativo_medio = (ativo_total_atual + ativo_total_anterior) / 2
+
+        resultado["ROA"] = _normalizar_valor(_safe_divide(ll_ltm / ativo_medio * 100, 1) if ativo_medio > 0 else np.nan)
+
+        # ROIC
+        nopat = ebit_ltm * 0.66  # (1 - 0.34 IR)
+        capital_investido = pl_medio + div_liq
+        resultado["ROIC"] = _normalizar_valor(_safe_divide(nopat / capital_investido * 100, 1) if capital_investido > 0 else np.nan)
+
+        resultado["MARGEM_EBITDA"] = _normalizar_valor(_safe_divide(ebitda_ltm / receita_ltm * 100, 1) if receita_ltm > 0 else np.nan)
+        resultado["MARGEM_LIQUIDA"] = _normalizar_valor(_safe_divide(ll_ltm / receita_ltm * 100, 1) if receita_ltm > 0 else np.nan)
+
+        # ========== MÚLTIPLOS DE ENDIVIDAMENTO ==========
+
+        resultado["DIV_LIQ_EBITDA"] = _normalizar_valor(_safe_divide(div_liq, ebitda_ltm))
+        resultado["DIV_LIQ_PL"] = _normalizar_valor(_safe_divide(div_liq, pl_medio))
+
+        desp_fin_ltm = _calcular_ltm(dados, dados.dre, "3.06.02", periodo)
+        desp_fin_abs = abs(desp_fin_ltm) if np.isfinite(desp_fin_ltm) else np.nan
+        resultado["ICJ"] = _normalizar_valor(_safe_divide(ebit_ltm, desp_fin_abs))
+
+        emp_cp = _obter_valor_flexivel(dados, dados.bpp, "2.01.04", periodo) or 0
+        emp_lp = _obter_valor_flexivel(dados, dados.bpp, "2.02.01", periodo) or 0
+        div_bruta = emp_cp + emp_lp
+        resultado["COMPOSICAO_DIVIDA"] = _normalizar_valor(_safe_divide(emp_cp / div_bruta * 100, 1) if div_bruta > 0 else np.nan)
+
+        # ========== MÚLTIPLOS DE LIQUIDEZ ==========
+
+        ac = _obter_valor_flexivel(dados, dados.bpa, "1.01", periodo)
+        pc = _obter_valor_flexivel(dados, dados.bpp, "2.01", periodo)
+        resultado["LIQ_CORRENTE"] = _normalizar_valor(_safe_divide(ac, pc))
+
+        estoques = _obter_valor_flexivel(dados, dados.bpa, "1.01.04", periodo) or 0
+        resultado["LIQ_SECA"] = _normalizar_valor(_safe_divide(ac - estoques, pc))
+
+        rlp = _obter_valor_flexivel(dados, dados.bpa, "1.02.01", periodo) or 0
+        pnc = _obter_valor_flexivel(dados, dados.bpp, "2.02", periodo) or 0
+        resultado["LIQ_GERAL"] = _normalizar_valor(_safe_divide(ac + rlp, pc + pnc))
+
+        # ========== MÚLTIPLOS DE EFICIÊNCIA ==========
+
+        resultado["GIRO_ATIVO"] = _normalizar_valor(_safe_divide(receita_ltm, ativo_total_atual))
+
+        cpv_ltm = _calcular_ltm(dados, dados.dre, "3.02", periodo)
+        resultado["PME"] = _normalizar_valor(_safe_divide(estoques * 360, cpv_ltm))
+
+        contas_receber = _obter_valor_flexivel(dados, dados.bpa, "1.01.03", periodo) or 0
+        fornecedores = _obter_valor_flexivel(dados, dados.bpp, "2.01.02", periodo) or 0
+
+        pmr = _safe_divide(contas_receber * 360, receita_ltm)
+        pmp = _safe_divide(fornecedores * 360, cpv_ltm)
+
+        resultado["CICLO_CAIXA"] = _normalizar_valor(pmr + resultado["PME"] - pmp if np.isfinite(pmr) and np.isfinite(pmp) else np.nan)
+
+        ncg = (ac - _obter_valor_flexivel(dados, dados.bpa, "1.01.01", periodo) or 0 - _obter_valor_flexivel(dados, dados.bpa, "1.01.02", periodo) or 0) - (pc - emp_cp)
+        resultado["NCG_RECEITA"] = _normalizar_valor(_safe_divide(ncg / receita_ltm * 100, 1) if receita_ltm > 0 else np.nan)
+
+        return resultado
+
+    except Exception as e:
+        print(f"❌ Erro ao calcular múltiplos para {ticker_classe}: {e}")
+        return {k: None for k in MULTIPLOS_METADATA.keys()}
+
 
 
 # ======================================================================================
@@ -2577,45 +2590,91 @@ def gerar_historico_anualizado(dados: DadosEmpresa) -> Dict[str, Any]:
 # PROCESSADOR PRINCIPAL
 # ======================================================================================
 
-def processar_ticker(ticker: str, salvar: bool = True) -> Tuple[bool, str, Optional[Dict]]:
-    """Processa um ticker e calcula todos os múltiplos."""
-    ticker_upper = ticker.upper().strip()
-    
-    # >>>>>> SEM EXCLUSÃO - AGORA SUPORTAMOS SEGURADORAS <<<<
-    
-    dados = carregar_dados_empresa(ticker_upper)
-    
-    if dados.erros:
-        erros_str = "; ".join(dados.erros)
-        return False, f"Erros ao carregar: {erros_str}", None
-    
-    if not dados.periodos:
-        return False, "Nenhum período disponível", None
-    
-    resultado = gerar_historico_anualizado(dados)
-    
-    if salvar:
-        pasta = get_pasta_balanco(ticker_upper)
-        pasta.mkdir(parents=True, exist_ok=True)
-        
-        output_path = pasta / "multiplos.json"
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(resultado, f, ensure_ascii=False, indent=2, default=str)
-        
-        csv_path = pasta / "multiplos.csv"
-        _salvar_csv_historico(resultado, csv_path)
-    
-    n_anos = len(resultado.get("historico_anual", {}))
-    padrao = resultado.get("padrao_fiscal", {}).get("tipo", "?")
-    ultimo = resultado.get("ltm", {}).get("periodo_referencia", "?")
-    preco = resultado.get("ltm", {}).get("preco_utilizado", "?")
-    
-    tipo_empresa = "BANCO" if _is_banco(ticker_upper) else "GERAL"
-    n_multiplos = len(MULTIPLOS_BANCOS_METADATA) if _is_banco(ticker_upper) else len(MULTIPLOS_METADATA)
-    
-    msg = f"OK | {n_anos} anos | fiscal={padrao} | LTM={ultimo} | Preço=R${preco} | Tipo={tipo_empresa} | {n_multiplos} múltiplos"
-    
-    return True, msg, resultado
+def _detectar_classes_disponiveis(dados: DadosEmpresa) -> List[str]:
+    """
+    Detecta quais classes estão disponíveis nos dados de preços.
+    """
+    if dados.precos is None or dados.precos.empty:
+        return []
+
+    df = dados.precos
+
+    # Busca coluna de ticker
+    col_ticker = None
+    for c in ["Ticker", "ticker", "TICKER"]:
+        if c in df.columns:
+            col_ticker = c
+            break
+
+    if not col_ticker:
+        return []
+
+    # Extrai classes únicas
+    classes = df[col_ticker].astype(str).str.upper().str.strip().unique().tolist()
+    classes = [c for c in classes if c and len(c) > 0]
+
+    return sorted(classes)
+
+
+def processar_ticker(
+    ticker: str,
+    pasta_saida: Path,
+    usar_preco_atual: bool = False
+) -> None:
+    """
+    Processa um ticker e gera múltiplos para CADA classe.
+    """
+    print(f"\n{'='*70}")
+    print(f"🔄 Processando: {ticker}")
+    print(f"{'='*70}")
+
+    try:
+        # Carrega dados
+        dados = carregar_dados_empresa(ticker, pasta_saida)
+
+        if not dados:
+            print(f"❌ Não foi possível carregar dados para {ticker}")
+            return
+
+        # Detecta classes disponíveis
+        classes = _detectar_classes_disponiveis(dados)
+
+        if not classes:
+            print(f"⚠️ Nenhuma classe detectada para {ticker}")
+            return
+
+        print(f"✅ Classes encontradas: {classes}")
+
+        # Processa CADA classe separadamente
+        for classe in classes:
+            print(f"\n📊 Calculando múltiplos para {classe}...")
+
+            # Calcula múltiplos específicos da classe
+            multiplos = calcular_multiplos_periodo(
+                dados,
+                periodo="2025T4",  # ou período mais recente
+                usar_preco_atual=usar_preco_atual,
+                ticker_classe=classe  # ← PASSAMOS A CLASSE
+            )
+
+            # Salva JSON com nome específico da classe
+            json_path = pasta_saida / f"multiplos_{classe}.json"
+            with open(json_path, 'w', encoding='utf-8') as f:
+                json.dump(multiplos, f, indent=2, ensure_ascii=False)
+
+            print(f"✅ Salvo: {json_path}")
+
+            # Salva CSV com nome específico da classe
+            csv_path = pasta_saida / f"multiplos_{classe}.csv"
+            df_multiplos = pd.DataFrame([multiplos])
+            df_multiplos.to_csv(csv_path, index=False, encoding='utf-8')
+
+            print(f"✅ Salvo: {csv_path}")
+
+    except Exception as e:
+        print(f"❌ Erro ao processar {ticker}: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 def _salvar_csv_historico(resultado: Dict, path: Path):
