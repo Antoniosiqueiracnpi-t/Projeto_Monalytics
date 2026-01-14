@@ -2408,80 +2408,88 @@ function parseCSVLine(csvText, delimiter = ';') {
 
 // ==================== 2. FUNÇÃO loadMapeamentoB3 CORRIGIDA ====================
 async function loadMapeamentoB3() {
-  try {
-    const timestamp = new Date().getTime();
-    // CORREÇÃO: Nome correto com underscores
-    const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/mapeamento_b3_consolidado.csv?t=${timestamp}`);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-    
-    const csvText = await response.text();
-    console.log("Carregando mapeamento B3...");
-    
-    // Parse CSV manualmente (linha por linha)
-    const linhas = csvText.split('\n').filter(l => l.trim());
-    if (linhas.length === 0) {
-      throw new Error("CSV vazio");
-    }
-    
-    // Remove header
-    linhas.shift();
-    
-    // Processa dados
-    const rawData = [];
-    linhas.forEach(linha => {
-      const partes = linha.split(',');
-      if (partes.length >= 7 && partes[0] && partes[1]) {
-        rawData.push({
-          ticker: partes[0].trim(),
-          empresa: partes[1].trim(),
-          cnpj: partes[2].trim(),
-          setor: partes[3].trim(),
-          segmento: partes[4].trim(),
-          sede: partes[5].trim(),
-          descricao: partes[6].trim()
+    try {
+        const timestamp = Date.now();
+        const csvUrl = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/${MAPEAMENTO_B3_PATH}?t=${timestamp}`;
+        const response = await fetch(csvUrl, { cache: 'no-store', mode: 'cors' });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status} ao baixar mapeamento B3`);
+
+        const csvText = await response.text();
+        
+        console.log('📥 Carregando mapeamento B3...');
+        
+        // Parse CSV usando função robusta
+        const rows = parseCSVLine(csvText);
+        
+        // Detecta header para suportar 7 ou 8 colunas
+        const header = (rows[0] || []).map(h => String(h).toLowerCase().trim());
+        const hasCodigoCvm = header.includes('codigo_cvm') || header.includes('código_cvm');
+        
+        // Remove header e linhas vazias
+        // CSV (7 colunas): ticker;empresa;cnpj;setor;segmento;sede;descricao
+        const rawData = rows.slice(1)
+            .filter(cols => cols && cols.length >= 2 && String(cols[0] || '').trim() !== '');
+        
+        // Limpa mapeamento anterior
+        mapeamentoB3 = [];
+        
+        rawData.forEach(cols => {
+            // Suporta 7 ou 8 colunas (com/sem codigo_cvm)
+            const item = {
+                ticker: (cols[0] || '').trim(),
+                empresa: (cols[1] || '').trim(),
+                cnpj: (cols[2] || '').trim(),
+                codigo_cvm: hasCodigoCvm ? (cols[3] || '').trim() : '',
+                setor: hasCodigoCvm ? (cols[4] || '').trim() : (cols[3] || '').trim(),
+                segmento: hasCodigoCvm ? (cols[5] || '').trim() : (cols[4] || '').trim(),
+                sede: hasCodigoCvm ? (cols[6] || '').trim() : (cols[5] || '').trim(),
+                descricao: hasCodigoCvm ? (cols[7] || '').trim() : (cols[6] || '').trim()
+            };
+        
+            // Permite múltiplos tickers por empresa (ex: KLBN11/KLBN3/KLBN4)
+            // Aceita separadores: ; , / espaço
+            const tickers = String(item.ticker || '')
+                .split(/[;\/ ,]+/)
+                .map(t => t.trim().toUpperCase())
+                .filter(Boolean);
+        
+            if (!tickers.length) return;
+        
+            // String padrão para exibição/lookup (sempre com ';')
+            const todosTickersStr = tickers.join(';');
+            // Pasta principal: 1º ticker da linha do CSV
+            const ticker_pasta = tickers[0];
+        
+            tickers.forEach(ticker => {
+                mapeamentoB3.push({
+                    ticker: ticker,
+                    ticker_pasta: ticker_pasta,
+                    todos_tickers: todosTickersStr,
+                    empresa: item.empresa,
+                    cnpj: item.cnpj,
+                    codigo_cvm: item.codigo_cvm || '',
+                    setor: item.setor,
+                    segmento: item.segmento,
+                    sede: item.sede,
+                    descricao: item.descricao
+                });
+            });
         });
-      }
-    });
-    
-    console.log(`Empresas carregadas: ${rawData.length}`);
-    
-    // Expande empresas com múltiplos tickers
-    mapeamentoB3 = [];
-    rawData.forEach(item => {
-      const tickers = String(item.ticker)
-        .split(/[,\s]+/)
-        .map(tk => tk.trim().toUpperCase())
-        .filter(Boolean);
-      
-      if (!tickers.length) return;
-      
-      const todosTickersStr = tickers.join(', ');
-      const tickerpasta = tickers[0];
-      
-      tickers.forEach(ticker => {
-        mapeamentoB3.push({
-          ticker: ticker,
-          tickerpasta: tickerpasta,
-          empresa: item.empresa,
-          cnpj: item.cnpj,
-          setor: item.setor,
-          segmento: item.segmento,
-          sede: item.sede,
-          descricao: item.descricao,
-          todosTickersStr: todosTickersStr
-        });
-      });
-    });
-    
-    console.log(`Mapeamento B3 carregado: ${mapeamentoB3.length} entradas`);
-    
-  } catch (error) {
-    console.error('Erro ao carregar mapeamento B3:', error);
-  }
+        
+        console.log(`✅ Mapeamento carregado: ${mapeamentoB3.length} tickers`);
+        
+        // Debug rápido (exemplo)
+        const petr4 = mapeamentoB3.find(item => item.ticker === 'PETR4');
+        const petr3 = mapeamentoB3.find(item => item.ticker === 'PETR3');
+        if (petr4) console.log('🔎 PETR4:', petr4);
+        if (petr3) console.log('🔎 PETR3:', petr3);
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar mapeamento B3:', error);
+    }
 }
+
 
 
 
