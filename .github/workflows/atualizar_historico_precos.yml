@@ -72,23 +72,38 @@ jobs:
           echo "📊 Estatísticas de Histórico de Preços"
           echo "======================================"
           
-          TOTAL=$(find balancos -name "historico_precos_diarios.json" 2>/dev/null | wc -l)
-          echo "Total de arquivos: $TOTAL"
+          # ✅ CORRIGIDO: Buscar TODOS os arquivos de histórico (padrão historico_precos_*.json)
+          TOTAL=$(find balancos -name "historico_precos_*.json" 2>/dev/null | wc -l)
+          TOTAL_PASTAS=$(find balancos -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l)
           
-          if [ -f "balancos/IBOV/historico_precos_diarios.json" ]; then
+          echo "Total de empresas: $TOTAL_PASTAS"
+          echo "Total de arquivos (classes): $TOTAL"
+          
+          # ✅ CORRIGIDO: IBOVESPA agora usa historico_precos_IBOV.json
+          if [ -f "balancos/IBOV/historico_precos_IBOV.json" ]; then
             echo "✅ IBOVESPA capturado"
             
-            IBOV_ULTIMO=$(jq -r '.estatisticas.preco_atual // "N/A"' balancos/IBOV/historico_precos_diarios.json)
-            IBOV_VAR=$(jq -r '.estatisticas.variacao_periodo // "N/A"' balancos/IBOV/historico_precos_diarios.json)
+            IBOV_ULTIMO=$(jq -r '.estatisticas.preco_atual // "N/A"' balancos/IBOV/historico_precos_IBOV.json)
+            IBOV_VAR=$(jq -r '.estatisticas.variacao_periodo // "N/A"' balancos/IBOV/historico_precos_IBOV.json)
             echo "   Último: $IBOV_ULTIMO | Variação 5Y: ${IBOV_VAR}%"
           fi
           
           echo ""
-          echo "Exemplos de arquivos:"
-          find balancos -name "historico_precos_diarios.json" | head -5
+          echo "Exemplos de arquivos capturados:"
+          find balancos -name "historico_precos_*.json" | head -10
+          
+          # Estatísticas por classe de ação
+          echo ""
+          echo "Classes de ações capturadas:"
+          UNITS=$(find balancos -name "historico_precos_*11.json" 2>/dev/null | wc -l)
+          ON=$(find balancos -name "historico_precos_*3.json" 2>/dev/null | wc -l)
+          PN=$(find balancos -name "historico_precos_*4.json" 2>/dev/null | wc -l)
+          echo "  - UNITs (11): $UNITS"
+          echo "  - ONs (3): $ON"
+          echo "  - PNs (4): $PN"
           
           if [ "$TOTAL" -gt 0 ]; then
-            AVG_SIZE=$(find balancos -name "historico_precos_diarios.json" -exec ls -l {} \; | awk '{sum+=$5; count++} END {print int(sum/count/1024)}')
+            AVG_SIZE=$(find balancos -name "historico_precos_*.json" -exec ls -l {} \; | awk '{sum+=$5; count++} END {print int(sum/count/1024)}')
             echo ""
             echo "Tamanho médio por arquivo: ${AVG_SIZE} KB"
           fi
@@ -118,8 +133,9 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions"
           
-          if [ -n "$(git status --porcelain balancos/*/historico_precos_diarios.json)" ]; then
-            git add balancos/*/historico_precos_diarios.json
+          # ✅ CORRIGIDO: Adicionar TODOS os arquivos de histórico (incluindo múltiplas classes)
+          if [ -n "$(git status --porcelain balancos/*/historico_precos_*.json)" ]; then
+            git add balancos/*/historico_precos_*.json
             git add site/data/ultima_atualizacao.json
             git commit -m "🤖 Atualizar histórico de preços - $(date +'%Y-%m-%d %H:%M') [skip netlify]"
             git push
