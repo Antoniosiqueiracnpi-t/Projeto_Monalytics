@@ -1876,43 +1876,28 @@ function normalizarTicker(t) {
 function obterTickerPasta(ticker) {
     const t = normalizarTicker(ticker);
     
-    if (!Array.isArray(mapeamentoB3) || !mapeamentoB3.length) return t;
+    if (!Array.isArray(mapeamentoB3) || !mapeamentoB3.length) {
+        console.log(`⚠️ Mapeamento B3 não carregado, usando ticker original: ${t}`);
+        return t;
+    }
     
+    // Busca a entrada do ticker no mapeamento
     const info = mapeamentoB3.find(item => normalizarTicker(item.ticker) === t);
-    if (!info) return t;
     
-    // CORREÇÃO: Usar tickerpasta que já vem correto do CSV
+    if (!info) {
+        console.log(`⚠️ Ticker ${t} não encontrado no mapeamento, usando original`);
+        return t;
+    }
+    
+    // SOLUÇÃO SIMPLES: Usa diretamente o campo tickerpasta
     if (info.tickerpasta) {
         console.log(`📁 Ticker ${t} → Pasta: ${info.tickerpasta} (do mapeamento)`);
         return info.tickerpasta;
     }
     
-    // Fallback: lógica anterior
-    const todosTickersStr = info.todosTickersStr || info.ticker || t;
-    const tickers = String(todosTickersStr)
-        .split(/[,\s]/)
-        .map(tk => tk.trim().toUpperCase())
-        .filter(Boolean);
-        
-    if (!tickers.length) return t;
-    
-    const prioridade = ['3', '4', '5', '6'];
-    for (const sufixo of prioridade) {
-        const tickerAcao = tickers.find(tk => tk.endsWith(sufixo));
-        if (tickerAcao) {
-            console.log(`📁 Ticker ${t} → Pasta: ${tickerAcao} (de ${todosTickersStr})`);
-            return tickerAcao;
-        }
-    }
-    
-    const tickerNaoUnit = tickers.find(tk => !tk.endsWith('11'));
-    if (tickerNaoUnit) {
-        console.log(`📁 Ticker ${t} → Pasta: ${tickerNaoUnit} (fallback não-unit)`);
-        return tickerNaoUnit;
-    }
-    
-    console.log(`📁 Ticker ${t} → Pasta: ${tickers[0]} (fallback unit)`);
-    return tickers[0] || t;
+    // Fallback: se tickerpasta não existir (não deveria acontecer)
+    console.log(`⚠️ tickerpasta não encontrado para ${t}, usando original`);
+    return t;
 }
 
 
