@@ -2410,7 +2410,7 @@ function parseCSVLine(csvText, delimiter = ';') {
 async function loadMapeamentoB3() {
   try {
     const timestamp = new Date().getTime();
-    // CORREÇÃO: Usar o caminho correto para o arquivo de mapeamento CSV
+    // CORREÇÃO: Usar o caminho correto do arquivo CSV na raiz do repositório
     const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/mapeamentob3consolidado.csv?t=${timestamp}`);
     
     if (!response.ok) {
@@ -2420,27 +2420,31 @@ async function loadMapeamentoB3() {
     const csvText = await response.text();
     console.log("Carregando mapeamento B3...");
     
-    // Parse CSV usando função robusta
-    const rows = parseCSVLine(csvText);
+    // Parse CSV manualmente (linha por linha)
+    const linhas = csvText.split('\n').filter(l => l.trim());
+    if (linhas.length === 0) {
+      throw new Error("CSV vazio");
+    }
     
-    // Detecta header para suportar 7 ou 8 colunas
-    const header = rows[0].map(h => String(h).toLowerCase().trim());
-    const hasCodigoCvm = header.includes('codigocvm') || header.includes('códigocvm');
+    // Remove header
+    linhas.shift();
     
-    // Remove header e linhas vazias
-    // CSV 7 colunas: ticker,empresa,cnpj,setor,segmento,sede,descricao
-    const rawData = rows.slice(1)
-      .filter(row => row.length >= 2 && row[0] && row[1])
-      .map(row => ({
-        ticker: row[0],
-        empresa: row[1],
-        cnpj: row[2],
-        codigocvm: '', // mantido por compatibilidade (CSV atual não possui essa coluna)
-        setor: row[3],
-        segmento: row[4],
-        sede: row[5],
-        descricao: row[6]
-      }));
+    // Processa dados
+    const rawData = [];
+    linhas.forEach(linha => {
+      const partes = linha.split(',');
+      if (partes.length >= 7 && partes[0] && partes[1]) {
+        rawData.push({
+          ticker: partes[0].trim(),
+          empresa: partes[1].trim(),
+          cnpj: partes[2].trim(),
+          setor: partes[3].trim(),
+          segmento: partes[4].trim(),
+          sede: partes[5].trim(),
+          descricao: partes[6].trim()
+        });
+      }
+    });
     
     console.log(`Empresas carregadas: ${rawData.length}`);
     
@@ -2448,16 +2452,13 @@ async function loadMapeamentoB3() {
     mapeamentoB3 = [];
     rawData.forEach(item => {
       const tickers = String(item.ticker)
-        .split(/[,\s]+/) // aceita ',' e espaços como separador
+        .split(/[,\s]+/)
         .map(tk => tk.trim().toUpperCase())
         .filter(Boolean);
       
       if (!tickers.length) return;
       
-      // String padro para exibição/lookup sempre com vírgula
       const todosTickersStr = tickers.join(', ');
-      
-      // Pasta principal = 1º ticker da linha do CSV
       const tickerpasta = tickers[0];
       
       tickers.forEach(ticker => {
@@ -2466,7 +2467,6 @@ async function loadMapeamentoB3() {
           tickerpasta: tickerpasta,
           empresa: item.empresa,
           cnpj: item.cnpj,
-          codigocvm: item.codigocvm,
           setor: item.setor,
           segmento: item.segmento,
           sede: item.sede,
@@ -2476,18 +2476,13 @@ async function loadMapeamentoB3() {
       });
     });
     
-    console.log(`Mapeamento B3 carregado: ${mapeamentoB3.length} entradas (tickers expandidos)`);
-    
-    // Debug: Verifica PETR3 e PETR4
-    const petr3 = mapeamentoB3.find(item => item.ticker === 'PETR3');
-    const petr4 = mapeamentoB3.find(item => item.ticker === 'PETR4');
-    if (petr3) console.log('PETR3 encontrado:', petr3.empresa);
-    if (petr4) console.log('PETR4 encontrado:', petr4.empresa);
+    console.log(`Mapeamento B3 carregado: ${mapeamentoB3.length} entradas`);
     
   } catch (error) {
     console.error('Erro ao carregar mapeamento B3:', error);
   }
 }
+
 
 
 // Carrega dados do Ibovespa
