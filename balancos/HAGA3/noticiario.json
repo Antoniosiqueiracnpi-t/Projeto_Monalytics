@@ -1,0 +1,33 @@
+{
+  "empresa": {
+    "ticker": "HAGA3",
+    "ticker_base": "HAGA",
+    "nome": "HAGA S.A. INDÚSTRIA E COMERCIO"
+  },
+  "ultima_atualizacao": "2026-01-14T11:24:51.153373",
+  "total_noticias": 2,
+  "fonte": "Google News RSS",
+  "ticker_consulta": "HAGA3",
+  "noticias": [
+    {
+      "id": 214271014863775,
+      "data": "2020-04-03",
+      "data_hora": "2020-04-03 15:49:50",
+      "titulo": "Haga Sa Ind Com (HAGA3) - ADVFN",
+      "descricao": "Haga Sa Ind Com (HAGA3) ADVFN",
+      "fonte": "ADVFN",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5DSWZuLVhUUzdDbEdOYXdlTXBIcEg4eUhPVmlYbWFIRF9TWDFHbmprZkJqZEJkNW9hX2RXcU1ic2pjRWRCd0pLaDBOZUMxYXd4dkZEVnBsOW5aZXAySHNsdDNkbnVBT3d5TVZOSjQ5dncxWTkzVmc?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 72399122873259,
+      "data": "2017-03-16",
+      "data_hora": "2017-03-16 00:01:42",
+      "titulo": "Forum de Ações da Bovespa e BM&F - ADVFN",
+      "descricao": "Forum de Ações da Bovespa e BM&F ADVFN",
+      "fonte": "ADVFN",
+      "url": "https://news.google.com/rss/articles/CBMiR0FVX3lxTE9peHg5MHdmdkY0Zk5scGM5VXRHV0tNTTVDNElsWlNqeUMtVzZfSndwc0VnWmQyaHdhZEJMTm5sLVJ1N29IN2d3?oc=5",
+      "tipo": "noticia_empresarial"
+    }
+  ]
+}

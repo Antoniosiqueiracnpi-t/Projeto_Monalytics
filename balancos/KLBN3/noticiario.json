@@ -4,10 +4,10 @@
     "ticker_base": "KLBN",
     "nome": "KLABIN S.A."
   },
-  "ultima_atualizacao": "2026-01-13T16:26:13.357664",
-  "total_noticias": 30,
+  "ultima_atualizacao": "2026-01-14T11:24:17.465060",
+  "total_noticias": 57,
   "fonte": "Google News RSS",
-  "ticker_consulta": "KLBN11",
+  "ticker_consulta": "KLBN3",
   "noticias": [
     {
       "id": 157736214577430,
@@ -17,6 +17,56 @@
       "descricao": "5 ações para investir e buscar lucros no curto prazo, segundo a Terra Investimentos TradingView – Acompanhe todos os mercados",
       "fonte": "TradingView – Acompanhe todos os mercados",
       "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE0wN0ZWbHB6SnZBQmE0ZWVMTEU5QUtiUlhKcURaUGt6LTZlZm9sOW1EcjliLW1zWWgyTUExOE5MZXFTREpSQW5jR1VxNFJVUkl2aGxyYVhYYWI2bzhCMWZhbk9ONVp0TU5hUEFr?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 147932832819459,
+      "data": "2025-12-22",
+      "data_hora": "2025-12-22 08:00:00",
+      "titulo": "Klabin faz bonificação de ações e muda o jogo do preço médio no IR - arevista.com.br",
+      "descricao": "Klabin faz bonificação de ações e muda o jogo do preço médio no IR arevista.com.br",
+      "fonte": "arevista.com.br",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOSzFlS3RQaDJNaHdWYVZpVFhINWl4R3RuWi1ld1VLaEtHWVNxQlpvajdsdDJZeFQ0ZHhIbXZmdFlxTEFQNVdtTWNTREF5d2UxNnRONVFtREgySU55cWZoV1h6aHk5aTVqSEtwNDZmZmxRUEdtSThKMzVRaVlwelYxelEwWTh0cmR1M1VwSlEwR1hBSDhud01nSHJzeGlkZw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 45366094690148,
+      "data": "2025-12-16",
+      "data_hora": "2025-12-16 08:00:00",
+      "titulo": "Klabin anuncia bonificação de ações e muda o cálculo do preço médio dos investidores - arevista.com.br",
+      "descricao": "Klabin anuncia bonificação de ações e muda o cálculo do preço médio dos investidores arevista.com.br",
+      "fonte": "arevista.com.br",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQNTdvWDBYZVh5dmZmRVAzM3FkekNMNURmNzhHRTB6SnMwTlc0WmU0aDdrU3pSQ0xJQUZwbTloajlCdGZhSF93Mkk3WXhCN1FhOVdiN3BTbDRHV0Fmeng3dExqeHZCc256Y1p3cm1XcV9OajZxQ0loTTNFVE8ybWlRUmdNVXFDa0kzbDExZ3dfRU00eUg3RXY1Vnk1ejFQMGJzWmFVRElHbjdHV2VQTjBicmZDS2M2TXlMZWJDcg?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 230303571660946,
+      "data": "2025-12-15",
+      "data_hora": "2025-12-15 21:33:20",
+      "titulo": "Klabin conclui recebimento dos aportes adicionais em SPEs do projeto Plateau - TradingView – Acompanhe todos os mercados",
+      "descricao": "Klabin conclui recebimento dos aportes adicionais em SPEs do projeto Plateau TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5rd0d3QUU0R2cwNlZ2dTdaUFlucTdmSW03NFRpVUFWd1pJZUZNWHVRU2s2X180eGdKZW53aDRoZVVteUJGQ1M4UFZYelE4NHlNVlBoQURLSUFxQnZSWjRUZlg0X1J6YzhYZ25iNVNITWtJc1BfMzJ3?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 126265412844460,
+      "data": "2025-12-15",
+      "data_hora": "2025-12-15 08:00:00",
+      "titulo": "Klabin (KLBN3, KLBN4, KLBN11) alcança classificação Triple A no CDP em Mudanças Climáticas, Florestas e Segurança Hídrica - Visno Invest",
+      "descricao": "Klabin (KLBN3, KLBN4, KLBN11) alcança classificação Triple A no CDP em Mudanças Climáticas, Florestas e Segurança Hídrica Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxPckhHdkhmVDhRaDdURDFwRlFuUGRBbVgtaUxMVF9VdGJRTjhYRVVlVTBqY0E0OFBUWjhMZEdyTTJoa0MtaDR3dHplZ3RSVExfdmpYanRsOFBiZjlUQ0xQWm50U29rNUJiSlFhNGhzbDJDR3RGVUJOMlA0R3pRaENGOGhkZVNkaW5TMFVVUC0zTEVfSXlFTWpHa0ZiU204Vzl6U3l5VUtFcEE0eTNzSThTLWxvYVVfY2ZuU01TSEJLQmdEbU8ySnZQR29DbTJSVzVFRFNwb3hndHhrT3UyeHQ3cUgzUS1oMzdCUGc?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 62002497685541,
+      "data": "2025-12-15",
+      "data_hora": "2025-12-15 08:00:00",
+      "titulo": "Klabin (KLBN3, KLBN4, KLBN11) conclui recebimento de R$ 1,2 bi nas SPEs do Projeto Plateau e totaliza R$ 2,7 bi em 2025 - Visno Invest",
+      "descricao": "Klabin (KLBN3, KLBN4, KLBN11) conclui recebimento de R$ 1,2 bi nas SPEs do Projeto Plateau e totaliza R$ 2,7 bi em 2025 Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNOE9PY2RhSkdzOEdoVUxtbTdYanBPM0JfN3ZZOXRkSk5aaXFWNFdiRF9oanYzN1NoVm00eXdYYUoyNDBmYndWR1VCMW41cjNSbXl2REV3M1pueGR2ZHVHWGJhUXRHcXRKOXpzQkFWcXdQV2I4LVJEQXdxbUtkUUdXbzE1eDVuMjF5NC1ZSE8zNHlpaDAwM2dVa0QyOGZGUzZ3ZVphaVdGRUI0QVVudjYybjdXUUpWNEtIWEtYakJXOXpYS013bTFNV2ZyaTY1LTRDTlFodWE5R1F6VDJoY1ROdFdDWQ?oc=5",
       "tipo": "noticia_empresarial"
     },
     {
@@ -60,6 +110,36 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 244863620470811,
+      "data": "2025-12-09",
+      "data_hora": "2025-12-09 08:00:00",
+      "titulo": "Klabin prevê investimento maior em 2026 e custo caixa abaixo da inflação - TradingView – Acompanhe todos os mercados",
+      "descricao": "Klabin prevê investimento maior em 2026 e custo caixa abaixo da inflação TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5rT1k0bFFDc3hjd0dBeUFZQVNJdDZaalhybDZzYVhJeFNIbXlwdTlWTVRMaVlrME83Zml0WkYzeXoteFFfRUdjbUFGQ2wxdnZxQ1E0ejZFV0ZiS2w3OTZPejhVbUFVQXhPejluNThZQjlxb2ZCMDN3?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 44797417138506,
+      "data": "2025-12-09",
+      "data_hora": "2025-12-09 08:00:00",
+      "titulo": "Klabin (KLBN3, KLBN4, KLBN11) atualiza capex (R$ 2,9 bi em 2025; R$ 3,3 bi em 2026) e projeta custo caixa de 2026 entre R$ 3,2 mil/ton e R$ 3,3 mil/ton - Visno Invest",
+      "descricao": "Klabin (KLBN3, KLBN4, KLBN11) atualiza capex (R$ 2,9 bi em 2025; R$ 3,3 bi em 2026) e projeta custo caixa de 2026 entre R$ 3,2 mil/ton e R$ 3,3 mil/ton Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMihAJBVV95cUxNVVNHdy1iREVyQkk5OG5LX21pYktocklScWl4eVpYdWhaMW1Zb1Jjdy1Uak5ybEMwcUNqVVF5ZzRYWFBSenZiZ1ZzaFhHSk40Tkk2Mlh3aTFTbWpBeUtsTWR6QWtWQmV5SFRCdGhxVUFJMEJoZWZiSDl5MnlyN3JUQW5xQVQtMlVPT3l2dWZwM3Q5b1FBOEUyMmdqMkxWbDlYamtpUldwSExxRkN5bTdENUpSWUo5ZkdnRU4yeGtobjlBb2RmaHZicWhndDJvNWEtQUpYa0x1dUkxeUlLV2s3UEJDczdaMHd6TVpyTXRMbDhKRE9VbFVUeUVZZjFWejZzQmJURQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 149083803546322,
+      "data": "2025-12-09",
+      "data_hora": "2025-12-09 08:00:00",
+      "titulo": "Klabin vê capex total em R$2,8 bi em 2027; R$2,5 Bi em 2028, e entre R$2 bi e R$2,5 no longo prazo - TradingView – Acompanhe todos os mercados",
+      "descricao": "Klabin vê capex total em R$2,8 bi em 2027; R$2,5 Bi em 2028, e entre R$2 bi e R$2,5 no longo prazo TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5EVlhkRXFSZm9vYWVsczNTbURDNWxKT1pUVnNwXzR5dUZLWlZhVHJxaWJDaXJpbTJjRFdBdVZiSVVVOFlqeDZFeWIyZmFucWdKcEFHd1lqTVF3bm1wdVFQZk5SV2VKdU9zYVNxZHFCLVRhTEItT0Zv?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 74863047939638,
       "data": "2025-12-08",
       "data_hora": "2025-12-08 08:00:00",
@@ -90,6 +170,36 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 137364318774659,
+      "data": "2025-12-08",
+      "data_hora": "2025-12-08 08:00:00",
+      "titulo": "Klabin pagará R$ 1,1 bilhão em dividendos; veja quem recebe - Valor Investe",
+      "descricao": "Klabin pagará R$ 1,1 bilhão em dividendos; veja quem recebe Valor Investe",
+      "fonte": "Valor Investe",
+      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQUURPY19zWEZlOUNyUzJ0RjhycGlHUms5WXdkQnI2Y01LcmlmY3Nfemo2TTU1UllwemR4T1dBR3Bfa0xDT0dPNFl3WmxnV1U1TWhYRldpdWFFS1hMV2ZzV29ndVg5YmhqZDNfellianVhMXRpT190S2dscUp4NXRwSDZNNEdwaFRZS2x2alBlTTJlcmZPVG1HNWVnQ3pjM3pKWHJpQkxkOENHZXpKaHhwajdLX0cwcklvRU84QkFOc3QydTh3aW5wUU1zcUdTLWdEU2w1cVNYT2VSeXRLZmfSAewBQVVfeXFMTVg1X09sY0liOFViNWppQTRaTktXc3IzNWI3aXJIUGgzV1dnWTZua0FGeXI0ZmtKdGFWWlJSd0ZwaWYzS0RxTlljRzRoUkJFNGI5VU9rd21ZVWQ1a3d1T0syR0RMZ29CcDJWSHRXX0pfSlFPZTRlS2tFTkxwNzFqWE45MXlDU2ZBam5jclJvWWFScks5eEhld1Z5NmNqdG91d0kxSlB2RnB6bE9FcFpMYkZKdnZOREhKWWpoUV9McGhxZ3RiOVRUbFI3RkNxSk5VWmZwRVpVbS1lNTY4VTZBckhYS2dtQXpYMEVEcjM?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 25274481614053,
+      "data": "2025-12-08",
+      "data_hora": "2025-12-08 08:00:00",
+      "titulo": "Klabin (KLBN3, KLBN4, KLBN11) aprova R$ 1.112.000.000 em dividendos e bonificação de ações de R$ 800.000.000 - Visno Invest",
+      "descricao": "Klabin (KLBN3, KLBN4, KLBN11) aprova R$ 1.112.000.000 em dividendos e bonificação de ações de R$ 800.000.000 Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQVG9Kb3BIWnVKZ2dCVUoyYUZ3QktkZ3ZqcERFUk1UV2gwWTE0ZGlhSTd2UUZYQll4M0VKVkFuWEZ3QlBLdFF6blM5SUpVdkdkNnVDcmtmSEptTjdPYThSRm44X3FFOC1UeU5JMUhvS2J5M0dRS2xDMENLM2psV3oteWdzMDZKODNTUjJEd0VNT3FkV1o2eVp6TDNlbE03b3JaRjM3MGRmMHlrUEtYTTgwY3NYS08yNWtPOGFMTzlZU0t0ZlYtWlRNS3BlYnVCNXVfek9hakdpNA?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 209572582478212,
+      "data": "2025-12-08",
+      "data_hora": "2025-12-08 08:00:00",
+      "titulo": "Klabin aprova R$1,1 bi em dividendos intercalares e aumento de capital com bonificação de ações de R$800mi - TradingView – Acompanhe todos os mercados",
+      "descricao": "Klabin aprova R$1,1 bi em dividendos intercalares e aumento de capital com bonificação de ações de R$800mi TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1iOXRoaXpmWUMzQ3U0MDBNSV9OSzNRRC03S1ZwQWNCeVdpVDA2alh3WlppdHBuelBDVVYwZVZfYU1nREFWOEVvUkJud2ctSzByelBtNHlhelpaVE1NMmhFQ1dCM0tYNkNiSk1QeEFIWVBweUZzMnlJ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 46828015344816,
       "data": "2025-12-04",
       "data_hora": "2025-12-04 08:00:00",
@@ -97,6 +207,16 @@
       "descricao": "Klabin (KLBN11) elege Gabriela Woge como CFO InfoMoney",
       "fonte": "InfoMoney",
       "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPQU0zOXZ3QjZ2blJ4NzNqMi1TbUtsLW4tRkJGNU1MVllxbTYxVllrWjNkR01raU9yMjg1dVJ2OXdrby1qTjVOMzJ4YUFZQmR5bml3Vml5cGRWTmFwNzVEb0o4R3psakRwSnAyaDhmYjFmQVN4WWE3ck9fLU5rNHpJOC1ubTQzczdI0gGOAUFVX3lxTFBkTU5aQWtZc0J0LV94TXNhWm50ZGxOTVg4T29kVm1hSmNYeTE2Z1FyRkI1U2c4N0hPOUVob0hmMUVpWEliZ2ZDeDFRRHdGY3lYeFhscTZDNk83RUswdmdCYUtYck80MHd6UU5tVnFuV1ZhM3BUTkxhMkVteHhwT2pzS3dyRmVFenppczZTc1E?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 162700077095330,
+      "data": "2025-12-03",
+      "data_hora": "2025-12-03 08:00:00",
+      "titulo": "Klabin (KLBN3, KLBN4, KLBN11) elege Maria Gabriela Woge como CFO e DRI e cria diretoria de Papéis para Marcos Ivo a partir de 01 de janeiro de 2026 - Visno Invest",
+      "descricao": "Klabin (KLBN3, KLBN4, KLBN11) elege Maria Gabriela Woge como CFO e DRI e cria diretoria de Papéis para Marcos Ivo a partir de 01 de janeiro de 2026 Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMijgJBVV95cUxQSzdaYVdBeVQ3YmJYQ3IwR0pIcU1uNGZqeXh5Q3E1anZENm5JaktiUHRNR1JZR3AyTnBsZzZNSk9xd2trUVVPLWFRZW1JU0FHUXpaZG9EdEkxWnhWemJJcU5HX01VeDdDaFFUWHVYMW1adzR4MkkxSlpLRlFJNGFQOE9iLUdVRjBkMUtSYllOWjZNWGZJWG1MMTBPVU0yLTVXaXhxbXJSYnlUMTZLd2FxMEFraFFIMXBPR2ZDblUzSXhKRFpWUXZFTXlMRGJJbkY5Mm5DZXJUMDNkc2JuUkFJbWtiNEhFUEJQOEpUZG9UVk9KcmNOd0N0UjNaTGtkZC1VS3Y0MS05SXNVaDJuTmc?oc=5",
       "tipo": "noticia_empresarial"
     },
     {
@@ -110,6 +230,16 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 99509415653273,
+      "data": "2025-11-19",
+      "data_hora": "2025-11-19 07:04:47",
+      "titulo": "Klabin paga dividendos em três classes de ações nesta quarta-feira (19) - Estadão E-Investidor",
+      "descricao": "Klabin paga dividendos em três classes de ações nesta quarta-feira (19) Estadão E-Investidor",
+      "fonte": "Estadão E-Investidor",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxObzlFS0xfTGVJOG9YMTVxS1ZnZi0tTlBJX2w0dEFwSm1BQmVCdXFiM0pjU3J0NDVFdW9RbTA3aFIwdkFsQnY1Sy1qN1VBNm1EVjVmQmRIM2RPelgxRmZOVmVQUURTWW01VXFRTHBkZGs2c3VXYzJ6VGxYbGVUVF9Eem81cGJHZ0RON0kzanFsQ3RnUXgwd0x5TzE4bmVQVVpTSjRkeVVPem5MTFZCRlY3LUZsQdIBuAFBVV95cUxNenBielphU195N1Zvd1NzQm1yeHg0MC13cThrX0R5ajBfVFVRY1Exdmw2Yi1DQWx0VGVKWFRfYUVrVlNTaFdQdTIxazl0REhfTjJNWVMza2JsOTJqSkJWSms5bEx6aGIwN29TUUUtYmYxWENFOHNoSDZpT1AyRmpvV2ZCRjg1VDd1YTgwNW9POUN6OHlCTkd2WWxtbk5zeHhvNGxHNkVrN25zVjAxTXRYYVJYSFctVm9F?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 14511840102955,
       "data": "2025-11-10",
       "data_hora": "2025-11-10 08:00:00",
@@ -117,6 +247,16 @@
       "descricao": "Jefferies vê ações da Klabin (KLBN11) baratas e com potencial de alta de quase 40% Valor Investe",
       "fonte": "Valor Investe",
       "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxQSi0tamVreWVxVkUyTTJzeDNTN0RZMTdYejIyVHNwY3JJTEc4YzJLQldqRjhSLTlwTDZwVkdBNGtMUnhON2lpNk03R0tMUnVrcEtfUmxsV3laTWxOT2hKOVVmOGRQQXVUaWdqQVJOcHVXREZxVGpwcmF6dWF1X2p0R0E5UldKaGNQdnRRRjBwZlBJZEdQVkhvMW80X3lfUV9NdzZYdklzanFUS0VJU0FyeGE5RGpfSUtuZDhYSVhjZnQ4NU1NT2VMeHl6VXNrdVdzNzZDTlBBV1dER0FBNVNyUmNCTDhOVklTd3RDYW9QaE9mRExsN04tU2p1X0ZvMEdwN2pnU2R3?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 56965706779436,
+      "data": "2025-11-07",
+      "data_hora": "2025-11-07 08:00:00",
+      "titulo": "Klabin (KLBN3, KLBN4, KLBN11) revisa políticas: alavancagem em ciclos até 3,9x e payout de 10% a 20% do EBITDA Ajustado - Visno Invest",
+      "descricao": "Klabin (KLBN3, KLBN4, KLBN11) revisa políticas: alavancagem em ciclos até 3,9x e payout de 10% a 20% do EBITDA Ajustado Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNVzk3eWdkSno3OVo2OFZMMUtLY0dQYkpJOFpQX085Vmd6VEdhdXlZZXNidTB2WUt0VXVLRGFlVDRlRW5FT1JFZndRYXR5cVl0ZEg1VmxLSGpGdkl3QTJtbms0WUlmUlVpdUhNbXRWd2c5REtyLTdHV29wRUxPVVVmblVlZEJONWtGYVBtMDY5eUY2QnltcGRBdDBXbUc2QmlqaDktYlpYU0FUS1BVcV92bTZUcTZQTnlOYkQyNXB2aDUteFJpMzMyYlFkSnhOMk9BRnlwdTRreWdQSFd3N3ZlbTNlVQ?oc=5",
       "tipo": "noticia_empresarial"
     },
     {
@@ -190,6 +330,16 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 260020009760537,
+      "data": "2025-11-04",
+      "data_hora": "2025-11-04 08:00:00",
+      "titulo": "Klabin (KLBN11) anuncia pagamento de R$ 318 milhões em dividendos mesmo após queda no lucro; veja detalhes - Money Times",
+      "descricao": "Klabin (KLBN11) anuncia pagamento de R$ 318 milhões em dividendos mesmo após queda no lucro; veja detalhes Money Times",
+      "fonte": "Money Times",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQV19RX2dxODVQdlZrcE43b3JQU0NVUmQ1Uy1nR1FKZEtiblhGTEdSOHNXemFtMVFUeHdGS0l3UVJDSUFXZlgweFUwanQwSUdoMHhEaEhsSUsta1c0Z1pJaVdNTlFYUHc5aUVnT0czX053eW83NXE3ODh4bk9oZnZPYlFYNWV2S2RBOFlUdGNzek1GVGZUZUlRYzl4RjVsdHlSZmJ4dDZYT2xraDJuck9VblFFNzhZUkpDTjBVT2xWMWY4UQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 178247306661567,
       "data": "2025-10-23",
       "data_hora": "2025-10-23 07:00:00",
@@ -220,6 +370,16 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 115831774559627,
+      "data": "2025-10-07",
+      "data_hora": "2025-10-07 07:00:00",
+      "titulo": "Klabin realiza liquidação antecipada integral de empréstimo sindicalizado com vencimento em 2028 - TradingView – Acompanhe todos os mercados",
+      "descricao": "Klabin realiza liquidação antecipada integral de empréstimo sindicalizado com vencimento em 2028 TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9SSzZQaDFEcmlKY2Y3SWE0b054SDNlZEhnM3NyQUstNVBmQW9JWUFxTzFZVzF5X3lMSk9JWjBhZ3RGZXJXcFlaemtTOHk2TVItQzUwQ0xSY3dTUU5RUV9FQXNFN2owZGFqOEsxeXpId0xPSWZKWjFZ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 51510122522400,
       "data": "2025-09-23",
       "data_hora": "2025-09-23 07:00:00",
@@ -227,6 +387,36 @@
       "descricao": "A valorização do real é ruim para a Klabin (KLBN11)? Veja impactos suno.com.br",
       "fonte": "suno.com.br",
       "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQVW8tT0h5R0JjRDF6V1Jsazk5c2FUdFRjc1d6dnh4TDE3RmNHM3RLZllvVFIzLTNoOW1fdFRnRmxsRVJHeVhQYWd1cEpWZHdIaGV1Q19pODREMldpU3NRazYzWk4xazIwTUprRktlV3pDa2dUeXFwMEdrMlhWTWlsbnBR0gGHAUFVX3lxTE9EOUhZbFBVelNHbDE0UjFxSmxZa2xwY2xmdTFTRDZMWnRGR1YtSWlubURpaWRDb1VJMExpU3VMUkxNMTlta1laRXZfejlzakR3N1VYaEl0bVRXV2FVRjVVMmctRHB3RTlHS0xwLWVtcjRObFZSUHZuTkEzT3d1TldsWDRyVkoyaw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 63000682609317,
+      "data": "2025-09-19",
+      "data_hora": "2025-09-19 07:00:00",
+      "titulo": "Setor de papel e celulose: análise completa de Irani e Klabin para investidores - arevista.com.br",
+      "descricao": "Setor de papel e celulose: análise completa de Irani e Klabin para investidores arevista.com.br",
+      "fonte": "arevista.com.br",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQd3o1Y20zLXgzUndrNG5oSlpwR1Axazl3THozM2VJc044MGtKTHJvc3c4aXlidmlfeXRJWWtPSkdyT1l4Q1hfQzI1S2VVRi1CMUlETFNEa1B1TVZ0OE1OZHVjTklHS3ZLcS1neWNlRFlvUEJRNHZVTTdaVUk0V1ZDaWxPWWdhbWhOZ1NOLW02TzBvenkxQW9xbmgyQVp0bkF1UGM3Qkp3c0NsbE9pb2tKOGI1MExjM3BVUlIwZlFR?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 82818734324000,
+      "data": "2025-08-13",
+      "data_hora": "2025-08-13 07:00:00",
+      "titulo": "Klabin (KLBN3, KLBN4, KLBN11) firma memorando para criar 2 SPEs imobiliárias; aporte de 30 mil ha e R$ 600 mi - Visno Invest",
+      "descricao": "Klabin (KLBN3, KLBN4, KLBN11) firma memorando para criar 2 SPEs imobiliárias; aporte de 30 mil ha e R$ 600 mi Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxOLXdEZDVnTDRLQ1V6SGFIVUNYdWdoR01fdVY5X3lZMGNGelRjM2VzWUlHaGtrV3lHeF9WN3VTakFzNEx4ckNUTllnVGVDY29aeFo4QkYtdlI1N05mSlp0alcxV2t1Y200WmFSYi1oNFViZ0VnYmtzc1RhNk1zdnVvWXVHalRGOWtybnNjdU9mc2xIOW1vTjRHdXo1WmhmYkNIcE5RV0pjc1h1NGl2Qko2Z2tDemhsR2ZOUmFpRjhQaUpRa000TVlrbXAzWmdlT3FMMmI3OEg2NA?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 144363013410314,
+      "data": "2025-08-07",
+      "data_hora": "2025-08-07 07:00:00",
+      "titulo": "Klabin (KLBN3) reapresenta oferta de CPR-F de R$ 1,5 bilhão com rating AAA - Visno Invest",
+      "descricao": "Klabin (KLBN3) reapresenta oferta de CPR-F de R$ 1,5 bilhão com rating AAA Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQMVFCME9xNFJIVng1VXk5UFlzM1JBV1VwZzg1RWlCeWlCMUNyYTkxNUdGR05pOEtNMVFZNlpxN3BXTldPdXZVOXZDZE1lM2RRT2FFU2I5SDJhQVhycEw4TERwN2NjVG1PYzZvdmpxMnAwSEtFNV9YQlA2VHBTMmlJNUt4ZUdNRFpWNnlXQ2RJUm9pZ1BfTTJDSXJOMEpYTnNuVHRhY1JabWUzbjA?oc=5",
       "tipo": "noticia_empresarial"
     },
     {
@@ -290,6 +480,16 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 179547088402586,
+      "data": "2025-08-05",
+      "data_hora": "2025-08-05 07:00:00",
+      "titulo": "Klabin (KLBN11) lucra R$ 585 milhões no 2T25, alta de 86%, e anuncia pagamento de dividendos - Money Times",
+      "descricao": "Klabin (KLBN11) lucra R$ 585 milhões no 2T25, alta de 86%, e anuncia pagamento de dividendos Money Times",
+      "fonte": "Money Times",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNSWZFWFJIMWpNemw4Z1dDZldvbF9VWlR4VWxTaHBYZmU5eV9PMDBLZTV0c05JdzFBSUFZVW11ZEdCTW41WlFOMlFPNUFVUXhsakR4ejhFZndPYkV6Y1ZZWU1VMWYtYXdoVlQ3UzZLWHNfanFSYkxzSk9vWThOOUtwWE1KLTZvWno3a0FZU29OM0hoZkR3cFI3dU9OdU9lN2p5cnZ0QTY3ZEpLQUNMTURWSzVyQV9RREhMc3ZVcUh2dw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 225338046129205,
       "data": "2025-07-31",
       "data_hora": "2025-07-31 07:00:00",
@@ -300,6 +500,66 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 216830086488658,
+      "data": "2025-07-23",
+      "data_hora": "2025-07-23 07:00:00",
+      "titulo": "Conselho da Klabin aprova emissão de R$1,5 bi em cédulas de produto rural - TradingView – Acompanhe todos os mercados",
+      "descricao": "Conselho da Klabin aprova emissão de R$1,5 bi em cédulas de produto rural TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9EWEIwR2luOE9FeGphN1NZMnlxX0xxc0gxQ1RTYVJqaEpOb00zNlhneHhMMjdvTVNyWjdzMEJoX0ZoWlFXZWRhSlBnem54TnhJR0RlUmgzNUdHYkN2WjM0MUtyeDVXa2NGYXZScHg5bE5lZHg4R3RR?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 264381922651753,
+      "data": "2025-06-12",
+      "data_hora": "2025-06-12 07:00:00",
+      "titulo": "Klabin (KLBN3) mantém rating BB+ da S&P com perspectiva estável - Visno Invest",
+      "descricao": "Klabin (KLBN3) mantém rating BB+ da S&P com perspectiva estável Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOVmt0VzhsV1pzVlV4ZDBERlZNTjdNSDdicnBCTFdiNVVKVF94cGh1ZXNWbjRXWWFjLWx4ajFsR01sbDJBZm1fNnVULXI3R2w2SzJDaUNSVnN4cktrXzRsZnlSODhScTQ1NkpmbmdvZkJZQ0NkRDhnVU5TRzNHbGYzRlMzV050TmFWRWZoWFFyQk9TallDOW95a3RCYmZ6UQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 47818712757243,
+      "data": "2025-05-21",
+      "data_hora": "2025-05-21 07:00:00",
+      "titulo": "Dividendos hoje: Klabin (KLBN11) paga R$ 279 mi em proventos nesta quinta-feira (22) - Estadão E-Investidor",
+      "descricao": "Dividendos hoje: Klabin (KLBN11) paga R$ 279 mi em proventos nesta quinta-feira (22) Estadão E-Investidor",
+      "fonte": "Estadão E-Investidor",
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPM3ZNTlhQbENTcWFEcmZaZExoU2xjZGlaTTllZVVSNHpxdmdFTEN2MGN2ZlFsWVo3VGZVREJCdDRfTFlyWnNwRTJ4eFlXQVRGRDAxTGVieVBURTlvQTFfNWRuTi00ZnZYX0pnZnphM09ybTFETEtNZ0VaNUJEMkdMQi1zR1Jvd0xQZERLTFV4MDVSZ1NtWXJ6SjF6dDlEYmo3Q3BWcGxxWUPSAa4BQVVfeXFMUFcxQUJ2ZG15dTl0TUJudXo2NHN1Z2FDNXk3UEZUM2JhQjJJd0owWHROaC1jWi1zMTJyZFRkVFBqbTZxYjdaOTBjdkNWZ3ZkM3hUdlB1dHB3U2ZicktPRW5NcHplc0tjc0dtUnhZSDA1SF9LalJZYl9ZWURveUwxWkJqZ3lTbkdRMGhYeTVUUGlsUEVGblduUVdtVHJ0TGNuSjVMR05DSlFSR09HMXBB?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 123025239889178,
+      "data": "2025-05-12",
+      "data_hora": "2025-05-12 07:00:00",
+      "titulo": "Prazo para garantir dividendos da Klabin encerra nesta terça-feira (13); veja quanto paga por ação - Estadão E-Investidor",
+      "descricao": "Prazo para garantir dividendos da Klabin encerra nesta terça-feira (13); veja quanto paga por ação Estadão E-Investidor",
+      "fonte": "Estadão E-Investidor",
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNazJsd2RKVU1HSlBtOFVGY2FVX3B4X2E5Ty1oR085RU5aeS0tRkc2azNRWmlSdVUzXzFwTUFWYWNjQ0tuTlF1VDAyQ0pSa1QxLVVSQnA2QU51MHpNeEpvb1h4UGtkU2tlQi14UjBKNjc0TzZzQTNFUG04R1NJZHJwWGJnbDF1WGtNWUJ6V0FB0gGTAUFVX3lxTE1yYzE5ejBlRDRJQzdpaktnU3NLTER6NHU0eHJ6WDdTbl9IZkJGYmFBYXdRTmFHbmxNc3gtZEQyX1o3QllrQTgxWmJmdHYzT2dFVjJCNlRRckhBTDhJNkcyOElocVJ2enVwT3hYOWRoTTY1c3R5dWdYSDlFTy1KVEdCTjEtNFA4UmlUTklVNlNwWm1ldw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 206458720031330,
+      "data": "2025-05-09",
+      "data_hora": "2025-05-09 07:00:00",
+      "titulo": "Dividendos da Klabin: descubra como receber e o histórico de pagamentos - Toro Blog",
+      "descricao": "Dividendos da Klabin: descubra como receber e o histórico de pagamentos Toro Blog",
+      "fonte": "Toro Blog",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE52WXNtVGF5RjBXU2djSWY3ZDFNUTlUYnBJb2ZpZnNXa3NqdXc2ZG9oTzYwVEhydHFsYkhnWEs0X0E0UEY2bEtMQ08tS3BkbTZ5c1Zha1VwMGRJN1pWbVRmdU13dm5iSWlIeGNMajFHbUxyeUE?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 53648594291568,
+      "data": "2025-05-05",
+      "data_hora": "2025-05-05 07:00:00",
+      "titulo": "Klabin (KLBN3, KLBN4, KLBN11) integra índice de sustentabilidade da B3 - Visno Invest",
+      "descricao": "Klabin (KLBN3, KLBN4, KLBN11) integra índice de sustentabilidade da B3 Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPMzVncGswc0d6V0V1enlsZTh3bUVKS3Fyb2trWmtoMHpZRGJpSW1BWDMzbjRoRE1zS1kwcU13ZGpDcWpJVlE4V25uemFVWldYZmhYSmFWQlFTZGlFQmpVR2FmR3RoZnVmZzV1ODdOa1lIUXRKbVJGVUhPUXpkN3BtSHM2d3hnN1ItcXk4TjM5Yk9Wa2lTQVc1ZnV5UjZHOWlKRmNKQk5R?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 238404500948350,
       "data": "2025-05-04",
       "data_hora": "2025-05-04 07:00:00",
@@ -307,6 +567,16 @@
       "descricao": "Klabin (KLBN11) | Prévia 1T25: A queda das ações esse ano foi exagerada? Genial Analisa",
       "fonte": "Genial Analisa",
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNcFRpcG9Sd29wQUJBbmo3bXF6QnMzQzI1WXU3U21KeG5TNmhKeU1lbDdCSnZDUXZZRXpqY2MwSG5zSWZmc0ZleFQ5M2pNajN0XzQxOUdiS2FSOHMtSHNQWklmSTBYbElzRF8teGJreEJJN3BJQjJSY2NrUmd2azRkUV9tZ21DZVRDMFpneG5mRlNSeDhDajBLblkwTTNDenZJRlZodTM3LVMtME5HZnhVVlU0U0JXU080ZEtfX2Q4bw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 149904008011540,
+      "data": "2025-03-11",
+      "data_hora": "2025-03-11 07:00:00",
+      "titulo": "Dividendos hoje: Klabin (KLBN11) paga R$ 54 milhões em proventos; veja quem tem direito a receber - Estadão E-Investidor",
+      "descricao": "Dividendos hoje: Klabin (KLBN11) paga R$ 54 milhões em proventos; veja quem tem direito a receber Estadão E-Investidor",
+      "fonte": "Estadão E-Investidor",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNV2MwMzdzMXJxX2ZYbmZhRmJ5UG95c2VLTU4wcEhwYks3ZEF5ZUlkRFN1MU1IZEtJWVJVSlRKdFA2Q1ZQS1owRXBEeXZnSXNMMTZ4ZHljVmJZQTJrUTQ0dEtROGFUSkJpX2cxU2RNUnNpbWh5eUIwaTl0OWtjSWFCQ044bEZCb1Zqb1pWeFNtM3J4aXZOajJUVnBqTUVnc0JlS1JyU2JSNNIBrAFBVV95cUxNWkt1dTY1d1BiT1U3dnI0RTdLandRUmhSLURkV0hTV0RJNmFUU1B3UnptZDdQaENIcG95bUlZR2ZzSDdxNmZaMUFIbmF1aXVjUkVzVUdXeUlibUdLaU9teVUtYmo4eGRHNm5ybWpUR3BYWVYwaU1HZ2Y4WDBVdkZid2VPTkhOR0VSM0h0U2xuR3JGMjRFaWwwS1JvNXVBNk5ad1VPSmFKcGUzalpT?oc=5",
       "tipo": "noticia_empresarial"
     }
   ]

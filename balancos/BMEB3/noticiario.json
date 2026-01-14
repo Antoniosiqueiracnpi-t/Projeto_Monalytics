@@ -2,12 +2,12 @@
   "empresa": {
     "ticker": "BMEB3",
     "ticker_base": "BMEB",
-    "nome": "BMEB"
+    "nome": "BANCO MERCANTIL DO BRASIL S.A."
   },
-  "ultima_atualizacao": "2026-01-12T21:28:10.647979",
-  "total_noticias": 47,
+  "ultima_atualizacao": "2026-01-14T11:24:13.299967",
+  "total_noticias": 51,
   "fonte": "Google News RSS",
-  "ticker_consulta": "BMEB4",
+  "ticker_consulta": "BMEB3",
   "noticias": [
     {
       "id": 42692340948981,
@@ -70,6 +70,16 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 113881584037091,
+      "data": "2025-12-24",
+      "data_hora": "2025-12-24 08:00:00",
+      "titulo": "Dinheiro na conta: Banco pagará R$ 1,82 por ação em dividendos; veja como aproveitar - TradingView – Acompanhe todos os mercados",
+      "descricao": "Dinheiro na conta: Banco pagará R$ 1,82 por ação em dividendos; veja como aproveitar TradingView – Acompanhe todos os mercados",
+      "fonte": "TradingView – Acompanhe todos os mercados",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9XakMwZThZUkNNR25FN0pZWEpoWnlwNUVPa0NzYlF3UnYxLTJjNkJKUUh4YU8tRFZsRmJJdmtpeUcyelpHZi1YQVlzbGJMeVVNeExxSjI4SmV1bWl2a0UyYVVENERMcTh6dUdv?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 270202548594771,
       "data": "2025-12-23",
       "data_hora": "2025-12-23 08:00:00",
@@ -107,6 +117,16 @@
       "descricao": "Banco Mercantil (BMEB3, BMEB4) aprova acordo tributário com desconto de 58,8% e pagará R$ 1.055.097.501,82; Conselho aprova aumento de capital Visno Invest",
       "fonte": "Visno Invest",
       "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxNQTl5Z0tVc291a2FSQ1Z1alJOTTVZMk5sbWJTMmlKUHNGZ1lITmVVX2RaNTV3cVI0bmJvZDljUnRIUF9JT0hRbTZDSjVHSkM1Z1FneERSN2ZXbTNsTjZqQzhnYklMVWF2a05ncnd0eDlnc0hKQjVwOW9XcVN4ZUhZU0NiaHZFRzYwNDBIbDd0TnlXTG5QTHJxM3pKejRVUE1vMWJoWmJHbzgzT3VfWEhSQ1M5TzNXSE56OGRwZktzU0R1dmtlM0s3cXROSmlVcHhBalQ0S2M0WV92eEpiODlsLWd2SXYwREczcU9qMF9IOXltcS1YNVdCeGlvdFBiY1Ata3c?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 39095112287001,
+      "data": "2025-12-23",
+      "data_hora": "2025-12-23 08:00:00",
+      "titulo": "Banco Mercantil (BMEB3, BMEB4) aprova dividendos intermedi rios de R$ 180 mi; pagamento em 14 de janeiro de 2026 - Visno Invest",
+      "descricao": "Banco Mercantil (BMEB3, BMEB4) aprova dividendos intermedi rios de R$ 180 mi; pagamento em 14 de janeiro de 2026 Visno Invest",
+      "fonte": "Visno Invest",
+      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQY2VyQUVHbzlkbzdrNUJLRkJ2cmdSUjIwZHZPc3FqOUlScnlRcXp1NW12MVlzUzBhX0MzVE83Umdib0pIYi1fTUx4YklyU2lTb1FFdk5oRkN3RGFtY3ZRajJESWhva0ZlX3BxLTBLanplRXEzOWhpRVJxdmtMSVc0OENsWXU1Z2dSZkNnT3RIclUwWGExTC12Sm9TRkxRTVRaWEJEOXpHMTVNVklNTlp6eTliNzN3MUQtM3l6aHY1TEdxWklVUDBGTUR2T1VnX1RWZ2RFbW1fUXgzTWwycUE?oc=5",
       "tipo": "noticia_empresarial"
     },
     {
@@ -460,6 +480,16 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 7311240619848,
+      "data": "2024-02-07",
+      "data_hora": "2024-02-07 08:00:00",
+      "titulo": "Banco Mercantil (BMEB3) paga dividendos nesta quarta-feira; veja o valor - Estadão E-Investidor",
+      "descricao": "Banco Mercantil (BMEB3) paga dividendos nesta quarta-feira; veja o valor Estadão E-Investidor",
+      "fonte": "Estadão E-Investidor",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQdzhiNURNLTBVeDJVMzdPVHYydG1pdTZvSGlyMkJMUUJST1VwOG1nQVhIN0VLSlVTVFR0RVZJQmFfdWVsRTRTQ2VaRVdVS0JaVWlkaEt3Xzh1N3pUZ2tWblBJbld3TmVhcG5RdnA0QXQwV084d0NTREJyTUtuMVBmSGh3dkROOEJnT1lPLdIBkgFBVV95cUxPZlNmQVdFaXVDZmd1c1ZrM3l5VXhkOHV0WnJTYjVTTmxjMUVZdHltSXlCd0FSanNadXA0UDdPTXRoUGVjQ1FacWRmWkhTb0t4NGhQXzVYMUpoVzJpYUR5ZW9hSDdPSmU4NDVIU3drUldET3RCYV83dWlmanhoSVR2azV3TTBIdEFUN1F3UlZwM1drUQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 61992890221442,
       "data": "2023-12-06",
       "data_hora": "2023-12-06 08:00:00",
@@ -477,6 +507,16 @@
       "descricao": "Banco Mercantil (BMEB3) tem retorno sobre patrimônio de “bancão” com carteira conservadora, focada em cliente “50+” InfoMoney",
       "fonte": "InfoMoney",
       "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQR1hGcVhuaHhEVS04OHB2Z3FuS0JEbENHVHhfbTN6aXltY3RjMXFJTy1kTnlWY2Mxc2FHNTN6LS1tSkhlYlV1WFFZOTJzZl8wWlJHX2d4T3lXei1ZSVlVN1pvZzI1YnhqOVdSMFRWWXdNcXBTc0hHZWxtZTd6NlZXQzUzV3JvaEk5ZkRyUkpwcXZJYXlzLWNqZXhiRHJNZmF5UU1qMDl2Y2l5S1JtUEJVUEVxU3NRQUl1eE5FYmF6VVJkNmVfakRYVFRyYjliU0lpSnY2SUpSWUNhV2tjbjRR0gHkAUFVX3lxTFBha3Z3cEhCR2x6bWFvM0ZIUEZRaGdNQTd2VnNJT3NqS3RCbndyU25MVzBPdzY5cVZsSTVEdjF0V2F6TUlsMzB1OC0tdFItV0hYME9UeHFVYmlQclltNVo5X1hJZGN4UF9adEx0cnJsMGptYTR3QXZWWk5GMVNrMzB0X1VLNk14clR3R1V5aXpLSGNvWURRMzRURTRRV0t4cnoxWkFDdmF3VEZYNERQMDBUSHQ0azVzcG5ZWkh2VDQtMXBWVGJ6X0FEbFVlVVZ0RVROQzV4LUlJNm9KUlRhZE5oXy1IQw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 191413528738377,
+      "data": "2020-04-04",
+      "data_hora": "2020-04-04 01:26:52",
+      "titulo": "Banco Mercantil Do Brasil SA (BMEB3) - ADVFN",
+      "descricao": "Banco Mercantil Do Brasil SA (BMEB3) ADVFN",
+      "fonte": "ADVFN",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOTG9BM0FKUWZLZXg2SDdSZUNoTk1sSWFrN1p5RjFWeHVZMExwbXBMNTFfVlZHX0JEYXV1RFBTcS1GXzdnVVFYM0VhblhBdjdtdkkxTWJqUjlqdk0zNnVmWDFWZlR5UTA0WUZEUWhmZFJXelFPTDJ4aVBuZ21acThtWTZiREg?oc=5",
       "tipo": "noticia_empresarial"
     }
   ]
