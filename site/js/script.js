@@ -2410,8 +2410,8 @@ function parseCSVLine(csvText, delimiter = ';') {
 async function loadMapeamentoB3() {
   try {
     const timestamp = new Date().getTime();
-    // CORREÇÃO: Usar o caminho correto do arquivo CSV na raiz do repositório
-    const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/mapeamentob3consolidado.csv?t=${timestamp}`);
+    // CORREÇÃO: Nome correto com underscores
+    const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/mapeamento_b3_consolidado.csv?t=${timestamp}`);
     
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
