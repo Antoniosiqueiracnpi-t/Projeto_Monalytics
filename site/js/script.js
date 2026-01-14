@@ -1875,24 +1875,28 @@ function normalizarTicker(t) {
  */
 function obterTickerPasta(ticker) {
     const t = normalizarTicker(ticker);
+    
     if (!Array.isArray(mapeamentoB3) || !mapeamentoB3.length) return t;
-
-    const info = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === t);
+    
+    const info = mapeamentoB3.find(item => normalizarTicker(item.ticker) === t);
     if (!info) return t;
-
-    // Pega todos os tickers relacionados da empresa
-    const todosTickersStr = info.todosTickersStr || info.ticker_pasta || t;
+    
+    // CORREÇÃO: Usar tickerpasta que já vem correto do CSV
+    if (info.tickerpasta) {
+        console.log(`📁 Ticker ${t} → Pasta: ${info.tickerpasta} (do mapeamento)`);
+        return info.tickerpasta;
+    }
+    
+    // Fallback: lógica anterior
+    const todosTickersStr = info.todosTickersStr || info.ticker || t;
     const tickers = String(todosTickersStr)
-        .split(/[;\/ ,]+/)
+        .split(/[,\s]/)
         .map(tk => tk.trim().toUpperCase())
         .filter(Boolean);
-
+        
     if (!tickers.length) return t;
-
-    // PRIORIDADE: Ticker de ação (3, 4, 5, 6) sobre unit (11)
-    // Ordem de preferência: 3 → 4 → 5 → 6 → qualquer outro → 11
-    const prioridade = ['3', '4', '5', '6'];
     
+    const prioridade = ['3', '4', '5', '6'];
     for (const sufixo of prioridade) {
         const tickerAcao = tickers.find(tk => tk.endsWith(sufixo));
         if (tickerAcao) {
@@ -1901,17 +1905,16 @@ function obterTickerPasta(ticker) {
         }
     }
     
-    // Se não encontrou ticker de ação, retorna o primeiro que NÃO seja unit (11)
     const tickerNaoUnit = tickers.find(tk => !tk.endsWith('11'));
     if (tickerNaoUnit) {
         console.log(`📁 Ticker ${t} → Pasta: ${tickerNaoUnit} (fallback não-unit)`);
         return tickerNaoUnit;
     }
     
-    // Último recurso: retorna o primeiro ticker (mesmo que seja unit)
     console.log(`📁 Ticker ${t} → Pasta: ${tickers[0]} (fallback unit)`);
     return tickers[0] || t;
 }
+
 
 
 /**
