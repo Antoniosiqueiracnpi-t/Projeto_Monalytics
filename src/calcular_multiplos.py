@@ -520,77 +520,97 @@ def _encontrar_periodo_imputacao(df: pd.DataFrame, periodo_req: str) -> Optional
 
     return None
 
-def _obter_preco(dados: DadosEmpresa, periodo: str, ticker_classe: Optional[str] = None) -> float:
+def _obter_preco(dados: DadosEmpresa, periodo: str, ticker_preco: Optional[str] = None) -> float:
     """
-    Obtém preço de fechamento ajustado do ticker específico no período.
+    Obtém preço da ação no período específico.
 
-    Usa o arquivo precos_trimestrais.csv:
-    - Se ticker_classe for informado, filtra pela coluna Ticker (KLBN3, KLBN4, KLBN11, etc.)
-    - Se não, mantém o comportamento antigo (usa a empresa base).
+    Suporta 2 formatos de precos_trimestrais.csv:
+
+    (A) Formato antigo (1 linha):
+        Preço_Fechamento,2015T1,2015T2,...
+        Preço de Fechamento Ajustado,2.11,2.12,...
+
+    (B) Formato multi-classes (várias linhas, coluna Ticker):
+        Ticker,Preço_Fechamento,2015T1,2015T2,...
+        BBDC3,Preço de Fechamento Ajustado,....
+        BBDC4,Preço de Fechamento Ajustado,....
+
+    Args:
+        dados: Dados da empresa
+        periodo: ex. "2024T4"
+        ticker_preco: ticker específico (ex. "BBDC4"). Se None, usa dados.ticker.
     """
     if dados.precos is None or dados.precos.empty:
         return np.nan
 
     df = dados.precos
 
-    # Identifica coluna de ticker
+    # Detectar coluna de ticker (formato multi-classes)
     col_ticker = None
-    for c in ("Ticker", "ticker", "TICKER"):
+    for c in ["Ticker", "ticker", "TICKER"]:
         if c in df.columns:
             col_ticker = c
             break
 
-    # Se foi passada uma classe explícita, filtra
-    if col_ticker and ticker_classe:
-        alvo = str(ticker_classe).upper().strip()
-        df = df[df[col_ticker].astype(str).str.upper().str.strip() == alvo]
-        if df.empty:
-            return np.nan
-
-    # Se o período não existe, devolve nan
     if periodo not in df.columns:
         return np.nan
 
-    serie = pd.to_numeric(df[periodo], errors="coerce")
-    if serie.notna().any():
-        return float(serie.dropna().iloc[0])
+    # Se multi-classes, filtrar pelo ticker desejado
+    if col_ticker:
+        alvo = (ticker_preco or dados.ticker or "")
+        alvo = str(alvo).upper().strip()
+        sub = df[df[col_ticker].astype(str).str.upper().str.strip() == alvo]
+        if sub.empty:
+            # fallback: se não achou, tenta usar a 1ª linha numérica disponível
+            sub = df
+        df_use = sub
+    else:
+        df_use = df
+
+    # Buscar valor numérico na coluna do período
+    s = pd.to_numeric(df_use[periodo], errors="coerce")
+    if s.notna().any():
+        # pega o primeiro valor numérico válido
+        return float(s.dropna().iloc[0])
 
     return np.nan
 
 
 
-def _obter_preco_atual(dados: DadosEmpresa, ticker_classe: Optional[str] = None) -> Tuple[float, str]:
+def _obter_preco_atual(dados: DadosEmpresa, ticker_preco: Optional[str] = None) -> Tuple[float, str]:
     """
-    Obtém o último preço válido da classe específica (usando precos_trimestrais.csv).
-    Retorna (preco, periodo).
+    Obtém o preço mais recente disponível (último trimestre com dado numérico).
+
+    Suporta formato antigo e multi-classes (com coluna Ticker).
     """
     if dados.precos is None or dados.precos.empty:
         return np.nan, ""
 
     df = dados.precos
 
-    # Identifica coluna de ticker
+    # Detectar coluna de ticker
     col_ticker = None
-    for c in ("Ticker", "ticker", "TICKER"):
+    for c in ["Ticker", "ticker", "TICKER"]:
         if c in df.columns:
             col_ticker = c
             break
 
-    # Filtra pela classe, se houver
-    if col_ticker and ticker_classe:
-        alvo = str(ticker_classe).upper().strip()
-        df = df[df[col_ticker].astype(str).str.upper().str.strip() == alvo]
-        if df.empty:
-            return np.nan, ""
+    if col_ticker:
+        alvo = (ticker_preco or dados.ticker or "")
+        alvo = str(alvo).upper().strip()
+        sub = df[df[col_ticker].astype(str).str.upper().str.strip() == alvo]
+        if sub.empty:
+            sub = df
+        df_use = sub
+    else:
+        df_use = df
 
-    # Pega as colunas de períodos válidas (tipo 2010T1, 2010T2, ...)
-    colunas = _get_colunas_numericas_validas(df)
-    if not colunas:
+    colunas_precos = _get_colunas_numericas_validas(df_use)
+    if not colunas_precos:
         return np.nan, ""
 
-    # Vai do mais recente para o mais antigo
-    for p in reversed(colunas):
-        preco = _obter_preco(dados, p, ticker_classe=ticker_classe)
+    for p in reversed(colunas_precos):
+        preco = _obter_preco(dados, p, ticker_preco=ticker_preco)
         if np.isfinite(preco) and preco > 0:
             return preco, p
 
@@ -637,6 +657,154 @@ def _selecionar_ticker_preco_multi(dados: DadosEmpresa, raiz: str, sufixos: List
 
 
 
+def _extrair_classe_ticker(ticker: str) -> str:
+    """Extrai a classe numérica do ticker (ex.: KLBN11 -> '11', AURA33 -> '33')."""
+    t = (ticker or "").upper().strip()
+    m = re.match(r"^([A-Z]{4})(\d+)$", t)
+    return m.group(2) if m else ""
+
+
+def _classe_para_especie(classe: str) -> str:
+    """
+    Mapeia a classe do ticker para a espécie no acoes_historico.csv.
+
+    - 3  -> ON
+    - 4/5/6/7/8 -> PN (preferenciais e variações)
+    - 11 -> UNIT
+    - demais -> TOTAL (fallback)
+    """
+    c = str(classe or "").strip()
+    if c == "3":
+        return "ON"
+    if c in {"4", "5", "6", "7", "8"}:
+        return "PN"
+    if c == "11":
+        return "UNIT"
+    return "TOTAL"
+
+
+def _obter_acoes_unit(dados: DadosEmpresa, periodo: str) -> float:
+    """Obtém quantidade de UNITS (se existir no acoes_historico.csv)."""
+    # nomes comuns observados em bases: UNIT, UNT, UNITS
+    for rotulo in ["UNIT", "UNITS", "UNT"]:
+        v = _obter_acoes_especie(dados, rotulo, periodo)
+        if np.isfinite(v) and v > 0:
+            return float(v)
+    return np.nan
+
+
+def _calcular_fator_unit_pacote(dados: DadosEmpresa, periodo: str) -> int:
+    """
+    Calcula o fator do pacote da UNIT: quantas ações (ON+PN) correspondem a 1 UNIT.
+
+    Regra:
+      fator = (ações ON+PN) / (quantidade de UNIT)
+
+    Retorna inteiro >= 1. Se não for possível calcular, retorna 1.
+    """
+    total_ex11 = _obter_acoes_total_ex11(dados, periodo)
+    units = _obter_acoes_unit(dados, periodo)
+
+    if np.isfinite(total_ex11) and total_ex11 > 0 and np.isfinite(units) and units > 0:
+        f = total_ex11 / units
+        # arredonda para inteiro se estiver "quase inteiro"
+        f_int = int(round(f))
+        if f_int >= 1 and abs(f - f_int) <= 0.15:
+            return f_int
+        # fallback: ainda assim garante >=1
+        return max(1, int(round(f)))
+    return 1
+
+
+def _ajustar_acoes_para_ticker_preco(dados: DadosEmpresa, periodo: str, ticker_preco: Optional[str]) -> Tuple[float, str, int]:
+    """
+    Retorna (acoes_equivalentes, periodo_acoes_usado, fator_unit).
+
+    Objetivo:
+    - Se o ticker_preco for UNIT (classe 11), converte ações totais (ON+PN) para "unidades de UNIT"
+      (ou usa a linha UNIT do acoes_historico.csv se existir).
+    - Caso contrário, mantém a regra do projeto (ON+PN sempre que possível).
+
+    Isso garante que múltiplos por ação (EPS, VPA, dividendos/ação, etc.) fiquem consistentes com o preço
+    utilizado (por exemplo, UNIT tem preço por "pacote", então precisa de ações equivalentes em UNIT).
+    """
+    ticker_preco = (ticker_preco or dados.ticker or "").upper().strip()
+    classe = _extrair_classe_ticker(ticker_preco)
+
+    # período usado para ações (imputação robusta já existe em _obter_acoes_especie/_obter_acoes_total_ex11)
+    periodo_use = periodo
+
+    if classe == "11":
+        # tenta usar a própria linha de UNIT se existir
+        a_unit = _obter_acoes_unit(dados, periodo_use)
+        if np.isfinite(a_unit) and a_unit > 0:
+            return float(a_unit), _encontrar_periodo_imputacao(dados.acoes, periodo_use) or periodo_use, _calcular_fator_unit_pacote(dados, periodo_use)
+
+        # fallback: converte ON+PN em "quantidade de UNIT"
+        total_ex11 = _obter_acoes_total_ex11(dados, periodo_use)
+        fator = _calcular_fator_unit_pacote(dados, periodo_use)
+        if np.isfinite(total_ex11) and total_ex11 > 0 and fator >= 1:
+            return float(total_ex11 / fator), _encontrar_periodo_imputacao(dados.acoes, periodo_use) or periodo_use, fator
+
+        return np.nan, _encontrar_periodo_imputacao(dados.acoes, periodo_use) or periodo_use, fator
+
+    # não-unit: regra geral (ON+PN)
+    a = _obter_acoes(dados, periodo_use)
+    return float(a) if np.isfinite(a) else np.nan, _encontrar_periodo_imputacao(dados.acoes, periodo_use) or periodo_use, 1
+
+
+def _listar_tickers_saida_multiclasse(dados: DadosEmpresa, ticker_seed: str) -> List[str]:
+    """
+    Lista tickers (com classe) disponíveis no arquivo de preços para a mesma empresa (mesma raiz de 4 letras).
+
+    Ex.: KLBN11 -> ['KLBN3','KLBN4','KLBN11'] (se existirem no precos_trimestrais.csv).
+    """
+    seed = (ticker_seed or dados.ticker or "").upper().strip()
+    if len(seed) < 4 or dados.precos is None or dados.precos.empty:
+        return [seed] if seed else []
+
+    raiz = seed[:4]
+    df = dados.precos
+
+    col_ticker = None
+    for c in ["Ticker", "ticker", "TICKER"]:
+        if c in df.columns:
+            col_ticker = c
+            break
+
+    if not col_ticker:
+        # arquivo antigo (uma linha sem coluna de ticker)
+        return [seed]
+
+    tickers = (
+        df[col_ticker]
+        .astype(str)
+        .str.upper()
+        .str.strip()
+        .unique()
+        .tolist()
+    )
+    tickers = [t for t in tickers if t.startswith(raiz)]
+    # ordenação: 3,4,5..,11 por preferência
+    def key(t: str):
+        c = _extrair_classe_ticker(t)
+        # peso menor = vem antes
+        if c == "3":
+            w = 10
+        elif c in {"4", "5", "6", "7", "8"}:
+            w = 20 + int(c)
+        elif c == "11":
+            w = 90
+        else:
+            w = 50 + (int(c) if c.isdigit() else 99)
+        return (w, t)
+
+    out = sorted(set(tickers), key=key)
+    if seed and seed not in out:
+        out.append(seed)
+    return out
+
+
 def _detectar_coluna_especie(df: pd.DataFrame) -> Optional[str]:
     if df is None:
         return None
@@ -679,38 +847,6 @@ def _obter_acoes_especie(dados: DadosEmpresa, especie: str, periodo: str) -> flo
 
     val = pd.to_numeric(df.loc[mask, periodo_busca], errors="coerce").iloc[0]
     return float(val) if pd.notna(val) else np.nan
-
-def _obter_acoes_para_classe(dados: DadosEmpresa, ticker_classe: Optional[str], periodo: str) -> float:
-    """
-    Retorna a quantidade de ações a ser usada nos múltiplos de preço
-    para a classe informada.
-
-    Regras:
-    - Se classe terminar em '11' (UNIT): usa ON + PN (pacote inteiro)
-    - Para qualquer outra classe: mantém o comportamento anterior (_obter_acoes total)
-
-    Isso evita engessar em 3/4/5/6 e continua compatível com estruturas mais exóticas.
-    """
-    if not ticker_classe:
-        # Sem classe explícita → comportamento antigo
-        return _obter_acoes(dados, periodo)
-
-    classe = str(ticker_classe).upper().strip()
-
-    # UNIT (11) = pacote ON + PN
-    if classe.endswith("11"):
-        on = _obter_acoes_especie(dados, "ON", periodo)
-        pn = _obter_acoes_especie(dados, "PN", periodo)
-
-        on_val = on if np.isfinite(on) else 0
-        pn_val = pn if np.isfinite(pn) else 0
-        total = on_val + pn_val
-
-        return total if total > 0 else _obter_acoes(dados, periodo)
-
-    # Qualquer outra classe → mantém total (sem assumir 3,4,5,6)
-    return _obter_acoes(dados, periodo)
-
 
 
 def _obter_acoes_total_ex11(dados: DadosEmpresa, periodo: str) -> float:
@@ -836,35 +972,72 @@ def _obter_acoes_atual(dados: DadosEmpresa) -> Tuple[float, str]:
 
 
 
-def _calcular_market_cap(dados: DadosEmpresa, periodo: str) -> float:
+def _calcular_market_cap(dados: DadosEmpresa, periodo: str, ticker_preco: Optional[str] = None) -> float:
     """
-    Calcula Market Cap (R$ mil) no período.
+    Calcula Market Cap (R$ mil) para um período.
 
-    ✅ Regra:
-        VM = (Preço_ON × Ações_ON) + (Preço_PN × Ações_PN)
+    Modos:
+    - ticker_preco=None: mantém a regra "empresa" (VM = p_ON*a_ON + p_PN*a_PN), usando preços do PERÍODO.
+    - ticker_preco informada:
+        * classe 3  -> VM = preço(ticker_preco) × ações ON
+        * classe 4/5/6/7/8 -> VM = preço(ticker_preco) × ações PN
+        * classe 11 (UNIT) -> VM = preço(ticker_preco) × ações equivalentes em UNIT
+        * demais -> VM = preço(ticker_preco) × ações ON+PN (fallback)
 
-    Observações importantes (para alinhar com StatusInvest/Investidor10):
-    - Nem toda PN é "4" (ex.: BPAC5). Por isso, selecionamos o melhor ticker PN disponível
-      entre 4/5/6/7/8 quando houver preços multi-classes.
-    - Para pastas baseadas em UNIT (11), os preços multi-classes normalmente contêm também ON/PN.
-      Nesse caso, calculamos o VM da EMPRESA via ON/PN, que é o que os concorrentes exibem como
-      "Valor de Mercado" para o ativo principal (incluindo UNIT).
+    Observação:
+    - Ações são obtidas com imputação via _obter_acoes_especie/_obter_acoes_total_ex11.
+    - Preço do período usa a coluna do próprio período; se faltar, cai no último preço disponível.
     """
+    periodo = str(periodo or "").upper().strip()
+    if not periodo:
+        return np.nan
+
+    # helper: preço do período com fallback robusto
+    def preco_periodo(t: Optional[str]) -> float:
+        p = _obter_preco(dados, periodo, ticker_preco=t)
+        if np.isfinite(p) and p > 0:
+            return float(p)
+        p2, _ = _obter_preco_atual(dados, ticker_preco=t)
+        return float(p2) if np.isfinite(p2) else np.nan
+
+    # modo classe específica
+    if ticker_preco:
+        tpx = str(ticker_preco).upper().strip()
+        classe = _extrair_classe_ticker(tpx)
+        p = preco_periodo(tpx)
+
+        if not (np.isfinite(p) and p > 0):
+            return np.nan
+
+        if classe == "11":
+            a_equiv, _, _ = _ajustar_acoes_para_ticker_preco(dados, periodo, tpx)
+            if np.isfinite(a_equiv) and a_equiv > 0:
+                return float((p * a_equiv) / 1000.0)
+            return np.nan
+
+        if classe == "3":
+            a = _obter_acoes_especie(dados, "ON", periodo)
+        elif classe in {"4", "5", "6", "7", "8"}:
+            a = _obter_acoes_especie(dados, "PN", periodo)
+        else:
+            a = _obter_acoes_total_ex11(dados, periodo)
+
+        if np.isfinite(a) and a > 0:
+            return float((p * a) / 1000.0)
+        return np.nan
+
+    # modo empresa (ON + PN)
     ticker = (dados.ticker or "").upper().strip()
     if len(ticker) < 4:
         return np.nan
 
     raiz = ticker[:4]
-
-    # Preferências de tickers para preços
     ticker_on = _selecionar_ticker_preco_multi(dados, raiz, ["3"])
     ticker_pn = _selecionar_ticker_preco_multi(dados, raiz, ["4", "5", "6", "7", "8"])
 
-    # Preços
-    p_on = _obter_preco(dados, periodo, ticker_preco=ticker_on) if ticker_on else np.nan
-    p_pn = _obter_preco(dados, periodo, ticker_preco=ticker_pn) if ticker_pn else np.nan
+    p_on = preco_periodo(ticker_on) if ticker_on else np.nan
+    p_pn = preco_periodo(ticker_pn) if ticker_pn else np.nan
 
-    # Ações (quantidade) - por espécie
     a_on = _obter_acoes_especie(dados, "ON", periodo)
     a_pn = _obter_acoes_especie(dados, "PN", periodo)
 
@@ -875,50 +1048,72 @@ def _calcular_market_cap(dados: DadosEmpresa, periodo: str) -> float:
         parts.append(p_pn * a_pn)
 
     if parts:
-        # R$ (unidade) -> R$ mil
         return float(sum(parts) / 1000.0)
 
-    # Fallback: total × preço do ticker "base" (mantém compatibilidade)
-    #preco = _obter_preco(dados, periodo)
-    preco = _obter_preco(dados, periodo, ticker_classe=ticker_classe)
-    acoes = _obter_acoes(dados, periodo)
-    if np.isfinite(preco) and preco > 0 and np.isfinite(acoes) and acoes > 0:
-        return float((preco * acoes) / 1000.0)
+    # fallback compatível: total × preço do ticker base
+    p = preco_periodo(None)
+    a = _obter_acoes_total_ex11(dados, periodo)
+    if np.isfinite(p) and p > 0 and np.isfinite(a) and a > 0:
+        return float((p * a) / 1000.0)
 
     return np.nan
 
 
-
-def _calcular_market_cap_atual(dados: DadosEmpresa) -> float:
+def _calcular_market_cap_atual(dados: DadosEmpresa, ticker_preco: Optional[str] = None) -> float:
     """
     Calcula Valor de Mercado (Market Cap) atual em R$ mil.
 
-    ✅ Regra:
-        VM = (Preço_ON × Ações_ON) + (Preço_PN × Ações_PN)
+    Modos:
+    - ticker_preco=None: VM da empresa = (Preço_ON × Ações_ON) + (Preço_PN × Ações_PN)
+    - ticker_preco informada:
+        * classe 3  -> VM = preço(ticker_preco) × ações ON
+        * classe 4/5/6/7/8 -> VM = preço(ticker_preco) × ações PN
+        * classe 11 (UNIT) -> VM = preço(ticker_preco) × ações equivalentes em UNIT
+        * demais -> VM = preço(ticker_preco) × ações ON+PN (fallback)
 
-    Observações:
-    - Seleção robusta do ticker PN (4/5/6/7/8) para evitar subestimar VM (ex.: BPAC5).
-    - Para tickers UNIT (11), calcula VM da empresa via ON/PN se estiverem disponíveis no arquivo de preços.
+    Observação: mantém compatibilidade quando ticker_preco não é informada.
     """
+    # modo classe específica
+    if ticker_preco:
+        tpx = str(ticker_preco).upper().strip()
+        classe = _extrair_classe_ticker(tpx)
+        p, periodo_p = _obter_preco_atual(dados, ticker_preco=tpx)
+        if not (np.isfinite(p) and p > 0):
+            return np.nan
+
+        if classe == "11":
+            a_equiv, _, _ = _ajustar_acoes_para_ticker_preco(dados, periodo_p or "9999T4", tpx)
+            if np.isfinite(a_equiv) and a_equiv > 0:
+                return float((p * a_equiv) / 1000.0)
+            return np.nan
+
+        if classe == "3":
+            a = _obter_acoes_especie(dados, "ON", periodo_p or "9999T4")
+        elif classe in {"4", "5", "6", "7", "8"}:
+            a = _obter_acoes_especie(dados, "PN", periodo_p or "9999T4")
+        else:
+            a = _obter_acoes_total_ex11(dados, periodo_p or "9999T4")
+
+        if np.isfinite(a) and a > 0:
+            return float((p * a) / 1000.0)
+        return np.nan
+
+    # modo empresa (ON + PN) - comportamento original
     ticker = (dados.ticker or "").upper().strip()
     if len(ticker) < 4:
         return np.nan
 
     raiz = ticker[:4]
 
-    # Preferências de tickers para preços
     ticker_on = _selecionar_ticker_preco_multi(dados, raiz, ["3"])
     ticker_pn = _selecionar_ticker_preco_multi(dados, raiz, ["4", "5", "6", "7", "8"])
 
-    p_on, _ = _obter_preco_atual(dados, ticker_preco=ticker_on) if ticker_on else (np.nan, "")
-    p_pn, _ = _obter_preco_atual(dados, ticker_preco=ticker_pn) if ticker_pn else (np.nan, "")
+    p_on, periodo_on = _obter_preco_atual(dados, ticker_preco=ticker_on) if ticker_on else (np.nan, "")
+    p_pn, periodo_pn = _obter_preco_atual(dados, ticker_preco=ticker_pn) if ticker_pn else (np.nan, "")
 
-    # Ações: usar o último período disponível (imputação interna)
-    # Aqui passamos um período "recente" para ativar a imputação (sem depender de unit)
-    # Se o usuário tiver dados trimestrais, o helper escolhe o melhor.
+    # referência de período para ações (usa o mais recente entre preços disponíveis)
     periodo_ref = ""
     if dados.precos is not None and not dados.precos.empty:
-        # pega o último período numérico válido de preços como referência
         col_periodos = _get_colunas_numericas_validas(dados.precos)
         if col_periodos:
             periodo_ref = col_periodos[-1]
@@ -936,13 +1131,12 @@ def _calcular_market_cap_atual(dados: DadosEmpresa) -> float:
         return float(sum(parts) / 1000.0)
 
     # Fallback compatível
-    preco, _ = _obter_preco_atual(dados)
+    preco, periodo_p = _obter_preco_atual(dados)
     acoes = _obter_acoes(dados, periodo_ref or "9999T4")
     if np.isfinite(preco) and preco > 0 and np.isfinite(acoes) and acoes > 0:
         return float((preco * acoes) / 1000.0)
 
     return np.nan
-
 
 
 def _calcular_ev(dados: DadosEmpresa, periodo: str, market_cap: Optional[float] = None) -> float:
@@ -1363,49 +1557,38 @@ def _calcular_lpa_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     return soma_lpa
 
 
-def _obter_preco_ultimo_trimestre_ano(dados: DadosEmpresa, periodo_referencia: str) -> Tuple[float, str]:
+def _obter_preco_ultimo_trimestre_ano(
+    dados: DadosEmpresa,
+    periodo_referencia: str,
+    ticker_preco: Optional[str] = None
+) -> Tuple[float, str]:
     """
-    Obtém preço do último trimestre disponível DO ANO de referência.
-    
-    USO: Histórico anualizado (colunas de anos específicos no CSV)
-    
-    Lógica:
-    1. Extrai ano do período de referência
-    2. Tenta buscar T4 do ano (se existir, ano está fechado)
-    3. Se não existir T4, busca T3, depois T2, depois T1 DO MESMO ANO
-    
+    Obtém o preço do último trimestre disponível do ANO do período de referência, para o ticker escolhido.
+
+    Ex.: periodo_referencia='2024T4' -> tenta 2024T4, depois 2024T3, 2024T2, 2024T1.
+    Se não encontrar, cai no último preço disponível.
+
     Args:
         dados: Dados da empresa
-        periodo_referencia: Período de referência (ex: "2025T3")
-    
-    Returns:
-        (preço, período_usado)
-    
-    Exemplo:
-        Para 2025T3 → busca 2025T4 (não existe) → busca 2025T3 (11.46)
+        periodo_referencia: Ex: '2024T4' (apenas o ano é usado)
+        ticker_preco: Ticker cujo preço deve ser utilizado (ex.: KLBN3, KLBN4, KLBN11)
     """
-    if dados.precos is None or not dados.periodos:
-        return np.nan, ""
-    
-    # Extrair ano do período de referência
-    ano_ref, _ = _parse_periodo(periodo_referencia)
-    if ano_ref == 0:
-        return np.nan, ""
-    
+    # Extrair ano do período
+    try:
+        ano_ref = int(str(periodo_referencia)[:4])
+    except Exception:
+        return _obter_preco_atual(dados, ticker_preco=ticker_preco)
+
     # Tentar períodos do ano em ordem decrescente: T4 → T3 → T2 → T1
     for tri in ['T4', 'T3', 'T2', 'T1']:
         periodo_teste = f"{ano_ref}{tri}"
-        preco = _obter_preco(dados, periodo_teste)
+        preco = _obter_preco(dados, periodo_teste, ticker_preco=ticker_preco)
         if np.isfinite(preco) and preco > 0:
-            return preco, periodo_teste
-    
+            return float(preco), periodo_teste
+
     # Se nenhum período do ano existe, busca último disponível
-    return _obter_preco_atual(dados)
+    return _obter_preco_atual(dados, ticker_preco=ticker_preco)
 
-
-# ======================================================================================
-# FUNÇÕES PARA OBTER RECEITA CORRETA POR TIPO DE EMPRESA
-# ======================================================================================
 
 def _obter_receita_holding_bbse3(dados: DadosEmpresa, periodo: str) -> float:
     """
@@ -1533,8 +1716,7 @@ def _calcular_receita_ltm_holding_cxse3(dados: DadosEmpresa, periodo_fim: str) -
 # CALCULADORA DE MÚLTIPLOS - EMPRESAS NÃO-FINANCEIRAS (22 MÚLTIPLOS)
 # ======================================================================================
 
-def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = False, ticker_classe: Optional[str] = None) -> Dict[str, Optional[float]]:
-    
+def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True, ticker_preco: Optional[str] = None) -> Dict[str, Optional[float]]:
     """
     Calcula todos os 22 múltiplos para um período específico (empresas não-financeiras).
     
@@ -1551,9 +1733,9 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     # ==================== MARKET CAP E EV ====================
     
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
     else:
-        market_cap = _calcular_market_cap(dados, periodo)
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
 
     # ✅ Expor Valor de Mercado (R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
@@ -1568,8 +1750,7 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     
     # P/L = Preço / EPS (Lucro Líquido LTM / Ações)
     # ✅ Alinha com o padrão clássico (Investidor10): EPS = Lucro Líquido LTM / Ações (ON+PN quando possível)
-    #acoes_ref = _obter_acoes(dados, periodo)
-    acoes_ref = _obter_acoes_para_classe(dados, ticker_classe, periodo)
+    acoes_ref, _periodo_acoes_ref, _fator_unit = _ajustar_acoes_para_ticker_preco(dados, periodo, ticker_preco)
 
     # EPS LTM:
     # ✅ Preferir "Lucro por Ação (3.99)" quando existir, pois já embute a média ponderada de ações
@@ -1579,9 +1760,9 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
         eps_ltm = (ll_ltm * 1000.0) / acoes_ref if np.isfinite(ll_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
 
     if usar_preco_atual:
-        preco_pl, periodo_preco_pl = _obter_preco_atual(dados)
+        preco_pl, periodo_preco_pl = _obter_preco_atual(dados, ticker_preco=ticker_preco)
     else:
-        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
+        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo, ticker_preco=ticker_preco)
 
     resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, eps_ltm))
 
@@ -2007,6 +2188,7 @@ MULTIPLOS_SEGURADORAS_METADATA = {
 # DETECTOR DE CÓDIGO DO PL PARA BANCOS
 # ======================================================================================
 
+
 def _detectar_codigo_pl_banco(df_bpp: pd.DataFrame) -> str:
     """
     Detecta dinamicamente o código do Patrimônio Líquido no BPP do banco.
@@ -2029,7 +2211,7 @@ def _detectar_codigo_pl_banco(df_bpp: pd.DataFrame) -> str:
 # CALCULADORA DE MÚLTIPLOS - BANCOS (8 ESSENCIAIS)
 # ======================================================================================
 
-def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True) -> Dict[str, Optional[float]]:
+def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True, ticker_preco: Optional[str] = None) -> Dict[str, Optional[float]]:
     """
     Calcula 8 múltiplos essenciais para bancos usando apenas contas agregadas robustas.
     
@@ -2059,9 +2241,9 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     # ==================== MARKET CAP ====================
     
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
     else:
-        market_cap = _calcular_market_cap(dados, periodo)
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
 
 
     # ✅ Expor Valor de Mercado (R$ mil)
@@ -2085,14 +2267,13 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     # ==================== VALUATION (4 MÚLTIPLOS) ====================
     
     # P/L = Preço / EPS (Lucro Líquido LTM / Ações)
-    #acoes_ref = _obter_acoes(dados, periodo)
-    acoes_ref = _obter_acoes_para_classe(dados, ticker_classe, periodo)
+    acoes_ref, _periodo_acoes_ref, _fator_unit = _ajustar_acoes_para_ticker_preco(dados, periodo, ticker_preco)
     eps_ltm = (ll_ltm * 1000.0) / acoes_ref if np.isfinite(ll_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
 
     if usar_preco_atual:
-        preco_pl, periodo_preco_pl = _obter_preco_atual(dados)
+        preco_pl, periodo_preco_pl = _obter_preco_atual(dados, ticker_preco=ticker_preco)
     else:
-        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
+        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo, ticker_preco=ticker_preco)
 
     resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, eps_ltm))
 
@@ -2140,7 +2321,9 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
 # ======================================================================================
 # CALCULADORA DE MÚLTIPLOS - HOLDINGS DE SEGUROS (10 MÚLTIPLOS)
 # ======================================================================================
-def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True) -> Dict[str, Optional[float]]:
+
+
+def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True, ticker_preco: Optional[str] = None) -> Dict[str, Optional[float]]:
     """
     Calcula 10 múltiplos essenciais para holdings de seguros (BBSE3, CXSE3).
     
@@ -2159,9 +2342,9 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     # ==================== MARKET CAP E EV ====================
     
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
     else:
-        market_cap = _calcular_market_cap(dados, periodo)
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
 
 
     # ✅ Expor Valor de Mercado (R$ mil)
@@ -2210,14 +2393,13 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     # ==================== VALUATION (4 MÚLTIPLOS) ====================
     
     # P/L = Preço / EPS (Lucro Líquido LTM / Ações)
-    #acoes_ref = _obter_acoes(dados, periodo)
-    acoes_ref = _obter_acoes_para_classe(dados, ticker_classe, periodo)
+    acoes_ref, _periodo_acoes_ref, _fator_unit = _ajustar_acoes_para_ticker_preco(dados, periodo, ticker_preco)
     eps_ltm = (ll_ltm * 1000.0) / acoes_ref if np.isfinite(ll_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
 
     if usar_preco_atual:
-        preco_pl, periodo_preco_pl = _obter_preco_atual(dados)
+        preco_pl, periodo_preco_pl = _obter_preco_atual(dados, ticker_preco=ticker_preco)
     else:
-        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
+        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo, ticker_preco=ticker_preco)
 
     resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, eps_ltm))
 
@@ -2279,7 +2461,8 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
 # CALCULADORA DE MÚLTIPLOS - SEGURADORAS OPERACIONAIS (10 MÚLTIPLOS)
 # ======================================================================================
 
-def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True) -> Dict[str, Optional[float]]:
+
+def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_atual: bool = True, ticker_preco: Optional[str] = None) -> Dict[str, Optional[float]]:
     """
     Calcula 10 múltiplos essenciais para seguradoras operacionais (IRBR3, PSSA3).
     
@@ -2295,9 +2478,9 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     # ==================== MARKET CAP ====================
     
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
     else:
-        market_cap = _calcular_market_cap(dados, periodo)
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
 
 
     # ✅ Expor Valor de Mercado (R$ mil)
@@ -2396,14 +2579,13 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     # ==================== VALUATION (4 MÚLTIPLOS) ====================
     
     # P/L = Preço / EPS (Lucro Líquido LTM / Ações)
-    #acoes_ref = _obter_acoes(dados, periodo)
-    acoes_ref = _obter_acoes_para_classe(dados, ticker_classe, periodo)
+    acoes_ref, _periodo_acoes_ref, _fator_unit = _ajustar_acoes_para_ticker_preco(dados, periodo, ticker_preco)
     eps_ltm = (ll_ltm * 1000.0) / acoes_ref if np.isfinite(ll_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
 
     if usar_preco_atual:
-        preco_pl, periodo_preco_pl = _obter_preco_atual(dados)
+        preco_pl, periodo_preco_pl = _obter_preco_atual(dados, ticker_preco=ticker_preco)
     else:
-        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo)
+        preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo, ticker_preco=ticker_preco)
 
     resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, eps_ltm))
 
@@ -2473,8 +2655,8 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
 # GERADOR DE HISTÓRICO ANUALIZADO
 # ======================================================================================
 
-def gerar_historico_anualizado(dados: DadosEmpresa, ticker_classe: Optional[str] = None) -> Dict[str, Any]:
-    
+
+def gerar_historico_anualizado(dados: DadosEmpresa, ticker_preco: Optional[str] = None, ticker_saida: Optional[str] = None) -> Dict[str, Any]:
     """Gera histórico de múltiplos anualizado."""
     if not dados.periodos or dados.padrao_fiscal is None:
         return {"erro": "Dados insuficientes", "ticker": dados.ticker}
@@ -2510,14 +2692,13 @@ def gerar_historico_anualizado(dados: DadosEmpresa, ticker_classe: Optional[str]
 
         # Determinar qual função de cálculo usar (mantém a lógica existente)
         if _is_banco(dados.ticker):
-            multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_classe=ticker_classe)
+            multiplos = calcular_multiplos_banco(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
         elif _is_holding_seguros(dados.ticker):
-            multiplos = calcular_multiplos_holding_seguros(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_classe=ticker_classe)
+            multiplos = calcular_multiplos_holding_seguros(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
         elif _is_seguradora_operacional(dados.ticker):
-            multiplos = calcular_multiplos_seguradora(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_classe=ticker_classe)
+            multiplos = calcular_multiplos_seguradora(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
         else:
-            multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist, ticker_classe=ticker_classe)
-
+            multiplos = calcular_multiplos_periodo(dados, periodo_referencia, usar_preco_atual=usar_preco_atual_hist)
 
         historico_anual[ano] = {
             "periodo_referencia": periodo_referencia,
@@ -2539,26 +2720,28 @@ def gerar_historico_anualizado(dados: DadosEmpresa, ticker_classe: Optional[str]
 
     # LTM usa preço MAIS RECENTE disponível (usar_preco_atual=True)
     if _is_banco(dados.ticker):
-        multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True, ticker_classe=ticker_classe)
+        multiplos_ltm = calcular_multiplos_banco(dados, ultimo_periodo, usar_preco_atual=True)
     elif _is_holding_seguros(dados.ticker):
-        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=True, ticker_classe=ticker_classe)
+        multiplos_ltm = calcular_multiplos_holding_seguros(dados, ultimo_periodo, usar_preco_atual=True)
     elif _is_seguradora_operacional(dados.ticker):
-        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=True, ticker_classe=ticker_classe)
+        multiplos_ltm = calcular_multiplos_seguradora(dados, ultimo_periodo, usar_preco_atual=True)
     else:
-        multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True, ticker_classe=ticker_classe)
-
+        multiplos_ltm = calcular_multiplos_periodo(dados, ultimo_periodo, usar_preco_atual=True)
 
     
 
     # Informações de preço e ações utilizados (LTM)
-    #preco_atual, periodo_preco = _obter_preco_atual(dados)
-    preco_atual, periodo_preco = _obter_preco_atual(dados, ticker_classe=ticker_classe)
+    preco_atual, periodo_preco = _obter_preco_atual(dados, ticker_preco=ticker_preco)
     acoes_atual, periodo_acoes = _obter_acoes_atual(dados)
-    
-    
+    # Ajustar ações ao ticker de preço (ex.: UNIT -> quantidade de UNIT)
+    if periodo_acoes:
+        acoes_eq, _, _ = _ajustar_acoes_para_ticker_preco(dados, periodo_acoes, ticker_preco)
+        if np.isfinite(acoes_eq) and acoes_eq > 0:
+            acoes_atual = acoes_eq
 
     return {
-        "ticker": dados.ticker,
+        "ticker": ticker_out,
+        "ticker_preco": (ticker_preco or ticker_out).upper().strip(),
         "padrao_fiscal": {
             "tipo": dados.padrao_fiscal.tipo,
             "descricao": dados.padrao_fiscal.descricao,
@@ -2590,148 +2773,65 @@ def gerar_historico_anualizado(dados: DadosEmpresa, ticker_classe: Optional[str]
 # PROCESSADOR PRINCIPAL
 # ======================================================================================
 
-def _detectar_classes_disponiveis(dados: DadosEmpresa) -> List[str]:
-    """
-    Lê precos_trimestrais.csv e retorna a lista de tickers de classe
-    encontrados na coluna Ticker (ex: ['KLBN11','KLBN3','KLBN4']).
-    """
-    if dados.precos is None or dados.precos.empty:
-        return []
-
-    df = dados.precos
-
-    col_ticker = None
-    for c in ("Ticker", "ticker", "TICKER"):
-        if c in df.columns:
-            col_ticker = c
-            break
-
-    if not col_ticker:
-        return []
-
-    classes = (
-        df[col_ticker]
-        .astype(str)
-        .str.upper()
-        .str.strip()
-        .replace({"": np.nan})
-        .dropna()
-        .unique()
-        .tolist()
-    )
-
-    return sorted(classes)
 
 def processar_ticker(ticker: str, salvar: bool = True) -> Tuple[bool, str, Optional[Dict]]:
     """
-    Mesma função de antes, mas agora:
+    Processa um ticker e gera múltiplos.
 
-    - Se houver múltiplas classes em precos_trimestrais.csv, processa cada uma
-      gerando multiplos_<classe>.json/csv
-    - Se não houver, mantém o comportamento antigo (multiplos.json/csv único)
+    NOVO PADRÃO (multi-classes):
+    - Para empresas com mais de uma classe disponível no precos_trimestrais.csv, gera arquivos por classe:
+        multiplos_<TICKER>.csv
+        multiplos_<TICKER>.js
+
+      Ex.: KLBN -> multiplos_KLBN3.*, multiplos_KLBN4.*, multiplos_KLBN11.*
+
+    - Para UNIT (classe 11), ajusta a quantidade de ações para equivaler a "quantidade de UNIT"
+      (UNIT = pacote de ações ON+PN), usando o fator derivado do acoes_historico.csv quando possível.
+
+    Retorna:
+        (sucesso, mensagem, resultado_seed)
     """
-    ticker_upper = ticker.upper().strip()
+    ticker_upper = (ticker or "").upper().strip()
+    if not ticker_upper:
+        return False, "Ticker vazio.", None
 
-    # Carrega dados da empresa (como já fazia)
-    dados = carregar_dados_empresa(ticker_upper)
+    try:
+        dados = carregar_dados_empresa(ticker_upper)
 
-    if dados.erros:
-        erros_str = "; ".join(dados.erros)
-        return False, f"Erros ao carregar: {erros_str}", None
+        if not dados.periodos:
+            return False, "Nenhum período encontrado nos dados.", None
 
-    if not dados.periodos:
-        return False, "Nenhum período disponível", None
+        pasta = get_pasta_balanco(ticker_upper)
 
-    # Detecta classes de preço disponíveis
-    classes = _detectar_classes_disponiveis(dados)
+        # lista de saídas por classe disponível
+        tickers_saida = _listar_tickers_saida_multiclasse(dados, ticker_upper)
+        if not tickers_saida:
+            tickers_saida = [ticker_upper]
 
-    # Se não houver classes explícitas, mantém comportamento antigo
-    if not classes:
-        resultado = gerar_historico_anualizado(dados)
+        # gera sempre por classe (novo padrão)
+        resultado_seed: Optional[Dict] = None
 
-        if salvar:
-            pasta = get_pasta_balanco(ticker_upper)
-            pasta.mkdir(parents=True, exist_ok=True)
+        for t_out in tickers_saida:
+            resultado = gerar_historico_anualizado(dados, ticker_preco=t_out, ticker_saida=t_out)
+            if resultado_seed is None and t_out == ticker_upper:
+                resultado_seed = resultado
 
-            output_path = pasta / "multiplos.json"
-            with open(output_path, 'w', encoding='utf-8') as f:
-                json.dump(resultado, f, ensure_ascii=False, indent=2, default=str)
+            if salvar:
+                js_path = pasta / f"multiplos_{t_out}.js"
+                csv_path = pasta / f"multiplos_{t_out}.csv"
 
-            csv_path = pasta / "multiplos.csv"
-            _salvar_csv_historico(resultado, csv_path)
+                _salvar_js_historico(resultado, js_path, ticker=t_out)
+                _salvar_csv_historico(resultado, csv_path)
 
-        # monta msg (exatamente como você já faz hoje)
-        n_anos = len(resultado.get("historico_anual", {}))
-        padrao = resultado.get("padrao_fiscal", {}).get("tipo", "?")
-        ultimo = resultado.get("ltm", {}).get("periodo_referencia", "?")
-        preco = resultado.get("ltm", {}).get("preco_utilizado", "?")
+        if resultado_seed is None:
+            # se o seed não estava na lista, usa o primeiro
+            resultado_seed = gerar_historico_anualizado(dados, ticker_preco=tickers_saida[0], ticker_saida=tickers_saida[0])
 
-        if _is_banco(ticker_upper):
-            tipo_empresa = "BANCO"
-            n_multiplos = len(MULTIPLOS_BANCOS_METADATA)
-        elif _is_holding_seguro(ticker_upper):
-            tipo_empresa = "HOLDING_SEGURO"
-            n_multiplos = len(MULTIPLOS_HOLDINGS_SEGUROS_METADATA)
-        elif _is_seguradora(ticker_upper):
-            tipo_empresa = "SEGURADORA"
-            n_multiplos = len(MULTIPLOS_SEGURADORAS_METADATA)
-        else:
-            tipo_empresa = "GERAL"
-            n_multiplos = len(MULTIPLOS_METADATA)
+        msg = f"OK - gerados {len(tickers_saida)} arquivo(s): " + ", ".join(tickers_saida)
+        return True, msg, resultado_seed
 
-        msg = (
-            f"OK | {n_anos} anos | fiscal={padrao} | LTM={ultimo} | "
-            f"Preço=R${preco} | Tipo={tipo_empresa} | {n_multiplos} múltiplos"
-        )
-
-        return True, msg, resultado
-
-    # Se HÁ classes → processa cada uma separadamente
-    resultados_por_classe: Dict[str, Dict[str, Any]] = {}
-    mensagens: List[str] = []
-
-    pasta = get_pasta_balanco(ticker_upper)
-    if salvar:
-        pasta.mkdir(parents=True, exist_ok=True)
-
-    for classe in classes:
-        resultado = gerar_historico_anualizado(dados, ticker_classe=classe)
-        resultados_por_classe[classe] = resultado
-
-        if salvar:
-            # multiplos_KLBN3.json, multiplos_KLBN4.json, ...
-            output_path = pasta / f"multiplos_{classe}.json"
-            with open(output_path, 'w', encoding='utf-8') as f:
-                json.dump(resultado, f, ensure_ascii=False, indent=2, default=str)
-
-            csv_path = pasta / f"multiplos_{classe}.csv"
-            _salvar_csv_historico(resultado, csv_path)
-
-        n_anos = len(resultado.get("historico_anual", {}))
-        padrao = resultado.get("padrao_fiscal", {}).get("tipo", "?")
-        ultimo = resultado.get("ltm", {}).get("periodo_referencia", "?")
-        preco = resultado.get("ltm", {}).get("preco_utilizado", "?")
-
-        if _is_banco(ticker_upper):
-            tipo_empresa = "BANCO"
-            n_multiplos = len(MULTIPLOS_BANCOS_METADATA)
-        elif _is_holding_seguro(ticker_upper):
-            tipo_empresa = "HOLDING_SEGURO"
-            n_multiplos = len(MULTIPLOS_HOLDINGS_SEGUROS_METADATA)
-        elif _is_seguradora(ticker_upper):
-            tipo_empresa = "SEGURADORA"
-            n_multiplos = len(MULTIPLOS_SEGURADORAS_METADATA)
-        else:
-            tipo_empresa = "GERAL"
-            n_multiplos = len(MULTIPLOS_METADATA)
-
-        mensagens.append(
-            f"{classe}: OK | {n_anos} anos | fiscal={padrao} | LTM={ultimo} | "
-            f"Preço=R${preco} | Tipo={tipo_empresa} | {n_multiplos} múltiplos"
-        )
-
-    msg_final = " | ".join(mensagens)
-    return True, msg_final, resultados_por_classe
+    except Exception as e:
+        return False, f"ERRO - {str(e)}", None
 
 
 def _salvar_csv_historico(resultado: Dict, path: Path):
@@ -2783,6 +2883,40 @@ def _salvar_csv_historico(resultado: Dict, path: Path):
 # CLI
 # ======================================================================================
 
+
+
+
+def _salvar_js_historico(resultado: Dict[str, Any], output_path: Path, ticker: Optional[str] = None) -> None:
+    """
+    Salva o resultado como JavaScript (para consumo direto via <script src=...>).
+
+    Padrão:
+      window.MONALYTICS.multiplos["TICKER"] = {...};
+
+    Args:
+        resultado: dict do histórico (mesma estrutura do JSON)
+        output_path: caminho .js
+        ticker: chave do dicionário (default: resultado['ticker'])
+    """
+    try:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        t = (ticker or resultado.get("ticker") or "").upper().strip() or "TICKER"
+
+        payload = json.dumps(resultado, ensure_ascii=False, indent=2)
+
+        js = (
+            "// Arquivo gerado automaticamente por calcular_multiplos.py\n"
+            "(function(){\n"
+            "  window.MONALYTICS = window.MONALYTICS || {};\n"
+            "  window.MONALYTICS.multiplos = window.MONALYTICS.multiplos || {};\n"
+            f"  window.MONALYTICS.multiplos[{json.dumps(t)}] = {payload};\n"
+            "})();\n"
+        )
+        output_path.write_text(js, encoding="utf-8")
+    except Exception as e:
+        print(f"⚠️ Erro ao salvar JS em {output_path}: {e}")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Calculadora de Múltiplos Financeiros"
@@ -2823,7 +2957,7 @@ def main():
     print(f"{'='*70}")
     print(f"Modo: {args.modo} | Selecionadas: {len(df_sel)}")
     print(f"Empresas: 22 múltiplos | Bancos: 8 | Holdings Seguros: 10 | Seguradoras: 10")
-    print(f"Saída: balancos/<TICKER>/multiplos.json + multiplos.csv")
+    print(f"Saída: balancos/<TICKER>/multiplos_<TICKER>.js + multiplos_<TICKER>.csv (por classe)")
     print(f"{'='*70}\n")
     
     ok_count = 0
