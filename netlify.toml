@@ -1,20 +1,10 @@
 # =========================== NETLIFY CONFIG - MONALYTICS ===========================
-# Site estático HTML/CSS/JS puro
 [build]
-  # Base directory: Netlify entra aqui PRIMEIRO e procura dependências
   base = "site/"
-  
-  # Build command: vazio (site estático, sem build)
   command = ""
-  
-  # Publish directory: RELATIVO ao base (. = aqui mesmo, ou seja site/)
   publish = "."
-  
-  # ✨ CORREÇÃO: Força rebuild em QUALQUER commit (resolve "No changes in base directory")
-  # Sem isto, mudanças em balancos/NOTICIAS/ não triggam deploy
   ignore = "exit 0"
 
-# Configuração de processamento
 [build.processing]
   skip_processing = false
 
@@ -46,34 +36,50 @@
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Cache-Control = "public, max-age=31536000, immutable"
 
+# HTML - Sempre buscar versão mais recente
 [[headers]]
   for = "/*.html"
   [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
 
+# CSS - Cache moderado com revalidação
 [[headers]]
   for = "/css/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=3600, must-revalidate"
 
+# JS - Cache moderado com revalidação  
 [[headers]]
   for = "/js/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=3600, must-revalidate"
 
-# ✨ NOVO: Headers para arquivos JSON (sem cache + CORS)
+# Dados JSON - Cache curto (5 minutos)
 [[headers]]
   for = "/data/*.json"
   [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
+    Cache-Control = "public, max-age=300, must-revalidate"
     Content-Type = "application/json; charset=utf-8"
     Access-Control-Allow-Origin = "*"
 
 [[headers]]
   for = "/noticias_mercado.json"
   [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
+    Cache-Control = "public, max-age=300, must-revalidate"
     Content-Type = "application/json; charset=utf-8"
     Access-Control-Allow-Origin = "*"
+
+# Imagens - Cache longo (são estáticas)
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Favicon
+[[headers]]
+  for = "/*.ico"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
