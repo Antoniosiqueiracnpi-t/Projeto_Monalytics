@@ -1,10 +1,10 @@
 {
   "meta": {
-    "ultima_atualizacao": "2026-01-15T14:06:23.487652Z",
+    "ultima_atualizacao": "2026-01-15T14:19:28.863397Z",
     "data_atualizacao": "2026-01-15",
-    "hora_atualizacao": "14:06:23",
-    "total_empresas": 177,
-    "total_noticias": 1193,
+    "hora_atualizacao": "14:19:28",
+    "total_empresas": 223,
+    "total_noticias": 1355,
     "periodo": {
       "inicio": "2025-12-15",
       "fim": "2026-01-15"
@@ -12,10 +12,10 @@
   },
   "estatisticas": {
     "por_categoria": {
-      "Governança": 520,
-      "Outros": 389,
-      "Aviso": 199,
-      "Fato Relevante": 78,
+      "Governança": 570,
+      "Outros": 447,
+      "Aviso": 233,
+      "Fato Relevante": 98,
       "Resultados": 7
     },
     "por_ticker": {
@@ -29,6 +29,7 @@
       "TTEN3": 13,
       "SBSP3": 12,
       "BBAS3": 12,
+      "PRIO3": 12,
       "PCAR3": 11,
       "BSLI3": 11,
       "CASN3": 11,
@@ -36,26 +37,25 @@
       "SLCE3": 10,
       "TUPY3": 10,
       "BPAN4": 10,
-      "CPLE3": 10,
-      "MDNE3": 10,
-      "BBDC3": 10
+      "IFCM3": 10,
+      "CPLE3": 10
     },
     "top_categorias": [
       {
         "categoria": "Governança",
-        "total": 520
+        "total": 570
       },
       {
         "categoria": "Outros",
-        "total": 389
+        "total": 447
       },
       {
         "categoria": "Aviso",
-        "total": 199
+        "total": 233
       },
       {
         "categoria": "Fato Relevante",
-        "total": 78
+        "total": 98
       },
       {
         "categoria": "Resultados",
@@ -995,6 +995,51 @@
       "data": "2026-01-15",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "HAPV3",
+        "nome": "HAPVIDA PARTICIPAÇÕES E INVESTIMENTOS SA",
+        "cnpj": "05.197.443/0001-38"
+      },
+      "noticia": {
+        "titulo": "NM)  Calendario de Eventos Corporativos  ate 31/12/26 (R) ",
+        "headline": "HAPVIDA (HAPV-NM) - Calendario de Eventos Corporativos - ate 31/12/26 (R) ",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205885&agencia=18&dataNoticia=2026-01-15%2009:03:41"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSNA3",
+        "nome": "CIA SIDERURGICA NACIONAL",
+        "cnpj": "33.042.730/0001-04"
+      },
+      "noticia": {
+        "titulo": " Apresentacao a analistas/agentes mercado  15/01/26  ",
+        "headline": "SID NACIONAL (CSNA) - Apresentacao a analistas/agentes mercado - 15/01/26  ",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205903&agencia=18&dataNoticia=2026-01-15%2009:20:54"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSNA3",
+        "nome": "CIA SIDERURGICA NACIONAL",
+        "cnpj": "33.042.730/0001-04"
+      },
+      "noticia": {
+        "titulo": " Fato Relevante  15/01/26  ",
+        "headline": "SID NACIONAL (CSNA) - Fato Relevante - 15/01/26  ",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205867&agencia=18&dataNoticia=2026-01-15%2008:57:33"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "KEPL3",
         "nome": "KEPLER WEBER S.A.",
         "cnpj": "91.983.056/0001-69"
@@ -1019,6 +1064,51 @@
         "headline": "MOVIDA (MOVI-NM) - Fato Relevante - 14/01/26 (R) ",
         "categoria": "Fato Relevante",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205807&agencia=18&dataNoticia=2026-01-15%2008:00:07"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "NGRD3",
+        "nome": "NEOGRID PATICIPAÇÕES S.A.",
+        "cnpj": "10.139.870/0001-08"
+      },
+      "noticia": {
+        "titulo": "NM)  Proposta da Administracao para AGESP  05/02/26  ",
+        "headline": "NEOGRID (NGRD-NM) - Proposta da Administracao para AGESP - 05/02/26  ",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205793&agencia=18&dataNoticia=2026-01-15%2008:00:06"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "NGRD3",
+        "nome": "NEOGRID PATICIPAÇÕES S.A.",
+        "cnpj": "10.139.870/0001-08"
+      },
+      "noticia": {
+        "titulo": "NM)  Manual para participacao na AGESP  05/02/26  ",
+        "headline": "NEOGRID (NGRD-NM) - Manual para participacao na AGESP - 05/02/26  ",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205795&agencia=18&dataNoticia=2026-01-15%2008:00:06"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "NGRD3",
+        "nome": "NEOGRID PATICIPAÇÕES S.A.",
+        "cnpj": "10.139.870/0001-08"
+      },
+      "noticia": {
+        "titulo": "NM)  Edital de Convocacao de AGESP  05/02/26  ",
+        "headline": "NEOGRID (NGRD-NM) - Edital de Convocacao de AGESP - 05/02/26  ",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205796&agencia=18&dataNoticia=2026-01-15%2008:00:06"
       }
     },
     {
@@ -1205,6 +1295,21 @@
       "data": "2026-01-15",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "NATU3",
+        "nome": "NATURA & CO HOLDING S.A.",
+        "cnpj": "32.785.497/0001-97"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  29/04/26  ",
+        "headline": "NATURA (NATU-NM) - Data prevista para assembleia geral - 29/04/26  ",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205865&agencia=18&dataNoticia=2026-01-15%2008:50:38"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "ABCB4",
         "nome": "BANCO ABC BRASIL S.A.",
         "cnpj": "28.195.667/0001-06"
@@ -1259,6 +1364,36 @@
         "headline": "LOG COM PROP (LOGG-NM) - Calendario de Eventos Corporativos - ate 31/12/26 (R)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204124&agencia=18&dataNoticia=2026-01-14%2009:44:27"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PETR3",
+        "nome": "PETRÓLEO BRASILEIRO S.A. PETROBRAS",
+        "cnpj": "33.000.167/0001-01"
+      },
+      "noticia": {
+        "titulo": "N2)  Aviso aos Debenturistas  14/01/26 (N)",
+        "headline": "PETROBRAS (PETR-N2) - Aviso aos Debenturistas - 14/01/26 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204999&agencia=18&dataNoticia=2026-01-14%2015:44:28"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PETR3",
+        "nome": "PETRÓLEO BRASILEIRO S.A. PETROBRAS",
+        "cnpj": "33.000.167/0001-01"
+      },
+      "noticia": {
+        "titulo": "N2)  Aviso aos Debenturistas  14/01/26",
+        "headline": "PETROBRAS (PETR-N2) - Aviso aos Debenturistas - 14/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204739&agencia=18&dataNoticia=2026-01-14%2014:04:19"
       }
     },
     {
@@ -1580,6 +1715,36 @@
       "data": "2026-01-14",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "ALPK3",
+        "nome": "ALLPARK EMPREENDIMENTOS PARTICIPAÇÕES SERVIÇOS S.A.",
+        "cnpj": "60.537.263/0001-66"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  14/01/26",
+        "headline": "ESTAPAR (ALPK-NM) - Outros Comunicados ao Mercado - 14/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205440&agencia=18&dataNoticia=2026-01-14%2018:03:22"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ONCO3",
+        "nome": "ONCOCLÍNICAS DO BRASIL SERVIÇOS MÉDICOS S.A.",
+        "cnpj": "12.104.241/0004-02"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  05/01/26",
+        "headline": "ONCOCLINICAS (ONCO-NM) - Ata Reuniao do Conselho de Administracao - 05/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205567&agencia=18&dataNoticia=2026-01-14%2018:25:08"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "COCE3",
         "nome": "COMPANHIA ENERGÉTICA DO CEARÁ – COELCE",
         "cnpj": "07.047.251/0001-70"
@@ -1604,6 +1769,21 @@
         "headline": "EMAE (EMAE) - Data prevista para assembleia geral - 20/04/26",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205249&agencia=18&dataNoticia=2026-01-14%2016:58:20"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IFCM3",
+        "nome": "INFRACOMMERCE CXAAS S.A.",
+        "cnpj": "38.546.921/0001-36"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas: Subscricao privada  09/01/26 (R)(N)",
+        "headline": "INFRACOMM (IFCM-NM) - Aviso aos Acionistas: Subscricao privada - 09/01/26 (R)(N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204896&agencia=18&dataNoticia=2026-01-14%2014:54:09"
       }
     },
     {
@@ -1865,6 +2045,21 @@
       "data": "2026-01-14",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "BRKM3",
+        "nome": "BRASKEM S.A.",
+        "cnpj": "42.150.391/0001-70"
+      },
+      "noticia": {
+        "titulo": "N1)  Data prevista para assembleia geral  29/04/26",
+        "headline": "BRASKEM (BRKM-N1) - Data prevista para assembleia geral - 29/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205767&agencia=18&dataNoticia=2026-01-14%2019:47:59"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "MRVE3",
         "nome": "MRV ENGENHARIA E PARTICIPAÇÕES S.A.",
         "cnpj": "08.343.492/0001-20"
@@ -2039,6 +2234,21 @@
         "headline": "MOVIDA (MOVI-NM) - Fato Relevante - 14/01/26",
         "categoria": "Fato Relevante",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205780&agencia=18&dataNoticia=2026-01-14%2019:59:23"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "UGPA3",
+        "nome": "ULTRAPAR PARTICIPAÇÕES S.A.",
+        "cnpj": "33.256.439/0001-39"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  15/04/26",
+        "headline": "ULTRAPAR (UGPA-NM) - Data prevista para assembleia geral - 15/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205741&agencia=18&dataNoticia=2026-01-14%2019:34:33"
       }
     },
     {
@@ -2285,6 +2495,21 @@
       "data": "2026-01-14",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "ODPV3",
+        "nome": "ODONTOPREV S.A.",
+        "cnpj": "58.119.199/0001-51"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  31/03/25",
+        "headline": "ODONTOPREV (ODPV-NM) - Data prevista para assembleia geral - 31/03/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205617&agencia=18&dataNoticia=2026-01-14%2018:46:16"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "TAEE11",
         "nome": "TRANSMISSORA ALIANÇA DE ENERGIA ELÉTRICA S.A – TAESA",
         "cnpj": "07.859.971/0001-30"
@@ -2324,6 +2549,21 @@
         "headline": "D1000VFARMA (DMVF-NM) - Data prevista para assembleia geral - 29/04/26",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205730&agencia=18&dataNoticia=2026-01-14%2019:29:27"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "VBBR3",
+        "nome": "VIBRA ENERGIA S.A.",
+        "cnpj": "34.274.233/0001-02"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  14/01/26",
+        "headline": "VIBRA (VBBR-NM) - Fato Relevante - 14/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205608&agencia=18&dataNoticia=2026-01-14%2018:42:28"
       }
     },
     {
@@ -2840,6 +3080,36 @@
       "data": "2026-01-13",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PETR3",
+        "nome": "PETRÓLEO BRASILEIRO S.A. PETROBRAS",
+        "cnpj": "33.000.167/0001-01"
+      },
+      "noticia": {
+        "titulo": "N2)  Data prevista para assembleia geral  16/04/26",
+        "headline": "PETROBRAS (PETR-N2) - Data prevista para assembleia geral - 16/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203959&agencia=18&dataNoticia=2026-01-13%2019:13:03"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "NUTR3",
+        "nome": "NUTRIPLANT INDÚSTRIA E COMÉRCIO S.A.",
+        "cnpj": "51.128.999/0001-90"
+      },
+      "noticia": {
+        "titulo": "MA)  Data prevista para assembleia geral  28/04/26",
+        "headline": "NUTRIPLANT (NUTR-MA) - Data prevista para assembleia geral - 28/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203874&agencia=18&dataNoticia=2026-01-13%2018:41:32"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "NEOE3",
         "nome": "NEOENERGIA S.A.",
         "cnpj": "01.083.200/0001-18"
@@ -2864,6 +3134,21 @@
         "headline": "PROFARMA (PFRM-NM) - Boletim de voto a distancia para AGE - 12/02/26",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202820&agencia=18&dataNoticia=2026-01-13%2010:40:20"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ESPA3",
+        "nome": "MPM CORPÓREOS S.A.",
+        "cnpj": "26.659.061/0001-59"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  28/04/26",
+        "headline": "ESPACOLASER (ESPA-NM) - Data prevista para assembleia geral - 28/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202568&agencia=18&dataNoticia=2026-01-13%2008:00:13"
       }
     },
     {
@@ -3170,6 +3455,21 @@
       "data": "2026-01-13",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "OSXB3",
+        "nome": "OSX BRASIL S.A.",
+        "cnpj": "09.112.685/0001-32"
+      },
+      "noticia": {
+        "titulo": "NM)  Apresentacao a analistas/agentes mercado  13/01/26",
+        "headline": "OSX BRASIL (OSXB-NM) - Apresentacao a analistas/agentes mercado - 13/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203961&agencia=18&dataNoticia=2026-01-13%2019:15:52"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "CSMG3",
         "nome": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS – COPASA MG ",
         "cnpj": "17.281.106/0001-03"
@@ -3245,6 +3545,81 @@
       "data": "2026-01-13",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "IFCM3",
+        "nome": "INFRACOMMERCE CXAAS S.A.",
+        "cnpj": "38.546.921/0001-36"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  30/04/26",
+        "headline": "INFRACOMM (IFCM-NM) - Data prevista para assembleia geral - 30/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203856&agencia=18&dataNoticia=2026-01-13%2018:34:08"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IFCM3",
+        "nome": "INFRACOMMERCE CXAAS S.A.",
+        "cnpj": "38.546.921/0001-36"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas: Subscricao privada  09/01/26 (R)",
+        "headline": "INFRACOMM (IFCM-NM) - Aviso aos Acionistas: Subscricao privada - 09/01/26 (R)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203851&agencia=18&dataNoticia=2026-01-13%2018:32:22"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IFCM3",
+        "nome": "INFRACOMMERCE CXAAS S.A.",
+        "cnpj": "38.546.921/0001-36"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  09/01/26 (R)",
+        "headline": "INFRACOMM (IFCM-NM) - Fato Relevante - 09/01/26 (R)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203848&agencia=18&dataNoticia=2026-01-13%2018:30:48"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IFCM3",
+        "nome": "INFRACOMMERCE CXAAS S.A.",
+        "cnpj": "38.546.921/0001-36"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  09/01/26 (R)",
+        "headline": "INFRACOMM (IFCM-NM) - Ata Reuniao do Conselho de Administracao - 09/01/26 (R)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203845&agencia=18&dataNoticia=2026-01-13%2018:30:08"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IFCM3",
+        "nome": "INFRACOMMERCE CXAAS S.A.",
+        "cnpj": "38.546.921/0001-36"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas: Subscricao privada  09/01/26 (N)",
+        "headline": "INFRACOMM (IFCM-NM) - Aviso aos Acionistas: Subscricao privada - 09/01/26 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203561&agencia=18&dataNoticia=2026-01-13%2017:19:56"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "IGTI11",
         "nome": "IGUATEMI S.A.",
         "cnpj": "60.543.816/0001-93"
@@ -3284,6 +3659,21 @@
         "headline": "MRV (MRVE-NM) - Outros Comunicados ao Mercado - 13/01/26",
         "categoria": "Aviso",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203656&agencia=18&dataNoticia=2026-01-13%2018:02:29"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "HAPV3",
+        "nome": "HAPVIDA PARTICIPAÇÕES E INVESTIMENTOS SA",
+        "cnpj": "05.197.443/0001-38"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  13/01/26",
+        "headline": "HAPVIDA (HAPV-NM) - Outros Comunicados ao Mercado - 13/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202667&agencia=18&dataNoticia=2026-01-13%2009:25:08"
       }
     },
     {
@@ -3365,6 +3755,36 @@
       "data": "2026-01-13",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PSSA3",
+        "nome": "PORTO SEGURO S.A.",
+        "cnpj": "02.149.205/0001-69"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  31/03/26",
+        "headline": "PORTO SEGURO (PSSA-NM) - Data prevista para assembleia geral - 31/03/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203691&agencia=18&dataNoticia=2026-01-13%2018:04:52"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PSSA3",
+        "nome": "PORTO SEGURO S.A.",
+        "cnpj": "02.149.205/0001-69"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  12/01/26",
+        "headline": "PORTO SEGURO (PSSA-NM) - Ata Reuniao do Conselho de Administracao - 12/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203688&agencia=18&dataNoticia=2026-01-13%2018:04:47"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "WEGE3",
         "nome": "WEG S.A.",
         "cnpj": "84.429.695/0001-11"
@@ -3374,6 +3794,21 @@
         "headline": "WEG (WEGE-NM) - Data prevista para assembleia geral - 28/04/26",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202716&agencia=18&dataNoticia=2026-01-13%2009:49:53"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "NGRD3",
+        "nome": "NEOGRID PATICIPAÇÕES S.A.",
+        "cnpj": "10.139.870/0001-08"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  13/01/26",
+        "headline": "NEOGRID (NGRD-NM) - Fato Relevante - 13/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203620&agencia=18&dataNoticia=2026-01-13%2018:00:12"
       }
     },
     {
@@ -3485,6 +3920,21 @@
       "data": "2026-01-13",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  17/04/26",
+        "headline": "PETRORIO (PRIO-NM) - Data prevista para assembleia geral - 17/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203846&agencia=18&dataNoticia=2026-01-13%2018:30:15"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "GPAR3",
         "nome": "COMPANHIA CELG DE PARTICIPAÇÕES – CELGPAR",
         "cnpj": "08.560.444/0001-93"
@@ -3524,6 +3974,21 @@
         "headline": "EMBRAER (EMBJ-NM) - Data prevista para assembleia geral - 29/04/26",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203714&agencia=18&dataNoticia=2026-01-13%2018:06:29"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBSE3",
+        "nome": "BB SEGURIDADE PARTICIPAÇÕES S.A.",
+        "cnpj": "17.344.597/0001-94"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  29/04/26",
+        "headline": "BBSEGURIDADE (BBSE-NM) - Data prevista para assembleia geral - 29/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203256&agencia=18&dataNoticia=2026-01-13%2015:06:48"
       }
     },
     {
@@ -3725,6 +4190,36 @@
       "data": "2026-01-12",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "RECV3",
+        "nome": "PETRORECÔNCAVO S.A.",
+        "cnpj": "03.342.704/0001-30"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  12/01/26",
+        "headline": "PETRORECSA (RECV-NM) - Outros Comunicados ao Mercado - 12/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202279&agencia=18&dataNoticia=2026-01-12%2018:14:23"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PETR3",
+        "nome": "PETRÓLEO BRASILEIRO S.A. PETROBRAS",
+        "cnpj": "33.000.167/0001-01"
+      },
+      "noticia": {
+        "titulo": "N2)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "PETROBRAS (PETR-N2) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202542&agencia=18&dataNoticia=2026-01-12%2019:51:54"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "CSED3",
         "nome": "CRUZEIRO DO SUL EDUCACIONAL S.A.",
         "cnpj": "62.984.091/0001-02"
@@ -3779,6 +4274,21 @@
         "headline": "DIRECIONAL (DIRR-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202179&agencia=18&dataNoticia=2026-01-12%2018:00:07"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "TRAD3",
+        "nome": "TC TRADERS CLUB S.A.",
+        "cnpj": "26.345.998/0001-50"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  30/04/26",
+        "headline": "TC (TRAD-NM) - Data prevista para assembleia geral - 30/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202397&agencia=18&dataNoticia=2026-01-12%2018:25:54"
       }
     },
     {
@@ -3875,6 +4385,21 @@
       "data": "2026-01-12",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "IRBR3",
+        "nome": "IRB – BRASIL RESSEGUROS S.A.",
+        "cnpj": "33.376.989/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "IRBBRASIL RE (IRBR-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202239&agencia=18&dataNoticia=2026-01-12%2018:05:51"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "PINE3",
         "nome": "BANCO PINE S.A.",
         "cnpj": "62.144.175/0001-20"
@@ -3884,6 +4409,66 @@
         "headline": "PINE (PINE-N2) - VM Posicao Individual (Cia,Controladas e Coligadas)  ",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200926&agencia=18&dataNoticia=2026-01-12%2008:00:09"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "WIZC3",
+        "nome": "WIZ CO PARTICIPAÇÕES E CORRETAGEM DE SEGUROS S.A.",
+        "cnpj": "42.278.473/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  31/10/25 (C)",
+        "headline": "WIZ CO (WIZC-NM) - Outros Comunicados ao Mercado - 31/10/25 (C)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202266&agencia=18&dataNoticia=2026-01-12%2018:09:21"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "WIZC3",
+        "nome": "WIZ CO PARTICIPAÇÕES E CORRETAGEM DE SEGUROS S.A.",
+        "cnpj": "42.278.473/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  31/10/25 (C)",
+        "headline": "WIZ CO (WIZC-NM) - Outros Comunicados ao Mercado - 31/10/25 (C)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202265&agencia=18&dataNoticia=2026-01-12%2018:09:11"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "WIZC3",
+        "nome": "WIZ CO PARTICIPAÇÕES E CORRETAGEM DE SEGUROS S.A.",
+        "cnpj": "42.278.473/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Transacao entre Partes Relacionadas  31/10/25",
+        "headline": "WIZ CO (WIZC-NM) - Transacao entre Partes Relacionadas - 31/10/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202255&agencia=18&dataNoticia=2026-01-12%2018:08:24"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "WIZC3",
+        "nome": "WIZ CO PARTICIPAÇÕES E CORRETAGEM DE SEGUROS S.A.",
+        "cnpj": "42.278.473/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Transacao entre Partes Relacionadas  31/10/25",
+        "headline": "WIZ CO (WIZC-NM) - Transacao entre Partes Relacionadas - 31/10/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202253&agencia=18&dataNoticia=2026-01-12%2018:08:14"
       }
     },
     {
@@ -4169,6 +4754,36 @@
         "headline": "CYRELA REALT (CYRE-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3201351&agencia=18&dataNoticia=2026-01-12%2010:09:59"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "RDOR3",
+        "nome": "REDE DOR SÃO LUIZ S.A.",
+        "cnpj": "06.047.087/0001-39"
+      },
+      "noticia": {
+        "titulo": "NM)  Anuncio Encerramento Distribuicao Publica12/01/26",
+        "headline": "REDE D OR (RDOR-NM) - Anuncio Encerramento Distribuicao Publica-12/01/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202514&agencia=18&dataNoticia=2026-01-12%2019:20:24"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "RDOR3",
+        "nome": "REDE DOR SÃO LUIZ S.A.",
+        "cnpj": "06.047.087/0001-39"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "REDE D OR (RDOR-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200939&agencia=18&dataNoticia=2026-01-12%2008:00:11"
       }
     },
     {
@@ -4565,6 +5180,21 @@
       "data": "2026-01-12",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "IFCM3",
+        "nome": "INFRACOMMERCE CXAAS S.A.",
+        "cnpj": "38.546.921/0001-36"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "INFRACOMM (IFCM-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202202&agencia=18&dataNoticia=2026-01-12%2018:01:51"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "ASAI3",
         "nome": "SENDAS DISTRIBUIDORA S.A.",
         "cnpj": "06.057.223/0001-71"
@@ -4655,6 +5285,66 @@
       "data": "2026-01-12",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "BRKM3",
+        "nome": "BRASKEM S.A.",
+        "cnpj": "42.150.391/0001-70"
+      },
+      "noticia": {
+        "titulo": "N1)  Fato Relevante  12/01/26 (R)",
+        "headline": "BRASKEM (BRKM-N1) - Fato Relevante - 12/01/26 (R)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202520&agencia=18&dataNoticia=2026-01-12%2019:29:19"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRKM3",
+        "nome": "BRASKEM S.A.",
+        "cnpj": "42.150.391/0001-70"
+      },
+      "noticia": {
+        "titulo": "N1)  Transacao entre Partes Relacionadas  01/01/26",
+        "headline": "BRASKEM (BRKM-N1) - Transacao entre Partes Relacionadas - 01/01/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202424&agencia=18&dataNoticia=2026-01-12%2018:46:55"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRKM3",
+        "nome": "BRASKEM S.A.",
+        "cnpj": "42.150.391/0001-70"
+      },
+      "noticia": {
+        "titulo": "N1)  Fato Relevante  12/01/26 (N)",
+        "headline": "BRASKEM (BRKM-N1) - Fato Relevante - 12/01/26 (N)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3201195&agencia=18&dataNoticia=2026-01-12%2009:47:47"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRKM3",
+        "nome": "BRASKEM S.A.",
+        "cnpj": "42.150.391/0001-70"
+      },
+      "noticia": {
+        "titulo": "N1)  Fato Relevante  12/01/26",
+        "headline": "BRASKEM (BRKM-N1) - Fato Relevante - 12/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3201156&agencia=18&dataNoticia=2026-01-12%2009:42:47"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "EVEN3",
         "nome": "EVEN CONSTRUTORA E INCORPORADORA S.A.",
         "cnpj": "43.470.988/0001-65"
@@ -4730,6 +5420,51 @@
       "data": "2026-01-12",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "VLID3",
+        "nome": "VALID SOLUÇÕES S.A.",
+        "cnpj": "33.113.309/0001-47"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  23/04/26",
+        "headline": "VALID (VLID-NM) - Data prevista para assembleia geral - 23/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202513&agencia=18&dataNoticia=2026-01-12%2019:18:45"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BOBR3",
+        "nome": "BOMBRIL S.A.",
+        "cnpj": "50.564.053/0001-03"
+      },
+      "noticia": {
+        "titulo": " Outros Comunicados ao Mercado  12/01/26",
+        "headline": "BOMBRIL (BOBR) - Outros Comunicados ao Mercado - 12/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202344&agencia=18&dataNoticia=2026-01-12%2018:21:34"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BOBR3",
+        "nome": "BOMBRIL S.A.",
+        "cnpj": "50.564.053/0001-03"
+      },
+      "noticia": {
+        "titulo": " Ata Reuniao do Conselho de Administracao  12/01/26",
+        "headline": "BOMBRIL (BOBR) - Ata Reuniao do Conselho de Administracao - 12/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202317&agencia=18&dataNoticia=2026-01-12%2018:18:17"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "NORD3",
         "nome": "NORDON INDÚSTRIAS METALÚRGICAS S.A.",
         "cnpj": "60.884.319/0001-59"
@@ -4784,6 +5519,21 @@
         "headline": "RAIADROGASIL (RADL-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202417&agencia=18&dataNoticia=2026-01-12%2018:39:29"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "HAPV3",
+        "nome": "HAPVIDA PARTICIPAÇÕES E INVESTIMENTOS SA",
+        "cnpj": "05.197.443/0001-38"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "HAPVIDA (HAPV-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202219&agencia=18&dataNoticia=2026-01-12%2018:02:37"
       }
     },
     {
@@ -5150,6 +5900,21 @@
       "data": "2026-01-12",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "CASH3",
+        "nome": "MÉLIUZ S.A.",
+        "cnpj": "14.110.585/0001-07"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "MELIUZ (CASH-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202251&agencia=18&dataNoticia=2026-01-12%2018:08:12"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "ISAE3",
         "nome": "ISA ENERGIA BRASIL S.A",
         "cnpj": "02.998.611/0001-04"
@@ -5354,6 +6119,21 @@
         "headline": "LAVVI (LAVV-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202342&agencia=18&dataNoticia=2026-01-12%2018:20:57"
+      }
+    },
+    {
+      "data": "2026-01-12",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "NATU3",
+        "nome": "NATURA & CO HOLDING S.A.",
+        "cnpj": "32.785.497/0001-97"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "NATURA (NATU-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202186&agencia=18&dataNoticia=2026-01-12%2018:00:50"
       }
     },
     {
@@ -5735,6 +6515,36 @@
       "data": "2026-01-09",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "TRAD3",
+        "nome": "TC TRADERS CLUB S.A.",
+        "cnpj": "26.345.998/0001-50"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "TC (TRAD-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200629&agencia=18&dataNoticia=2026-01-09%2018:17:45"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ESPA3",
+        "nome": "MPM CORPÓREOS S.A.",
+        "cnpj": "26.659.061/0001-59"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "ESPACOLASER (ESPA-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198697&agencia=18&dataNoticia=2026-01-09%2008:00:08"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "PGMN3",
         "nome": "EMPREENDIMENTOS PAGUE MENOS S.A.",
         "cnpj": "06.626.253/0001-51"
@@ -5744,6 +6554,36 @@
         "headline": "PAGUE MENOS (PGMN-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198786&agencia=18&dataNoticia=2026-01-09%2009:28:22"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "WIZC3",
+        "nome": "WIZ CO PARTICIPAÇÕES E CORRETAGEM DE SEGUROS S.A.",
+        "cnpj": "42.278.473/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "WIZ CO (WIZC-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200617&agencia=18&dataNoticia=2026-01-09%2018:15:33"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "WIZC3",
+        "nome": "WIZ CO PARTICIPAÇÕES E CORRETAGEM DE SEGUROS S.A.",
+        "cnpj": "42.278.473/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  28/04/26",
+        "headline": "WIZ CO (WIZC-NM) - Data prevista para assembleia geral - 28/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200612&agencia=18&dataNoticia=2026-01-09%2018:14:36"
       }
     },
     {
@@ -5819,6 +6659,36 @@
         "headline": "EZTEC (EZTC-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198802&agencia=18&dataNoticia=2026-01-09%2009:39:57"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "FESA3",
+        "nome": "CIA FERRO LIGAS DA BAHIA – FERBASA",
+        "cnpj": "15.141.799/0001-03"
+      },
+      "noticia": {
+        "titulo": "N1)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "FERBASA (FESA-N1) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3199035&agencia=18&dataNoticia=2026-01-09%2010:36:09"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "GGBR3",
+        "nome": "GERDAU S.A.",
+        "cnpj": "33.611.500/0001-19"
+      },
+      "noticia": {
+        "titulo": "N1)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "GERDAU (GGBR-N1) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200593&agencia=18&dataNoticia=2026-01-09%2018:09:51"
       }
     },
     {
@@ -5960,6 +6830,21 @@
       "data": "2026-01-09",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "UNIP3",
+        "nome": "UNIPAR CARBOCLORO S.A.",
+        "cnpj": "33.958.695/0001-78"
+      },
+      "noticia": {
+        "titulo": " VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "UNIPAR (UNIP) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198669&agencia=18&dataNoticia=2026-01-09%2008:00:05"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "AMAR3",
         "nome": "MARISA LOJAS S.A.",
         "cnpj": "61.189.288/0001-89"
@@ -5969,6 +6854,21 @@
         "headline": "LOJAS MARISA (AMAR-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200701&agencia=18&dataNoticia=2026-01-09%2018:28:13"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "LWSA3",
+        "nome": "LOCAWEB SERVIÇOS DE INTERNET S.A.",
+        "cnpj": "02.351.877/0001-52"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  30/04/26",
+        "headline": "LWSA (LWSA-NM) - Data prevista para assembleia geral - 30/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200580&agencia=18&dataNoticia=2026-01-09%2018:08:23"
       }
     },
     {
@@ -6050,6 +6950,36 @@
       "data": "2026-01-09",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "ONCO3",
+        "nome": "ONCOCLÍNICAS DO BRASIL SERVIÇOS MÉDICOS S.A.",
+        "cnpj": "12.104.241/0004-02"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  09/01/26 (N)",
+        "headline": "ONCOCLINICAS (ONCO-NM) - Fato Relevante - 09/01/26 (N)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198929&agencia=18&dataNoticia=2026-01-09%2010:01:36"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ONCO3",
+        "nome": "ONCOCLÍNICAS DO BRASIL SERVIÇOS MÉDICOS S.A.",
+        "cnpj": "12.104.241/0004-02"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  09/01/26",
+        "headline": "ONCOCLINICAS (ONCO-NM) - Fato Relevante - 09/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198916&agencia=18&dataNoticia=2026-01-09%2009:56:44"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "BMGB4",
         "nome": "BANCO BMG S.A.",
         "cnpj": "61.186.680/0001-74"
@@ -6059,6 +6989,51 @@
         "headline": "BANCO BMG (BMGB-N1) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200505&agencia=18&dataNoticia=2026-01-09%2018:02:00"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IFCM3",
+        "nome": "INFRACOMMERCE CXAAS S.A.",
+        "cnpj": "38.546.921/0001-36"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  09/01/26",
+        "headline": "INFRACOMM (IFCM-NM) - Ata Reuniao do Conselho de Administracao - 09/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200713&agencia=18&dataNoticia=2026-01-09%2018:34:58"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IFCM3",
+        "nome": "INFRACOMMERCE CXAAS S.A.",
+        "cnpj": "38.546.921/0001-36"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  09/01/26",
+        "headline": "INFRACOMM (IFCM-NM) - Fato Relevante - 09/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200711&agencia=18&dataNoticia=2026-01-09%2018:34:40"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IFCM3",
+        "nome": "INFRACOMMERCE CXAAS S.A.",
+        "cnpj": "38.546.921/0001-36"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas: Subscricao privada  09/01/26",
+        "headline": "INFRACOMM (IFCM-NM) - Aviso aos Acionistas: Subscricao privada - 09/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200709&agencia=18&dataNoticia=2026-01-09%2018:34:23"
       }
     },
     {
@@ -6200,6 +7175,66 @@
       "data": "2026-01-09",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "TOTS3",
+        "nome": "TOTVS S.A.",
+        "cnpj": "53.113.791/0001-22"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "TOTVS (TOTS-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200698&agencia=18&dataNoticia=2026-01-09%2018:24:36"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "VLID3",
+        "nome": "VALID SOLUÇÕES S.A.",
+        "cnpj": "33.113.309/0001-47"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "VALID (VLID-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200700&agencia=18&dataNoticia=2026-01-09%2018:28:00"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "VLID3",
+        "nome": "VALID SOLUÇÕES S.A.",
+        "cnpj": "33.113.309/0001-47"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas) (R)",
+        "headline": "VALID (VLID-NM) - VM Posicao Individual (Cia,Controladas e Coligadas) (R)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200696&agencia=18&dataNoticia=2026-01-09%2018:23:41"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "VLID3",
+        "nome": "VALID SOLUÇÕES S.A.",
+        "cnpj": "33.113.309/0001-47"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas) (R)",
+        "headline": "VALID (VLID-NM) - VM Posicao Individual (Cia,Controladas e Coligadas) (R)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200628&agencia=18&dataNoticia=2026-01-09%2018:17:17"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "RENT3",
         "nome": "LOCALIZA RENT A CAR S.A.",
         "cnpj": "16.670.085/0001-55"
@@ -6269,6 +7304,21 @@
         "headline": "BRAVA (BRAV-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200633&agencia=18&dataNoticia=2026-01-09%2018:19:40"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSNA3",
+        "nome": "CIA SIDERURGICA NACIONAL",
+        "cnpj": "33.042.730/0001-04"
+      },
+      "noticia": {
+        "titulo": " Data prevista para assembleia geral  24/04/26",
+        "headline": "SID NACIONAL (CSNA) - Data prevista para assembleia geral - 24/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200852&agencia=18&dataNoticia=2026-01-09%2019:43:57"
       }
     },
     {
@@ -6440,6 +7490,21 @@
       "data": "2026-01-09",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PSSA3",
+        "nome": "PORTO SEGURO S.A.",
+        "cnpj": "02.149.205/0001-69"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "PORTO SEGURO (PSSA-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200213&agencia=18&dataNoticia=2026-01-09%2016:16:31"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "MOVI3",
         "nome": "MOVIDA PARTICIPAÇÕES S.A.",
         "cnpj": "21.314.559/0001-66"
@@ -6449,6 +7514,21 @@
         "headline": "MOVIDA (MOVI-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200004&agencia=18&dataNoticia=2026-01-09%2014:49:20"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "UGPA3",
+        "nome": "ULTRAPAR PARTICIPAÇÕES S.A.",
+        "cnpj": "33.256.439/0001-39"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "ULTRAPAR (UGPA-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200378&agencia=18&dataNoticia=2026-01-09%2017:13:28"
       }
     },
     {
@@ -6479,6 +7559,36 @@
         "headline": "ENERGISA (ENGI-N2) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3199429&agencia=18&dataNoticia=2026-01-09%2012:17:31"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "NGRD3",
+        "nome": "NEOGRID PATICIPAÇÕES S.A.",
+        "cnpj": "10.139.870/0001-08"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "NEOGRID (NGRD-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200402&agencia=18&dataNoticia=2026-01-09%2017:27:57"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "RAIZ4",
+        "nome": "RAIZEN S.A.",
+        "cnpj": "33.453.598/0001-23"
+      },
+      "noticia": {
+        "titulo": "N2)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "RAIZEN (RAIZ-N2) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200815&agencia=18&dataNoticia=2026-01-09%2019:13:58"
       }
     },
     {
@@ -6590,6 +7700,21 @@
       "data": "2026-01-09",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "VITT3",
+        "nome": "VITTIA FERTILIZANTES BIOLÓGICOS S.A.",
+        "cnpj": "45.365.558/0001-09"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "VITTIA (VITT-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198665&agencia=18&dataNoticia=2026-01-09%2008:00:05"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "BEEF3",
         "nome": "MINERVA S.A.",
         "cnpj": "67.620.377/0001-14"
@@ -6695,6 +7820,66 @@
       "data": "2026-01-09",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  02/01/26 (R)(N)",
+        "headline": "PETRORIO (PRIO-NM) - Fato Relevante - 02/01/26 (R)(N)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200819&agencia=18&dataNoticia=2026-01-09%2019:19:17"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  02/01/26 (R)",
+        "headline": "PETRORIO (PRIO-NM) - Fato Relevante - 02/01/26 (R)",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200740&agencia=18&dataNoticia=2026-01-09%2018:46:45"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas: Subscricao privada  02/01/26 (R)",
+        "headline": "PETRORIO (PRIO-NM) - Aviso aos Acionistas: Subscricao privada - 02/01/26 (R)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200739&agencia=18&dataNoticia=2026-01-09%2018:44:19"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  02/01/26 (R)",
+        "headline": "PETRORIO (PRIO-NM) - Ata Reuniao do Conselho de Administracao - 02/01/26 (R)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200734&agencia=18&dataNoticia=2026-01-09%2018:42:01"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "GPAR3",
         "nome": "COMPANHIA CELG DE PARTICIPAÇÕES – CELGPAR",
         "cnpj": "08.560.444/0001-93"
@@ -6779,6 +7964,66 @@
         "headline": "ROSSI RESID (RSID-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200609&agencia=18&dataNoticia=2026-01-09%2018:13:39"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "VBBR3",
+        "nome": "VIBRA ENERGIA S.A.",
+        "cnpj": "34.274.233/0001-02"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  15/04/26",
+        "headline": "VIBRA (VBBR-NM) - Data prevista para assembleia geral - 15/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200763&agencia=18&dataNoticia=2026-01-09%2019:02:36"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "VBBR3",
+        "nome": "VIBRA ENERGIA S.A.",
+        "cnpj": "34.274.233/0001-02"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "VIBRA (VBBR-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200752&agencia=18&dataNoticia=2026-01-09%2018:58:41"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "MATD3",
+        "nome": "HOSPITAL MATER DEI S/A",
+        "cnpj": "16.676.520/0001-59"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  23/04/26",
+        "headline": "MATER DEI (MATD-NM) - Data prevista para assembleia geral - 23/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200419&agencia=18&dataNoticia=2026-01-09%2017:39:26"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "FLRY3",
+        "nome": "FLEURY S.A.",
+        "cnpj": "60.840.055/0001-31"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "FLEURY (FLRY-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200727&agencia=18&dataNoticia=2026-01-09%2018:39:07"
       }
     },
     {
@@ -6884,6 +8129,21 @@
         "headline": "PLANOEPLANO (PLPL-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198764&agencia=18&dataNoticia=2026-01-09%2008:41:08"
+      }
+    },
+    {
+      "data": "2026-01-09",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AALR3",
+        "nome": "ALLIANÇA SAÚDE E PARTICIPAÇÕES S.A.",
+        "cnpj": "42.771.949/0001-35"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "ALLIAR (AALR-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198803&agencia=18&dataNoticia=2026-01-09%2009:40:02"
       }
     },
     {
@@ -7310,6 +8570,21 @@
       "data": "2026-01-08",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "RECV3",
+        "nome": "PETRORECÔNCAVO S.A.",
+        "cnpj": "03.342.704/0001-30"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  08/01/26",
+        "headline": "PETRORECSA (RECV-NM) - Outros Comunicados ao Mercado - 08/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198535&agencia=18&dataNoticia=2026-01-08%2018:30:11"
+      }
+    },
+    {
+      "data": "2026-01-08",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "AGRO3",
         "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
         "cnpj": "07.628.528/0001-59"
@@ -7580,6 +8855,21 @@
       "data": "2026-01-08",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "LWSA3",
+        "nome": "LOCAWEB SERVIÇOS DE INTERNET S.A.",
+        "cnpj": "02.351.877/0001-52"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "LWSA (LWSA-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198401&agencia=18&dataNoticia=2026-01-08%2018:09:39"
+      }
+    },
+    {
+      "data": "2026-01-08",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "LPSB3",
         "nome": "LPS BRASIL – CONSULTORIA DE IMÓVEIS S.A.",
         "cnpj": "08.078.847/0001-09"
@@ -7604,6 +8894,36 @@
         "headline": "COPASA (CSMG-NM) - Outros Comunicados ao Mercado - 08/01/26",
         "categoria": "Aviso",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198357&agencia=18&dataNoticia=2026-01-08%2018:06:25"
+      }
+    },
+    {
+      "data": "2026-01-08",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ALPK3",
+        "nome": "ALLPARK EMPREENDIMENTOS PARTICIPAÇÕES SERVIÇOS S.A.",
+        "cnpj": "60.537.263/0001-66"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "ESTAPAR (ALPK-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198600&agencia=18&dataNoticia=2026-01-08%2019:01:56"
+      }
+    },
+    {
+      "data": "2026-01-08",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ONCO3",
+        "nome": "ONCOCLÍNICAS DO BRASIL SERVIÇOS MÉDICOS S.A.",
+        "cnpj": "12.104.241/0004-02"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "ONCOCLINICAS (ONCO-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198396&agencia=18&dataNoticia=2026-01-08%2018:09:21"
       }
     },
     {
@@ -7745,6 +9065,21 @@
       "data": "2026-01-08",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "BRKM3",
+        "nome": "BRASKEM S.A.",
+        "cnpj": "42.150.391/0001-70"
+      },
+      "noticia": {
+        "titulo": "N1)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "BRASKEM (BRKM-N1) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198329&agencia=18&dataNoticia=2026-01-08%2018:03:40"
+      }
+    },
+    {
+      "data": "2026-01-08",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "MRVE3",
         "nome": "MRV ENGENHARIA E PARTICIPAÇÕES S.A.",
         "cnpj": "08.343.492/0001-20"
@@ -7775,6 +9110,21 @@
       "data": "2026-01-08",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "TOTS3",
+        "nome": "TOTVS S.A.",
+        "cnpj": "53.113.791/0001-22"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  24/04/26",
+        "headline": "TOTVS (TOTS-NM) - Data prevista para assembleia geral - 24/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198457&agencia=18&dataNoticia=2026-01-08%2018:15:47"
+      }
+    },
+    {
+      "data": "2026-01-08",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "RENT3",
         "nome": "LOCALIZA RENT A CAR S.A.",
         "cnpj": "16.670.085/0001-55"
@@ -7784,6 +9134,21 @@
         "headline": "LOCALIZA (RENT-NM) - Outros Comunicados ao Mercado - 08/01/26",
         "categoria": "Aviso",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198332&agencia=18&dataNoticia=2026-01-08%2018:04:01"
+      }
+    },
+    {
+      "data": "2026-01-08",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PDTC3",
+        "nome": "PADTEC HOLDING S.A.",
+        "cnpj": "02.365.069/0001-44"
+      },
+      "noticia": {
+        "titulo": "NM)  Calendario de Eventos Corporativos  ate 31/12/26 (R)",
+        "headline": "PADTEC (PDTC-NM) - Calendario de Eventos Corporativos - ate 31/12/26 (R)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198655&agencia=18&dataNoticia=2026-01-08%2019:53:24"
       }
     },
     {
@@ -8015,6 +9380,36 @@
       "data": "2026-01-08",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "BBSE3",
+        "nome": "BB SEGURIDADE PARTICIPAÇÕES S.A.",
+        "cnpj": "17.344.597/0001-94"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "BBSEGURIDADE (BBSE-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3197309&agencia=18&dataNoticia=2026-01-08%2012:33:47"
+      }
+    },
+    {
+      "data": "2026-01-08",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "DASA3",
+        "nome": "DIAGNÓSTICOS DA AMÉRICA S.A.",
+        "cnpj": "61.486.650/0001-83"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "DASA (DASA-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198532&agencia=18&dataNoticia=2026-01-08%2018:27:47"
+      }
+    },
+    {
+      "data": "2026-01-08",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "BLAU3",
         "nome": "BLAU FARMACÊUTICA S.A.",
         "cnpj": "58.430.828/0001-60"
@@ -8225,6 +9620,51 @@
       "data": "2026-01-07",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PETR3",
+        "nome": "PETRÓLEO BRASILEIRO S.A. PETROBRAS",
+        "cnpj": "33.000.167/0001-01"
+      },
+      "noticia": {
+        "titulo": "N2)  Transacao entre Partes Relacionadas  31/12/25",
+        "headline": "PETROBRAS (PETR-N2) - Transacao entre Partes Relacionadas - 31/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196591&agencia=18&dataNoticia=2026-01-07%2019:02:08"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ESPA3",
+        "nome": "MPM CORPÓREOS S.A.",
+        "cnpj": "26.659.061/0001-59"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  07/01/26",
+        "headline": "ESPACOLASER (ESPA-NM) - Outros Comunicados ao Mercado - 07/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196487&agencia=18&dataNoticia=2026-01-07%2018:21:23"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ESPA3",
+        "nome": "MPM CORPÓREOS S.A.",
+        "cnpj": "26.659.061/0001-59"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  07/01/26",
+        "headline": "ESPACOLASER (ESPA-NM) - Outros Comunicados ao Mercado - 07/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196467&agencia=18&dataNoticia=2026-01-07%2018:13:04"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "PGMN3",
         "nome": "EMPREENDIMENTOS PAGUE MENOS S.A.",
         "cnpj": "06.626.253/0001-51"
@@ -8234,6 +9674,96 @@
         "headline": "PAGUE MENOS (PGMN-NM) - Ata Reuniao do Conselho de Administracao - 07/01/26",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195381&agencia=18&dataNoticia=2026-01-07%2008:41:12"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IRBR3",
+        "nome": "IRB – BRASIL RESSEGUROS S.A.",
+        "cnpj": "33.376.989/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Regimento interno de Comites  15/12/25",
+        "headline": "IRBBRASIL RE (IRBR-NM) - Regimento interno de Comites - 15/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196466&agencia=18&dataNoticia=2026-01-07%2018:13:02"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IRBR3",
+        "nome": "IRB – BRASIL RESSEGUROS S.A.",
+        "cnpj": "33.376.989/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Politica de Remuneracao  15/12/25",
+        "headline": "IRBBRASIL RE (IRBR-NM) - Politica de Remuneracao - 15/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196454&agencia=18&dataNoticia=2026-01-07%2018:09:55"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IRBR3",
+        "nome": "IRB – BRASIL RESSEGUROS S.A.",
+        "cnpj": "33.376.989/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Politica de Remuneracao  15/12/25",
+        "headline": "IRBBRASIL RE (IRBR-NM) - Politica de Remuneracao - 15/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196453&agencia=18&dataNoticia=2026-01-07%2018:09:48"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IRBR3",
+        "nome": "IRB – BRASIL RESSEGUROS S.A.",
+        "cnpj": "33.376.989/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  15/12/25",
+        "headline": "IRBBRASIL RE (IRBR-NM) - Ata Reuniao do Conselho de Administracao - 15/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196431&agencia=18&dataNoticia=2026-01-07%2018:05:57"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "IRBR3",
+        "nome": "IRB – BRASIL RESSEGUROS S.A.",
+        "cnpj": "33.376.989/0001-91"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  28/11/25",
+        "headline": "IRBBRASIL RE (IRBR-NM) - Ata Reuniao do Conselho de Administracao - 28/11/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196399&agencia=18&dataNoticia=2026-01-07%2018:01:28"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "GGBR3",
+        "nome": "GERDAU S.A.",
+        "cnpj": "33.611.500/0001-19"
+      },
+      "noticia": {
+        "titulo": "N1)  Data prevista para assembleia geral  15/04/26",
+        "headline": "GERDAU (GGBR-N1) - Data prevista para assembleia geral - 15/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196563&agencia=18&dataNoticia=2026-01-07%2018:38:43"
       }
     },
     {
@@ -8369,6 +9899,21 @@
         "headline": "KLABIN S/A (KLBN-N2) - Data prevista para assembleia geral - 07/04/26",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195401&agencia=18&dataNoticia=2026-01-07%2009:02:36"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ONCO3",
+        "nome": "ONCOCLÍNICAS DO BRASIL SERVIÇOS MÉDICOS S.A.",
+        "cnpj": "12.104.241/0004-02"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata da AGE  07/01/26",
+        "headline": "ONCOCLINICAS (ONCO-NM) - Ata da AGE - 07/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196573&agencia=18&dataNoticia=2026-01-07%2018:48:29"
       }
     },
     {
@@ -8555,6 +10100,21 @@
       "data": "2026-01-07",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "ODPV3",
+        "nome": "ODONTOPREV S.A.",
+        "cnpj": "58.119.199/0001-51"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "ODONTOPREV (ODPV-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196409&agencia=18&dataNoticia=2026-01-07%2018:03:05"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "AXIA3",
         "nome": "CENTRAIS ELÉTRICAS BRASILEIRAS S.A. – ELETROBRAS ",
         "cnpj": "00.001.180/0001-26"
@@ -8585,6 +10145,96 @@
       "data": "2026-01-07",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "PETRORIO (PRIO-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196477&agencia=18&dataNoticia=2026-01-07%2018:18:57"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": " VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "PRIO FORTE (PFOR) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196460&agencia=18&dataNoticia=2026-01-07%2018:11:12"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CASH3",
+        "nome": "MÉLIUZ S.A.",
+        "cnpj": "14.110.585/0001-07"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas: Subscricao privada  05/01/26 (N)",
+        "headline": "MELIUZ (CASH-NM) - Aviso aos Acionistas: Subscricao privada - 05/01/26 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195407&agencia=18&dataNoticia=2026-01-07%2009:20:56"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CASH3",
+        "nome": "MÉLIUZ S.A.",
+        "cnpj": "14.110.585/0001-07"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  07/01/26",
+        "headline": "MELIUZ (CASH-NM) - Fato Relevante - 07/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195348&agencia=18&dataNoticia=2026-01-07%2008:05:42"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CASH3",
+        "nome": "MÉLIUZ S.A.",
+        "cnpj": "14.110.585/0001-07"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  07/01/26",
+        "headline": "MELIUZ (CASH-NM) - Outros Comunicados ao Mercado - 07/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195347&agencia=18&dataNoticia=2026-01-07%2008:02:38"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "MATD3",
+        "nome": "HOSPITAL MATER DEI S/A",
+        "cnpj": "16.676.520/0001-59"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "MATER DEI (MATD-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196059&agencia=18&dataNoticia=2026-01-07%2014:04:54"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "AERI3",
         "nome": "AERIS INDÚSTRIA E COMÉRCIO DE EQUIPAMENTOS DE GERAÇÃO DE ENERGIA S/A",
         "cnpj": "12.528.708/0001-07"
@@ -8609,6 +10259,21 @@
         "headline": "SANEPAR (SAPR-N2) - Data prevista para assembleia geral - 29/04/26",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196390&agencia=18&dataNoticia=2026-01-07%2018:00:08"
+      }
+    },
+    {
+      "data": "2026-01-07",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "QUAL3",
+        "nome": "QUALICORP CONSULTORIA E CORRETORA DE SEGUROS S.A.",
+        "cnpj": "11.992.680/0001-93"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "QUALICORP (QUAL-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3196470&agencia=18&dataNoticia=2026-01-07%2018:14:37"
       }
     },
     {
@@ -9395,6 +11060,21 @@
       "data": "2026-01-06",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "RECV3",
+        "nome": "PETRORECÔNCAVO S.A.",
+        "cnpj": "03.342.704/0001-30"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  06/01/26",
+        "headline": "PETRORECSA (RECV-NM) - Outros Comunicados ao Mercado - 06/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3194983&agencia=18&dataNoticia=2026-01-06%2018:16:27"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "AGRO3",
         "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
         "cnpj": "07.628.528/0001-59"
@@ -9404,6 +11084,21 @@
         "headline": "ECO SEC AGRO (ECOA) CRA E:131 S:1(s) Comunicado ao mercado - 06/01/2026",
         "categoria": "Aviso",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3194309&agencia=18&dataNoticia=2026-01-06%2013:54:11"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BMOB3",
+        "nome": "BEMOBI MOBILE TECH S.A.",
+        "cnpj": "09.042.817/0001-05"
+      },
+      "noticia": {
+        "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "BEMOBI TECH (BMOB-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193864&agencia=18&dataNoticia=2026-01-06%2008:18:56"
       }
     },
     {
@@ -9725,6 +11420,21 @@
       "data": "2026-01-06",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "DEXP3",
+        "nome": "DEXXOS PARTICIPAÇÕES S.A.",
+        "cnpj": "02.193.750/0001-52"
+      },
+      "noticia": {
+        "titulo": "N1)  Aquisicao de Participacao Acionaria  06/01/26",
+        "headline": "DEXXOS PAR (DEXP-N1) - Aquisicao de Participacao Acionaria - 06/01/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193911&agencia=18&dataNoticia=2026-01-06%2009:34:40"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "COCE3",
         "nome": "COMPANHIA ENERGÉTICA DO CEARÁ – COELCE",
         "cnpj": "07.047.251/0001-70"
@@ -9815,6 +11525,66 @@
       "data": "2026-01-06",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "TOTS3",
+        "nome": "TOTVS S.A.",
+        "cnpj": "53.113.791/0001-22"
+      },
+      "noticia": {
+        "titulo": "NM)  Relatorio de Agencia de Rating  06/01/25",
+        "headline": "TOTVS (TOTS-NM) - Relatorio de Agencia de Rating - 06/01/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195251&agencia=18&dataNoticia=2026-01-06%2019:31:43"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "TOTS3",
+        "nome": "TOTVS S.A.",
+        "cnpj": "53.113.791/0001-22"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  06/01/26",
+        "headline": "TOTVS (TOTS-NM) - Ata Reuniao do Conselho de Administracao - 06/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195043&agencia=18&dataNoticia=2026-01-06%2018:48:21"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "TOTS3",
+        "nome": "TOTVS S.A.",
+        "cnpj": "53.113.791/0001-22"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  06/01/26",
+        "headline": "TOTVS (TOTS-NM) - Fato Relevante - 06/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195042&agencia=18&dataNoticia=2026-01-06%2018:48:12"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "TOTS3",
+        "nome": "TOTVS S.A.",
+        "cnpj": "53.113.791/0001-22"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso ao Mercado  06/01/26",
+        "headline": "TOTVS (TOTS-NM) - Aviso ao Mercado - 06/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195041&agencia=18&dataNoticia=2026-01-06%2018:47:57"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "RENT3",
         "nome": "LOCALIZA RENT A CAR S.A.",
         "cnpj": "16.670.085/0001-55"
@@ -9839,6 +11609,21 @@
         "headline": "LOCALIZA (RENT-NM) - Aviso aos Acionistas - 05/01/26 (N)",
         "categoria": "Aviso",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3194160&agencia=18&dataNoticia=2026-01-06%2011:45:52"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSNA3",
+        "nome": "CIA SIDERURGICA NACIONAL",
+        "cnpj": "33.042.730/0001-04"
+      },
+      "noticia": {
+        "titulo": " VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "SID NACIONAL (CSNA) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3194763&agencia=18&dataNoticia=2026-01-06%2017:30:01"
       }
     },
     {
@@ -9920,6 +11705,21 @@
       "data": "2026-01-06",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "NGRD3",
+        "nome": "NEOGRID PATICIPAÇÕES S.A.",
+        "cnpj": "10.139.870/0001-08"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  06/01/26",
+        "headline": "NEOGRID (NGRD-NM) - Fato Relevante - 06/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3194865&agencia=18&dataNoticia=2026-01-06%2018:04:46"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "JHSF3",
         "nome": "JHSF PARTICIPAÇÕES S.A.",
         "cnpj": "08.294.224/0001-65"
@@ -9959,6 +11759,21 @@
         "headline": "SYN PROP TEC (SYNE-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3194092&agencia=18&dataNoticia=2026-01-06%2010:42:16"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ODPV3",
+        "nome": "ODONTOPREV S.A.",
+        "cnpj": "58.119.199/0001-51"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  06/01/26",
+        "headline": "ODONTOPREV (ODPV-NM) - Fato Relevante - 06/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195045&agencia=18&dataNoticia=2026-01-06%2018:49:34"
       }
     },
     {
@@ -10115,6 +11930,51 @@
       "data": "2026-01-06",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "CASH3",
+        "nome": "MÉLIUZ S.A.",
+        "cnpj": "14.110.585/0001-07"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas: Subscricao privada  05/01/26",
+        "headline": "MELIUZ (CASH-NM) - Aviso aos Acionistas: Subscricao privada - 05/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195256&agencia=18&dataNoticia=2026-01-06%2019:58:25"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CASH3",
+        "nome": "MÉLIUZ S.A.",
+        "cnpj": "14.110.585/0001-07"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  05/01/26 (N)",
+        "headline": "MELIUZ (CASH-NM) - Ata Reuniao do Conselho de Administracao - 05/01/26 (N)",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195062&agencia=18&dataNoticia=2026-01-06%2018:52:32"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CASH3",
+        "nome": "MÉLIUZ S.A.",
+        "cnpj": "14.110.585/0001-07"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  05/01/26",
+        "headline": "MELIUZ (CASH-NM) - Ata Reuniao do Conselho de Administracao - 05/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3194992&agencia=18&dataNoticia=2026-01-06%2018:21:19"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "GMAT3",
         "nome": "GRUPO MATEUS S.A.",
         "cnpj": "24.990.777/0001-09"
@@ -10175,6 +12035,36 @@
       "data": "2026-01-06",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "FHER3",
+        "nome": "FERTILIZANTES HERINGER S.A.",
+        "cnpj": "22.266.175/0001-88"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  06/01/26",
+        "headline": "FER HERINGER (FHER-NM) - Outros Comunicados ao Mercado - 06/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3194990&agencia=18&dataNoticia=2026-01-06%2018:18:48"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "FHER3",
+        "nome": "FERTILIZANTES HERINGER S.A.",
+        "cnpj": "22.266.175/0001-88"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  29/12/25",
+        "headline": "FER HERINGER (FHER-NM) - Ata Reuniao do Conselho de Administracao - 29/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3194967&agencia=18&dataNoticia=2026-01-06%2018:12:42"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "EGIE3",
         "nome": "ENGIE BRASIL ENERGIA S.A.",
         "cnpj": "02.474.103/0001-19"
@@ -10199,6 +12089,21 @@
         "headline": "ENGIE BRASIL (EGIE-NM) - Calendario de Eventos Corporativos - ate 31/12/26 (R)",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193881&agencia=18&dataNoticia=2026-01-06%2008:58:42"
+      }
+    },
+    {
+      "data": "2026-01-06",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBSE3",
+        "nome": "BB SEGURIDADE PARTICIPAÇÕES S.A.",
+        "cnpj": "17.344.597/0001-94"
+      },
+      "noticia": {
+        "titulo": "NM)  Transacao entre Partes Relacionadas  23/12/25",
+        "headline": "BBSEGURIDADE (BBSE-NM) - Transacao entre Partes Relacionadas - 23/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3194815&agencia=18&dataNoticia=2026-01-06%2018:02:14"
       }
     },
     {
@@ -10685,6 +12590,81 @@
       "data": "2026-01-05",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PETR3",
+        "nome": "PETRÓLEO BRASILEIRO S.A. PETROBRAS",
+        "cnpj": "33.000.167/0001-01"
+      },
+      "noticia": {
+        "titulo": "N2)  Transacao entre Partes Relacionadas  29/12/25",
+        "headline": "PETROBRAS (PETR-N2) - Transacao entre Partes Relacionadas - 29/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193701&agencia=18&dataNoticia=2026-01-05%2019:06:25"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ENJU3",
+        "nome": "ENJOEI S.A.",
+        "cnpj": "16.922.038/0001-51"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  05/01/26",
+        "headline": "ENJOEI (ENJU-NM) - Ata Reuniao do Conselho de Administracao - 05/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193710&agencia=18&dataNoticia=2026-01-05%2019:21:28"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ENJU3",
+        "nome": "ENJOEI S.A.",
+        "cnpj": "16.922.038/0001-51"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  05/01/26",
+        "headline": "ENJOEI (ENJU-NM) - Fato Relevante - 05/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193709&agencia=18&dataNoticia=2026-01-05%2019:21:20"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "NUTR3",
+        "nome": "NUTRIPLANT INDÚSTRIA E COMÉRCIO S.A.",
+        "cnpj": "51.128.999/0001-90"
+      },
+      "noticia": {
+        "titulo": "MA)  Ata Reuniao do Conselho de Administracao  23/12/25",
+        "headline": "NUTRIPLANT (NUTR-MA) - Ata Reuniao do Conselho de Administracao - 23/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193544&agencia=18&dataNoticia=2026-01-05%2018:58:27"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "NUTR3",
+        "nome": "NUTRIPLANT INDÚSTRIA E COMÉRCIO S.A.",
+        "cnpj": "51.128.999/0001-90"
+      },
+      "noticia": {
+        "titulo": "MA)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "NUTRIPLANT (NUTR-MA) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193534&agencia=18&dataNoticia=2026-01-05%2018:47:43"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "BIOM3",
         "nome": "BIOMM S.A.",
         "cnpj": "04.752.991/0001-10"
@@ -10865,6 +12845,21 @@
       "data": "2026-01-05",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "DEXP3",
+        "nome": "DEXXOS PARTICIPAÇÕES S.A.",
+        "cnpj": "02.193.750/0001-52"
+      },
+      "noticia": {
+        "titulo": "N1)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "DEXXOS PAR (DEXP-N1) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3192259&agencia=18&dataNoticia=2026-01-05%2009:43:33"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "SCAR3",
         "nome": "SÃO CARLOS EMPREENDIMENTOS E PARTICIPAÇÕES S.A.",
         "cnpj": "29.780.061/0001-09"
@@ -10889,6 +12884,36 @@
         "headline": "SAO CARLOS (SCAR-NM) - Ata Reuniao do Conselho de Administracao - 02/01/26",
         "categoria": "Governança",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3192168&agencia=18&dataNoticia=2026-01-05%2008:00:06"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ONCO3",
+        "nome": "ONCOCLÍNICAS DO BRASIL SERVIÇOS MÉDICOS S.A.",
+        "cnpj": "12.104.241/0004-02"
+      },
+      "noticia": {
+        "titulo": "NM)  Mapa consolidado voto a distancia  AGE  07/01/26",
+        "headline": "ONCOCLINICAS (ONCO-NM) - Mapa consolidado voto a distancia - AGE - 07/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193472&agencia=18&dataNoticia=2026-01-05%2018:13:56"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "ONCO3",
+        "nome": "ONCOCLÍNICAS DO BRASIL SERVIÇOS MÉDICOS S.A.",
+        "cnpj": "12.104.241/0004-02"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas  04/01/26",
+        "headline": "ONCOCLINICAS (ONCO-NM) - Aviso aos Acionistas - 04/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3192158&agencia=18&dataNoticia=2026-01-05%2008:00:05"
       }
     },
     {
@@ -11009,6 +13034,21 @@
         "headline": "IMC S/A (MEAL-NM) - Fato Relevante - 05/01/26",
         "categoria": "Fato Relevante",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3192217&agencia=18&dataNoticia=2026-01-05%2008:57:55"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "TOTS3",
+        "nome": "TOTVS S.A.",
+        "cnpj": "53.113.791/0001-22"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  05/01/26",
+        "headline": "TOTVS (TOTS-NM) - Outros Comunicados ao Mercado - 05/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193524&agencia=18&dataNoticia=2026-01-05%2018:32:12"
       }
     },
     {
@@ -11195,6 +13235,36 @@
       "data": "2026-01-05",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PSSA3",
+        "nome": "PORTO SEGURO S.A.",
+        "cnpj": "02.149.205/0001-69"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  05/01/26",
+        "headline": "PORTO SEGURO (PSSA-NM) - Outros Comunicados ao Mercado - 05/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193529&agencia=18&dataNoticia=2026-01-05%2018:34:56"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PSSA3",
+        "nome": "PORTO SEGURO S.A.",
+        "cnpj": "02.149.205/0001-69"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  02/01/26",
+        "headline": "PORTO SEGURO (PSSA-NM) - Ata Reuniao do Conselho de Administracao - 02/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193528&agencia=18&dataNoticia=2026-01-05%2018:34:49"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "SBFG3",
         "nome": "GRUPO SBF SA",
         "cnpj": "13.217.485/0001-11"
@@ -11249,6 +13319,21 @@
         "headline": "3TENTOS (TTEN-NM) - Outros Comunicados ao Mercado - 05/01/26",
         "categoria": "Aviso",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193482&agencia=18&dataNoticia=2026-01-05%2018:20:46"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "VITT3",
+        "nome": "VITTIA FERTILIZANTES BIOLÓGICOS S.A.",
+        "cnpj": "45.365.558/0001-09"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  23/04/26",
+        "headline": "VITTIA (VITT-NM) - Data prevista para assembleia geral - 23/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193462&agencia=18&dataNoticia=2026-01-05%2018:13:13"
       }
     },
     {
@@ -11360,6 +13445,21 @@
       "data": "2026-01-05",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  05/01/26",
+        "headline": "PETRORIO (PRIO-NM) - Outros Comunicados ao Mercado - 05/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193543&agencia=18&dataNoticia=2026-01-05%2018:58:14"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "FRIO3",
         "nome": "METALFRIO SOLUTIONS S.A.",
         "cnpj": "04.821.041/0001-08"
@@ -11414,6 +13514,21 @@
         "headline": "EQUATORIAL (EQTL-NM) - Aviso aos Acionistas - 05/01/26",
         "categoria": "Aviso",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193522&agencia=18&dataNoticia=2026-01-05%2018:32:00"
+      }
+    },
+    {
+      "data": "2026-01-05",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BBSE3",
+        "nome": "BB SEGURIDADE PARTICIPAÇÕES S.A.",
+        "cnpj": "17.344.597/0001-94"
+      },
+      "noticia": {
+        "titulo": "NM)  Transacao entre Partes Relacionadas  22/12/25",
+        "headline": "BBSEGURIDADE (BBSE-NM) - Transacao entre Partes Relacionadas - 22/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193479&agencia=18&dataNoticia=2026-01-05%2018:19:32"
       }
     },
     {
@@ -11930,6 +14045,21 @@
       "data": "2026-01-02",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "PETR3",
+        "nome": "PETRÓLEO BRASILEIRO S.A. PETROBRAS",
+        "cnpj": "33.000.167/0001-01"
+      },
+      "noticia": {
+        "titulo": "N2)  Outros Comunicados ao Mercado  02/01/26",
+        "headline": "PETROBRAS (PETR-N2) - Outros Comunicados ao Mercado - 02/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3190190&agencia=18&dataNoticia=2026-01-02%2009:11:34"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "BIOM3",
         "nome": "BIOMM S.A.",
         "cnpj": "04.752.991/0001-10"
@@ -11984,6 +14114,21 @@
         "headline": "BOA SAFRA (SOJA-NM) - Transacao entre Partes Relacionadas - 31/12/25",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189635&agencia=18&dataNoticia=2026-01-02%2008:00:21"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "RDOR3",
+        "nome": "REDE DOR SÃO LUIZ S.A.",
+        "cnpj": "06.047.087/0001-39"
+      },
+      "noticia": {
+        "titulo": "NM)  Anuncio de Inicio Distribuicao Publica  31/12/25",
+        "headline": "REDE D OR (RDOR-NM) - Anuncio de Inicio Distribuicao Publica - 31/12/25",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189649&agencia=18&dataNoticia=2026-01-02%2008:00:24"
       }
     },
     {
@@ -12125,6 +14270,21 @@
       "data": "2026-01-02",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "BOBR3",
+        "nome": "BOMBRIL S.A.",
+        "cnpj": "50.564.053/0001-03"
+      },
+      "noticia": {
+        "titulo": " Data prevista para assembleia geral  24/04/26",
+        "headline": "BOMBRIL (BOBR) - Data prevista para assembleia geral - 24/04/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3190136&agencia=18&dataNoticia=2026-01-02%2008:16:01"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "CEBR3",
         "nome": "COMPANHIA ENERGÉTICA DE BRASÍLIA",
         "cnpj": "00.070.698/0001-11"
@@ -12185,6 +14345,36 @@
       "data": "2026-01-02",
       "hora": "00:00:00",
       "empresa": {
+        "ticker": "RPMG3",
+        "nome": "REFINARIA DE PETRÓLEOS MANGUINHOS S.A.",
+        "cnpj": "33.412.081/0001-96"
+      },
+      "noticia": {
+        "titulo": " VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "PET MANGUINH (RPMG) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3190831&agencia=18&dataNoticia=2026-01-02%2012:08:52"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSNA3",
+        "nome": "CIA SIDERURGICA NACIONAL",
+        "cnpj": "33.042.730/0001-04"
+      },
+      "noticia": {
+        "titulo": " Outros Comunicados ao Mercado  31/12/25",
+        "headline": "SID NACIONAL (CSNA) - Outros Comunicados ao Mercado - 31/12/25",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189647&agencia=18&dataNoticia=2026-01-02%2008:00:24"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
         "ticker": "BBAS3",
         "nome": "BANCO DO BRASIL S.A.",
         "cnpj": "00.000.000/0001-91"
@@ -12239,6 +14429,246 @@
         "headline": "CSNMINERACAO (CMIN-N2) - Outros Comunicados ao Mercado - 31/12/25",
         "categoria": "Aviso",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189648&agencia=18&dataNoticia=2026-01-02%2008:00:24"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB3",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Ata da AGE  02/01/26",
+        "headline": "BRQ (BRQB-MA) - Ata da AGE - 02/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3190736&agencia=18&dataNoticia=2026-01-02%2011:41:26"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB3",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "headline": "BRQ (BRQB-MA) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3190490&agencia=18&dataNoticia=2026-01-02%2009:56:06"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "BRQB3",
+        "nome": "BRQ SOLUÇÕES EM INFORMÁTICA S.A.",
+        "cnpj": "36.542.025/0001-64"
+      },
+      "noticia": {
+        "titulo": "MA)  Mapa consolidado voto a distancia  AGE  02/01/26",
+        "headline": "BRQ (BRQB-MA) - Mapa consolidado voto a distancia - AGE - 02/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189512&agencia=18&dataNoticia=2026-01-02%2008:00:05"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CXSE3",
+        "nome": "CAIXA SEGURIDADE PARTICIPAÇÕES S.A.",
+        "cnpj": "22.543.331/0001-00"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas  02/01/26 (N)",
+        "headline": "CAIXA SEGURI (CXSE-NM) - Aviso aos Acionistas - 02/01/26 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3191937&agencia=18&dataNoticia=2026-01-02%2018:33:28"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CXSE3",
+        "nome": "CAIXA SEGURIDADE PARTICIPAÇÕES S.A.",
+        "cnpj": "22.543.331/0001-00"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas  02/01/26",
+        "headline": "CAIXA SEGURI (CXSE-NM) - Aviso aos Acionistas - 02/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3191738&agencia=18&dataNoticia=2026-01-02%2018:03:45"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CXSE3",
+        "nome": "CAIXA SEGURIDADE PARTICIPAÇÕES S.A.",
+        "cnpj": "22.543.331/0001-00"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  22/12/25",
+        "headline": "CAIXA SEGURI (CXSE-NM) - Ata Reuniao do Conselho de Administracao - 22/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3191648&agencia=18&dataNoticia=2026-01-02%2017:48:29"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "VITT3",
+        "nome": "VITTIA FERTILIZANTES BIOLÓGICOS S.A.",
+        "cnpj": "45.365.558/0001-09"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas  30/12/25 (R)(N)",
+        "headline": "VITTIA (VITT-NM) - Aviso aos Acionistas - 30/12/25 (R)(N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3191305&agencia=18&dataNoticia=2026-01-02%2015:14:13"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "VITT3",
+        "nome": "VITTIA FERTILIZANTES BIOLÓGICOS S.A.",
+        "cnpj": "45.365.558/0001-09"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas  30/12/25 (N)",
+        "headline": "VITTIA (VITT-NM) - Aviso aos Acionistas - 30/12/25 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3191237&agencia=18&dataNoticia=2026-01-02%2015:02:55"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas: Subscricao privada  02/01/26 (N)",
+        "headline": "PETRORIO (PRIO-NM) - Aviso aos Acionistas: Subscricao privada - 02/01/26 (N)",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3190588&agencia=18&dataNoticia=2026-01-02%2010:18:24"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  02/01/26",
+        "headline": "PETRORIO (PRIO-NM) - Fato Relevante - 02/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3190172&agencia=18&dataNoticia=2026-01-02%2008:36:37"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Acionistas: Subscricao privada  02/01/26",
+        "headline": "PETRORIO (PRIO-NM) - Aviso aos Acionistas: Subscricao privada - 02/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3190137&agencia=18&dataNoticia=2026-01-02%2008:20:17"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "PRIO3",
+        "nome": "PRIO S.A. – PETRORIO",
+        "cnpj": "10.629.105/0001-68"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  02/01/26",
+        "headline": "PETRORIO (PRIO-NM) - Ata Reuniao do Conselho de Administracao - 02/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189752&agencia=18&dataNoticia=2026-01-02%2008:05:14"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "VBBR3",
+        "nome": "VIBRA ENERGIA S.A.",
+        "cnpj": "34.274.233/0001-02"
+      },
+      "noticia": {
+        "titulo": "NM)  Esclarecimentos de questionamentos CVM/B3 02/01/26",
+        "headline": "VIBRA (VBBR-NM) - Esclarecimentos de questionamentos CVM/B3- 02/01/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3192094&agencia=18&dataNoticia=2026-01-02%2019:22:23"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "DASA3",
+        "nome": "DIAGNÓSTICOS DA AMÉRICA S.A.",
+        "cnpj": "61.486.650/0001-83"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  30/12/25",
+        "headline": "DASA (DASA-NM) - Fato Relevante - 30/12/25",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189720&agencia=18&dataNoticia=2026-01-02%2008:00:32"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "DASA3",
+        "nome": "DIAGNÓSTICOS DA AMÉRICA S.A.",
+        "cnpj": "61.486.650/0001-83"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  26/12/25",
+        "headline": "DASA (DASA-NM) - Ata Reuniao do Conselho de Administracao - 26/12/25",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189718&agencia=18&dataNoticia=2026-01-02%2008:00:31"
+      }
+    },
+    {
+      "data": "2026-01-02",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "NATU3",
+        "nome": "NATURA & CO HOLDING S.A.",
+        "cnpj": "32.785.497/0001-97"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  31/12/25",
+        "headline": "NATURA (NATU-NM) - Fato Relevante - 31/12/25",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189753&agencia=18&dataNoticia=2026-01-02%2008:05:42"
       }
     },
     {
