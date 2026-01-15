@@ -348,7 +348,7 @@ const DATA_PATHS = {
 const NOTICIAS_MERCADO_PATH = 'balancos/NOTICIAS/noticias_mercado.json';
 const DIVIDENDOS_PATH = 'agenda_dividendos_acoes_investidor10.json';
 const MAPEAMENTO_B3_PATH = 'mapeamento_b3_consolidado.csv';
-const IBOV_PATH = 'balancos/IBOV/historico_precos_diarios.json';
+const IBOV_PATH = 'balancos/IBOV/historico_precos_IBOV.json';
 
 let currentSlide = 0;
 const totalSlides = 3;
