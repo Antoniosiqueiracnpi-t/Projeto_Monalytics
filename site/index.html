@@ -621,7 +621,7 @@
             <!-- Análise Gráfica de Ações -->
             <div class="analise-grafica-container">
                 <!-- Card de Busca Destacado -->
-                <div class="search-card" id="#busca-acoes">
+                <div class="search-card" id="busca-acoes">
                     <div class="search-card-header">
                         <h3>🔍 Buscar Ação</h3>
                         <p>Digite o ticker ou nome da empresa</p>
@@ -706,7 +706,7 @@
                     </nav>
 
                     <!-- Cards de indicadores -->
-                    <div class="indicadores-cards" id="indicadores">    
+                    <div class="indicadores-cards">
                         <div class="indicador-card">
                             <div class="indicador-label">COTAÇÃO</div>
                             <div class="indicador-valor" id="cotacaoAtual">R$ 13,65</div>
@@ -744,7 +744,7 @@
                     </div>
 
                     <!-- Gráfico -->
-                    <div class="grafico-container" id="cotacao">
+                    <div class="grafico-container">
                         <canvas id="acaoChart"></canvas>
                     </div>
 
@@ -765,7 +765,7 @@
                     </div>
 
                     <!-- Card de Informações da Empresa -->
-                    <div class="empresa-info-card" id="empresa">
+                    <div class="empresa-info-card">
                         <h3 class="empresa-info-title">📋 Informações da Empresa</h3>
 
                         <div class="empresa-info-grid">
@@ -812,7 +812,7 @@
                     </div>
 
                     <!-- Múltiplos da Empresa -->
-                    <div class="multiplos-empresa-section" id="multiplos" style="display: none;">    
+                    <div class="multiplos-empresa-section" id="multiplosSection" style="display: none;">
                         <!-- Conteúdo será gerado dinamicamente pelo JavaScript -->
                     </div>
 
@@ -822,12 +822,12 @@
                     </div>
 
                     <!-- Histórico de Dividendos -->
-                    <div class="dividendos-historico-section" id="dividendos-hist" style="display: none;">    
+                    <div class="dividendos-historico-section" id="dividendosHistoricoSection" style="display: none;">
                         <!-- Conteúdo será gerado dinamicamente pelo JavaScript -->
                     </div>
 
                     <!-- Comparador de Ações do Setor -->
-                    <div class="comparador-acoes-section" id="comparador" style="display: none;">    
+                    <div class="comparador-acoes-section" id="comparadorAcoesSection" style="display: none;">
                         <div class="comparador-header">
                             <div class="comparador-title-group">
                                 <i class="fas fa-balance-scale"></i>
@@ -1203,62 +1203,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Script de Controle das Tabs de Navegação Interna -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Controle das tabs de navegação interna da análise de ações
-        const navItems = document.querySelectorAll('.empresa-nav-item');
-        
-        navItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault(); // Previne o comportamento padrão da âncora
-                
-                // Remove classe active de todos os itens
-                navItems.forEach(nav => nav.classList.remove('active'));
-                
-                // Adiciona classe active no item clicado
-                this.classList.add('active');
-                
-                // Pega o ID da seção alvo
-                const targetId = this.getAttribute('href').substring(1); // Remove o #
-                const targetSection = document.getElementById(targetId);
-                
-                if (targetSection) {
-                    // Garante que o container pai esteja visível
-                    const container = document.getElementById('acaoAnaliseContent');
-                    if (container && container.style.display === 'none') {
-                        container.style.display = 'block';
-                    }
-                    
-                    // Garante que a seção alvo esteja visível (se tiver display:none)
-                    if (targetSection.style.display === 'none') {
-                        targetSection.style.display = 'block';
-                    }
-                    
-                    // Faz o scroll suave até a seção
-                    targetSection.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'start',
-                        inline: 'nearest'
-                    });
-                    
-                    // Ajuste fino: compensa a altura do header fixo (se houver)
-                    setTimeout(() => {
-                        const headerOffset = 100; // Ajuste este valor conforme necessário
-                        const elementPosition = targetSection.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                        
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-                    }, 100);
-                }
-            });
-        });
-    });
-    </script>
 
 </body>
 </html>
