@@ -3502,9 +3502,10 @@ async function carregarDYAtual(ticker) {
 
 
 
+
 /**
- * Carrega DY histórico do arquivo multiplos.json
- * ✅ CORREÇÃO 2026-01-15: Agora carrega arquivo específico por ticker (multiplos_TICKER.csv)
+ * Carrega DY histórico do arquivo multiplos_TICKER.json
+ * ✅ CORREÇÃO 2026-01-15: Carrega arquivo JSON específico por ticker
  */
 async function carregarDYHistorico(ticker) {
     try {
@@ -3523,7 +3524,7 @@ async function carregarDYHistorico(ticker) {
         
         const timestamp = new Date().getTime();
         
-        // ✅ CORREÇÃO: Carrega arquivo específico do ticker
+        // ✅ CORREÇÃO: Carrega arquivo JSON específico do ticker
         const response = await fetch(
             `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${timestamp}`
         );
@@ -3582,6 +3583,7 @@ async function carregarDYHistorico(ticker) {
         return null;
     }
 }
+
 
 
 
