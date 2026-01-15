@@ -1,0 +1,31 @@
+{
+  "empresa": {
+    "ticker": "CEBR3",
+    "nome": "COMPANHIA ENERGÉTICA DE BRASÍLIA",
+    "cnpj": "00.070.698/0001-11"
+  },
+  "ultima_atualizacao": "2026-01-15T14:01:24.282329",
+  "total_noticias": 2,
+  "noticias": [
+    {
+      "data": "2026-01-02",
+      "data_hora": "2026-01-02 08:00:33",
+      "titulo": " Ata da AGE  10/12/25",
+      "headline": "CEB (CEBR) - Ata da AGE - 10/12/25",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189736&agencia=18&dataNoticia=2026-01-02%2008:00:33",
+      "id": 3189736,
+      "categoria": "Governança"
+    },
+    {
+      "data": "2026-01-02",
+      "data_hora": "2026-01-02 08:00:33",
+      "titulo": " Estatuto Social  10/12/25",
+      "headline": "CEB (CEBR) - Estatuto Social - 10/12/25",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3189737&agencia=18&dataNoticia=2026-01-02%2008:00:33",
+      "id": 3189737,
+      "categoria": "Outros"
+    }
+  ]
+}

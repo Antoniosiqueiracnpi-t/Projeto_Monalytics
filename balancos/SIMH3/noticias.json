@@ -1,0 +1,41 @@
+{
+  "empresa": {
+    "ticker": "SIMH3",
+    "nome": "SIMPAR S.A.",
+    "cnpj": "07.415.333/0001-20"
+  },
+  "ultima_atualizacao": "2026-01-15T14:02:03.650098",
+  "total_noticias": 3,
+  "noticias": [
+    {
+      "data": "2026-01-14",
+      "data_hora": "2026-01-14 16:25:00",
+      "titulo": "NM)  Aviso aos Debenturistas  14/01/26",
+      "headline": "SIMPAR (SIMH-NM) - Aviso aos Debenturistas - 14/01/26",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205161&agencia=18&dataNoticia=2026-01-14%2016:25:00",
+      "id": 3205161,
+      "categoria": "Aviso"
+    },
+    {
+      "data": "2026-01-09",
+      "data_hora": "2026-01-09 18:20:32",
+      "titulo": "NM)  Data prevista para assembleia geral  30/04/26",
+      "headline": "SIMPAR (SIMH-NM) - Data prevista para assembleia geral - 30/04/26",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3200635&agencia=18&dataNoticia=2026-01-09%2018:20:32",
+      "id": 3200635,
+      "categoria": "Governança"
+    },
+    {
+      "data": "2026-01-09",
+      "data_hora": "2026-01-09 09:54:59",
+      "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "headline": "SIMPAR (SIMH-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3198914&agencia=18&dataNoticia=2026-01-09%2009:54:59",
+      "id": 3198914,
+      "categoria": "Outros"
+    }
+  ]
+}

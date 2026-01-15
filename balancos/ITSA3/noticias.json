@@ -1,0 +1,41 @@
+{
+  "empresa": {
+    "ticker": "ITSA3",
+    "nome": "ITAUSA S.A.",
+    "cnpj": "61.532.644/0001-15"
+  },
+  "ultima_atualizacao": "2026-01-15T14:02:01.637484",
+  "total_noticias": 3,
+  "noticias": [
+    {
+      "data": "2026-01-14",
+      "data_hora": "2026-01-14 18:11:31",
+      "titulo": "N1)  Transacao entre Partes Relacionadas  13/01/26",
+      "headline": "ITAUSA (ITSA-N1) - Transacao entre Partes Relacionadas - 13/01/26",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205503&agencia=18&dataNoticia=2026-01-14%2018:11:31",
+      "id": 3205503,
+      "categoria": "Outros"
+    },
+    {
+      "data": "2026-01-14",
+      "data_hora": "2026-01-14 18:09:35",
+      "titulo": "N1)  Data prevista para assembleia geral  30/04/26",
+      "headline": "ITAUSA (ITSA-N1) - Data prevista para assembleia geral - 30/04/26",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205496&agencia=18&dataNoticia=2026-01-14%2018:09:35",
+      "id": 3205496,
+      "categoria": "Governança"
+    },
+    {
+      "data": "2026-01-12",
+      "data_hora": "2026-01-12 18:19:33",
+      "titulo": "N1)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "headline": "ITAUSA (ITSA-N1) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202331&agencia=18&dataNoticia=2026-01-12%2018:19:33",
+      "id": 3202331,
+      "categoria": "Outros"
+    }
+  ]
+}

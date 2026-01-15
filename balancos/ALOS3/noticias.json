@@ -1,0 +1,31 @@
+{
+  "empresa": {
+    "ticker": "ALOS3",
+    "nome": "ALLOS S.A",
+    "cnpj": "05.878.397/0001-32"
+  },
+  "ultima_atualizacao": "2026-01-15T14:01:49.887715",
+  "total_noticias": 2,
+  "noticias": [
+    {
+      "data": "2026-01-07",
+      "data_hora": "2026-01-07 09:26:46",
+      "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "headline": "ALLOS (ALOS-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3195420&agencia=18&dataNoticia=2026-01-07%2009:26:46",
+      "id": 3195420,
+      "categoria": "Outros"
+    },
+    {
+      "data": "2026-01-05",
+      "data_hora": "2026-01-05 08:00:05",
+      "titulo": "NM)  Outros Comunicados ao Mercado  04/01/26",
+      "headline": "ALLOS (ALOS-NM) - Outros Comunicados ao Mercado - 04/01/26",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3192155&agencia=18&dataNoticia=2026-01-05%2008:00:05",
+      "id": 3192155,
+      "categoria": "Aviso"
+    }
+  ]
+}
