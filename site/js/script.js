@@ -2455,6 +2455,87 @@ function initAcaoBusca() {
     });
 }
 
+
+/* ========================================
+   NAVEGAÇÃO INTERNA DA ANÁLISE DE AÇÃO
+   ======================================== */
+
+/**
+ * Inicializa navegação por seções da análise
+ */
+function initEmpresaNavigation() {
+    const navItems = document.querySelectorAll('.empresa-nav-item');
+    
+    if (!navItems || navItems.length === 0) {
+        console.log('⚠️ Navegação da empresa não encontrada');
+        return;
+    }
+    
+    console.log('✅ Inicializando navegação da empresa');
+    
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            const section = item.dataset.section;
+            console.log(`📍 Navegando para seção: ${section}`);
+            
+            // Remove active de todos
+            navItems.forEach(nav => nav.classList.remove('active'));
+            
+            // Adiciona active no clicado
+            item.classList.add('active');
+            
+            // Scroll suave para a seção correspondente
+            scrollToSection(section);
+        });
+    });
+}
+
+/**
+ * Rola suavemente para a seção solicitada
+ */
+function scrollToSection(section) {
+    const secoes = {
+        'indicadores': '.indicadores-cards',
+        'cotacao': '.grafico-container',
+        'empresa': '.empresa-info-card',
+        'multiplos': '#multiplosSection',
+        'dividendos': '#dividendosHistoricoSection',
+        'comparador': '#comparadorAcoesSection'
+    };
+    
+    const selector = secoes[section];
+    
+    if (!selector) {
+        console.warn(`⚠️ Seção "${section}" não mapeada`);
+        return;
+    }
+    
+    const targetElement = document.querySelector(selector);
+    
+    if (!targetElement) {
+        console.warn(`⚠️ Elemento "${selector}" não encontrado`);
+        return;
+    }
+    
+    // Calcula posição com offset do header
+    const header = document.getElementById('header');
+    const headerHeight = header ? header.offsetHeight : 80;
+    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+    
+    // Scroll suave
+    window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+    });
+    
+    console.log(`✅ Scroll para ${section} concluído`);
+}
+
+
+
+
 /* ========================================
    SISTEMA DE EXPANSÃO DE BLOCOS
    ======================================== */
@@ -2712,6 +2793,8 @@ async function loadAcaoData(ticker) {
         content.style.display      = 'block';
 
         console.log("🎯 Ação carregada com sucesso:", t);
+
+        initEmpresaNavigation();
 
     } catch (err) {
         console.error("❌ Erro loadAcaoData:", err);
