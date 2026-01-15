@@ -1203,6 +1203,25 @@
             </div>
         </div>
     </div>
+    
+    <script>
+    document.querySelectorAll('.empresa-nav-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active de todos
+            document.querySelectorAll('.empresa-nav-item').forEach(n => n.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Scroll até a seção
+            const id = this.getAttribute('href');
+            const section = document.querySelector(id);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+    </script>    
 
 </body>
 </html>
