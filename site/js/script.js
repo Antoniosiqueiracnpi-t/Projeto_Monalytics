@@ -2806,7 +2806,7 @@ async function loadMultiplosData(ticker) {
         const timestamp = new Date().getTime();
         
         // ✅ CORREÇÃO: Carrega arquivo específico do ticker (ex: multiplos_PETR3.csv)
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${timestamp}`);
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.js?t=${timestamp}`);
         
         if (!response.ok) {
             console.warn(`⚠️ Múltiplos não encontrados para ${tickerNorm} (HTTP ${response.status})`);
@@ -2856,7 +2856,7 @@ async function loadAcionistasData(ticker) {
         const tickerPasta = obterTickerPasta(ticker);
         
         const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/acionistas.json?t=${timestamp}`);
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/acionistas.js?t=${timestamp}`);
         
         if (!response.ok) {
             throw new Error(`Dados de acionistas não encontrados para ${ticker}`);
@@ -3462,7 +3462,7 @@ async function carregarDYAtual(ticker) {
         const timestamp = new Date().getTime();
         
         // ✅ CORREÇÃO: Carrega arquivo específico do ticker
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${timestamp}`);
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.js?t=${timestamp}`);
         
         if (response.ok) {
             const multiplosData = await response.json();
@@ -3526,7 +3526,7 @@ async function carregarDYHistorico(ticker) {
         
         // ✅ CORREÇÃO: Carrega arquivo JSON específico do ticker
         const response = await fetch(
-            `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${timestamp}`
+            `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.js?t=${timestamp}`
         );
         
         if (!response.ok) {
@@ -4982,7 +4982,7 @@ async function buscarMultiplosEmpresa(ticker) {
         const ts = Date.now();
         
         // ✅ CORREÇÃO: Carrega arquivo específico do ticker
-        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${ts}`;
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.js?t=${ts}`;
         
         console.log(`🔍 Comparador: Buscando múltiplos de ${tickerNorm}...`);
         
