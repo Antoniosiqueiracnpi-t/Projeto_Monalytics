@@ -1,8 +1,94 @@
 /**
- * Sistema de Auto-Atualização Monalytics
- * Verifica periodicamente se há novos dados disponíveis
- * e recarrega automaticamente sem necessidade de F5
+ * ============================================
+ * SISTEMA DE DETECÇÃO DE VERSÃO
+ * Verifica se há nova versão do site e notifica usuário
+ * ============================================
  */
+
+const CURRENT_VERSION = '20260115144200'; // ⚠️ ATUALIZAR JUNTO COM index.html
+
+// Verifica versão a cada 2 minutos
+setInterval(checkVersion, 2 * 60 * 1000);
+
+// Verificação inicial após 10 segundos
+setTimeout(checkVersion, 10000);
+
+async function checkVersion() {
+    try {
+        const response = await fetch('/index.html', {
+            method: 'GET',
+            cache: 'no-cache',
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        });
+        
+        const html = await response.text();
+        const versionMatch = html.match(/css\/styles\.css\?v=(\d+)/);
+        
+        if (versionMatch && versionMatch[1] !== CURRENT_VERSION) {
+            console.log('🔄 Nova versão detectada:', versionMatch[1]);
+            showUpdateBanner();
+        }
+    } catch (error) {
+        console.warn('⚠️ Erro ao verificar versão:', error);
+    }
+}
+
+function showUpdateBanner() {
+    // Remove banner antigo se existir
+    const oldBanner = document.getElementById('update-banner');
+    if (oldBanner) return; // Já está mostrando
+    
+    // Cria novo banner
+    const banner = document.createElement('div');
+    banner.id = 'update-banner';
+    banner.className = 'update-banner';
+    banner.innerHTML = `
+        <div class="update-banner-content">
+            <div class="update-banner-icon">
+                <i class="fas fa-sync-alt fa-spin"></i>
+            </div>
+            <div class="update-banner-text">
+                <strong>Nova versão disponível!</strong>
+                <span>Clique para atualizar e ver as novidades</span>
+            </div>
+            <button class="update-banner-btn" onclick="forceReload()">
+                Atualizar Agora
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(banner);
+    
+    // Remove após 30 segundos se não clicar
+    setTimeout(() => {
+        if (banner.parentNode) {
+            banner.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => banner.remove(), 300);
+        }
+    }, 30000);
+}
+
+function forceReload() {
+    console.log('🔄 Forçando atualização completa...');
+    
+    // Limpa service worker cache se existir
+    if ('caches' in window) {
+        caches.keys().then(names => {
+            names.forEach(name => caches.delete(name));
+        });
+    }
+    
+    // Limpa storage
+    localStorage.clear();
+    sessionStorage.clear();
+    
+    // Força reload completo
+    window.location.reload(true);
+}
 
 class MonalyticsAutoUpdater {
   constructor(config = {}) {
