@@ -1204,24 +1204,61 @@
         </div>
     </div>
     
+    <!-- Script de Controle das Tabs de Navegação Interna -->
     <script>
-    document.querySelectorAll('.empresa-nav-item').forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Remove active de todos
-            document.querySelectorAll('.empresa-nav-item').forEach(n => n.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Scroll até a seção
-            const id = this.getAttribute('href');
-            const section = document.querySelector(id);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Controle das tabs de navegação interna da análise de ações
+        const navItems = document.querySelectorAll('.empresa-nav-item');
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault(); // Previne o comportamento padrão da âncora
+                
+                // Remove classe active de todos os itens
+                navItems.forEach(nav => nav.classList.remove('active'));
+                
+                // Adiciona classe active no item clicado
+                this.classList.add('active');
+                
+                // Pega o ID da seção alvo
+                const targetId = this.getAttribute('href').substring(1); // Remove o #
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    // Garante que o container pai esteja visível
+                    const container = document.getElementById('acaoAnaliseContent');
+                    if (container && container.style.display === 'none') {
+                        container.style.display = 'block';
+                    }
+                    
+                    // Garante que a seção alvo esteja visível (se tiver display:none)
+                    if (targetSection.style.display === 'none') {
+                        targetSection.style.display = 'block';
+                    }
+                    
+                    // Faz o scroll suave até a seção
+                    targetSection.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start',
+                        inline: 'nearest'
+                    });
+                    
+                    // Ajuste fino: compensa a altura do header fixo (se houver)
+                    setTimeout(() => {
+                        const headerOffset = 100; // Ajuste este valor conforme necessário
+                        const elementPosition = targetSection.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }, 100);
+                }
+            });
         });
     });
-    </script>    
+    </script>
 
 </body>
 </html>
