@@ -2150,46 +2150,6 @@ function formatCurrency(value) {
     return value.toFixed(2);
 }
 
-/**
- * Formata valores grandes em formato compacto (milhões, bilhões)
- * @param {number} valor - Valor a ser formatado
- * @param {string} unidade - Unidade do múltiplo ('R$', '%', 'x', etc.)
- * @returns {string} - Valor formatado
- */
-function formatMultiploValor(valor, unidade) {
-    if (valor === null || valor === undefined) return 'N/D';
-    
-    // Para porcentagem e multiplicadores
-    if (unidade === '%') {
-        return `${valor.toFixed(2)}%`;
-    }
-    
-    if (unidade === 'x') {
-        return `${valor.toFixed(2)}x`;
-    }
-    
-    // Para valores monetários
-    if (unidade === 'R$') {
-        // VALOR DE MERCADO: Converte para bilhões/milhões
-        if (Math.abs(valor) >= 1_000_000_000) {
-            // Bilhões
-            return `R$ ${(valor / 1_000_000_000).toFixed(2)} bi`;
-        } else if (Math.abs(valor) >= 1_000_000) {
-            // Milhões
-            return `R$ ${(valor / 1_000_000).toFixed(2)} mi`;
-        } else if (Math.abs(valor) >= 1_000) {
-            // Milhares
-            return `R$ ${(valor / 1_000).toFixed(2)} mil`;
-        } else {
-            // Menor que mil
-            return `R$ ${valor.toFixed(2)}`;
-        }
-    }
-    
-    // Padrão: sem unidade
-    return valor.toFixed(2);
-}
-
 
 /**
  * Formata volume (milhões)
@@ -4181,21 +4141,71 @@ function toggleDividendosView(view) {
 
 
 /**
- * Formata valor do múltiplo
+ * Formata valores grandes em formato compacto (milhões, bilhões)
+ * CORREÇÃO 2025-01-15: Adiciona suporte para "R$ mil" e "R$"
+ * @param {number} valor - Valor a ser formatado
+ * @param {string} unidade - Unidade do múltiplo ('R$', 'R$ mil', '%', 'x', 'dias', etc.)
+ * @returns {string} - Valor formatado
  */
 function formatMultiploValor(valor, unidade) {
     if (valor === null || valor === undefined) return 'N/D';
     
+    // Para porcentagem
     if (unidade === '%') {
         return valor.toFixed(2) + '%';
-    } else if (unidade === 'x') {
+    }
+    
+    // Para multiplicadores
+    if (unidade === 'x') {
         return valor.toFixed(2) + 'x';
-    } else if (unidade === 'dias') {
+    }
+    
+    // Para dias (arredonda para inteiro)
+    if (unidade === 'dias') {
         return Math.round(valor);
     }
     
+    // ✅ NOVO: Suporte para "R$ mil" (valores em milhares de reais)
+    if (unidade === 'R$ mil') {
+        // Converte de milhares para reais (multiplica por 1.000)
+        const valorEmReais = valor * 1_000;
+        
+        if (Math.abs(valorEmReais) >= 1_000_000_000) {
+            // Bilhões
+            return 'R$ ' + (valorEmReais / 1_000_000_000).toFixed(2) + ' bi';
+        } else if (Math.abs(valorEmReais) >= 1_000_000) {
+            // Milhões
+            return 'R$ ' + (valorEmReais / 1_000_000).toFixed(2) + ' mi';
+        } else if (Math.abs(valorEmReais) >= 1_000) {
+            // Milhares
+            return 'R$ ' + (valorEmReais / 1_000).toFixed(2) + ' mil';
+        } else {
+            // Menor que mil
+            return 'R$ ' + valorEmReais.toFixed(2);
+        }
+    }
+    
+    // ✅ NOVO: Suporte para "R$" (valores monetários já em reais)
+    if (unidade === 'R$') {
+        if (Math.abs(valor) >= 1_000_000_000) {
+            // Bilhões
+            return 'R$ ' + (valor / 1_000_000_000).toFixed(2) + ' bi';
+        } else if (Math.abs(valor) >= 1_000_000) {
+            // Milhões
+            return 'R$ ' + (valor / 1_000_000).toFixed(2) + ' mi';
+        } else if (Math.abs(valor) >= 1_000) {
+            // Milhares
+            return 'R$ ' + (valor / 1_000).toFixed(2) + ' mil';
+        } else {
+            // Menor que mil
+            return 'R$ ' + valor.toFixed(2);
+        }
+    }
+    
+    // Padrão: retorna valor com 2 casas decimais
     return valor.toFixed(2);
 }
+
 
 /**
  * Cria modal para exibir histórico
