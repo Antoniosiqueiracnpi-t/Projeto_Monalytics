@@ -2793,43 +2793,37 @@ let multiplosChart = null;
  */
 async function loadMultiplosData(ticker) {
     try {
-        console.log(`📊 Carregando múltiplos para ${ticker}...`);
-
+        console.log(`📊 Carregando múltiplos de ${ticker}...`);
+        
         const tickerNorm = normalizarTicker(ticker);
-        const pasta = obterTickerPasta(tickerNorm); // mantém sua lógica original
+        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item.ticker) === tickerNorm);
+        
+        if (!empresaInfo) {
+            throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
+        }
+        
+        const tickerPasta = obterTickerPasta(ticker);
         const timestamp = new Date().getTime();
-
-        // --------------------------------------------------------------
-        // NOVA REGRA (cirúrgica):
-        // Carrega SEMPRE o arquivo multiplos_<TICKER>.json
-        // Ex:
-        //   multiplos_PETR3.json
-        //   multiplos_PETR4.json
-        //   multiplos_KLBN11.json
-        // --------------------------------------------------------------
-        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${pasta}/multiplos_${tickerNorm}.json?t=${timestamp}`;
-
-        console.log("🔗 Arquivo de múltiplos solicitado:", url);
-
-        const response = await fetch(url);
-
+        
+        // ✅ CORREÇÃO: Carrega arquivo específico do ticker (ex: multiplos_PETR3.csv)
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${timestamp}`);
+        
         if (!response.ok) {
-            console.warn(`⚠️ Arquivo de múltiplos não encontrado para ${tickerNorm} (HTTP ${response.status})`);
+            console.warn(`⚠️ Múltiplos não encontrados para ${tickerNorm} (HTTP ${response.status})`);
             document.getElementById('multiplosSection').style.display = 'none';
             return;
         }
-
-        // JSON carregado corretamente
+        
         multiplosData = await response.json();
-
-        console.log(`✅ Múltiplos carregados para ${tickerNorm}`);
-        renderMultiplosSection();  // mantém sua função original
-
+        console.log(`✅ Múltiplos carregados para ${tickerNorm}: ${Object.keys(multiplosData.ltm.multiplos).length} indicadores`);
+        renderMultiplosSection();
+        
     } catch (error) {
-        console.error("❌ Erro ao carregar múltiplos:", error);
-        document.getElementById("multiplosSection").style.display = "none";
+        console.error(`❌ Erro ao carregar múltiplos de ${ticker}:`, error);
+        document.getElementById('multiplosSection').style.display = 'none';
     }
 }
+
 
 
 
@@ -3456,8 +3450,6 @@ let currentDividendosPeriod = 5; // 5 ou 10 anos
 async function carregarDYAtual(ticker) {
     try {
         const tickerNorm = normalizarTicker(ticker);
-        
-        // Busca info da empresa no mapeamento (comparação normalizada)
         const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item && item.ticker) === tickerNorm);
         
         if (!empresaInfo) {
@@ -3465,34 +3457,34 @@ async function carregarDYAtual(ticker) {
         }
         const tickerPasta = obterTickerPasta(ticker);
         
-        console.log(`🔍 Buscando DY em multiplos.json (ticker: ${tickerPasta})...`);
+        console.log(`🔍 Buscando DY atual em multiplos_${tickerNorm}.json...`);
         
         const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
+        
+        // ✅ CORREÇÃO: Carrega arquivo específico do ticker
+        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${timestamp}`);
         
         if (response.ok) {
             const multiplosData = await response.json();
             
-            // ✅ ACESSO CORRETO: multiplosData.ltm.multiplos.DY
             if (multiplosData?.ltm?.multiplos?.DY) {
                 const dyAtual = multiplosData.ltm.multiplos.DY;
                 
-                // ✅ Atribuição robusta
                 if (dividendosHistoricoData) {
                     dividendosHistoricoData.dy_atual = dyAtual;
                 }
                 
-                console.log(`✅ DY atual carregado: ${dyAtual.toFixed(2)}%`);
+                console.log(`✅ DY atual carregado para ${tickerNorm}: ${dyAtual.toFixed(2)}%`);
                 return dyAtual;
             } else {
-                console.log('⚠️ DY não encontrado em multiplos.ltm.multiplos.DY, usando 0');
+                console.log(`⚠️ DY não encontrado em multiplos_${tickerNorm}.json, usando 0`);
                 if (dividendosHistoricoData) {
                     dividendosHistoricoData.dy_atual = 0;
                 }
                 return 0;
             }
         } else {
-            console.log(`⚠️ Arquivo multiplos.json não encontrado (${response.status})`);
+            console.log(`⚠️ Arquivo multiplos_${tickerNorm}.json não encontrado (HTTP ${response.status})`);
             if (dividendosHistoricoData) {
                 dividendosHistoricoData.dy_atual = 0;
             }
@@ -3500,7 +3492,7 @@ async function carregarDYAtual(ticker) {
         }
         
     } catch (error) {
-        console.log('⚠️ Erro ao buscar DY atual:', error.message);
+        console.log(`⚠️ Erro ao buscar DY atual de ${ticker}:`, error.message);
         if (dividendosHistoricoData) {
             dividendosHistoricoData.dy_atual = 0;
         }
@@ -3508,8 +3500,11 @@ async function carregarDYAtual(ticker) {
     }
 }
 
+
+
 /**
  * Carrega DY histórico do arquivo multiplos.json
+ * ✅ CORREÇÃO 2026-01-15: Agora carrega arquivo específico por ticker (multiplos_TICKER.csv)
  */
 async function carregarDYHistorico(ticker) {
     try {
@@ -3521,42 +3516,73 @@ async function carregarDYHistorico(ticker) {
         if (!empresaInfo) {
             throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
         }
+        
         const tickerPasta = obterTickerPasta(ticker);
         
-        console.log(`📈 Buscando DY histórico em multiplos.json (ticker: ${tickerPasta})...`);
+        console.log(`📊 Buscando DY histórico em multiplos_${tickerNorm}.json...`);
         
         const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
         
-        if (response.ok) {
-            const multiplosData = await response.json();
-            
-            // ✅ Extrai DY de cada ano do histórico
-            const historicoAnual = multiplosData.historico_anual || {};
-            
-            for (const ano in historicoAnual) {
-                const dyAno = historicoAnual[ano].multiplos?.DY;
-                
-                if (dyAno !== undefined && dyAno !== null) {
-                    // Atualiza dy_percent no historico_anos correspondente
-                    const anoObj = dividendosHistoricoData.historico_anos.find(
-                        a => a.ano === parseInt(ano)
-                    );
-                    
-                    if (anoObj) {
-                        anoObj.dy_percent = dyAno;
-                        console.log(`   ✅ ${ano}: ${dyAno.toFixed(2)}%`);
-                    }
-                }
-            }
-            
-            console.log('✅ DY histórico atualizado de multiplos.json');
+        // ✅ CORREÇÃO: Carrega arquivo específico do ticker
+        const response = await fetch(
+            `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${timestamp}`
+        );
+        
+        if (!response.ok) {
+            console.log(`⚠️ Arquivo multiplos_${tickerNorm}.json não encontrado para histórico DY (HTTP ${response.status})`);
+            return null;
         }
         
+        const multiplosData = await response.json();
+        
+        // Valida estrutura do JSON
+        if (!multiplosData || !multiplosData.historico) {
+            console.warn(`⚠️ Estrutura inválida em multiplos_${tickerNorm}.json - 'historico' não encontrado`);
+            return null;
+        }
+        
+        // Extrai DY histórico
+        const historicoCompleto = multiplosData.historico;
+        
+        // Filtra apenas registros que possuem DY
+        const dyHistorico = historicoCompleto
+            .filter(reg => reg.multiplos && reg.multiplos.DY !== undefined && reg.multiplos.DY !== null)
+            .map(reg => ({
+                ano: reg.ano,
+                periodo: reg.periodo || 'LTM',
+                dy: reg.multiplos.DY,
+                preco: reg.preco_utilizado || null,
+                dividendos_pagos: reg.multiplos.DIVIDENDO_PAGO || null
+            }))
+            .sort((a, b) => a.ano - b.ano);
+        
+        if (dyHistorico.length === 0) {
+            console.warn(`⚠️ Nenhum DY histórico encontrado para ${tickerNorm}`);
+            return null;
+        }
+        
+        console.log(`✅ DY histórico carregado para ${tickerNorm}: ${dyHistorico.length} registros`);
+        
+        // Armazena no objeto global de dividendos (se existir)
+        if (dividendosHistoricoData) {
+            dividendosHistoricoData.dy_historico = dyHistorico;
+            
+            // Calcula média de DY
+            const dyValores = dyHistorico.map(d => d.dy);
+            const dyMedio = dyValores.reduce((sum, val) => sum + val, 0) / dyValores.length;
+            dividendosHistoricoData.dy_medio = dyMedio;
+            
+            console.log(`📊 DY Médio (${dyHistorico.length} anos): ${dyMedio.toFixed(2)}%`);
+        }
+        
+        return dyHistorico;
+        
     } catch (error) {
-        console.warn('⚠️ Erro ao carregar DY histórico:', error);
+        console.error(`❌ Erro ao carregar DY histórico de ${ticker}:`, error);
+        return null;
     }
 }
+
 
 
 /**
@@ -4950,52 +4976,29 @@ function buscarEmpresasDoSetor(ticker) {
 async function buscarMultiplosEmpresa(ticker) {
     try {
         const tickerNorm = normalizarTicker(ticker);
-        const tickerPasta = obterTickerPasta(tickerNorm);
+        const tickerPasta = obterTickerPasta(ticker);
+        const ts = Date.now();
         
-        console.log(`📈 Buscando múltiplos de ${tickerNorm} (pasta: ${tickerPasta})`);
+        // ✅ CORREÇÃO: Carrega arquivo específico do ticker
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.json?t=${ts}`;
         
-        const timestamp = new Date().getTime();
-        const url = `${GITHUB_RAW_BASE}/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`;
+        console.log(`🔍 Comparador: Buscando múltiplos de ${tickerNorm}...`);
         
-        // ✅ Timeout de 3 segundos
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
-        
-        const response = await fetch(url, { signal: controller.signal });
-        clearTimeout(timeoutId);
-        
+        const response = await fetch(url);
         if (!response.ok) {
-            console.warn(`⚠️ Múltiplos não encontrados para ${tickerNorm} (HTTP ${response.status})`);
-            return null;  // ✅ Retorna null em vez de quebrar
+            console.log(`⚠️ Múltiplos não encontrados para ${tickerNorm} (HTTP ${response.status})`);
+            return null;
         }
         
         const data = await response.json();
-        
-        // Busca info da empresa no mapeamento
-        const empresaInfo = mapeamentoB3?.find(e => normalizarTicker(e.ticker) === tickerNorm);
-        
-        // Extrai múltiplos do LTM
-        const multiplos = data?.ltm?.multiplos;
-        
-        console.log(`✅ Múltiplos carregados para ${tickerNorm}`);
-        
-        return {
-            ticker: tickerNorm,
-            empresa: empresaInfo?.empresa || tickerNorm,
-            logo: `${GITHUB_RAW_BASE}/balancos/${tickerPasta}/logo.png`,
-            multiplos: multiplos || {}
-        };
-        
+        console.log(`✅ Múltiplos carregados para comparação: ${tickerNorm}`);
+        return data;
     } catch (error) {
-        // Se foi timeout ou erro de rede, não loga como erro
-        if (error.name === 'AbortError') {
-            console.warn(`⏱️ Timeout ao buscar ${ticker}`);
-        } else {
-            console.warn(`⚠️ Erro ao buscar múltiplos de ${ticker}:`, error.message);
-        }
+        console.log(`⚠️ Erro ao buscar múltiplos de ${ticker}:`, error.message);
         return null;
     }
 }
+
 
 
 
