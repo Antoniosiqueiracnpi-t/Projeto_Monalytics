@@ -1,4 +1,4 @@
-// Arquivo gerado automaticamente por calcular_multiplos.py v2.0
+// Arquivo gerado automaticamente por calcular_multiplos.py
 (function(){
   window.MONALYTICS = window.MONALYTICS || {};
   window.MONALYTICS.multiplos = window.MONALYTICS.multiplos || {};
@@ -14,126 +14,126 @@
     "VALOR_MERCADO": {
       "nome": "Valor de Mercado",
       "categoria": "Valuation",
-      "formula": "Preço × Ações",
+      "formula": "Preço × Ações (3+4)",
       "unidade": "R$ mil",
       "usa_preco": true
     },
     "P_L": {
       "nome": "P/L",
       "categoria": "Valuation",
-      "formula": "Preço / LPA LTM",
+      "formula": "Preço / Lucro por Ação LTM",
       "unidade": "x",
       "usa_preco": true
     },
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Preço / VPA",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
     "EV_EBITDA": {
       "nome": "EV/EBITDA",
       "categoria": "Valuation",
-      "formula": "EV / EBITDA LTM",
+      "formula": "Enterprise Value / EBITDA LTM",
       "unidade": "x",
       "usa_preco": true
     },
     "EV_EBIT": {
       "nome": "EV/EBIT",
       "categoria": "Valuation",
-      "formula": "EV / EBIT LTM",
+      "formula": "Enterprise Value / EBIT LTM",
       "unidade": "x",
       "usa_preco": true
     },
     "EV_RECEITA": {
       "nome": "EV/Receita",
       "categoria": "Valuation",
-      "formula": "EV / Receita LTM",
+      "formula": "Enterprise Value / Receita LTM",
       "unidade": "x",
       "usa_preco": true
     },
     "DY": {
       "nome": "Dividend Yield",
       "categoria": "Valuation",
-      "formula": "DPA LTM / Preço × 100",
+      "formula": "Dividendos LTM / Market Cap",
       "unidade": "%",
       "usa_preco": true
     },
     "PAYOUT": {
       "nome": "Payout",
       "categoria": "Valuation",
-      "formula": "DPA LTM / LPA LTM × 100",
+      "formula": "Dividendos LTM / Lucro Líquido LTM",
       "unidade": "%",
       "usa_preco": false
     },
     "ROE": {
       "nome": "ROE",
       "categoria": "Rentabilidade",
-      "formula": "LL LTM / PL Médio × 100",
+      "formula": "Lucro Líquido LTM / PL Médio",
       "unidade": "%",
       "usa_preco": false
     },
     "ROA": {
       "nome": "ROA",
       "categoria": "Rentabilidade",
-      "formula": "LL LTM / Ativo Médio × 100",
+      "formula": "Lucro Líquido LTM / Ativo Total Médio",
       "unidade": "%",
       "usa_preco": false
     },
     "ROIC": {
       "nome": "ROIC",
       "categoria": "Rentabilidade",
-      "formula": "NOPAT / (PL + Dív. Bruta) × 100",
+      "formula": "NOPAT / Capital Investido",
       "unidade": "%",
       "usa_preco": false
     },
     "MARGEM_EBITDA": {
       "nome": "Margem EBITDA",
       "categoria": "Rentabilidade",
-      "formula": "EBITDA / Receita × 100",
+      "formula": "EBITDA / Receita",
       "unidade": "%",
       "usa_preco": false
     },
     "MARGEM_LIQUIDA": {
       "nome": "Margem Líquida",
       "categoria": "Rentabilidade",
-      "formula": "LL / Receita × 100",
+      "formula": "Lucro Líquido / Receita",
       "unidade": "%",
       "usa_preco": false
     },
     "DIV_LIQ_EBITDA": {
       "nome": "Dív.Líq/EBITDA",
       "categoria": "Endividamento",
-      "formula": "Dívida Líquida / EBITDA",
+      "formula": "(Emp CP + LP - Caixa) / EBITDA",
       "unidade": "x",
       "usa_preco": false
     },
     "DIV_LIQ_PL": {
       "nome": "Dív.Líq/PL",
       "categoria": "Endividamento",
-      "formula": "Dívida Líquida / PL",
+      "formula": "Dívida Líquida / Patrimônio Líquido",
       "unidade": "x",
       "usa_preco": false
     },
     "ICJ": {
       "nome": "ICJ",
       "categoria": "Endividamento",
-      "formula": "EBIT / Desp. Financeiras",
+      "formula": "EBIT / Despesas Financeiras",
       "unidade": "x",
       "usa_preco": false
     },
     "COMPOSICAO_DIVIDA": {
       "nome": "Composição Dívida",
       "categoria": "Endividamento",
-      "formula": "Dív. CP / Dív. Total × 100",
+      "formula": "Emp CP / (Emp CP + LP)",
       "unidade": "%",
       "usa_preco": false
     },
     "LIQ_CORRENTE": {
       "nome": "Liquidez Corrente",
       "categoria": "Liquidez",
-      "formula": "AC / PC",
+      "formula": "Ativo Circulante / Passivo Circulante",
       "unidade": "x",
       "usa_preco": false
     },
@@ -154,7 +154,7 @@
     "GIRO_ATIVO": {
       "nome": "Giro do Ativo",
       "categoria": "Eficiência",
-      "formula": "Receita LTM / Ativo Médio",
+      "formula": "Receita LTM / Ativo Total",
       "unidade": "x",
       "usa_preco": false
     },
@@ -168,14 +168,14 @@
     "PME": {
       "nome": "PME",
       "categoria": "Eficiência",
-      "formula": "Estoque Médio × 360 / CPV",
+      "formula": "(Estoques + AtBio) × 360 / CPV",
       "unidade": "dias",
       "usa_preco": false
     },
     "NCG_RECEITA": {
       "nome": "NCG/Receita",
       "categoria": "Eficiência",
-      "formula": "NCG / Receita × 100",
+      "formula": "NCG / Receita LTM",
       "unidade": "%",
       "usa_preco": false
     }
@@ -194,7 +194,7 @@
         "PAYOUT": 55.6471,
         "ROE": 11.5728,
         "ROA": 6.9045,
-        "ROIC": 7.0256,
+        "ROIC": 8.0902,
         "MARGEM_EBITDA": 28.3465,
         "MARGEM_LIQUIDA": 16.8335,
         "DIV_LIQ_EBITDA": 1.0185,
@@ -223,7 +223,7 @@
         "PAYOUT": 68.7765,
         "ROE": 10.3073,
         "ROA": 5.9171,
-        "ROIC": 5.9845,
+        "ROIC": 6.7071,
         "MARGEM_EBITDA": 25.3785,
         "MARGEM_LIQUIDA": 13.5597,
         "DIV_LIQ_EBITDA": 1.6621,
@@ -233,9 +233,9 @@
         "LIQ_CORRENTE": 1.7353,
         "LIQ_SECA": 1.3183,
         "LIQ_GERAL": 0.6082,
-        "GIRO_ATIVO": 0.4364,
-        "PME": 52.0385,
-        "CICLO_CAIXA": 38.2505,
+        "GIRO_ATIVO": 0.4075,
+        "PME": 61.345,
+        "CICLO_CAIXA": 47.557,
         "NCG_RECEITA": 6.7848
       }
     },
@@ -252,7 +252,7 @@
         "PAYOUT": 64.5247,
         "ROE": 6.3254,
         "ROA": 3.2672,
-        "ROIC": 3.9435,
+        "ROIC": 4.3474,
         "MARGEM_EBITDA": 18.9218,
         "MARGEM_LIQUIDA": 7.4488,
         "DIV_LIQ_EBITDA": 2.7679,
@@ -262,9 +262,9 @@
         "LIQ_CORRENTE": 1.6964,
         "LIQ_SECA": 1.2692,
         "LIQ_GERAL": 0.4852,
-        "GIRO_ATIVO": 0.4386,
-        "PME": 49.7592,
-        "CICLO_CAIXA": 38.1787,
+        "GIRO_ATIVO": 0.4115,
+        "PME": 50.8616,
+        "CICLO_CAIXA": 39.2811,
         "NCG_RECEITA": 5.2802
       }
     },
@@ -281,7 +281,7 @@
         "PAYOUT": 58.4641,
         "ROE": 6.7686,
         "ROA": 3.2024,
-        "ROIC": 3.6742,
+        "ROIC": 3.972,
         "MARGEM_EBITDA": 20.6054,
         "MARGEM_LIQUIDA": 7.546,
         "DIV_LIQ_EBITDA": 3.5265,
@@ -291,9 +291,9 @@
         "LIQ_CORRENTE": 1.4947,
         "LIQ_SECA": 1.0909,
         "LIQ_GERAL": 0.4146,
-        "GIRO_ATIVO": 0.4244,
-        "PME": 48.5645,
-        "CICLO_CAIXA": 32.3036,
+        "GIRO_ATIVO": 0.4049,
+        "PME": 51.3278,
+        "CICLO_CAIXA": 35.0669,
         "NCG_RECEITA": 4.3737
       }
     },
@@ -310,7 +310,7 @@
         "PAYOUT": -93.0667,
         "ROE": 6.6431,
         "ROA": 2.8356,
-        "ROIC": -2.1858,
+        "ROIC": -2.4402,
         "MARGEM_EBITDA": 2.5977,
         "MARGEM_LIQUIDA": 6.5006,
         "DIV_LIQ_EBITDA": 32.1919,
@@ -320,9 +320,9 @@
         "LIQ_CORRENTE": 1.6335,
         "LIQ_SECA": 1.265,
         "LIQ_GERAL": 0.3836,
-        "GIRO_ATIVO": 0.4362,
-        "PME": 44.7023,
-        "CICLO_CAIXA": 30.9577,
+        "GIRO_ATIVO": 0.4251,
+        "PME": 42.6929,
+        "CICLO_CAIXA": 28.9483,
         "NCG_RECEITA": 4.426
       }
     },
@@ -339,7 +339,7 @@
         "PAYOUT": null,
         "ROE": 12.37,
         "ROA": 4.1536,
-        "ROIC": -1.1591,
+        "ROIC": -1.339,
         "MARGEM_EBITDA": 7.8927,
         "MARGEM_LIQUIDA": 10.935,
         "DIV_LIQ_EBITDA": 15.4467,
@@ -349,9 +349,9 @@
         "LIQ_CORRENTE": 1.5199,
         "LIQ_SECA": 1.2595,
         "LIQ_GERAL": 0.3807,
-        "GIRO_ATIVO": 0.3798,
-        "PME": 48.0249,
-        "CICLO_CAIXA": 33.2197,
+        "GIRO_ATIVO": 0.3573,
+        "PME": 46.8951,
+        "CICLO_CAIXA": 32.0899,
         "NCG_RECEITA": 4.5156
       }
     },
@@ -368,7 +368,7 @@
         "PAYOUT": null,
         "ROE": 5.1089,
         "ROA": 1.5301,
-        "ROIC": 1.7036,
+        "ROIC": 1.919,
         "MARGEM_EBITDA": 23.0104,
         "MARGEM_LIQUIDA": 4.6162,
         "DIV_LIQ_EBITDA": 4.8308,
@@ -378,9 +378,9 @@
         "LIQ_CORRENTE": 1.7976,
         "LIQ_SECA": 1.4573,
         "LIQ_GERAL": 0.3847,
-        "GIRO_ATIVO": 0.3315,
-        "PME": 52.968,
-        "CICLO_CAIXA": 37.6661,
+        "GIRO_ATIVO": 0.3511,
+        "PME": 51.627,
+        "CICLO_CAIXA": 36.3251,
         "NCG_RECEITA": 8.8224
       }
     },
@@ -397,7 +397,7 @@
         "PAYOUT": null,
         "ROE": 0.1443,
         "ROA": 0.0461,
-        "ROIC": 3.9503,
+        "ROIC": 4.5298,
         "MARGEM_EBITDA": 28.2878,
         "MARGEM_LIQUIDA": 0.1329,
         "DIV_LIQ_EBITDA": 3.4984,
@@ -407,9 +407,9 @@
         "LIQ_CORRENTE": 1.889,
         "LIQ_SECA": 1.5488,
         "LIQ_GERAL": 0.4037,
-        "GIRO_ATIVO": 0.3467,
-        "PME": 52.1944,
-        "CICLO_CAIXA": 37.3131,
+        "GIRO_ATIVO": 0.3412,
+        "PME": 52.6245,
+        "CICLO_CAIXA": 37.7432,
         "NCG_RECEITA": 5.6
       }
     },
@@ -426,7 +426,7 @@
         "PAYOUT": 58.0808,
         "ROE": 9.653,
         "ROA": 3.1558,
-        "ROIC": 7.0146,
+        "ROIC": 7.7518,
         "MARGEM_EBITDA": 31.0208,
         "MARGEM_LIQUIDA": 7.6316,
         "DIV_LIQ_EBITDA": 2.4771,
@@ -436,9 +436,9 @@
         "LIQ_CORRENTE": 1.4794,
         "LIQ_SECA": 1.1207,
         "LIQ_GERAL": 0.3971,
-        "GIRO_ATIVO": 0.4135,
-        "PME": 50.257,
-        "CICLO_CAIXA": 33.9933,
+        "GIRO_ATIVO": 0.4066,
+        "PME": 55.6427,
+        "CICLO_CAIXA": 39.379,
         "NCG_RECEITA": 0.7952
       }
     },
@@ -455,7 +455,7 @@
         "PAYOUT": 46.737,
         "ROE": 14.0626,
         "ROA": 4.5867,
-        "ROIC": 8.292,
+        "ROIC": 8.7394,
         "MARGEM_EBITDA": 46.3872,
         "MARGEM_LIQUIDA": 13.5552,
         "DIV_LIQ_EBITDA": 2.2672,
@@ -465,9 +465,9 @@
         "LIQ_CORRENTE": 0.9652,
         "LIQ_SECA": 0.681,
         "LIQ_GERAL": 0.2926,
-        "GIRO_ATIVO": 0.3384,
-        "PME": 67.7783,
-        "CICLO_CAIXA": 40.723,
+        "GIRO_ATIVO": 0.3264,
+        "PME": 65.9667,
+        "CICLO_CAIXA": 38.9114,
         "NCG_RECEITA": 1.2569
       }
     },
@@ -484,7 +484,7 @@
         "PAYOUT": 44.5185,
         "ROE": 2.0469,
         "ROA": 0.6529,
-        "ROIC": 4.654,
+        "ROIC": 5.1218,
         "MARGEM_EBITDA": 39.6686,
         "MARGEM_LIQUIDA": 2.2957,
         "DIV_LIQ_EBITDA": 3.0416,
@@ -494,9 +494,9 @@
         "LIQ_CORRENTE": 1.0443,
         "LIQ_SECA": 0.8278,
         "LIQ_GERAL": 0.3657,
-        "GIRO_ATIVO": 0.2844,
-        "PME": 75.9695,
-        "CICLO_CAIXA": 21.8575,
+        "GIRO_ATIVO": 0.2755,
+        "PME": 71.7049,
+        "CICLO_CAIXA": 17.5929,
         "NCG_RECEITA": -2.5288
       }
     },
@@ -513,7 +513,7 @@
         "PAYOUT": 138.2213,
         "ROE": 30.6149,
         "ROA": 10.9432,
-        "ROIC": 19.3962,
+        "ROIC": 21.2324,
         "MARGEM_EBITDA": 60.5033,
         "MARGEM_LIQUIDA": 23.696,
         "DIV_LIQ_EBITDA": 0.9704,
@@ -523,9 +523,9 @@
         "LIQ_CORRENTE": 1.2471,
         "LIQ_SECA": 0.947,
         "LIQ_GERAL": 0.4255,
-        "GIRO_ATIVO": 0.4618,
-        "PME": 54.0592,
-        "CICLO_CAIXA": 35.054,
+        "GIRO_ATIVO": 0.4653,
+        "PME": 62.5452,
+        "CICLO_CAIXA": 43.54,
         "NCG_RECEITA": 4.8435
       }
     },
@@ -542,7 +542,7 @@
         "PAYOUT": 232.2251,
         "ROE": 50.1362,
         "ROA": 19.3885,
-        "ROIC": 30.1057,
+        "ROIC": 32.9784,
         "MARGEM_EBITDA": 56.523,
         "MARGEM_LIQUIDA": 29.4742,
         "DIV_LIQ_EBITDA": 0.6194,
@@ -552,9 +552,9 @@
         "LIQ_CORRENTE": 0.9959,
         "LIQ_SECA": 0.7161,
         "LIQ_GERAL": 0.4471,
-        "GIRO_ATIVO": 0.6578,
-        "PME": 50.5678,
-        "CICLO_CAIXA": 31.8324,
+        "GIRO_ATIVO": 0.6565,
+        "PME": 53.6843,
+        "CICLO_CAIXA": 34.9489,
         "NCG_RECEITA": -1.4381
       }
     },
@@ -571,7 +571,7 @@
         "PAYOUT": 152.9446,
         "ROE": 33.524,
         "ROA": 12.3462,
-        "ROIC": 18.2325,
+        "ROIC": 20.4815,
         "MARGEM_EBITDA": 49.9119,
         "MARGEM_LIQUIDA": 24.4468,
         "DIV_LIQ_EBITDA": 0.8914,
@@ -581,9 +581,9 @@
         "LIQ_CORRENTE": 0.9582,
         "LIQ_SECA": 0.7314,
         "LIQ_GERAL": 0.429,
-        "GIRO_ATIVO": 0.505,
-        "PME": 61.7111,
-        "CICLO_CAIXA": 47.9402,
+        "GIRO_ATIVO": 0.4872,
+        "PME": 55.3011,
+        "CICLO_CAIXA": 41.5302,
         "NCG_RECEITA": -5.1428
       }
     },
@@ -600,7 +600,7 @@
         "PAYOUT": 556.5106,
         "ROE": 9.871,
         "ROA": 3.4021,
-        "ROIC": 12.2206,
+        "ROIC": 13.0417,
         "MARGEM_EBITDA": 41.61,
         "MARGEM_LIQUIDA": 7.5401,
         "DIV_LIQ_EBITDA": 1.6002,
@@ -610,9 +610,9 @@
         "LIQ_CORRENTE": 0.6941,
         "LIQ_SECA": 0.4808,
         "LIQ_GERAL": 0.3471,
-        "GIRO_ATIVO": 0.4512,
-        "PME": 57.9952,
-        "CICLO_CAIXA": 18.7108,
+        "GIRO_ATIVO": 0.4364,
+        "PME": 61.2112,
+        "CICLO_CAIXA": 21.9268,
         "NCG_RECEITA": -7.6328
       }
     },
@@ -629,7 +629,7 @@
         "PAYOUT": 173.0615,
         "ROE": 17.7948,
         "ROA": 6.3724,
-        "ROIC": 10.7367,
+        "ROIC": 11.6375,
         "MARGEM_EBITDA": 54.7397,
         "MARGEM_LIQUIDA": 14.846,
         "DIV_LIQ_EBITDA": 1.1675,
@@ -639,16 +639,16 @@
         "LIQ_CORRENTE": 0.819,
         "LIQ_SECA": 0.5653,
         "LIQ_GERAL": 0.3583,
-        "GIRO_ATIVO": 0.4292,
-        "PME": 61.3288,
-        "CICLO_CAIXA": 26.1222,
+        "GIRO_ATIVO": 0.4055,
+        "PME": 65.3752,
+        "CICLO_CAIXA": 30.1686,
         "NCG_RECEITA": -6.2654
       }
     }
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-15T22:12:02.047965",
+    "data_calculo": "2026-01-15T22:42:46.241520",
     "preco_utilizado": 32.81,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 12888732761,
@@ -664,7 +664,7 @@
       "PAYOUT": 173.0615,
       "ROE": 17.7948,
       "ROA": 6.3724,
-      "ROIC": 10.7367,
+      "ROIC": 11.6375,
       "MARGEM_EBITDA": 54.7397,
       "MARGEM_LIQUIDA": 14.846,
       "DIV_LIQ_EBITDA": 1.1675,
@@ -674,9 +674,9 @@
       "LIQ_CORRENTE": 0.819,
       "LIQ_SECA": 0.5653,
       "LIQ_GERAL": 0.3583,
-      "GIRO_ATIVO": 0.4292,
-      "PME": 61.3288,
-      "CICLO_CAIXA": 26.1222,
+      "GIRO_ATIVO": 0.4055,
+      "PME": 65.3752,
+      "CICLO_CAIXA": 30.1686,
       "NCG_RECEITA": -6.2654
     }
   },

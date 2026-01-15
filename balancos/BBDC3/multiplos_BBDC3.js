@@ -1,4 +1,4 @@
-// Arquivo gerado automaticamente por calcular_multiplos.py v2.0
+// Arquivo gerado automaticamente por calcular_multiplos.py
 (function(){
   window.MONALYTICS = window.MONALYTICS || {};
   window.MONALYTICS.multiplos = window.MONALYTICS.multiplos || {};
@@ -14,63 +14,63 @@
     "VALOR_MERCADO": {
       "nome": "Valor de Mercado",
       "categoria": "Valuation",
-      "formula": "Preço × Ações",
+      "formula": "Preço × Ações (3+4)",
       "unidade": "R$ mil",
       "usa_preco": true
     },
     "P_L": {
       "nome": "P/L",
       "categoria": "Valuation",
-      "formula": "Preço / LPA LTM",
+      "formula": "Preço / Lucro por Ação LTM",
       "unidade": "x",
       "usa_preco": true
     },
     "P_VPA": {
       "nome": "P/VPA",
       "categoria": "Valuation",
-      "formula": "Preço / VPA",
+      "formula": "Preço / Valor Patrimonial por Ação",
       "unidade": "x",
       "usa_preco": true
     },
     "DY": {
       "nome": "Dividend Yield",
       "categoria": "Valuation",
-      "formula": "DPA LTM / Preço × 100",
+      "formula": "Dividendos LTM / Market Cap × 100",
       "unidade": "%",
       "usa_preco": true
     },
     "PAYOUT": {
       "nome": "Payout",
       "categoria": "Valuation",
-      "formula": "DPA LTM / LPA LTM × 100",
+      "formula": "Dividendos LTM / Lucro Líquido LTM × 100",
       "unidade": "%",
       "usa_preco": false
     },
     "ROE": {
       "nome": "ROE",
       "categoria": "Rentabilidade",
-      "formula": "LL LTM / PL Médio × 100",
+      "formula": "Lucro Líquido LTM / PL Médio × 100",
       "unidade": "%",
       "usa_preco": false
     },
     "ROA": {
       "nome": "ROA",
       "categoria": "Rentabilidade",
-      "formula": "LL LTM / Ativo Médio × 100",
+      "formula": "Lucro Líquido LTM / Ativo Total Médio × 100",
       "unidade": "%",
       "usa_preco": false
     },
     "MARGEM_LIQUIDA": {
       "nome": "Margem Líquida",
       "categoria": "Rentabilidade",
-      "formula": "LL LTM / Rec. Interm. LTM × 100",
+      "formula": "Lucro Líquido LTM / Receita Intermediação LTM × 100",
       "unidade": "%",
       "usa_preco": false
     },
     "PL_ATIVOS": {
       "nome": "PL/Ativos",
       "categoria": "Estrutura",
-      "formula": "PL / Ativo Total × 100",
+      "formula": "Patrimônio Líquido / Ativo Total × 100",
       "unidade": "%",
       "usa_preco": false
     }
@@ -80,10 +80,10 @@
       "periodo_referencia": "2022T4",
       "multiplos": {
         "VALOR_MERCADO": 53650858.5,
-        "P_L": 2.5573,
+        "P_L": 5.0486,
         "P_VPA": 0.6748,
         "DY": 8.0607,
-        "PAYOUT": 20.6132,
+        "PAYOUT": 40.6955,
         "ROE": 13.3659,
         "ROA": 0.5895,
         "MARGEM_LIQUIDA": 10.3039,
@@ -94,10 +94,10 @@
       "periodo_referencia": "2023T4",
       "multiplos": {
         "VALOR_MERCADO": 67957754.11,
-        "P_L": 4.75,
+        "P_L": 9.3556,
         "P_VPA": 0.8124,
         "DY": 25.4485,
-        "PAYOUT": 120.8806,
+        "PAYOUT": 238.0873,
         "ROE": 8.9041,
         "ROA": 0.3891,
         "MARGEM_LIQUIDA": 6.4612,
@@ -108,10 +108,10 @@
       "periodo_referencia": "2024T4",
       "multiplos": {
         "VALOR_MERCADO": 50068540.17,
-        "P_L": 2.8957,
+        "P_L": 5.6999,
         "P_VPA": 0.5918,
         "DY": 22.535,
-        "PAYOUT": 65.2546,
+        "PAYOUT": 128.4471,
         "ROE": 10.4431,
         "ROA": 0.4389,
         "MARGEM_LIQUIDA": 8.2273,
@@ -122,10 +122,10 @@
       "periodo_referencia": "2025T3",
       "multiplos": {
         "VALOR_MERCADO": 78656403.68,
-        "P_L": 3.6799,
+        "P_L": 7.2749,
         "P_VPA": 0.8918,
         "DY": 17.2994,
-        "PAYOUT": 63.66,
+        "PAYOUT": 125.8522,
         "ROE": 12.5608,
         "ROA": 0.5116,
         "MARGEM_LIQUIDA": 8.5587,
@@ -135,17 +135,17 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-15T22:11:59.515184",
+    "data_calculo": "2026-01-15T22:42:43.661109",
     "preco_utilizado": 14.83,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 10592012028,
     "periodo_acoes": "2024T4",
     "multiplos": {
       "VALOR_MERCADO": 78656403.68,
-      "P_L": 3.6799,
+      "P_L": 7.2749,
       "P_VPA": 0.8918,
       "DY": 17.2994,
-      "PAYOUT": 63.66,
+      "PAYOUT": 125.8522,
       "ROE": 12.5608,
       "ROA": 0.5116,
       "MARGEM_LIQUIDA": 8.5587,
