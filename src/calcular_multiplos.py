@@ -442,7 +442,6 @@ def _buscar_conta_flexivel(df: pd.DataFrame, codigos: List[str], periodo: str) -
             return val
     return np.nan
 
-
 def carregar_dados_empresa(ticker: str) -> DadosEmpresa:
     """Carrega todos os dados padronizados de uma empresa."""
     ticker_upper = ticker.upper().strip()
@@ -481,7 +480,6 @@ def carregar_dados_empresa(ticker: str) -> DadosEmpresa:
         dados.padrao_fiscal = detectar_padrao_fiscal(ticker_upper, dados.periodos)
     
     return dados
-
 
 # ======================================================================================
 # FUNÇÕES DE OBTENÇÃO DE PREÇO E AÇÕES - CORRIGIDAS
@@ -1560,7 +1558,7 @@ def _calcular_dpa_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     """
     CORREÇÃO v3.0: Calcula DPA LTM usando dividendos_detalhado.json
     
-    Metodologia alinhada com plataformas (StatusInvest, Fundamentus):
+    Metodologia alinhada com plataformas (StatusInvest, Fundamentus, Investidor10):
     1. Filtra últimos 12 meses baseado em data_com
     2. Remove duplicatas (ON/PN tem valores idênticos)
     3. Soma valores únicos
@@ -1913,23 +1911,20 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     
     # ==================== VALUATION ====================
     
-    # P/L = Preço / EPS (Lucro Líquido LTM / Ações)
-    # ✅ Alinha com o padrão clássico (Investidor10): EPS = Lucro Líquido LTM / Ações (ON+PN quando possível)
+    # P/L = Preço / LPA (Lucro Líquido LTM / Ações)
+    # CORREÇÃO v3.0: SEMPRE usar LPA = LL_LTM / Ações (padrão Investidor10/StatusInvest)
     acoes_ref, _periodo_acoes_ref, _fator_unit = _ajustar_acoes_para_ticker_preco(dados, periodo, ticker_preco)
 
-    # EPS LTM:
-    # ✅ Preferir "Lucro por Ação (3.99)" quando existir, pois já embute a média ponderada de ações
-    # e tende a bater melhor com StatusInvest/Investidor10.
-    eps_ltm = _calcular_ltm(dados, dados.dre, "3.99", periodo)
-    if not (np.isfinite(eps_ltm) and eps_ltm != 0):
-        eps_ltm = (ll_ltm * 1000.0) / acoes_ref if np.isfinite(ll_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
+    # LPA (Lucro por Ação) = Lucro Líquido LTM / Número de Ações
+    # ✅ Fórmula padrão das plataformas (não usa conta 3.99)
+    lpa_ltm = (ll_ltm * 1000.0) / acoes_ref if np.isfinite(ll_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
 
     if usar_preco_atual:
         preco_pl, periodo_preco_pl = _obter_preco_atual(dados, ticker_preco=ticker_preco)
     else:
         preco_pl, periodo_preco_pl = _obter_preco_ultimo_trimestre_ano(dados, periodo, ticker_preco=ticker_preco)
 
-    resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, eps_ltm))
+    resultado["P_L"] = _normalizar_valor(_safe_divide(preco_pl, lpa_ltm))
 
     # Obter Patrimônio Líquido (usado em P/VPA, ROIC, Dív.Líq/PL)
     pl = _obter_valor_pontual(dados.bpp, CONTAS_BPP["patrimonio_liquido"], periodo)
@@ -1956,7 +1951,7 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     resultado["DY"] = _normalizar_valor(_safe_divide(dpa_ltm, preco_pl) * 100)
 
     # Payout (padrão clássico) = DPA / LPA × 100
-    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dpa_ltm, eps_ltm) * 100)
+    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dpa_ltm, lpa_ltm) * 100)
     
     # ==================== RENTABILIDADE ====================
     
