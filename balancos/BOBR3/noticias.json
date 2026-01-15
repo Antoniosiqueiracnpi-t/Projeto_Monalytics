@@ -1,0 +1,41 @@
+{
+  "empresa": {
+    "ticker": "BOBR3",
+    "nome": "BOMBRIL S.A.",
+    "cnpj": "50.564.053/0001-03"
+  },
+  "ultima_atualizacao": "2026-01-15T14:07:36.466251",
+  "total_noticias": 3,
+  "noticias": [
+    {
+      "data": "2026-01-12",
+      "data_hora": "2026-01-12 18:21:34",
+      "titulo": " Outros Comunicados ao Mercado  12/01/26",
+      "headline": "BOMBRIL (BOBR) - Outros Comunicados ao Mercado - 12/01/26",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202344&agencia=18&dataNoticia=2026-01-12%2018:21:34",
+      "id": 3202344,
+      "categoria": "Aviso"
+    },
+    {
+      "data": "2026-01-12",
+      "data_hora": "2026-01-12 18:18:17",
+      "titulo": " Ata Reuniao do Conselho de Administracao  12/01/26",
+      "headline": "BOMBRIL (BOBR) - Ata Reuniao do Conselho de Administracao - 12/01/26",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202317&agencia=18&dataNoticia=2026-01-12%2018:18:17",
+      "id": 3202317,
+      "categoria": "Governança"
+    },
+    {
+      "data": "2026-01-02",
+      "data_hora": "2026-01-02 08:16:01",
+      "titulo": " Data prevista para assembleia geral  24/04/26",
+      "headline": "BOMBRIL (BOBR) - Data prevista para assembleia geral - 24/04/26",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3190136&agencia=18&dataNoticia=2026-01-02%2008:16:01",
+      "id": 3190136,
+      "categoria": "Governança"
+    }
+  ]
+}
