@@ -1,0 +1,46 @@
+{
+  "ticker": "TTEN3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-15T18:57:27.890507",
+  "periodo_analisado": {
+    "inicio": "2021T2",
+    "fim": "2025T3",
+    "total_trimestres": 18,
+    "anos": 4.5
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 39.72,
+      "variacao_total": 314.38,
+      "ultimo_valor": 4994.88
+    },
+    "margens": {
+      "bruta": 15.57,
+      "operacional": 6.79,
+      "liquida": 6.63
+    },
+    "rentabilidade": {
+      "roe_medio": 20.69,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 56.07,
+      "ultimo": -5.87
+    },
+    "balanco": {
+      "ativo_total": 12381.55,
+      "patrimonio": 4703.07
+    }
+  },
+  "analise_critica": "TTEN3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 6.63%). Gera excelente retorno sobre o patrimônio (ROE médio de 20.69%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 39.72%)",
+    "Excelente retorno sobre patrimônio (ROE: 20.69%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

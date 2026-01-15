@@ -1,0 +1,43 @@
+{
+  "ticker": "SLCE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-15T18:57:27.852919",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 18.24,
+      "variacao_total": 1242.68,
+      "ultimo_valor": 2379.04
+    },
+    "margens": {
+      "bruta": 26.98,
+      "operacional": 18.07,
+      "liquida": 10.03
+    },
+    "rentabilidade": {
+      "roe_medio": 11.68,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 154.58,
+      "ultimo": 999.76
+    },
+    "balanco": {
+      "ativo_total": 20525.45,
+      "patrimonio": 5336.9
+    }
+  },
+  "analise_critica": "SLCE3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 10.03%. Retorno sobre patrimônio adequado (ROE de 11.68%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 18.24%)"
+  ],
+  "pontos_atencao": []
+}

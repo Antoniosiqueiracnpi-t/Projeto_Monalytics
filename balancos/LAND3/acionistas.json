@@ -1,0 +1,103 @@
+{
+  "empresa": {
+    "cnpj": "40.337.136/0001-06",
+    "nome": "",
+    "ticker": "LAND3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 7,
+  "acionistas": [
+    {
+      "nome": "SILVIO TINI DE ARAÚJO",
+      "cpf_cnpj": "064.065.488-68",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 28059852,
+      "percentual_total": 29.16,
+      "acoes_ordinarias": 28059852,
+      "percentual_ordinarias": 29.16,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Laplace Investimentos Gestão de Recursos LTDA.",
+      "cpf_cnpj": "11.401.701/0001-59",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 22137237,
+      "percentual_total": 23.005,
+      "acoes_ordinarias": 22137237,
+      "percentual_ordinarias": 23.005,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "BONSUCEX HOLDING S.A.",
+      "cpf_cnpj": "52.839.420/0001-60",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 19170913,
+      "percentual_total": 19.923,
+      "acoes_ordinarias": 19170913,
+      "percentual_ordinarias": 19.923,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "Gavea Investimentos",
+      "cpf_cnpj": "05.669.128/0001-66",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 6598869,
+      "percentual_total": 6.858,
+      "acoes_ordinarias": 6598869,
+      "percentual_ordinarias": 6.858,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "MARK KAMINITZ",
+      "cpf_cnpj": "157.599.938-28",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 5124000,
+      "percentual_total": 5.325,
+      "acoes_ordinarias": 5124000,
+      "percentual_ordinarias": 5.325,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "EOS AMANPULO FIM IE CREDITO PRIVADO",
+      "cpf_cnpj": "10.237.153/0001-00",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 3924270,
+      "percentual_total": 4.078,
+      "acoes_ordinarias": 3924270,
+      "percentual_ordinarias": 4.078,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "BRUNO SZWARC",
+      "cpf_cnpj": "000.490.177-05",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 896400,
+      "percentual_total": 0.932,
+      "acoes_ordinarias": 896400,
+      "percentual_ordinarias": 0.932,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    }
+  ]
+}

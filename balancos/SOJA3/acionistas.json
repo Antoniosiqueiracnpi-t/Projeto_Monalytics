@@ -1,0 +1,90 @@
+{
+  "empresa": {
+    "cnpj": "10.807.374/0001-77",
+    "nome": "",
+    "ticker": "SOJA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 6,
+  "acionistas": [
+    {
+      "nome": "CAMILA STEFANI COLPO KOCH",
+      "cpf_cnpj": "031.641.321-66",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 37077980,
+      "percentual_total": 26.129,
+      "acoes_ordinarias": 37077980,
+      "percentual_ordinarias": 26.129,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "MARINO STEFANI COLPO",
+      "cpf_cnpj": "718.455.691-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 37077980,
+      "percentual_total": 26.129,
+      "acoes_ordinarias": 37077980,
+      "percentual_ordinarias": 26.129,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "HIX Investimentos Ltda.",
+      "cpf_cnpj": "14.205.023/0001-47",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 7124920,
+      "percentual_total": 5.021,
+      "acoes_ordinarias": 7124920,
+      "percentual_ordinarias": 5.021,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "STEFANI FUNDO DE INVESTIMENTOS EM AÇÕES",
+      "cpf_cnpj": "51.638.213/0001-84",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 6509933,
+      "percentual_total": 4.588,
+      "acoes_ordinarias": 6509933,
+      "percentual_ordinarias": 4.588,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "SOYBEAN FUNDO DE INVESTIMENTO EM AÇÕES",
+      "cpf_cnpj": "52.272.841/0001-51",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1676023,
+      "percentual_total": 1.181,
+      "acoes_ordinarias": 1676023,
+      "percentual_ordinarias": 1.181,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "CEREAIS SUL INDUSTRIA E COMERCIO DE CEREAIS LTDA",
+      "cpf_cnpj": "37.621.414/0001-48",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 168585,
+      "percentual_total": 0.119,
+      "acoes_ordinarias": 168585,
+      "percentual_ordinarias": 0.119,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    }
+  ]
+}
