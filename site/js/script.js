@@ -2790,6 +2790,7 @@ let multiplosChart = null;
 
 /**
  * Carrega dados de múltiplos da empresa
+ * CORREÇÃO: Acessa window.MONALYTICS.multiplos[ticker]
  */
 async function loadMultiplosData(ticker) {
     try {
@@ -2805,38 +2806,53 @@ async function loadMultiplosData(ticker) {
         const tickerPasta = obterTickerPasta(ticker);
         const timestamp = new Date().getTime();
 
-        // ✅ CORREÇÃO: Carrega o arquivo .js do ticker digitado
+        // ✅ CORRETO: Usa tickerNorm no nome do arquivo (PETR4)
         const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.js?t=${timestamp}`;
+        //                                                                                              ^^^^^^^^^^      ^^^^^^^^^^
+        //                                                                                              PETR3           PETR4 ✅
 
-        console.log("🔗 Arquivo de múltiplos solicitado:", url);
+        console.log("🔗 Arquivo de múltiplos:", url);
 
         const response = await fetch(url);
 
         if (!response.ok) {
-            console.warn(`⚠️ Arquivo de múltiplos não encontrado para ${tickerNorm} (HTTP ${response.status})`);
+            console.warn(`⚠️ Arquivo multiplos_${tickerNorm}.js não encontrado (HTTP ${response.status})`);
             document.getElementById('multiplosSection').style.display = 'none';
             return;
         }
 
-        // ✅ Executa o JavaScript que define a variável global
         const jsCode = await response.text();
-        eval(jsCode); // Executa o código JS que define window.multiplosData ou similar
-
-        // ✅ Assume que o .js define uma variável global (ex: window.multiplosData_PETR4)
-        const varName = `multiplosData_${tickerNorm}`;
-        if (window[varName]) {
-            multiplosData = window[varName];
-            console.log(`✅ Múltiplos carregados para ${tickerNorm}`);
-            renderMultiplosSection();
-        } else {
-            throw new Error(`Variável ${varName} não foi definida no arquivo .js`);
+        
+        // ✅ SEGURANÇA: Limpa cache anterior
+        if (window.MONALYTICS && window.MONALYTICS.multiplos) {
+            delete window.MONALYTICS.multiplos[tickerNorm];
         }
+        
+        eval(jsCode);
+
+        // ✅ CORREÇÃO: Acessa caminho correto do namespace
+        if (!window.MONALYTICS || !window.MONALYTICS.multiplos || !window.MONALYTICS.multiplos[tickerNorm]) {
+            throw new Error(`Dados de múltiplos não encontrados em window.MONALYTICS.multiplos["${tickerNorm}"]`);
+        }
+        
+        multiplosData = window.MONALYTICS.multiplos[tickerNorm];
+        
+        console.log(`✅ Múltiplos carregados para ${tickerNorm}`);
+        console.log(`   LTM: ${multiplosData.ltm.periodo_referencia}`);
+        console.log(`   Preço: R$ ${multiplosData.ltm.preco_utilizado}`);
+        
+        // ✅ SEGURANÇA: Limpa namespace (opcional - mantém para outros componentes)
+        // delete window.MONALYTICS.multiplos[tickerNorm];
+        
+        renderMultiplosSection();
 
     } catch (error) {
         console.error("❌ Erro ao carregar múltiplos:", error);
+        console.error("Stack:", error.stack);
         document.getElementById("multiplosSection").style.display = "none";
     }
 }
+
 
 
 
@@ -3458,7 +3474,8 @@ let currentDividendosView = 'dy'; // 'dy' ou 'pagos'
 let currentDividendosPeriod = 5; // 5 ou 10 anos
 
 /**
- * Carrega DY atual do arquivo multiplos.json
+ * Carrega DY atual do arquivo multiplos.js
+ * CORREÇÃO: Acessa window.MONALYTICS.multiplos[ticker]
  */
 async function carregarDYAtual(ticker) {
     try {
@@ -3472,19 +3489,38 @@ async function carregarDYAtual(ticker) {
         const tickerPasta = obterTickerPasta(ticker);
         const timestamp = new Date().getTime();
 
-        // ✅ CORREÇÃO: Busca multiplos_PETR3.js ou multiplos_PETR4.js
+        // ✅ CORRETO: Usa tickerNorm no nome do arquivo
         console.log(`🔍 Buscando DY em multiplos_${tickerNorm}.js...`);
 
         const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.js?t=${timestamp}`;
+        //                                                                                              ^^^^^^^^^^      ^^^^^^^^^^
+        //                                                                                              PETR3           PETR4 ✅
+        
         const response = await fetch(url);
 
         if (response.ok) {
             const scriptText = await response.text();
-            eval(scriptText); // Executa o JS
-            const multiplosData = window.multiplosData;
+            
+            // ✅ SEGURANÇA: Limpa cache
+            if (window.MONALYTICS && window.MONALYTICS.multiplos) {
+                delete window.MONALYTICS.multiplos[tickerNorm];
+            }
+            
+            eval(scriptText);
+            
+            // ✅ CORREÇÃO: Acessa caminho correto
+            if (!window.MONALYTICS || !window.MONALYTICS.multiplos || !window.MONALYTICS.multiplos[tickerNorm]) {
+                console.warn(`⚠️ Dados não encontrados em window.MONALYTICS.multiplos["${tickerNorm}"]`);
+                if (dividendosHistoricoData) {
+                    dividendosHistoricoData.dy_atual = 0;
+                }
+                return 0;
+            }
+            
+            const multiplosData = window.MONALYTICS.multiplos[tickerNorm];
 
-            // ✅ Acessa DY corretamente
-            if (multiplosData?.ltm?.multiplos?.DY) {
+            // ✅ VALIDAÇÃO: Verifica estrutura
+            if (multiplosData?.ltm?.multiplos?.DY !== undefined) {
                 const dyAtual = multiplosData.ltm.multiplos.DY;
 
                 if (dividendosHistoricoData) {
@@ -3492,12 +3528,19 @@ async function carregarDYAtual(ticker) {
                 }
 
                 console.log(`✅ DY atual carregado: ${dyAtual.toFixed(2)}%`);
+                
+                // ✅ SEGURANÇA: Limpa cache (opcional)
+                // delete window.MONALYTICS.multiplos[tickerNorm];
+                
                 return dyAtual;
             } else {
-                console.log('⚠️ DY não encontrado em multiplos.ltm.multiplos.DY, usando 0');
+                console.log('⚠️ DY não encontrado em multiplosData.ltm.multiplos.DY');
+                console.log('📋 Estrutura disponível:', Object.keys(multiplosData));
+                
                 if (dividendosHistoricoData) {
                     dividendosHistoricoData.dy_atual = 0;
                 }
+                
                 return 0;
             }
         } else {
@@ -3509,7 +3552,8 @@ async function carregarDYAtual(ticker) {
         }
 
     } catch (error) {
-        console.log('⚠️ Erro ao buscar DY atual:', error.message);
+        console.error('❌ Erro ao buscar DY atual:', error);
+        console.error('Stack:', error.stack);
         if (dividendosHistoricoData) {
             dividendosHistoricoData.dy_atual = 0;
         }
@@ -3518,8 +3562,10 @@ async function carregarDYAtual(ticker) {
 }
 
 
+
 /**
- * Carrega DY histórico do arquivo multiplos.json
+ * Carrega DY histórico do arquivo multiplos.js
+ * CORREÇÃO: Acessa window.MONALYTICS.multiplos[ticker]
  */
 async function carregarDYHistorico(ticker) {
     try {
@@ -3533,22 +3579,47 @@ async function carregarDYHistorico(ticker) {
         const tickerPasta = obterTickerPasta(ticker);
         const timestamp = new Date().getTime();
 
-        // ✅ CORREÇÃO: Busca multiplos_PETR3.js ou multiplos_PETR4.js
+        // ✅ CORRETO: Usa tickerNorm
         console.log(`📈 Buscando DY histórico em multiplos_${tickerNorm}.js...`);
 
         const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${tickerNorm}.js?t=${timestamp}`;
+        //                                                                                              ^^^^^^^^^^      ^^^^^^^^^^
+        //                                                                                              PETR3           PETR4 ✅
+        
         const response = await fetch(url);
 
         if (response.ok) {
             const scriptText = await response.text();
+            
+            // ✅ SEGURANÇA: Limpa cache
+            if (window.MONALYTICS && window.MONALYTICS.multiplos) {
+                delete window.MONALYTICS.multiplos[tickerNorm];
+            }
+            
             eval(scriptText);
-            const multiplosData = window.multiplosData;
+            
+            // ✅ CORREÇÃO: Acessa caminho correto
+            if (!window.MONALYTICS || !window.MONALYTICS.multiplos || !window.MONALYTICS.multiplos[tickerNorm]) {
+                console.warn(`⚠️ Dados não encontrados em window.MONALYTICS.multiplos["${tickerNorm}"]`);
+                return;
+            }
+            
+            const multiplosData = window.MONALYTICS.multiplos[tickerNorm];
 
-            // ✅ Extrai DY de cada ano do histórico
-            const historicoAnual = multiplosData.historico_anual || {};
+            // ✅ VALIDAÇÃO: Verifica historico_anual
+            if (!multiplosData.historico_anual) {
+                console.warn(`⚠️ historico_anual não encontrado`);
+                console.log('📋 Estrutura disponível:', Object.keys(multiplosData));
+                return;
+            }
 
+            const historicoAnual = multiplosData.historico_anual;
+
+            // ✅ Extrai DY de cada ano
+            let anosProcessados = 0;
+            
             for (const ano in historicoAnual) {
-                const dyAno = historicoAnual[ano].multiplos?.DY;
+                const dyAno = historicoAnual[ano]?.multiplos?.DY;
 
                 if (dyAno !== undefined && dyAno !== null) {
                     const anoObj = dividendosHistoricoData.historico_anos.find(
@@ -3557,16 +3628,21 @@ async function carregarDYHistorico(ticker) {
 
                     if (anoObj) {
                         anoObj.dy_percent = dyAno;
+                        anosProcessados++;
                         console.log(`   ✅ ${ano}: ${dyAno.toFixed(2)}%`);
                     }
                 }
             }
 
-            console.log('✅ DY histórico atualizado de multiplos.js');
+            console.log(`✅ DY histórico atualizado: ${anosProcessados} anos processados`);
+            
+            // ✅ SEGURANÇA: Limpa cache (opcional)
+            // delete window.MONALYTICS.multiplos[tickerNorm];
         }
 
     } catch (error) {
-        console.warn('⚠️ Erro ao carregar DY histórico:', error);
+        console.error('❌ Erro ao carregar DY histórico:', error);
+        console.error('Stack trace:', error.stack);
     }
 }
 
