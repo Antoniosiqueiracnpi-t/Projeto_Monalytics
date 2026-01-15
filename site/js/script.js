@@ -7199,6 +7199,71 @@ if (document.readyState === 'loading') {
 }
 
 
+/* ========================================
+   FIX: NAVEGAÇÃO PARA BUSCA DE AÇÕES
+   ======================================== */
+
+/**
+ * Garante que o link "Análise de Ações" funcione corretamente
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    // Seleciona TODOS os links que apontam para #busca-acoes
+    const linksBuscaAcoes = document.querySelectorAll('a[href="#busca-acoes"]');
+    
+    console.log(`🔗 Encontrados ${linksBuscaAcoes.length} links para #busca-acoes`);
+    
+    linksBuscaAcoes.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('🎯 Navegando para Buscar Ação...');
+            
+            // Fecha menu mobile se estiver aberto
+            const navMenu = document.getElementById('navMenu');
+            if (navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                const menuToggle = document.getElementById('menuToggle');
+                if (menuToggle) menuToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Scroll suave para o card
+            const targetCard = document.getElementById('busca-acoes');
+            
+            if (targetCard) {
+                const header = document.getElementById('header');
+                const headerHeight = header ? header.offsetHeight : 80;
+                const targetPosition = targetCard.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Destaque visual no card (opcional)
+                targetCard.style.animation = 'pulse 0.5s ease';
+                setTimeout(() => {
+                    targetCard.style.animation = '';
+                }, 500);
+                
+                console.log('✅ Scroll executado com sucesso!');
+            } else {
+                console.error('❌ Card #busca-acoes não encontrado!');
+            }
+        });
+    });
+});
+
+// Animação de pulso (adicione no CSS se quiser efeito visual)
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.02); box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3); }
+    }
+`;
+document.head.appendChild(style);
 
 
 
