@@ -1,9 +1,9 @@
 {
   "ticker": "INTB3",
-  "ultima_atualizacao": "2026-01-14T23:01:25.488333",
+  "ultima_atualizacao": "2026-01-15T23:01:50.532094",
   "periodo": {
     "inicio": "2021-02-08",
-    "fim": "2026-01-13"
+    "fim": "2026-01-14"
   },
   "dados": [
     {
@@ -13535,16 +13535,27 @@
       "mm20": 11.79,
       "mm50": 11.77,
       "mm200": 12.21
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 11.28,
+      "maxima": 11.42,
+      "minima": 11.15,
+      "fechamento": 11.26,
+      "volume": 1064100,
+      "mm20": 11.74,
+      "mm50": 11.78,
+      "mm200": 12.21
     }
   ],
   "estatisticas": {
-    "total_dias": 1230,
+    "total_dias": 1231,
     "preco_inicial": 16.15,
-    "preco_atual": 11.25,
-    "variacao_periodo": -30.32,
+    "preco_atual": 11.26,
+    "variacao_periodo": -30.26,
     "maxima_periodo": 31.13,
     "minima_periodo": 10.15,
-    "volume_medio": 1559411,
-    "tendencia": "indefinida"
+    "volume_medio": 1559009,
+    "tendencia": "baixa"
   }
 }

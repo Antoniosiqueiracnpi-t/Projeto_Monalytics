@@ -1,22 +1,11 @@
 {
   "ticker": "GFSA3",
-  "ultima_atualizacao": "2026-01-14T23:01:29.281504",
+  "ultima_atualizacao": "2026-01-15T23:01:53.609965",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 704.41,
-      "maxima": 708.88,
-      "minima": 682.07,
-      "fechamento": 701.43,
-      "volume": 21405,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 702.92,
@@ -222,7 +211,7 @@
       "minima": 615.06,
       "fechamento": 615.06,
       "volume": 48446,
-      "mm20": 645.59,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 689.52,
       "volume": 59154,
       "mm20": 786.24,
-      "mm50": 704.62,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 65808,
       "mm20": 421.83,
       "mm50": 461.1,
-      "mm200": 631.04
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 5.01,
       "mm50": 5.3,
       "mm200": 15.92
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 4.55,
+      "maxima": 4.63,
+      "minima": 4.44,
+      "fechamento": 4.49,
+      "volume": 285400,
+      "mm20": 4.98,
+      "mm50": 5.25,
+      "mm200": 15.78
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 701.43,
-    "preco_atual": 4.53,
-    "variacao_periodo": -99.35,
+    "preco_atual": 4.49,
+    "variacao_periodo": -99.36,
     "maxima_periodo": 880.14,
-    "minima_periodo": 4.53,
-    "volume_medio": 204820,
+    "minima_periodo": 4.49,
+    "volume_medio": 205029,
     "tendencia": "baixa"
   }
 }

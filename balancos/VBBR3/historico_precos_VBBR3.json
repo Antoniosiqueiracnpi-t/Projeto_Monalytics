@@ -1,22 +1,11 @@
 {
   "ticker": "VBBR3",
-  "ultima_atualizacao": "2026-01-14T23:02:56.264228",
+  "ultima_atualizacao": "2026-01-15T23:03:15.590764",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 14.98,
-      "maxima": 15.08,
-      "minima": 14.66,
-      "fechamento": 15.02,
-      "volume": 10315144,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 15.15,
@@ -222,7 +211,7 @@
       "minima": 14.56,
       "fechamento": 14.65,
       "volume": 4453536,
-      "mm20": 14.93,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 13.66,
       "volume": 15445831,
       "mm20": 14.48,
-      "mm50": 14.79,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 15021996,
       "mm20": 17.99,
       "mm50": 18.87,
-      "mm200": 17.26
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 25.29,
       "mm50": 24.24,
       "mm200": 20.47
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 25.6,
+      "maxima": 26.07,
+      "minima": 25.56,
+      "fechamento": 25.91,
+      "volume": 9825000,
+      "mm20": 25.33,
+      "mm50": 24.33,
+      "mm200": 20.52
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 15.02,
-    "preco_atual": 25.41,
-    "variacao_periodo": 69.15,
-    "maxima_periodo": 25.89,
+    "preco_inicial": 15.06,
+    "preco_atual": 25.91,
+    "variacao_periodo": 72.1,
+    "maxima_periodo": 25.91,
     "minima_periodo": 9.53,
-    "volume_medio": 10768632,
+    "volume_medio": 10768244,
     "tendencia": "alta"
   }
 }

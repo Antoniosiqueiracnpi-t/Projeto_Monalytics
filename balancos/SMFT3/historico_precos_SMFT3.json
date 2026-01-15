@@ -1,9 +1,9 @@
 {
   "ticker": "SMFT3",
-  "ultima_atualizacao": "2026-01-14T23:03:46.753683",
+  "ultima_atualizacao": "2026-01-15T23:04:14.446173",
   "periodo": {
     "inicio": "2021-07-14",
-    "fim": "2026-01-13"
+    "fim": "2026-01-14"
   },
   "dados": [
     {
@@ -12369,16 +12369,27 @@
       "mm20": 23.39,
       "mm50": 23.87,
       "mm200": 23.06
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 22.85,
+      "maxima": 23.03,
+      "minima": 22.5,
+      "fechamento": 22.76,
+      "volume": 3293300,
+      "mm20": 23.32,
+      "mm50": 23.85,
+      "mm200": 23.07
     }
   ],
   "estatisticas": {
-    "total_dias": 1124,
+    "total_dias": 1125,
     "preco_inicial": 28.31,
-    "preco_atual": 22.65,
-    "variacao_periodo": -19.99,
+    "preco_atual": 22.76,
+    "variacao_periodo": -19.6,
     "maxima_periodo": 29.4,
     "minima_periodo": 9.1,
-    "volume_medio": 2582928,
+    "volume_medio": 2583560,
     "tendencia": "indefinida"
   }
 }

@@ -1,22 +1,11 @@
 {
   "ticker": "KLBN11",
-  "ultima_atualizacao": "2026-01-14T23:02:31.611853",
+  "ultima_atualizacao": "2026-01-15T23:02:50.148776",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 16.27,
-      "maxima": 16.49,
-      "minima": 16.17,
-      "fechamento": 16.43,
-      "volume": 4201579,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 16.49,
@@ -222,7 +211,7 @@
       "minima": 19.06,
       "fechamento": 19.45,
       "volume": 2766834,
-      "mm20": 17.87,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 19.85,
       "volume": 7801553,
       "mm20": 19.45,
-      "mm50": 18.73,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -1284,7 +1273,7 @@
     },
     {
       "data": "2021-06-10",
-      "abertura": 17.15,
+      "abertura": 17.14,
       "maxima": 17.25,
       "minima": 16.99,
       "fechamento": 17.13,
@@ -2204,7 +2193,7 @@
       "volume": 8441822,
       "mm20": 15.83,
       "mm50": 16.4,
-      "mm200": 17.88
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 18.45,
       "mm50": 17.58,
       "mm200": 17.11
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 18.65,
+      "maxima": 19.01,
+      "minima": 18.54,
+      "fechamento": 19.01,
+      "volume": 3770300,
+      "mm20": 18.51,
+      "mm50": 17.62,
+      "mm200": 17.12
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 16.43,
-    "preco_atual": 18.64,
-    "variacao_periodo": 13.42,
+    "preco_inicial": 16.61,
+    "preco_atual": 19.01,
+    "variacao_periodo": 14.47,
     "maxima_periodo": 21.43,
     "minima_periodo": 12.59,
-    "volume_medio": 5761193,
+    "volume_medio": 5760852,
     "tendencia": "alta"
   }
 }

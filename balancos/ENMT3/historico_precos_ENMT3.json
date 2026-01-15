@@ -1,22 +1,11 @@
 {
   "ticker": "ENMT3",
-  "ultima_atualizacao": "2026-01-14T23:01:58.595922",
+  "ultima_atualizacao": "2026-01-15T23:02:19.997196",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 20.54,
-      "maxima": 20.93,
-      "minima": 20.54,
-      "fechamento": 20.93,
-      "volume": 2500,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 21.19,
@@ -222,7 +211,7 @@
       "minima": 21.91,
       "fechamento": 21.92,
       "volume": 200,
-      "mm20": 21.82,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 21.88,
       "volume": 0,
       "mm20": 21.89,
-      "mm50": 21.87,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 2100,
       "mm20": 62.81,
       "mm50": 59.06,
-      "mm200": 40.55
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -8561,7 +8550,7 @@
       "fechamento": 65.16,
       "volume": 3600,
       "mm20": 63.84,
-      "mm50": 59.66,
+      "mm50": 59.67,
       "mm200": 56.04
     },
     {
@@ -11587,7 +11576,7 @@
       "volume": 100,
       "mm20": 78.01,
       "mm50": 76.44,
-      "mm200": 76.54
+      "mm200": 76.55
     },
     {
       "data": "2025-03-13",
@@ -13898,16 +13887,27 @@
       "mm20": 50.96,
       "mm50": 53.58,
       "mm200": 60.04
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 49.63,
+      "maxima": 50.89,
+      "minima": 49.62,
+      "fechamento": 50.89,
+      "volume": 300,
+      "mm20": 51.0,
+      "mm50": 53.47,
+      "mm200": 59.89
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 20.93,
-    "preco_atual": 51.18,
-    "variacao_periodo": 144.48,
+    "preco_inicial": 21.19,
+    "preco_atual": 50.89,
+    "variacao_periodo": 140.15,
     "maxima_periodo": 80.78,
-    "minima_periodo": 20.93,
-    "volume_medio": 1211,
-    "tendencia": "indefinida"
+    "minima_periodo": 21.19,
+    "volume_medio": 1209,
+    "tendencia": "baixa"
   }
 }

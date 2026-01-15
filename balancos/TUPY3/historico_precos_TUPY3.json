@@ -1,22 +1,11 @@
 {
   "ticker": "TUPY3",
-  "ultima_atualizacao": "2026-01-14T23:02:46.157321",
+  "ultima_atualizacao": "2026-01-15T23:03:03.502925",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 18.72,
-      "maxima": 18.83,
-      "minima": 18.25,
-      "fechamento": 18.83,
-      "volume": 976100,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 18.79,
@@ -222,7 +211,7 @@
       "minima": 19.4,
       "fechamento": 19.46,
       "volume": 586700,
-      "mm20": 18.99,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 19.72,
       "volume": 1717000,
       "mm20": 18.46,
-      "mm50": 18.69,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 766600,
       "mm20": 17.12,
       "mm50": 18.0,
-      "mm200": 19.07
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 11.99,
       "mm50": 12.27,
       "mm200": 15.66
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 11.46,
+      "maxima": 11.66,
+      "minima": 11.33,
+      "fechamento": 11.47,
+      "volume": 1568400,
+      "mm20": 11.95,
+      "mm50": 12.26,
+      "mm200": 15.62
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 18.83,
-    "preco_atual": 11.45,
-    "variacao_periodo": -39.19,
+    "preco_inicial": 18.63,
+    "preco_atual": 11.47,
+    "variacao_periodo": -38.44,
     "maxima_periodo": 27.6,
     "minima_periodo": 11.45,
-    "volume_medio": 801359,
+    "volume_medio": 801828,
     "tendencia": "baixa"
   }
 }

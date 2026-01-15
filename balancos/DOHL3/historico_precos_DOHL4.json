@@ -1,22 +1,11 @@
 {
   "ticker": "DOHL4",
-  "ultima_atualizacao": "2026-01-14T23:03:29.172386",
+  "ultima_atualizacao": "2026-01-15T23:03:51.864546",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 4.86,
-      "maxima": 5.0,
-      "minima": 4.86,
-      "fechamento": 4.95,
-      "volume": 5500,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 4.94,
@@ -222,7 +211,7 @@
       "minima": 5.28,
       "fechamento": 5.32,
       "volume": 56300,
-      "mm20": 5.26,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 4.77,
       "volume": 2000,
       "mm20": 4.82,
-      "mm50": 5.09,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 4700,
       "mm20": 5.88,
       "mm50": 6.07,
-      "mm200": 5.72
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 3.7,
       "mm50": 3.76,
       "mm200": 3.89
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 3.68,
+      "maxima": 3.69,
+      "minima": 3.68,
+      "fechamento": 3.69,
+      "volume": 300,
+      "mm20": 3.7,
+      "mm50": 3.75,
+      "mm200": 3.89
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 4.95,
+    "preco_inicial": 4.87,
     "preco_atual": 3.69,
-    "variacao_periodo": -25.52,
+    "variacao_periodo": -24.22,
     "maxima_periodo": 6.95,
     "minima_periodo": 3.64,
-    "volume_medio": 6783,
+    "volume_medio": 6779,
     "tendencia": "baixa"
   }
 }

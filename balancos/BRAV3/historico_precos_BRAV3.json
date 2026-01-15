@@ -1,22 +1,11 @@
 {
   "ticker": "BRAV3",
-  "ultima_atualizacao": "2026-01-14T23:02:51.719889",
+  "ultima_atualizacao": "2026-01-15T23:03:10.256724",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 34.98,
-      "maxima": 35.84,
-      "minima": 33.4,
-      "fechamento": 34.0,
-      "volume": 368700,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 34.98,
@@ -222,7 +211,7 @@
       "minima": 34.62,
       "fechamento": 35.42,
       "volume": 115100,
-      "mm20": 35.5,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 41.51,
       "volume": 483700,
       "mm20": 37.47,
-      "mm50": 35.96,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 2570300,
       "mm20": 37.53,
       "mm50": 37.23,
-      "mm200": 39.5
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13876,16 +13865,27 @@
       "mm20": 15.71,
       "mm50": 14.82,
       "mm200": 17.67
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 17.75,
+      "maxima": 18.1,
+      "minima": 17.27,
+      "fechamento": 17.95,
+      "volume": 11869400,
+      "mm20": 15.94,
+      "mm50": 14.89,
+      "mm200": 17.64
     }
   ],
   "estatisticas": {
     "total_dias": 1261,
-    "preco_inicial": 34.0,
-    "preco_atual": 17.6,
-    "variacao_periodo": -48.24,
+    "preco_inicial": 33.4,
+    "preco_atual": 17.95,
+    "variacao_periodo": -46.26,
     "maxima_periodo": 51.31,
     "minima_periodo": 13.43,
-    "volume_medio": 5616837,
+    "volume_medio": 5625957,
     "tendencia": "indefinida"
   }
 }

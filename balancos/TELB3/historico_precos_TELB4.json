@@ -1,22 +1,11 @@
 {
   "ticker": "TELB4",
-  "ultima_atualizacao": "2026-01-14T23:03:35.715358",
+  "ultima_atualizacao": "2026-01-15T23:04:00.858379",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 31.67,
-      "maxima": 32.0,
-      "minima": 30.9,
-      "fechamento": 31.02,
-      "volume": 10000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 31.27,
@@ -222,7 +211,7 @@
       "minima": 29.29,
       "fechamento": 29.29,
       "volume": 9800,
-      "mm20": 30.4,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 25.9,
       "volume": 7300,
       "mm20": 28.21,
-      "mm50": 29.23,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 5100,
       "mm20": 24.13,
       "mm50": 25.5,
-      "mm200": 27.92
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 8.09,
       "mm50": 8.35,
       "mm200": 8.49
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 7.76,
+      "maxima": 7.76,
+      "minima": 7.76,
+      "fechamento": 7.76,
+      "volume": 300,
+      "mm20": 8.02,
+      "mm50": 8.35,
+      "mm200": 8.48
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 31.02,
-    "preco_atual": 7.9,
-    "variacao_periodo": -74.53,
+    "preco_inicial": 31.14,
+    "preco_atual": 7.76,
+    "variacao_periodo": -75.08,
     "maxima_periodo": 34.65,
     "minima_periodo": 6.8,
-    "volume_medio": 6595,
+    "volume_medio": 6587,
     "tendencia": "baixa"
   }
 }

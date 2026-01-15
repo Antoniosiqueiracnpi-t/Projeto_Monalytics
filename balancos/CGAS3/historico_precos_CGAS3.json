@@ -1,22 +1,11 @@
 {
   "ticker": "CGAS3",
-  "ultima_atualizacao": "2026-01-14T23:02:15.954197",
+  "ultima_atualizacao": "2026-01-15T23:02:34.298989",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 108.39,
-      "maxima": 108.39,
-      "minima": 108.39,
-      "fechamento": 108.39,
-      "volume": 100,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 110.36,
@@ -222,7 +211,7 @@
       "minima": 110.36,
       "fechamento": 110.36,
       "volume": 400,
-      "mm20": 110.34,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 95.87,
       "volume": 0,
       "mm20": 106.58,
-      "mm50": 108.42,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 95.16,
       "mm50": 99.6,
-      "mm200": 102.05
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -3182,7 +3171,7 @@
       "fechamento": 88.56,
       "volume": 200,
       "mm20": 93.69,
-      "mm50": 98.29,
+      "mm50": 98.3,
       "mm200": 99.07
     },
     {
@@ -3347,7 +3336,7 @@
       "fechamento": 87.08,
       "volume": 0,
       "mm20": 87.95,
-      "mm50": 93.41,
+      "mm50": 93.42,
       "mm200": 98.6
     },
     {
@@ -13898,13 +13887,24 @@
       "mm20": 121.98,
       "mm50": 121.59,
       "mm200": 119.54
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 126.9,
+      "maxima": 126.9,
+      "minima": 126.9,
+      "fechamento": 126.9,
+      "volume": 100,
+      "mm20": 122.21,
+      "mm50": 121.72,
+      "mm200": 119.56
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 108.39,
+    "preco_inicial": 110.69,
     "preco_atual": 126.9,
-    "variacao_periodo": 17.07,
+    "variacao_periodo": 14.65,
     "maxima_periodo": 148.57,
     "minima_periodo": 74.9,
     "volume_medio": 137,

@@ -1,22 +1,11 @@
 {
   "ticker": "PSSA3",
-  "ultima_atualizacao": "2026-01-14T23:02:57.911018",
+  "ultima_atualizacao": "2026-01-15T23:03:17.764774",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 19.43,
-      "maxima": 19.45,
-      "minima": 18.95,
-      "fechamento": 19.27,
-      "volume": 2644800,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 19.27,
@@ -222,7 +211,7 @@
       "minima": 19.11,
       "fechamento": 19.36,
       "volume": 1834000,
-      "mm20": 18.95,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 16.84,
       "volume": 1732400,
       "mm20": 18.23,
-      "mm50": 18.68,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 5869200,
       "mm20": 20.6,
       "mm50": 21.76,
-      "mm200": 20.18
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -4851,7 +4840,7 @@
       "abertura": 18.96,
       "maxima": 18.96,
       "minima": 18.51,
-      "fechamento": 18.59,
+      "fechamento": 18.58,
       "volume": 727100,
       "mm20": 19.01,
       "mm50": 17.69,
@@ -13898,16 +13887,27 @@
       "mm20": 47.76,
       "mm50": 47.33,
       "mm200": 47.86
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 46.76,
+      "maxima": 47.12,
+      "minima": 46.36,
+      "fechamento": 47.08,
+      "volume": 1201300,
+      "mm20": 47.71,
+      "mm50": 47.32,
+      "mm200": 47.89
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 19.27,
-    "preco_atual": 46.5,
-    "variacao_periodo": 141.29,
+    "preco_inicial": 19.24,
+    "preco_atual": 47.08,
+    "variacao_periodo": 144.74,
     "maxima_periodo": 55.43,
     "minima_periodo": 14.79,
-    "volume_medio": 2069614,
+    "volume_medio": 2068471,
     "tendencia": "indefinida"
   }
 }

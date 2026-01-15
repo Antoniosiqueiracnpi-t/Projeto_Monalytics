@@ -1,22 +1,11 @@
 {
   "ticker": "GGBR3",
-  "ultima_atualizacao": "2026-01-14T23:03:16.852907",
+  "ultima_atualizacao": "2026-01-15T23:03:37.880350",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 9.83,
-      "maxima": 9.93,
-      "minima": 9.74,
-      "fechamento": 9.89,
-      "volume": 91602,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 9.9,
@@ -222,7 +211,7 @@
       "minima": 11.0,
       "fechamento": 11.2,
       "volume": 113022,
-      "mm20": 10.92,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 11.05,
       "volume": 126756,
       "mm20": 10.61,
-      "mm50": 10.69,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 145656,
       "mm20": 11.52,
       "mm50": 12.3,
-      "mm200": 12.47
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 17.57,
       "mm50": 16.82,
       "mm200": 15.17
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 18.4,
+      "maxima": 18.9,
+      "minima": 18.13,
+      "fechamento": 18.75,
+      "volume": 95600,
+      "mm20": 17.66,
+      "mm50": 16.89,
+      "mm200": 15.19
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 9.89,
-    "preco_atual": 18.39,
-    "variacao_periodo": 85.89,
+    "preco_inicial": 10.1,
+    "preco_atual": 18.75,
+    "variacao_periodo": 85.57,
     "maxima_periodo": 19.4,
     "minima_periodo": 9.84,
-    "volume_medio": 82878,
+    "volume_medio": 82881,
     "tendencia": "alta"
   }
 }

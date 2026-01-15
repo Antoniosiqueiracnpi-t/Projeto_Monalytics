@@ -1,22 +1,11 @@
 {
   "ticker": "NEXP3",
-  "ultima_atualizacao": "2026-01-14T23:02:13.915731",
+  "ultima_atualizacao": "2026-01-15T23:02:31.820705",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 97.77,
-      "maxima": 98.99,
-      "minima": 92.06,
-      "fechamento": 97.77,
-      "volume": 17861,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 96.14,
@@ -222,7 +211,7 @@
       "minima": 88.4,
       "fechamento": 90.84,
       "volume": 26939,
-      "mm20": 88.11,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 70.47,
       "volume": 9070,
       "mm20": 82.94,
-      "mm50": 85.91,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 56694,
       "mm20": 75.73,
       "mm50": 82.39,
-      "mm200": 82.68
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 2.95,
       "mm50": 3.17,
       "mm200": 3.57
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 2.85,
+      "maxima": 2.85,
+      "minima": 2.85,
+      "fechamento": 2.85,
+      "volume": 0,
+      "mm20": 2.93,
+      "mm50": 3.16,
+      "mm200": 3.57
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 97.77,
+    "preco_inicial": 90.03,
     "preco_atual": 2.85,
-    "variacao_periodo": -97.08,
+    "variacao_periodo": -96.83,
     "maxima_periodo": 162.94,
     "minima_periodo": 2.85,
-    "volume_medio": 16249,
+    "volume_medio": 16235,
     "tendencia": "baixa"
   }
 }

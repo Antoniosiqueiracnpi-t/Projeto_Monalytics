@@ -1,22 +1,11 @@
 {
   "ticker": "PDGR3",
-  "ultima_atualizacao": "2026-01-14T23:01:34.211934",
+  "ultima_atualizacao": "2026-01-15T23:01:57.868256",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 10169070.0,
-      "maxima": 10169070.0,
-      "minima": 9945301.0,
-      "fechamento": 10044754.0,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 10144207.0,
@@ -222,7 +211,7 @@
       "minima": 10218797.0,
       "fechamento": 10914968.0,
       "volume": 0,
-      "mm20": 10033565.45,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 11934361.0,
       "volume": 0,
       "mm20": 15450024.9,
-      "mm50": 13080556.96,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 4732500.0,
       "mm50": 6092500.0,
-      "mm200": 12312946.67
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 1.46,
       "mm50": 1.5,
       "mm200": 48.93
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 1.35,
+      "maxima": 1.35,
+      "minima": 1.28,
+      "fechamento": 1.33,
+      "volume": 61700,
+      "mm20": 1.45,
+      "mm50": 1.49,
+      "mm200": 48.18
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 10044754.0,
+    "preco_inicial": 10094480.0,
     "preco_atual": 1.33,
     "variacao_periodo": -100.0,
     "maxima_periodo": 20387866.0,
     "minima_periodo": 0.82,
-    "volume_medio": 12441,
+    "volume_medio": 12489,
     "tendencia": "baixa"
   }
 }

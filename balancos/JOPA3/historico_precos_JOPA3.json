@@ -1,22 +1,11 @@
 {
   "ticker": "JOPA3",
-  "ultima_atualizacao": "2026-01-14T23:01:10.249087",
+  "ultima_atualizacao": "2026-01-15T23:01:38.545550",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 30.13,
-      "maxima": 30.13,
-      "minima": 30.13,
-      "fechamento": 30.13,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 30.13,
@@ -222,7 +211,7 @@
       "minima": 30.13,
       "fechamento": 30.13,
       "volume": 1000,
-      "mm20": 30.43,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 26.26,
       "volume": 0,
       "mm20": 29.61,
-      "mm50": 30.08,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 100,
       "mm20": 27.2,
       "mm50": 29.41,
-      "mm200": 29.52
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13890,6 +13879,17 @@
     },
     {
       "data": "2026-01-13",
+      "abertura": 20.11,
+      "maxima": 20.11,
+      "minima": 20.11,
+      "fechamento": 20.11,
+      "volume": 0,
+      "mm20": 20.11,
+      "mm50": 20.11,
+      "mm200": 20.84
+    },
+    {
+      "data": "2026-01-14",
       "abertura": 20.11,
       "maxima": 20.11,
       "minima": 20.11,

@@ -1,22 +1,11 @@
 {
   "ticker": "LAVV3",
-  "ultima_atualizacao": "2026-01-14T23:01:32.115451",
+  "ultima_atualizacao": "2026-01-15T23:01:56.410405",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 5.47,
-      "maxima": 5.47,
-      "minima": 5.33,
-      "fechamento": 5.44,
-      "volume": 457200,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 5.4,
@@ -222,7 +211,7 @@
       "minima": 5.0,
       "fechamento": 5.0,
       "volume": 937900,
-      "mm20": 5.25,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 4.01,
       "volume": 1026600,
       "mm20": 4.48,
-      "mm50": 4.87,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 872500,
       "mm20": 3.76,
       "mm50": 3.94,
-      "mm200": 4.55
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 16.01,
       "mm50": 15.5,
       "mm200": 12.22
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 16.77,
+      "maxima": 17.03,
+      "minima": 16.67,
+      "fechamento": 17.03,
+      "volume": 589800,
+      "mm20": 16.08,
+      "mm50": 15.58,
+      "mm200": 12.26
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 5.44,
-    "preco_atual": 16.75,
-    "variacao_periodo": 208.07,
-    "maxima_periodo": 16.75,
+    "preco_inicial": 5.4,
+    "preco_atual": 17.03,
+    "variacao_periodo": 215.25,
+    "maxima_periodo": 17.03,
     "minima_periodo": 2.94,
-    "volume_medio": 850228,
+    "volume_medio": 850333,
     "tendencia": "alta"
   }
 }

@@ -1,22 +1,11 @@
 {
   "ticker": "SCAR3",
-  "ultima_atualizacao": "2026-01-14T23:02:14.769608",
+  "ultima_atualizacao": "2026-01-15T23:02:33.394395",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 26.62,
-      "maxima": 26.68,
-      "minima": 26.0,
-      "fechamento": 26.49,
-      "volume": 4100,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 26.18,
@@ -222,7 +211,7 @@
       "minima": 25.19,
       "fechamento": 25.89,
       "volume": 8100,
-      "mm20": 26.27,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 20.2,
       "volume": 4200,
       "mm20": 23.4,
-      "mm50": 24.81,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 2900,
       "mm20": 23.61,
       "mm50": 24.21,
-      "mm200": 24.85
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 13.57,
       "mm50": 15.27,
       "mm200": 14.17
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 13.94,
+      "maxima": 13.98,
+      "minima": 13.75,
+      "fechamento": 13.85,
+      "volume": 77300,
+      "mm20": 13.56,
+      "mm50": 15.25,
+      "mm200": 14.17
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 26.49,
-    "preco_atual": 13.94,
-    "variacao_periodo": -47.38,
+    "preco_inicial": 26.43,
+    "preco_atual": 13.85,
+    "variacao_periodo": -47.6,
     "maxima_periodo": 27.96,
     "minima_periodo": 7.56,
-    "volume_medio": 24899,
+    "volume_medio": 24957,
     "tendencia": "indefinida"
   }
 }

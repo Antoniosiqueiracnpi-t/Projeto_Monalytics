@@ -1,9 +1,9 @@
 {
   "ticker": "NATU3",
-  "ultima_atualizacao": "2026-01-14T23:02:59.907040",
+  "ultima_atualizacao": "2026-01-15T23:03:18.989246",
   "periodo": {
     "inicio": "2025-06-26",
-    "fim": "2026-01-13"
+    "fim": "2026-01-14"
   },
   "dados": [
     {
@@ -1534,16 +1534,27 @@
       "mm20": 7.5,
       "mm50": 7.96,
       "mm200": null
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 7.58,
+      "maxima": 7.6,
+      "minima": 7.42,
+      "fechamento": 7.55,
+      "volume": 6118600,
+      "mm20": 7.48,
+      "mm50": 7.94,
+      "mm200": null
     }
   ],
   "estatisticas": {
-    "total_dias": 139,
+    "total_dias": 140,
     "preco_inicial": 36.86,
-    "preco_atual": 7.51,
-    "variacao_periodo": -79.63,
+    "preco_atual": 7.55,
+    "variacao_periodo": -79.52,
     "maxima_periodo": 36.86,
     "minima_periodo": 7.2,
-    "volume_medio": 9550845,
+    "volume_medio": 9526329,
     "tendencia": "indefinida"
   }
 }

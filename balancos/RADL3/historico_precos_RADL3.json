@@ -1,22 +1,11 @@
 {
   "ticker": "RADL3",
-  "ultima_atualizacao": "2026-01-14T23:01:18.020965",
+  "ultima_atualizacao": "2026-01-15T23:01:43.984502",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 22.13,
-      "maxima": 22.38,
-      "minima": 21.84,
-      "fechamento": 22.38,
-      "volume": 6728760,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 22.21,
@@ -222,7 +211,7 @@
       "minima": 22.99,
       "fechamento": 23.74,
       "volume": 5906216,
-      "mm20": 22.21,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 20.78,
       "volume": 9588889,
       "mm20": 21.67,
-      "mm50": 22.05,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 13055583,
       "mm20": 21.78,
       "mm50": 22.4,
-      "mm200": 22.51
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 23.61,
       "mm50": 22.59,
       "mm200": 17.98
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 23.75,
+      "maxima": 24.64,
+      "minima": 23.7,
+      "fechamento": 24.3,
+      "volume": 9278800,
+      "mm20": 23.61,
+      "mm50": 22.69,
+      "mm200": 18.01
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 22.38,
-    "preco_atual": 23.66,
-    "variacao_periodo": 5.7,
+    "preco_inicial": 22.81,
+    "preco_atual": 24.3,
+    "variacao_periodo": 6.55,
     "maxima_periodo": 28.58,
     "minima_periodo": 12.95,
-    "volume_medio": 7637023,
+    "volume_medio": 7639042,
     "tendencia": "alta"
   }
 }

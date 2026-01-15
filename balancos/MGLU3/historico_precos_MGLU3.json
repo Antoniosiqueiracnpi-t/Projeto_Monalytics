@@ -1,22 +1,11 @@
 {
   "ticker": "MGLU3",
-  "ultima_atualizacao": "2026-01-14T23:01:23.162402",
+  "ultima_atualizacao": "2026-01-15T23:01:48.857753",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 211.49,
-      "maxima": 215.55,
-      "minima": 208.65,
-      "fechamento": 215.47,
-      "volume": 4637475,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 214.6,
@@ -222,7 +211,7 @@
       "minima": 206.62,
       "fechamento": 211.28,
       "volume": 2723128,
-      "mm20": 211.15,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 219.84,
       "volume": 4550855,
       "mm20": 217.29,
-      "mm50": 215.31,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 4442512,
       "mm20": 133.78,
       "mm50": 155.12,
-      "mm200": 184.34
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 8.93,
       "mm50": 9.01,
       "mm200": 8.64
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 8.3,
+      "maxima": 8.44,
+      "minima": 8.18,
+      "fechamento": 8.4,
+      "volume": 20752400,
+      "mm20": 8.89,
+      "mm50": 9.02,
+      "mm200": 8.63
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 215.47,
-    "preco_atual": 8.2,
-    "variacao_periodo": -96.19,
+    "preco_inicial": 211.84,
+    "preco_atual": 8.4,
+    "variacao_periodo": -96.03,
     "maxima_periodo": 226.75,
     "minima_periodo": 5.37,
-    "volume_medio": 17127519,
+    "volume_medio": 17140278,
     "tendencia": "indefinida"
   }
 }

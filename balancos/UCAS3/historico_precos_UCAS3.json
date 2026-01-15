@@ -1,22 +1,11 @@
 {
   "ticker": "UCAS3",
-  "ultima_atualizacao": "2026-01-14T23:03:43.193024",
+  "ultima_atualizacao": "2026-01-15T23:04:09.873885",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 3.26,
-      "maxima": 3.3,
-      "minima": 3.22,
-      "fechamento": 3.28,
-      "volume": 136900,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 3.32,
@@ -222,7 +211,7 @@
       "minima": 3.26,
       "fechamento": 3.3,
       "volume": 115600,
-      "mm20": 3.21,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 3.27,
       "volume": 42600,
       "mm20": 3.49,
-      "mm50": 3.36,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 41900,
       "mm20": 3.38,
       "mm50": 3.52,
-      "mm200": 3.63
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 1.42,
       "mm50": 1.37,
       "mm200": 1.4
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 1.4,
+      "maxima": 1.4,
+      "minima": 1.36,
+      "fechamento": 1.4,
+      "volume": 72900,
+      "mm20": 1.41,
+      "mm50": 1.37,
+      "mm200": 1.4
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 3.28,
-    "preco_atual": 1.39,
-    "variacao_periodo": -57.63,
+    "preco_inicial": 3.29,
+    "preco_atual": 1.4,
+    "variacao_periodo": -57.43,
     "maxima_periodo": 4.39,
     "minima_periodo": 1.18,
-    "volume_medio": 60212,
+    "volume_medio": 60162,
     "tendencia": "indefinida"
   }
 }

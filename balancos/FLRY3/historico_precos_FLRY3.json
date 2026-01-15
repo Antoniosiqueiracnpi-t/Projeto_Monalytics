@@ -1,22 +1,11 @@
 {
   "ticker": "FLRY3",
-  "ultima_atualizacao": "2026-01-14T23:03:10.756526",
+  "ultima_atualizacao": "2026-01-15T23:03:30.411876",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 19.04,
-      "maxima": 19.59,
-      "minima": 18.91,
-      "fechamento": 19.39,
-      "volume": 2479353,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 19.39,
@@ -222,7 +211,7 @@
       "minima": 19.66,
       "fechamento": 19.77,
       "volume": 1368522,
-      "mm20": 19.09,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 18.41,
       "volume": 1884966,
       "mm20": 19.31,
-      "mm50": 19.2,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 4343535,
       "mm20": 16.62,
       "mm50": 16.93,
-      "mm200": 18.38
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 15.0,
       "mm50": 14.75,
       "mm200": 13.33
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 15.28,
+      "maxima": 15.56,
+      "minima": 15.21,
+      "fechamento": 15.56,
+      "volume": 2795900,
+      "mm20": 15.04,
+      "mm50": 14.79,
+      "mm200": 13.36
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 19.39,
-    "preco_atual": 15.13,
-    "variacao_periodo": -21.97,
+    "preco_inicial": 19.19,
+    "preco_atual": 15.56,
+    "variacao_periodo": -18.9,
     "maxima_periodo": 20.33,
     "minima_periodo": 9.83,
-    "volume_medio": 2831058,
+    "volume_medio": 2831309,
     "tendencia": "alta"
   }
 }

@@ -1,22 +1,11 @@
 {
   "ticker": "CGRA3",
-  "ultima_atualizacao": "2026-01-14T23:01:21.178046",
+  "ultima_atualizacao": "2026-01-15T23:01:46.318404",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 15.74,
-      "maxima": 16.44,
-      "minima": 15.59,
-      "fechamento": 16.44,
-      "volume": 1629,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 16.44,
@@ -222,7 +211,7 @@
       "minima": 19.59,
       "fechamento": 20.38,
       "volume": 1047,
-      "mm20": 18.01,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 15.51,
       "volume": 1047,
       "mm20": 17.06,
-      "mm50": 17.86,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1280,
       "mm20": 21.73,
       "mm50": 19.99,
-      "mm200": 17.55
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 26.06,
       "mm50": 24.03,
       "mm200": 21.18
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 26.97,
+      "maxima": 26.98,
+      "minima": 26.52,
+      "fechamento": 26.52,
+      "volume": 1100,
+      "mm20": 26.23,
+      "mm50": 24.12,
+      "mm200": 21.22
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 16.44,
-    "preco_atual": 26.5,
-    "variacao_periodo": 61.18,
+    "preco_atual": 26.52,
+    "variacao_periodo": 61.31,
     "maxima_periodo": 28.33,
     "minima_periodo": 14.33,
-    "volume_medio": 3739,
+    "volume_medio": 3738,
     "tendencia": "alta"
   }
 }

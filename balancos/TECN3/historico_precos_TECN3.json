@@ -1,22 +1,11 @@
 {
   "ticker": "TECN3",
-  "ultima_atualizacao": "2026-01-14T23:03:31.530386",
+  "ultima_atualizacao": "2026-01-15T23:03:55.640418",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 1.12,
-      "maxima": 1.14,
-      "minima": 1.1,
-      "fechamento": 1.11,
-      "volume": 1478500,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 1.11,
@@ -222,7 +211,7 @@
       "minima": 1.01,
       "fechamento": 1.03,
       "volume": 642300,
-      "mm20": 1.05,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 1.1,
       "volume": 1164900,
       "mm20": 1.2,
-      "mm50": 1.1,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 3284000,
       "mm20": 2.79,
       "mm50": 2.53,
-      "mm200": 1.82
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 6.96,
       "mm50": 6.58,
       "mm200": 6.19
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 7.33,
+      "maxima": 7.44,
+      "minima": 7.13,
+      "fechamento": 7.19,
+      "volume": 31600,
+      "mm20": 6.97,
+      "mm50": 6.6,
+      "mm200": 6.19
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 1.11,
-    "preco_atual": 7.2,
-    "variacao_periodo": 551.05,
+    "preco_atual": 7.19,
+    "variacao_periodo": 550.15,
     "maxima_periodo": 7.36,
     "minima_periodo": 0.98,
-    "volume_medio": 877234,
+    "volume_medio": 876088,
     "tendencia": "alta"
   }
 }

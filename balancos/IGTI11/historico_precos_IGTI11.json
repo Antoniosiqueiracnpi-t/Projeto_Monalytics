@@ -1,9 +1,9 @@
 {
   "ticker": "IGTI11",
-  "ultima_atualizacao": "2026-01-14T23:02:11.074215",
+  "ultima_atualizacao": "2026-01-15T23:02:30.099562",
   "periodo": {
     "inicio": "2021-11-22",
-    "fim": "2026-01-13"
+    "fim": "2026-01-14"
   },
   "dados": [
     {
@@ -11390,16 +11390,27 @@
       "mm20": 25.54,
       "mm50": 25.69,
       "mm200": 22.91
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 26.55,
+      "maxima": 26.79,
+      "minima": 26.24,
+      "fechamento": 26.72,
+      "volume": 1680200,
+      "mm20": 25.58,
+      "mm50": 25.74,
+      "mm200": 22.96
     }
   ],
   "estatisticas": {
-    "total_dias": 1035,
+    "total_dias": 1036,
     "preco_inicial": 18.48,
-    "preco_atual": 26.55,
-    "variacao_periodo": 43.66,
+    "preco_atual": 26.72,
+    "variacao_periodo": 44.58,
     "maxima_periodo": 27.5,
     "minima_periodo": 13.69,
-    "volume_medio": 2844809,
+    "volume_medio": 2843685,
     "tendencia": "indefinida"
   }
 }

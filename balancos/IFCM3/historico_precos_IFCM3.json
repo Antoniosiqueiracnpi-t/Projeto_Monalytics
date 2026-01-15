@@ -1,9 +1,9 @@
 {
   "ticker": "IFCM3",
-  "ultima_atualizacao": "2026-01-14T23:03:01.535631",
+  "ultima_atualizacao": "2026-01-15T23:03:20.086210",
   "periodo": {
     "inicio": "2021-05-07",
-    "fim": "2026-01-13"
+    "fim": "2026-01-14"
   },
   "dados": [
     {
@@ -12875,16 +12875,27 @@
       "mm20": 1.11,
       "mm50": 1.64,
       "mm200": 14.57
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 0.87,
+      "maxima": 0.91,
+      "minima": 0.84,
+      "fechamento": 0.86,
+      "volume": 515900,
+      "mm20": 1.08,
+      "mm50": 1.61,
+      "mm200": 14.44
     }
   ],
   "estatisticas": {
-    "total_dias": 1170,
+    "total_dias": 1171,
     "preco_inicial": 4665.91,
     "preco_atual": 0.86,
     "variacao_periodo": -99.98,
     "maxima_periodo": 7299.7,
     "minima_periodo": 0.77,
-    "volume_medio": 55343,
+    "volume_medio": 55736,
     "tendencia": "baixa"
   }
 }

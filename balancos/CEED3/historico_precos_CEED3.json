@@ -1,22 +1,11 @@
 {
   "ticker": "CEED3",
-  "ultima_atualizacao": "2026-01-14T23:01:49.846427",
+  "ultima_atualizacao": "2026-01-15T23:02:11.588743",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 53.6,
-      "maxima": 53.6,
-      "minima": 53.6,
-      "fechamento": 53.6,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 53.7,
@@ -222,7 +211,7 @@
       "minima": 52.0,
       "fechamento": 52.0,
       "volume": 0,
-      "mm20": 54.81,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 50.0,
       "volume": 0,
       "mm20": 52.15,
-      "mm50": 53.64,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 45.0,
       "mm50": 45.93,
-      "mm200": 53.46
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,13 +13887,24 @@
       "mm20": 8.95,
       "mm50": 8.95,
       "mm200": 8.95
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 8.95,
+      "maxima": 8.95,
+      "minima": 8.95,
+      "fechamento": 8.95,
+      "volume": 0,
+      "mm20": 8.95,
+      "mm50": 8.95,
+      "mm200": 8.94
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 53.6,
+    "preco_inicial": 53.7,
     "preco_atual": 8.95,
-    "variacao_periodo": -83.3,
+    "variacao_periodo": -83.33,
     "maxima_periodo": 76.81,
     "minima_periodo": 6.65,
     "volume_medio": 99,

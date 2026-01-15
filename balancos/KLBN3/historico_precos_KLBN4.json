@@ -1,22 +1,11 @@
 {
   "ticker": "KLBN4",
-  "ultima_atualizacao": "2026-01-14T23:02:32.482218",
+  "ultima_atualizacao": "2026-01-15T23:02:50.783933",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 3.25,
-      "maxima": 3.29,
-      "minima": 3.21,
-      "fechamento": 3.27,
-      "volume": 1959470,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 3.27,
@@ -222,7 +211,7 @@
       "minima": 3.72,
       "fechamento": 3.78,
       "volume": 1546067,
-      "mm20": 3.53,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 3.97,
       "volume": 2391205,
       "mm20": 3.81,
-      "mm50": 3.69,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1227432,
       "mm20": 2.96,
       "mm50": 3.1,
-      "mm200": 3.48
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 3.7,
       "mm50": 3.52,
       "mm200": 3.41
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 3.72,
+      "maxima": 3.79,
+      "minima": 3.7,
+      "fechamento": 3.76,
+      "volume": 2195600,
+      "mm20": 3.71,
+      "mm50": 3.53,
+      "mm200": 3.42
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 3.27,
-    "preco_atual": 3.7,
-    "variacao_periodo": 12.99,
+    "preco_inicial": 3.3,
+    "preco_atual": 3.76,
+    "variacao_periodo": 13.9,
     "maxima_periodo": 4.23,
     "minima_periodo": 2.53,
-    "volume_medio": 2125140,
+    "volume_medio": 2125327,
     "tendencia": "alta"
   }
 }

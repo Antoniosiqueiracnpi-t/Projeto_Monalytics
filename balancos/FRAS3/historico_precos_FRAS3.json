@@ -1,22 +1,11 @@
 {
   "ticker": "FRAS3",
-  "ultima_atualizacao": "2026-01-14T23:02:41.441818",
+  "ultima_atualizacao": "2026-01-15T23:02:59.316859",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 7.47,
-      "maxima": 7.59,
-      "minima": 7.44,
-      "fechamento": 7.55,
-      "volume": 309545,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 7.56,
@@ -222,7 +211,7 @@
       "minima": 8.68,
       "fechamento": 8.77,
       "volume": 104753,
-      "mm20": 8.44,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 10.02,
       "volume": 586290,
       "mm20": 10.07,
-      "mm50": 9.17,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 103625,
       "mm20": 12.42,
       "mm50": 13.08,
-      "mm200": 10.92
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -3368,7 +3357,7 @@
       "minima": 11.1,
       "fechamento": 11.22,
       "volume": 216271,
-      "mm20": 11.46,
+      "mm20": 11.45,
       "mm50": 11.2,
       "mm200": 11.89
     },
@@ -13898,16 +13887,27 @@
       "mm20": 23.41,
       "mm50": 23.66,
       "mm200": 24.21
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 23.94,
+      "maxima": 24.21,
+      "minima": 23.85,
+      "fechamento": 24.0,
+      "volume": 165400,
+      "mm20": 23.42,
+      "mm50": 23.68,
+      "mm200": 24.19
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 7.55,
-    "preco_atual": 23.95,
-    "variacao_periodo": 217.1,
+    "preco_inicial": 7.75,
+    "preco_atual": 24.0,
+    "variacao_periodo": 209.64,
     "maxima_periodo": 28.73,
-    "minima_periodo": 7.55,
-    "volume_medio": 338796,
+    "minima_periodo": 7.75,
+    "volume_medio": 338682,
     "tendencia": "indefinida"
   }
 }

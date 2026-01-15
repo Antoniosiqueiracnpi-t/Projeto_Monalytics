@@ -1,9 +1,9 @@
 {
   "ticker": "MOTV3",
-  "ultima_atualizacao": "2026-01-14T23:03:40.359149",
+  "ultima_atualizacao": "2026-01-15T23:04:06.969540",
   "periodo": {
     "inicio": "2025-04-23",
-    "fim": "2026-01-13"
+    "fim": "2026-01-14"
   },
   "dados": [
     {
@@ -2018,16 +2018,27 @@
       "mm20": 15.25,
       "mm50": 15.6,
       "mm200": null
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 15.16,
+      "maxima": 15.28,
+      "minima": 14.94,
+      "fechamento": 15.1,
+      "volume": 5604000,
+      "mm20": 15.23,
+      "mm50": 15.59,
+      "mm200": null
     }
   ],
   "estatisticas": {
-    "total_dias": 183,
+    "total_dias": 184,
     "preco_inicial": 12.74,
-    "preco_atual": 14.99,
-    "variacao_periodo": 17.7,
+    "preco_atual": 15.1,
+    "variacao_periodo": 18.57,
     "maxima_periodo": 16.41,
     "minima_periodo": 12.01,
-    "volume_medio": 8405303,
+    "volume_medio": 8390079,
     "tendencia": "indefinida"
   }
 }

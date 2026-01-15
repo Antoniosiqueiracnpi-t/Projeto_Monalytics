@@ -1,22 +1,11 @@
 {
   "ticker": "BRKM5",
-  "ultima_atualizacao": "2026-01-14T23:03:04.900197",
+  "ultima_atualizacao": "2026-01-15T23:03:23.079700",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 18.29,
-      "maxima": 19.13,
-      "minima": 18.12,
-      "fechamento": 19.06,
-      "volume": 10561100,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 19.16,
@@ -222,7 +211,7 @@
       "minima": 21.05,
       "fechamento": 21.12,
       "volume": 1937500,
-      "mm20": 20.46,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 25.63,
       "volume": 3898400,
       "mm20": 25.66,
-      "mm50": 22.65,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2044,7 +2033,7 @@
     {
       "data": "2021-09-17",
       "abertura": 58.99,
-      "maxima": 59.29,
+      "maxima": 59.28,
       "minima": 55.89,
       "fechamento": 56.15,
       "volume": 4992900,
@@ -2204,7 +2193,7 @@
       "volume": 2767300,
       "mm20": 52.03,
       "mm50": 51.46,
-      "mm200": 40.08
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 7.83,
       "mm50": 7.61,
       "mm200": 8.8
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 8.32,
+      "maxima": 8.67,
+      "minima": 8.24,
+      "fechamento": 8.54,
+      "volume": 4308800,
+      "mm20": 7.86,
+      "mm50": 7.64,
+      "mm200": 8.78
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 19.06,
-    "preco_atual": 8.25,
-    "variacao_periodo": -56.71,
+    "preco_inicial": 20.5,
+    "preco_atual": 8.54,
+    "variacao_periodo": -58.35,
     "maxima_periodo": 59.69,
     "minima_periodo": 6.26,
-    "volume_medio": 3554445,
+    "volume_medio": 3549495,
     "tendencia": "indefinida"
   }
 }

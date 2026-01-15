@@ -1,9 +1,9 @@
 {
   "ticker": "ESPA3",
-  "ultima_atualizacao": "2026-01-14T23:02:59.696215",
+  "ultima_atualizacao": "2026-01-15T23:03:18.787292",
   "periodo": {
     "inicio": "2021-02-04",
-    "fim": "2026-01-13"
+    "fim": "2026-01-14"
   },
   "dados": [
     {
@@ -13557,16 +13557,27 @@
       "mm20": 0.97,
       "mm50": 1.03,
       "mm200": 1.0
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 0.83,
+      "maxima": 0.87,
+      "minima": 0.81,
+      "fechamento": 0.86,
+      "volume": 2708700,
+      "mm20": 0.96,
+      "mm50": 1.03,
+      "mm200": 1.0
     }
   ],
   "estatisticas": {
-    "total_dias": 1232,
+    "total_dias": 1233,
     "preco_inicial": 20.11,
-    "preco_atual": 0.81,
-    "variacao_periodo": -95.97,
+    "preco_atual": 0.86,
+    "variacao_periodo": -95.72,
     "maxima_periodo": 20.11,
     "minima_periodo": 0.64,
-    "volume_medio": 2142049,
+    "volume_medio": 2142508,
     "tendencia": "indefinida"
   }
 }

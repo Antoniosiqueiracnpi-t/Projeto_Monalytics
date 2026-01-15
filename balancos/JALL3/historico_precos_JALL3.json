@@ -1,9 +1,9 @@
 {
   "ticker": "JALL3",
-  "ultima_atualizacao": "2026-01-14T23:01:09.841260",
+  "ultima_atualizacao": "2026-01-15T23:01:38.258875",
   "periodo": {
     "inicio": "2021-02-08",
-    "fim": "2026-01-13"
+    "fim": "2026-01-14"
   },
   "dados": [
     {
@@ -13535,16 +13535,27 @@
       "mm20": 2.89,
       "mm50": 2.88,
       "mm200": 3.34
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 2.97,
+      "maxima": 3.02,
+      "minima": 2.92,
+      "fechamento": 2.99,
+      "volume": 708100,
+      "mm20": 2.89,
+      "mm50": 2.88,
+      "mm200": 3.33
     }
   ],
   "estatisticas": {
-    "total_dias": 1230,
+    "total_dias": 1231,
     "preco_inicial": 8.03,
-    "preco_atual": 2.95,
-    "variacao_periodo": -63.26,
+    "preco_atual": 2.99,
+    "variacao_periodo": -62.77,
     "maxima_periodo": 10.39,
     "minima_periodo": 2.55,
-    "volume_medio": 795974,
+    "volume_medio": 795903,
     "tendencia": "indefinida"
   }
 }

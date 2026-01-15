@@ -1,9 +1,9 @@
 {
   "ticker": "CXSE3",
-  "ultima_atualizacao": "2026-01-14T23:02:57.095487",
+  "ultima_atualizacao": "2026-01-15T23:03:16.164086",
   "periodo": {
     "inicio": "2021-04-30",
-    "fim": "2026-01-13"
+    "fim": "2026-01-14"
   },
   "dados": [
     {
@@ -12930,16 +12930,27 @@
       "mm20": 16.01,
       "mm50": 15.59,
       "mm200": 14.24
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 16.1,
+      "maxima": 16.13,
+      "minima": 15.86,
+      "fechamento": 16.09,
+      "volume": 3353400,
+      "mm20": 16.02,
+      "mm50": 15.62,
+      "mm200": 14.25
     }
   ],
   "estatisticas": {
-    "total_dias": 1175,
+    "total_dias": 1176,
     "preco_inicial": 6.86,
-    "preco_atual": 16.02,
-    "variacao_periodo": 133.54,
+    "preco_atual": 16.09,
+    "variacao_periodo": 134.56,
     "maxima_periodo": 16.37,
     "minima_periodo": 4.85,
-    "volume_medio": 3569040,
+    "volume_medio": 3568856,
     "tendencia": "alta"
   }
 }

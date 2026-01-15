@@ -1,22 +1,11 @@
 {
   "ticker": "TGMA3",
-  "ultima_atualizacao": "2026-01-14T23:03:41.527435",
+  "ultima_atualizacao": "2026-01-15T23:04:08.814056",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 18.58,
-      "maxima": 19.0,
-      "minima": 18.11,
-      "fechamento": 18.44,
-      "volume": 732900,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 18.46,
@@ -222,7 +211,7 @@
       "minima": 17.96,
       "fechamento": 18.05,
       "volume": 217800,
-      "mm20": 17.97,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 13.89,
       "volume": 499100,
       "mm20": 15.42,
-      "mm50": 16.78,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 272000,
       "mm20": 11.89,
       "mm50": 12.35,
-      "mm200": 14.85
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 36.53,
       "mm50": 36.22,
       "mm200": 33.44
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 35.58,
+      "maxima": 35.75,
+      "minima": 35.27,
+      "fechamento": 35.65,
+      "volume": 82700,
+      "mm20": 36.43,
+      "mm50": 36.25,
+      "mm200": 33.47
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 18.44,
-    "preco_atual": 35.4,
-    "variacao_periodo": 91.95,
+    "preco_inicial": 18.35,
+    "preco_atual": 35.65,
+    "variacao_periodo": 94.29,
     "maxima_periodo": 38.43,
     "minima_periodo": 8.98,
-    "volume_medio": 285996,
+    "volume_medio": 285482,
     "tendencia": "indefinida"
   }
 }

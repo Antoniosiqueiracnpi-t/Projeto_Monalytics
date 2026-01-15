@@ -1,22 +1,11 @@
 {
   "ticker": "ENGI11",
-  "ultima_atualizacao": "2026-01-14T23:01:57.443464",
+  "ultima_atualizacao": "2026-01-15T23:02:19.051994",
   "periodo": {
-    "inicio": "2020-12-16",
-    "fim": "2026-01-13"
+    "inicio": "2020-12-17",
+    "fim": "2026-01-14"
   },
   "dados": [
-    {
-      "data": "2020-12-16",
-      "abertura": 34.6,
-      "maxima": 34.72,
-      "minima": 34.15,
-      "fechamento": 34.7,
-      "volume": 1436160,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-17",
       "abertura": 35.04,
@@ -222,7 +211,7 @@
       "minima": 32.67,
       "fechamento": 32.69,
       "volume": 520850,
-      "mm20": 34.2,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 30.49,
       "volume": 1316260,
       "mm20": 33.11,
-      "mm50": 33.67,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 2349050,
       "mm20": 31.27,
       "mm50": 31.16,
-      "mm200": 32.19
+      "mm200": null
     },
     {
       "data": "2021-10-08",
@@ -13898,16 +13887,27 @@
       "mm20": 47.5,
       "mm50": 47.93,
       "mm200": 43.14
+    },
+    {
+      "data": "2026-01-14",
+      "abertura": 47.33,
+      "maxima": 47.33,
+      "minima": 46.35,
+      "fechamento": 47.01,
+      "volume": 2981700,
+      "mm20": 47.44,
+      "mm50": 47.94,
+      "mm200": 43.2
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 34.7,
-    "preco_atual": 46.91,
-    "variacao_periodo": 35.19,
+    "preco_inicial": 35.12,
+    "preco_atual": 47.01,
+    "variacao_periodo": 33.85,
     "maxima_periodo": 51.06,
     "minima_periodo": 28.27,
-    "volume_medio": 2570101,
+    "volume_medio": 2571324,
     "tendencia": "indefinida"
   }
 }
