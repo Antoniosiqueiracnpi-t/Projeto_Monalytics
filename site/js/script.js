@@ -2793,35 +2793,44 @@ let multiplosChart = null;
  */
 async function loadMultiplosData(ticker) {
     try {
-        console.log(`📊 Carregando múltiplos de ${ticker}...`);
-        
+        console.log(`📊 Carregando múltiplos para ${ticker}...`);
+
         const tickerNorm = normalizarTicker(ticker);
-        const empresaInfo = mapeamentoB3.find(item => normalizarTicker(item.ticker) === tickerNorm);
-        
-        if (!empresaInfo) {
-            throw new Error(`Ticker ${tickerNorm} não encontrado no mapeamento B3`);
-        }
-        
-        const tickerPasta = obterTickerPasta(ticker);
+        const pasta = obterTickerPasta(tickerNorm); // mantém sua lógica original
         const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`);
-        
+
+        // --------------------------------------------------------------
+        // NOVA REGRA (cirúrgica):
+        // Carrega SEMPRE o arquivo multiplos_<TICKER>.json
+        // Ex:
+        //   multiplos_PETR3.json
+        //   multiplos_PETR4.json
+        //   multiplos_KLBN11.json
+        // --------------------------------------------------------------
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${pasta}/multiplos_${tickerNorm}.json?t=${timestamp}`;
+
+        console.log("🔗 Arquivo de múltiplos solicitado:", url);
+
+        const response = await fetch(url);
+
         if (!response.ok) {
-            // ✅ NOVO: Se não encontrar multiplos.json, avisa mas não quebra
-            console.warn(`⚠️ Múltiplos não encontrados para ${ticker} (HTTP ${response.status})`);
+            console.warn(`⚠️ Arquivo de múltiplos não encontrado para ${tickerNorm} (HTTP ${response.status})`);
             document.getElementById('multiplosSection').style.display = 'none';
-            return;  // ✅ Retorna sem quebrar o fluxo
+            return;
         }
-        
+
+        // JSON carregado corretamente
         multiplosData = await response.json();
-        console.log(`✅ Múltiplos carregados: ${Object.keys(multiplosData.ltm.multiplos).length}`);
-        renderMultiplosSection();
-        
+
+        console.log(`✅ Múltiplos carregados para ${tickerNorm}`);
+        renderMultiplosSection();  // mantém sua função original
+
     } catch (error) {
-        console.error('Erro ao carregar múltiplos:', error);
-        document.getElementById('multiplosSection').style.display = 'none';
+        console.error("❌ Erro ao carregar múltiplos:", error);
+        document.getElementById("multiplosSection").style.display = "none";
     }
 }
+
 
 
 
