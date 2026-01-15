@@ -2630,80 +2630,96 @@ function renderSuggestions(matches) {
     });
 }
 
-// Carrega dados da ação
+/**
+ * Carrega todos os dados necessários da ação.
+ * AJUSTE CIRÚRGICO:
+ * - O histórico de preços agora é carregado usando exatamente o ticker digitado pelo usuário:
+ *      historico_precos_${TICKER}.json
+ * - Todo o restante (balanços, múltiplos, IA, dividendos etc.) continua usando tickerPasta.
+ */
 async function loadAcaoData(ticker) {
-    const emptyState = document.getElementById('acaoEmptyState');
+    const emptyState   = document.getElementById('acaoEmptyState');
     const loadingState = document.getElementById('acaoLoadingState');
-    const content = document.getElementById('acaoAnaliseContent');
-    
-    emptyState.style.display = 'none';
-    content.style.display = 'none';
+    const content      = document.getElementById('acaoAnaliseContent');
+
+    emptyState.style.display   = 'none';
+    content.style.display      = 'none';
     loadingState.style.display = 'block';
-    
+
     try {
-        console.log(`🔍 Carregando dados de ${ticker}...`);
-        
-        // Normaliza ticker recebido
         const t = String(ticker || '').trim().toUpperCase();
-        
-        // Busca info da empresa no mapeamento (comparação normalizada)
-        const empresaInfo = mapeamentoB3.find(item => String(item.ticker || '').trim().toUpperCase() === t);
-        
+        console.log(`🔍 Carregando dados da ação: ${t}`);
+
+        // Localiza a empresa no mapeamento B3 (sem alteração)
+        const empresaInfo = mapeamentoB3.find(
+            item => String(item?.ticker || "").trim().toUpperCase() === t
+        );
+
         if (!empresaInfo) {
             throw new Error(`Ticker ${t} não encontrado no mapeamento B3`);
         }
-        
-        console.log('✅ Empresa encontrada:', empresaInfo.empresa);
-        
-        // CORREÇÃO: Usa função obterTickerPasta que prioriza ações sobre units
+
+        // Mantém a lógica de pasta (NÃO ALTERAR)
         const tickerPasta = obterTickerPasta(t);
-        
-        console.log(`📂 Usando pasta: balancos/${tickerPasta}/`);
-        
-        const timestamp = new Date().getTime();
-        const response = await fetch(`https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/historico_precos_diarios.json?t=${timestamp}`);
-        
-        if (!response.ok) {
-            throw new Error(`Dados não encontrados para ${ticker}`);
+        const ts = Date.now();
+
+        console.log(`📂 Pasta base: balancos/${tickerPasta}`);
+
+        // ----------------------------------------------------------
+        //  AJUSTE PEDIDO: HISTÓRICO DE PREÇOS INDIVIDUAL POR TICKER
+        // ----------------------------------------------------------
+        const historicoUrl =
+            `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/historico_precos_${t}.json?t=${ts}`;
+
+        console.log("📈 Carregando histórico:", historicoUrl);
+
+        const respHistorico = await fetch(historicoUrl);
+
+        if (!respHistorico.ok) {
+            throw new Error(`Histórico de preços não encontrado para ${t}`);
         }
-        
-        acaoAtualData = await response.json();
-        console.log('✅ Dados carregados:', acaoAtualData.dados.length, 'registros');
-        
-        // Atualiza UI com ticker solicitado
-        document.getElementById('acaoTicker').textContent = ticker;
-        document.getElementById('acaoNome').textContent = empresaInfo.empresa;
-        
-        // Carrega logo
-        const logoImg = document.getElementById('acaoLogoImg');
-        const logoFallback = document.getElementById('acaoLogoFallback');
-        logoImg.src = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/logo.png?t=${timestamp}`;
-        logoImg.style.display = 'block';
-        logoFallback.style.display = 'none';
-        logoFallback.textContent = ticker.substring(0, 4);
-        
-        // Atualiza informações da empresa
-        updateEmpresaInfo(ticker);
-        
-        // Atualiza indicadores
+
+        acaoAtualData = await respHistorico.json();
+
+        console.log("✅ Histórico carregado:", acaoAtualData?.dados?.length, "registros");
+
+
+        // ----------------------------------------------------------
+        //  TODO O RESTO PERMANECE EXATAMENTE COMO ESTAVA
+        // ----------------------------------------------------------
+
+        document.getElementById('acaoTicker').textContent = t;
+        document.getElementById('acaoNome').textContent   = empresaInfo.empresa;
+
+        // Logo (mantém pasta única)
+        const logoImg      = document.getElementById('acaoLogoImg');
+        const fallback     = document.getElementById('acaoLogoFallback');
+
+        logoImg.src =
+            `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/logo.png?t=${ts}`;
+
+        logoImg.style.display = "block";
+        fallback.style.display = "none";
+        fallback.textContent = t.substring(0, 4);
+
+        // Chamadas originais (NÃO ALTERAR)
+        updateEmpresaInfo(t);
         updateIndicadores();
-        
-        // Renderiza gráfico
         renderAcaoChart();
-        
-        // Mostra conteúdo
+
         loadingState.style.display = 'none';
-        content.style.display = 'block';
-        
-        console.log('✅ Ação carregada com sucesso!');
-        
-    } catch (error) {
-        console.error('❌ Erro ao carregar ação:', error);
+        content.style.display      = 'block';
+
+        console.log("🎯 Ação carregada com sucesso:", t);
+
+    } catch (err) {
+        console.error("❌ Erro loadAcaoData:", err);
         loadingState.style.display = 'none';
-        emptyState.style.display = 'block';
-        alert(`Erro ao carregar ${ticker}:\n${error.message}`);
+        emptyState.style.display   = 'block';
+        alert(`Erro ao carregar ${ticker}:\n${err.message}`);
     }
 }
+
 
 
 // ============================================================================
@@ -4481,82 +4497,167 @@ function updateIndicadores() {
     updateEmpresaInfo(acaoAtualData.ticker);
 }
 
-// Renderiza gráfico
+/**
+ * Renderiza o gráfico de preços da ação com médias móveis e comparação com IBOVESPA.
+ * COMPATÍVEL com históricos individuais por ticker (historico_precos_KLBN3.json, etc.)
+ * 
+ * Estrutura esperada de acaoAtualData:
+ * {
+ *   ticker: "KLBN4",
+ *   dados: [
+ *     { data: "2024-01-02", fechamento: 23.45, mm20: 23.10, mm50: 22.80, mm200: 21.50 },
+ *     ...
+ *   ]
+ * }
+ */
 function renderAcaoChart() {
-    if (!acaoAtualData) return;
-    
+    // ========================================
+    // 1. VALIDAÇÕES INICIAIS
+    // ========================================
+
+    if (!acaoAtualData) {
+        console.warn('⚠️ renderAcaoChart: acaoAtualData não definido');
+        return;
+    }
+
+    if (!acaoAtualData.dados || !Array.isArray(acaoAtualData.dados)) {
+        console.error('❌ renderAcaoChart: acaoAtualData.dados inválido ou ausente');
+        return;
+    }
+
+    if (acaoAtualData.dados.length === 0) {
+        console.warn('⚠️ renderAcaoChart: Nenhum dado disponível para renderizar');
+        return;
+    }
+
     const ctx = document.getElementById('acaoChart');
-    
-    // Destroi gráfico anterior
+    if (!ctx) {
+        console.error('❌ renderAcaoChart: Elemento canvas #acaoChart não encontrado');
+        return;
+    }
+
+    console.log(`📊 Renderizando gráfico para ${acaoAtualData.ticker || 'ticker desconhecido'}`);
+
+    // ========================================
+    // 2. DESTROI GRÁFICO ANTERIOR
+    // ========================================
+
     if (acaoChart) {
         acaoChart.destroy();
+        acaoChart = null;
     }
-    
-    // Filtra dados por período
+
+    // ========================================
+    // 3. FILTRA DADOS POR PERÍODO
+    // ========================================
+
     const dadosFiltrados = filterDataByPeriodo(acaoAtualData.dados, periodoAtual);
-    
-    // Prepara datasets
+
+    if (!dadosFiltrados || dadosFiltrados.length === 0) {
+        console.warn(`⚠️ Nenhum dado disponível para o período: ${periodoAtual}`);
+        return;
+    }
+
+    console.log(`✅ Dados filtrados: ${dadosFiltrados.length} registros (período: ${periodoAtual})`);
+
+    // ========================================
+    // 4. PREPARA DATASET PRINCIPAL (PREÇO)
+    // ========================================
+
+    const tickerLabel = acaoAtualData.ticker || 'Ação';
+
     const datasets = [
         {
-            label: acaoAtualData.ticker,
+            label: tickerLabel,
             data: dadosFiltrados.map(d => d.fechamento),
             borderColor: '#4f46e5',
             backgroundColor: 'rgba(79, 70, 229, 0.1)',
             tension: 0.1,
             fill: true,
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            pointHoverBackgroundColor: '#4f46e5',
             yAxisID: 'y'
         }
     ];
-    
-    // Adiciona médias móveis
-    if (dadosFiltrados.some(d => d.mm20)) {
+
+    // ========================================
+    // 5. ADICIONA MÉDIAS MÓVEIS (SE EXISTIREM)
+    // ========================================
+
+    // MM20
+    if (dadosFiltrados.some(d => d.mm20 !== null && d.mm20 !== undefined)) {
         datasets.push({
             label: 'MM20',
             data: dadosFiltrados.map(d => d.mm20),
             borderColor: '#10b981',
+            backgroundColor: 'transparent',
             borderWidth: 1.5,
             pointRadius: 0,
+            tension: 0.1,
             yAxisID: 'y'
         });
+        console.log('✅ MM20 adicionada ao gráfico');
     }
-    
-    if (dadosFiltrados.some(d => d.mm50)) {
+
+    // MM50
+    if (dadosFiltrados.some(d => d.mm50 !== null && d.mm50 !== undefined)) {
         datasets.push({
             label: 'MM50',
             data: dadosFiltrados.map(d => d.mm50),
             borderColor: '#f59e0b',
+            backgroundColor: 'transparent',
             borderWidth: 1.5,
             pointRadius: 0,
+            tension: 0.1,
             yAxisID: 'y'
         });
+        console.log('✅ MM50 adicionada ao gráfico');
     }
-    
-    if (dadosFiltrados.some(d => d.mm200)) {
+
+    // MM200
+    if (dadosFiltrados.some(d => d.mm200 !== null && d.mm200 !== undefined)) {
         datasets.push({
             label: 'MM200',
             data: dadosFiltrados.map(d => d.mm200),
             borderColor: '#ef4444',
+            backgroundColor: 'transparent',
             borderWidth: 1.5,
             pointRadius: 0,
+            tension: 0.1,
             yAxisID: 'y'
         });
+        console.log('✅ MM200 adicionada ao gráfico');
     }
-    
-    // Adiciona IBOV se habilitado
-    if (ibovEnabled && ibovData) {
+
+    // ========================================
+    // 6. ADICIONA IBOVESPA (SE HABILITADO)
+    // ========================================
+
+    if (ibovEnabled && ibovData && ibovData.dados && Array.isArray(ibovData.dados)) {
         const ibovFiltrado = filterDataByPeriodo(ibovData.dados, periodoAtual);
-        datasets.push({
-            label: 'IBOVESPA',
-            data: ibovFiltrado.map(d => d.fechamento),
-            borderColor: '#8b5cf6',
-            borderWidth: 2,
-            borderDash: [5, 5],
-            pointRadius: 0,
-            yAxisID: 'y1'
-        });
+
+        if (ibovFiltrado && ibovFiltrado.length > 0) {
+            datasets.push({
+                label: 'IBOVESPA',
+                data: ibovFiltrado.map(d => d.fechamento),
+                borderColor: '#8b5cf6',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                borderDash: [5, 5],
+                pointRadius: 0,
+                tension: 0.1,
+                yAxisID: 'y1'
+            });
+            console.log('✅ IBOVESPA adicionado ao gráfico');
+        }
     }
-    
-    // Cria gráfico
+
+    // ========================================
+    // 7. CRIA O GRÁFICO
+    // ========================================
+
     acaoChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -4573,28 +4674,68 @@ function renderAcaoChart() {
             plugins: {
                 legend: {
                     display: true,
-                    position: 'top'
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15,
+                        font: {
+                            size: 12
+                        }
+                    }
                 },
                 tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
                     callbacks: {
                         label: function(context) {
                             let label = context.dataset.label || '';
+
                             if (label) {
                                 label += ': ';
                             }
+
                             if (context.parsed.y !== null) {
-                                label += 'R$ ' + context.parsed.y.toFixed(2);
+                                // Formata valores do IBOVESPA sem R$
+                                if (context.dataset.label === 'IBOVESPA') {
+                                    label += context.parsed.y.toLocaleString('pt-BR', {
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 0
+                                    }) + ' pts';
+                                } else {
+                                    // Formata valores da ação e MMs com R$
+                                    label += 'R$ ' + context.parsed.y.toFixed(2);
+                                }
                             }
+
                             return label;
                         }
                     }
                 }
             },
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                },
                 y: {
                     type: 'linear',
                     display: true,
                     position: 'left',
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    },
                     ticks: {
                         callback: function(value) {
                             return 'R$ ' + value.toFixed(2);
@@ -4603,21 +4744,27 @@ function renderAcaoChart() {
                 },
                 y1: {
                     type: 'linear',
-                    display: ibovEnabled,
+                    display: ibovEnabled && ibovData && ibovData.dados,
                     position: 'right',
                     grid: {
                         drawOnChartArea: false
                     },
                     ticks: {
                         callback: function(value) {
-                            return value.toLocaleString('pt-BR');
+                            return value.toLocaleString('pt-BR', {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            });
                         }
                     }
                 }
             }
         }
     });
+
+    console.log(`🎯 Gráfico renderizado com sucesso: ${datasets.length} datasets`);
 }
+
 
 // Filtra dados por período
 function filterDataByPeriodo(dados, periodo) {
