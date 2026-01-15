@@ -135,7 +135,7 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-15T15:49:42.817844",
+    "data_calculo": "2026-01-15T17:15:54.115791",
     "preco_utilizado": 17.25,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 10592012028,
