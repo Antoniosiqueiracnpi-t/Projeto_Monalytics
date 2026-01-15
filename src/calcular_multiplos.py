@@ -1340,24 +1340,66 @@ def _obter_valor_medio(
 
 def _calcular_da_periodo(dados: DadosEmpresa, periodo: str) -> float:
     """
-    Calcula D&A (Depreciação e Amortização) de um período.
-    """
-    if dados.dfc is None:
-        return np.nan
-    
-    codigos_da = ["6.01.DA", "6.01.01.02", "6.01.01.01", "6.01.01"]
-    
-    for cod in codigos_da:
-        val = _extrair_valor_conta(dados.dfc, cod, periodo)
-        if np.isfinite(val):
-            return abs(val)
-    
-    return np.nan
+    Calcula D&A (Depreciação e Amortização) de um período de forma **robusta**.
 
+    Problema comum (que derruba EV/EBITDA): usar agregadores amplos de DFC (ex.: 6.01.01)
+    como se fossem D&A. Em muitas companhias, 6.01.01 representa "Ajustes" (com vários itens),
+    o que superestima o EBITDA.
+
+    Regra (universal):
+    1) Prioriza código sintético 6.01.DA (se existir).
+    2) Depois tenta códigos específicos de D&A (6.01.01.02 e 6.01.01.01).
+    3) Se não encontrar, NÃO usa o agregador 6.01.01 (evita superestimar); retorna NaN.
+       Nesse caso, o EBITDA do período vira uma aproximação conservadora (= EBIT).
+    """
+    if dados.dfc is None or periodo not in dados.dfc.columns:
+        return np.nan
+
+    dfc = dados.dfc
+    if 'cd_conta' not in dfc.columns:
+        return np.nan
+
+    def _val_exato(cd: str) -> float:
+        mask = (dfc['cd_conta'] == cd)
+        if mask.any():
+            v = pd.to_numeric(dfc.loc[mask, periodo], errors='coerce').values[0]
+            return float(v) if pd.notna(v) else np.nan
+        return np.nan
+
+    # 1) Preferência máxima: código sintético gerado pelo seu pipeline (quando existir)
+    val = _val_exato("6.01.DA")
+    if np.isfinite(val):
+        return abs(val)
+
+    # 2) Preferência: códigos específicos de D&A (podem ter subcontas; aqui permitimos soma do ramo específico)
+    for cd in ("6.01.01.02", "6.01.01.01"):
+        v = _extrair_valor_conta(dfc, cd, periodo)
+        if np.isfinite(v):
+            return abs(v)
+
+    # 3) Fallback: tentar encontrar qualquer subconta típica de D&A sob 6.01.01.*
+    # (sem recorrer ao agregador 6.01.01, que costuma englobar diversos "Ajustes")
+    try:
+        ser_cd = dfc['cd_conta'].astype(str)
+    except Exception:
+        return np.nan
+
+    # Preferir padrões clássicos: ...01 ou ...02 logo abaixo de 6.01.01
+    candidatos = dfc[ser_cd.str.match(r"^6\.01\.01\.(01|02)(\.|$)", na=False)]
+    if not candidatos.empty:
+        vals = pd.to_numeric(candidatos[periodo], errors='coerce')
+        soma = float(np.nansum(np.abs(vals.values)))
+        return soma if np.isfinite(soma) and soma > 0 else np.nan
+
+    # Não usar 6.01.01 (agregador amplo) para não superestimar EBITDA
+    return np.nan
 
 def _calcular_ebitda_periodo(dados: DadosEmpresa, periodo: str) -> float:
     """
-    Calcula EBITDA de um período: EBIT + |D&A|
+    Calcula EBITDA de um período.
+
+    Regra: EBITDA = EBIT + D&A (D&A robusto via DFC; se D&A indisponível, aproxima por EBIT).
+    Isso evita superestimar EBITDA quando o DFC traz um agregador amplo de ajustes.
     """
     ebit = _extrair_valor_conta(dados.dre, CONTAS_DRE["ebit"], periodo)
     
@@ -1745,9 +1787,7 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     # ✅ Expor Valor de Mercado (R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
-    # ✅ EV/EV-múltiplos devem seguir o padrão Investidor10: usar valor de mercado consolidado da empresa (ON+PN),
-# independentemente do ticker da classe. Mantemos VALOR_MERCADO como valor da classe para múltiplos de preço.
-    ev = _calcular_ev(dados, periodo)
+    ev = _calcular_ev(dados, periodo, market_cap)
 
     # ==================== LUCRO LÍQUIDO LTM (para PAYOUT) ====================
     
@@ -2357,9 +2397,7 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     # ✅ Expor Valor de Mercado (R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
-    # ✅ EV/EV-múltiplos devem seguir o padrão Investidor10: usar valor de mercado consolidado da empresa (ON+PN),
-# independentemente do ticker da classe. Mantemos VALOR_MERCADO como valor da classe para múltiplos de preço.
-    ev = _calcular_ev(dados, periodo)
+    ev = _calcular_ev(dados, periodo, market_cap)
     
     # ==================== VALORES BASE - ESPECÍFICOS POR TICKER ====================
     
