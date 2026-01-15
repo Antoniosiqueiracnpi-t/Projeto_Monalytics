@@ -28,58 +28,63 @@
   to = "/index.html"
   status = 200
 
-# =========================== SECURITY HEADERS ===========================
+# =========================== SECURITY + CACHE HEADERS ===========================
+
+# HTML - ZERO CACHE (força revalidação sempre)
 [[headers]]
-  for = "/*"
+  for = "/*.html"
   [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate, max-age=0, s-maxage=0"
+    Pragma = "no-cache"
+    Expires = "0"
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# HTML - Sempre buscar versão mais recente
+# CSS - Cache mínimo (5 minutos)
 [[headers]]
-  for = "/*.html"
+  for = "/css/*.css"
   [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
-    Pragma = "no-cache"
-    Expires = "0"
+    Cache-Control = "public, max-age=300, must-revalidate, stale-while-revalidate=60"
+    X-Content-Type-Options = "nosniff"
 
-# CSS - Cache moderado com revalidação
+# JS - Cache mínimo (5 minutos)
 [[headers]]
-  for = "/css/*"
+  for = "/js/*.js"
   [headers.values]
-    Cache-Control = "public, max-age=3600, must-revalidate"
+    Cache-Control = "public, max-age=300, must-revalidate, stale-while-revalidate=60"
+    X-Content-Type-Options = "nosniff"
 
-# JS - Cache moderado com revalidação  
-[[headers]]
-  for = "/js/*"
-  [headers.values]
-    Cache-Control = "public, max-age=3600, must-revalidate"
-
-# Dados JSON - Cache curto (5 minutos)
+# JSON - Sem cache (dados financeiros)
 [[headers]]
   for = "/data/*.json"
   [headers.values]
-    Cache-Control = "public, max-age=300, must-revalidate"
+    Cache-Control = "no-cache, no-store, must-revalidate, max-age=0"
     Content-Type = "application/json; charset=utf-8"
     Access-Control-Allow-Origin = "*"
 
 [[headers]]
   for = "/noticias_mercado.json"
   [headers.values]
-    Cache-Control = "public, max-age=300, must-revalidate"
+    Cache-Control = "no-cache, no-store, must-revalidate, max-age=0"
     Content-Type = "application/json; charset=utf-8"
     Access-Control-Allow-Origin = "*"
 
-# Imagens - Cache longo (são estáticas)
+# Imagens - Cache médio (1 dia)
 [[headers]]
   for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400, immutable"
 
 # Favicon
 [[headers]]
   for = "/*.ico"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, immutable"
+
+# Fontes
+[[headers]]
+  for = "/fonts/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
