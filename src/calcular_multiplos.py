@@ -1406,157 +1406,80 @@ def _calcular_ebitda_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
 
 def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     """
-    Calcula dividendos LTM (últimos 12 meses) em **R$ MIL**.
-
-    O arquivo dividendos_trimestrais.csv é tratado como *dividendo por ação* por período (ex.: soma de proventos no trimestre).
-    Para aproximar Investidor10/StatusInvest, o total é estimado trimestre a trimestre usando a quantidade de ações daquele período
-    (evita usar "ações atuais" para todo o histórico).
-
+    Calcula dividendos LTM (últimos 12 meses).
+    
+    CORREÇÃO APLICADA: Remove lógica duplicada que somava trimestres extras.
+    
+    Exemplo: Se periodo_fim = "2025T3"
+    - LTM correto = 2024T4 + 2025T1 + 2025T2 + 2025T3 (4 trimestres)
+    
+    Lógica:
+    - Ano atual: T1 até T_fim
+    - Ano anterior: T(tri_fim + 1) até T4
+    - Total: SEMPRE 4 trimestres
+    
     Returns:
-        Dividendos totais em R$ MIL.
+        Dividendos totais em R$ MIL (dividendos por ação × número de ações / 1000)
     """
-    if dados.dividendos is None or dados.dividendos.empty:
+    if dados.dividendos is None:
         return np.nan
-
+    
+    # Obter número de ações atual
+    num_acoes, _ = _obter_acoes_atual(dados)
+    
+    if not np.isfinite(num_acoes) or num_acoes <= 0:
+        return np.nan
+    
     # Parsear período fim
     ano_fim, tri_fim = _parse_periodo(periodo_fim)
     if ano_fim == 0:
         return np.nan
-
+    
     tri_num = {'T1': 1, 'T2': 2, 'T3': 3, 'T4': 4}.get(tri_fim, 0)
-    if tri_num == 0:
-        return np.nan
-
-    # Construir lista dos 4 trimestres do LTM (ou 3 no caso semestral - se aplicável)
-    periodos_12m: List[str] = []
+    
+    # Obter todas as colunas de dividendos disponíveis
+    colunas_div = [c for c in dados.dividendos.columns if _parse_periodo(c)[0] > 0]
+    
+    periodos_12m = []
+    
+    # ========== LÓGICA CORRIGIDA ==========
+    
+    # Passo 1: Ano atual - T1 até T_fim
+    # Ex: Se tri_fim=3 (2025T3) → adiciona 2025T1, 2025T2, 2025T3
     for t in range(1, tri_num + 1):
         periodos_12m.append(f"{ano_fim}T{t}")
+    
+    # Passo 2: Ano anterior - T(tri_fim + 1) até T4
+    # Ex: Se tri_fim=3 (2025T3) → adiciona 2024T4
     for t in range(tri_num + 1, 5):
         periodos_12m.append(f"{ano_fim - 1}T{t}")
-
-    soma_mil = 0.0
-    encontrou = False
-
-    # Detectar coluna de ticker (caso a base venha multi-linhas)
-    df_div = dados.dividendos
-    col_ticker = None
-    for c in ("Ticker", "ticker", "TICKER"):
-        if c in df_div.columns:
-            col_ticker = c
-            break
-
-    # Se houver múltiplas linhas, não faremos fallback cruzando tickers (evita distorção entre classes)
-    df_use = df_div
-    if col_ticker:
-        # se houver ticker seed, filtra pela raiz de 4 letras (mesma empresa) e usa a primeira linha disponível
-        raiz = (dados.ticker or "")[:4].upper()
-        ser_t = df_div[col_ticker].astype(str).str.upper().str.strip().str.replace(".SA", "", regex=False)
-        sub = df_div[ser_t.str.startswith(raiz)] if raiz else df_div
-        df_use = sub if not sub.empty else df_div
-
-    for p in periodos_12m:
-        if p not in df_use.columns:
-            continue
-
-        # dividendos por ação no período
-        s = _series_to_numeric_smart(df_use[p]).dropna()
-        if s.empty:
-            continue
-
-        div_por_acao = float(s.iloc[0])
-        if not (np.isfinite(div_por_acao) and div_por_acao > 0):
-            continue
-
-        # ações do período (preferência: total ON+PN equivalente - exclui UNIT como linha separada)
-        acoes_p = _obter_acoes_total_ex11(dados, p)
-        if not (np.isfinite(acoes_p) and acoes_p > 0):
-            # fallback: total padrão do projeto
-            acoes_p = _obter_acoes(dados, p)
-
-        if not (np.isfinite(acoes_p) and acoes_p > 0):
-            # fallback final: ações atuais (evita NaN se só houver uma coluna em acoes_historico)
-            acoes_p, _ = _obter_acoes_atual(dados)
-
-        if not (np.isfinite(acoes_p) and acoes_p > 0):
-            continue
-
-        soma_mil += (div_por_acao * acoes_p) / 1000.0
-        encontrou = True
-
-    return soma_mil if encontrou and soma_mil > 0 else np.nan
-
-
-def _calcular_dps_ltm(dados: DadosEmpresa, periodo_fim: str, ticker_preco: Optional[str] = None) -> float:
-    """
-    Calcula DPS LTM (dividendos por ação nos últimos 12 meses).
-
-    - Soma diretamente os proventos por ação dos períodos LTM.
-    - Se ticker_preco for UNIT (classe 11), ajusta pelo fator do pacote (ex.: 1 UNIT = 5 ações).
-
-    Returns:
-        DPS LTM em R$/ação (ou R$/UNIT se classe 11).
-    """
-    if dados.dividendos is None or dados.dividendos.empty:
-        return np.nan
-
-    ano_fim, tri_fim = _parse_periodo(periodo_fim)
-    if ano_fim == 0:
-        return np.nan
-
-    tri_num = {'T1': 1, 'T2': 2, 'T3': 3, 'T4': 4}.get(tri_fim, 0)
-    if tri_num == 0:
-        return np.nan
-
-    periodos_12m: List[str] = []
-    for t in range(1, tri_num + 1):
-        periodos_12m.append(f"{ano_fim}T{t}")
-    for t in range(tri_num + 1, 5):
-        periodos_12m.append(f"{ano_fim - 1}T{t}")
-
-    df_div = dados.dividendos
-
-    # Detectar coluna de ticker (caso venha multi-linhas)
-    col_ticker = None
-    for c in ("Ticker", "ticker", "TICKER"):
-        if c in df_div.columns:
-            col_ticker = c
-            break
-
-    df_use = df_div
-    if col_ticker and ticker_preco:
-        alvo = str(ticker_preco).upper().strip().replace(".SA", "")
-        ser_t = df_div[col_ticker].astype(str).str.upper().str.strip().str.replace(".SA", "", regex=False)
-        sub = df_div[ser_t.eq(alvo)]
-        if not sub.empty:
-            df_use = sub
-
+    
+    # ✅ CORREÇÃO: REMOVIDO loop duplicado que adicionava trimestres extras
+    # ANTES (BUG):
+    # for t in range(1, tri_num + 1):
+    #     p = f"{ano_fim - 1}T{t}"
+    #     if p not in periodos_12m:
+    #         periodos_12m.append(p)
+    # ↑ Isso adicionava 2024T1, 2024T2, 2024T3 → total = 7 trimestres (errado!)
+    
+    # AGORA: Total sempre = 4 trimestres ✅
+    
+    # ========================================
+    
+    # Buscar dividendos em todos esses períodos (4 trimestres)
     soma = 0.0
-    count = 0
-
+    
     for p in periodos_12m:
-        if p not in df_use.columns:
-            continue
-        s = _series_to_numeric_smart(df_use[p]).dropna()
-        if s.empty:
-            continue
-        v = float(s.iloc[0])
-        if np.isfinite(v) and v > 0:
-            soma += v
-            count += 1
-
-    if count == 0:
-        return np.nan
-
-    # Ajuste de UNIT (dividendo por UNIT = dividendo por ação × fator do pacote)
-    if ticker_preco:
-        classe = _extrair_classe_ticker(str(ticker_preco))
-        if classe == "11":
-            soma *= float(_calcular_fator_unit_pacote(dados, periodo_fim))
-
+        if p in colunas_div:
+            vals = pd.to_numeric(dados.dividendos[p], errors='coerce').dropna()
+            if len(vals) > 0:
+                div_por_acao = float(vals.iloc[0])
+                if np.isfinite(div_por_acao) and div_por_acao > 0:
+                    # Converter dividendos por ação em dividendos totais (R$ MIL)
+                    div_total_mil = (div_por_acao * num_acoes) / 1000.0
+                    soma += div_total_mil
+    
     return soma if soma > 0 else np.nan
-
-
-
 
 # ======================================================================================
 # NOVAS FUNÇÕES PARA CÁLCULO DE P/L COM LPA
@@ -1822,7 +1745,9 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     # ✅ Expor Valor de Mercado (R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
-    ev = _calcular_ev(dados, periodo, market_cap)
+    # ✅ EV/EV-múltiplos devem seguir o padrão Investidor10: usar valor de mercado consolidado da empresa (ON+PN),
+# independentemente do ticker da classe. Mantemos VALOR_MERCADO como valor da classe para múltiplos de preço.
+    ev = _calcular_ev(dados, periodo)
 
     # ==================== LUCRO LÍQUIDO LTM (para PAYOUT) ====================
     
@@ -1868,16 +1793,13 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     
     dividendos_ltm = _calcular_dividendos_ltm(dados, periodo)
     
-    # Dividend Yield (padrão Investidor10/StatusInvest):
-    # - DY = (DPS LTM / Preço) × 100
-    #   DPS LTM = soma de proventos por ação nos últimos 12 meses (ajustado para UNIT quando aplicável)
-    dps_ltm = _calcular_dps_ltm(dados, periodo, ticker_preco=ticker_preco)
+    # Dividend Yield (padrão clássico) = (Dividendos por Ação LTM / Preço) × 100
+    # dividendos_ltm está em R$ mil (total); converter para R$/ação usando acoes_ref
+    dps_ltm = (dividendos_ltm * 1000.0) / acoes_ref if np.isfinite(dividendos_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
     resultado["DY"] = _normalizar_valor(_safe_divide(dps_ltm, preco_pl) * 100)
 
-    # Payout (padrão plataformas) = (Dividendos totais LTM / Lucro Líquido LTM) × 100
-    resultado["PAYOUT"] = _normalizar_valor(
-        _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
-    )
+    # Payout (padrão clássico) = Dividendos por Ação / EPS × 100
+    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dps_ltm, eps_ltm) * 100)
     
     # ==================== RENTABILIDADE ====================
     
@@ -2370,16 +2292,12 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     vpa = (pl * 1000.0) / acoes_ref if np.isfinite(pl) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
     resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
-    # Dividend Yield (padrão Investidor10/StatusInvest):
-    # - DY = (DPS LTM / Preço) × 100
-    #   DPS LTM = soma de proventos por ação nos últimos 12 meses (ajustado para UNIT quando aplicável)
-    dps_ltm = _calcular_dps_ltm(dados, periodo, ticker_preco=ticker_preco)
+    # Dividend Yield (padrão clássico) = (Dividendos por Ação LTM / Preço) × 100
+    dps_ltm = (dividendos_ltm * 1000.0) / acoes_ref if np.isfinite(dividendos_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
     resultado["DY"] = _normalizar_valor(_safe_divide(dps_ltm, preco_pl) * 100)
 
-    # Payout (padrão plataformas) = (Dividendos totais LTM / Lucro Líquido LTM) × 100
-    resultado["PAYOUT"] = _normalizar_valor(
-        _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
-    )
+    # Payout (padrão clássico) = Dividendos por Ação / EPS × 100
+    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dps_ltm, eps_ltm) * 100)
     
     # ==================== RENTABILIDADE (3 MÚLTIPLOS) ====================
     
@@ -2439,7 +2357,9 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     # ✅ Expor Valor de Mercado (R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
-    ev = _calcular_ev(dados, periodo, market_cap)
+    # ✅ EV/EV-múltiplos devem seguir o padrão Investidor10: usar valor de mercado consolidado da empresa (ON+PN),
+# independentemente do ticker da classe. Mantemos VALOR_MERCADO como valor da classe para múltiplos de preço.
+    ev = _calcular_ev(dados, periodo)
     
     # ==================== VALORES BASE - ESPECÍFICOS POR TICKER ====================
     
@@ -2500,16 +2420,12 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     vpa = (pl * 1000.0) / acoes_ref if np.isfinite(pl) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
     resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
-    # Dividend Yield (padrão Investidor10/StatusInvest):
-    # - DY = (DPS LTM / Preço) × 100
-    #   DPS LTM = soma de proventos por ação nos últimos 12 meses (ajustado para UNIT quando aplicável)
-    dps_ltm = _calcular_dps_ltm(dados, periodo, ticker_preco=ticker_preco)
+    # Dividend Yield (padrão clássico) = (Dividendos por Ação LTM / Preço) × 100
+    dps_ltm = (dividendos_ltm * 1000.0) / acoes_ref if np.isfinite(dividendos_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
     resultado["DY"] = _normalizar_valor(_safe_divide(dps_ltm, preco_pl) * 100)
 
-    # Payout (padrão plataformas) = (Dividendos totais LTM / Lucro Líquido LTM) × 100
-    resultado["PAYOUT"] = _normalizar_valor(
-        _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
-    )
+    # Payout (padrão clássico) = Dividendos por Ação / EPS × 100
+    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dps_ltm, eps_ltm) * 100)
     
     # EV/Receita = Enterprise Value / Receita LTM (CORRIGIDO!)
     resultado["EV_RECEITA"] = _normalizar_valor(_safe_divide(ev, receita_ltm))
@@ -2690,16 +2606,12 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     vpa = (pl * 1000.0) / acoes_ref if np.isfinite(pl) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
     resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
-    # Dividend Yield (padrão Investidor10/StatusInvest):
-    # - DY = (DPS LTM / Preço) × 100
-    #   DPS LTM = soma de proventos por ação nos últimos 12 meses (ajustado para UNIT quando aplicável)
-    dps_ltm = _calcular_dps_ltm(dados, periodo, ticker_preco=ticker_preco)
+    # Dividend Yield (padrão clássico) = (Dividendos por Ação LTM / Preço) × 100
+    dps_ltm = (dividendos_ltm * 1000.0) / acoes_ref if np.isfinite(dividendos_ltm) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
     resultado["DY"] = _normalizar_valor(_safe_divide(dps_ltm, preco_pl) * 100)
 
-    # Payout (padrão plataformas) = (Dividendos totais LTM / Lucro Líquido LTM) × 100
-    resultado["PAYOUT"] = _normalizar_valor(
-        _safe_divide(dividendos_ltm, ll_ltm) * 100 if np.isfinite(ll_ltm) and ll_ltm > 0 else np.nan
-    )
+    # Payout (padrão clássico) = Dividendos por Ação / EPS × 100
+    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dps_ltm, eps_ltm) * 100)
     
     # ==================== RENTABILIDADE (2 MÚLTIPLOS) ====================
     
