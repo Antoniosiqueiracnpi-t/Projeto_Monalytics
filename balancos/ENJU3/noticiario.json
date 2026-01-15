@@ -4,8 +4,8 @@
     "ticker_base": "ENJU",
     "nome": "ENJOEI S.A."
   },
-  "ultima_atualizacao": "2026-01-14T11:24:38.703779",
-  "total_noticias": 30,
+  "ultima_atualizacao": "2026-01-15T11:19:29.523388",
+  "total_noticias": 34,
   "fonte": "Google News RSS",
   "ticker_consulta": "ENJU3",
   "noticias": [
@@ -40,6 +40,16 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 100951033015425,
+      "data": "2026-01-06",
+      "data_hora": "2026-01-06 13:20:56",
+      "titulo": "Enjoei (ENJU3) elege novo CFO e reforça governança corporativa - GAZETA MERCANTIL",
+      "descricao": "Enjoei (ENJU3) elege novo CFO e reforça governança corporativa GAZETA MERCANTIL",
+      "fonte": "GAZETA MERCANTIL",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOWkxxekNxZXltcHJCNm9RTjlRZVFXMWVCSDk2SXJlemRnYkNnS0VDbXFVV2trVVYweHlscUZHQVJCanItdGlZSTNUQndsQnNiWDNyLUl0TC01UDJBNVNNaUJ3VndsTGtDUFBvbEtTcDlYLVRLaW42cHZ0ZHU2LTAwQzk3NHZnQQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 28776702381275,
       "data": "2026-01-06",
       "data_hora": "2026-01-06 12:12:27",
@@ -60,9 +70,39 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 118986075579826,
+      "data": "2026-01-06",
+      "data_hora": "2026-01-06 12:04:01",
+      "titulo": "Enjoei anuncia novo CFO e DRI, e reforça governança após reestruturação executiva - ADVFN",
+      "descricao": "Enjoei anuncia novo CFO e DRI, e reforça governança após reestruturação executiva ADVFN",
+      "fonte": "ADVFN",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNT3IteFA5Qk1MUV95TV9LUzFhLTFSTm5lNThXUk9heEhSWnJyLW15SGUyTlRseUJDUDAtekNWT1NxYVVIVXRfeC1UQXE1ajhqcFpoWXVMMnVTVFVUWWVuWnRla0ZUcjh3eU9ockZHYnd1bVVvWlN1TDlWN1B2eFhSSExfSnhTcHFyZ1JJMDVfU2psbkJYY3QwUEFWVzZyVXRGZWljbnZ3NFNjTVZYaW05R0pPLWFaRzQ?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 266299901135089,
       "data": "2026-01-06",
       "data_hora": "2026-01-06 11:19:41",
+      "titulo": "Enjoei (ENJU3) elege Leandro Marchesi ao cargo de CFO e de Diretor de RI - InfoMoney",
+      "descricao": "Enjoei (ENJU3) elege Leandro Marchesi ao cargo de CFO e de Diretor de RI InfoMoney",
+      "fonte": "InfoMoney",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOR0hydkVOX3VYVDNWdzFaSGZWakRXTHozSHE5a0w2WEdSX05zWm1STkJHcDItNVB0TXN0eF9HbXpTV3hXYkdESUVEamk2TzZ1d2ZvelNoVXBNMGViYVVPTkhaLUtrZjRtc0RzM0VsMlBOQ05ZSG5yMW5TckN1RU5yMmJhNThCbWxEdzN4SUp3V19TejBZSWowcDdfMXpfTXZSM1FEZWhRTkMyWVF5cGfSAbMBQVVfeXFMUG43Vjc1Zm9RU2hDQVE4eVd2OXY0VUR1RUl4Rm0xSGRpNjZfZWV4Q0VLMWU3M25uMEE4YUtsaThOeGtMU1pCelg4dHhJVFZQNng2R3M5cmJCam05a0MtZExObmpyelozQ3VSeUJsTTFYczBXZm5fX3JJMFpYYWllTFhBZklmNFlkZUlRY1l5U3U2bW1SeThNalFaWDlVS242TVFKYXpRVkRSdUxBeVVYTXlFTGc?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 251272794762811,
+      "data": "2026-01-06",
+      "data_hora": "2026-01-06 08:00:00",
+      "titulo": "Enjoei (ENJU3) anuncia novo CFO: ex-Locaweb assume finanças e RI da companhia - Estadão E-Investidor",
+      "descricao": "Enjoei (ENJU3) anuncia novo CFO: ex-Locaweb assume finanças e RI da companhia Estadão E-Investidor",
+      "fonte": "Estadão E-Investidor",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNdmhWWEs5RndOLUtWUDcxalNqWVBCcXBPM0drRGJYZXVLZTNpdExYSUpFaHpnWS1LcmZIWnBGWnJaWGpUX1NOT2VjV0wwXzhFTXVTZUMzMGo1V2RVcmY2Tl9BNUwzV08yNk83NnItdG81VXpVaEh4SXJ0VEJtdkZMWHRlSzduRVFzSGo3UWV1WUdNa25VYWlVLVhIZmtPQnIzSFNmXzlueEIwZ9IBrwFBVV95cUxQQnJZWHdXNnVtLWpxWk14d0VELVpoQjRSUGJXeEZSNG5CN3Y0YXRwR0JFcjdzY1ltc25RN2pPNnJwSktvWnpLZTIzQzd2ejh3Y3VzVXN5VDVxbWhPQ0p3NFE4MG9zVmNCa240YXQwXzBpbG9wNG5GSllFaV95RDNpZGpvNV9la3ZSdTZJYmY1cjZvbkgxdEdSa25uazBkMjZFQ3VqQklaMDdYcFVQcFpB?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 231694489299438,
+      "data": "2026-01-06",
+      "data_hora": "2026-01-06 08:00:00",
       "titulo": "Enjoei (ENJU3) elege Leandro Marchesi ao cargo de CFO e de Diretor de RI - InfoMoney",
       "descricao": "Enjoei (ENJU3) elege Leandro Marchesi ao cargo de CFO e de Diretor de RI InfoMoney",
       "fonte": "InfoMoney",

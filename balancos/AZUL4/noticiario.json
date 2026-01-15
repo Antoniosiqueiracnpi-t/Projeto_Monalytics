@@ -4,11 +4,21 @@
     "ticker_base": "AZUL",
     "nome": "AZUL S.A."
   },
-  "ultima_atualizacao": "2026-01-14T11:25:00.949459",
-  "total_noticias": 30,
+  "ultima_atualizacao": "2026-01-15T11:19:53.524036",
+  "total_noticias": 37,
   "fonte": "Google News RSS",
   "ticker_consulta": "AZUL4",
   "noticias": [
+    {
+      "id": 102617417374966,
+      "data": "2026-01-14",
+      "data_hora": "2026-01-14 12:34:17",
+      "titulo": "MRV (MRVE3); Irani (RANI3); Azul (AZUL4): veja os destaques das empresas - Valor Investe",
+      "descricao": "MRV (MRVE3); Irani (RANI3); Azul (AZUL4): veja os destaques das empresas Valor Investe",
+      "fonte": "Valor Investe",
+      "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxOeHg3b2p0Wjg5YlJOYmptZjFEMWY5YkpEeElxcE44djZkaHRWZUkxXzhuX2RLOVFqak5weC1tVWd5WWItdEFGWEp0OWV3cDNRUUJFNFBzZmVFQ2dsWHBqVTM0ZzlhTDNVSExsOC1rYjFiMDVkZlNNcmt3ZDdlN3FTZnBLeE5FeWRSOHBLaUs1QVdfWDBDUTY0SnJFUEtSeTNCbGJabjNxbVNRYmxNQTg0cjdGeGM5MVFsWW50QjRkREhIVHg0N28yVlJGZVBYSnpGQ0QtQnF1UlZtczBsZERpVE0xR2duRDTSAfYBQVVfeXFMTnpqZ25xNkxTVXUyZUJGYkVWcVEyR2tDRzQtUnhWM2phZ1FVTWZsZ09BZ2xndHVhRlVrUUY5OGVfVmt4b3lnMEVGcDBuMUJEVlU3Wm1lbF85alRNalA4bTZrYk1LLVo1cDNSdzlObWpTX2pqS2Yzd3l3ZloyejZLb0pkWkZLTUQ5Q1pwZnhEVjZlb3N6Wk1LUWxSYVZxbHF1anU5UThhbWxFclZCaTVFWFIwZ3FkNExWd2tPb2RaSklQQTQ0Ri02YmlsY3FwN2h3X1VGb1pfcElXNlNaV0syNlJHOXNzZlhKaWNXTGlsUWVzRVdlV2hB?oc=5",
+      "tipo": "noticia_empresarial"
+    },
     {
       "id": 240033568157743,
       "data": "2026-01-13",
@@ -47,6 +57,26 @@
       "descricao": "Capital da Azul poderá alcançar até R$15,7 bi após conversão de bônus de subscrição TradingView – Acompanhe todos os mercados",
       "fonte": "TradingView – Acompanhe todos os mercados",
       "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE02VmVValhtMGpjNFAxemM4WllTNl8xOWhVQmN0TzJpanl2LXhUZVY2cVV6U2ZBV0loNjdmUno2MXlweU13bUZ0LXZTejFxT1hPdnNUMFNJN29fQzlnSHNCS3NSWndkdkJUdHFpTVVSWHF4N3JaOXdr?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 130723211237442,
+      "data": "2026-01-13",
+      "data_hora": "2026-01-13 18:46:00",
+      "titulo": "Azul (AZUL53) derrete 67% após dar fim em uma das classes de ações; entenda - Money Times",
+      "descricao": "Azul (AZUL53) derrete 67% após dar fim em uma das classes de ações; entenda Money Times",
+      "fonte": "Money Times",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOcUNUNkZMd2hyejhOQ29fVEdEdjFzU3BFMVdJYW55RVlEdWdGZWdPSkRfUDEtVm9wSHk3Q1dYWkdxX25VbFZ2Q18zVGNyUGN4MDZxX0VhaWNwVkQ4UFB1a052c2kzdFlKTnk0NmkyRHRuM2RraUdpN21zUWt6VFI1VkdjUHdvd3YzRWZWTGJBZy04NXZHNG92aXFlLU9aRmpxR1ZjVFBnbTNVbUU?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 74954813939725,
+      "data": "2026-01-13",
+      "data_hora": "2026-01-13 15:04:19",
+      "titulo": "AZUL4 já era: por que a Azul acabou com essas ações, e o que muda para o acionista - Seu Dinheiro",
+      "descricao": "AZUL4 já era: por que a Azul acabou com essas ações, e o que muda para o acionista Seu Dinheiro",
+      "fonte": "Seu Dinheiro",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNT2w2dmhFQjNWZFBHaGdvVGgtVzRUSFB6dFl6UjM0OXdSVkdlMGdCQkhSSGJZWUlkYjFfZHdOUFQyR3RSVld6WHN5S2tkU1N3azlNTWFvZDJOem83Y3U0NS1EWHdXcENmWXVhYVlIbFlNSGIzY2RhTk0zTG5yRmJpdDVKOWw3b1ZPeW40dkp3N0xTS3dmSWVpTm1lNk83bUU0R2VxWl9HSmRuMUY0UHpjMUJuMkNJVnFSOS1FSWlVNlk0Unp6YnlMMzlWOA?oc=5",
       "tipo": "noticia_empresarial"
     },
     {
@@ -120,6 +150,16 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 159660224559467,
+      "data": "2026-01-08",
+      "data_hora": "2026-01-08 17:38:49",
+      "titulo": "Ações da Azul derretem mais de 90% em cinco dias; entenda o que está acontecendo - ISTOÉ DINHEIRO",
+      "descricao": "Ações da Azul derretem mais de 90% em cinco dias; entenda o que está acontecendo ISTOÉ DINHEIRO",
+      "fonte": "ISTOÉ DINHEIRO",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1MMGV5NWpXa0hhdHBSb1lKVmR3WVRjcF9HeGJycXlJSUpldHh0QUthbVF4UW5zbEhXVngxYjcyOFFPaWpUWlVfQzFxM2xvN1QwdXRfY0xIREV1MU1uYjZsZklB?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 148254279802907,
       "data": "2026-01-08",
       "data_hora": "2026-01-08 17:14:25",
@@ -167,6 +207,16 @@
       "descricao": "Ação da Azul (AZUL54) derrete 25% com dados operacionais de novembro Money Times",
       "fonte": "Money Times",
       "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPeFlrenY0VE5mRzNpMk13ZlZnNGRNSFIyVTVpcWZmSE91Q1NycEc1NHVJNXUtMlByZUpKSl8wM1YyVXg1dXVGMFY5YlFEbEF5RVU0dEhKSmtzOVRMRXlNYk5Pa2ZSc1BxUVlCQWllS2lwNzRRajIzVDd1azVFWWJaNjBnSGhOZnJ5eFh3dE9qRzJxYjJHaktJWmdQekFPTmxBTXc?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 48236923335068,
+      "data": "2025-12-30",
+      "data_hora": "2025-12-30 08:00:00",
+      "titulo": "Em plena recuperação judicial, Azul (AZUL4) entrega EBITDA acima de 34% - suno.com.br",
+      "descricao": "Em plena recuperação judicial, Azul (AZUL4) entrega EBITDA acima de 34% suno.com.br",
+      "fonte": "suno.com.br",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE91amdDU0lDWlhFbThUREtJNnd6SDlyS3NfR2FLajZ5ZWFOOU9uWmVxSVUxVVRhbUV4Xzc5Wk9YTjVsUDByZE5ocTRpMHBNSmdMRG9mRDZKMC1FbFFPVlQ3S2s5Y0NrX2lqcEZWMGJwVE9GUzZLcXY5NtIBfkFVX3lxTE51bzkwdFQ3MXhhNWdQczFNOTQtbVMtbUt4d3Vlb0pDYkF1OGhuODc1Z2dZVTg4dXIxTnhZdXpQS0JoNk16NjRHU3JqRkREQ0txQ0tRZzZ4eENiQWMyV1g1ckJacUNWVnJ1MXljbXpxV3liaDQ2WWRqa2NSa2tjUQ?oc=5",
       "tipo": "noticia_empresarial"
     },
     {
@@ -250,6 +300,16 @@
       "tipo": "noticia_empresarial"
     },
     {
+      "id": 12765163638933,
+      "data": "2025-12-23",
+      "data_hora": "2025-12-23 08:00:00",
+      "titulo": "Azul (AZUL4) protocola oferta de R$ 7,4 bilhões em ações com bônus de subscrição no âmbito do Chapter 11 - Estadão E-Investidor",
+      "descricao": "Azul (AZUL4) protocola oferta de R$ 7,4 bilhões em ações com bônus de subscrição no âmbito do Chapter 11 Estadão E-Investidor",
+      "fonte": "Estadão E-Investidor",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQZlktdHhRSG5hMVpHclB4OFV6UFdiRGhnMHZrSVVlSGZ3bGo1bDhheWhldWZ2UVBDenJOdG82ajdxemg1NTVFdE1JXzQzc3hJUUlhcXlWeV9ZdnZzT21WcllMQ2NSR0hVdG1OcEx1aG9qSzR6VDkyRUlLbGJhY1laSkd2WGdrWkQ1X1hiWlVvLTFsbGppSkZjTkZxcw?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
       "id": 244746091325781,
       "data": "2025-12-22",
       "data_hora": "2025-12-22 08:00:00",
@@ -277,6 +337,16 @@
       "descricao": "Azul (AZUL4) lança oferta bilionária de ações como parte de reestruturação; entenda os detalhes Money Times",
       "fonte": "Money Times",
       "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQb3FQd2xaLVNkUkVUc3p0S2NsTF8wSnl2Vl96UzJWY2JrZEM0WkhsdUNhLTAyRFZaMDRjQUJUdTJkVEthY29CdGlyeHZBdlg1TktmY3BiMzZNMDJvTnpRT1NYTFJ4WkJPcko3NEpBMVgtT2s5Y3lRTjMwXzMtLXZXXy01cWpJMTA5TmdEcFlXeVdEY1RQR3ltOUdibjFURk1ER0x3OUJlR0Z1Skd5VGxkczlnY2d4MmM?oc=5",
+      "tipo": "noticia_empresarial"
+    },
+    {
+      "id": 175373795718018,
+      "data": "2025-12-20",
+      "data_hora": "2025-12-20 15:35:04",
+      "titulo": "AZUL4 com os dias contados: Azul convoca assembleias para extinguir essas ações; entenda - Seu Dinheiro",
+      "descricao": "AZUL4 com os dias contados: Azul convoca assembleias para extinguir essas ações; entenda Seu Dinheiro",
+      "fonte": "Seu Dinheiro",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPaTRnRFFoQmhOb01iUjZ2V253V2h3ME9sNWRDS2hRWnRweUlJYlJRTVlQRWNnQmNVdTE3dDRQenNqeWdsZVljMzlKS0tNY2twM0ltVHBjYTQ0ay1MZkpRN1Q0UE0zdXNGcGdsUEFEcFAzZVdoX0NzQWp0a2dXTGNnVUc0NFpwc0VmOUVuM0dSVm9ibzVWTlNIODZSMWZyZG5IdUtob3pmSnlKTzVIQkEyU0VZczVIcGZuekVTLVhVaVQ0YkFWdmlIeTM5OWx3T1k?oc=5",
       "tipo": "noticia_empresarial"
     },
     {
