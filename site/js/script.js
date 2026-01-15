@@ -2151,6 +2151,47 @@ function formatCurrency(value) {
 }
 
 /**
+ * Formata valores grandes em formato compacto (milhões, bilhões)
+ * @param {number} valor - Valor a ser formatado
+ * @param {string} unidade - Unidade do múltiplo ('R$', '%', 'x', etc.)
+ * @returns {string} - Valor formatado
+ */
+function formatMultiploValor(valor, unidade) {
+    if (valor === null || valor === undefined) return 'N/D';
+    
+    // Para porcentagem e multiplicadores
+    if (unidade === '%') {
+        return `${valor.toFixed(2)}%`;
+    }
+    
+    if (unidade === 'x') {
+        return `${valor.toFixed(2)}x`;
+    }
+    
+    // Para valores monetários
+    if (unidade === 'R$') {
+        // VALOR DE MERCADO: Converte para bilhões/milhões
+        if (Math.abs(valor) >= 1_000_000_000) {
+            // Bilhões
+            return `R$ ${(valor / 1_000_000_000).toFixed(2)} bi`;
+        } else if (Math.abs(valor) >= 1_000_000) {
+            // Milhões
+            return `R$ ${(valor / 1_000_000).toFixed(2)} mi`;
+        } else if (Math.abs(valor) >= 1_000) {
+            // Milhares
+            return `R$ ${(valor / 1_000).toFixed(2)} mil`;
+        } else {
+            // Menor que mil
+            return `R$ ${valor.toFixed(2)}`;
+        }
+    }
+    
+    // Padrão: sem unidade
+    return valor.toFixed(2);
+}
+
+
+/**
  * Formata volume (milhões)
  */
 function formatVolume(value) {
@@ -3329,9 +3370,6 @@ function isIntermediarioFinanceiro(ticker) {
 }
 
 
-
-
-
 /**
  * Renderiza seção completa de múltiplos
  */
@@ -3389,7 +3427,6 @@ function renderMultiplosSection() {
             });
         }
     }
-
     
     // Gera HTML
     let html = `
@@ -3435,6 +3472,7 @@ function renderMultiplosSection() {
         `;
         
         multiplos.forEach(mult => {
+            // ✅ APLICAR FORMATAÇÃO CORRETA AQUI
             const valorFormatado = formatMultiploValor(mult.valor, mult.unidade);
             
             html += `
@@ -3463,6 +3501,7 @@ function renderMultiplosSection() {
     // Cria modal (se não existe)
     createMultiploModal();
 }
+
 
 /* ========================================
    HISTÓRICO DE DIVIDENDOS
