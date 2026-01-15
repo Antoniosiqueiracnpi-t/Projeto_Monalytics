@@ -5169,61 +5169,143 @@ function buscarEmpresasDoSetor(ticker) {
 /**
  * Busca múltiplos de uma empresa via arquivo multiplos_TICKER.js - VERSÃO CORRIGIDA
  */
+/**
+ * Busca múltiplos de uma empresa via arquivo multiplos_TICKER.js
+ * VERSÃO CORRIGIDA COM RETURN CORRETO
+ */
 async function buscarMultiplosEmpresa(ticker) {
     try {
         const tickerNorm = normalizarTicker(ticker);
         const tickerPasta = obterTickerPasta(tickerNorm);
-
+        
         console.log(`📈 Buscando múltiplos de ${tickerNorm} (pasta: ${tickerPasta})`);
-
+        
         const timestamp = new Date().getTime();
-
-        // ✅ CORREÇÃO: Busca multiplos_PETR3.js ou multiplos_PETR4.js
-        const url = `${GITHUB_RAW_BASE}/balancos/${tickerPasta}/multiplos_${tickerNorm}.js?t=${timestamp}`;
-
-        // ✅ Timeout de 3 segundos
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
-
-        const response = await fetch(url, { signal: controller.signal });
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-            console.warn(`⚠️ Múltiplos não encontrados para ${tickerNorm} (HTTP ${response.status})`);
-            return null;  // ✅ Retorna null em vez de quebrar
+        
+        // ========== MONTA LISTA DE CANDIDATOS ==========
+        const candidatos = [];
+        const pushUnique = (val) => {
+            const v = String(val).trim().toUpperCase();
+            if (!v) return;
+            if (candidatos.indexOf(v) === -1) candidatos.push(v);
+        };
+        
+        // 1) Ticker original
+        pushUnique(tickerNorm);
+        
+        // 2) Todos os tickers da empresa (do mapeamento)
+        try {
+            if (typeof MAPA_EMPRESAS_B3 === 'object' && MAPA_EMPRESAS_B3) {
+                const info = MAPA_EMPRESAS_B3[tickerNorm];
+                if (info && info.tickersNegociacao) {
+                    const list = String(info.tickersNegociacao).split(/[,;]/);
+                    list.forEach(t => pushUnique(t));
+                }
+            }
+        } catch(e) {}
+        
+        // 3) Ticker da pasta
+        pushUnique(tickerPasta);
+        
+        // 4) Ticker base (sem números)
+        const tickerBase = tickerNorm.replace(/\d+$/, '');
+        if (tickerBase !== tickerNorm) {
+            pushUnique(tickerBase);
         }
-
-        // ✅ Carrega o arquivo .js que define window.multiplosData
-        const scriptText = await response.text();
-        eval(scriptText);
-
-        const data = window.multiplosData;
-
-        // Busca info da empresa no mapeamento
-        const empresaInfo = mapeamentoB3?.find(e => normalizarTicker(e.ticker) === tickerNorm);
-
-        // Extrai múltiplos do LTM
-        const multiplos = data?.ltm?.multiplos;
-
-        console.log(`✅ Múltiplos carregados para ${tickerNorm}`);
-
-        return {
+        
+        console.log(`   📋 Candidatos: ${candidatos.join(', ')}`);
+        
+        // ========== BUSCA ARQUIVO E CARREGA DADOS ==========
+        let dataEncontrada = null;
+        let tickerEncontrado = null;
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        
+        try {
+            for (const candidato of candidatos) {
+                const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/multiplos_${candidato}.js?t=${timestamp}`;
+                
+                try {
+                    console.log(`   🔗 Tentando: multiplos_${candidato}.js`);
+                    
+                    const response = await fetch(url, { 
+                        signal: controller.signal,
+                        cache: 'no-store'
+                    });
+                    
+                    if (response.ok) {
+                        const scriptText = await response.text();
+                        
+                        // Limpa cache anterior
+                        if (window.MONALYTICS?.multiplos?.[candidato]) {
+                            delete window.MONALYTICS.multiplos[candidato];
+                        }
+                        
+                        // Executa script
+                        eval(scriptText);
+                        
+                        // Acessa dados do namespace correto
+                        const data = window.MONALYTICS?.multiplos?.[candidato];
+                        
+                        if (data?.ltm?.multiplos) {
+                            dataEncontrada = data;
+                            tickerEncontrado = candidato;
+                            console.log(`   ✅ Dados válidos encontrados em multiplos_${candidato}.js`);
+                            break; // Sucesso! Para o loop
+                        }
+                    }
+                } catch (fetchError) {
+                    // Continua para próximo candidato
+                    if (fetchError.name !== 'AbortError') {
+                        console.log(`   ⚠️ ${candidato}: ${fetchError.message}`);
+                    }
+                }
+            }
+        } finally {
+            clearTimeout(timeoutId);
+        }
+        
+        // ========== VALIDAÇÃO E RETORNO ==========
+        if (!dataEncontrada || !tickerEncontrado) {
+            console.warn(`   ❌ Nenhum arquivo válido encontrado para ${tickerNorm}`);
+            return null;
+        }
+        
+        const multiplos = dataEncontrada.ltm.multiplos;
+        
+        if (!multiplos || Object.keys(multiplos).length === 0) {
+            console.warn(`   ⚠️ Múltiplos vazios para ${tickerEncontrado}`);
+            return null;
+        }
+        
+        // Busca informações da empresa
+        const empresaInfo = mapeamentoB3?.find(e => 
+            normalizarTicker(e.ticker) === tickerNorm
+        );
+        
+        const resultado = {
             ticker: tickerNorm,
             empresa: empresaInfo?.empresa || tickerNorm,
-            logo: `${GITHUB_RAW_BASE}/balancos/${tickerPasta}/logo.png`,
-            multiplos: multiplos || {}
+            logo: `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/balancos/${tickerPasta}/logo.png`,
+            multiplos: multiplos
         };
-
+        
+        console.log(`✅ Múltiplos carregados para ${tickerNorm}:`, Object.keys(multiplos).length, 'indicadores');
+        
+        // 🎯 CRÍTICO: RETORNA O OBJETO!
+        return resultado;
+        
     } catch (error) {
-        // Se foi timeout ou erro de rede, não loga como erro
         if (error.name === 'AbortError') {
             console.warn(`⏱️ Timeout ao buscar ${ticker}`);
         } else {
-            console.warn(`⚠️ Erro ao buscar múltiplos de ${ticker}:`, error.message);
+            console.error(`❌ Erro ao buscar múltiplos de ${ticker}:`, error);
         }
         return null;
     }
 }
+
 
 
 
