@@ -7,25 +7,25 @@
     <meta name="description" content="Monalytics - Plataforma de Análise de Investimentos com Análise Quantitativa Avançada">
     <meta name="keywords" content="monalytics, análise de ações, renda fixa, investimentos, análise quantitativa, monalisa research">
     <meta name="author" content="Monalisa Research">
-    
+
     <title>Monalytics - Análise Profissional de Investimentos | Monalisa Research</title>
-    
+
     <!-- =========================== FAVICON =========================== -->
     <link rel="icon" type="image/png" href="https://i.ibb.co/ZpSVYcgH/Monalytics-3-D.png">
-    
+
     <!-- =========================== FONTS =========================== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <!-- =========================== STYLESHEETS =========================== -->
     <link rel="stylesheet" href="css/styles.css">
-    
+
     <!-- =========================== FONT AWESOME =========================== -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    
+
     <!-- =========================== HEADER / NAVIGATION =========================== -->
     <header class="header" id="header">
         <nav class="navbar">
@@ -35,22 +35,22 @@
                     <a href="#hero" class="logo-link">
                         <img src="https://i.ibb.co/zVkHbJJ1/Monalytics-logo-azul.png" alt="Monalytics" class="logo-monalisa">
                     </a>
-                    
+
                     <!-- Menu Toggle (Mobile) -->
                     <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
                         <span></span>
                         <span></span>
                         <span></span>
                     </button>
-                    
+
                     <!-- Navigation Menu -->
                     <ul class="nav-menu" id="navMenu">
                       <li><a href="#hero" class="nav-link active">Início</a></li>
                       <li><a href="#destaques" class="nav-link">Destaques</a></li>
-                    
+
                       <!-- Notícias do Mercado -->
                       <li><a href="#noticias" class="nav-link">Notícias do Mercado</a></li>
-                    
+
                       <!-- Análise de Ações com Dropdown -->
                       <li class="nav-item-dropdown">
                         <a href="#acoes" class="nav-link">
@@ -62,7 +62,7 @@
                           <li><a href="#busca-acoes" class="nav-dropdown-link">Análise de Ações</a></li>
                         </ul>
                       </li>
-                    
+
                       <!-- Renda Fixa -->
                       <li><a href="#renda-fixa" class="nav-link">Renda Fixa</a></li>
                     </ul>
@@ -77,7 +77,7 @@
             <!-- Background Pattern -->
             <div class="hero-pattern"></div>
         </div>
-        
+
         <div class="container">
             <div class="hero-content">
                 <!-- Text Content -->
@@ -85,9 +85,9 @@
                     <h1 class="hero-title">
                         Análise Profissional de Investimentos
                     </h1>
-                    
+
                     <p class="hero-subtitle">
-                        Acesse ferramentas de análise quantitativa avançada para Ações e Renda Fixa. 
+                        Acesse ferramentas de análise quantitativa avançada para Ações e Renda Fixa.
                         Democratizando o acesso a tecnologia de nível institucional para todos os investidores.
                     </p>
 
@@ -105,7 +105,7 @@
                             <span>IA Avançada</span>
                         </div>
                     </div>
-                    
+
                     <div class="hero-buttons">
                         <a href="#acoes" class="btn btn-primary">
                             <i class="fas fa-chart-line"></i>
@@ -117,11 +117,11 @@
                         </a>
                     </div>
                 </div>
-                
+
                 <!-- Logo / Image -->
                 <div class="hero-image">
                     <img src="https://i.ibb.co/ZpSVYcgH/Monalytics-3-D.png" alt="Monalytics 3D" class="monalytics-logo">
-                    
+
                     <!-- Stats Cards -->
                     <div class="stats-cards">
                         <div class="stat-card">
@@ -131,7 +131,7 @@
                                 <span class="stat-label">Empresas Analisadas</span>
                             </div>
                         </div>
-                        
+
                         <div class="stat-card">
                             <i class="fas fa-database"></i>
                             <div class="stat-info">
@@ -139,7 +139,7 @@
                                 <span class="stat-label">Múltiplos Comparativos</span>
                             </div>
                         </div>
-                        
+
                         <div class="stat-card">
                             <i class="fas fa-certificate"></i>
                             <div class="stat-info">
@@ -151,7 +151,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Scroll Indicator -->
         <div class="scroll-indicator">
             <a href="#destaques" class="scroll-link">
@@ -168,12 +168,12 @@
                 <h2 class="section-title">Destaques do Mercado</h2>
                 <p class="section-subtitle">Acompanhe em tempo real os principais movimentos e indicadores</p>
             </div>
-    
+
             <div class="carousel-wrapper">
                 <!-- Carousel Container -->
                 <div class="carousel-container">
                     <div class="carousel-track">
-                        
+
                         <!-- ==================== SLIDE 1: DESTAQUES DA BOLSA ==================== -->
                         <div class="carousel-slide active">
                             <div class="slide-content">
@@ -186,14 +186,14 @@
                                         <p class="slide-subtitle">Maiores movimentações do IBOVESPA</p>
                                     </div>
                                 </div>
-    
+
                                 <div class="slide-body">
                                     <!-- Loading State -->
                                     <div class="loading-spinner" id="bolsaLoading">
                                         <i class="fas fa-spinner fa-spin"></i>
                                         <span>Carregando dados...</span>
                                     </div>
-    
+
                                     <!-- Stats Overview -->
                                     <div class="stats-overview" id="statsOverview" style="display: none;">
                                         <div class="stat-box">
@@ -209,7 +209,7 @@
                                             <span class="stat-label">Em Baixa</span>
                                         </div>
                                     </div>
-    
+
                                     <!-- Tabs for Altas/Baixas/Volumes -->
                                     <div class="tabs-container" id="bolsaTabs" style="display: none;">
                                         <div class="tabs-header">
@@ -223,25 +223,25 @@
                                                 <i class="fas fa-chart-bar"></i> Maiores Volumes
                                             </button>
                                         </div>
-    
+
                                         <div class="tabs-content">
                                             <!-- Tab: Maiores Altas -->
                                             <div class="tab-panel active" id="tab-altas">
                                                 <div class="stocks-list" id="listAltas"></div>
                                             </div>
-    
+
                                             <!-- Tab: Maiores Baixas -->
                                             <div class="tab-panel" id="tab-baixas">
                                                 <div class="stocks-list" id="listBaixas"></div>
                                             </div>
-    
+
                                             <!-- Tab: Maiores Volumes -->
                                             <div class="tab-panel" id="tab-volumes">
                                                 <div class="stocks-list" id="listVolumes"></div>
                                             </div>
                                         </div>
                                     </div>
-    
+
                                     <!-- Timestamp -->
                                     <div class="slide-footer" id="bolsaFooter" style="display: none;">
                                         <i class="fas fa-clock"></i>
@@ -251,7 +251,7 @@
                                 </div>
                             </div>
                         </div>
-    
+
 
                         <!-- ==================== SLIDE 2: INDICADORES ECONÔMICOS ==================== -->
                         <div class="carousel-slide">
@@ -265,14 +265,14 @@
                                         <p class="slide-subtitle">Principais taxas e índices</p>
                                     </div>
                                 </div>
-                        
+
                                 <div class="slide-body">
                                     <!-- Loading State -->
                                     <div class="loading-spinner" id="indicadoresLoading">
                                         <i class="fas fa-spinner fa-spin"></i>
                                         <span>Carregando indicadores...</span>
                                     </div>
-                        
+
                                     <!-- Indicadores Grid -->
                                     <div class="indicators-grid" id="indicadoresGrid" style="display: none;">
                                         <!-- SELIC -->
@@ -286,7 +286,7 @@
                                                 <span class="indicator-sub">Taxa básica de juros</span>
                                             </div>
                                         </div>
-                        
+
                                         <!-- CDI -->
                                         <div class="indicator-card">
                                             <div class="indicator-icon cdi">
@@ -298,7 +298,7 @@
                                                 <span class="indicator-sub">Certificado de Depósito</span>
                                             </div>
                                         </div>
-                        
+
                                         <!-- IPCA MENSAL -->
                                         <div class="indicator-card">
                                             <div class="indicator-icon ipca">
@@ -310,7 +310,7 @@
                                                 <span class="indicator-sub" id="ipcaMensalMes">-</span>
                                             </div>
                                         </div>
-                        
+
                                         <!-- IPCA 12M -->
                                         <div class="indicator-card">
                                             <div class="indicator-icon ipca">
@@ -322,7 +322,7 @@
                                                 <span class="indicator-sub" id="ipcaAcumMes">-</span>
                                             </div>
                                         </div>
-                        
+
                                         <!-- IGP-M MENSAL -->
                                         <div class="indicator-card">
                                             <div class="indicator-icon igpm">
@@ -334,7 +334,7 @@
                                                 <span class="indicator-sub" id="igpmMensalMes">-</span>
                                             </div>
                                         </div>
-                        
+
                                         <!-- IGP-M 12M -->
                                         <div class="indicator-card">
                                             <div class="indicator-icon igpm">
@@ -346,7 +346,7 @@
                                                 <span class="indicator-sub" id="igpmAcumMes">-</span>
                                             </div>
                                         </div>
-                        
+
                                         <!-- DÓLAR -->
                                         <div class="indicator-card">
                                             <div class="indicator-icon dolar">
@@ -359,7 +359,7 @@
                                             </div>
                                         </div>
                                     </div>
-                        
+
                                     <!-- Timestamp -->
                                     <div class="slide-footer" id="indicadoresFooter" style="display: none;">
                                         <i class="fas fa-clock"></i>
@@ -368,7 +368,7 @@
                                 </div>
                             </div>
                         </div>
-    
+
                         <!-- ==================== SLIDE 3: COMUNICADOS DO MERCADO ==================== -->
                         <div class="carousel-slide">
                             <div class="slide-content">
@@ -381,17 +381,17 @@
                                         <p class="slide-subtitle">Fatos relevantes e eventos corporativos</p>
                                     </div>
                                 </div>
-    
+
                                 <div class="slide-body">
                                     <!-- Loading State -->
                                     <div class="loading-spinner" id="noticiasLoading">
                                         <i class="fas fa-spinner fa-spin"></i>
                                         <span>Carregando comunicados...</span>
                                     </div>
-    
+
                                     <!-- Comunicados List -->
                                     <div class="news-list" id="comunicadosList" style="display: none;"></div>
-    
+
                                     <!-- Timestamp -->
                                     <div class="slide-footer" id="noticiasFooter" style="display: none;">
                                         <i class="fas fa-clock"></i>
@@ -400,10 +400,10 @@
                                 </div>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
-    
+
                 <!-- Navigation Arrows -->
                 <button class="carousel-arrow prev" id="prevSlide" aria-label="Slide Anterior">
                     <i class="fas fa-chevron-left"></i>
@@ -411,7 +411,7 @@
                 <button class="carousel-arrow next" id="nextSlide" aria-label="Próximo Slide">
                     <i class="fas fa-chevron-right"></i>
                 </button>
-    
+
                 <!-- Indicators -->
                 <div class="carousel-indicators">
                     <button class="indicator active" data-slide="0" aria-label="Slide 1"></button>
@@ -420,7 +420,7 @@
                 </div>
             </div>
         </div>
-    </section>   
+    </section>
 
     <!-- =========================== SEÇÃO DE NOTÍCIAS DO MERCADO =========================== -->
     <section class="news-section" id="noticias">
@@ -463,7 +463,7 @@
                 <span id="newsExpandText">Ver mais notícias</span>
                 <span class="count" id="newsExpandCount">+12</span>
                 <i class="fas fa-chevron-down"></i>
-            </button>            
+            </button>
 
             <!-- Timestamp -->
             <div class="news-timestamp" id="newsTimestampSection" style="display: none;">
@@ -472,7 +472,7 @@
             </div>
         </div>
     </section>
-    
+
 
     <!-- =========================== SEÇÃO DE AÇÕES =========================== -->
     <section class="acoes-section" id="acoes">
@@ -549,8 +549,8 @@
             <!-- FIM NOVO CARD -->
 
 
-            
-    
+
+
             <!-- Agenda de Dividendos -->
             <div class="dividendos-container" id="dividendos">
                 <div class="dividendos-header">
@@ -561,7 +561,7 @@
                             <p class="dividendos-subtitle">Próximos pagamentos de proventos</p>
                         </div>
                     </div>
-                    
+
                     <!-- Filtros -->
                     <div class="dividendos-filters">
                         <button class="dividendos-filter-btn active" data-period="30">
@@ -575,13 +575,13 @@
                         </button>
                     </div>
                 </div>
-    
+
                 <!-- Loading -->
                 <div class="dividendos-loading" id="dividendosLoading">
                     <i class="fas fa-spinner fa-spin"></i>
                     <span>Carregando agenda...</span>
                 </div>
-    
+
                 <!-- Filtro de Tipo -->
                 <div class="dividendos-tipo-filters" id="dividendosTipoFilters" style="display: none;">
                     <button class="tipo-filter-btn active" data-tipo="todos">
@@ -594,23 +594,23 @@
                         <i class="fas fa-percentage"></i> JSCP
                     </button>
                 </div>
-    
+
                 <!-- Grid de Dividendos -->
                 <div class="dividendos-grid collapsed" id="dividendosGrid" style="display: none;"></div>
-    
+
                 <!-- Botão Ver Mais - NOVO -->
                 <button class="expand-btn" id="dividendosExpandBtn" style="display: none;">
                     <span id="dividendosExpandText">Ver mais dividendos</span>
                     <span class="count" id="dividendosExpandCount">+8</span>
                     <i class="fas fa-chevron-down"></i>
-                </button>                
-    
+                </button>
+
                 <!-- Mensagem Vazia -->
                 <div class="dividendos-empty" id="dividendosEmpty" style="display: none;">
                     <i class="fas fa-inbox"></i>
                     <p>Nenhum pagamento previsto para o período selecionado</p>
                 </div>
-    
+
                 <!-- Timestamp -->
                 <div class="dividendos-footer" id="dividendosFooter" style="display: none;">
                     <i class="fas fa-info-circle"></i>
@@ -637,7 +637,7 @@
                         </button>
                     </div>
                     <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
-                    
+
                     <div class="mais-buscados">
                         <span>Mais buscados:</span>
                         <button class="ticker-tag" data-ticker="ITUB4">Itaúsa</button>
@@ -646,7 +646,7 @@
                         <button class="ticker-tag" data-ticker="SUZB3">Suzano</button>
                     </div>
                 </div>
-            
+
                 <!-- Estado inicial (sem ação selecionada) -->
                 <div id="acaoEmptyState" class="acao-empty-state">
                     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -655,7 +655,7 @@
                     </svg>
                     <p>Selecione uma ação acima para visualizar o gráfico e preços</p>
                 </div>
-            
+
                 <!-- Container da análise (oculto inicialmente) -->
                 <div id="acaoAnaliseContent" class="acao-analise-content" style="display: none;">
                     <!-- Cabeçalho com logo e nome da empresa -->
@@ -676,7 +676,7 @@
                             Comparar com IBOV
                         </button>
                     </div>
-            
+
                     <!-- Navegação por Seções com Ícones -->
                     <nav class="empresa-nav-tabs">
                         <a href="#indicadores" class="empresa-nav-item active" data-section="indicadores">
@@ -704,7 +704,7 @@
                             <span>COMPARADOR</span>
                         </a>
                     </nav>
-            
+
                     <!-- Cards de indicadores -->
                     <div class="indicadores-cards">
                         <div class="indicador-card">
@@ -718,7 +718,7 @@
                         <div class="indicador-card">
                             <div class="indicador-label">VARIAÇÃO (24M)</div>
                             <div class="indicador-valor positivo" id="variacao24m">+45,20% ↑</div>
-                        </div>                
+                        </div>
                         <div class="indicador-card">
                             <div class="indicador-label">TENDÊNCIA MM20</div>
                             <div class="indicador-valor" id="tendenciaMM20">
@@ -734,7 +734,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <!-- Filtros de período -->
                     <div class="periodo-filters">
                         <button class="periodo-btn" data-periodo="180">6 MESES</button>
@@ -742,12 +742,12 @@
                         <button class="periodo-btn" data-periodo="1095">3 ANOS</button>
                         <button class="periodo-btn" data-periodo="max">MÁXIMO</button>
                     </div>
-            
+
                     <!-- Gráfico -->
                     <div class="grafico-container">
                         <canvas id="acaoChart"></canvas>
                     </div>
-            
+
                     <!-- Dados das médias móveis atuais -->
                     <div class="medias-moveis">
                         <div class="media-item">
@@ -763,42 +763,42 @@
                             <span class="mm-valor" id="mm200Atual">R$ 12,40</span>
                         </div>
                     </div>
-            
+
                     <!-- Card de Informações da Empresa -->
                     <div class="empresa-info-card">
                         <h3 class="empresa-info-title">📋 Informações da Empresa</h3>
-                        
+
                         <div class="empresa-info-grid">
                             <div class="info-item">
                                 <div class="info-label">Razão Social</div>
                                 <div class="info-valor" id="empresaRazaoSocial">-</div>
                             </div>
-                            
+
                             <div class="info-item">
                                 <div class="info-label">CNPJ</div>
                                 <div class="info-valor" id="empresaCNPJ">-</div>
                             </div>
-                            
+
                             <div class="info-item">
                                 <div class="info-label">Setor / Segmento</div>
                                 <div class="info-valor" id="empresaSetorSegmento">-</div>
                             </div>
-                            
+
                             <div class="info-item">
                                 <div class="info-label">Tickers de Negociação</div>
                                 <div class="info-valor" id="empresaTickers">-</div>
                             </div>
-                            
+
                             <div class="info-item full-width">
                                 <div class="info-label">Endereço da Sede</div>
                                 <div class="info-valor" id="empresaSede">-</div>
                             </div>
-                            
+
                             <div class="info-item full-width">
                                 <div class="info-label">Descrição</div>
                                 <div class="info-valor descricao" id="empresaDescricao">-</div>
                             </div>
-                            
+
                             <div class="info-item">
                                 <div class="info-label">Empresas do Mesmo Setor</div>
                                 <div class="info-valor" id="empresasMesmoSetor">-</div>
@@ -809,7 +809,7 @@
                     <!-- Composição Acionária -->
                     <div class="composicao-acionaria-card" id="composicaoAcionariaCard" style="display: none;">
                         <!-- Conteúdo será gerado dinamicamente pelo JavaScript -->
-                    </div>                    
+                    </div>
 
                     <!-- Múltiplos da Empresa -->
                     <div class="multiplos-empresa-section" id="multiplosSection" style="display: none;">
@@ -819,12 +819,12 @@
                     <!-- I.A Analisa -->
                     <div class="ia-analisa-section" id="iaAnalisaSection" style="display: none;">
                         <!-- Conteúdo será gerado dinamicamente pelo JavaScript -->
-                    </div>       
+                    </div>
 
                     <!-- Histórico de Dividendos -->
                     <div class="dividendos-historico-section" id="dividendosHistoricoSection" style="display: none;">
                         <!-- Conteúdo será gerado dinamicamente pelo JavaScript -->
-                    </div>   
+                    </div>
 
                     <!-- Comparador de Ações do Setor -->
                     <div class="comparador-acoes-section" id="comparadorAcoesSection" style="display: none;">
@@ -835,19 +835,19 @@
                                 <p class="comparador-subtitle" id="comparadorSubtitle">Empresas do setor</p>
                             </div>
                         </div>
-                    
+
                         <!-- Loading State -->
                         <div class="comparador-loading" id="comparadorLoading" style="display: none;">
                             <i class="fas fa-spinner fa-spin"></i>
                             <span>Carregando comparativo...</span>
                         </div>
-                    
+
                         <!-- Empty State -->
                         <div class="comparador-empty" id="comparadorEmpty" style="display: none;">
                             <i class="fas fa-info-circle"></i>
                             <p>Não há dados suficientes para comparação neste setor</p>
                         </div>
-                    
+
                         <!-- Indicadores Selecionados -->
                         <div class="comparador-indicators-tabs" id="comparadorTabs" style="display: none;">
                             <button class="indicator-tab active" data-group="main">
@@ -859,7 +859,7 @@
                                 <span>Adicionar +4</span>
                             </button>
                         </div>
-                    
+
                         <!-- Tabela de Comparação -->
                         <div class="comparador-table-wrapper" id="comparadorTableWrapper" style="display: none;">
                             <div class="comparador-table-scroll">
@@ -873,7 +873,7 @@
                                 </table>
                             </div>
                         </div>
-                    
+
                         <!-- Legenda -->
                         <div class="comparador-footer" id="comparadorFooter" style="display: none;">
                             <div class="comparador-legend">
@@ -900,19 +900,19 @@
                                 </div>
                             </div>
                         </div>
-                    
+
                         <!-- Loading State -->
                         <div class="analise-balancos-loading" id="analiseBalancosLoading" style="display: none;">
                             <i class="fas fa-spinner fa-spin"></i>
                             <span>Carregando balanços...</span>
                         </div>
-                    
+
                         <!-- Empty State -->
                         <div class="analise-balancos-empty" id="analiseBalancosEmpty" style="display: none;">
                             <i class="fas fa-info-circle"></i>
                             <p>Não há dados suficientes de balanços</p>
                         </div>
-                    
+
                         <!-- Controles de Visualização -->
                         <div class="analise-balancos-controls" id="analiseBalancosControls" style="display: none;">
                             <div class="view-type-switch">
@@ -923,7 +923,7 @@
                                     <i class="fas fa-calendar"></i> Trimestral
                                 </button>
                             </div>
-                        
+
                             <div class="chart-table-switch">
                                 <button class="chart-table-btn active" data-display="tabela" id="displayTabelaBtn">
                                     <i class="fas fa-table"></i> Tabela
@@ -933,7 +933,7 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                         <!-- Controles de Tipo de Demonstração (apenas para gráfico) -->
                         <div class="demonstracao-tipo-controls" id="demonstracaoTipoControls" style="display: none;">
                             <button class="demonstracao-tipo-btn active" data-tipo="DRE" id="tipoDREBtn">
@@ -950,7 +950,7 @@
                             </button>
                         </div>
 
-                    
+
                         <!-- Container Tabela -->
                         <div class="analise-balancos-table-wrapper" id="analiseBalancosTableWrapper" style="display: none;">
                             <div class="analise-balancos-table-scroll">
@@ -964,14 +964,14 @@
                                 </table>
                             </div>
                         </div>
-                    
+
                         <!-- Container Gráfico -->
                         <div class="analise-balancos-chart-wrapper" id="analiseBalancosChartWrapper" style="display: none;">
                             <div class="analise-balancos-chart-container">
                                 <canvas id="analiseBalancosChart"></canvas>
                             </div>
                         </div>
-                    
+
                         <!-- Rodapé -->
                         <div class="analise-balancos-footer" id="analiseBalancosFooter" style="display: none;">
                             <div class="analise-balancos-legend">
@@ -982,7 +982,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Comunicados da Empresa -->
                     <section class="comunicados-empresa-section" id="comunicadosEmpresaSection" style="display: none;">
                         <div class="comunicados-empresa-header">
@@ -994,18 +994,18 @@
                                 </div>
                             </div>
                         </div>
-                    
+
                         <!-- Loading -->
                         <div class="comunicados-empresa-loading" id="comunicadosEmpresaLoading">
                             <i class="fas fa-spinner fa-spin"></i>
                             <span>Carregando comunicados...</span>
                         </div>
-                    
+
                         <!-- Conteúdo -->
                         <div class="comunicados-empresa-content" id="comunicadosEmpresaContent" style="display: none;">
                             <!-- Comunicados Recentes (3 primeiros) -->
                             <div class="comunicados-recentes" id="comunicadosRecentes"></div>
-                    
+
                             <!-- Botão Ver Mais -->
                             <div class="comunicados-ver-mais-container" id="comunicadosVerMaisContainer" style="display: none;">
                                 <button class="comunicados-ver-mais-btn" id="comunicadosVerMaisBtn">
@@ -1013,17 +1013,17 @@
                                     <span>Ver comunicados anteriores</span>
                                 </button>
                             </div>
-                    
+
                             <!-- Comunicados Antigos (expandível por mês/ano) -->
                             <div class="comunicados-antigos" id="comunicadosAntigos" style="display: none;"></div>
                         </div>
-                    
+
                         <!-- Empty State -->
                         <div class="comunicados-empresa-empty" id="comunicadosEmpresaEmpty" style="display: none;">
                             <i class="fas fa-inbox"></i>
                             <p>Nenhum comunicado disponível</p>
                         </div>
-                    </section>  
+                    </section>
 
 
                     <!-- Card Noticiário Empresarial -->
@@ -1032,13 +1032,13 @@
                             <i class="fas fa-newspaper noticiario-empresarial-icon"></i>
                             <h3 class="noticiario-empresarial-title">Noticiário Empresarial</h3>
                         </div>
-                        
+
                         <div class="noticiario-carousel-container">
                             <!-- Carrossel de notícias -->
                             <div class="noticiario-carousel" id="newsCarousel">
                                 <!-- As notícias serão inseridas dinamicamente aqui -->
                             </div>
-                            
+
                             <!-- Navegação do carrossel -->
                             <div class="noticiario-carousel-nav">
                                 <button class="noticiario-nav-btn" id="newsPrev">
@@ -1050,7 +1050,7 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div class="noticiario-footer">
                             <div class="noticiario-update-info" id="newsUpdateInfo">
                                 <i class="fas fa-clock"></i>
@@ -1058,11 +1058,11 @@
                             </div>
                         </div>
                     </div>
-                
-                    
+
+
                 </div>
-           
-            
+
+
                 <!-- Loading state -->
                 <div id="acaoLoadingState" class="acao-loading" style="display: none;">
                     <div class="loading-spinner"></div>
@@ -1070,7 +1070,7 @@
                 </div>
             </div>
 
-            
+
         </div>
     </section>
 
@@ -1095,33 +1095,33 @@
                         Democratizando o acesso a análise quantitativa avançada para todos os investidores.
                     </p>
                 </div>
-                
+
                 <div class="footer-links">
                     <div class="footer-column">
                         <h4>Navegação</h4>
                         <ul>
                           <li><a href="#hero">Início</a></li>
                           <li><a href="#destaques">Destaques</a></li>
-                        
+
                           <!-- Notícias do Mercado -->
                           <li><a href="#noticias">Notícias do Mercado</a></li>
-                        
+
                           <!-- Análise de Ações com Subitens -->
                           <li>
                             <a href="#acoes">Análise de Ações</a>
-                        
+
                             <ul class="footer-subnav">
                               <li><a href="#dashboardB3">Dashboard B3</a></li>
                               <li><a href="#dividendos">Agenda de Dividendos</a></li>
                               <li><a href="#busca-acoes">Análise de Ações</a></li>
                             </ul>
                           </li>
-                        
+
                           <!-- Renda Fixa -->
                           <li><a href="#renda-fixa">Renda Fixa</a></li>
                         </ul>
                     </div>
-                    
+
                     <div class="footer-column">
                         <h4>Monalisa Research</h4>
                         <ul>
@@ -1130,7 +1130,7 @@
                             <li><a href="https://monalisaresearch.com.br/run-out" target="_blank">Run Out HEDGE</a></li>
                         </ul>
                     </div>
-                    
+
                     <div class="footer-column">
                         <h4>Contato</h4>
                         <ul>
@@ -1139,7 +1139,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <p>&copy; 2025 Monalisa Research. Todos os direitos reservados.</p>
                 <p class="disclaimer">Resultado passado não é garantia de resultado futuro!</p>
@@ -1153,7 +1153,7 @@
 
     <!-- Auto-Atualização de Dados -->
     <script src="/js/auto-update.js"></script>
-    
+
     <!-- Opcional: Event listener para reagir a atualizações -->
     <script>
     window.addEventListener('monalytics:dataUpdated', function(event) {
@@ -1161,7 +1161,7 @@
       // Aqui você pode adicionar lógica customizada quando dados são atualizados
     });
     </script>
-    
+
 
     <!-- Modal: Seleção de indicadores (+4) do Comparador -->
     <div class="multiplo-modal" id="comparadorIndicadoresModal" aria-hidden="true">
@@ -1187,13 +1187,13 @@
               <button type="button" class="btn btn-secondary" id="comparadorIndicadoresCancelBtn">
                 Cancelar
               </button>
-            
+
               <button type="button" class="btn btn-primary" id="comparadorIndicadoresApplyBtn">
                 Aplicar indicadores
               </button>
             </div>
 
-            
+
             <div class="comparador-indicadores-footer">
                 <button class="btn-secondary" id="comparadorIndicadoresClear">Limpar</button>
                 <div class="comparador-indicadores-footer-actions">
