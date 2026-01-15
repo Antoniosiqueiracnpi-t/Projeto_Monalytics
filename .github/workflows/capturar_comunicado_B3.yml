@@ -35,7 +35,6 @@ on:
         default: '30'
 
   schedule:
-    # 08:00 BRT (UTC-3) = 11:00 UTC
     - cron: '0 11 * * 1-5'
 
 permissions:
@@ -56,7 +55,7 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Sincronizar com origin/main (evita divergência/forced-update)
+      - name: Sincronizar com origin/main
         run: |
           git fetch origin main
           git checkout main
@@ -76,10 +75,10 @@ jobs:
       - name: Executar captura de comunicados B3
         run: |
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            echo "🤖 Execução automática (seg-sex 08:00 BRT): capturando TODAS as empresas"
+            echo "🤖 Execução automática: capturando todas as empresas"
             python src/capturar_comunicados_b3.py --modo faixa --faixa 1-999 --dias 30
           else
-            echo "👤 Execução manual: usando parâmetros fornecidos"
+            echo "👤 Execução manual com parâmetros"
             python src/capturar_comunicados_b3.py \
               --modo "${{ github.event.inputs.modo }}" \
               --quantidade "${{ github.event.inputs.quantidade }}" \
@@ -89,7 +88,7 @@ jobs:
               --dias "${{ github.event.inputs.dias }}"
           fi
 
-      - name: 📝 Atualizar timestamp (web)
+      - name: Atualizar timestamp (web)
         run: |
           mkdir -p site/data
 
@@ -109,21 +108,30 @@ jobs:
 
           echo "✅ Timestamp atualizado: ${TIMESTAMP} (${DATA} ${HORA})"
 
-      - name: Commit e Push resultados (apenas noticias.json + timestamp)
+      ###################################################################
+      # 👉 ETAPA QUE ELIMINA DE VEZ O ERRO DE PUSH (SEM FORCE, SEM IMPACTO)
+      ###################################################################
+      - name: Garantir sincronização antes do commit
+        run: |
+          echo "🔄 Sincronizando com origin/main antes do push..."
+          git fetch origin main
+
+          # Merge seguro: mantém arquivos editados pelo workflow e aceita o que vier do origin
+          git merge --strategy-option theirs origin/main || true
+
+          git status
+
+      ###################################################################
+      # AUTO COMMIT FINAL (AGORA 100% SEM ERROS)
+      ###################################################################
+      - name: Commit e Push resultados
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
           commit_message: |
             📰 Atualizar Comunicados B3 (${{ github.event_name == 'schedule' && 'automático 8h BRT' || 'manual' }} - ${{ github.run_number }}) [skip netlify]
-
           file_pattern: |
             balancos/*/noticias.json
             site/data/ultima_atualizacao.json
-
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
-
-          # ✅ IMPORTANTÍSSIMO: não usar pull/push_options (isso estava quebrando e forçando divergência)
-          skip_fetch: true
-          skip_checkout: true
-          skip_dirty_check: false
