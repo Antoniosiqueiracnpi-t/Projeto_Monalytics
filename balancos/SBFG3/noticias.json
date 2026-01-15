@@ -1,0 +1,41 @@
+{
+  "empresa": {
+    "ticker": "SBFG3",
+    "nome": "GRUPO SBF SA",
+    "cnpj": "13.217.485/0001-11"
+  },
+  "ultima_atualizacao": "2026-01-15T13:54:30.779116",
+  "total_noticias": 3,
+  "noticias": [
+    {
+      "data": "2026-01-12",
+      "data_hora": "2026-01-12 18:21:46",
+      "titulo": "NM)  Aquisicao de Participacao Acionaria  12/01/26",
+      "headline": "GRUPO SBF (SBFG-NM) - Aquisicao de Participacao Acionaria - 12/01/26",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202345&agencia=18&dataNoticia=2026-01-12%2018:21:46",
+      "id": 3202345,
+      "categoria": "Outros"
+    },
+    {
+      "data": "2026-01-12",
+      "data_hora": "2026-01-12 18:15:00",
+      "titulo": "NM)  VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "headline": "GRUPO SBF (SBFG-NM) - VM Posicao Individual (Cia,Controladas e Coligadas)",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202281&agencia=18&dataNoticia=2026-01-12%2018:15:00",
+      "id": 3202281,
+      "categoria": "Outros"
+    },
+    {
+      "data": "2026-01-05",
+      "data_hora": "2026-01-05 18:04:26",
+      "titulo": "NM)  Data prevista para assembleia geral  24/04/26",
+      "headline": "GRUPO SBF (SBFG-NM) - Data prevista para assembleia geral - 24/04/26",
+      "conteudo": null,
+      "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3193345&agencia=18&dataNoticia=2026-01-05%2018:04:26",
+      "id": 3193345,
+      "categoria": "Governança"
+    }
+  ]
+}
