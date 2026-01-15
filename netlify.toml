@@ -42,18 +42,22 @@
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# CSS - Cache mínimo (5 minutos)
+# CSS - ZERO CACHE (detecta novas versões instantaneamente)
 [[headers]]
   for = "/css/*.css"
   [headers.values]
-    Cache-Control = "public, max-age=300, must-revalidate, stale-while-revalidate=60"
+    Cache-Control = "no-cache, no-store, must-revalidate, max-age=0"
+    Pragma = "no-cache"
+    Expires = "0"
     X-Content-Type-Options = "nosniff"
 
-# JS - Cache mínimo (5 minutos)
+# JS - ZERO CACHE (detecta novas versões instantaneamente)
 [[headers]]
   for = "/js/*.js"
   [headers.values]
-    Cache-Control = "public, max-age=300, must-revalidate, stale-while-revalidate=60"
+    Cache-Control = "no-cache, no-store, must-revalidate, max-age=0"
+    Pragma = "no-cache"
+    Expires = "0"
     X-Content-Type-Options = "nosniff"
 
 # JSON - Sem cache (dados financeiros)
