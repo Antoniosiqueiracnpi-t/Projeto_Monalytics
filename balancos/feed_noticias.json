@@ -1,61 +1,61 @@
 {
   "meta": {
-    "ultima_atualizacao": "2026-01-13T16:32:05.004290Z",
-    "data_atualizacao": "2026-01-13",
-    "hora_atualizacao": "16:32:05",
+    "ultima_atualizacao": "2026-01-15T13:48:55.064207Z",
+    "data_atualizacao": "2026-01-15",
+    "hora_atualizacao": "13:48:55",
     "total_empresas": 25,
-    "total_noticias": 604,
+    "total_noticias": 682,
     "periodo": {
       "inicio": "2025-12-15",
-      "fim": "2026-01-13"
+      "fim": "2026-01-15"
     }
   },
   "estatisticas": {
     "por_categoria": {
-      "Governança": 281,
-      "Outros": 193,
-      "Aviso": 92,
-      "Fato Relevante": 37,
+      "Governança": 344,
+      "Outros": 204,
+      "Aviso": 95,
+      "Fato Relevante": 38,
       "Resultados": 1
     },
     "por_ticker": {
-      "AGRO3": 334,
-      "CSMG3": 63,
+      "AGRO3": 393,
+      "CSMG3": 73,
       "PINE3": 16,
       "BMEB3": 16,
       "SANB3": 14,
       "ITUB3": 13,
+      "TTEN3": 13,
       "BBAS3": 12,
-      "TTEN3": 12,
       "BPAC3": 12,
       "CASN3": 11,
       "BEES3": 10,
+      "SLCE3": 10,
       "BBDC3": 10,
       "ABCB4": 9,
-      "SLCE3": 8,
       "SOJA3": 8,
+      "AGXY3": 8,
       "BSLI3": 8,
       "LAND3": 8,
       "IGSN3": 7,
-      "BRSR3": 7,
-      "BPAN4": 6
+      "BRSR3": 7
     },
     "top_categorias": [
       {
         "categoria": "Governança",
-        "total": 281
+        "total": 344
       },
       {
         "categoria": "Outros",
-        "total": 193
+        "total": 204
       },
       {
         "categoria": "Aviso",
-        "total": 92
+        "total": 95
       },
       {
         "categoria": "Fato Relevante",
-        "total": 37
+        "total": 38
       },
       {
         "categoria": "Resultados",
@@ -65,11 +65,11 @@
     "top_empresas": [
       {
         "ticker": "AGRO3",
-        "total": 334
+        "total": 393
       },
       {
         "ticker": "CSMG3",
-        "total": 63
+        "total": 73
       },
       {
         "ticker": "PINE3",
@@ -88,11 +88,11 @@
         "total": 13
       },
       {
-        "ticker": "BBAS3",
-        "total": 12
+        "ticker": "TTEN3",
+        "total": 13
       },
       {
-        "ticker": "TTEN3",
+        "ticker": "BBAS3",
         "total": 12
       },
       {
@@ -106,6 +106,1146 @@
     ]
   },
   "feed": [
+    {
+      "data": "2026-01-15",
+      "hora": "17:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 17:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:373 S:1(s) EDITAL AGOE - 27/01/2026 17:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205918&agencia=18&dataNoticia=2026-01-15%2009:28:12"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "16:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 16:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:224 S:1 EDITAL AGOE - 23/01/2026 16:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206039&agencia=18&dataNoticia=2026-01-15%2009:57:01"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "15:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 15:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:228 S:1 EDITAL AGOE - 23/01/2026 15:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206036&agencia=18&dataNoticia=2026-01-15%2009:55:27"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "15:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 15:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:376 S:1(s) EDITAL AGOE - 27/01/2026 15:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205919&agencia=18&dataNoticia=2026-01-15%2009:28:40"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "15:30:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 15:30",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:352 S:1 EDITAL AGOE - 26/01/2026 15:30",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206163&agencia=18&dataNoticia=2026-01-15%2010:20:44"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "15:30:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 15:30",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:239 S:1 EDITAL AGOE - 23/01/2026 15:30",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206029&agencia=18&dataNoticia=2026-01-15%2009:54:11"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "15:15:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 15:15",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:328 S:1 EDITAL AGOE - 26/01/2026 15:15",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206159&agencia=18&dataNoticia=2026-01-15%2010:19:22"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "15:15:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 15:15",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:231 S:1(s) EDITAL AGOE - 23/01/2026 15:15",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206024&agencia=18&dataNoticia=2026-01-15%2009:52:26"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "15:15:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 15:15",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:345 S:1(s) EDITAL AGOE - 27/01/2026 15:15",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205916&agencia=18&dataNoticia=2026-01-15%2009:27:08"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "15:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 15:00",
+        "headline": "ECO SEC AGRO (ECOA) CRI E:1 S:1 EDITAL AGOE - 23/01/2026 15:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206021&agencia=18&dataNoticia=2026-01-15%2009:51:10"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "15:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 15:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:200 S:1 EDITAL AGOE - 23/01/2026 15:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205944&agencia=18&dataNoticia=2026-01-15%2009:45:33"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "14:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 14:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:323 S:1 EDITAL AGOE - 26/01/2026 14:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206148&agencia=18&dataNoticia=2026-01-15%2010:15:18"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "14:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 14:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:216 S:1(s) EDITAL AGOE - 23/01/2026 14:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206014&agencia=18&dataNoticia=2026-01-15%2009:50:30"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "14:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 14:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:344 S:1(s) EDITAL AGOE - 27/01/2026 14:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205915&agencia=18&dataNoticia=2026-01-15%2009:26:31"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "14:30:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 14:30",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:222 S:1 EDITAL AGOE - 23/01/2026 14:30",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206008&agencia=18&dataNoticia=2026-01-15%2009:49:42"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "14:30:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 14:30",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:348 S:1(s) EDITAL AGOE - 27/01/2026 14:30",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205917&agencia=18&dataNoticia=2026-01-15%2009:27:38"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "14:15:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 14:15",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:221 S:1 EDITAL AGOE - 23/01/2026 14:15",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205999&agencia=18&dataNoticia=2026-01-15%2009:49:03"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "14:15:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 14:15",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:343 S:1 EDITAL AGOE - 27/01/2026 14:15",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205914&agencia=18&dataNoticia=2026-01-15%2009:26:01"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "14:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 14:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:322 S:1 EDITAL AGOE - 26/01/2026 14:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206144&agencia=18&dataNoticia=2026-01-15%2010:12:49"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "14:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 14:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:196 S:1(s) EDITAL AGOE - 23/01/2026 14:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205995&agencia=18&dataNoticia=2026-01-15%2009:48:28"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "14:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 14:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:237 S:1 EDITAL AGOE - 27/01/2026 14:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205913&agencia=18&dataNoticia=2026-01-15%2009:25:25"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "12:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 12:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:208 S:1 EDITAL AGOE - 23/01/2026 12:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205988&agencia=18&dataNoticia=2026-01-15%2009:47:50"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "12:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 12:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:166 S:1 EDITAL AGOE - 27/01/2026 12:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205904&agencia=18&dataNoticia=2026-01-15%2009:21:27"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "11:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 11:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:319 S:1(s) EDITAL AGOE - 26/01/2026 11:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206133&agencia=18&dataNoticia=2026-01-15%2010:09:58"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "11:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 11:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:207 S:1 EDITAL AGOE - 23/01/2026 11:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205978&agencia=18&dataNoticia=2026-01-15%2009:47:07"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "11:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 11:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:106 S:1(s) EDITAL AGOE - 27/01/2026 11:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205901&agencia=18&dataNoticia=2026-01-15%2009:20:08"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "11:30:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 11:30",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:209 S:1 EDITAL AGOE - 23/01/2026 11:30",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205961&agencia=18&dataNoticia=2026-01-15%2009:46:08"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "11:30:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 11:30",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:120 S:1(s) EDITAL AGOE - 27/01/2026 11:30",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205902&agencia=18&dataNoticia=2026-01-15%2009:20:46"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "11:15:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 11:15",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:301 S:1(s) EDITAL AGOE - 26/01/2026 11:15",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205936&agencia=18&dataNoticia=2026-01-15%2009:36:07"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "11:15:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 11:15",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:116 S:1 EDITAL AGOE - 27/01/2026 11:15",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205911&agencia=18&dataNoticia=2026-01-15%2009:24:48"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "11:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 11:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:308 S:1 EDITAL AGOE - 26/01/2026 11:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206127&agencia=18&dataNoticia=2026-01-15%2010:08:03"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "11:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 11:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:155 S:1(s) EDITAL AGOE - 23/01/2026 11:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205935&agencia=18&dataNoticia=2026-01-15%2009:35:32"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "11:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 11:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:84 S:1 EDITAL AGOE - 27/01/2026 11:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205910&agencia=18&dataNoticia=2026-01-15%2009:24:03"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "10:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 10:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:259 S:1(s) EDITAL AGOE - 26/01/2026 10:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206117&agencia=18&dataNoticia=2026-01-15%2010:06:39"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "10:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 10:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:140 S:1(s) EDITAL AGOE - 23/01/2026 10:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205933&agencia=18&dataNoticia=2026-01-15%2009:34:32"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "10:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 10:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:75 S:1(s) EDITAL AGOE - 27/01/2026 10:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205900&agencia=18&dataNoticia=2026-01-15%2009:19:10"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "10:30:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 10:30",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:378 S:1(s) EDITAL AGOE - 27/01/2026 10:30",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206167&agencia=18&dataNoticia=2026-01-15%2010:22:14"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "10:30:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 10:30",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:234 S:1(s) EDITAL AGOE - 26/01/2026 10:30",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206105&agencia=18&dataNoticia=2026-01-15%2010:05:22"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "10:30:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 10:30",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:131 S:1(s) EDITAL AGOE - 23/01/2026 10:30",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205929&agencia=18&dataNoticia=2026-01-15%2009:33:52"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "10:15:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 10:15",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:225 S:1 EDITAL AGOE - 26/01/2026 10:15",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206092&agencia=18&dataNoticia=2026-01-15%2010:03:47"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "10:15:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 10:15",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:145 S:1(s) EDITAL AGOE - 23/01/2026 10:15",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205934&agencia=18&dataNoticia=2026-01-15%2009:35:03"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "10:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 10:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:227 S:1(s) EDITAL AGOE - 26/01/2026 10:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3206045&agencia=18&dataNoticia=2026-01-15%2009:58:21"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "10:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 23/01/2026 10:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:100 S:1 EDITAL AGOE - 23/01/2026 10:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205922&agencia=18&dataNoticia=2026-01-15%2009:33:24"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "SLCE3",
+        "nome": "SLC AGRÍCOLA S.A.",
+        "cnpj": "89.096.457/0001-55"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  15/01/26  ",
+        "headline": "SLC AGRICOLA (SLCE-NM) - Outros Comunicados ao Mercado - 15/01/26  ",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205866&agencia=18&dataNoticia=2026-01-15%2008:52:27"
+      }
+    },
+    {
+      "data": "2026-01-15",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "TTEN3",
+        "nome": "TRÊS TENTOS AGROINDUSTRIAL S/A",
+        "cnpj": "94.813.102/0001-70"
+      },
+      "noticia": {
+        "titulo": "NM)  Data prevista para assembleia geral  28/04/26  ",
+        "headline": "3TENTOS (TTEN-NM) - Data prevista para assembleia geral - 28/04/26  ",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205860&agencia=18&dataNoticia=2026-01-15%2008:35:04"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "11:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 14/01/2026 11:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:137 S:1(s) ATA AGOE - 14/01/2026 11:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205362&agencia=18&dataNoticia=2026-01-14%2017:33:59"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": "53  Informe Mensal  12/2025 (R)",
+        "headline": "FI AGRO FYTO (FTCA) 42.537.438/0001-53 - Informe Mensal - 12/2025 (R)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204070&agencia=18&dataNoticia=2026-01-14%2008:29:11"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSMG3",
+        "nome": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS – COPASA MG ",
+        "cnpj": "17.281.106/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata da AGDEB  14/01/26",
+        "headline": "COPASA (CSMG-NM) - Ata da AGDEB - 14/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205748&agencia=18&dataNoticia=2026-01-14%2019:37:10"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSMG3",
+        "nome": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS – COPASA MG ",
+        "cnpj": "17.281.106/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Edital de Convocacao de AGDEB  23/01/26  (R)",
+        "headline": "COPASA (CSMG-NM) - Edital de Convocacao de AGDEB - 23/01/26  (R)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205015&agencia=18&dataNoticia=2026-01-14%2015:55:52"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSMG3",
+        "nome": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS – COPASA MG ",
+        "cnpj": "17.281.106/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Edital de Convocacao de AGDEB  23/01/26  (R)",
+        "headline": "COPASA (CSMG-NM) - Edital de Convocacao de AGDEB - 23/01/26  (R)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205012&agencia=18&dataNoticia=2026-01-14%2015:54:00"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSMG3",
+        "nome": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS – COPASA MG ",
+        "cnpj": "17.281.106/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Edital de Convocacao de AGDEB  23/01/26",
+        "headline": "COPASA (CSMG-NM) - Edital de Convocacao de AGDEB - 23/01/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204996&agencia=18&dataNoticia=2026-01-14%2015:44:06"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSMG3",
+        "nome": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS – COPASA MG ",
+        "cnpj": "17.281.106/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Edital de Convocacao de AGDEB  23/01/26",
+        "headline": "COPASA (CSMG-NM) - Edital de Convocacao de AGDEB - 23/01/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204988&agencia=18&dataNoticia=2026-01-14%2015:41:04"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSMG3",
+        "nome": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS – COPASA MG ",
+        "cnpj": "17.281.106/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Aviso aos Debenturistas  14/01/26",
+        "headline": "COPASA (CSMG-NM) - Aviso aos Debenturistas - 14/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204107&agencia=18&dataNoticia=2026-01-14%2009:08:59"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSMG3",
+        "nome": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS – COPASA MG ",
+        "cnpj": "17.281.106/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata da AGDEB  13/01/26",
+        "headline": "COPASA (CSMG-NM) - Ata da AGDEB - 13/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204022&agencia=18&dataNoticia=2026-01-14%2008:00:10"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSMG3",
+        "nome": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS – COPASA MG ",
+        "cnpj": "17.281.106/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata da AGDEB  13/01/26",
+        "headline": "COPASA (CSMG-NM) - Ata da AGDEB - 13/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204023&agencia=18&dataNoticia=2026-01-14%2008:00:10"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSMG3",
+        "nome": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS – COPASA MG ",
+        "cnpj": "17.281.106/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata da AGDEB  13/01/26",
+        "headline": "COPASA (CSMG-NM) - Ata da AGDEB - 13/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204024&agencia=18&dataNoticia=2026-01-14%2008:00:10"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGXY3",
+        "nome": "AGROGALAXY PARTICIPAÇÕES S.A.",
+        "cnpj": "21.240.146/0001-84"
+      },
+      "noticia": {
+        "titulo": "NM)  Boletim de voto a distancia para AGE  04/02/26",
+        "headline": "AGROGALAXY (AGXY-NM) - Boletim de voto a distancia para AGE - 04/02/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205565&agencia=18&dataNoticia=2026-01-14%2018:21:32"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGXY3",
+        "nome": "AGROGALAXY PARTICIPAÇÕES S.A.",
+        "cnpj": "21.240.146/0001-84"
+      },
+      "noticia": {
+        "titulo": "NM)  Manual para participacao na AGE  04/02/26",
+        "headline": "AGROGALAXY (AGXY-NM) - Manual para participacao na AGE - 04/02/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205438&agencia=18&dataNoticia=2026-01-14%2018:03:08"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGXY3",
+        "nome": "AGROGALAXY PARTICIPAÇÕES S.A.",
+        "cnpj": "21.240.146/0001-84"
+      },
+      "noticia": {
+        "titulo": "NM)  Proposta da Administracao para AGE  04/02/26",
+        "headline": "AGROGALAXY (AGXY-NM) - Proposta da Administracao para AGE - 04/02/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205437&agencia=18&dataNoticia=2026-01-14%2018:02:59"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGXY3",
+        "nome": "AGROGALAXY PARTICIPAÇÕES S.A.",
+        "cnpj": "21.240.146/0001-84"
+      },
+      "noticia": {
+        "titulo": "NM)  Edital de Convocacao de AGE  04/02/26",
+        "headline": "AGROGALAXY (AGXY-NM) - Edital de Convocacao de AGE - 04/02/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3205435&agencia=18&dataNoticia=2026-01-14%2018:02:48"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGXY3",
+        "nome": "AGROGALAXY PARTICIPAÇÕES S.A.",
+        "cnpj": "21.240.146/0001-84"
+      },
+      "noticia": {
+        "titulo": "NM)  Outros Comunicados ao Mercado  14/01/26",
+        "headline": "AGROGALAXY (AGXY-NM) - Outros Comunicados ao Mercado - 14/01/26",
+        "categoria": "Aviso",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204087&agencia=18&dataNoticia=2026-01-14%2009:01:15"
+      }
+    },
+    {
+      "data": "2026-01-14",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGXY3",
+        "nome": "AGROGALAXY PARTICIPAÇÕES S.A.",
+        "cnpj": "21.240.146/0001-84"
+      },
+      "noticia": {
+        "titulo": "NM)  Ata Reuniao do Conselho de Administracao  13/01/26",
+        "headline": "AGROGALAXY (AGXY-NM) - Ata Reuniao do Conselho de Administracao - 13/01/26",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3204084&agencia=18&dataNoticia=2026-01-14%2008:57:55"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "16:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 16:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:314 S:1(s) EDITAL AGOE - 26/01/2026 16:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203543&agencia=18&dataNoticia=2026-01-13%2017:12:08"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "15:45:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 15:45",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:295 S:1(s) EDITAL AGOE - 26/01/2026 15:45",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203541&agencia=18&dataNoticia=2026-01-13%2017:10:51"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "15:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 15:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:342 S:1(s) EDITAL AGOE - 26/01/2026 15:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203555&agencia=18&dataNoticia=2026-01-13%2017:17:31"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "14:30:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 14:30",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:332 S:1(s) EDITAL AGOE - 26/01/2026 14:30",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203553&agencia=18&dataNoticia=2026-01-13%2017:16:22"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "14:15:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 14:15",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:321 S:1(s) EDITAL AGOE - 26/01/2026 14:15",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203548&agencia=18&dataNoticia=2026-01-13%2017:14:13"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "12:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 12:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:326 S:1 EDITAL AGOE - 26/01/2026 12:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203551&agencia=18&dataNoticia=2026-01-13%2017:15:18"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "11:30:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 26/01/2026 11:30",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:315 S:1(s) EDITAL AGOE - 26/01/2026 11:30",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203547&agencia=18&dataNoticia=2026-01-13%2017:13:06"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "10:15:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 10:15",
+        "headline": "ECO SEC AGRO (ECOA) CRI E:3 S:1 EDITAL AGOE - 27/01/2026 10:15",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203538&agencia=18&dataNoticia=2026-01-13%2017:09:31"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "10:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " 27/01/2026 10:00",
+        "headline": "ECO SEC AGRO (ECOA) CRA E:354 S:1(s) EDITAL AGOE - 27/01/2026 10:00",
+        "categoria": "Governança",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203562&agencia=18&dataNoticia=2026-01-13%2017:19:59"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " Dem. Financeiras Anuais Completas  31/12/22",
+        "headline": "JAPUNGU AGRO (JACR) - Dem. Financeiras Anuais Completas - 31/12/22",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203212&agencia=18&dataNoticia=2026-01-13%2014:51:54"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " Dem. Financeiras Anuais Completas  31/12/23",
+        "headline": "JAPUNGU AGRO (JACR) - Dem. Financeiras Anuais Completas - 31/12/23",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203209&agencia=18&dataNoticia=2026-01-13%2014:47:07"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " Dem. Financeiras Anuais Completas  31/12/24",
+        "headline": "JAPUNGU AGRO (JACR) - Dem. Financeiras Anuais Completas - 31/12/24",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203195&agencia=18&dataNoticia=2026-01-13%2014:42:33"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " Anuncio de Inicio Distribuicao Publica  09/01/26",
+        "headline": "JAPUNGU AGRO (JACR) - Anuncio de Inicio Distribuicao Publica - 09/01/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202903&agencia=18&dataNoticia=2026-01-13%2011:54:45"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "AGRO3",
+        "nome": "BRASILAGRO – COMPANHIA BRASILEIRA DE PROPRIEDADES AGRÍCOLAS",
+        "cnpj": "07.628.528/0001-59"
+      },
+      "noticia": {
+        "titulo": " Anuncio de Inicio Distribuicao Publica  12/01/26",
+        "headline": "COAMO AGRO (COAM) - Anuncio de Inicio Distribuicao Publica - 12/01/26",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202669&agencia=18&dataNoticia=2026-01-13%2009:35:24"
+      }
+    },
     {
       "data": "2026-01-13",
       "hora": "00:00:00",
@@ -134,6 +1274,36 @@
         "headline": "ECO SEC AGRO (ECOA) CRA E:436 S:1(s) TERMO SECURITIZACAO. - 12/01/2026",
         "categoria": "Outros",
         "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3202624&agencia=18&dataNoticia=2026-01-13%2008:29:09"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "SLCE3",
+        "nome": "SLC AGRÍCOLA S.A.",
+        "cnpj": "89.096.457/0001-55"
+      },
+      "noticia": {
+        "titulo": "NM)  Fato Relevante  13/01/26",
+        "headline": "SLC AGRICOLA (SLCE-NM) - Fato Relevante - 13/01/26",
+        "categoria": "Fato Relevante",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203740&agencia=18&dataNoticia=2026-01-13%2018:08:26"
+      }
+    },
+    {
+      "data": "2026-01-13",
+      "hora": "00:00:00",
+      "empresa": {
+        "ticker": "CSMG3",
+        "nome": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS – COPASA MG ",
+        "cnpj": "17.281.106/0001-03"
+      },
+      "noticia": {
+        "titulo": "NM)  Calendario de Eventos Corporativos  ate 31/12/26 (R)",
+        "headline": "COPASA (CSMG-NM) - Calendario de Eventos Corporativos - ate 31/12/26 (R)",
+        "categoria": "Outros",
+        "url": "https://sistemasweb.b3.com.br/PlantaoNoticias/Noticias/Detail?idNoticia=3203439&agencia=18&dataNoticia=2026-01-13%2016:18:38"
       }
     },
     {
