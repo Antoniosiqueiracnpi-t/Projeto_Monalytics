@@ -28,12 +28,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- =========================== STYLESHEETS =========================== -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=20260115144200">
 
     <!-- =========================== FONT AWESOME =========================== -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
+    <!-- =========================== SCRIPT DE DETECÇÃO DE VERSÃO =========================== -->
+    <script>
+        (function() {
+            const APP_VERSION = '20260115144200'; // Atualizar toda vez que modificar o site
+            const STORED_VERSION = localStorage.getItem('monalytics_version');
+            
+            if (STORED_VERSION !== APP_VERSION) {
+                console.log('🔄 Nova versão detectada. Limpando cache...');
+                
+                // Limpa localStorage e sessionStorage
+                localStorage.clear();
+                sessionStorage.clear();
+                
+                // Salva nova versão
+                localStorage.setItem('monalytics_version', APP_VERSION);
+                
+                // Se não é a primeira visita, força reload
+                if (STORED_VERSION) {
+                    window.location.reload(true);
+                }
+            }
+        })();
+    </script>    
 
     <!-- =========================== HEADER / NAVIGATION =========================== -->
     <header class="header" id="header">
@@ -1158,10 +1182,11 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=20260115144200"></script>
 
     <!-- Auto-Atualização de Dados -->
-    <script src="/js/auto-update.js"></script>
+    <script src="js/auto-update.js?v=20260115144200"></script>
+
 
     <!-- Opcional: Event listener para reagir a atualizações -->
     <script>
