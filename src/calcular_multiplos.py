@@ -1144,110 +1144,32 @@ def _calcular_market_cap_atual(dados: DadosEmpresa, ticker_preco: Optional[str] 
     return np.nan
 
 
-def _somar_contas_periodo(df: Optional[pd.DataFrame], periodo: str, codigos_base: List[str]) -> float:
-    """Soma contas (balanço) em um período, suportando imputação de período.
-
-    - Usa _extrair_valor_conta para cada código base (que já soma subcontas).
-    - Se o período não existir no DF, aplica _encontrar_periodo_imputacao.
-
-    Retorna R$ MIL.
-    """
-    if df is None or df.empty:
-        return np.nan
-
-    periodo_req = str(periodo or '').upper().strip()
-    if not periodo_req:
-        return np.nan
-
-    periodo_use = periodo_req if periodo_req in df.columns else (_encontrar_periodo_imputacao(df, periodo_req) or periodo_req)
-    if periodo_use not in df.columns:
-        return np.nan
-
-    soma = 0.0
-    found = False
-
-    for cd in codigos_base:
-        v = _extrair_valor_conta(df, str(cd), periodo_use)
-        if np.isfinite(v):
-            soma += float(v)
-            found = True
-
-    return soma if found else np.nan
-
-
-def _calcular_divida_cp(dados: DadosEmpresa, periodo: str) -> float:
-    """Dívida bruta - curto prazo (R$ mil).
-
-    Metodologia alinhada a StatusInvest/Investidor10: inclui passivos onerosos (CP).
-    """
-    # Padrões CVM mais comuns (CP): empréstimos/financiamentos, debêntures, arrendamentos
-    cods = ["2.01.04", "2.01.05", "2.01.06", "2.01.07"]
-    return _somar_contas_periodo(dados.bpp, periodo, cods)
-
-
-def _calcular_divida_lp(dados: DadosEmpresa, periodo: str) -> float:
-    """Dívida bruta - longo prazo (R$ mil)."""
-    cods = ["2.02.01", "2.02.02", "2.02.03", "2.02.04"]
-    return _somar_contas_periodo(dados.bpp, periodo, cods)
-
-
-def _calcular_divida_bruta(dados: DadosEmpresa, periodo: str) -> float:
-    """Dívida bruta (R$ mil).
-
-    Observação:
-    - Se apenas CP ou LP existir, usa o que estiver disponível.
-    - Se nenhum estiver disponível, retorna NaN.
-    """
-    cp = _calcular_divida_cp(dados, periodo)
-    lp = _calcular_divida_lp(dados, periodo)
-
-    if not np.isfinite(cp) and not np.isfinite(lp):
-        return np.nan
-
-    cp_val = cp if np.isfinite(cp) else 0.0
-    lp_val = lp if np.isfinite(lp) else 0.0
-    return float(cp_val + lp_val)
-
-
-def _calcular_disponibilidade(dados: DadosEmpresa, periodo: str) -> float:
-    """Disponibilidade (Caixa + Aplicações financeiras) em R$ mil."""
-    cods = [CONTAS_BPA["caixa"], CONTAS_BPA["aplicacoes"]]
-    return _somar_contas_periodo(dados.bpa, periodo, cods)
-
-
 def _calcular_ev(dados: DadosEmpresa, periodo: str, market_cap: Optional[float] = None) -> float:
-    """Calcula Enterprise Value (EV / Valor da Firma) em R$ mil.
-
-    Metodologia (StatusInvest / Investidor10):
-        EV = Valor de Mercado (empresa) + Dívida Bruta - Disponibilidade
-
-    Notas importantes:
-    - Valor de Mercado (Market Cap) deve ser o da EMPRESA (ON+PN), não da classe do ticker.
-    - Dívida Bruta: soma passivos onerosos CP + LP (inclui itens como debêntures/arrendamentos quando existirem).
-    - Disponibilidade: Caixa + Aplicações financeiras (equivalentes/curto prazo).
-
-    Retorna:
+    """
+    Calcula Enterprise Value = Market Cap + Dívida Líquida
+    
+    Returns:
         EV em R$ MIL
     """
-    periodo = str(periodo or '').upper().strip()
-
-    # Market Cap (empresa) - por período quando possível
     if market_cap is None:
-        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
-        if not np.isfinite(market_cap):
-            market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
-
+        market_cap = _calcular_market_cap_atual(dados)
+    
     if not np.isfinite(market_cap):
         return np.nan
-
-    divida_bruta = _calcular_divida_bruta(dados, periodo)
-    disponibilidade = _calcular_disponibilidade(dados, periodo)
-
-    divida_val = divida_bruta if np.isfinite(divida_bruta) else 0.0
-    disp_val = disponibilidade if np.isfinite(disponibilidade) else 0.0
-
-    return float(market_cap + divida_val - disp_val)
-
+    
+    emp_cp = _obter_valor_pontual(dados.bpp, CONTAS_BPP["emprestimos_cp"], periodo, ["2.01.04", "2.01.04.01"])
+    emp_lp = _obter_valor_pontual(dados.bpp, CONTAS_BPP["emprestimos_lp"], periodo, ["2.02.01", "2.02.01.01"])
+    caixa = _obter_valor_pontual(dados.bpa, CONTAS_BPA["caixa"], periodo)
+    aplic = _obter_valor_pontual(dados.bpa, CONTAS_BPA["aplicacoes"], periodo)
+    
+    emp_cp = emp_cp if np.isfinite(emp_cp) else 0
+    emp_lp = emp_lp if np.isfinite(emp_lp) else 0
+    caixa = caixa if np.isfinite(caixa) else 0
+    aplic = aplic if np.isfinite(aplic) else 0
+    
+    divida_liquida = emp_cp + emp_lp - caixa - aplic
+    
+    return market_cap + divida_liquida
 
 def _calcular_vpa(dados: DadosEmpresa, periodo: str) -> float:
     """
@@ -1857,17 +1779,15 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     
     # ==================== MARKET CAP E EV ====================
     
-    # StatusInvest/Investidor10: Valor de Mercado (e EV) são da EMPRESA (ON+PN),
-    # independentemente da classe do ticker (ex.: PETR3 e PETR4 têm o mesmo VM/EV).
     if usar_preco_atual:
-        market_cap_empresa = _calcular_market_cap_atual(dados, ticker_preco=None)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
     else:
-        market_cap_empresa = _calcular_market_cap(dados, periodo, ticker_preco=None)
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
 
     # ✅ Expor Valor de Mercado (R$ mil)
-    resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap_empresa, decimals=2)
-
-    ev = _calcular_ev(dados, periodo, market_cap_empresa)
+    resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+    
+    ev = _calcular_ev(dados, periodo, market_cap)
 
     # ==================== LUCRO LÍQUIDO LTM (para PAYOUT) ====================
     
@@ -1931,31 +1851,30 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     
     # ROIC = NOPAT / Capital Investido
     nopat = ebit_ltm * (1 - TAXA_IR_NOPAT) if np.isfinite(ebit_ltm) else np.nan
-
-    # StatusInvest/Investidor10: Dívida Bruta e Disponibilidade (Caixa + Aplicações)
-    divida_cp = _calcular_divida_cp(dados, periodo)
-    divida_lp = _calcular_divida_lp(dados, periodo)
-    divida_bruta = _calcular_divida_bruta(dados, periodo)
-    disponibilidade = _calcular_disponibilidade(dados, periodo)
-
-    divida_cp_val = divida_cp if np.isfinite(divida_cp) else 0.0
-    divida_lp_val = divida_lp if np.isfinite(divida_lp) else 0.0
-    divida_bruta_val = divida_bruta if np.isfinite(divida_bruta) else (divida_cp_val + divida_lp_val)
-    disponibilidade_val = disponibilidade if np.isfinite(disponibilidade) else 0.0
-
-    divida_liquida_calc = divida_bruta_val - disponibilidade_val
+    
+    emp_cp = _obter_valor_pontual(dados.bpp, CONTAS_BPP["emprestimos_cp"], periodo, ["2.01.04"])
+    emp_lp = _obter_valor_pontual(dados.bpp, CONTAS_BPP["emprestimos_lp"], periodo, ["2.02.01"])
+    caixa = _obter_valor_pontual(dados.bpa, CONTAS_BPA["caixa"], periodo)
+    aplic = _obter_valor_pontual(dados.bpa, CONTAS_BPA["aplicacoes"], periodo)
+    
+    emp_cp_val = emp_cp if np.isfinite(emp_cp) else 0
+    emp_lp_val = emp_lp if np.isfinite(emp_lp) else 0
+    caixa_val = caixa if np.isfinite(caixa) else 0
+    aplic_val = aplic if np.isfinite(aplic) else 0
+    
+    divida_liquida_calc = emp_cp_val + emp_lp_val - caixa_val - aplic_val
     capital_investido = pl + divida_liquida_calc if np.isfinite(pl) else np.nan
     resultado["ROIC"] = _normalizar_valor(_safe_divide(nopat, capital_investido) * 100)
-
+    
     resultado["MARGEM_EBITDA"] = _normalizar_valor(_safe_divide(ebitda_ltm, receita_ltm) * 100)
     resultado["MARGEM_LIQUIDA"] = _normalizar_valor(_safe_divide(ll_ltm, receita_ltm) * 100)
-
+    
     # ==================== ENDIVIDAMENTO ====================
-
+    
+    divida_bruta = emp_cp_val + emp_lp_val
     resultado["DIV_LIQ_EBITDA"] = _normalizar_valor(_safe_divide(divida_liquida_calc, ebitda_ltm))
     resultado["DIV_LIQ_PL"] = _normalizar_valor(_safe_divide(divida_liquida_calc, pl))
-
-
+    
     #resultado_fin = _calcular_ltm(dados, dados.dre, CONTAS_DRE["resultado_financeiro"], periodo)
     #desp_fin = abs(resultado_fin) if np.isfinite(resultado_fin) and resultado_fin < 0 else np.nan
 
@@ -1963,7 +1882,7 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     desp_fin = abs(desp_fin_ltm) if np.isfinite(desp_fin_ltm) else np.nan
     resultado["ICJ"] = _normalizar_valor(_safe_divide(ebit_ltm, desp_fin))
     
-    resultado["COMPOSICAO_DIVIDA"] = _normalizar_valor(_safe_divide(divida_cp_val, divida_bruta_val) * 100)
+    resultado["COMPOSICAO_DIVIDA"] = _normalizar_valor(_safe_divide(emp_cp_val, divida_bruta) * 100)
     
     # ==================== LIQUIDEZ ====================
     
@@ -2469,16 +2388,16 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     
     # ==================== MARKET CAP E EV ====================
     
-    # StatusInvest/Investidor10: VM/EV são da EMPRESA (mesma lógica das não-financeiras)
     if usar_preco_atual:
-        market_cap_empresa = _calcular_market_cap_atual(dados, ticker_preco=None)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
     else:
-        market_cap_empresa = _calcular_market_cap(dados, periodo, ticker_preco=None)
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
+
 
     # ✅ Expor Valor de Mercado (R$ mil)
-    resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap_empresa, decimals=2)
-
-    ev = _calcular_ev(dados, periodo, market_cap_empresa)
+    resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+    
+    ev = _calcular_ev(dados, periodo, market_cap)
     
     # ==================== VALORES BASE - ESPECÍFICOS POR TICKER ====================
     
