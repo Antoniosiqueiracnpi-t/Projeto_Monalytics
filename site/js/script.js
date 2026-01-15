@@ -4957,48 +4957,55 @@ function buscarEmpresasDoSetor(ticker) {
     };
 }
 
+
 /**
- * Busca múltiplos de uma empresa via arquivo multiplos.json - VERSÃO OTIMIZADA
+ * Busca múltiplos de uma empresa via arquivo multiplos_TICKER.js - VERSÃO CORRIGIDA
  */
 async function buscarMultiplosEmpresa(ticker) {
     try {
         const tickerNorm = normalizarTicker(ticker);
         const tickerPasta = obterTickerPasta(tickerNorm);
-        
+
         console.log(`📈 Buscando múltiplos de ${tickerNorm} (pasta: ${tickerPasta})`);
-        
+
         const timestamp = new Date().getTime();
-        const url = `${GITHUB_RAW_BASE}/balancos/${tickerPasta}/multiplos.json?t=${timestamp}`;
-        
+
+        // ✅ CORREÇÃO: Busca multiplos_PETR3.js ou multiplos_PETR4.js
+        const url = `${GITHUB_RAW_BASE}/balancos/${tickerPasta}/multiplos_${tickerNorm}.js?t=${timestamp}`;
+
         // ✅ Timeout de 3 segundos
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000);
-        
+
         const response = await fetch(url, { signal: controller.signal });
         clearTimeout(timeoutId);
-        
+
         if (!response.ok) {
             console.warn(`⚠️ Múltiplos não encontrados para ${tickerNorm} (HTTP ${response.status})`);
             return null;  // ✅ Retorna null em vez de quebrar
         }
-        
-        const data = await response.json();
-        
+
+        // ✅ Carrega o arquivo .js que define window.multiplosData
+        const scriptText = await response.text();
+        eval(scriptText);
+
+        const data = window.multiplosData;
+
         // Busca info da empresa no mapeamento
         const empresaInfo = mapeamentoB3?.find(e => normalizarTicker(e.ticker) === tickerNorm);
-        
+
         // Extrai múltiplos do LTM
         const multiplos = data?.ltm?.multiplos;
-        
+
         console.log(`✅ Múltiplos carregados para ${tickerNorm}`);
-        
+
         return {
             ticker: tickerNorm,
             empresa: empresaInfo?.empresa || tickerNorm,
             logo: `${GITHUB_RAW_BASE}/balancos/${tickerPasta}/logo.png`,
             multiplos: multiplos || {}
         };
-        
+
     } catch (error) {
         // Se foi timeout ou erro de rede, não loga como erro
         if (error.name === 'AbortError') {
@@ -5009,6 +5016,7 @@ async function buscarMultiplosEmpresa(ticker) {
         return null;
     }
 }
+
 
 
 
