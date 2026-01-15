@@ -1144,124 +1144,32 @@ def _calcular_market_cap_atual(dados: DadosEmpresa, ticker_preco: Optional[str] 
     return np.nan
 
 
-def _somar_contas_por_regex(df: pd.DataFrame, periodo: str, include_regex: str,
-                           exclude_regex: Optional[str] = None,
-                           prefix_regex: Optional[str] = None) -> float:
-    """
-    Soma valores (em R$ MIL) de contas cujo `ds_conta` bate com um regex.
-    Usa _obter_valor_pontual por cd_conta para herdar a lógica de imputação/lookup por período.
-    Evita dupla contagem removendo códigos-filho quando o código-pai já está incluído.
-    """
-    if df is None or len(df) == 0:
-        return np.nan
-    if "ds_conta" not in df.columns or "cd_conta" not in df.columns:
-        return np.nan
-
-    s_desc = df["ds_conta"].astype(str)
-    s_cd = df["cd_conta"].astype(str)
-
-    try:
-        mask = s_desc.str.contains(include_regex, flags=re.IGNORECASE, regex=True, na=False)
-        if exclude_regex:
-            mask &= ~s_desc.str.contains(exclude_regex, flags=re.IGNORECASE, regex=True, na=False)
-        if prefix_regex:
-            mask &= s_cd.str.contains(prefix_regex, regex=True, na=False)
-    except re.error:
-        return np.nan
-
-    cods = s_cd[mask].dropna().unique().tolist()
-    if not cods:
-        return np.nan
-
-    # remove códigos-filho se o pai já está presente (ex.: 2.01.04 e 2.01.04.01)
-    cods_sorted = sorted(cods, key=len)
-    keep: List[str] = []
-    for c in cods_sorted:
-        if not any(c.startswith(k) and c != k for k in keep):
-            keep.append(c)
-
-    total = 0.0
-    any_val = False
-    for cd in keep:
-        v = _obter_valor_pontual(df, cd, periodo)
-        if np.isfinite(v):
-            total += float(v)
-            any_val = True
-
-    return total if any_val else np.nan
-
-
-def _calcular_divida_bruta_e_disponibilidades(dados: DadosEmpresa, periodo: str) -> Tuple[float, float]:
-    """
-    Retorna (dívida_bruta, disponibilidades) em R$ MIL.
-    - Dívida bruta: tenta por regex (empréstimos/financiamentos/debêntures/arrendamentos) no BPP,
-      com fallback para (2.01.04 + 2.02.01).
-    - Disponibilidades: tenta por regex (caixa/equivalentes/aplicações/disponibilidades) no BPA,
-      com fallback para (1.01.01 + 1.01.02).
-    """
-    # Dívida bruta (BPP)
-    divida_bruta = _somar_contas_por_regex(
-        dados.bpp,
-        periodo,
-        include_regex=r"(empr[eé]st|financ|deb[eê]nt|arrend|lease|bond|note)",
-        exclude_regex=r"(dep[oó]sit|deposit|capta[cç][aã]o|forneced|provis|impost|tribut|sal[aá]r|dividend|jscp|juros\s+sobre\s+capital)",
-        prefix_regex=r"^2\.(01|02)\."
-    )
-
-    if not np.isfinite(divida_bruta) or abs(divida_bruta) < 1e-9:
-        emp_cp = _obter_valor_pontual(dados.bpp, CONTAS_BPP["emprestimos_cp"], periodo, ["2.01.04", "2.01.04.01"])
-        emp_lp = _obter_valor_pontual(dados.bpp, CONTAS_BPP["emprestimos_lp"], periodo, ["2.02.01", "2.02.01.01"])
-        emp_cp = emp_cp if np.isfinite(emp_cp) else 0.0
-        emp_lp = emp_lp if np.isfinite(emp_lp) else 0.0
-        divida_bruta = float(emp_cp + emp_lp)
-
-    # Disponibilidades (BPA)
-    disponibilidades = _somar_contas_por_regex(
-        dados.bpa,
-        periodo,
-        include_regex=r"(caixa|equival|aplica[cç][aã]o|disponibil)",
-        exclude_regex=None,
-        prefix_regex=r"^1\.01\."
-    )
-
-    if not np.isfinite(disponibilidades) or abs(disponibilidades) < 1e-9:
-        caixa = _obter_valor_pontual(dados.bpa, CONTAS_BPA["caixa"], periodo)
-        aplic = _obter_valor_pontual(dados.bpa, CONTAS_BPA["aplicacoes"], periodo)
-        caixa = caixa if np.isfinite(caixa) else 0.0
-        aplic = aplic if np.isfinite(aplic) else 0.0
-        disponibilidades = float(caixa + aplic)
-
-    return float(divida_bruta), float(disponibilidades)
-
-
 def _calcular_ev(dados: DadosEmpresa, periodo: str, market_cap: Optional[float] = None) -> float:
     """
-    Calcula Enterprise Value (EV) em R$ MIL.
-
-    Regra alinhada às plataformas (Investidor10/StatusInvest):
-        EV = Valor de Mercado (empresa) + Dívida Bruta - Disponibilidades
-
-    Observações:
-    - Para empresas com múltiplas classes (3/4/11), o EV deve ser de EMPRESA (mesmo EV para PETR3/PETR4, etc.).
-      Por isso, quando `market_cap` não é informado (ou é inválido), usamos `_calcular_market_cap_atual(dados)`
-      que soma todas as classes disponíveis.
-    - Dívida bruta e disponibilidades tentam capturar também arrendamentos/debêntures via regex em `ds_conta`,
-      com fallback seguro para as contas padrão (2.01.04 + 2.02.01) e (1.01.01 + 1.01.02).
+    Calcula Enterprise Value = Market Cap + Dívida Líquida
+    
+    Returns:
+        EV em R$ MIL
     """
-    if market_cap is None or not np.isfinite(market_cap):
+    if market_cap is None:
         market_cap = _calcular_market_cap_atual(dados)
-
+    
     if not np.isfinite(market_cap):
         return np.nan
-
-    divida_bruta, disponibilidades = _calcular_divida_bruta_e_disponibilidades(dados, periodo)
-
-    divida_bruta = divida_bruta if np.isfinite(divida_bruta) else 0.0
-    disponibilidades = disponibilidades if np.isfinite(disponibilidades) else 0.0
-
-    divida_liquida = divida_bruta - disponibilidades
-    return float(market_cap + divida_liquida)
-a
+    
+    emp_cp = _obter_valor_pontual(dados.bpp, CONTAS_BPP["emprestimos_cp"], periodo, ["2.01.04", "2.01.04.01"])
+    emp_lp = _obter_valor_pontual(dados.bpp, CONTAS_BPP["emprestimos_lp"], periodo, ["2.02.01", "2.02.01.01"])
+    caixa = _obter_valor_pontual(dados.bpa, CONTAS_BPA["caixa"], periodo)
+    aplic = _obter_valor_pontual(dados.bpa, CONTAS_BPA["aplicacoes"], periodo)
+    
+    emp_cp = emp_cp if np.isfinite(emp_cp) else 0
+    emp_lp = emp_lp if np.isfinite(emp_lp) else 0
+    caixa = caixa if np.isfinite(caixa) else 0
+    aplic = aplic if np.isfinite(aplic) else 0
+    
+    divida_liquida = emp_cp + emp_lp - caixa - aplic
+    
+    return market_cap + divida_liquida
 
 def _calcular_vpa(dados: DadosEmpresa, periodo: str) -> float:
     """
@@ -1432,24 +1340,66 @@ def _obter_valor_medio(
 
 def _calcular_da_periodo(dados: DadosEmpresa, periodo: str) -> float:
     """
-    Calcula D&A (Depreciação e Amortização) de um período.
-    """
-    if dados.dfc is None:
-        return np.nan
-    
-    codigos_da = ["6.01.DA", "6.01.01.02", "6.01.01.01", "6.01.01"]
-    
-    for cod in codigos_da:
-        val = _extrair_valor_conta(dados.dfc, cod, periodo)
-        if np.isfinite(val):
-            return abs(val)
-    
-    return np.nan
+    Calcula D&A (Depreciação e Amortização) de um período de forma **robusta**.
 
+    Problema comum (que derruba EV/EBITDA): usar agregadores amplos de DFC (ex.: 6.01.01)
+    como se fossem D&A. Em muitas companhias, 6.01.01 representa "Ajustes" (com vários itens),
+    o que superestima o EBITDA.
+
+    Regra (universal):
+    1) Prioriza código sintético 6.01.DA (se existir).
+    2) Depois tenta códigos específicos de D&A (6.01.01.02 e 6.01.01.01).
+    3) Se não encontrar, NÃO usa o agregador 6.01.01 (evita superestimar); retorna NaN.
+       Nesse caso, o EBITDA do período vira uma aproximação conservadora (= EBIT).
+    """
+    if dados.dfc is None or periodo not in dados.dfc.columns:
+        return np.nan
+
+    dfc = dados.dfc
+    if 'cd_conta' not in dfc.columns:
+        return np.nan
+
+    def _val_exato(cd: str) -> float:
+        mask = (dfc['cd_conta'] == cd)
+        if mask.any():
+            v = pd.to_numeric(dfc.loc[mask, periodo], errors='coerce').values[0]
+            return float(v) if pd.notna(v) else np.nan
+        return np.nan
+
+    # 1) Preferência máxima: código sintético gerado pelo seu pipeline (quando existir)
+    val = _val_exato("6.01.DA")
+    if np.isfinite(val):
+        return abs(val)
+
+    # 2) Preferência: códigos específicos de D&A (podem ter subcontas; aqui permitimos soma do ramo específico)
+    for cd in ("6.01.01.02", "6.01.01.01"):
+        v = _extrair_valor_conta(dfc, cd, periodo)
+        if np.isfinite(v):
+            return abs(v)
+
+    # 3) Fallback: tentar encontrar qualquer subconta típica de D&A sob 6.01.01.*
+    # (sem recorrer ao agregador 6.01.01, que costuma englobar diversos "Ajustes")
+    try:
+        ser_cd = dfc['cd_conta'].astype(str)
+    except Exception:
+        return np.nan
+
+    # Preferir padrões clássicos: ...01 ou ...02 logo abaixo de 6.01.01
+    candidatos = dfc[ser_cd.str.match(r"^6\.01\.01\.(01|02)(\.|$)", na=False)]
+    if not candidatos.empty:
+        vals = pd.to_numeric(candidatos[periodo], errors='coerce')
+        soma = float(np.nansum(np.abs(vals.values)))
+        return soma if np.isfinite(soma) and soma > 0 else np.nan
+
+    # Não usar 6.01.01 (agregador amplo) para não superestimar EBITDA
+    return np.nan
 
 def _calcular_ebitda_periodo(dados: DadosEmpresa, periodo: str) -> float:
     """
-    Calcula EBITDA de um período: EBIT + |D&A|
+    Calcula EBITDA de um período.
+
+    Regra: EBITDA = EBIT + D&A (D&A robusto via DFC; se D&A indisponível, aproxima por EBIT).
+    Isso evita superestimar EBITDA quando o DFC traz um agregador amplo de ajustes.
     """
     ebit = _extrair_valor_conta(dados.dre, CONTAS_DRE["ebit"], periodo)
     
@@ -1912,10 +1862,7 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     caixa_val = caixa if np.isfinite(caixa) else 0
     aplic_val = aplic if np.isfinite(aplic) else 0
     
-    div_bruta_calc, disp_calc = _calcular_divida_bruta_e_disponibilidades(dados, periodo)
-    div_bruta_calc = div_bruta_calc if np.isfinite(div_bruta_calc) else (emp_cp_val + emp_lp_val)
-    disp_calc = disp_calc if np.isfinite(disp_calc) else (caixa_val + aplic_val)
-    divida_liquida_calc = div_bruta_calc - disp_calc
+    divida_liquida_calc = emp_cp_val + emp_lp_val - caixa_val - aplic_val
     capital_investido = pl + divida_liquida_calc if np.isfinite(pl) else np.nan
     resultado["ROIC"] = _normalizar_valor(_safe_divide(nopat, capital_investido) * 100)
     
