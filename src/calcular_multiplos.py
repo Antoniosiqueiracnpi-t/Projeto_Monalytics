@@ -396,6 +396,7 @@ class DadosEmpresa:
     precos: Optional[pd.DataFrame] = None
     acoes: Optional[pd.DataFrame] = None
     dividendos: Optional[pd.DataFrame] = None
+    dividendos_detalhado: Optional[List[Dict]] = None  # CORREÇÃO v3.0: dados do JSON
     padrao_fiscal: Optional[PadraoFiscal] = None
     periodos: List[str] = field(default_factory=list)
     erros: List[str] = field(default_factory=list)
@@ -456,6 +457,16 @@ def carregar_dados_empresa(ticker: str) -> DadosEmpresa:
     dados.precos = _carregar_csv_padronizado(pasta / "precos_trimestrais.csv")
     dados.acoes = _carregar_csv_padronizado(pasta / "acoes_historico.csv")
     dados.dividendos = _carregar_csv_padronizado(pasta / "dividendos_trimestrais.csv")
+    
+    # CORREÇÃO v3.0: Carregar dividendos_detalhado.json
+    json_path = pasta / "dividendos_detalhado.json"
+    if json_path.exists():
+        try:
+            with open(json_path, 'r', encoding='utf-8') as f:
+                json_data = json.load(f)
+                dados.dividendos_detalhado = json_data.get('dividendos', [])
+        except Exception:
+            dados.dividendos_detalhado = None
     
     if dados.dre is None:
         dados.erros.append("DRE padronizado não encontrado")
@@ -1547,20 +1558,62 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
 
 def _calcular_dpa_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     """
-    CORREÇÃO v3.0: Calcula DPA LTM (Dividendo por Ação) somando diretamente dos 4 trimestres.
+    CORREÇÃO v3.0: Calcula DPA LTM usando dividendos_detalhado.json
     
-    Esta função evita as conversões DPA → Total → DPA que causavam erros.
+    Metodologia alinhada com plataformas (StatusInvest, Fundamentus):
+    1. Filtra últimos 12 meses baseado em data_com
+    2. Remove duplicatas (ON/PN tem valores idênticos)
+    3. Soma valores únicos
     
-    Exemplo: Se periodo_fim = "2025T3"
-    - LTM = DPA(2024T4) + DPA(2025T1) + DPA(2025T2) + DPA(2025T3)
+    Args:
+        dados: Dados da empresa (deve ter dividendos_detalhado carregado)
+        periodo_fim: Período de referência (ex: "2025T3")
     
     Returns:
-        DPA LTM em R$/ação (soma direta, sem conversões)
+        DPA LTM em R$/ação
     """
+    from datetime import datetime, timedelta
+    
+    # Usar dividendos_detalhado.json se disponível
+    if dados.dividendos_detalhado and len(dados.dividendos_detalhado) > 0:
+        # Determinar data de referência baseada no período
+        ano_fim, tri_fim = _parse_periodo(periodo_fim)
+        if ano_fim == 0:
+            return np.nan
+        
+        # Mapear trimestre para mês final
+        tri_mes_fim = {'T1': 3, 'T2': 6, 'T3': 9, 'T4': 12}.get(tri_fim, 12)
+        
+        # Data de referência: último dia do trimestre
+        if tri_mes_fim == 12:
+            data_ref = datetime(ano_fim, 12, 31)
+        else:
+            # Próximo mês, dia 1, menos 1 dia = último dia do mês atual
+            prox_mes = tri_mes_fim + 1
+            data_ref = datetime(ano_fim, prox_mes, 1) - timedelta(days=1)
+        
+        # Últimos 12 meses
+        data_inicio = data_ref - timedelta(days=365)
+        
+        # Coletar valores únicos (evita duplicatas ON/PN)
+        valores_unicos = set()
+        for d in dados.dividendos_detalhado:
+            try:
+                data_com = datetime.strptime(d['data_com'], '%Y-%m-%d')
+                if data_inicio < data_com <= data_ref:
+                    # Chave única: (data_com, valor, tipo)
+                    valores_unicos.add((d['data_com'], d['valor'], d.get('tipo', '')))
+            except (ValueError, KeyError):
+                continue
+        
+        # Somar valores únicos
+        soma_dpa = sum(v[1] for v in valores_unicos)
+        return soma_dpa if soma_dpa > 0 else np.nan
+    
+    # Fallback: usar dividendos_trimestrais.csv (método antigo)
     if dados.dividendos is None:
         return np.nan
     
-    # Parsear período fim
     ano_fim, tri_fim = _parse_periodo(periodo_fim)
     if ano_fim == 0:
         return np.nan
@@ -1569,23 +1622,15 @@ def _calcular_dpa_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     if tri_num == 0:
         return np.nan
     
-    # Obter colunas de dividendos disponíveis
     colunas_div = [c for c in dados.dividendos.columns if _parse_periodo(c)[0] > 0]
     
-    # Construir lista de 4 períodos para LTM
     periodos_12m = []
-    
-    # Ano atual: T1 até T_fim
     for t in range(1, tri_num + 1):
         periodos_12m.append(f"{ano_fim}T{t}")
-    
-    # Ano anterior: T(tri_fim + 1) até T4
     for t in range(tri_num + 1, 5):
         periodos_12m.append(f"{ano_fim - 1}T{t}")
     
-    # Somar DPA diretamente (sem converter para total)
     soma_dpa = 0.0
-    
     for p in periodos_12m:
         if p in colunas_div:
             vals = pd.to_numeric(dados.dividendos[p], errors='coerce').dropna()
