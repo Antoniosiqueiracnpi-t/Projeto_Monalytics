@@ -1,0 +1,80 @@
+name: 📌 Atualizar Portfolio Renda Fixa - 09h15 BRT (Seg-Sex)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub cron em UTC. BRT (UTC-3): 09:15 => 12:15 UTC
+    - cron: "15 12 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: portfolio-renda-fixa
+  cancel-in-progress: true
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy
+
+      - name: Pull/Rebase before generate
+        shell: bash
+        run: |
+          set -e
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git rebase origin/main || (git rebase --abort && exit 1)
+
+      - name: Generate Portfolio JSON
+        shell: bash
+        run: |
+          set -e
+          # valida dependências de entrada
+          test -f site/data/debentures_anbima.json
+          test -f site/data/cri_cra_anbima.json
+
+          python src/analisar_portfolio_renda_fixa.py \
+            --deb site/data/debentures_anbima.json \
+            --cri site/data/cri_cra_anbima.json \
+            --out site/data/portfolio_renda_fixa.json
+
+          test -f site/data/portfolio_renda_fixa.json
+          echo "✅ Gerado: site/data/portfolio_renda_fixa.json"
+          ls -la site/data | head -n 200
+
+      - name: Commit and push if changed
+        shell: bash
+        run: |
+          set -e
+
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "✅ Nenhuma mudança no repositório."
+            exit 0
+          fi
+
+          git add site/data/portfolio_renda_fixa.json
+
+          TS="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          git commit -m "📌 Portfolio Renda Fixa: atualização automática - ${TS} [skip netlify]" || exit 0
+
+          git fetch origin main
+          git rebase origin/main || (git rebase --abort && exit 1)
+
+          git push origin HEAD:main
