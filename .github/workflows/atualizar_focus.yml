@@ -47,17 +47,23 @@ jobs:
         run: |
           set -e
           python src/capturar_focus.py --output site/data/focus.json
+          test -f site/data/focus.json
+          echo "✅ Arquivo gerado: site/data/focus.json"
+          ls -la site/data | head -n 50
 
-      - name: Commit and push if changed
+      - name: Commit and push if changed (inclui arquivos novos)
         shell: bash
         run: |
           set -e
-          if git diff --quiet; then
-            echo "✅ Nenhuma mudança no Focus."
+
+          # Detecta alterações incluindo arquivos novos (untracked)
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "✅ Nenhuma mudança no repositório."
             exit 0
           fi
 
           git add site/data/focus.json
+
           TS="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
           git commit -m "📈 Focus: atualização automática - ${TS} [skip netlify]" || exit 0
 
