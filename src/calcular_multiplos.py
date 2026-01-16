@@ -1948,10 +1948,14 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     dpa_ltm = _calcular_dpa_ltm(dados, periodo)
     
     # Dividend Yield (padrão clássico) = (DPA LTM / Preço) × 100
-    resultado["DY"] = _normalizar_valor(_safe_divide(dpa_ltm, preco_pl) * 100)
-
-    # Payout (padrão clássico) = DPA / LPA × 100
-    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dpa_ltm, lpa_ltm) * 100)
+    # CORREÇÃO: Se não há dividendos, DY = 0 (não NaN)
+    if not np.isfinite(dpa_ltm) or dpa_ltm <= 0:
+        resultado["DY"] = 0.0
+        resultado["PAYOUT"] = 0.0
+    else:
+        resultado["DY"] = _normalizar_valor(_safe_divide(dpa_ltm, preco_pl) * 100)
+        # Payout (padrão clássico) = DPA / LPA × 100
+        resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dpa_ltm, lpa_ltm) * 100)
     
     # ==================== RENTABILIDADE ====================
     
@@ -2444,11 +2448,13 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     vpa = (pl * 1000.0) / acoes_ref if np.isfinite(pl) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
     resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
-    # Dividend Yield (padrão clássico) = (DPA LTM / Preço) × 100
-    resultado["DY"] = _normalizar_valor(_safe_divide(dpa_ltm, preco_pl) * 100)
-
-    # Payout (padrão clássico) = DPA / EPS × 100
-    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dpa_ltm, eps_ltm) * 100)
+    if not np.isfinite(dpa_ltm) or dpa_ltm <= 0:
+        resultado["DY"] = 0.0
+        resultado["PAYOUT"] = 0.0
+    else:
+        resultado["DY"] = _normalizar_valor(_safe_divide(dpa_ltm, preco_pl) * 100)
+        # Payout (padrão clássico) = DPA / EPS × 100
+        resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dpa_ltm, eps_ltm) * 100)
     
     # ==================== RENTABILIDADE (3 MÚLTIPLOS) ====================
     
@@ -2569,11 +2575,14 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     vpa = (pl * 1000.0) / acoes_ref if np.isfinite(pl) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
     resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
-    # Dividend Yield (padrão clássico) = (DPA LTM / Preço) × 100
-    resultado["DY"] = _normalizar_valor(_safe_divide(dpa_ltm, preco_pl) * 100)
-
-    # Payout (padrão clássico) = DPA / EPS × 100
-    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dpa_ltm, eps_ltm) * 100)
+    # CORREÇÃO: Se não há dividendos, DY = 0 (não NaN)
+    if not np.isfinite(dpa_ltm) or dpa_ltm <= 0:
+        resultado["DY"] = 0.0
+        resultado["PAYOUT"] = 0.0
+    else:
+        resultado["DY"] = _normalizar_valor(_safe_divide(dpa_ltm, preco_pl) * 100)
+        # Payout (padrão clássico) = DPA / EPS × 100
+        resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dpa_ltm, eps_ltm) * 100)
     
     # EV/Receita = Enterprise Value / Receita LTM (CORRIGIDO!)
     resultado["EV_RECEITA"] = _normalizar_valor(_safe_divide(ev, receita_ltm))
@@ -2754,11 +2763,13 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     vpa = (pl * 1000.0) / acoes_ref if np.isfinite(pl) and np.isfinite(acoes_ref) and acoes_ref > 0 else np.nan
     resultado["P_VPA"] = _normalizar_valor(_safe_divide(preco_pl, vpa))
     
-    # Dividend Yield (padrão clássico) = (DPA LTM / Preço) × 100
-    resultado["DY"] = _normalizar_valor(_safe_divide(dpa_ltm, preco_pl) * 100)
-
-    # Payout (padrão clássico) = DPA / EPS × 100
-    resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dpa_ltm, eps_ltm) * 100)
+    if not np.isfinite(dpa_ltm) or dpa_ltm <= 0:
+        resultado["DY"] = 0.0
+        resultado["PAYOUT"] = 0.0
+    else:
+        resultado["DY"] = _normalizar_valor(_safe_divide(dpa_ltm, preco_pl) * 100)
+        # Payout (padrão clássico) = DPA / EPS × 100
+        resultado["PAYOUT"] = _normalizar_valor(_safe_divide(dpa_ltm, eps_ltm) * 100)
     
     # ==================== RENTABILIDADE (2 MÚLTIPLOS) ====================
     
