@@ -8212,3 +8212,329 @@ renderizarExpectativasSelic = function(data) {
 };
 
 
+/* ========================================================================== */
+/* SPREADS DE CRÉDITO ANBIMA (Tabela + Gráfico)
+/* ========================================================================== */
+
+let spreadsChartInstance = null;
+
+/**
+ * Carrega dados dos Spreads de Crédito ANBIMA
+ */
+async function carregarSpreadsAnbima() {
+    try {
+        console.log('📡 Carregando Spreads ANBIMA...');
+        
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/site/data/anbima_credito.json?t=${Date.now()}`;
+        
+        const response = await fetch(url, {
+            cache: 'no-store',
+            mode: 'cors'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('✅ Spreads ANBIMA carregados:', data);
+        
+        renderizarSpreadsAnbima(data);
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar Spreads ANBIMA:', error);
+        mostrarErroSpreads();
+    }
+}
+
+/**
+ * Renderiza Spreads ANBIMA (Tabela + Gráfico)
+ */
+function renderizarSpreadsAnbima(data) {
+    // Esconde loading
+    document.getElementById('spreadsLoading').style.display = 'none';
+    
+    // Mostra controles
+    const controls = document.getElementById('spreadsViewControls');
+    if (controls) {
+        controls.style.display = 'flex';
+    }
+    
+    // Atualiza badge com data
+    const badgeEl = document.getElementById('spreadsDataBadge');
+    if (badgeEl && data.data_referencia) {
+        badgeEl.innerHTML = `
+            <i class="fas fa-calendar-alt"></i>
+            <span>${data.data_referencia}</span>
+        `;
+    }
+    
+    // Mostra footer
+    const footerEl = document.getElementById('spreadsFooter');
+    if (footerEl) {
+        footerEl.style.display = 'block';
+    }
+    
+    // Renderiza tabela
+    renderizarTabelaSpreads(data.dados_completos);
+    
+    // Renderiza gráfico
+    renderizarGraficoSpreads(data.curvas);
+    
+    // Inicializa toggle
+    inicializarToggleSpreads();
+}
+
+/**
+ * Renderiza tabela de spreads
+ */
+function renderizarTabelaSpreads(dadosCompletos) {
+    const tbody = document.getElementById('spreadsTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = dadosCompletos.map(item => {
+        const vertice = formatarVerticeAnos(item['Vértice (anos)']);
+        const spreadAAA = item['Spread AAA (%)'];
+        const spreadAA = item['Spread AA (%)'];
+        const spreadA = item['Spread A (%)'];
+        
+        return `
+            <tr>
+                <td>${vertice}</td>
+                <td><span class="spread-value aaa">${spreadAAA.toFixed(2)}%</span></td>
+                <td><span class="spread-value aa">${spreadAA.toFixed(2)}%</span></td>
+                <td><span class="spread-value a">${spreadA.toFixed(2)}%</span></td>
+            </tr>
+        `;
+    }).join('');
+}
+
+/**
+ * Formata vértice em anos
+ */
+function formatarVerticeAnos(anos) {
+    if (anos === 0.5) return '6 meses';
+    if (anos === 1.0) return '1 ano';
+    if (anos % 1 === 0) return `${anos} anos`;
+    return `${anos} anos`;
+}
+
+/**
+ * Renderiza gráfico de spreads
+ */
+function renderizarGraficoSpreads(curvas) {
+    const canvas = document.getElementById('spreadsChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destrói gráfico anterior
+    if (spreadsChartInstance) {
+        spreadsChartInstance.destroy();
+    }
+    
+    // Prepara dados
+    const labels = curvas.aaa.map(item => formatarVerticeAnos(item['Vértice (anos)']));
+    const spreadsAAA = curvas.aaa.map(item => item['Spread (%)']);
+    const spreadsAA = curvas.aa.map(item => item['Spread (%)']);
+    const spreadsA = curvas.a.map(item => item['Spread (%)']);
+    
+    // Cria gráfico
+    spreadsChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'AAA (Menor Risco)',
+                    data: spreadsAAA,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 3,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointBackgroundColor: '#10b981',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    tension: 0.4,
+                    fill: false
+                },
+                {
+                    label: 'AA (Risco Médio)',
+                    data: spreadsAA,
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    borderWidth: 3,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointBackgroundColor: '#f59e0b',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    tension: 0.4,
+                    fill: false
+                },
+                {
+                    label: 'A (Maior Risco)',
+                    data: spreadsA,
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    borderWidth: 3,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointBackgroundColor: '#ef4444',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    tension: 0.4,
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: window.innerWidth <= 768 ? 1.8 : 2.5,
+            animation: {
+                duration: 750,
+                easing: 'easeInOutQuart'
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    borderWidth: 1,
+                    padding: 14,
+                    displayColors: true,
+                    callbacks: {
+                        title: function(context) {
+                            return context[0].label;
+                        },
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}%`;
+                        },
+                        afterLabel: function(context) {
+                            // Calcula taxa implícita (aproximada com Selic ~14%)
+                            const selicBase = 14.0;
+                            const taxaImplicita = selicBase + context.parsed.y;
+                            return `Taxa implícita: ~${taxaImplicita.toFixed(2)}%`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            weight: 600,
+                            size: 11
+                        },
+                        color: '#666',
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return value.toFixed(1) + '%';
+                        },
+                        font: {
+                            weight: 600,
+                            size: 11
+                        },
+                        color: '#666',
+                        precision: 1
+                    }
+                }
+            },
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            hover: {
+                mode: 'index',
+                intersect: false,
+                animationDuration: 200
+            }
+        }
+    });
+}
+
+/**
+ * Inicializa toggle entre Tabela e Gráfico
+ */
+function inicializarToggleSpreads() {
+    const btnTable = document.getElementById('btnSpreadsTableView');
+    const btnChart = document.getElementById('btnSpreadsChartView');
+    const tableView = document.getElementById('spreadsTableView');
+    const chartView = document.getElementById('spreadsChartView');
+    
+    if (!btnTable || !btnChart) return;
+    
+    btnTable.addEventListener('click', () => {
+        btnTable.classList.add('active');
+        btnChart.classList.remove('active');
+        tableView.classList.add('active');
+        chartView.classList.remove('active');
+    });
+    
+    btnChart.addEventListener('click', () => {
+        btnChart.classList.add('active');
+        btnTable.classList.remove('active');
+        chartView.classList.add('active');
+        tableView.classList.remove('active');
+    });
+}
+
+/**
+ * Mostra erro ao carregar Spreads
+ */
+function mostrarErroSpreads() {
+    const loadingEl = document.getElementById('spreadsLoading');
+    if (loadingEl) {
+        loadingEl.innerHTML = `
+            <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+            <span>Erro ao carregar Spreads ANBIMA. Tente novamente mais tarde.</span>
+        `;
+    }
+}
+
+/**
+ * Inicializa carregamento dos Spreads quando a seção estiver visível
+ */
+function inicializarMercadoSecundario() {
+    // Observer para carregar dados quando a seção entrar na viewport
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                carregarSpreadsAnbima();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        rootMargin: '100px'
+    });
+    
+    const section = document.getElementById('mercado-secundario');
+    if (section) {
+        observer.observe(section);
+    }
+}
+
+// Inicializa quando o DOM carregar
+document.addEventListener('DOMContentLoaded', () => {
+    inicializarMercadoSecundario();
+});
+
