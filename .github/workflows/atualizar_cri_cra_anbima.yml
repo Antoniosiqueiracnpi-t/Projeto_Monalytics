@@ -3,7 +3,7 @@ name: 🧾 Atualizar CRI/CRA ANBIMA - 08h40 BRT
 on:
   workflow_dispatch:
   schedule:
-    # GitHub cron em UTC. BRT (UTC-3): 08:40 => 11:40 UTC (todos os dias)
+    # GitHub cron em UTC. BRT (UTC-3): 08:40 => 11:40 UTC
     - cron: "40 11 * * *"
 
 permissions:
