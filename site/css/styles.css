@@ -1997,6 +1997,422 @@ body {
 }
 
 
+/* ========================================================================== */
+/* EXPECTATIVAS SELIC - COPOM (dentro do card Focus)
+/* ========================================================================== */
+
+.selic-expectativas-container {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 2px solid rgba(0, 180, 216, 0.2);
+}
+
+/* ========== Header com Toggle ========== */
+.selic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.selic-title-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.selic-title-group > i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    background: rgba(0, 102, 204, 0.1);
+    padding: 1rem;
+    border-radius: var(--border-radius-sm);
+}
+
+.selic-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.selic-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Toggle de Visualização */
+.selic-view-toggle {
+    display: flex;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.35rem;
+    border-radius: var(--border-radius-sm);
+    border: 2px solid rgba(0, 180, 216, 0.15);
+}
+
+.toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: calc(var(--border-radius-sm) - 2px);
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+    color: var(--primary-color);
+    background: rgba(0, 180, 216, 0.05);
+}
+
+.toggle-btn.active {
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+}
+
+.toggle-btn i {
+    font-size: 1rem;
+}
+
+/* ========== Loading ========== */
+.selic-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem;
+    color: var(--text-secondary);
+}
+
+.selic-loading i {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+}
+
+/* ========== Container de Views ========== */
+.selic-view-container {
+    display: none;
+}
+
+.selic-view-container.active {
+    display: block;
+}
+
+/* ========== TABELA ========== */
+.selic-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
+.selic-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.selic-table thead {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.selic-table th {
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.selic-table th:first-child {
+    text-align: left;
+    padding-left: 1.5rem;
+}
+
+.selic-table tbody tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: background 0.2s ease;
+}
+
+.selic-table tbody tr:hover {
+    background: rgba(0, 102, 204, 0.03);
+}
+
+.selic-table tbody tr.hidden-row {
+    display: none;
+}
+
+.selic-table tbody tr.hidden-row.visible {
+    display: table-row;
+}
+
+.selic-table td {
+    padding: 1rem;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.selic-table td:first-child {
+    text-align: left;
+    padding-left: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.selic-rate {
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.selic-variation {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.selic-variation.positive {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.selic-variation.negative {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.selic-variation.neutral {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+}
+
+.selic-variation i {
+    font-size: 0.875rem;
+}
+
+/* ========== Botão Expandir ========== */
+.selic-expand-container {
+    text-align: center;
+    padding: 1.5rem 0 0.5rem;
+}
+
+.selic-expand-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.75rem;
+    background: white;
+    border: 2px solid var(--primary-color);
+    border-radius: var(--border-radius-sm);
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.selic-expand-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.selic-expand-btn.expanded i {
+    transform: rotate(180deg);
+}
+
+.selic-expand-btn i {
+    transition: transform 0.3s ease;
+}
+
+/* ========== GRÁFICO ========== */
+.selic-chart-wrapper {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+#selicChart {
+    max-height: 400px;
+    width: 100% !important;
+    height: auto !important;
+}
+
+.selic-chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.legend-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: block;
+}
+
+/* ========================================================================== */
+/* RESPONSIVO - SELIC EXPECTATIVAS
+/* ========================================================================== */
+
+@media screen and (max-width: 968px) {
+    .selic-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .selic-view-toggle {
+        width: 100%;
+    }
+    
+    .toggle-btn {
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .selic-title {
+        font-size: 1.35rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .selic-expectativas-container {
+        margin-top: 2rem;
+        padding-top: 2rem;
+    }
+    
+    .selic-title-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .selic-title {
+        font-size: 1.25rem;
+    }
+    
+    /* Tabela responsiva */
+    .selic-table {
+        font-size: 0.85rem;
+    }
+    
+    .selic-table th,
+    .selic-table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .selic-table th:first-child,
+    .selic-table td:first-child {
+        padding-left: 1rem;
+    }
+    
+    .selic-rate {
+        font-size: 1rem;
+    }
+    
+    .selic-variation {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Gráfico mobile */
+    .selic-chart-wrapper {
+        padding: 1rem;
+    }
+    
+    #selicChart {
+        max-height: 300px;
+    }
+    
+    .toggle-btn span {
+        display: none;
+    }
+    
+    .toggle-btn {
+        padding: 0.75rem;
+        justify-content: center;
+    }
+    
+    .toggle-btn i {
+        font-size: 1.25rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .selic-title {
+        font-size: 1.125rem;
+    }
+    
+    .selic-subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .selic-table {
+        font-size: 0.8rem;
+    }
+    
+    .selic-table th,
+    .selic-table td {
+        padding: 0.625rem 0.35rem;
+    }
+    
+    .selic-table th:first-child,
+    .selic-table td:first-child {
+        padding-left: 0.75rem;
+    }
+    
+    .selic-rate {
+        font-size: 0.95rem;
+    }
+    
+    .selic-chart-wrapper {
+        padding: 0.75rem;
+    }
+    
+    #selicChart {
+        max-height: 250px;
+    }
+    
+    .selic-expand-btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.875rem;
+    }
+}
+
+
 
 
 
