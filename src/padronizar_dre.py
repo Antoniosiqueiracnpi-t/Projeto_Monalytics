@@ -1891,7 +1891,8 @@ class PadronizadorDRE:
                 if pd.notna(val):
                     try:
                         # Converter para string com 8 casas decimais
-                        df_out.at[idx_lpa[0], col] = f"{float(val):.8f}"
+                        #df_out.at[idx_lpa[0], col] = f"{float(val):.8f}"
+                        df_out.at[idx_lpa[0], col] = float(round(float(val), 8))
                     except (ValueError, TypeError):
                         pass  # Manter valor original se conversão falhar
         # ============================================================================
