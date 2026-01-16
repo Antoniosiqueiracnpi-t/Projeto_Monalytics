@@ -1700,7 +1700,8 @@ function renderNewsGrid(noticias) {
     if (!grid) return;
     
     grid.innerHTML = noticias.map(noticia => {
-        const categoriaClass = (noticia.categoria || 'geral').toLowerCase();
+        const categoriaNormalizada = normalizarCategoria(noticia.categoria || 'Geral');
+        const categoriaClass = getCategoryBadgeClass(categoriaNormalizada);
         const tagsHtml = (noticia.tags || []).length > 0
             ? `<div class="news-tags">${noticia.tags.map(tag => 
                 `<span class="news-tag">${tag}</span>`
@@ -2118,8 +2119,6 @@ function normalizarCategoria(categoria) {
 
 
 
-
-
 /**
  * Retorna classe CSS para badge da categoria
  */
@@ -2136,6 +2135,7 @@ function getCategoryBadgeClass(categoria) {
     };
     return map[categoria] || 'outros';
 }
+
 
 
 // =========================== UTILITY FUNCTIONS ===========================
