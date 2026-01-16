@@ -47,6 +47,24 @@ warnings.filterwarnings("ignore")
 # Helpers
 # -----------------------------
 
+def _make_unique_columns(cols):
+    """
+    Garante nomes de colunas únicos.
+    Se houver duplicatas, adiciona sufixos __2, __3, ...
+    """
+    seen = {}
+    new_cols = []
+    for c in cols:
+        name = str(c).strip()
+        if name in seen:
+            seen[name] += 1
+            new_cols.append(f"{name}__{seen[name]}")
+        else:
+            seen[name] = 1
+            new_cols.append(name)
+    return new_cols
+
+
 def _to_num_br(x):
     """Converte strings BR para float."""
     import numpy as np
@@ -169,7 +187,7 @@ def extrair_data_referencia(soup: BeautifulSoup) -> Optional[str]:
 
 
 def extrair_tabela_html(tabela, verbose: bool = True) -> Optional[pd.DataFrame]:
-    """Extrai dados de uma tabela HTML mantendo sua lógica de header/tbody."""
+    """Extrai dados de uma tabela HTML mantendo a lógica de header/tbody."""
 
     thead = tabela.find("thead")
     headers = []
@@ -221,7 +239,12 @@ def extrair_tabela_html(tabela, verbose: bool = True) -> Optional[pd.DataFrame]:
         elif len(r) > max_cols:
             rows_data[i] = r[:max_cols]
 
-    return pd.DataFrame(rows_data, columns=headers)
+    df = pd.DataFrame(rows_data, columns=headers)
+
+    # ✅ Correção crítica: evita colunas duplicadas (que geram Series em row[col])
+    df.columns = _make_unique_columns(df.columns)
+
+    return df
 
 
 # -----------------------------
@@ -384,23 +407,62 @@ def limpar_e_formatar(df: pd.DataFrame, tipo: str) -> pd.DataFrame:
 
 
 # -----------------------------
-# JSON output (estável em site/data)
+# JSON output (estável em site/data) - blindado
 # -----------------------------
+
+def _json_safe_value(v):
+    """Converte valores para JSON sem quebrar com Series/NaN/Timestamp."""
+    import numpy as np
+
+    # Se vier Series (colunas duplicadas), transforma em lista
+    if isinstance(v, pd.Series):
+        return [_json_safe_value(x) for x in v.tolist()]
+
+    # List/tuple
+    if isinstance(v, (list, tuple)):
+        return [_json_safe_value(x) for x in v]
+
+    # Dict
+    if isinstance(v, dict):
+        return {str(k): _json_safe_value(val) for k, val in v.items()}
+
+    # Timestamp
+    if isinstance(v, pd.Timestamp):
+        if pd.isna(v):
+            return None
+        return v.strftime("%Y-%m-%d")
+
+    # NaT / NaN / None
+    try:
+        if v is None:
+            return None
+        if pd.isna(v):
+            return None
+    except Exception:
+        pass
+
+    # numpy scalars
+    if isinstance(v, (np.integer,)):
+        return int(v)
+    if isinstance(v, (np.floating,)):
+        return float(v)
+    if isinstance(v, (np.bool_,)):
+        return bool(v)
+
+    # números python
+    if isinstance(v, (int, float, bool)):
+        return v
+
+    # fallback string
+    return str(v)
+
 
 def _df_to_rows(df: pd.DataFrame) -> list:
     rows = []
     for _, r in df.iterrows():
         item = {}
         for c in df.columns:
-            v = r[c]
-            if pd.isna(v):
-                item[c] = None
-            elif isinstance(v, (int, float)):
-                item[c] = float(v)
-            elif isinstance(v, pd.Timestamp):
-                item[c] = v.strftime("%Y-%m-%d")
-            else:
-                item[c] = str(v)
+            item[str(c)] = _json_safe_value(r[c])
         rows.append(item)
     return rows
 
