@@ -1,0 +1,183 @@
+{
+  "gerado_em": "2026-01-16 14:16:05",
+  "fontes": {
+    "debentures_anbima": {
+      "arquivo": "site/data/debentures_anbima.json",
+      "data_referencia": "15/01/2026"
+    },
+    "cri_cra_anbima": {
+      "arquivo": "site/data/cri_cra_anbima.json",
+      "data_referencia": "15/01/2026"
+    }
+  },
+  "resumo": [
+    {
+      "Indexador": "IPCA+",
+      "Distribuição (%)": 52.49,
+      "Quantidade Títulos": 1466,
+      "PU/Par Médio (%)": 93.02,
+      "Duration Média (dias)": 1095.0,
+      "Taxa Indicativa Média (%)": 9.71,
+      "Maior Taxa (%)": 21.48
+    },
+    {
+      "Indexador": "CDI+",
+      "Distribuição (%)": 40.03,
+      "Quantidade Títulos": 1118,
+      "PU/Par Médio (%)": 99.37,
+      "Duration Média (dias)": 585.0,
+      "Taxa Indicativa Média (%)": 1.5,
+      "Maior Taxa (%)": 6.01
+    },
+    {
+      "Indexador": "%CDI",
+      "Distribuição (%)": 7.48,
+      "Quantidade Títulos": 209,
+      "PU/Par Médio (%)": 99.93,
+      "Duration Média (dias)": 713.0,
+      "Taxa Indicativa Média (%)": 101.68,
+      "Maior Taxa (%)": 132.95
+    },
+    {
+      "Indexador": "TOTAL",
+      "Distribuição (%)": 100.0,
+      "Quantidade Títulos": 2793,
+      "PU/Par Médio (%)": NaN,
+      "Duration Média (dias)": NaN,
+      "Taxa Indicativa Média (%)": NaN,
+      "Maior Taxa (%)": NaN
+    }
+  ],
+  "estatisticas": {
+    "ipca_spread": {
+      "count": 1466,
+      "mean": 7.96426567164179,
+      "median": 7.4015,
+      "min": 6.6352,
+      "max": 16.0954,
+      "p90": 9.6885
+    },
+    "di_spread": {
+      "count": 1118,
+      "mean": 1.4257918772563176,
+      "median": 1.04775,
+      "min": 0.2359,
+      "max": 26.563,
+      "p90": 2.18872
+    },
+    "di_percentual": {
+      "count": 209,
+      "mean": 101.67920161290323,
+      "median": 100.1808,
+      "min": 95.7878,
+      "max": 132.95,
+      "p90": 106.19015
+    }
+  },
+  "top10": {
+    "ipca_spread": [
+      {
+        "tipo": "IPCA+",
+        "id": "RESA14",
+        "spread": 16.0954
+      },
+      {
+        "tipo": "IPCA+",
+        "id": "RESA15",
+        "spread": 15.4076
+      },
+      {
+        "tipo": "IPCA+",
+        "id": "RESA17",
+        "spread": 15.1775
+      },
+      {
+        "tipo": "IPCA+",
+        "id": "RESA27",
+        "spread": 14.8449
+      },
+      {
+        "tipo": "IPCA+",
+        "id": "RAIZ13",
+        "spread": 14.8332
+      },
+      {
+        "tipo": "IPCA+",
+        "id": "RAIZ23",
+        "spread": 14.2485
+      },
+      {
+        "tipo": "IPCA+",
+        "id": "JSMLB5",
+        "spread": 13.9237
+      },
+      {
+        "tipo": "IPCA+",
+        "id": "SUMI19",
+        "spread": 13.4627
+      },
+      {
+        "tipo": "IPCA+",
+        "id": "VAMO33",
+        "spread": 13.4551
+      },
+      {
+        "tipo": "IPCA+",
+        "id": "SUMI37",
+        "spread": 13.1508
+      }
+    ],
+    "di_spread": [
+      {
+        "tipo": "DI+",
+        "id": "CBRDB8",
+        "spread": 26.563
+      },
+      {
+        "tipo": "DI+",
+        "id": "KRSA12",
+        "spread": 22.9885
+      },
+      {
+        "tipo": "DI+",
+        "id": "CBRDA8",
+        "spread": 18.5888
+      },
+      {
+        "tipo": "DI+",
+        "id": "SUMI15",
+        "spread": 14.1795
+      },
+      {
+        "tipo": "DI+",
+        "id": "KRSA11",
+        "spread": 9.0313
+      },
+      {
+        "tipo": "DI+",
+        "id": "AALR13",
+        "spread": 6.9993
+      },
+      {
+        "tipo": "DI+",
+        "id": "JSMLA5",
+        "spread": 6.7994
+      },
+      {
+        "tipo": "DI+",
+        "id": "SIMH16",
+        "spread": 6.7553
+      },
+      {
+        "tipo": "DI+",
+        "id": "CSNAA2",
+        "spread": 6.6169
+      },
+      {
+        "tipo": "DI+",
+        "id": "SUMI39",
+        "spread": 6.6047
+      }
+    ]
+  }
+}
