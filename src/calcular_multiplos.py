@@ -1894,24 +1894,14 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     resultado: Dict[str, Optional[float]] = {}
     
     # ==================== MARKET CAP E EV ====================
-    
-    # Market Cap do TICKER específico (para VALOR_MERCADO individual)
+    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
-        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
-
-    # ✅ Expor Valor de Mercado (R$ mil) - individual do ticker
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
+    
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
-    
-    # Market Cap TOTAL da empresa (para EV) - soma ON + PN, sem ticker_preco
-    # EV deve usar o valor de mercado TOTAL da empresa, não de uma classe específica
-    if usar_preco_atual:
-        market_cap_total = _calcular_market_cap_atual(dados, ticker_preco=None)
-    else:
-        market_cap_total = _calcular_market_cap(dados, periodo, ticker_preco=None)
-    
-    ev = _calcular_ev(dados, periodo, market_cap_total)
+    ev = _calcular_ev(dados, periodo, market_cap)
 
     # ==================== LUCRO LÍQUIDO LTM (para PAYOUT) ====================
     
@@ -2410,14 +2400,12 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     pl_code = _detectar_codigo_pl_banco(dados.bpp)
     
     # ==================== MARKET CAP ====================
-    
+    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
-        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
 
-
-    # ✅ Expor Valor de Mercado (R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
     # ==================== VALORES BASE (CONTAS AGREGADAS) ====================
@@ -2512,24 +2500,14 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     ticker_upper = dados.ticker.upper().strip()
     
     # ==================== MARKET CAP E EV ====================
-    
-    # Market Cap do TICKER específico (para VALOR_MERCADO individual)
+    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
-        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
-
-    # ✅ Expor Valor de Mercado (R$ mil) - individual do ticker
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
+    
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
-    
-    # Market Cap TOTAL da empresa (para EV) - soma ON + PN, sem ticker_preco
-    # EV deve usar o valor de mercado TOTAL da empresa, não de uma classe específica
-    if usar_preco_atual:
-        market_cap_total = _calcular_market_cap_atual(dados, ticker_preco=None)
-    else:
-        market_cap_total = _calcular_market_cap(dados, periodo, ticker_preco=None)
-    
-    ev = _calcular_ev(dados, periodo, market_cap_total)
+    ev = _calcular_ev(dados, periodo, market_cap)
     
     # ==================== VALORES BASE - ESPECÍFICOS POR TICKER ====================
     
@@ -2657,14 +2635,12 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     ticker_upper = dados.ticker.upper().strip()
     
     # ==================== MARKET CAP ====================
-    
+    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
-        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
 
-
-    # ✅ Expor Valor de Mercado (R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
     # ==================== LUCRO LÍQUIDO - SUPORTA 3.11 E 3.13 ====================
