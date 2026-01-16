@@ -1,0 +1,45 @@
+{
+  "ticker": "BLAU3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T21:22:31.272696",
+  "periodo_analisado": {
+    "inicio": "2017T1",
+    "fim": "2025T3",
+    "total_trimestres": 35,
+    "anos": 8.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 15.88,
+      "variacao_total": 250.05,
+      "ultimo_valor": 475.2
+    },
+    "margens": {
+      "bruta": 43.26,
+      "operacional": 27.43,
+      "liquida": 19.09
+    },
+    "rentabilidade": {
+      "roe_medio": 43.42,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 58.65,
+      "ultimo": 216.94
+    },
+    "balanco": {
+      "ativo_total": 3621.06,
+      "patrimonio": 2334.78
+    }
+  },
+  "analise_critica": "BLAU3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 19.09%. Gera excelente retorno sobre o patrimônio (ROE médio de 43.42%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 15.88%)",
+    "Alta margem de lucro líquido (19.09%)",
+    "Excelente retorno sobre patrimônio (ROE: 43.42%)"
+  ],
+  "pontos_atencao": []
+}

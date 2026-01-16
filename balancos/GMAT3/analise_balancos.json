@@ -1,0 +1,46 @@
+{
+  "ticker": "GMAT3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T21:22:31.311945",
+  "periodo_analisado": {
+    "inicio": "2019T1",
+    "fim": "2025T3",
+    "total_trimestres": 27,
+    "anos": 6.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 29.5,
+      "variacao_total": 436.75,
+      "ultimo_valor": 10763.54
+    },
+    "margens": {
+      "bruta": 23.23,
+      "operacional": 6.28,
+      "liquida": 4.8
+    },
+    "rentabilidade": {
+      "roe_medio": 16.96,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 195.29,
+      "ultimo": 829.96
+    },
+    "balanco": {
+      "ativo_total": 23696.09,
+      "patrimonio": 11251.4
+    }
+  },
+  "analise_critica": "GMAT3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 4.8%). Gera excelente retorno sobre o patrimônio (ROE médio de 16.96%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 29.5%)",
+    "Excelente retorno sobre patrimônio (ROE: 16.96%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (4.8%)"
+  ]
+}

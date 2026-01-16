@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "58.430.828/0001-60",
+    "nome": "",
+    "ticker": "BLAU3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "MARCELO RODOLFO HAHN",
+      "cpf_cnpj": "094.057.508-60",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 147999999,
+      "percentual_total": 82.5,
+      "acoes_ordinarias": 147999999,
+      "percentual_ordinarias": 82.5,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Hahn Participações EIRELI",
+      "cpf_cnpj": "18.288.246/0001-76",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1,
+      "percentual_total": 0.0,
+      "acoes_ordinarias": 1,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    }
+  ]
+}

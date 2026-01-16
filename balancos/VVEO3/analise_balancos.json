@@ -1,0 +1,46 @@
+{
+  "ticker": "VVEO3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T21:22:31.463326",
+  "periodo_analisado": {
+    "inicio": "2020T1",
+    "fim": "2025T3",
+    "total_trimestres": 23,
+    "anos": 5.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 24.65,
+      "variacao_total": 235.97,
+      "ultimo_valor": 2833.65
+    },
+    "margens": {
+      "bruta": 14.95,
+      "operacional": 3.58,
+      "liquida": 0.66
+    },
+    "rentabilidade": {
+      "roe_medio": -2.08,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 4.12,
+      "ultimo": 105.44
+    },
+    "balanco": {
+      "ativo_total": 9063.53,
+      "patrimonio": 2014.76
+    }
+  },
+  "analise_critica": "VVEO3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 0.66%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 24.65%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (0.66%)",
+    "Retorno sobre patrimônio baixo (ROE: -2.08%)"
+  ]
+}

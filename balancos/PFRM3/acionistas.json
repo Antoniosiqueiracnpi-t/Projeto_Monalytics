@@ -1,0 +1,103 @@
+{
+  "empresa": {
+    "cnpj": "45.453.214/0001-51",
+    "nome": "",
+    "ticker": "PFRM3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 7,
+  "acionistas": [
+    {
+      "nome": "BPL Brazil Holding Company",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Luxemburgo",
+      "acoes_total": 47272449,
+      "percentual_total": 38.181,
+      "acoes_ordinarias": 47272449,
+      "percentual_ordinarias": 38.181,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "BMK Participações S.A.",
+      "cpf_cnpj": "03.283.980/0001-75",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 31656178,
+      "percentual_total": 25.568,
+      "acoes_ordinarias": 31656178,
+      "percentual_ordinarias": 25.568,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "LIS Capital Gestora Ltda",
+      "cpf_cnpj": "23.345.332/0001-03",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 10291000,
+      "percentual_total": 8.312,
+      "acoes_ordinarias": 10291000,
+      "percentual_ordinarias": 8.312,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "MANOEL BIRMARCKER",
+      "cpf_cnpj": "027.990.227-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1457763,
+      "percentual_total": 1.177,
+      "acoes_ordinarias": 1457763,
+      "percentual_ordinarias": 1.177,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "SAMMY BIRMARCKER",
+      "cpf_cnpj": "810.719.737-20",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1371806,
+      "percentual_total": 1.108,
+      "acoes_ordinarias": 1371806,
+      "percentual_ordinarias": 1.108,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "CACILDA DELEGAVE BIRMARCKER",
+      "cpf_cnpj": "308.783.067-49",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 102463,
+      "percentual_total": 0.083,
+      "acoes_ordinarias": 102463,
+      "percentual_ordinarias": 0.083,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "DEBORAH UDERMAN",
+      "cpf_cnpj": "628.654.127-68",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 69759,
+      "percentual_total": 0.056,
+      "acoes_ordinarias": 69759,
+      "percentual_ordinarias": 0.056,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    }
+  ]
+}

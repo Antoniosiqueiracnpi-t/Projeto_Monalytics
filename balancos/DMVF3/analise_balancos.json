@@ -1,0 +1,46 @@
+{
+  "ticker": "DMVF3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T21:22:31.292174",
+  "periodo_analisado": {
+    "inicio": "2019T1",
+    "fim": "2025T3",
+    "total_trimestres": 27,
+    "anos": 6.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 16.27,
+      "variacao_total": 166.39,
+      "ultimo_valor": 731.44
+    },
+    "margens": {
+      "bruta": 31.25,
+      "operacional": 1.28,
+      "liquida": 0.43
+    },
+    "rentabilidade": {
+      "roe_medio": 1.43,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 29.37,
+      "ultimo": 111.34
+    },
+    "balanco": {
+      "ativo_total": 1933.43,
+      "patrimonio": 909.87
+    }
+  },
+  "analise_critica": "DMVF3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 0.43%). Retorno sobre patrimônio abaixo do esperado (ROE de 1.43%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 16.27%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (0.43%)",
+    "Retorno sobre patrimônio baixo (ROE: 1.43%)"
+  ]
+}

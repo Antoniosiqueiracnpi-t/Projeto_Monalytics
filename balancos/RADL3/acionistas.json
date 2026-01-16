@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "61.585.865/0001-51",
+    "nome": "",
+    "ticker": "RADL3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "WELLS HOLDING LIMITED",
+      "cpf_cnpj": "32.107.155/0001-18",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Malta",
+      "acoes_total": 189391148,
+      "percentual_total": 11.024,
+      "acoes_ordinarias": 189391148,
+      "percentual_ordinarias": 11.024,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Gl Investimentos e Participacoes Ltda",
+      "cpf_cnpj": "05.318.060/0001-70",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 95887472,
+      "percentual_total": 5.581,
+      "acoes_ordinarias": 95887472,
+      "percentual_ordinarias": 5.581,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "Capital Research Global Investors (\"CRGI\")(Gestor/Administrador - Vide item 6.6 a seguir)",
+      "cpf_cnpj": "00.000.000/0000-00",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 94882334,
+      "percentual_total": 5.523,
+      "acoes_ordinarias": 94882334,
+      "percentual_ordinarias": 5.523,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "RBC GLOBAL ASSET MANAGEMENT INC. (GESTOR/ADMINISTRADOR - VIDE ITEM 6.6 A SEGUIR)",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Canadá",
+      "acoes_total": 87158247,
+      "percentual_total": 5.073,
+      "acoes_ordinarias": 87158247,
+      "percentual_ordinarias": 5.073,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "BlackRock, Inc. (Gestor/Administrador - Vide item 6.6 a seguir)",
+      "cpf_cnpj": "00.000.000/0000-00",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 86991112,
+      "percentual_total": 5.063,
+      "acoes_ordinarias": 86991112,
+      "percentual_ordinarias": 5.063,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "ANTONIO CARLOS PIPPONZI",
+      "cpf_cnpj": "454.326.788-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 17188697,
+      "percentual_total": 1.001,
+      "acoes_ordinarias": 17188697,
+      "percentual_ordinarias": 1.001,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "CRISTIANA ALMEIDA PIPPONZI",
+      "cpf_cnpj": "285.220.788-58",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 15961901,
+      "percentual_total": 0.929,
+      "acoes_ordinarias": 15961901,
+      "percentual_ordinarias": 0.929,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    },
+    {
+      "nome": "MARTA ALMEIDA PIPPONZI",
+      "cpf_cnpj": "225.035.128-79",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 13178966,
+      "percentual_total": 0.767,
+      "acoes_ordinarias": 13178966,
+      "percentual_ordinarias": 0.767,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 8
+    },
+    {
+      "nome": "MARCELLO DE ZAGOTTIS",
+      "cpf_cnpj": "270.229.108-20",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 12629631,
+      "percentual_total": 0.735,
+      "acoes_ordinarias": 12629631,
+      "percentual_ordinarias": 0.735,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 9
+    },
+    {
+      "nome": "PAULO SÉRGIO COUTINHO GALVÃO FILHO",
+      "cpf_cnpj": "040.443.368-57",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 12357623,
+      "percentual_total": 0.719,
+      "acoes_ordinarias": 12357623,
+      "percentual_ordinarias": 0.719,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 10
+    }
+  ]
+}
