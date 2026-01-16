@@ -1,7 +1,7 @@
 {
   "ticker": "AGRO3",
   "tipo_empresa": "nao_financeira",
-  "ultima_atualizacao": "2026-01-15T18:57:27.789773",
+  "ultima_atualizacao": "2026-01-16T17:17:54.261503",
   "periodo_analisado": {
     "inicio": "2010T3",
     "fim": "2025T3",
@@ -15,12 +15,12 @@
       "ultimo_valor": 286.64
     },
     "margens": {
-      "bruta": 31.36,
-      "operacional": 7.92,
-      "liquida": 23.4
+      "bruta": 29.19,
+      "operacional": 14.42,
+      "liquida": 14.9
     },
     "rentabilidade": {
-      "roe_medio": 10.36,
+      "roe_medio": 7.53,
       "roa_medio": null
     },
     "estrutura": {
@@ -35,10 +35,11 @@
       "patrimonio": 2103.47
     }
   },
-  "analise_critica": "AGRO3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 23.4%. Retorno sobre patrimônio adequado (ROE de 10.36%). Geração de caixa operacional positiva.",
+  "analise_critica": "AGRO3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 14.9%. Retorno sobre patrimônio abaixo do esperado (ROE de 7.53%). Geração de caixa operacional positiva.",
   "pontos_fortes": [
-    "Forte crescimento de receita (CAGR: 24.47%)",
-    "Alta margem de lucro líquido (23.4%)"
+    "Forte crescimento de receita (CAGR: 24.47%)"
   ],
-  "pontos_atencao": []
+  "pontos_atencao": [
+    "Retorno sobre patrimônio baixo (ROE: 7.53%)"
+  ]
 }

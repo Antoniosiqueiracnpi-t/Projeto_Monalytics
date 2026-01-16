@@ -1,7 +1,7 @@
 {
   "ticker": "LAND3",
   "tipo_empresa": "nao_financeira",
-  "ultima_atualizacao": "2026-01-15T18:57:27.830326",
+  "ultima_atualizacao": "2026-01-16T17:17:54.301283",
   "periodo_analisado": {
     "inicio": "2020T1",
     "fim": "2025T3",
@@ -15,12 +15,12 @@
       "ultimo_valor": 22.06
     },
     "margens": {
-      "bruta": 88.48,
+      "bruta": 83.21,
       "operacional": 30.26,
-      "liquida": 65.41
+      "liquida": 32.39
     },
     "rentabilidade": {
-      "roe_medio": 7.22,
+      "roe_medio": 6.09,
       "roa_medio": null
     },
     "estrutura": {
@@ -35,12 +35,12 @@
       "patrimonio": 652.36
     }
   },
-  "analise_critica": "LAND3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 65.41%. Retorno sobre patrimônio abaixo do esperado (ROE de 7.22%). Geração de caixa operacional positiva.",
+  "analise_critica": "LAND3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 32.39%. Retorno sobre patrimônio abaixo do esperado (ROE de 6.09%). Geração de caixa operacional positiva.",
   "pontos_fortes": [
-    "Alta margem de lucro líquido (65.41%)"
+    "Alta margem de lucro líquido (32.39%)"
   ],
   "pontos_atencao": [
     "Receita em queda (CAGR: -11.62%)",
-    "Retorno sobre patrimônio baixo (ROE: 7.22%)"
+    "Retorno sobre patrimônio baixo (ROE: 6.09%)"
   ]
 }

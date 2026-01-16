@@ -1,6 +1,6 @@
 # Padrão Fiscal: Ano fiscal padrão (jan-dez) - trimestres disponíveis: ['T1', 'T2', 'T3']
 # Trimestres encontrados: ['T1', 'T2', 'T3']
-# Data geração: 2026-01-15 18:56:48
+# Data geração: 2026-01-16 17:16:51
 ano,codigo,soma_trimestral,valor_anual,diferenca,diff_%,status
 2021,3.01,627665.000,,,,SEM_ANUAL
 2021,3.02,-506903.000,,,,SEM_ANUAL
@@ -15,7 +15,7 @@ ano,codigo,soma_trimestral,valor_anual,diferenca,diff_%,status
 2021,3.06.01,7354.000,,,,SEM_ANUAL
 2021,3.06.02,-11745.000,,,,SEM_ANUAL
 2021,3.07,101876.000,,,,SEM_ANUAL
-2021,3.08,-9679.000,,,,SEM_ANUAL
+2021,3.08,-2089.000,,,,SEM_ANUAL
 2021,3.09,99787.000,,,,SEM_ANUAL
 2021,3.10,0.000,,,,SEM_ANUAL
 2021,3.11,99787.000,,,,SEM_ANUAL
@@ -53,7 +53,7 @@ ano,codigo,soma_trimestral,valor_anual,diferenca,diff_%,status
 2023,3.06.01,88276.000,88276.000,0.000,0.000,OK
 2023,3.06.02,-87292.000,-87292.000,0.000,0.000,OK
 2023,3.07,254495.000,254495.000,0.000,0.000,OK
-2023,3.08,-90973.000,-90973.000,0.000,0.000,OK
+2023,3.08,90973.000,90973.000,0.000,0.000,OK
 2023,3.09,345468.000,345468.000,0.000,0.000,OK
 2023,3.10,-516.000,-516.000,0.000,0.000,OK
 2023,3.11,344952.000,344952.000,0.000,0.000,OK
@@ -91,7 +91,7 @@ ano,codigo,soma_trimestral,valor_anual,diferenca,diff_%,status
 2025,3.06.01,172390.000,,,,SEM_ANUAL
 2025,3.06.02,-146246.000,,,,SEM_ANUAL
 2025,3.07,117755.000,,,,SEM_ANUAL
-2025,3.08,-25171.000,,,,SEM_ANUAL
+2025,3.08,-11389.000,,,,SEM_ANUAL
 2025,3.09,106366.000,,,,SEM_ANUAL
 2025,3.10,0.000,,,,SEM_ANUAL
 2025,3.11,106366.000,,,,SEM_ANUAL

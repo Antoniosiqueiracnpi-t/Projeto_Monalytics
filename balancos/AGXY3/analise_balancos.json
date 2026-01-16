@@ -1,7 +1,7 @@
 {
   "ticker": "AGXY3",
   "tipo_empresa": "nao_financeira",
-  "ultima_atualizacao": "2026-01-15T18:57:27.810448",
+  "ultima_atualizacao": "2026-01-16T17:17:54.282149",
   "periodo_analisado": {
     "inicio": "2019T1",
     "fim": "2025T3",
@@ -15,12 +15,12 @@
       "ultimo_valor": 440.75
     },
     "margens": {
-      "bruta": 8.72,
+      "bruta": 7.74,
       "operacional": 13.25,
-      "liquida": 59.39
+      "liquida": 21.7
     },
     "rentabilidade": {
-      "roe_medio": 135.54,
+      "roe_medio": 92.18,
       "roa_medio": null
     },
     "estrutura": {
@@ -35,10 +35,10 @@
       "patrimonio": -185.46
     }
   },
-  "analise_critica": "AGXY3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 59.39%. Gera excelente retorno sobre o patrimônio (ROE médio de 135.54%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "analise_critica": "AGXY3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 21.7%. Gera excelente retorno sobre o patrimônio (ROE médio de 92.18%). Apresenta queima de caixa operacional, requerendo atenção.",
   "pontos_fortes": [
-    "Alta margem de lucro líquido (59.39%)",
-    "Excelente retorno sobre patrimônio (ROE: 135.54%)"
+    "Alta margem de lucro líquido (21.7%)",
+    "Excelente retorno sobre patrimônio (ROE: 92.18%)"
   ],
   "pontos_atencao": [
     "Queima de caixa operacional"

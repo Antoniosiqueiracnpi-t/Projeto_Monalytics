@@ -1,7 +1,7 @@
 {
   "ticker": "SOJA3",
   "tipo_empresa": "nao_financeira",
-  "ultima_atualizacao": "2026-01-15T18:57:27.872038",
+  "ultima_atualizacao": "2026-01-16T17:17:54.342236",
   "periodo_analisado": {
     "inicio": "2021T2",
     "fim": "2025T3",
@@ -15,12 +15,12 @@
       "ultimo_valor": 1131.1
     },
     "margens": {
-      "bruta": 19.53,
+      "bruta": 16.29,
       "operacional": 7.42,
-      "liquida": 13.66
+      "liquida": 12.54
     },
     "rentabilidade": {
-      "roe_medio": 18.58,
+      "roe_medio": 18.33,
       "roa_medio": null
     },
     "estrutura": {
@@ -35,10 +35,10 @@
       "patrimonio": 2035.42
     }
   },
-  "analise_critica": "SOJA3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 13.66%. Gera excelente retorno sobre o patrimônio (ROE médio de 18.58%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "analise_critica": "SOJA3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 12.54%. Gera excelente retorno sobre o patrimônio (ROE médio de 18.33%). Apresenta queima de caixa operacional, requerendo atenção.",
   "pontos_fortes": [
     "Forte crescimento de receita (CAGR: 118.26%)",
-    "Excelente retorno sobre patrimônio (ROE: 18.58%)"
+    "Excelente retorno sobre patrimônio (ROE: 18.33%)"
   ],
   "pontos_atencao": [
     "Queima de caixa operacional"
