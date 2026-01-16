@@ -2253,12 +2253,15 @@ body {
     border-radius: var(--border-radius);
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 1.5rem;
+    min-height: 450px;
+    position: relative;
 }
 
 #selicChart {
     max-height: 400px;
     width: 100% !important;
-    height: auto !important;
+    height: 400px !important;
+    display: block;
 }
 
 .selic-chart-legend {
@@ -2602,12 +2605,15 @@ body {
     border-radius: var(--border-radius);
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 1.5rem;
+    min-height: 450px;
+    position: relative;
 }
 
 #curvaJurosChart {
     max-height: 400px;
     width: 100% !important;
-    height: auto !important;
+    height: 400px !important;
+    display: block;
 }
 
 .curva-chart-legend {
@@ -2789,14 +2795,14 @@ body {
 }
 
 .mercado-secundario-title {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin: 0 0 0.25rem 0;
+    margin: 0 0 0.5rem 0;
 }
 
 .mercado-secundario-subtitle {
-    font-size: 0.9rem;
+    font-size: 1.125rem;
     color: var(--text-secondary);
     margin: 0;
 }
@@ -3054,12 +3060,15 @@ body {
     border-radius: var(--border-radius);
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 1.5rem;
+    min-height: 500px;
+    position: relative;
 }
 
 #spreadsChart {
     max-height: 450px;
     width: 100% !important;
-    height: auto !important;
+    height: 450px !important;
+    display: block;
 }
 
 .spreads-chart-legend {
@@ -9208,6 +9217,3 @@ textarea:focus {
         top: -1rem;
     }
 }
-
-
-
