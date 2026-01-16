@@ -63,8 +63,14 @@ jobs:
             echo "Rodando capturar_noticiario_economico.py..."
             python src/capturar_noticiario_economico.py
 
+            # NOVO: Copiar JSON para diretorio deployado pelo Netlify
+            echo "Copiando noticias para site/data/..."
+            mkdir -p site/data
+            cp balancos/NOTICIAS/noticias_mercado.json site/data/noticias_mercado.json
+
             # Adicionar arquivos
             git add balancos/NOTICIAS/noticias_mercado.json 2>/dev/null || true
+            git add site/data/noticias_mercado.json 2>/dev/null || true
             git add site/data/ultima_atualizacao.json 2>/dev/null || true
 
             # Verificar se ha mudancas
