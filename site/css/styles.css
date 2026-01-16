@@ -2756,14 +2756,16 @@ body {
 .mercado-secundario-section {
     padding: 6rem 0;
     background: #f8fafc;
+    margin-top: 3rem; /* ✅ NOVO - Espaço do card anterior */
 }
 
-/* ========== Título da Seção (FORA do card, igual ao Focus) ========== */
+/* ========== Título da Seo (FORA do card, igual ao Focus) ========== */
 .mercado-secundario-title-wrapper {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2rem; /* ✅ Espaço até o card */
+    padding-bottom: 1rem; /* ✅ NOVO - Respiro visual */
 }
 
 .mercado-secundario-icon-wrapper {
@@ -2809,6 +2811,7 @@ body {
     padding: 2rem;
     box-shadow: var(--shadow-lg);
     border: 1px solid rgba(0, 0, 0, 0.08);
+    margin-top: 0; /* ✅ Já tem espaço do title-wrapper */
 }
 
 /* ========== Header do Card ========== */
@@ -9159,5 +9162,52 @@ textarea:focus {
 }
 
 /* =========================== FIM DAS CORREÇÕES =========================== */
+
+
+/* ========================================================================== */
+/* SEPARAÇÃO VISUAL ENTRE SEÇÕES
+/* ========================================================================== */
+
+/* Garante espaço entre Expectativas Macro e Mercado Secundário */
+.expectativas-macro-section + .mercado-secundario-section {
+    margin-top: 3rem;
+}
+
+/* Remove padding-bottom extra da seção anterior se necessário */
+.expectativas-macro-section {
+    padding-bottom: 4rem; /* Ajuste se necessário */
+}
+
+/* Linha sutil de separação (opcional) */
+.mercado-secundario-title-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0, 180, 216, 0.2) 20%,
+        rgba(0, 180, 216, 0.4) 50%,
+        rgba(0, 180, 216, 0.2) 80%,
+        transparent 100%
+    );
+}
+
+/* Ajuste para mobile */
+@media screen and (max-width: 768px) {
+    .expectativas-macro-section + .mercado-secundario-section {
+        margin-top: 2rem;
+    }
+    
+    .mercado-secundario-title-wrapper::before {
+        width: 80%;
+        top: -1rem;
+    }
+}
+
 
 
