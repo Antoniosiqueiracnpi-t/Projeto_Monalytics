@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "51.466.860/0001-56",
+    "nome": "",
+    "ticker": "SMTO3"
+  },
+  "data_referencia": "2026-12-31",
+  "ano_fre": 2026,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "LJN Participações S.A.",
+      "cpf_cnpj": "13.608.705/0001-38",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 190242864,
+      "percentual_total": 57.227,
+      "acoes_ordinarias": 190242864,
+      "percentual_ordinarias": 57.227,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    }
+  ]
+}

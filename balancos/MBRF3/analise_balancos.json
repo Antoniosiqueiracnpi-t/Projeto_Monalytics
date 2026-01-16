@@ -1,0 +1,46 @@
+{
+  "ticker": "MBRF3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T18:34:42.971759",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 18.04,
+      "variacao_total": 1206.83,
+      "ultimo_valor": 41765.53
+    },
+    "margens": {
+      "bruta": 13.61,
+      "operacional": 5.79,
+      "liquida": 0.11
+    },
+    "rentabilidade": {
+      "roe_medio": 12.32,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 1277.12,
+      "ultimo": 9444.56
+    },
+    "balanco": {
+      "ativo_total": 137444.66,
+      "patrimonio": 14916.22
+    }
+  },
+  "analise_critica": "MBRF3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 0.11%). Retorno sobre patrimônio adequado (ROE de 12.32%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 18.04%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (0.11%)"
+  ]
+}

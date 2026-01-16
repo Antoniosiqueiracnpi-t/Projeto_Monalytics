@@ -1,0 +1,44 @@
+{
+  "ticker": "MDIA3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T18:34:42.993894",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.88,
+      "variacao_total": 395.48,
+      "ultimo_valor": 2784.39
+    },
+    "margens": {
+      "bruta": 35.94,
+      "operacional": 11.5,
+      "liquida": 10.76
+    },
+    "rentabilidade": {
+      "roe_medio": 14.57,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 203.12,
+      "ultimo": 1226.64
+    },
+    "balanco": {
+      "ativo_total": 13074.97,
+      "patrimonio": 8306.22
+    }
+  },
+  "analise_critica": "MDIA3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 10.76%. Retorno sobre patrimônio adequado (ROE de 14.57%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.88%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}
