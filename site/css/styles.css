@@ -2755,47 +2755,39 @@ body {
 
 .mercado-secundario-section {
     padding: 6rem 0;
-    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    background: #f8fafc;
 }
 
-/* ========== Header da Seção ========== */
+/* ========== Header da Seção (FORA do card, igual ao Focus) ========== */
 .mercado-secundario-header {
-    text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 
 .mercado-secundario-title-group {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .mercado-secundario-title-group > i {
-    font-size: 3.5rem;
+    font-size: 2rem;
     color: var(--accent-color);
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(59, 130, 246, 0.1));
-    padding: 2rem;
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 20px rgba(0, 217, 255, 0.2);
+    background: rgba(0, 217, 255, 0.1);
+    padding: 1rem;
+    border-radius: var(--border-radius-sm);
 }
 
 .mercado-secundario-title {
-    font-size: 2.5rem;
-    font-weight: 800;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: var(--text-primary);
-    margin: 0;
+    margin: 0 0 0.25rem 0;
 }
 
 .mercado-secundario-subtitle {
-    font-size: 1.125rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
-    margin: 0.5rem 0 0 0;
+    margin: 0;
 }
 
 /* ========================================================================== */
@@ -2805,7 +2797,7 @@ body {
 .spreads-anbima-card {
     background: white;
     border-radius: var(--border-radius);
-    padding: 2.5rem;
+    padding: 2rem;
     box-shadow: var(--shadow-lg);
     border: 1px solid rgba(0, 0, 0, 0.08);
 }
@@ -2969,6 +2961,14 @@ body {
     background: rgba(0, 217, 255, 0.03);
 }
 
+.spreads-table tbody tr.hidden-row {
+    display: none;
+}
+
+.spreads-table tbody tr.hidden-row.visible {
+    display: table-row;
+}
+
 .spreads-table td {
     padding: 1rem;
     text-align: center;
@@ -2997,6 +2997,42 @@ body {
 
 .spread-value.a {
     color: #ef4444;
+}
+
+/* ========== Botão Expandir ========== */
+.spreads-expand-container {
+    text-align: center;
+    padding: 1.5rem 0 0.5rem;
+}
+
+.spreads-expand-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.75rem;
+    background: white;
+    border: 2px solid var(--accent-color);
+    border-radius: var(--border-radius-sm);
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.spreads-expand-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.spreads-expand-btn.expanded i {
+    transform: rotate(180deg);
+}
+
+.spreads-expand-btn i {
+    transition: transform 0.3s ease;
 }
 
 /* ========== GRÁFICO ========== */
@@ -3052,12 +3088,8 @@ body {
         padding: 4rem 0;
     }
     
-    .mercado-secundario-header {
-        margin-bottom: 3rem;
-    }
-    
     .mercado-secundario-title {
-        font-size: 2rem;
+        font-size: 1.35rem;
     }
     
     .spreads-anbima-header {
@@ -3075,19 +3107,18 @@ body {
         padding: 3rem 0;
     }
     
-    .mercado-secundario-title-group > i {
-        font-size: 2.5rem;
-        width: 80px;
-        height: 80px;
-        padding: 1.5rem;
+    .mercado-secundario-title-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
     }
     
     .mercado-secundario-title {
-        font-size: 1.75rem;
+        font-size: 1.25rem;
     }
     
     .mercado-secundario-subtitle {
-        font-size: 1rem;
+        font-size: 0.85rem;
     }
     
     .spreads-anbima-card {
@@ -3123,15 +3154,20 @@ body {
     .spreads-view-toggle .toggle-btn i {
         font-size: 1.25rem;
     }
+    
+    .spreads-expand-btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.875rem;
+    }
 }
 
 @media screen and (max-width: 480px) {
     .mercado-secundario-title {
-        font-size: 1.5rem;
+        font-size: 1.125rem;
     }
     
     .mercado-secundario-subtitle {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
     
     .spreads-anbima-card {
