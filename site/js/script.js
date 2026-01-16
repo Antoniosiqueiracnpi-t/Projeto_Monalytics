@@ -8285,21 +8285,24 @@ function renderizarSpreadsAnbima(data) {
     inicializarToggleSpreads();
 }
 
+const MAX_VISIBLE_SPREADS = 6; // Mostra inicialmente 6 vértices (até 3 anos)
+
 /**
- * Renderiza tabela de spreads
+ * Renderiza tabela de spreads com expansão
  */
 function renderizarTabelaSpreads(dadosCompletos) {
     const tbody = document.getElementById('spreadsTableBody');
     if (!tbody) return;
     
-    tbody.innerHTML = dadosCompletos.map(item => {
+    tbody.innerHTML = dadosCompletos.map((item, index) => {
         const vertice = formatarVerticeAnos(item['Vértice (anos)']);
         const spreadAAA = item['Spread AAA (%)'];
         const spreadAA = item['Spread AA (%)'];
         const spreadA = item['Spread A (%)'];
+        const isHidden = index >= MAX_VISIBLE_SPREADS;
         
         return `
-            <tr>
+            <tr class="${isHidden ? 'hidden-row' : ''}">
                 <td>${vertice}</td>
                 <td><span class="spread-value aaa">${spreadAAA.toFixed(2)}%</span></td>
                 <td><span class="spread-value aa">${spreadAA.toFixed(2)}%</span></td>
@@ -8307,7 +8310,41 @@ function renderizarTabelaSpreads(dadosCompletos) {
             </tr>
         `;
     }).join('');
+    
+    // Mostra botão "Ver mais" se tiver mais linhas
+    if (dadosCompletos.length > MAX_VISIBLE_SPREADS) {
+        document.getElementById('spreadsExpandContainer').style.display = 'block';
+        inicializarExpandirSpreads();
+    }
 }
+
+/**
+ * Inicializa botão de expandir/colapsar spreads
+ */
+function inicializarExpandirSpreads() {
+    const btn = document.getElementById('spreadsExpandBtn');
+    const expandText = btn.querySelector('.expand-text');
+    
+    if (!btn) return;
+    
+    btn.addEventListener('click', () => {
+        const hiddenRows = document.querySelectorAll('.spreads-table .hidden-row');
+        const isExpanded = btn.classList.contains('expanded');
+        
+        if (isExpanded) {
+            // Colapsar
+            hiddenRows.forEach(row => row.classList.remove('visible'));
+            expandText.textContent = 'Ver todos os vértices';
+            btn.classList.remove('expanded');
+        } else {
+            // Expandir
+            hiddenRows.forEach(row => row.classList.add('visible'));
+            expandText.textContent = 'Ver menos';
+            btn.classList.add('expanded');
+        }
+    });
+}
+
 
 /**
  * Formata vértice em anos
