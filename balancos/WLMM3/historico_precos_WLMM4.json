@@ -1,22 +1,11 @@
 {
   "ticker": "WLMM4",
-  "ultima_atualizacao": "2026-01-15T23:01:50.272090",
+  "ultima_atualizacao": "2026-01-16T20:53:06.401910",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 19.39,
-      "maxima": 19.78,
-      "minima": 18.98,
-      "fechamento": 19.77,
-      "volume": 2700,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 19.77,
@@ -222,7 +211,7 @@
       "minima": 22.55,
       "fechamento": 22.55,
       "volume": 3400,
-      "mm20": 22.64,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 22.88,
       "volume": 1400,
       "mm20": 22.25,
-      "mm50": 22.11,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1700,
       "mm20": 30.83,
       "mm50": 29.26,
-      "mm200": 25.52
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,13 +13887,24 @@
       "mm20": 19.83,
       "mm50": 18.79,
       "mm200": 21.9
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 20.24,
+      "maxima": 20.59,
+      "minima": 20.05,
+      "fechamento": 20.05,
+      "volume": 2600,
+      "mm20": 19.88,
+      "mm50": 18.83,
+      "mm200": 21.86
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 19.77,
-    "preco_atual": 20.75,
-    "variacao_periodo": 4.97,
+    "preco_atual": 20.05,
+    "variacao_periodo": 1.42,
     "maxima_periodo": 33.56,
     "minima_periodo": 12.5,
     "volume_medio": 1697,

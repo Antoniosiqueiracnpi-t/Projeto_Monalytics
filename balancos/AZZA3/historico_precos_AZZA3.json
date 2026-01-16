@@ -1,22 +1,11 @@
 {
   "ticker": "AZZA3",
-  "ultima_atualizacao": "2026-01-15T23:01:45.348969",
+  "ultima_atualizacao": "2026-01-16T20:52:59.650528",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 58.88,
-      "maxima": 58.98,
-      "minima": 57.6,
-      "fechamento": 58.17,
-      "volume": 303700,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 57.6,
@@ -222,7 +211,7 @@
       "minima": 56.57,
       "fechamento": 58.19,
       "volume": 948900,
-      "mm20": 55.3,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 65.02,
       "volume": 1720600,
       "mm20": 61.6,
-      "mm50": 58.52,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1643600,
       "mm20": 69.74,
       "mm50": 72.67,
-      "mm200": 67.65
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -3485,7 +3474,7 @@
     {
       "data": "2022-03-31",
       "abertura": 75.12,
-      "maxima": 76.27,
+      "maxima": 76.26,
       "minima": 74.92,
       "fechamento": 75.58,
       "volume": 934000,
@@ -3572,7 +3561,7 @@
     },
     {
       "data": "2022-04-12",
-      "abertura": 76.27,
+      "abertura": 76.26,
       "maxima": 77.04,
       "minima": 75.3,
       "fechamento": 75.68,
@@ -5081,7 +5070,7 @@
       "data": "2022-10-27",
       "abertura": 80.61,
       "maxima": 82.7,
-      "minima": 79.93,
+      "minima": 79.92,
       "fechamento": 81.85,
       "volume": 855500,
       "mm20": 84.71,
@@ -13898,16 +13887,27 @@
       "mm20": 24.01,
       "mm50": 25.26,
       "mm200": 29.5
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 24.37,
+      "maxima": 24.54,
+      "minima": 23.75,
+      "fechamento": 23.82,
+      "volume": 2600000,
+      "mm20": 24.01,
+      "mm50": 25.21,
+      "mm200": 29.51
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 58.17,
-    "preco_atual": 24.16,
-    "variacao_periodo": -58.46,
+    "preco_inicial": 56.69,
+    "preco_atual": 23.82,
+    "variacao_periodo": -57.98,
     "maxima_periodo": 88.83,
     "minima_periodo": 19.54,
-    "volume_medio": 1677237,
-    "tendencia": "indefinida"
+    "volume_medio": 1679056,
+    "tendencia": "baixa"
   }
 }

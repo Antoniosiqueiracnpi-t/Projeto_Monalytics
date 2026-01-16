@@ -1,0 +1,46 @@
+{
+  "ticker": "AMAR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T20:56:59.112757",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -0.82,
+      "variacao_total": -11.97,
+      "ultimo_valor": 332.75
+    },
+    "margens": {
+      "bruta": 46.84,
+      "operacional": 1.36,
+      "liquida": -6.12
+    },
+    "rentabilidade": {
+      "roe_medio": -1678.31,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 45.06,
+      "ultimo": -81.11
+    },
+    "balanco": {
+      "ativo_total": 2130.54,
+      "patrimonio": 295.43
+    }
+  },
+  "analise_critica": "AMAR3 enfrenta desafios no crescimento, com receita em tendência de queda. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -0.82%)",
+    "Margem líquida comprimida (-6.12%)",
+    "Retorno sobre patrimônio baixo (ROE: -1678.31%)",
+    "Queima de caixa operacional"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "ticker": "BHIA3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T20:56:59.178677",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 11.58,
+      "variacao_total": 446.18,
+      "ultimo_valor": 6868.0
+    },
+    "margens": {
+      "bruta": 30.04,
+      "operacional": 3.36,
+      "liquida": -0.67
+    },
+    "rentabilidade": {
+      "roe_medio": -19.77,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 629.92,
+      "ultimo": 10812.0
+    },
+    "balanco": {
+      "ativo_total": 34332.0,
+      "patrimonio": 2634.0
+    }
+  },
+  "analise_critica": "BHIA3 apresenta trajetória consistente de crescimento de receita no período analisado. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 11.58%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (-0.67%)",
+    "Retorno sobre patrimônio baixo (ROE: -19.77%)"
+  ]
+}

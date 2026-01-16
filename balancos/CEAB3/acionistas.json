@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "45.242.914/0001-05",
+    "nome": "",
+    "ticker": "CEAB3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "COFRA INVESTMENTS S.A.R.L.",
+      "cpf_cnpj": "06.049.145/0001-63",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Luxemburgo",
+      "acoes_total": 80363049,
+      "percentual_total": 26.071,
+      "acoes_ordinarias": 80363049,
+      "percentual_ordinarias": 26.071,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Morgan Stanley (de forma agregada, por meio de suas subsidiárias - Ver item 6.6 abaixo)",
+      "cpf_cnpj": "00.000.000/0000-00",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 18882299,
+      "percentual_total": 6.126,
+      "acoes_ordinarias": 18882299,
+      "percentual_ordinarias": 6.126,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "INCAS SARL",
+      "cpf_cnpj": "06.049.146/0001-08",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Luxemburgo",
+      "acoes_total": 14939166,
+      "percentual_total": 4.847,
+      "acoes_ordinarias": 14939166,
+      "percentual_ordinarias": 4.847,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "COFRA LATIN AMERICA LTDA",
+      "cpf_cnpj": "05.236.528/0001-88",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 9068,
+      "percentual_total": 0.003,
+      "acoes_ordinarias": 9068,
+      "percentual_ordinarias": 0.003,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    }
+  ]
+}

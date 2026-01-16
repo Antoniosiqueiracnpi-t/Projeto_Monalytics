@@ -1,0 +1,46 @@
+{
+  "ticker": "AMER3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T20:56:59.134031",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2021T3",
+    "total_trimestres": 47,
+    "anos": 11.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.07,
+      "variacao_total": 201.3,
+      "ultimo_valor": 6277.26
+    },
+    "margens": {
+      "bruta": 31.45,
+      "operacional": 9.61,
+      "liquida": 1.46
+    },
+    "rentabilidade": {
+      "roe_medio": 13.33,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 26.97,
+      "ultimo": -3823.22
+    },
+    "balanco": {
+      "ativo_total": 43736.19,
+      "patrimonio": 16066.7
+    }
+  },
+  "analise_critica": "AMER3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 1.46%). Retorno sobre patrimônio adequado (ROE de 13.33%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.07%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (1.46%)",
+    "Queima de caixa operacional"
+  ]
+}

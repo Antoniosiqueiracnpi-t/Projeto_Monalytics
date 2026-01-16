@@ -1,0 +1,77 @@
+{
+  "empresa": {
+    "cnpj": "18.328.118/0001-09",
+    "nome": "",
+    "ticker": "PETZ3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 5,
+  "acionistas": [
+    {
+      "nome": "SERGIO ZIMERMAN",
+      "cpf_cnpj": "076.168.548-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 140115975,
+      "percentual_total": 31.058,
+      "acoes_ordinarias": 140115975,
+      "percentual_ordinarias": 31.058,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "XP INVESTIMENTOS CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+      "cpf_cnpj": "02.332.886/0001-04",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 50194155,
+      "percentual_total": 11.126,
+      "acoes_ordinarias": 50194155,
+      "percentual_ordinarias": 11.126,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "KINEA PRIVATE EQUITY V MASTER FUNDO DE INVESTIMENTO EM PARTICIPAÇÕES MULTIESTRATÉGIA",
+      "cpf_cnpj": "41.536.198/0001-00",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 24764767,
+      "percentual_total": 5.489,
+      "acoes_ordinarias": 24764767,
+      "percentual_ordinarias": 5.489,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "TEFRA PARTICIPAÇÕES S/A",
+      "cpf_cnpj": "61.159.372/0001-50",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 23139200,
+      "percentual_total": 5.129,
+      "acoes_ordinarias": 23139200,
+      "percentual_ordinarias": 5.129,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "PLATINA 55 FIM",
+      "cpf_cnpj": "39.512.176/0001-68",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 12500000,
+      "percentual_total": 2.771,
+      "acoes_ordinarias": 12500000,
+      "percentual_ordinarias": 2.771,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    }
+  ]
+}

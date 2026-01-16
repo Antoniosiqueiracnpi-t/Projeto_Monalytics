@@ -1,0 +1,46 @@
+{
+  "ticker": "SBFG3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T20:56:59.372535",
+  "periodo_analisado": {
+    "inicio": "2018T1",
+    "fim": "2025T3",
+    "total_trimestres": 31,
+    "anos": 7.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 21.1,
+      "variacao_total": 320.2,
+      "ultimo_valor": 1936.52
+    },
+    "margens": {
+      "bruta": 47.38,
+      "operacional": 6.08,
+      "liquida": 3.57
+    },
+    "rentabilidade": {
+      "roe_medio": 21.29,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 82.91,
+      "ultimo": 398.38
+    },
+    "balanco": {
+      "ativo_total": 9069.85,
+      "patrimonio": 2978.68
+    }
+  },
+  "analise_critica": "SBFG3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 3.57%). Gera excelente retorno sobre o patrimônio (ROE médio de 21.29%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 21.1%)",
+    "Excelente retorno sobre patrimônio (ROE: 21.29%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (3.57%)"
+  ]
+}

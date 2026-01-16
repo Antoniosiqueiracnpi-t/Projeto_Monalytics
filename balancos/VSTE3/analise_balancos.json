@@ -1,0 +1,45 @@
+{
+  "ticker": "VSTE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T20:56:59.393942",
+  "periodo_analisado": {
+    "inicio": "2010T3",
+    "fim": "2025T3",
+    "total_trimestres": 61,
+    "anos": 15.2
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -0.56,
+      "variacao_total": -8.11,
+      "ultimo_valor": 309.4
+    },
+    "margens": {
+      "bruta": 60.29,
+      "operacional": -9.11,
+      "liquida": -22.87
+    },
+    "rentabilidade": {
+      "roe_medio": -34.66,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 33.22,
+      "ultimo": 138.09
+    },
+    "balanco": {
+      "ativo_total": 1686.02,
+      "patrimonio": 1054.9
+    }
+  },
+  "analise_critica": "VSTE3 enfrenta desafios no crescimento, com receita em tendência de queda. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -0.56%)",
+    "Margem líquida comprimida (-22.87%)",
+    "Retorno sobre patrimônio baixo (ROE: -34.66%)"
+  ]
+}

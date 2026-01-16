@@ -1,0 +1,43 @@
+{
+  "ticker": "CEAB3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T20:56:59.198246",
+  "periodo_analisado": {
+    "inicio": "2018T1",
+    "fim": "2025T3",
+    "total_trimestres": 31,
+    "anos": 7.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.43,
+      "variacao_total": 83.46,
+      "ultimo_valor": 1840.86
+    },
+    "margens": {
+      "bruta": 50.14,
+      "operacional": 3.72,
+      "liquida": 2.14
+    },
+    "rentabilidade": {
+      "roe_medio": 12.89,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 224.84,
+      "ultimo": 680.61
+    },
+    "balanco": {
+      "ativo_total": 8917.83,
+      "patrimonio": 3536.83
+    }
+  },
+  "analise_critica": "CEAB3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 2.14%). Retorno sobre patrimônio adequado (ROE de 12.89%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Margem líquida comprimida (2.14%)"
+  ]
+}

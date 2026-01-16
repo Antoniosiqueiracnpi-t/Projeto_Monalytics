@@ -1,0 +1,45 @@
+{
+  "ticker": "WLMM4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T20:56:59.440121",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.45,
+      "variacao_total": 366.6,
+      "ultimo_valor": 856.09
+    },
+    "margens": {
+      "bruta": 15.68,
+      "operacional": 3.99,
+      "liquida": 2.99
+    },
+    "rentabilidade": {
+      "roe_medio": 8.99,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 7.82,
+      "ultimo": 163.37
+    },
+    "balanco": {
+      "ativo_total": 1533.87,
+      "patrimonio": 822.3
+    }
+  },
+  "analise_critica": "WLMM4 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 2.99%). Retorno sobre patrimônio abaixo do esperado (ROE de 8.99%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.45%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (2.99%)"
+  ]
+}

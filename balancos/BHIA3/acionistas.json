@@ -1,0 +1,77 @@
+{
+  "empresa": {
+    "cnpj": "33.041.260/0652-90",
+    "nome": "",
+    "ticker": "BHIA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 5,
+  "acionistas": [
+    {
+      "nome": "DOMUS VII PARTICIPAÇÕES S.A.",
+      "cpf_cnpj": "59.931.221/0001-26",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 835128978,
+      "percentual_total": 89.605,
+      "acoes_ordinarias": 835128978,
+      "percentual_ordinarias": 89.605,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Goldentree Fundo de Investimento em Ações",
+      "cpf_cnpj": "24.069.477/0001-91",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 7462394,
+      "percentual_total": 0.801,
+      "acoes_ordinarias": 7462394,
+      "percentual_ordinarias": 0.801,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "TWINSF FIM CP IE",
+      "cpf_cnpj": "29.033.458/0001-29",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 6604018,
+      "percentual_total": 0.709,
+      "acoes_ordinarias": 6604018,
+      "percentual_ordinarias": 0.709,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "EK-VV Limited",
+      "cpf_cnpj": "18.707.488/0001-57",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Nova Zelândia",
+      "acoes_total": 3278591,
+      "percentual_total": 0.352,
+      "acoes_ordinarias": 3278591,
+      "percentual_ordinarias": 0.352,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "MICHAEL KLEIN",
+      "cpf_cnpj": "498.139.868-91",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1945864,
+      "percentual_total": 0.209,
+      "acoes_ordinarias": 1945864,
+      "percentual_ordinarias": 0.209,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    }
+  ]
+}

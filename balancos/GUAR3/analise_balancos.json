@@ -1,0 +1,43 @@
+{
+  "ticker": "GUAR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T20:56:59.266746",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 11.31,
+      "variacao_total": 426.22,
+      "ultimo_valor": 2452.19
+    },
+    "margens": {
+      "bruta": 59.3,
+      "operacional": 8.97,
+      "liquida": 6.01
+    },
+    "rentabilidade": {
+      "roe_medio": 10.61,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 149.43,
+      "ultimo": 521.87
+    },
+    "balanco": {
+      "ativo_total": 13558.23,
+      "patrimonio": 5544.32
+    }
+  },
+  "analise_critica": "GUAR3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 6.01%). Retorno sobre patrimônio adequado (ROE de 10.61%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 11.31%)"
+  ],
+  "pontos_atencao": []
+}

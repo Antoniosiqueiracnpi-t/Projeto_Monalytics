@@ -1,22 +1,11 @@
 {
   "ticker": "VSTE3",
-  "ultima_atualizacao": "2026-01-15T23:01:49.721854",
+  "ultima_atualizacao": "2026-01-16T20:53:05.407819",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 38.78,
-      "maxima": 38.94,
-      "minima": 37.99,
-      "fechamento": 38.55,
-      "volume": 10287,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 38.63,
@@ -222,7 +211,7 @@
       "minima": 37.28,
       "fechamento": 37.52,
       "volume": 7437,
-      "mm20": 38.21,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 32.14,
       "volume": 5325,
       "mm20": 34.01,
-      "mm50": 36.13,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 88262,
       "mm20": 18.85,
       "mm50": 21.87,
-      "mm200": 31.2
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13854,16 +13843,27 @@
       "mm20": 4.0,
       "mm50": 4.31,
       "mm200": 5.48
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 3.91,
+      "maxima": 3.93,
+      "minima": 3.9,
+      "fechamento": 3.9,
+      "volume": 21600,
+      "mm20": 3.99,
+      "mm50": 4.29,
+      "mm200": 5.46
     }
   ],
   "estatisticas": {
     "total_dias": 1259,
-    "preco_inicial": 38.55,
-    "preco_atual": 3.91,
-    "variacao_periodo": -89.86,
+    "preco_inicial": 38.39,
+    "preco_atual": 3.9,
+    "variacao_periodo": -89.84,
     "maxima_periodo": 39.97,
     "minima_periodo": 3.85,
-    "volume_medio": 45274,
+    "volume_medio": 45283,
     "tendencia": "baixa"
   }
 }

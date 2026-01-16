@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "96.418.264/0218-02",
+    "nome": "",
+    "ticker": "LJQQ3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "Alaska Investimento Ltda",
+      "cpf_cnpj": "11.752.203/0001-50",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 47987734,
+      "percentual_total": 23.192,
+      "acoes_ordinarias": 47987734,
+      "percentual_ordinarias": 23.192,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Wishbone Management LC",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 33696232,
+      "percentual_total": 16.285,
+      "acoes_ordinarias": 33696232,
+      "percentual_ordinarias": 16.285,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    }
+  ]
+}
