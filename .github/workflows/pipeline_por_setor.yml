@@ -333,12 +333,12 @@ jobs:
         run: |
           python src/capturar_logos.py --modo lista --lista "${TICKERS}"
 
-      - name: Capturar Notícias (30 dias retroativos)
-        id: noticias
+      - name: Capturar Comunicados B3 (30 dias retroativos)
+        id: comunicados
         if: env.EXEC_NOTICIAS == 'true'
         continue-on-error: true
         run: |
-          python src/capturar_noticias.py --modo lista --lista "${TICKERS}" --dias 30
+          python src/capturar_comunicados_b3.py --modo lista --lista "${TICKERS}" --dias 30
 
       - name: Capturar Noticiario Empresarial 
         id: noticiario
