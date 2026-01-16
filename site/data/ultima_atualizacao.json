@@ -1,11 +1,11 @@
 {
-  "timestamp": 1768589285000,
+  "timestamp": 1768589818000,
   "data": "2026-01-16",
-  "hora": "15:48 BRT",
-  "deploy": "automatico-push",
+  "hora": "15:56 BRT",
+  "deploy": "automatico",
   "versao": "1.0.0",
-  "trigger": "push",
-  "iso": "2026-01-16T15:48:05-03:00",
-  "run_id": "21077206250",
-  "commit_sha": "de4f1fa470991db8eef7583dd42879b3f36b224e"
+  "trigger": "schedule",
+  "iso": "2026-01-16T15:56:58-03:00",
+  "run_id": "21077431289",
+  "commit_sha": "68a3e646b16859fd8f9222b98d122797b0940cea"
 }
