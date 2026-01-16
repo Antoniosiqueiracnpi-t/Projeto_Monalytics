@@ -1,44 +1,44 @@
 {
   "ticker": "ABEV3",
   "tipo_empresa": "nao_financeira",
-  "ultima_atualizacao": "2026-01-13T11:08:13.524112",
+  "ultima_atualizacao": "2026-01-16T16:52:32.417012",
   "periodo_analisado": {
-    "inicio": "2013T2",
+    "inicio": "2012T2",
     "fim": "2025T3",
-    "total_trimestres": 50,
-    "anos": 12.5
+    "total_trimestres": 54,
+    "anos": 13.5
   },
   "metricas": {
     "receita": {
-      "cagr": 8.7,
-      "variacao_total": 177.85,
-      "ultimo_valor": 208472620000000.0
+      "cagr": 8.79,
+      "variacao_total": 205.44,
+      "ultimo_valor": 20847.26
     },
     "margens": {
-      "bruta": 57.58,
-      "operacional": 30.58,
-      "liquida": 21.85
+      "bruta": 58.28,
+      "operacional": 31.45,
+      "liquida": 22.72
     },
     "rentabilidade": {
-      "roe_medio": 19.95,
+      "roe_medio": 20.47,
       "roa_medio": null
     },
     "estrutura": {
       "pl_ativos": null
     },
     "caixa": {
-      "media": 50652291632653.06,
-      "ultimo": 111983560000000.0
+      "media": 4937.07,
+      "ultimo": 11198.36
     },
     "balanco": {
-      "ativo_total": 1407549950000000.0,
-      "patrimonio": 927284120000000.0
+      "ativo_total": 140755.0,
+      "patrimonio": 92728.41
     }
   },
-  "analise_critica": "ABEV3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 21.85%. Gera excelente retorno sobre o patrimônio (ROE médio de 19.95%). Geração de caixa operacional positiva.",
+  "analise_critica": "ABEV3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 22.72%. Gera excelente retorno sobre o patrimônio (ROE médio de 20.47%). Geração de caixa operacional positiva.",
   "pontos_fortes": [
-    "Alta margem de lucro líquido (21.85%)",
-    "Excelente retorno sobre patrimônio (ROE: 19.95%)",
+    "Alta margem de lucro líquido (22.72%)",
+    "Excelente retorno sobre patrimônio (ROE: 20.47%)",
     "Forte geração de caixa operacional"
   ],
   "pontos_atencao": []
