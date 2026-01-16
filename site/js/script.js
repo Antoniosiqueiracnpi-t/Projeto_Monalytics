@@ -1549,7 +1549,8 @@ function renderNoticiasData(data) {
  */
 async function loadNoticiasMercado() {
     try {
-        const url = `${DATA_CONFIG.GITHUB_RAW}/${DATA_CONFIG.BRANCH}/${NOTICIAS_MERCADO_PATH}?t=${Date.now()}`;
+        // ATUALIZADO: busca arquivo local copiado pelo workflow para site/data/
+        const url = `data/noticias_mercado.json?t=${Date.now()}`;
 
         // força não usar cache do browser (além do cache-buster ?t=...)
         const response = await fetch(url, { cache: 'no-store' });
@@ -1566,6 +1567,7 @@ async function loadNoticiasMercado() {
         showNewsError();
     }
 }
+
 
 /**
  * Renderiza notícias do mercado
