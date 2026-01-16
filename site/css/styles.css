@@ -875,6 +875,17 @@ body {
     color: #6b7280;
 }
 
+.news-category-badge.mercados {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.news-category-badge.politica {
+    background-color: rgba(236, 72, 153, 0.1);
+    color: #ec4899;
+}
+
+
 .news-time {
     font-size: 0.75rem;
     color: var(--text-light);
