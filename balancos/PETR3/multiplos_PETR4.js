@@ -184,14 +184,14 @@
     "2010": {
       "periodo_referencia": "2010T4",
       "multiplos": {
-        "VALOR_MERCADO": 93601669.46,
+        "VALOR_MERCADO": 34508583.57,
         "P_L": 2.2382,
         "P_VPA": 0.259,
         "EV_EBITDA": 2.5668,
         "EV_EBIT": 3.4049,
         "EV_RECEITA": 0.7276,
-        "DY": 16.125,
-        "PAYOUT": 36.0907,
+        "DY": 16.0779,
+        "PAYOUT": 35.9854,
         "ROE": 11.5728,
         "ROA": 6.9045,
         "ROIC": 8.0902,
@@ -213,7 +213,7 @@
     "2011": {
       "periodo_referencia": "2011T4",
       "multiplos": {
-        "VALOR_MERCADO": 74247066.36,
+        "VALOR_MERCADO": 28178275.22,
         "P_L": 1.9817,
         "P_VPA": 0.1975,
         "EV_EBITDA": 2.8603,
@@ -242,7 +242,7 @@
     "2012": {
       "periodo_referencia": "2012T4",
       "multiplos": {
-        "VALOR_MERCADO": 66257963.53,
+        "VALOR_MERCADO": 26217560.25,
         "P_L": 2.9127,
         "P_VPA": 0.1847,
         "EV_EBITDA": 4.0124,
@@ -271,14 +271,14 @@
     "2013": {
       "periodo_referencia": "2013T4",
       "multiplos": {
-        "VALOR_MERCADO": 56611500.5,
+        "VALOR_MERCADO": 23864702.28,
         "P_L": 2.4153,
         "P_VPA": 0.1591,
         "EV_EBITDA": 4.4276,
         "EV_EBIT": 8.0963,
         "EV_RECEITA": 0.9123,
-        "DY": 24.8402,
-        "PAYOUT": 59.9977,
+        "DY": 9.3608,
+        "PAYOUT": 22.6096,
         "ROE": 6.7686,
         "ROA": 3.2024,
         "ROIC": 3.972,
@@ -300,14 +300,14 @@
     "2014": {
       "periodo_referencia": "2014T4",
       "multiplos": {
-        "VALOR_MERCADO": 35349778.59,
+        "VALOR_MERCADO": 14957454.24,
         "P_L": -1.5886,
         "P_VPA": 0.1121,
         "EV_EBITDA": 36.2268,
         "EV_EBIT": -14.4818,
         "EV_RECEITA": 0.9411,
-        "DY": 57.515,
-        "PAYOUT": -91.3692,
+        "DY": 37.3622,
+        "PAYOUT": -59.3541,
         "ROE": -6.6431,
         "ROA": -2.8356,
         "ROIC": -2.4402,
@@ -329,7 +329,7 @@
     "2015": {
       "periodo_referencia": "2015T4",
       "multiplos": {
-        "VALOR_MERCADO": 28187244.7,
+        "VALOR_MERCADO": 10027656.59,
         "P_L": -0.6639,
         "P_VPA": 0.0905,
         "EV_EBITDA": 16.5571,
@@ -358,7 +358,7 @@
     "2016": {
       "periodo_referencia": "2016T4",
       "multiplos": {
-        "VALOR_MERCADO": 58131142.95,
+        "VALOR_MERCADO": 22184089.44,
         "P_L": -3.9598,
         "P_VPA": 0.2044,
         "EV_EBITDA": 5.7247,
@@ -387,7 +387,7 @@
     "2017": {
       "periodo_referencia": "2017T4",
       "multiplos": {
-        "VALOR_MERCADO": 59905392.52,
+        "VALOR_MERCADO": 24032763.56,
         "P_L": 148.4374,
         "P_VPA": 0.2076,
         "EV_EBITDA": 4.2449,
@@ -416,14 +416,14 @@
     "2018": {
       "periodo_referencia": "2018T4",
       "multiplos": {
-        "VALOR_MERCADO": 89827654.31,
+        "VALOR_MERCADO": 35348889.99,
         "P_L": 3.083,
         "P_VPA": 0.2903,
         "EV_EBITDA": 3.3049,
         "EV_EBIT": 5.5283,
         "EV_RECEITA": 1.0252,
-        "DY": 15.0555,
-        "PAYOUT": 46.4165,
+        "DY": 14.2631,
+        "PAYOUT": 43.9735,
         "ROE": 9.653,
         "ROA": 3.1558,
         "ROIC": 7.7518,
@@ -445,7 +445,7 @@
     "2019": {
       "periodo_referencia": "2019T4",
       "multiplos": {
-        "VALOR_MERCADO": 118305506.28,
+        "VALOR_MERCADO": 48569710.97,
         "P_L": 2.7605,
         "P_VPA": 0.3781,
         "EV_EBITDA": 3.111,
@@ -474,14 +474,14 @@
     "2020": {
       "periodo_referencia": "2020T4",
       "multiplos": {
-        "VALOR_MERCADO": 109159186.67,
+        "VALOR_MERCADO": 45600628.29,
         "P_L": 17.0,
         "P_VPA": 0.3413,
         "EV_EBITDA": 4.053,
         "EV_EBIT": 8.8154,
         "EV_RECEITA": 1.6078,
-        "DY": 2.9528,
-        "PAYOUT": 50.1973,
+        "DY": 2.9471,
+        "PAYOUT": 50.101,
         "ROE": 2.0469,
         "ROA": 0.6529,
         "ROIC": 5.1218,
@@ -503,7 +503,7 @@
     "2021": {
       "periodo_referencia": "2021T4",
       "multiplos": {
-        "VALOR_MERCADO": 139135044.62,
+        "VALOR_MERCADO": 56300530.02,
         "P_L": 1.2222,
         "P_VPA": 0.3365,
         "EV_EBITDA": 1.4784,
@@ -532,14 +532,14 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
-        "VALOR_MERCADO": 201096223.14,
+        "VALOR_MERCADO": 77700333.47,
         "P_L": 0.9573,
         "P_VPA": 0.4965,
         "EV_EBITDA": 1.1742,
         "EV_EBIT": 1.4464,
         "EV_RECEITA": 0.6637,
-        "DY": 120.8842,
-        "PAYOUT": 115.7178,
+        "DY": 80.5345,
+        "PAYOUT": 77.0925,
         "ROE": 50.1362,
         "ROA": 19.3885,
         "ROIC": 32.9784,
@@ -561,14 +561,14 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
-        "VALOR_MERCADO": 369660032.73,
+        "VALOR_MERCADO": 152935768.11,
         "P_L": 2.8451,
         "P_VPA": 0.9314,
         "EV_EBITDA": 2.338,
         "EV_EBIT": 3.1554,
         "EV_RECEITA": 1.1669,
-        "DY": 26.8073,
-        "PAYOUT": 76.2705,
+        "DY": 18.6751,
+        "PAYOUT": 53.1332,
         "ROE": 33.524,
         "ROA": 12.3462,
         "ROIC": 20.4815,
@@ -590,14 +590,14 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
-        "VALOR_MERCADO": 442232463.97,
+        "VALOR_MERCADO": 177065759.83,
         "P_L": 11.3219,
         "P_VPA": 1.1401,
         "EV_EBITDA": 3.7655,
         "EV_EBIT": 5.6053,
         "EV_RECEITA": 1.5668,
-        "DY": 20.002,
-        "PAYOUT": 226.4609,
+        "DY": 19.2181,
+        "PAYOUT": 217.5852,
         "ROE": 9.871,
         "ROA": 3.4021,
         "ROIC": 13.0417,
@@ -619,14 +619,14 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "VALOR_MERCADO": 410352368.72,
+        "VALOR_MERCADO": 166172757.07,
         "P_L": 5.0421,
         "P_VPA": 0.9253,
         "EV_EBITDA": 2.6929,
         "EV_EBIT": 5.5592,
         "EV_RECEITA": 1.4741,
-        "DY": 15.9108,
-        "PAYOUT": 80.2244,
+        "DY": 14.8988,
+        "PAYOUT": 75.1216,
         "ROE": 19.0216,
         "ROA": 6.8117,
         "ROIC": 11.6375,
@@ -648,20 +648,20 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-16T13:19:46.827633",
+    "data_calculo": "2026-01-16T16:10:30.567297",
     "preco_utilizado": 30.51,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 12888732761,
     "periodo_acoes": "2024T4",
     "multiplos": {
-      "VALOR_MERCADO": 410352368.72,
+      "VALOR_MERCADO": 166172757.07,
       "P_L": 5.0421,
       "P_VPA": 0.9253,
       "EV_EBITDA": 2.6929,
       "EV_EBIT": 5.5592,
       "EV_RECEITA": 1.4741,
-      "DY": 15.9108,
-      "PAYOUT": 80.2244,
+      "DY": 14.8988,
+      "PAYOUT": 75.1216,
       "ROE": 19.0216,
       "ROA": 6.8117,
       "ROIC": 11.6375,
