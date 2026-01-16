@@ -1895,15 +1895,23 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     
     # ==================== MARKET CAP E EV ====================
     
+    # Market Cap do TICKER específico (para VALOR_MERCADO individual)
     if usar_preco_atual:
         market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
     else:
         market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
 
-    # ✅ Expor Valor de Mercado (R$ mil)
+    # ✅ Expor Valor de Mercado (R$ mil) - individual do ticker
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
-    ev = _calcular_ev(dados, periodo, market_cap)
+    # Market Cap TOTAL da empresa (para EV) - soma ON + PN, sem ticker_preco
+    # EV deve usar o valor de mercado TOTAL da empresa, não de uma classe específica
+    if usar_preco_atual:
+        market_cap_total = _calcular_market_cap_atual(dados, ticker_preco=None)
+    else:
+        market_cap_total = _calcular_market_cap(dados, periodo, ticker_preco=None)
+    
+    ev = _calcular_ev(dados, periodo, market_cap_total)
 
     # ==================== LUCRO LÍQUIDO LTM (para PAYOUT) ====================
     
@@ -2505,16 +2513,23 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     
     # ==================== MARKET CAP E EV ====================
     
+    # Market Cap do TICKER específico (para VALOR_MERCADO individual)
     if usar_preco_atual:
         market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
     else:
         market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
 
-
-    # ✅ Expor Valor de Mercado (R$ mil)
+    # ✅ Expor Valor de Mercado (R$ mil) - individual do ticker
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
-    ev = _calcular_ev(dados, periodo, market_cap)
+    # Market Cap TOTAL da empresa (para EV) - soma ON + PN, sem ticker_preco
+    # EV deve usar o valor de mercado TOTAL da empresa, não de uma classe específica
+    if usar_preco_atual:
+        market_cap_total = _calcular_market_cap_atual(dados, ticker_preco=None)
+    else:
+        market_cap_total = _calcular_market_cap(dados, periodo, ticker_preco=None)
+    
+    ev = _calcular_ev(dados, periodo, market_cap_total)
     
     # ==================== VALORES BASE - ESPECÍFICOS POR TICKER ====================
     
