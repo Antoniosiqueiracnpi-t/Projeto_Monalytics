@@ -1,0 +1,50 @@
+{
+  "data_relatorio": "09/01/2026",
+  "dados_reais": true,
+  "indicadores": [
+    {
+      "indicador": "IPCA",
+      "ha1sem2026": 4.06,
+      "valor_2026": 4.05,
+      "ha1sem2027": 3.8,
+      "valor_2027": 3.8,
+      "delta_2026": -0.009999999999999787,
+      "delta_2027": 0.0,
+      "var_sem_2026": "▼",
+      "var_sem_2027": "―"
+    },
+    {
+      "indicador": "PIB",
+      "ha1sem2026": 1.8,
+      "valor_2026": 1.8,
+      "ha1sem2027": 1.8,
+      "valor_2027": 1.8,
+      "delta_2026": 0.0,
+      "delta_2027": 0.0,
+      "var_sem_2026": "―",
+      "var_sem_2027": "―"
+    },
+    {
+      "indicador": "Câmbio",
+      "ha1sem2026": 5.5,
+      "valor_2026": 5.5,
+      "ha1sem2027": 5.5,
+      "valor_2027": 5.5,
+      "delta_2026": 0.0,
+      "delta_2027": 0.0,
+      "var_sem_2026": "―",
+      "var_sem_2027": "―"
+    },
+    {
+      "indicador": "Selic",
+      "ha1sem2026": 12.25,
+      "valor_2026": 12.25,
+      "ha1sem2027": 10.5,
+      "valor_2027": 10.5,
+      "delta_2026": 0.0,
+      "delta_2027": 0.0,
+      "var_sem_2026": "―",
+      "var_sem_2027": "―"
+    }
+  ]
+}
