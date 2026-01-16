@@ -7765,10 +7765,14 @@ function renderizarGraficoSelic(dados) {
         options: {
             responsive: true,
             maintainAspectRatio: true,
-            aspectRatio: 2.5,
+            aspectRatio: window.innerWidth <= 768 ? 1.8 : 2.5, // ✅ Aumentado no mobile
+            animation: {
+                duration: 750, // ✅ Reduzido de 1000ms
+                easing: 'easeInOutQuart' // ✅ Easing mais suave
+            },
             plugins: {
                 legend: {
-                    display: false // Usando legenda customizada
+                    display: false
                 },
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -7794,13 +7798,16 @@ function renderizarGraficoSelic(dados) {
                         font: {
                             weight: 600
                         },
-                        color: '#666'
+                        color: '#666',
+                        maxRotation: 0, // ✅ Sem rotação (evita tremor)
+                        minRotation: 0
                     }
                 },
                 y: {
                     beginAtZero: false,
                     grid: {
-                        color: 'rgba(0, 0, 0, 0.05)'
+                        color: 'rgba(0, 0, 0, 0.05)',
+                        drawBorder: false // ✅ Remove borda (mais limpo)
                     },
                     ticks: {
                         callback: function(value) {
@@ -7809,15 +7816,22 @@ function renderizarGraficoSelic(dados) {
                         font: {
                             weight: 600
                         },
-                        color: '#666'
+                        color: '#666',
+                        precision: 1 // ✅ Precisão fixa
                     }
                 }
             },
             interaction: {
                 mode: 'index',
                 intersect: false
+            },
+            hover: {
+                mode: 'index',
+                intersect: false,
+                animationDuration: 200 // ✅ Hover mais rápido
             }
         }
+
     });
 }
 
@@ -7871,5 +7885,330 @@ renderizarBoletimFocus = function(data) {
     carregarExpectativasSelic();
 };
 
+
+/* ========================================================================== */
+/* CURVA DE JUROS (DIxPre) - Tabela + Gráfico
+/* ========================================================================== */
+
+let curvaJurosChartInstance = null;
+
+/**
+ * Carrega dados da Curva de Juros
+ */
+async function carregarCurvaJuros() {
+    try {
+        console.log('📡 Carregando Curva de Juros...');
+        
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/site/data/curva_pre_di.json?t=${Date.now()}`;
+        
+        const response = await fetch(url, {
+            cache: 'no-store',
+            mode: 'cors'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('✅ Curva de Juros carregada:', data);
+        
+        renderizarCurvaJuros(data);
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar Curva de Juros:', error);
+        mostrarErroCurva();
+    }
+}
+
+/**
+ * Renderiza Curva de Juros (Tabela + Gráfico)
+ */
+function renderizarCurvaJuros(data) {
+    // Esconde loading
+    document.getElementById('curvaLoading').style.display = 'none';
+    
+    // Mostra container
+    document.getElementById('curvaJurosContainer').style.display = 'block';
+    
+    // Atualiza timestamp
+    const footerEl = document.getElementById('curvaFooter');
+    const timestampEl = document.getElementById('curvaTimestamp');
+    if (footerEl && timestampEl && data.gerado_em) {
+        footerEl.style.display = 'flex';
+        timestampEl.textContent = `Atualizado em: ${data.gerado_em}`;
+    }
+    
+    // Renderiza tabela
+    renderizarTabelaCurva(data.series);
+    
+    // Renderiza gráfico
+    renderizarGraficoCurva(data.series);
+    
+    // Inicializa toggle
+    inicializarToggleCurva();
+}
+
+/**
+ * Renderiza tabela da curva
+ */
+function renderizarTabelaCurva(series) {
+    const tbody = document.getElementById('curvaTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = series.map(item => {
+        const vertice = formatarVertice(item.dias);
+        
+        // Variações em bps
+        const var1d = gerarCelulaBps(item.var_1d_bps);
+        const var1sem = gerarCelulaBps(item.var_1sem_bps);
+        const var1mes = gerarCelulaBps(item.var_1mes_bps);
+        
+        return `
+            <tr>
+                <td>${vertice}</td>
+                <td><span class="curva-rate">${item.atual.toFixed(2)}%</span></td>
+                <td><span class="curva-rate-small">${item['1d_atras'].toFixed(2)}%</span></td>
+                <td>${var1d}</td>
+                <td><span class="curva-rate-small">${item['1sem_atras'].toFixed(2)}%</span></td>
+                <td>${var1sem}</td>
+                <td><span class="curva-rate-small">${item['1mes_atras'].toFixed(2)}%</span></td>
+                <td>${var1mes}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+/**
+ * Formata vértice em dias para texto amigável
+ */
+function formatarVertice(dias) {
+    if (dias === 21) return '21d';
+    if (dias === 63) return '2m';
+    if (dias === 126) return '4m';
+    if (dias === 252) return '1a';
+    if (dias === 378) return '15m';
+    if (dias === 504) return '2a';
+    if (dias === 756) return '3a';
+    if (dias === 1008) return '4a';
+    if (dias === 1260) return '5a';
+    if (dias === 2520) return '10a';
+    return `${dias}d`;
+}
+
+/**
+ * Gera célula de variação em bps
+ */
+function gerarCelulaBps(bps) {
+    let classe = 'neutral';
+    let icone = 'fa-minus';
+    let sinal = '';
+    
+    if (bps > 0.5) {
+        classe = 'positive';
+        icone = 'fa-arrow-up';
+        sinal = '+';
+    } else if (bps < -0.5) {
+        classe = 'negative';
+        icone = 'fa-arrow-down';
+        sinal = '';
+    }
+    
+    const bpsFormatado = Math.abs(bps).toFixed(1);
+    
+    return `
+        <span class="curva-variation-bps ${classe}">
+            <i class="fas ${icone}"></i>
+            <span>${sinal}${bpsFormatado}</span>
+        </span>
+    `;
+}
+
+/**
+ * Renderiza gráfico da curva
+ */
+function renderizarGraficoCurva(series) {
+    const canvas = document.getElementById('curvaJurosChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destrói gráfico anterior
+    if (curvaJurosChartInstance) {
+        curvaJurosChartInstance.destroy();
+    }
+    
+    // Prepara dados
+    const labels = series.map(s => formatarVertice(s.dias));
+    const atual = series.map(s => s.atual);
+    const semana = series.map(s => s['1sem_atras']);
+    const mes = series.map(s => s['1mes_atras']);
+    
+    // Cria gráfico
+    curvaJurosChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Atual',
+                    data: atual,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 3,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    pointBackgroundColor: '#10b981',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    tension: 0.4,
+                    fill: false,
+                    borderDash: [] // Linha sólida
+                },
+                {
+                    label: '1 Semana Atrás',
+                    data: semana,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.05)',
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: '#3b82f6',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 1.5,
+                    tension: 0.4,
+                    fill: false,
+                    borderDash: [5, 5] // Linha tracejada
+                },
+                {
+                    label: '1 Mês Atrás',
+                    data: mes,
+                    borderColor: '#9ca3af',
+                    backgroundColor: 'rgba(156, 163, 175, 0.05)',
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: '#9ca3af',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 1.5,
+                    tension: 0.4,
+                    fill: false,
+                    borderDash: [5, 5] // Linha tracejada
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 2.5,
+            animation: {
+                duration: 750,
+                easing: 'easeInOutQuart'
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    borderWidth: 1,
+                    padding: 12,
+                    displayColors: true,
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}%`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            weight: 600,
+                            size: 11
+                        },
+                        color: '#666'
+                    }
+                },
+                y: {
+                    beginAtZero: false,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return value.toFixed(1) + '%';
+                        },
+                        font: {
+                            weight: 600,
+                            size: 11
+                        },
+                        color: '#666'
+                    }
+                }
+            },
+            interaction: {
+                mode: 'index',
+                intersect: false
+            }
+        }
+    });
+}
+
+/**
+ * Inicializa toggle entre Tabela e Gráfico
+ */
+function inicializarToggleCurva() {
+    const btnTable = document.getElementById('btnCurvaTableView');
+    const btnChart = document.getElementById('btnCurvaChartView');
+    const tableView = document.getElementById('curvaTableView');
+    const chartView = document.getElementById('curvaChartView');
+    
+    if (!btnTable || !btnChart) return;
+    
+    btnTable.addEventListener('click', () => {
+        btnTable.classList.add('active');
+        btnChart.classList.remove('active');
+        tableView.classList.add('active');
+        chartView.classList.remove('active');
+    });
+    
+    btnChart.addEventListener('click', () => {
+        btnChart.classList.add('active');
+        btnTable.classList.remove('active');
+        chartView.classList.add('active');
+        tableView.classList.remove('active');
+    });
+}
+
+/**
+ * Mostra erro ao carregar Curva
+ */
+function mostrarErroCurva() {
+    const loadingEl = document.getElementById('curvaLoading');
+    if (loadingEl) {
+        loadingEl.innerHTML = `
+            <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+            <span>Erro ao carregar Curva de Juros. Tente novamente mais tarde.</span>
+        `;
+    }
+}
+
+/**
+ * Carrega Curva após Selic
+ */
+const renderizarExpectativasSelicOriginal = renderizarExpectativasSelic;
+renderizarExpectativasSelic = function(data) {
+    renderizarExpectativasSelicOriginal(data);
+    // Carrega Curva após Selic
+    carregarCurvaJuros();
+};
 
 
