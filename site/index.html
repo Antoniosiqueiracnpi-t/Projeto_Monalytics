@@ -104,8 +104,10 @@
                         </a>
                         <ul class="nav-dropdown">
                           <li><a href="#expectativas-macro" class="nav-dropdown-link">Expectativas Macroeconômicas</a></li>
+                          <li><a href="#mercado-secundario" class="nav-dropdown-link">Mercado Secundário de Renda Fixa</a></li>
                         </ul>
                       </li>
+
                         
                     </ul>
                 </div>
@@ -1376,6 +1378,114 @@
                     </div>
                 </div>
 
+
+
+                
+
+                <!-- MERCADO SECUNDÁRIO DE RENDA FIXA -->
+                <section id="mercado-secundario" class="mercado-secundario-section">
+                    <div class="container">
+                        <!-- Header da Seção -->
+                        <div class="mercado-secundario-header">
+                            <div class="mercado-secundario-title-group">
+                                <i class="fas fa-exchange-alt"></i>
+                                <div>
+                                    <h2 class="mercado-secundario-title">Mercado Secundário de Renda Fixa</h2>
+                                    <p class="mercado-secundario-subtitle">Acompanhe spreads de crédito e taxas do mercado secundário</p>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <!-- Card Spreads de Crédito ANBIMA -->
+                        <div class="spreads-anbima-card">
+                            <div class="spreads-anbima-header">
+                                <div class="spreads-icon">
+                                    <i class="fas fa-chart-area"></i>
+                                </div>
+                                <div class="spreads-info">
+                                    <h3 class="spreads-title">Spreads de Crédito ANBIMA</h3>
+                                    <p class="spreads-description">Curvas de spread por rating de crédito (AAA, AA, A)</p>
+                                </div>
+                                <div class="spreads-badge" id="spreadsDataBadge">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Carregando...</span>
+                                </div>
+                            </div>
+            
+                            <!-- Loading -->
+                            <div class="spreads-loading" id="spreadsLoading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Carregando spreads de crédito...</span>
+                            </div>
+            
+                            <!-- Toggle Tabela/Gráfico -->
+                            <div class="spreads-view-controls" id="spreadsViewControls" style="display: none;">
+                                <div class="spreads-view-toggle">
+                                    <button class="toggle-btn active" data-view="table" id="btnSpreadsTableView">
+                                        <i class="fas fa-table"></i>
+                                        <span>Tabela</span>
+                                    </button>
+                                    <button class="toggle-btn" data-view="chart" id="btnSpreadsChartView">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>Gráfico</span>
+                                    </button>
+                                </div>
+                            </div>
+            
+                            <!-- View: Tabela -->
+                            <div class="spreads-view-container active" id="spreadsTableView">
+                                <div class="spreads-table-wrapper">
+                                    <table class="spreads-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Vértice</th>
+                                                <th class="rating-aaa">AAA</th>
+                                                <th class="rating-aa">AA</th>
+                                                <th class="rating-a">A</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="spreadsTableBody">
+                                            <!-- Preenchido via JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+            
+                            <!-- View: Gráfico -->
+                            <div class="spreads-view-container" id="spreadsChartView">
+                                <div class="spreads-chart-wrapper">
+                                    <canvas id="spreadsChart"></canvas>
+                                </div>
+                                
+                                <!-- Legenda do gráfico -->
+                                <div class="spreads-chart-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-dot" style="background: #10b981;"></span>
+                                        <span>AAA (Menor Risco)</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-dot" style="background: #f59e0b;"></span>
+                                        <span>AA (Risco Médio)</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-dot" style="background: #ef4444;"></span>
+                                        <span>A (Maior Risco)</span>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <!-- Rodapé -->
+                            <div class="spreads-footer" id="spreadsFooter" style="display: none;">
+                                <div class="spreads-footer-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Spreads de crédito corporativo calculados pela ANBIMA sobre a curva livre de risco</span>
+                                </div>
+                            </div>
+                        </div>
+            
+                    </div>
+                </section>
+
                 
 
 
@@ -1421,11 +1531,12 @@
                           <!-- De olho na Renda Fixa com Subitens -->
                           <li>
                             <a href="#renda-fixa">De olho na Renda Fixa</a>
-                
                             <ul class="footer-subnav">
                               <li><a href="#expectativas-macro">Expectativas Macroeconômicas</a></li>
+                              <li><a href="#mercado-secundario">Mercado Secundário de Renda Fixa</a></li>
                             </ul>
                           </li>
+
                         </ul>
                     </div>
 
