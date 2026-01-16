@@ -7363,4 +7363,197 @@ style.textContent = `
 document.head.appendChild(style);
 
 
+/* ========================================================================== */
+/* EXPECTATIVAS MACROECONÔMICAS - BOLETIM FOCUS
+/* ========================================================================== */
+
+/**
+ * Carrega dados do Boletim Focus
+ */
+async function carregarBoletimFocus() {
+    try {
+        console.log('📡 Carregando Boletim Focus...');
+        
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/site/data/focus.json?t=${Date.now()}`;
+        
+        const response = await fetch(url, {
+            cache: 'no-store',
+            mode: 'cors'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('✅ Focus carregado:', data);
+        
+        renderizarBoletimFocus(data);
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar Focus:', error);
+        mostrarErroFocus();
+    }
+}
+
+/**
+ * Renderiza os dados do Boletim Focus
+ */
+function renderizarBoletimFocus(data) {
+    // Esconde loading
+    document.getElementById('focusLoading').style.display = 'none';
+    
+    // Mostra conteúdo
+    document.getElementById('focusTableWrapper').style.display = 'block';
+    document.getElementById('focusFooter').style.display = 'block';
+    
+    // Atualiza badge com data
+    const badgeElement = document.getElementById('focusDataBadge');
+    if (badgeElement && data.data_relatorio) {
+        badgeElement.innerHTML = `
+            <i class="fas fa-calendar-alt"></i>
+            <span>${data.data_relatorio}</span>
+        `;
+    }
+    
+    // Renderiza tabela desktop
+    renderizarTabelaFocus(data.indicadores);
+    
+    // Renderiza cards mobile
+    renderizarCardsMobileFocus(data.indicadores);
+}
+
+/**
+ * Renderiza tabela desktop
+ */
+function renderizarTabelaFocus(indicadores) {
+    const tbody = document.getElementById('focusTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = indicadores.map(ind => {
+        // Formata valores
+        const valor2026 = formatarValorIndicador(ind.indicador, ind.valor_2026);
+        const valor2027 = formatarValorIndicador(ind.indicador, ind.valor_2027);
+        
+        // Variação 2026
+        const var2026 = gerarCelulaVariacao(ind.delta_2026, ind.var_sem_2026);
+        
+        // Variação 2027
+        const var2027 = gerarCelulaVariacao(ind.delta_2027, ind.var_sem_2027);
+        
+        return `
+            <tr>
+                <td class="col-indicator">${ind.indicador}</td>
+                <td class="col-year">${valor2026}</td>
+                <td class="col-variation">${var2026}</td>
+                <td class="col-year">${valor2027}</td>
+                <td class="col-variation">${var2027}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+/**
+ * Renderiza cards mobile
+ */
+function renderizarCardsMobileFocus(indicadores) {
+    const container = document.getElementById('focusCardsMobile');
+    if (!container) return;
+    
+    container.innerHTML = indicadores.map(ind => {
+        const valor2026 = formatarValorIndicador(ind.indicador, ind.valor_2026);
+        const valor2027 = formatarValorIndicador(ind.indicador, ind.valor_2027);
+        
+        const var2026 = gerarCelulaVariacao(ind.delta_2026, ind.var_sem_2026);
+        const var2027 = gerarCelulaVariacao(ind.delta_2027, ind.var_sem_2027);
+        
+        return `
+            <div class="focus-indicator-card">
+                <div class="focus-indicator-name">${ind.indicador}</div>
+                
+                <div class="focus-year-section">
+                    <div class="focus-year-label">2026</div>
+                    <div class="focus-year-data">
+                        <div class="focus-year-value">${valor2026}</div>
+                        ${var2026}
+                    </div>
+                </div>
+                
+                <div class="focus-year-section">
+                    <div class="focus-year-label">2027</div>
+                    <div class="focus-year-data">
+                        <div class="focus-year-value">${valor2027}</div>
+                        ${var2027}
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+/**
+ * Formata valor do indicador conforme tipo
+ */
+function formatarValorIndicador(indicador, valor) {
+    switch(indicador.toUpperCase()) {
+        case 'CÂMBIO':
+            return `R$ ${valor.toFixed(2)}`;
+        case 'PIB':
+        case 'IPCA':
+        case 'SELIC':
+            return `${valor.toFixed(2)}%`;
+        default:
+            return valor.toFixed(2);
+    }
+}
+
+/**
+ * Gera célula de variação com cor e ícone
+ */
+function gerarCelulaVariacao(delta, simbolo) {
+    let classe = 'neutral';
+    let icone = 'fa-minus';
+    let sinal = '';
+    
+    if (delta > 0) {
+        classe = 'positive';
+        icone = 'fa-arrow-up';
+        sinal = '+';
+    } else if (delta < 0) {
+        classe = 'negative';
+        icone = 'fa-arrow-down';
+        sinal = '';
+    }
+    
+    const deltaFormatado = Math.abs(delta).toFixed(2);
+    
+    return `
+        <span class="variation-cell ${classe}">
+            <i class="fas ${icone}"></i>
+            <span>${sinal}${deltaFormatado} p.p.</span>
+        </span>
+    `;
+}
+
+/**
+ * Mostra mensagem de erro
+ */
+function mostrarErroFocus() {
+    const loadingEl = document.getElementById('focusLoading');
+    if (loadingEl) {
+        loadingEl.innerHTML = `
+            <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+            <span>Erro ao carregar dados do Focus. Tente novamente mais tarde.</span>
+        `;
+    }
+}
+
+/**
+ * Inicializa carregamento do Focus
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    carregarBoletimFocus();
+});
+
+
 
