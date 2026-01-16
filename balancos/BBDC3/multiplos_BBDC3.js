@@ -79,7 +79,7 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
-        "VALOR_MERCADO": 53650858.5,
+        "VALOR_MERCADO": 114246730.84,
         "P_L": 5.0486,
         "P_VPA": 0.6748,
         "DY": 8.0599,
@@ -93,7 +93,7 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
-        "VALOR_MERCADO": 67957754.11,
+        "VALOR_MERCADO": 144141502.29,
         "P_L": 9.3556,
         "P_VPA": 0.8124,
         "DY": 25.4487,
@@ -107,7 +107,7 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
-        "VALOR_MERCADO": 50068540.17,
+        "VALOR_MERCADO": 104483513.6,
         "P_L": 5.6999,
         "P_VPA": 0.5918,
         "DY": 22.5341,
@@ -121,7 +121,7 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "VALOR_MERCADO": 78656403.68,
+        "VALOR_MERCADO": 169876840.19,
         "P_L": 7.2749,
         "P_VPA": 0.8918,
         "DY": 17.2993,
@@ -135,13 +135,13 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-16T10:35:39.458754",
+    "data_calculo": "2026-01-16T13:19:43.777835",
     "preco_utilizado": 14.83,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 10592012028,
     "periodo_acoes": "2024T4",
     "multiplos": {
-      "VALOR_MERCADO": 78656403.68,
+      "VALOR_MERCADO": 169876840.19,
       "P_L": 7.2749,
       "P_VPA": 0.8918,
       "DY": 17.2993,

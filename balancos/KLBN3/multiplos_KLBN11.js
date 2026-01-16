@@ -184,7 +184,7 @@
     "2010": {
       "periodo_referencia": "2010T4",
       "multiplos": {
-        "VALOR_MERCADO": 3077909.77,
+        "VALOR_MERCADO": 545913.4,
         "P_L": 5.2871,
         "P_VPA": 0.5971,
         "EV_EBITDA": 2.5585,
@@ -213,7 +213,7 @@
     "2011": {
       "periodo_referencia": "2011T4",
       "multiplos": {
-        "VALOR_MERCADO": 3077909.77,
+        "VALOR_MERCADO": 715792.97,
         "P_L": 16.8449,
         "P_VPA": 0.6208,
         "EV_EBITDA": 3.3416,
@@ -242,7 +242,7 @@
     "2012": {
       "periodo_referencia": "2012T4",
       "multiplos": {
-        "VALOR_MERCADO": 3077909.77,
+        "VALOR_MERCADO": 1224999.04,
         "P_L": 4.0932,
         "P_VPA": 0.5678,
         "EV_EBITDA": 2.4044,
@@ -271,7 +271,7 @@
     "2013": {
       "periodo_referencia": "2013T4",
       "multiplos": {
-        "VALOR_MERCADO": 15863714.1,
+        "VALOR_MERCADO": 6104677.54,
         "P_L": 54.6842,
         "P_VPA": 2.9417,
         "EV_EBITDA": 7.4375,
@@ -300,7 +300,7 @@
     "2014": {
       "periodo_referencia": "2014T4",
       "multiplos": {
-        "VALOR_MERCADO": 7473067.51,
+        "VALOR_MERCADO": 7083546.03,
         "P_L": 10.2325,
         "P_VPA": 1.0588,
         "EV_EBITDA": 6.2329,
@@ -329,7 +329,7 @@
     "2015": {
       "periodo_referencia": "2015T4",
       "multiplos": {
-        "VALOR_MERCADO": 12476665.49,
+        "VALOR_MERCADO": 8634844.63,
         "P_L": -9.9559,
         "P_VPA": 2.3311,
         "EV_EBITDA": 11.6581,
@@ -358,7 +358,7 @@
     "2016": {
       "periodo_referencia": "2016T4",
       "multiplos": {
-        "VALOR_MERCADO": 9693554.97,
+        "VALOR_MERCADO": 11458758.0,
         "P_L": 3.9056,
         "P_VPA": 1.3652,
         "EV_EBITDA": 10.1674,
@@ -387,7 +387,7 @@
     "2017": {
       "periodo_referencia": "2017T4",
       "multiplos": {
-        "VALOR_MERCADO": 11338944.66,
+        "VALOR_MERCADO": 12494316.54,
         "P_L": 21.307,
         "P_VPA": 1.5674,
         "EV_EBITDA": 9.3378,
@@ -416,7 +416,7 @@
     "2018": {
       "periodo_referencia": "2018T4",
       "multiplos": {
-        "VALOR_MERCADO": 10830423.28,
+        "VALOR_MERCADO": 11693425.72,
         "P_L": 57.9731,
         "P_VPA": 1.6577,
         "EV_EBITDA": 6.0205,
@@ -445,7 +445,7 @@
     "2019": {
       "periodo_referencia": "2019T4",
       "multiplos": {
-        "VALOR_MERCADO": 13264834.11,
+        "VALOR_MERCADO": 13705331.65,
         "P_L": 18.5621,
         "P_VPA": 2.0403,
         "EV_EBITDA": 7.6783,
@@ -474,7 +474,7 @@
     "2020": {
       "periodo_referencia": "2020T4",
       "multiplos": {
-        "VALOR_MERCADO": 19808689.86,
+        "VALOR_MERCADO": 19714806.58,
         "P_L": -8.2899,
         "P_VPA": 4.5176,
         "EV_EBITDA": 9.0185,
@@ -503,7 +503,7 @@
     "2021": {
       "periodo_referencia": "2021T4",
       "multiplos": {
-        "VALOR_MERCADO": 19505323.65,
+        "VALOR_MERCADO": 19869076.46,
         "P_L": 5.7286,
         "P_VPA": 2.7526,
         "EV_EBITDA": 6.2646,
@@ -532,7 +532,7 @@
     "2022": {
       "periodo_referencia": "2022T4",
       "multiplos": {
-        "VALOR_MERCADO": 16235710.06,
+        "VALOR_MERCADO": 16368885.21,
         "P_L": 3.4626,
         "P_VPA": 1.4035,
         "EV_EBITDA": 4.0439,
@@ -561,7 +561,7 @@
     "2023": {
       "periodo_referencia": "2023T4",
       "multiplos": {
-        "VALOR_MERCADO": 21208668.73,
+        "VALOR_MERCADO": 21095614.74,
         "P_L": 7.4485,
         "P_VPA": 1.5444,
         "EV_EBITDA": 6.9329,
@@ -590,7 +590,7 @@
     "2024": {
       "periodo_referencia": "2024T4",
       "multiplos": {
-        "VALOR_MERCADO": 25942305.17,
+        "VALOR_MERCADO": 26447145.94,
         "P_L": 12.6737,
         "P_VPA": 3.0036,
         "EV_EBITDA": 8.8594,
@@ -619,7 +619,7 @@
     "2025": {
       "periodo_referencia": "2025T3",
       "multiplos": {
-        "VALOR_MERCADO": 20726653.53,
+        "VALOR_MERCADO": 20692836.24,
         "P_L": 10.0985,
         "P_VPA": 1.4127,
         "EV_EBITDA": 5.3616,
@@ -648,13 +648,13 @@
   },
   "ltm": {
     "periodo_referencia": "2025T3",
-    "data_calculo": "2026-01-16T10:35:42.079521",
+    "data_calculo": "2026-01-16T13:19:45.782119",
     "preco_utilizado": 16.77,
     "periodo_preco": "2025T3",
     "acoes_utilizadas": 1235936406,
     "periodo_acoes": "2024T4",
     "multiplos": {
-      "VALOR_MERCADO": 20726653.53,
+      "VALOR_MERCADO": 20692836.24,
       "P_L": 10.0985,
       "P_VPA": 1.4127,
       "EV_EBITDA": 5.3616,
