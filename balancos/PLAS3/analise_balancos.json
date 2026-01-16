@@ -1,0 +1,44 @@
+{
+  "ticker": "PLAS3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-16T20:18:44.824276",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 5.01,
+      "variacao_total": 113.38,
+      "ultimo_valor": 315.33
+    },
+    "margens": {
+      "bruta": 8.81,
+      "operacional": -7.12,
+      "liquida": -21.77
+    },
+    "rentabilidade": {
+      "roe_medio": -205.02,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 15.95,
+      "ultimo": 58.17
+    },
+    "balanco": {
+      "ativo_total": 631.44,
+      "patrimonio": -673.57
+    }
+  },
+  "analise_critica": "PLAS3 apresenta trajetória consistente de crescimento de receita no período analisado. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Margem líquida comprimida (-21.77%)",
+    "Retorno sobre patrimônio baixo (ROE: -205.02%)"
+  ]
+}
