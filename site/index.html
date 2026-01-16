@@ -1138,6 +1138,79 @@
         </div>
     </section>
 
+    <!-- ===================== EXPECTATIVAS MACROECONÔMICAS ===================== -->
+    <section id="expectativas-macro" class="expectativas-macro-section">
+        <div class="container">
+            <!-- Header da Seção -->
+            <div class="expectativas-header">
+                <div class="expectativas-title-group">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <h2 class="expectativas-title">Expectativas Macroeconômicas</h2>
+                        <p class="expectativas-subtitle">Projeções do mercado financeiro para os principais indicadores</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Card Boletim Focus -->
+            <div class="focus-card">
+                <div class="focus-card-header">
+                    <div class="focus-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="focus-info">
+                        <h3 class="focus-title">Boletim Focus</h3>
+                        <p class="focus-description">Relatório semanal do Banco Central com as expectativas do mercado</p>
+                    </div>
+                    <div class="focus-badge" id="focusDataBadge">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Carregando...</span>
+                    </div>
+                </div>
+    
+                <!-- Loading -->
+                <div class="focus-loading" id="focusLoading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Carregando expectativas...</span>
+                </div>
+    
+                <!-- Tabela Responsiva -->
+                <div class="focus-table-wrapper" id="focusTableWrapper" style="display: none;">
+                    <div class="focus-table-scroll">
+                        <table class="focus-table" id="focusTable">
+                            <thead>
+                                <tr>
+                                    <th class="col-indicator">Indicador</th>
+                                    <th class="col-year">2026</th>
+                                    <th class="col-variation">Variação Semanal</th>
+                                    <th class="col-year">2027</th>
+                                    <th class="col-variation">Variação Semanal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="focusTableBody">
+                                <!-- Preenchido via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+    
+                    <!-- Cards Mobile (alternativa para mobile) -->
+                    <div class="focus-cards-mobile" id="focusCardsMobile">
+                        <!-- Preenchido via JS -->
+                    </div>
+                </div>
+    
+                <!-- Rodapé -->
+                <div class="focus-footer" id="focusFooter" style="display: none;">
+                    <div class="focus-footer-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Dados coletados do Relatório Focus - Sistema de Expectativas do Mercado (Banco Central)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
 
     <!-- =========================== FOOTER =========================== -->
     <footer class="footer">
