@@ -9,13 +9,28 @@ concurrency:
   cancel-in-progress: false  # Aguarda o anterior terminar
 
 # ═══════════════════════════════════════════════════════════════
-# TRIGGERS
+# TRIGGERS - VERSÃO DEFINITIVA COM AUTOMAÇÃO COMPLETA
 # ═══════════════════════════════════════════════════════════════
 on:
-  # Manual via GitHub Actions
+  # ✅ TRIGGER 1: Push automático quando atualizar site/
+  push:
+    branches:
+      - main
+    paths:
+      - 'site/**'
+      - '.github/workflows/deploy_netlify.yml'
+  
+  # ✅ TRIGGER 2: Dispara após workflow de notícias concluir
+  workflow_run:
+    workflows:
+      - "Atualizar Noticiario Economico (08h-20h BRT de 1h em 1h)"
+    types:
+      - completed
+  
+  # ✅ TRIGGER 3: Manual via GitHub Actions
   workflow_dispatch:
   
-  # Automático via schedule
+  # ✅ TRIGGER 4: Automático via schedule (horários fixos)
   schedule:
     - cron: '0 13 * * 1-5'   # 10h BRT (após abertura - seg a sex)
     - cron: '30 18 * * 1-5'  # 15h30 BRT (após fechamento - seg a sex)
@@ -27,7 +42,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15  # Timeout de segurança
+    timeout-minutes: 15
     
     steps:
       # ────────────────────────────────────────────────────────
@@ -36,7 +51,7 @@ jobs:
       - name: 📥 Checkout Repositório
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Histórico completo para rebase
+          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
       
       # ────────────────────────────────────────────────────────
@@ -46,7 +61,6 @@ jobs:
         run: |
           echo "🔍 Validando configurações..."
           
-          # Valida secret do Netlify
           if [ -z "${{ secrets.NETLIFY_BUILD_HOOK }}" ]; then
             echo "❌ ERRO CRÍTICO: Secret NETLIFY_BUILD_HOOK não configurado!"
             echo ""
@@ -59,7 +73,6 @@ jobs:
             exit 1
           fi
           
-          # Valida estrutura de diretórios
           if [ ! -d "site" ]; then
             echo "❌ ERRO: Diretório 'site' não encontrado!"
             exit 1
@@ -75,15 +88,14 @@ jobs:
           echo "⏳ Verificando workflows ativos..."
           echo "═══════════════════════════════════════"
           
-          TIMEOUT=600  # 10 minutos de timeout
+          TIMEOUT=600
           ELAPSED=0
-          INTERVAL=30  # Verifica a cada 30 segundos
+          INTERVAL=30
           
           while [ $ELAPSED -lt $TIMEOUT ]; do
-            # Lista workflows em execução (exceto este)
             RUNNING=$(gh run list \
               --status in_progress \
-              --json name,databaseId,startedAt \
+              --json name,databaseId \
               --jq '[.[] | select(.name != "Deploy Netlify")] | length' \
               2>/dev/null || echo "0")
             
@@ -117,28 +129,27 @@ jobs:
         run: |
           echo "🕐 Gerando timestamp de deploy..."
           
-          # Criar diretório se não existir
           mkdir -p site/data
           
-          # Backup do arquivo anterior (se existir)
           if [ -f "site/data/ultima_atualizacao.json" ]; then
             cp site/data/ultima_atualizacao.json site/data/ultima_atualizacao.json.bak
           fi
           
-          # Gerar timestamp Unix em milissegundos
           TIMESTAMP=$(date +%s)000
           DATA=$(TZ='America/Sao_Paulo' date +'%Y-%m-%d')
           HORA=$(TZ='America/Sao_Paulo' date +'%H:%M BRT')
           ISO=$(TZ='America/Sao_Paulo' date -Iseconds)
           
-          # Determinar tipo de deploy
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             TIPO="manual"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            TIPO="automatico-push"
+          elif [ "${{ github.event_name }}" = "workflow_run" ]; then
+            TIPO="automatico-workflow"
           else
             TIPO="automatico"
           fi
           
-          # Criar JSON com timestamp
           cat > site/data/ultima_atualizacao.json << EOF
           {
             "timestamp": ${TIMESTAMP},
@@ -165,7 +176,6 @@ jobs:
           echo "📄 Conteúdo do arquivo:"
           cat site/data/ultima_atualizacao.json
           
-          # Exporta para próximos steps
           echo "timestamp=${TIMESTAMP}" >> $GITHUB_OUTPUT
           echo "data_hora=${DATA} ${HORA}" >> $GITHUB_OUTPUT
       
@@ -177,28 +187,21 @@ jobs:
           echo "💾 Iniciando processo de commit e push..."
           echo "═══════════════════════════════════════"
           
-          # Configurar Git
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           
-          # Adicionar arquivo
           git add site/data/ultima_atualizacao.json
           
-          # Verificar se há mudanças
           if git diff --staged --quiet; then
             echo "ℹ️  Nenhuma mudança detectada no timestamp"
             echo "ℹ️  Arquivo já estava atualizado, pulando commit"
             exit 0
           fi
           
-          # Criar commit
           COMMIT_MSG="🕐 Atualizar timestamp de deploy [skip ci]"
           git commit -m "$COMMIT_MSG"
           echo "✅ Commit criado: $COMMIT_MSG"
           
-          # ═══════════════════════════════════════════
-          # RETRY LOGIC COM PULL + REBASE
-          # ═══════════════════════════════════════════
           MAX_ATTEMPTS=5
           ATTEMPT=1
           SUCCESS=false
@@ -208,11 +211,9 @@ jobs:
             echo "🔄 Tentativa $ATTEMPT de $MAX_ATTEMPTS"
             echo "───────────────────────────────────────"
             
-            # Fetch últimas mudanças
             echo "📥 Fetching origin/main..."
             git fetch origin main
             
-            # Tenta rebase
             echo "🔀 Aplicando rebase..."
             if git rebase origin/main; then
               echo "✅ Rebase aplicado com sucesso"
@@ -220,10 +221,8 @@ jobs:
               echo "⚠️  Conflito detectado durante rebase"
               echo "🔧 Resolvendo conflito automaticamente..."
               
-              # Aborta rebase
               git rebase --abort 2>/dev/null || true
               
-              # Estratégia: reset soft + reaplica commit
               git reset --soft origin/main
               git add site/data/ultima_atualizacao.json
               git commit -m "$COMMIT_MSG"
@@ -231,7 +230,6 @@ jobs:
               echo "✅ Conflito resolvido automaticamente"
             fi
             
-            # Tenta push
             echo "⬆️  Executando push..."
             if git push origin main; then
               echo ""
@@ -241,9 +239,7 @@ jobs:
             else
               echo "❌ Push falhou na tentativa $ATTEMPT"
               
-              # Se não foi a última tentativa, aguarda
               if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
-                # Backoff exponencial: 5s, 10s, 15s, 20s, 25s
                 SLEEP_TIME=$((ATTEMPT * 5))
                 echo "⏳ Aguardando ${SLEEP_TIME}s antes de nova tentativa..."
                 sleep $SLEEP_TIME
@@ -253,7 +249,6 @@ jobs:
             ATTEMPT=$((ATTEMPT + 1))
           done
           
-          # Verifica resultado final
           if [ "$SUCCESS" = true ]; then
             echo ""
             echo "═══════════════════════════════════════"
@@ -283,19 +278,16 @@ jobs:
           echo "🚀 Disparando build no Netlify..."
           echo "═══════════════════════════════════════"
           
-          # Faz request para build hook
           RESPONSE=$(curl -X POST -d {} \
             -w "\n%{http_code}" \
             -s "${{ secrets.NETLIFY_BUILD_HOOK }}" \
             2>&1)
           
-          # Extrai código HTTP e body
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | head -n-1)
           
           echo "📡 Response HTTP: $HTTP_CODE"
           
-          # Valida resposta
           if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "201" ]; then
             echo "✅ Build disparado com sucesso!"
             echo ""
@@ -319,7 +311,6 @@ jobs:
             exit 1
           fi
           
-          # Exporta URL para próximos steps
           echo "netlify_url=https://app.netlify.com/sites/newmonalytics/deploys" >> $GITHUB_OUTPUT
       
       # ────────────────────────────────────────────────────────
@@ -405,11 +396,10 @@ jobs:
           echo "════════════════════════════════════════════════════════"
       
       # ────────────────────────────────────────────────────────
-      # 9. LIMPEZA (OPCIONAL)
+      # 9. LIMPEZA
       # ────────────────────────────────────────────────────────
       - name: 🧹 Limpeza
         if: always()
         run: |
-          # Remove backup se existir
           rm -f site/data/ultima_atualizacao.json.bak
           echo "✅ Limpeza concluída"
