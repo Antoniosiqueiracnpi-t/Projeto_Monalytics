@@ -1,22 +1,11 @@
 {
   "ticker": "ALUP3",
-  "ultima_atualizacao": "2026-01-15T23:02:08.059991",
+  "ultima_atualizacao": "2026-01-16T23:02:23.176338",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 6.46,
-      "maxima": 6.57,
-      "minima": 6.41,
-      "fechamento": 6.42,
-      "volume": 10011,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 6.38,
@@ -222,7 +211,7 @@
       "minima": 6.29,
       "fechamento": 6.57,
       "volume": 36333,
-      "mm20": 6.37,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 5.8,
       "volume": 5399,
       "mm20": 6.0,
-      "mm50": 6.19,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 9223,
       "mm20": 5.97,
       "mm50": 6.01,
-      "mm200": 6.19
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 11.79,
       "mm50": 11.9,
       "mm200": 10.78
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 11.68,
+      "maxima": 11.89,
+      "minima": 11.68,
+      "fechamento": 11.82,
+      "volume": 3500,
+      "mm20": 11.79,
+      "mm50": 11.91,
+      "mm200": 10.79
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 6.42,
-    "preco_atual": 11.81,
-    "variacao_periodo": 83.84,
+    "preco_inicial": 6.35,
+    "preco_atual": 11.82,
+    "variacao_periodo": 86.04,
     "maxima_periodo": 12.66,
     "minima_periodo": 5.58,
-    "volume_medio": 17188,
+    "volume_medio": 17183,
     "tendencia": "indefinida"
   }
 }

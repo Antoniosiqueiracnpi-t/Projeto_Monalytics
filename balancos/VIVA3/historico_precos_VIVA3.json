@@ -1,22 +1,11 @@
 {
   "ticker": "VIVA3",
-  "ultima_atualizacao": "2026-01-15T23:03:56.653553",
+  "ultima_atualizacao": "2026-01-16T23:04:16.155291",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 23.96,
-      "maxima": 25.08,
-      "minima": 23.93,
-      "fechamento": 25.08,
-      "volume": 842600,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 25.01,
@@ -222,7 +211,7 @@
       "minima": 23.85,
       "fechamento": 24.06,
       "volume": 512700,
-      "mm20": 24.49,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 21.74,
       "volume": 2284600,
       "mm20": 22.74,
-      "mm50": 23.56,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1400600,
       "mm20": 27.41,
       "mm50": 27.96,
-      "mm200": 25.58
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -3198,7 +3187,7 @@
     },
     {
       "data": "2022-02-21",
-      "abertura": 24.07,
+      "abertura": 24.08,
       "maxima": 24.31,
       "minima": 23.48,
       "fechamento": 23.66,
@@ -13898,16 +13887,27 @@
       "mm20": 32.02,
       "mm50": 32.28,
       "mm200": 26.9
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 29.3,
+      "maxima": 29.64,
+      "minima": 27.29,
+      "fechamento": 27.37,
+      "volume": 7472900,
+      "mm20": 31.66,
+      "mm50": 32.22,
+      "mm200": 26.94
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 25.08,
-    "preco_atual": 29.29,
-    "variacao_periodo": 16.8,
+    "preco_inicial": 24.81,
+    "preco_atual": 27.37,
+    "variacao_periodo": 10.33,
     "maxima_periodo": 35.35,
     "minima_periodo": 15.77,
-    "volume_medio": 2276044,
+    "volume_medio": 2281294,
     "tendencia": "indefinida"
   }
 }

@@ -1,9 +1,9 @@
 {
   "ticker": "BMOB3",
-  "ultima_atualizacao": "2026-01-15T23:03:19.242347",
+  "ultima_atualizacao": "2026-01-16T23:03:39.407894",
   "periodo": {
     "inicio": "2021-02-11",
-    "fim": "2026-01-14"
+    "fim": "2026-01-15"
   },
   "dados": [
     {
@@ -20,7 +20,7 @@
     {
       "data": "2021-02-12",
       "abertura": 17.55,
-      "maxima": 17.58,
+      "maxima": 17.59,
       "minima": 16.88,
       "fechamento": 17.51,
       "volume": 1484400,
@@ -4831,7 +4831,7 @@
       "minima": 11.53,
       "fechamento": 11.67,
       "volume": 424100,
-      "mm20": 12.87,
+      "mm20": 12.86,
       "mm50": 12.4,
       "mm200": 11.41
     },
@@ -13513,16 +13513,27 @@
       "mm20": 22.68,
       "mm50": 23.15,
       "mm200": 19.75
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 21.37,
+      "maxima": 21.94,
+      "minima": 21.2,
+      "fechamento": 21.89,
+      "volume": 428800,
+      "mm20": 22.57,
+      "mm50": 23.16,
+      "mm200": 19.78
     }
   ],
   "estatisticas": {
-    "total_dias": 1228,
+    "total_dias": 1229,
     "preco_inicial": 17.47,
-    "preco_atual": 21.37,
-    "variacao_periodo": 22.29,
+    "preco_atual": 21.89,
+    "variacao_periodo": 25.27,
     "maxima_periodo": 25.76,
     "minima_periodo": 8.65,
-    "volume_medio": 549080,
+    "volume_medio": 548982,
     "tendencia": "indefinida"
   }
 }

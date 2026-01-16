@@ -1,22 +1,11 @@
 {
   "ticker": "UGPA3",
-  "ultima_atualizacao": "2026-01-15T23:03:15.321130",
+  "ultima_atualizacao": "2026-01-16T23:03:34.300786",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 8.9,
-      "maxima": 8.93,
-      "minima": 8.63,
-      "fechamento": 8.67,
-      "volume": 13005793,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 8.69,
@@ -222,7 +211,7 @@
       "minima": 8.11,
       "fechamento": 8.23,
       "volume": 13621778,
-      "mm20": 8.75,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 7.3,
       "volume": 14912785,
       "mm20": 8.01,
-      "mm50": 8.37,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 13535500,
       "mm20": 12.27,
       "mm50": 12.72,
-      "mm200": 10.0
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -8513,7 +8502,7 @@
       "data": "2024-01-30",
       "abertura": 24.78,
       "maxima": 24.82,
-      "minima": 24.57,
+      "minima": 24.58,
       "fechamento": 24.75,
       "volume": 9390100,
       "mm20": 24.46,
@@ -13898,16 +13887,27 @@
       "mm20": 21.02,
       "mm50": 21.05,
       "mm200": 18.15
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 22.16,
+      "maxima": 22.45,
+      "minima": 22.0,
+      "fechamento": 22.26,
+      "volume": 5807400,
+      "mm20": 21.06,
+      "mm50": 21.09,
+      "mm200": 18.18
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 8.67,
-    "preco_atual": 21.94,
-    "variacao_periodo": 153.01,
+    "preco_inicial": 8.81,
+    "preco_atual": 22.26,
+    "variacao_periodo": 152.81,
     "maxima_periodo": 27.65,
     "minima_periodo": 6.72,
-    "volume_medio": 7192062,
+    "volume_medio": 7186362,
     "tendencia": "indefinida"
   }
 }

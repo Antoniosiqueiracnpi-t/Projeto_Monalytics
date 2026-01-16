@@ -1,22 +1,11 @@
 {
   "ticker": "PATI3",
-  "ultima_atualizacao": "2026-01-15T23:03:41.376777",
+  "ultima_atualizacao": "2026-01-16T23:04:02.267223",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 15.34,
-      "maxima": 15.34,
-      "minima": 15.34,
-      "fechamento": 15.34,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 15.34,
@@ -222,7 +211,7 @@
       "minima": 21.6,
       "fechamento": 21.6,
       "volume": 130,
-      "mm20": 17.98,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 19.92,
       "volume": 0,
       "mm20": 20.87,
-      "mm50": 19.74,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -1009,10 +998,10 @@
     },
     {
       "data": "2021-05-06",
-      "abertura": 40.12,
-      "maxima": 40.12,
-      "minima": 40.12,
-      "fechamento": 40.12,
+      "abertura": 40.11,
+      "maxima": 40.11,
+      "minima": 40.11,
+      "fechamento": 40.11,
       "volume": 1178,
       "mm20": 33.41,
       "mm50": 26.78,
@@ -1477,7 +1466,7 @@
       "fechamento": 61.19,
       "volume": 0,
       "mm20": 60.57,
-      "mm50": 53.7,
+      "mm50": 53.69,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 200,
       "mm20": 58.74,
       "mm50": 62.52,
-      "mm200": 43.01
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,13 +13887,24 @@
       "mm20": 30.27,
       "mm50": 31.4,
       "mm200": 34.64
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 29.01,
+      "maxima": 29.01,
+      "minima": 29.01,
+      "fechamento": 29.01,
+      "volume": 100,
+      "mm20": 30.08,
+      "mm50": 31.32,
+      "mm200": 34.66
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 15.34,
-    "preco_atual": 29.0,
-    "variacao_periodo": 89.05,
+    "preco_atual": 29.01,
+    "variacao_periodo": 89.12,
     "maxima_periodo": 67.25,
     "minima_periodo": 15.34,
     "volume_medio": 283,

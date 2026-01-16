@@ -1,22 +1,11 @@
 {
   "ticker": "UNIP3",
-  "ultima_atualizacao": "2026-01-15T23:03:27.667187",
+  "ultima_atualizacao": "2026-01-16T23:03:50.282997",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 20.18,
-      "maxima": 20.25,
-      "minima": 19.89,
-      "fechamento": 20.25,
-      "volume": 21659,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 20.4,
@@ -222,7 +211,7 @@
       "minima": 22.92,
       "fechamento": 23.68,
       "volume": 10164,
-      "mm20": 22.5,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 25.29,
       "volume": 24321,
       "mm20": 24.95,
-      "mm50": 23.79,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 57717,
       "mm20": 42.33,
       "mm50": 44.8,
-      "mm200": 35.73
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 57.56,
       "mm50": 54.3,
       "mm200": 49.46
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 58.3,
+      "maxima": 59.0,
+      "minima": 58.1,
+      "fechamento": 58.23,
+      "volume": 7500,
+      "mm20": 57.78,
+      "mm50": 54.37,
+      "mm200": 49.53
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 20.25,
-    "preco_atual": 59.0,
-    "variacao_periodo": 191.4,
+    "preco_inicial": 20.4,
+    "preco_atual": 58.23,
+    "variacao_periodo": 185.39,
     "maxima_periodo": 63.49,
     "minima_periodo": 19.95,
-    "volume_medio": 24622,
+    "volume_medio": 24611,
     "tendencia": "alta"
   }
 }

@@ -1,22 +1,11 @@
 {
   "ticker": "ISAE4",
-  "ultima_atualizacao": "2026-01-15T23:02:22.905419",
+  "ultima_atualizacao": "2026-01-16T23:02:42.998843",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 19.0,
-      "maxima": 19.12,
-      "minima": 18.77,
-      "fechamento": 18.82,
-      "volume": 1507300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 18.88,
@@ -222,7 +211,7 @@
       "minima": 18.72,
       "fechamento": 18.89,
       "volume": 707200,
-      "mm20": 18.79,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 17.1,
       "volume": 1622600,
       "mm20": 17.07,
-      "mm50": 17.97,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -1042,7 +1031,7 @@
     },
     {
       "data": "2021-05-11",
-      "abertura": 18.11,
+      "abertura": 18.1,
       "maxima": 18.34,
       "minima": 18.03,
       "fechamento": 18.24,
@@ -2204,7 +2193,7 @@
       "volume": 794800,
       "mm20": 18.04,
       "mm50": 17.89,
-      "mm200": 18.18
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13876,16 +13865,27 @@
       "mm20": 26.98,
       "mm50": 26.67,
       "mm200": 23.49
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 26.32,
+      "maxima": 26.37,
+      "minima": 26.1,
+      "fechamento": 26.29,
+      "volume": 991200,
+      "mm20": 26.96,
+      "mm50": 26.7,
+      "mm200": 23.51
     }
   ],
   "estatisticas": {
     "total_dias": 1261,
-    "preco_inicial": 18.82,
-    "preco_atual": 26.21,
-    "variacao_periodo": 39.27,
+    "preco_inicial": 18.74,
+    "preco_atual": 26.29,
+    "variacao_periodo": 40.3,
     "maxima_periodo": 27.97,
     "minima_periodo": 16.33,
-    "volume_medio": 2168865,
+    "volume_medio": 2168456,
     "tendencia": "indefinida"
   }
 }

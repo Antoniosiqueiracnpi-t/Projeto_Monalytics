@@ -1,22 +1,11 @@
 {
   "ticker": "NUTR3",
-  "ultima_atualizacao": "2026-01-15T23:03:26.347239",
+  "ultima_atualizacao": "2026-01-16T23:03:49.958261",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 2.25,
-      "maxima": 2.25,
-      "minima": 2.25,
-      "fechamento": 2.25,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 2.25,
@@ -222,7 +211,7 @@
       "minima": 2.21,
       "fechamento": 2.21,
       "volume": 0,
-      "mm20": 2.21,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 2.8,
       "volume": 10000,
       "mm20": 2.26,
-      "mm50": 2.23,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 2.53,
       "mm50": 2.49,
-      "mm200": 2.54
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 2.6,
       "mm50": 2.79,
       "mm200": 3.16
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 2.62,
+      "maxima": 2.67,
+      "minima": 2.62,
+      "fechamento": 2.67,
+      "volume": 1800,
+      "mm20": 2.6,
+      "mm50": 2.78,
+      "mm200": 3.15
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 2.25,
-    "preco_atual": 2.63,
-    "variacao_periodo": 16.89,
+    "preco_atual": 2.67,
+    "variacao_periodo": 18.67,
     "maxima_periodo": 9.0,
     "minima_periodo": 2.16,
-    "volume_medio": 5600,
+    "volume_medio": 5602,
     "tendencia": "indefinida"
   }
 }

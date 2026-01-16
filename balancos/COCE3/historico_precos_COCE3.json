@@ -1,22 +1,11 @@
 {
   "ticker": "COCE3",
-  "ultima_atualizacao": "2026-01-15T23:02:13.313875",
+  "ultima_atualizacao": "2026-01-16T23:02:29.781775",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 60.62,
-      "maxima": 60.62,
-      "minima": 60.62,
-      "fechamento": 60.62,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 60.62,
@@ -222,7 +211,7 @@
       "minima": 58.09,
       "fechamento": 58.09,
       "volume": 0,
-      "mm20": 60.29,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 43.14,
       "volume": 0,
       "mm20": 46.34,
-      "mm50": 53.81,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 57.3,
       "mm50": 57.48,
-      "mm200": 56.88
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -8485,7 +8474,7 @@
       "volume": 0,
       "mm20": 46.44,
       "mm50": 46.44,
-      "mm200": 46.74
+      "mm200": 46.73
     },
     {
       "data": "2024-01-26",
@@ -13898,13 +13887,24 @@
       "mm20": 33.53,
       "mm50": 32.71,
       "mm200": 30.27
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 48.8,
+      "maxima": 48.8,
+      "minima": 48.8,
+      "fechamento": 48.8,
+      "volume": 100,
+      "mm20": 34.34,
+      "mm50": 33.05,
+      "mm200": 30.4
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 60.62,
-    "preco_atual": 40.7,
-    "variacao_periodo": -32.86,
+    "preco_atual": 48.8,
+    "variacao_periodo": -19.5,
     "maxima_periodo": 75.96,
     "minima_periodo": 23.59,
     "volume_medio": 26,

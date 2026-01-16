@@ -1,22 +1,11 @@
 {
   "ticker": "CGAS3",
-  "ultima_atualizacao": "2026-01-15T23:02:34.298989",
+  "ultima_atualizacao": "2026-01-16T23:02:53.557817",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 110.36,
-      "maxima": 110.69,
-      "minima": 110.36,
-      "fechamento": 110.69,
-      "volume": 800,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 110.69,
@@ -222,7 +211,7 @@
       "minima": 110.16,
       "fechamento": 110.16,
       "volume": 300,
-      "mm20": 110.43,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 99.18,
       "volume": 100,
       "mm20": 106.12,
-      "mm50": 108.23,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 95.33,
       "mm50": 99.41,
-      "mm200": 101.99
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -3171,7 +3160,7 @@
       "fechamento": 88.56,
       "volume": 200,
       "mm20": 93.69,
-      "mm50": 98.3,
+      "mm50": 98.29,
       "mm200": 99.07
     },
     {
@@ -3336,7 +3325,7 @@
       "fechamento": 87.08,
       "volume": 0,
       "mm20": 87.95,
-      "mm50": 93.42,
+      "mm50": 93.41,
       "mm200": 98.6
     },
     {
@@ -13898,6 +13887,17 @@
       "mm20": 122.21,
       "mm50": 121.72,
       "mm200": 119.56
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 126.9,
+      "maxima": 126.9,
+      "minima": 126.9,
+      "fechamento": 126.9,
+      "volume": 0,
+      "mm20": 122.35,
+      "mm50": 121.84,
+      "mm200": 119.58
     }
   ],
   "estatisticas": {
@@ -13907,7 +13907,7 @@
     "variacao_periodo": 14.65,
     "maxima_periodo": 148.57,
     "minima_periodo": 74.9,
-    "volume_medio": 137,
+    "volume_medio": 136,
     "tendencia": "alta"
   }
 }

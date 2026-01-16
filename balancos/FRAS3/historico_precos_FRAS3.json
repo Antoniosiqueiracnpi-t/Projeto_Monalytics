@@ -1,22 +1,11 @@
 {
   "ticker": "FRAS3",
-  "ultima_atualizacao": "2026-01-15T23:02:59.316859",
+  "ultima_atualizacao": "2026-01-16T23:03:18.283707",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 7.56,
-      "maxima": 7.77,
-      "minima": 7.56,
-      "fechamento": 7.75,
-      "volume": 121665,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 7.76,
@@ -222,7 +211,7 @@
       "minima": 8.64,
       "fechamento": 8.72,
       "volume": 59961,
-      "mm20": 8.5,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 10.09,
       "volume": 537194,
       "mm20": 10.09,
-      "mm50": 9.22,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 134580,
       "mm20": 12.37,
       "mm50": 13.06,
-      "mm200": 10.94
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 23.42,
       "mm50": 23.68,
       "mm200": 24.19
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 24.23,
+      "maxima": 24.25,
+      "minima": 23.77,
+      "fechamento": 24.0,
+      "volume": 158900,
+      "mm20": 23.43,
+      "mm50": 23.71,
+      "mm200": 24.18
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 7.75,
+    "preco_inicial": 8.0,
     "preco_atual": 24.0,
-    "variacao_periodo": 209.64,
+    "variacao_periodo": 200.06,
     "maxima_periodo": 28.73,
-    "minima_periodo": 7.75,
-    "volume_medio": 338682,
+    "minima_periodo": 7.82,
+    "volume_medio": 338711,
     "tendencia": "indefinida"
   }
 }

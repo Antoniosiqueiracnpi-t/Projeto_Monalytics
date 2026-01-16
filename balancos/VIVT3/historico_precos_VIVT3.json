@@ -1,22 +1,11 @@
 {
   "ticker": "VIVT3",
-  "ultima_atualizacao": "2026-01-15T23:04:01.484551",
+  "ultima_atualizacao": "2026-01-16T23:04:18.813926",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 16.67,
-      "maxima": 16.83,
-      "minima": 16.49,
-      "fechamento": 16.73,
-      "volume": 3538000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 16.74,
@@ -222,7 +211,7 @@
       "minima": 16.1,
       "fechamento": 16.17,
       "volume": 4720000,
-      "mm20": 16.55,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 16.55,
       "volume": 6232600,
       "mm20": 16.98,
-      "mm50": 16.77,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 7880000,
       "mm20": 16.47,
       "mm50": 16.38,
-      "mm200": 16.57
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -2748,9 +2737,9 @@
     {
       "data": "2021-12-22",
       "abertura": 19.03,
-      "maxima": 19.32,
+      "maxima": 19.33,
       "minima": 18.95,
-      "fechamento": 19.32,
+      "fechamento": 19.33,
       "volume": 3837600,
       "mm20": 19.24,
       "mm50": 18.82,
@@ -13898,16 +13887,27 @@
       "mm20": 32.96,
       "mm50": 33.6,
       "mm200": 31.11
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 33.15,
+      "maxima": 33.25,
+      "minima": 32.26,
+      "fechamento": 32.71,
+      "volume": 5019400,
+      "mm20": 32.93,
+      "mm50": 33.58,
+      "mm200": 31.15
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 16.73,
-    "preco_atual": 33.06,
-    "variacao_periodo": 97.56,
+    "preco_inicial": 16.54,
+    "preco_atual": 32.71,
+    "variacao_periodo": 97.74,
     "maxima_periodo": 35.31,
     "minima_periodo": 15.2,
-    "volume_medio": 4888088,
+    "volume_medio": 4889261,
     "tendencia": "indefinida"
   }
 }

@@ -1,22 +1,11 @@
 {
   "ticker": "CRPG6",
-  "ultima_atualizacao": "2026-01-15T23:03:24.208687",
+  "ultima_atualizacao": "2026-01-16T23:03:48.864636",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 22.47,
-      "maxima": 22.47,
-      "minima": 22.12,
-      "fechamento": 22.47,
-      "volume": 3500,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 22.65,
@@ -222,7 +211,7 @@
       "minima": 33.05,
       "fechamento": 34.42,
       "volume": 1700,
-      "mm20": 27.65,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 34.49,
       "volume": 1100,
       "mm20": 34.35,
-      "mm50": 31.39,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -1407,7 +1396,7 @@
       "data": "2021-06-28",
       "abertura": 64.54,
       "maxima": 65.99,
-      "minima": 63.8,
+      "minima": 63.81,
       "fechamento": 65.99,
       "volume": 400,
       "mm20": 60.84,
@@ -2204,7 +2193,7 @@
       "volume": 400,
       "mm20": 67.71,
       "mm50": 74.3,
-      "mm200": 53.41
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -6043,7 +6032,7 @@
       "volume": 0,
       "mm20": 23.47,
       "mm50": 24.05,
-      "mm200": 23.85
+      "mm200": 23.84
     },
     {
       "data": "2023-03-07",
@@ -13898,16 +13887,27 @@
       "mm20": 18.69,
       "mm50": 19.23,
       "mm200": 17.88
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 18.98,
+      "maxima": 18.98,
+      "minima": 18.98,
+      "fechamento": 18.98,
+      "volume": 100,
+      "mm20": 18.7,
+      "mm50": 19.21,
+      "mm200": 17.88
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 22.47,
-    "preco_atual": 18.49,
-    "variacao_periodo": -17.71,
+    "preco_inicial": 22.82,
+    "preco_atual": 18.98,
+    "variacao_periodo": -16.84,
     "maxima_periodo": 89.5,
     "minima_periodo": 10.99,
-    "volume_medio": 1442,
+    "volume_medio": 1439,
     "tendencia": "indefinida"
   }
 }

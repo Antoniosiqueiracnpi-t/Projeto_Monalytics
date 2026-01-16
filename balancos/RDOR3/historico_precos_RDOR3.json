@@ -1,22 +1,11 @@
 {
   "ticker": "RDOR3",
-  "ultima_atualizacao": "2026-01-15T23:03:33.116839",
+  "ultima_atualizacao": "2026-01-16T23:03:53.877826",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 56.22,
-      "maxima": 59.42,
-      "minima": 56.2,
-      "fechamento": 58.5,
-      "volume": 3838013,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 58.49,
@@ -41,7 +30,7 @@
     },
     {
       "data": "2020-12-22",
-      "abertura": 55.91,
+      "abertura": 55.9,
       "maxima": 56.42,
       "minima": 55.38,
       "fechamento": 56.41,
@@ -222,7 +211,7 @@
       "minima": 56.28,
       "fechamento": 57.02,
       "volume": 2202344,
-      "mm20": 55.47,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 55.83,
       "volume": 2794139,
       "mm20": 60.11,
-      "mm50": 57.51,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 2018200,
       "mm20": 58.36,
       "mm50": 59.62,
-      "mm200": 58.03
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -3012,7 +3001,7 @@
     {
       "data": "2022-01-27",
       "abertura": 37.99,
-      "maxima": 38.11,
+      "maxima": 38.12,
       "minima": 36.66,
       "fechamento": 37.73,
       "volume": 3125000,
@@ -13898,16 +13887,27 @@
       "mm20": 41.26,
       "mm50": 41.49,
       "mm200": 35.01
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 40.55,
+      "maxima": 40.84,
+      "minima": 39.9,
+      "fechamento": 40.32,
+      "volume": 6280000,
+      "mm20": 41.2,
+      "mm50": 41.51,
+      "mm200": 35.08
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 58.5,
-    "preco_atual": 40.34,
-    "variacao_periodo": -31.05,
+    "preco_inicial": 57.25,
+    "preco_atual": 40.32,
+    "variacao_periodo": -29.58,
     "maxima_periodo": 64.24,
     "minima_periodo": 17.39,
-    "volume_medio": 4985530,
+    "volume_medio": 4987464,
     "tendencia": "indefinida"
   }
 }

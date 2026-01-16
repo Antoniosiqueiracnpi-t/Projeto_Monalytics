@@ -1,22 +1,11 @@
 {
   "ticker": "CURY3",
-  "ultima_atualizacao": "2026-01-15T23:01:51.777631",
+  "ultima_atualizacao": "2026-01-16T23:02:00.596566",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 6.74,
-      "maxima": 6.82,
-      "minima": 6.65,
-      "fechamento": 6.82,
-      "volume": 609100,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 6.82,
@@ -222,7 +211,7 @@
       "minima": 7.2,
       "fechamento": 7.36,
       "volume": 415500,
-      "mm20": 6.9,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 6.11,
       "volume": 905900,
       "mm20": 6.56,
-      "mm50": 6.83,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 598100,
       "mm20": 5.22,
       "mm50": 5.41,
-      "mm200": 6.29
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 32.4,
       "mm50": 33.55,
       "mm200": 29.11
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 33.0,
+      "maxima": 33.24,
+      "minima": 31.55,
+      "fechamento": 31.55,
+      "volume": 3431900,
+      "mm20": 32.26,
+      "mm50": 33.54,
+      "mm200": 29.16
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 6.82,
-    "preco_atual": 31.64,
-    "variacao_periodo": 364.24,
+    "preco_inicial": 6.86,
+    "preco_atual": 31.55,
+    "variacao_periodo": 359.86,
     "maxima_periodo": 36.57,
     "minima_periodo": 3.94,
-    "volume_medio": 1667060,
+    "volume_medio": 1669295,
     "tendencia": "indefinida"
   }
 }

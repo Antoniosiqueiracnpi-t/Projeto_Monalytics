@@ -1,22 +1,11 @@
 {
   "ticker": "CYRE3",
-  "ultima_atualizacao": "2026-01-15T23:01:52.130915",
+  "ultima_atualizacao": "2026-01-16T23:02:00.917168",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 22.27,
-      "maxima": 22.57,
-      "minima": 21.97,
-      "fechamento": 22.02,
-      "volume": 3730500,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 21.96,
@@ -222,7 +211,7 @@
       "minima": 20.91,
       "fechamento": 21.27,
       "volume": 5906100,
-      "mm20": 21.54,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 18.73,
       "volume": 6745800,
       "mm20": 19.91,
-      "mm50": 20.59,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 13468500,
       "mm20": 14.82,
       "mm50": 15.18,
-      "mm200": 18.19
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 27.89,
       "mm50": 30.09,
       "mm200": 25.83
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 25.03,
+      "maxima": 25.32,
+      "minima": 24.76,
+      "fechamento": 24.95,
+      "volume": 5502400,
+      "mm20": 27.48,
+      "mm50": 30.04,
+      "mm200": 25.85
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 22.02,
-    "preco_atual": 24.92,
-    "variacao_periodo": 13.18,
+    "preco_inicial": 21.74,
+    "preco_atual": 24.95,
+    "variacao_periodo": 14.77,
     "maxima_periodo": 35.31,
     "minima_periodo": 9.54,
-    "volume_medio": 6450909,
+    "volume_medio": 6452311,
     "tendencia": "indefinida"
   }
 }

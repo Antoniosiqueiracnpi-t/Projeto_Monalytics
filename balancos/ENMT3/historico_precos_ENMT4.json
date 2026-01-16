@@ -1,22 +1,11 @@
 {
   "ticker": "ENMT4",
-  "ultima_atualizacao": "2026-01-15T23:02:20.282403",
+  "ultima_atualizacao": "2026-01-16T23:02:39.113430",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 22.94,
-      "maxima": 22.94,
-      "minima": 22.94,
-      "fechamento": 22.94,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 22.94,
@@ -222,7 +211,7 @@
       "minima": 25.16,
       "fechamento": 25.16,
       "volume": 0,
-      "mm20": 24.37,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 25.16,
       "volume": 0,
       "mm20": 25.16,
-      "mm50": 24.85,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -1862,7 +1851,7 @@
       "fechamento": 59.81,
       "volume": 6200,
       "mm20": 54.25,
-      "mm50": 51.21,
+      "mm50": 51.2,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 62.8,
       "mm50": 59.41,
-      "mm200": 41.53
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -6217,7 +6206,7 @@
       "minima": 67.43,
       "fechamento": 67.43,
       "volume": 0,
-      "mm20": 69.01,
+      "mm20": 69.0,
       "mm50": 68.58,
       "mm200": 67.58
     },
@@ -13898,6 +13887,17 @@
       "mm20": 54.12,
       "mm50": 54.25,
       "mm200": 61.66
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 50.51,
+      "maxima": 50.51,
+      "minima": 50.51,
+      "fechamento": 50.51,
+      "volume": 0,
+      "mm20": 53.87,
+      "mm50": 54.16,
+      "mm200": 61.53
     }
   ],
   "estatisticas": {

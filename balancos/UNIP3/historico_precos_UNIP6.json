@@ -1,22 +1,11 @@
 {
   "ticker": "UNIP6",
-  "ultima_atualizacao": "2026-01-15T23:03:28.248073",
+  "ultima_atualizacao": "2026-01-16T23:03:50.905836",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 20.08,
-      "maxima": 20.37,
-      "minima": 19.72,
-      "fechamento": 20.27,
-      "volume": 467060,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 20.32,
@@ -222,7 +211,7 @@
       "minima": 21.28,
       "fechamento": 21.77,
       "volume": 639243,
-      "mm20": 22.2,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 23.87,
       "volume": 631862,
       "mm20": 24.06,
-      "mm50": 23.09,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -1736,7 +1725,7 @@
     {
       "data": "2021-08-10",
       "abertura": 45.38,
-      "maxima": 46.0,
+      "maxima": 45.99,
       "minima": 44.86,
       "fechamento": 45.0,
       "volume": 334807,
@@ -2204,7 +2193,7 @@
       "volume": 241637,
       "mm20": 38.97,
       "mm50": 41.68,
-      "mm200": 34.73
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 58.53,
       "mm50": 57.96,
       "mm200": 54.78
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 61.23,
+      "maxima": 62.11,
+      "minima": 60.6,
+      "fechamento": 60.81,
+      "volume": 195400,
+      "mm20": 58.74,
+      "mm50": 57.9,
+      "mm200": 54.86
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 20.27,
-    "preco_atual": 61.15,
-    "variacao_periodo": 201.75,
+    "preco_inicial": 20.12,
+    "preco_atual": 60.81,
+    "variacao_periodo": 202.22,
     "maxima_periodo": 71.67,
     "minima_periodo": 19.46,
-    "volume_medio": 290918,
+    "volume_medio": 290703,
     "tendencia": "alta"
   }
 }

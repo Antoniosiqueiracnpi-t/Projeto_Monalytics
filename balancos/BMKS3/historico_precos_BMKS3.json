@@ -1,22 +1,11 @@
 {
   "ticker": "BMKS3",
-  "ultima_atualizacao": "2026-01-15T23:04:12.137102",
+  "ultima_atualizacao": "2026-01-16T23:04:27.832524",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 114.43,
-      "maxima": 116.37,
-      "minima": 114.43,
-      "fechamento": 115.89,
-      "volume": 12,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 116.36,
@@ -222,7 +211,7 @@
       "minima": 117.35,
       "fechamento": 117.35,
       "volume": 98,
-      "mm20": 126.57,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 109.56,
       "volume": 4,
       "mm20": 117.36,
-      "mm50": 121.67,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -1451,7 +1440,7 @@
       "data": "2021-07-02",
       "abertura": 118.3,
       "maxima": 120.81,
-      "minima": 117.8,
+      "minima": 117.79,
       "fechamento": 120.25,
       "volume": 1384,
       "mm20": 122.23,
@@ -2204,7 +2193,7 @@
       "volume": 3511,
       "mm20": 116.67,
       "mm50": 116.98,
-      "mm200": 119.52
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -4436,7 +4425,7 @@
       "fechamento": 130.33,
       "volume": 5,
       "mm20": 131.05,
-      "mm50": 130.92,
+      "mm50": 130.91,
       "mm200": 121.81
     },
     {
@@ -13898,13 +13887,24 @@
       "mm20": 369.19,
       "mm50": 368.29,
       "mm200": 321.43
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 381.0,
+      "maxima": 392.39,
+      "minima": 381.0,
+      "fechamento": 389.97,
+      "volume": 129,
+      "mm20": 371.01,
+      "mm50": 369.65,
+      "mm200": 322.04
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 115.89,
-    "preco_atual": 381.01,
-    "variacao_periodo": 228.78,
+    "preco_inicial": 116.36,
+    "preco_atual": 389.97,
+    "variacao_periodo": 235.13,
     "maxima_periodo": 392.77,
     "minima_periodo": 107.49,
     "volume_medio": 98,

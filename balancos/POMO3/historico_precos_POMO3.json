@@ -1,22 +1,11 @@
 {
   "ticker": "POMO3",
-  "ultima_atualizacao": "2026-01-15T23:03:01.223400",
+  "ultima_atualizacao": "2026-01-16T23:03:19.112127",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 1.3,
-      "maxima": 1.3,
-      "minima": 1.28,
-      "fechamento": 1.28,
-      "volume": 627264,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 1.3,
@@ -222,7 +211,7 @@
       "minima": 1.33,
       "fechamento": 1.34,
       "volume": 451176,
-      "mm20": 1.31,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 1.17,
       "volume": 423588,
       "mm20": 1.2,
-      "mm50": 1.27,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 753324,
       "mm20": 1.18,
       "mm50": 1.2,
-      "mm200": 1.26
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 5.51,
       "mm50": 5.44,
       "mm200": 5.23
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 5.48,
+      "maxima": 5.61,
+      "minima": 5.47,
+      "fechamento": 5.52,
+      "volume": 986200,
+      "mm20": 5.52,
+      "mm50": 5.43,
+      "mm200": 5.24
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 1.28,
     "preco_atual": 5.52,
-    "variacao_periodo": 330.9,
+    "variacao_periodo": 332.47,
     "maxima_periodo": 6.78,
     "minima_periodo": 0.92,
-    "volume_medio": 445186,
-    "tendencia": "alta"
+    "volume_medio": 445471,
+    "tendencia": "indefinida"
   }
 }

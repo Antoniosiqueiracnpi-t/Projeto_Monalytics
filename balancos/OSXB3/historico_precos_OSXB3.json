@@ -1,22 +1,11 @@
 {
   "ticker": "OSXB3",
-  "ultima_atualizacao": "2026-01-15T23:03:12.339717",
+  "ultima_atualizacao": "2026-01-16T23:03:31.189900",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 21.15,
-      "maxima": 22.3,
-      "minima": 21.0,
-      "fechamento": 21.3,
-      "volume": 56600,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 21.53,
@@ -222,7 +211,7 @@
       "minima": 20.25,
       "fechamento": 21.16,
       "volume": 51000,
-      "mm20": 20.42,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 17.85,
       "volume": 5700,
       "mm20": 18.82,
-      "mm50": 19.63,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 6300,
       "mm20": 7.77,
       "mm50": 8.51,
-      "mm200": 13.57
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 1.91,
       "mm50": 1.94,
       "mm200": 2.47
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 1.94,
+      "maxima": 1.94,
+      "minima": 1.94,
+      "fechamento": 1.94,
+      "volume": 400,
+      "mm20": 1.92,
+      "mm50": 1.93,
+      "mm200": 2.47
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 21.3,
-    "preco_atual": 1.73,
-    "variacao_periodo": -91.88,
+    "preco_inicial": 21.05,
+    "preco_atual": 1.94,
+    "variacao_periodo": -90.78,
     "maxima_periodo": 21.66,
     "minima_periodo": 1.73,
-    "volume_medio": 15489,
-    "tendencia": "baixa"
+    "volume_medio": 15444,
+    "tendencia": "indefinida"
   }
 }

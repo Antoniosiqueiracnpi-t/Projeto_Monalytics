@@ -1,22 +1,11 @@
 {
   "ticker": "BRKM6",
-  "ultima_atualizacao": "2026-01-15T23:03:23.381765",
+  "ultima_atualizacao": "2026-01-16T23:03:46.835516",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 20.92,
-      "maxima": 20.92,
-      "minima": 20.92,
-      "fechamento": 20.92,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 21.61,
@@ -222,7 +211,7 @@
       "minima": 17.68,
       "fechamento": 19.15,
       "volume": 200,
-      "mm20": 19.65,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 20.92,
       "volume": 0,
       "mm20": 18.57,
-      "mm50": 18.99,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 37.69,
       "mm50": 37.98,
-      "mm200": 30.41
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,13 +13887,24 @@
       "mm20": 8.69,
       "mm50": 7.79,
       "mm200": 7.68
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 8.59,
+      "maxima": 8.59,
+      "minima": 8.59,
+      "fechamento": 8.59,
+      "volume": 0,
+      "mm20": 8.72,
+      "mm50": 7.83,
+      "mm200": 7.69
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 20.92,
+    "preco_inicial": 21.51,
     "preco_atual": 8.59,
-    "variacao_periodo": -58.94,
+    "variacao_periodo": -60.06,
     "maxima_periodo": 43.22,
     "minima_periodo": 6.12,
     "volume_medio": 137,

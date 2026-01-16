@@ -1,22 +1,11 @@
 {
   "ticker": "CEDO3",
-  "ultima_atualizacao": "2026-01-15T23:03:48.393388",
+  "ultima_atualizacao": "2026-01-16T23:04:06.987474",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 12.9,
-      "maxima": 13.49,
-      "minima": 12.9,
-      "fechamento": 13.16,
-      "volume": 1300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 13.0,
@@ -222,7 +211,7 @@
       "minima": 11.82,
       "fechamento": 11.98,
       "volume": 8200,
-      "mm20": 12.37,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 10.55,
       "volume": 500,
       "mm20": 11.45,
-      "mm50": 12.02,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 7.54,
       "mm50": 8.3,
-      "mm200": 10.21
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 14.0,
       "mm50": 13.61,
       "mm200": 20.96
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 13.99,
+      "maxima": 13.99,
+      "minima": 13.99,
+      "fechamento": 13.99,
+      "volume": 0,
+      "mm20": 14.0,
+      "mm50": 13.59,
+      "mm200": 20.89
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 13.16,
+    "preco_inicial": 13.0,
     "preco_atual": 13.99,
-    "variacao_periodo": 6.31,
+    "variacao_periodo": 7.62,
     "maxima_periodo": 39.0,
     "minima_periodo": 5.45,
-    "volume_medio": 2185,
+    "volume_medio": 2184,
     "tendencia": "indefinida"
   }
 }

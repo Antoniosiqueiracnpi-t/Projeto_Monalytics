@@ -1,9 +1,9 @@
 {
   "ticker": "RECV3",
-  "ultima_atualizacao": "2026-01-15T23:03:14.741586",
+  "ultima_atualizacao": "2026-01-16T23:03:33.719555",
   "periodo": {
     "inicio": "2021-05-05",
-    "fim": "2026-01-14"
+    "fim": "2026-01-15"
   },
   "dados": [
     {
@@ -12908,16 +12908,27 @@
       "mm20": 10.01,
       "mm50": 10.15,
       "mm200": 11.71
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 10.41,
+      "maxima": 10.63,
+      "minima": 10.34,
+      "fechamento": 10.57,
+      "volume": 3484000,
+      "mm20": 10.05,
+      "mm50": 10.14,
+      "mm200": 11.69
     }
   ],
   "estatisticas": {
-    "total_dias": 1173,
+    "total_dias": 1174,
     "preco_inicial": 10.41,
-    "preco_atual": 10.58,
-    "variacao_periodo": 1.66,
+    "preco_atual": 10.57,
+    "variacao_periodo": 1.57,
     "maxima_periodo": 24.77,
     "minima_periodo": 9.04,
-    "volume_medio": 2296049,
+    "volume_medio": 2297061,
     "tendencia": "indefinida"
   }
 }

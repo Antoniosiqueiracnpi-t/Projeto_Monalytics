@@ -1,22 +1,11 @@
 {
   "ticker": "TAEE11",
-  "ultima_atualizacao": "2026-01-15T23:02:26.742177",
+  "ultima_atualizacao": "2026-01-16T23:02:44.995877",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 20.43,
-      "maxima": 20.63,
-      "minima": 20.29,
-      "fechamento": 20.32,
-      "volume": 987300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 20.5,
@@ -222,7 +211,7 @@
       "minima": 20.23,
       "fechamento": 20.49,
       "volume": 1357900,
-      "mm20": 20.24,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 19.7,
       "volume": 2835900,
       "mm20": 19.41,
-      "mm50": 19.84,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 2323200,
       "mm20": 24.03,
       "mm50": 24.9,
-      "mm200": 23.41
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -4156,7 +4145,7 @@
     {
       "data": "2022-06-29",
       "abertura": 28.34,
-      "maxima": 28.44,
+      "maxima": 28.45,
       "minima": 27.78,
       "fechamento": 27.78,
       "volume": 2288900,
@@ -13898,16 +13887,27 @@
       "mm20": 41.06,
       "mm50": 41.45,
       "mm200": 35.39
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 39.78,
+      "maxima": 40.11,
+      "minima": 39.73,
+      "fechamento": 39.88,
+      "volume": 1711300,
+      "mm20": 40.97,
+      "mm50": 41.5,
+      "mm200": 35.44
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 20.32,
-    "preco_atual": 39.78,
-    "variacao_periodo": 95.8,
+    "preco_inicial": 20.18,
+    "preco_atual": 39.88,
+    "variacao_periodo": 97.6,
     "maxima_periodo": 45.0,
     "minima_periodo": 18.53,
-    "volume_medio": 1969325,
+    "volume_medio": 1969898,
     "tendencia": "indefinida"
   }
 }

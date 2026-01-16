@@ -1,22 +1,11 @@
 {
   "ticker": "AXIA5",
-  "ultima_atualizacao": "2026-01-15T23:02:09.185641",
+  "ultima_atualizacao": "2026-01-16T23:02:24.329682",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 31.53,
-      "maxima": 31.53,
-      "minima": 31.53,
-      "fechamento": 31.53,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 31.14,
@@ -222,7 +211,7 @@
       "minima": 37.1,
       "fechamento": 37.1,
       "volume": 0,
-      "mm20": 35.73,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 59.39,
       "volume": 0,
       "mm20": 57.45,
-      "mm50": 45.6,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 55.06,
       "mm50": 58.15,
-      "mm200": 54.93
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -9210,7 +9199,7 @@
       "fechamento": 91.46,
       "volume": 0,
       "mm20": 89.55,
-      "mm50": 88.22,
+      "mm50": 88.21,
       "mm200": 79.88
     },
     {
@@ -13898,6 +13887,17 @@
       "mm20": 66.67,
       "mm50": 73.25,
       "mm200": 75.27
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 79.0,
+      "maxima": 79.0,
+      "minima": 79.0,
+      "fechamento": 79.0,
+      "volume": 0,
+      "mm20": 67.49,
+      "mm50": 73.29,
+      "mm200": 75.31
     }
   ],
   "estatisticas": {

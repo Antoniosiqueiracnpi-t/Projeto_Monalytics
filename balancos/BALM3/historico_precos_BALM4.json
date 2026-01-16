@@ -1,22 +1,11 @@
 {
   "ticker": "BALM4",
-  "ultima_atualizacao": "2026-01-15T23:02:27.939880",
+  "ultima_atualizacao": "2026-01-16T23:02:48.479556",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 10.41,
-      "maxima": 10.74,
-      "minima": 10.41,
-      "fechamento": 10.74,
-      "volume": 300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 10.41,
@@ -222,7 +211,7 @@
       "minima": 9.83,
       "fechamento": 10.09,
       "volume": 1600,
-      "mm20": 10.38,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 8.79,
       "volume": 200,
       "mm20": 9.06,
-      "mm50": 9.77,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1300,
       "mm20": 9.73,
       "mm50": 11.19,
-      "mm200": 10.77
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,13 +13887,24 @@
       "mm20": 18.41,
       "mm50": 16.82,
       "mm200": 14.33
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 18.2,
+      "maxima": 18.2,
+      "minima": 18.2,
+      "fechamento": 18.2,
+      "volume": 0,
+      "mm20": 18.47,
+      "mm50": 16.86,
+      "mm200": 14.37
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 10.74,
+    "preco_inicial": 10.41,
     "preco_atual": 18.2,
-    "variacao_periodo": 69.48,
+    "variacao_periodo": 74.77,
     "maxima_periodo": 20.93,
     "minima_periodo": 5.89,
     "volume_medio": 1194,

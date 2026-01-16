@@ -1,22 +1,11 @@
 {
   "ticker": "SYNE3",
-  "ultima_atualizacao": "2026-01-15T23:02:33.719416",
+  "ultima_atualizacao": "2026-01-16T23:02:52.898911",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 2.82,
-      "maxima": 2.88,
-      "minima": 2.79,
-      "fechamento": 2.84,
-      "volume": 2324900,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 2.83,
@@ -222,7 +211,7 @@
       "minima": 2.53,
       "fechamento": 2.55,
       "volume": 416000,
-      "mm20": 2.64,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 2.25,
       "volume": 397500,
       "mm20": 2.39,
-      "mm50": 2.51,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 484100,
       "mm20": 2.1,
       "mm50": 2.11,
-      "mm200": 2.37
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 4.88,
       "mm50": 4.77,
       "mm200": 4.14
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 4.77,
+      "maxima": 4.88,
+      "minima": 4.77,
+      "fechamento": 4.88,
+      "volume": 540000,
+      "mm20": 4.88,
+      "mm50": 4.77,
+      "mm200": 4.16
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 2.84,
-    "preco_atual": 4.76,
-    "variacao_periodo": 67.47,
+    "preco_inicial": 2.82,
+    "preco_atual": 4.88,
+    "variacao_periodo": 73.15,
     "maxima_periodo": 5.18,
     "minima_periodo": 1.18,
-    "volume_medio": 594329,
-    "tendencia": "indefinida"
+    "volume_medio": 592915,
+    "tendencia": "alta"
   }
 }

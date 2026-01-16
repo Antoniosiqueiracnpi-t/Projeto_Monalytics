@@ -1,22 +1,11 @@
 {
   "ticker": "FESA3",
-  "ultima_atualizacao": "2026-01-15T23:03:37.095184",
+  "ultima_atualizacao": "2026-01-16T23:03:57.194178",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 6.32,
-      "maxima": 6.32,
-      "minima": 6.32,
-      "fechamento": 6.32,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 6.32,
@@ -222,7 +211,7 @@
       "minima": 7.35,
       "fechamento": 7.35,
       "volume": 0,
-      "mm20": 6.88,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 6.87,
       "volume": 1600,
       "mm20": 7.01,
-      "mm50": 6.86,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 10.75,
       "mm50": 10.86,
-      "mm200": 9.3
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -3420,8 +3409,8 @@
       "data": "2022-03-23",
       "abertura": 10.02,
       "maxima": 10.02,
-      "minima": 10.02,
-      "fechamento": 10.02,
+      "minima": 10.01,
+      "fechamento": 10.01,
       "volume": 800,
       "mm20": 9.93,
       "mm50": 10.12,
@@ -13898,16 +13887,27 @@
       "mm20": 11.59,
       "mm50": 11.55,
       "mm200": 11.23
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 12.05,
+      "maxima": 12.05,
+      "minima": 12.05,
+      "fechamento": 12.05,
+      "volume": 200,
+      "mm20": 11.58,
+      "mm50": 11.59,
+      "mm200": 11.23
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 6.32,
-    "preco_atual": 11.71,
-    "variacao_periodo": 85.22,
+    "preco_atual": 12.05,
+    "variacao_periodo": 90.6,
     "maxima_periodo": 14.53,
     "minima_periodo": 5.95,
-    "volume_medio": 876,
-    "tendencia": "alta"
+    "volume_medio": 877,
+    "tendencia": "indefinida"
   }
 }

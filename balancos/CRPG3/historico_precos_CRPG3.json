@@ -1,22 +1,11 @@
 {
   "ticker": "CRPG3",
-  "ultima_atualizacao": "2026-01-15T23:03:23.639197",
+  "ultima_atualizacao": "2026-01-16T23:03:47.148575",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 22.73,
-      "maxima": 24.5,
-      "minima": 22.73,
-      "fechamento": 24.49,
-      "volume": 1300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 24.49,
@@ -222,7 +211,7 @@
       "minima": 38.15,
       "fechamento": 38.15,
       "volume": 0,
-      "mm20": 29.12,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 34.07,
       "volume": 0,
       "mm20": 34.82,
-      "mm50": 32.63,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 87.58,
       "mm50": 91.6,
-      "mm200": 59.55
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,6 +13887,17 @@
       "mm20": 17.26,
       "mm50": 17.75,
       "mm200": 18.27
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 17.01,
+      "maxima": 17.01,
+      "minima": 17.01,
+      "fechamento": 17.01,
+      "volume": 0,
+      "mm20": 17.14,
+      "mm50": 17.79,
+      "mm200": 18.25
     }
   ],
   "estatisticas": {
@@ -13907,7 +13907,7 @@
     "variacao_periodo": -30.54,
     "maxima_periodo": 103.04,
     "minima_periodo": 15.0,
-    "volume_medio": 30,
+    "volume_medio": 29,
     "tendencia": "baixa"
   }
 }

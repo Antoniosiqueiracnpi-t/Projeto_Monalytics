@@ -1,22 +1,11 @@
 {
   "ticker": "EKTR3",
-  "ultima_atualizacao": "2026-01-15T23:02:16.635712",
+  "ultima_atualizacao": "2026-01-16T23:02:32.305231",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 10.82,
-      "maxima": 10.95,
-      "minima": 10.82,
-      "fechamento": 10.95,
-      "volume": 200,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 10.95,
@@ -222,7 +211,7 @@
       "minima": 20.8,
       "fechamento": 20.8,
       "volume": 0,
-      "mm20": 16.69,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 18.52,
       "volume": 0,
       "mm20": 18.38,
-      "mm50": 17.86,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 19.57,
       "mm50": 20.87,
-      "mm200": 18.71
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,6 +13887,17 @@
       "mm20": 45.86,
       "mm50": 42.83,
       "mm200": 40.51
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 49.2,
+      "maxima": 49.2,
+      "minima": 49.2,
+      "fechamento": 49.2,
+      "volume": 0,
+      "mm20": 46.27,
+      "mm50": 42.99,
+      "mm200": 40.58
     }
   ],
   "estatisticas": {
@@ -13907,7 +13907,7 @@
     "variacao_periodo": 349.35,
     "maxima_periodo": 49.2,
     "minima_periodo": 10.82,
-    "volume_medio": 42,
+    "volume_medio": 41,
     "tendencia": "alta"
   }
 }

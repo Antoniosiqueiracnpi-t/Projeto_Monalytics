@@ -1,22 +1,11 @@
 {
   "ticker": "HAGA3",
-  "ultima_atualizacao": "2026-01-15T23:03:39.313981",
+  "ultima_atualizacao": "2026-01-16T23:04:00.185413",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 3.58,
-      "maxima": 3.58,
-      "minima": 3.4,
-      "fechamento": 3.4,
-      "volume": 17300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 3.4,
@@ -222,7 +211,7 @@
       "minima": 3.1,
       "fechamento": 3.11,
       "volume": 23200,
-      "mm20": 3.27,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 2.9,
       "volume": 4300,
       "mm20": 3.08,
-      "mm50": 3.18,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 18500,
       "mm20": 3.4,
       "mm50": 3.58,
-      "mm200": 3.57
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 1.72,
       "mm50": 1.78,
       "mm200": 1.91
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 1.66,
+      "maxima": 1.75,
+      "minima": 1.65,
+      "fechamento": 1.71,
+      "volume": 5200,
+      "mm20": 1.72,
+      "mm50": 1.77,
+      "mm200": 1.91
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 3.4,
-    "preco_atual": 1.77,
-    "variacao_periodo": -47.94,
+    "preco_atual": 1.71,
+    "variacao_periodo": -49.71,
     "maxima_periodo": 11.45,
     "minima_periodo": 1.63,
-    "volume_medio": 15809,
-    "tendencia": "indefinida"
+    "volume_medio": 15800,
+    "tendencia": "baixa"
   }
 }

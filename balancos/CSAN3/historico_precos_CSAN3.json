@@ -1,22 +1,11 @@
 {
   "ticker": "CSAN3",
-  "ultima_atualizacao": "2026-01-15T23:03:10.549971",
+  "ultima_atualizacao": "2026-01-16T23:03:30.400808",
   "periodo": {
-    "inicio": "2020-12-17",
-    "fim": "2026-01-14"
+    "inicio": "2020-12-18",
+    "fim": "2026-01-15"
   },
   "dados": [
-    {
-      "data": "2020-12-17",
-      "abertura": 16.56,
-      "maxima": 17.29,
-      "minima": 16.41,
-      "fechamento": 17.29,
-      "volume": 17170400,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-18",
       "abertura": 17.31,
@@ -222,7 +211,7 @@
       "minima": 18.1,
       "fechamento": 18.39,
       "volume": 8851600,
-      "mm20": 17.73,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 20.49,
       "volume": 81925600,
       "mm20": 18.94,
-      "mm50": 18.13,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -935,7 +924,7 @@
       "abertura": 20.13,
       "maxima": 20.67,
       "minima": 20.02,
-      "fechamento": 20.09,
+      "fechamento": 20.08,
       "volume": 9185600,
       "mm20": 20.3,
       "mm50": 19.97,
@@ -2204,7 +2193,7 @@
       "volume": 7361700,
       "mm20": 21.06,
       "mm50": 20.98,
-      "mm200": 20.44
+      "mm200": null
     },
     {
       "data": "2021-10-11",
@@ -13898,16 +13887,27 @@
       "mm20": 5.31,
       "mm50": 5.79,
       "mm200": 6.57
+    },
+    {
+      "data": "2026-01-15",
+      "abertura": 5.19,
+      "maxima": 5.27,
+      "minima": 5.01,
+      "fechamento": 5.01,
+      "volume": 36219800,
+      "mm20": 5.27,
+      "mm50": 5.77,
+      "mm200": 6.56
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 17.29,
-    "preco_atual": 5.14,
-    "variacao_periodo": -70.28,
+    "preco_inicial": 17.0,
+    "preco_atual": 5.01,
+    "variacao_periodo": -70.53,
     "maxima_periodo": 24.59,
-    "minima_periodo": 5.1,
-    "volume_medio": 13009709,
+    "minima_periodo": 5.01,
+    "volume_medio": 13024792,
     "tendencia": "baixa"
   }
 }
