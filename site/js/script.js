@@ -7556,4 +7556,320 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+/* ========================================================================== */
+/* EXPECTATIVAS SELIC - COPOM (Tabela + Gráfico)
+/* ========================================================================== */
+
+let selicChartInstance = null;
+const MAX_VISIBLE_ROWS = 8; // Mostra inicialmente 8 reuniões (2026 completo)
+
+/**
+ * Carrega dados das Expectativas Selic
+ */
+async function carregarExpectativasSelic() {
+    try {
+        console.log('📡 Carregando Expectativas Selic...');
+        
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/site/data/expectativa_selic.json?t=${Date.now()}`;
+        
+        const response = await fetch(url, {
+            cache: 'no-store',
+            mode: 'cors'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('✅ Expectativas Selic carregadas:', data);
+        
+        renderizarExpectativasSelic(data);
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar Expectativas Selic:', error);
+        mostrarErroSelic();
+    }
+}
+
+/**
+ * Renderiza Expectativas Selic (Tabela + Gráfico)
+ */
+function renderizarExpectativasSelic(data) {
+    // Esconde loading
+    document.getElementById('selicLoading').style.display = 'none';
+    
+    // Mostra container
+    document.getElementById('selicExpectativasContainer').style.display = 'block';
+    
+    // Filtra apenas base_calculo = 0 (geral) e pega mediana
+    const dadosFiltrados = data.registros
+        .filter(r => r.base_calculo === 0)
+        .sort((a, b) => {
+            // Ordena por ano e reunião
+            const [rA, anoA] = a.reuniao.split('/');
+            const [rB, anoB] = b.reuniao.split('/');
+            if (anoA !== anoB) return anoA.localeCompare(anoB);
+            return parseInt(rA.substring(1)) - parseInt(rB.substring(1));
+        });
+    
+    // Renderiza tabela
+    renderizarTabelaSelic(dadosFiltrados);
+    
+    // Renderiza gráfico
+    renderizarGraficoSelic(dadosFiltrados);
+    
+    // Inicializa toggle de visualização
+    inicializarToggleSelic();
+}
+
+/**
+ * Renderiza tabela de expectativas
+ */
+function renderizarTabelaSelic(dados) {
+    const tbody = document.getElementById('selicTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = dados.map((item, index) => {
+        const delta = item.delta_mediana;
+        const variation = gerarVariacaoSelic(delta);
+        const isHidden = index >= MAX_VISIBLE_ROWS;
+        
+        return `
+            <tr class="${isHidden ? 'hidden-row' : ''}">
+                <td>${item.reuniao}</td>
+                <td><span class="selic-rate">${item.mediana_semana.toFixed(2)}%</span></td>
+                <td><span class="selic-rate">${item.mediana_atual.toFixed(2)}%</span></td>
+                <td>${variation}</td>
+            </tr>
+        `;
+    }).join('');
+    
+    // Mostra botão "Ver mais" se tiver mais de MAX_VISIBLE_ROWS
+    if (dados.length > MAX_VISIBLE_ROWS) {
+        document.getElementById('selicExpandContainer').style.display = 'block';
+        inicializarExpandirSelic();
+    }
+}
+
+/**
+ * Gera célula de variação
+ */
+function gerarVariacaoSelic(delta) {
+    let classe = 'neutral';
+    let icone = 'fa-minus';
+    let sinal = '';
+    
+    if (delta > 0) {
+        classe = 'positive';
+        icone = 'fa-arrow-up';
+        sinal = '+';
+    } else if (delta < 0) {
+        classe = 'negative';
+        icone = 'fa-arrow-down';
+        sinal = '';
+    }
+    
+    const deltaFormatado = Math.abs(delta).toFixed(2);
+    
+    return `
+        <span class="selic-variation ${classe}">
+            <i class="fas ${icone}"></i>
+            <span>${sinal}${deltaFormatado} p.p.</span>
+        </span>
+    `;
+}
+
+/**
+ * Inicializa botão de expandir/colapsar
+ */
+function inicializarExpandirSelic() {
+    const btn = document.getElementById('selicExpandBtn');
+    const expandText = btn.querySelector('.expand-text');
+    
+    if (!btn) return;
+    
+    btn.addEventListener('click', () => {
+        const hiddenRows = document.querySelectorAll('.selic-table .hidden-row');
+        const isExpanded = btn.classList.contains('expanded');
+        
+        if (isExpanded) {
+            // Colapsar
+            hiddenRows.forEach(row => row.classList.remove('visible'));
+            expandText.textContent = 'Ver todas as reuniões';
+            btn.classList.remove('expanded');
+        } else {
+            // Expandir
+            hiddenRows.forEach(row => row.classList.add('visible'));
+            expandText.textContent = 'Ver menos';
+            btn.classList.add('expanded');
+        }
+    });
+}
+
+/**
+ * Renderiza gráfico de expectativas
+ */
+function renderizarGraficoSelic(dados) {
+    const canvas = document.getElementById('selicChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destrói gráfico anterior se existir
+    if (selicChartInstance) {
+        selicChartInstance.destroy();
+    }
+    
+    // Prepara dados
+    const labels = dados.map(d => d.reuniao);
+    const mediasSemana = dados.map(d => d.mediana_semana);
+    const mediasAtual = dados.map(d => d.mediana_atual);
+    
+    // Cria gráfico
+    selicChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Semana Anterior',
+                    data: mediasSemana,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderWidth: 3,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointBackgroundColor: '#3b82f6',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    tension: 0.3,
+                    fill: false
+                },
+                {
+                    label: 'Expectativa Atual',
+                    data: mediasAtual,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 3,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointBackgroundColor: '#10b981',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    tension: 0.3,
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 2.5,
+            plugins: {
+                legend: {
+                    display: false // Usando legenda customizada
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    borderWidth: 1,
+                    padding: 12,
+                    displayColors: true,
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}%`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            weight: 600
+                        },
+                        color: '#666'
+                    }
+                },
+                y: {
+                    beginAtZero: false,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return value.toFixed(1) + '%';
+                        },
+                        font: {
+                            weight: 600
+                        },
+                        color: '#666'
+                    }
+                }
+            },
+            interaction: {
+                mode: 'index',
+                intersect: false
+            }
+        }
+    });
+}
+
+/**
+ * Inicializa toggle entre Tabela e Gráfico
+ */
+function inicializarToggleSelic() {
+    const btnTable = document.getElementById('btnTableView');
+    const btnChart = document.getElementById('btnChartView');
+    const tableView = document.getElementById('selicTableView');
+    const chartView = document.getElementById('selicChartView');
+    
+    if (!btnTable || !btnChart) return;
+    
+    btnTable.addEventListener('click', () => {
+        btnTable.classList.add('active');
+        btnChart.classList.remove('active');
+        tableView.classList.add('active');
+        chartView.classList.remove('active');
+    });
+    
+    btnChart.addEventListener('click', () => {
+        btnChart.classList.add('active');
+        btnTable.classList.remove('active');
+        chartView.classList.add('active');
+        tableView.classList.remove('active');
+    });
+}
+
+/**
+ * Mostra erro ao carregar Selic
+ */
+function mostrarErroSelic() {
+    const loadingEl = document.getElementById('selicLoading');
+    if (loadingEl) {
+        loadingEl.innerHTML = `
+            <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+            <span>Erro ao carregar expectativas da Selic. Tente novamente mais tarde.</span>
+        `;
+    }
+}
+
+/**
+ * Inicializa carregamento das Expectativas Selic junto com o Focus
+ */
+// Modifica a função existente renderizarBoletimFocus para chamar as expectativas
+const renderizarBoletimFocusOriginal = renderizarBoletimFocus;
+renderizarBoletimFocus = function(data) {
+    renderizarBoletimFocusOriginal(data);
+    // Carrega expectativas Selic após o Focus
+    carregarExpectativasSelic();
+};
+
+
 
