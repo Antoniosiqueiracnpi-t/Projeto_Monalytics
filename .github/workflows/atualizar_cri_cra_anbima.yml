@@ -1,0 +1,72 @@
+name: 🧾 Atualizar CRI/CRA ANBIMA - 08h40 BRT
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub cron em UTC. BRT (UTC-3): 08:40 => 11:40 UTC (todos os dias)
+    - cron: "40 11 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cri-cra-anbima
+  cancel-in-progress: true
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests beautifulsoup4 lxml
+
+      - name: Pull/Rebase before generate
+        shell: bash
+        run: |
+          set -e
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git rebase origin/main || (git rebase --abort && exit 1)
+
+      - name: Generate CRI/CRA ANBIMA JSON
+        shell: bash
+        run: |
+          set -e
+          python src/capturar_cri_cra_anbima.py --output site/data/cri_cra_anbima.json
+          test -f site/data/cri_cra_anbima.json
+          echo "✅ Arquivo gerado: site/data/cri_cra_anbima.json"
+          ls -la site/data | head -n 120
+
+      - name: Commit and push if changed
+        shell: bash
+        run: |
+          set -e
+
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "✅ Nenhuma mudança no repositório."
+            exit 0
+          fi
+
+          git add site/data/cri_cra_anbima.json
+
+          TS="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          git commit -m "🧾 CRI/CRA ANBIMA: atualização automática - ${TS} [skip netlify]" || exit 0
+
+          git fetch origin main
+          git rebase origin/main || (git rebase --abort && exit 1)
+
+          git push origin HEAD:main
