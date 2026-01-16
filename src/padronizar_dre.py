@@ -631,15 +631,8 @@ def _validate_account_sign(code: str, value: float) -> float:
         "3.08"       # IR/CSLL
     ]
     
-    # Aplicar correção se necessário
-    if code in DEVE_SER_POSITIVO and value < 0:
-        print(f"    ⚠️ Invertendo sinal de {code}: {value} → {-value}")
-        return -value
-    
-    if code in DEVE_SER_NEGATIVO and value > 0:
-        print(f"    ⚠️ Invertendo sinal de {code}: {value} → {-value}")
-        return -value
-    
+    # Aplicar correção se necessário (DESATIVADO)
+    # Objetivo: preservar o sinal exatamente como chega dos arquivos consolidados.
     return value
 
 
@@ -1478,6 +1471,9 @@ class PadronizadorDRE:
             Returns:
                 DataFrame com sinais corrigidos
             """
+            # DESATIVADO: preservar o sinal exatamente como chega dos arquivos consolidados.
+            # A correção automática de sinais conflita com outras rotinas e pode inverter indevidamente.
+            return df
             df = df.copy()
         
             # Dicionário: {conta: sinal_esperado}
