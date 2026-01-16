@@ -1293,6 +1293,91 @@
                     </div>
                 </div>
 
+                <!-- Curva de Juros (DIxPre) -->
+                <div class="curva-juros-container" id="curvaJurosContainer" style="display: none;">
+                    <!-- Header com Toggle -->
+                    <div class="curva-header">
+                        <div class="curva-title-group">
+                            <i class="fas fa-chart-area"></i>
+                            <div>
+                                <h3 class="curva-title">Curva de Juros (DIxPre)</h3>
+                                <p class="curva-subtitle">Taxas de juros futuros por vértice de prazo</p>
+                            </div>
+                        </div>
+                        
+                        <div class="curva-view-toggle">
+                            <button class="toggle-btn active" data-view="table" id="btnCurvaTableView">
+                                <i class="fas fa-table"></i>
+                                <span>Tabela</span>
+                            </button>
+                            <button class="toggle-btn" data-view="chart" id="btnCurvaChartView">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Gráfico</span>
+                            </button>
+                        </div>
+                    </div>
+    
+                    <!-- Loading -->
+                    <div class="curva-loading" id="curvaLoading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Carregando curva de juros...</span>
+                    </div>
+    
+                    <!-- View: Tabela -->
+                    <div class="curva-view-container active" id="curvaTableView">
+                        <div class="curva-table-wrapper">
+                            <table class="curva-table">
+                                <thead>
+                                    <tr>
+                                        <th>Vértice</th>
+                                        <th>Atual</th>
+                                        <th>1 Dia</th>
+                                        <th>Δ (bps)</th>
+                                        <th>1 Semana</th>
+                                        <th>Δ (bps)</th>
+                                        <th>1 Mês</th>
+                                        <th>Δ (bps)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="curvaTableBody">
+                                    <!-- Preenchido via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+    
+                    <!-- View: Gráfico -->
+                    <div class="curva-view-container" id="curvaChartView">
+                        <div class="curva-chart-wrapper">
+                            <canvas id="curvaJurosChart"></canvas>
+                        </div>
+                        
+                        <!-- Legenda do gráfico -->
+                        <div class="curva-chart-legend">
+                            <div class="legend-item">
+                                <span class="legend-line solid" style="background: #10b981;"></span>
+                                <span>Atual</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-line dashed" style="background: #3b82f6;"></span>
+                                <span>1 Semana Atrás</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-line dashed" style="background: #9ca3af;"></span>
+                                <span>1 Mês Atrás</span>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Timestamp -->
+                    <div class="curva-footer" id="curvaFooter" style="display: none;">
+                        <i class="fas fa-clock"></i>
+                        <span id="curvaTimestamp">Atualizado em: --</span>
+                    </div>
+                </div>
+
+                
+
 
                 
             </div>
