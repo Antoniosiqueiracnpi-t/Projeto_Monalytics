@@ -2099,9 +2099,7 @@ function selectTopNews(feed, limit = 5) {
 }
 
 
-/**
- * Normaliza nome da categoria
- */
+
 function normalizarCategoria(categoria) {
     const map = {
         'Fato Relevante': 'Fato Relevante',
@@ -2109,11 +2107,18 @@ function normalizarCategoria(categoria) {
         'Resultados': 'Resultados',
         'Aviso': 'Aviso',
         'Governança': 'Governança',
+        'Mercado': 'Mercado',
+        'Mercados': 'Mercado',
+        'Politica': 'Politica',
+        'Política': 'Politica',
         'Outros': 'Outros'
     };
-    
     return map[categoria] || categoria;
 }
+
+
+
+
 
 /**
  * Retorna classe CSS para badge da categoria
@@ -2125,11 +2130,13 @@ function getCategoryBadgeClass(categoria) {
         'Resultados': 'resultados',
         'Aviso': 'aviso',
         'Governança': 'governanca',
+        'Mercado': 'mercado',
+        'Politica': 'politica',
         'Outros': 'outros'
     };
-    
     return map[categoria] || 'outros';
 }
+
 
 // =========================== UTILITY FUNCTIONS ===========================
 
