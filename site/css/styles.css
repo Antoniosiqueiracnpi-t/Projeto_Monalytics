@@ -2415,6 +2415,340 @@ body {
 
 
 
+/* ========================================================================== */
+/* CURVA DE JUROS (DIxPre)
+/* ========================================================================== */
+
+.curva-juros-container {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 2px solid rgba(0, 180, 216, 0.2);
+}
+
+/* ========== Header com Toggle ========== */
+.curva-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.curva-title-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.curva-title-group > i {
+    font-size: 2rem;
+    color: var(--accent-color);
+    background: rgba(0, 217, 255, 0.1);
+    padding: 1rem;
+    border-radius: var(--border-radius-sm);
+}
+
+.curva-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.curva-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Toggle já existe (reutiliza .selic-view-toggle) */
+.curva-view-toggle {
+    display: flex;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.35rem;
+    border-radius: var(--border-radius-sm);
+    border: 2px solid rgba(0, 180, 216, 0.15);
+}
+
+/* ========== Loading ========== */
+.curva-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem;
+    color: var(--text-secondary);
+}
+
+.curva-loading i {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+}
+
+/* ========== Container de Views ========== */
+.curva-view-container {
+    display: none;
+}
+
+.curva-view-container.active {
+    display: block;
+}
+
+/* ========== TABELA ========== */
+.curva-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
+.curva-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.curva-table thead {
+    background: linear-gradient(135deg, var(--accent-color), #3b82f6);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.curva-table th {
+    padding: 0.875rem 0.75rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+.curva-table th:first-child {
+    text-align: left;
+    padding-left: 1.25rem;
+}
+
+.curva-table tbody tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: background 0.2s ease;
+}
+
+.curva-table tbody tr:hover {
+    background: rgba(0, 217, 255, 0.03);
+}
+
+.curva-table td {
+    padding: 0.875rem 0.75rem;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.curva-table td:first-child {
+    text-align: left;
+    padding-left: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.curva-rate {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.curva-rate-small {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.curva-variation-bps {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.curva-variation-bps.positive {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.curva-variation-bps.negative {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.curva-variation-bps.neutral {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+}
+
+.curva-variation-bps i {
+    font-size: 0.75rem;
+}
+
+/* ========== GRÁFICO ========== */
+.curva-chart-wrapper {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+#curvaJurosChart {
+    max-height: 400px;
+    width: 100% !important;
+    height: auto !important;
+}
+
+.curva-chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.legend-line {
+    width: 30px;
+    height: 3px;
+    display: block;
+    border-radius: 2px;
+}
+
+.legend-line.solid {
+    /* Linha sólida */
+}
+
+.legend-line.dashed {
+    background: repeating-linear-gradient(
+        to right,
+        currentColor,
+        currentColor 5px,
+        transparent 5px,
+        transparent 10px
+    );
+}
+
+/* ========== Footer ========== */
+.curva-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+    padding-top: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.curva-footer i {
+    color: var(--accent-color);
+}
+
+/* ========================================================================== */
+/* RESPONSIVO - CURVA DE JUROS
+/* ========================================================================== */
+
+@media screen and (max-width: 968px) {
+    .curva-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .curva-view-toggle {
+        width: 100%;
+    }
+    
+    .curva-title {
+        font-size: 1.35rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .curva-juros-container {
+        margin-top: 2rem;
+        padding-top: 2rem;
+    }
+    
+    .curva-title-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .curva-title {
+        font-size: 1.25rem;
+    }
+    
+    /* Tabela responsiva - Scroll horizontal */
+    .curva-table {
+        font-size: 0.8rem;
+    }
+    
+    .curva-table th,
+    .curva-table td {
+        padding: 0.625rem 0.5rem;
+    }
+    
+    .curva-rate {
+        font-size: 0.9rem;
+    }
+    
+    /* Gráfico mobile */
+    .curva-chart-wrapper {
+        padding: 1rem;
+    }
+    
+    #curvaJurosChart {
+        max-height: 300px;
+    }
+    
+    /* Esconde texto dos botões no mobile */
+    .curva-view-toggle .toggle-btn span {
+        display: none;
+    }
+    
+    .curva-view-toggle .toggle-btn {
+        padding: 0.75rem;
+        justify-content: center;
+    }
+    
+    .curva-view-toggle .toggle-btn i {
+        font-size: 1.25rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .curva-title {
+        font-size: 1.125rem;
+    }
+    
+    .curva-subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .curva-table {
+        font-size: 0.75rem;
+    }
+    
+    .curva-chart-wrapper {
+        padding: 0.75rem;
+    }
+    
+    #curvaJurosChart {
+        max-height: 250px;
+    }
+}
+
+
 
 
 /* =========================== RESPONSIVE DESIGN =========================== */
