@@ -1,0 +1,42 @@
+{
+  "ticker": "WIZC3",
+  "tipo_empresa": "financeira",
+  "ultima_atualizacao": "2026-01-16T22:25:05.734672",
+  "periodo_analisado": {
+    "inicio": "2014T1",
+    "fim": "2025T3",
+    "total_trimestres": 47,
+    "anos": 11.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": null,
+      "variacao_total": null,
+      "ultimo_valor": null
+    },
+    "margens": {
+      "bruta": null,
+      "operacional": null,
+      "liquida": null
+    },
+    "rentabilidade": {
+      "roe_medio": 67.3,
+      "roa_medio": 30.85
+    },
+    "estrutura": {
+      "pl_ativos": 45.24
+    },
+    "caixa": {},
+    "balanco": {
+      "ativo_total": 2413.89,
+      "patrimonio": 1303.36
+    }
+  },
+  "analise_critica": "Gera excelente retorno sobre o patrimônio (ROE médio de 67.3%). Apresenta eficiência operacional adequada (ROA de 30.85%). Estrutura de capital robusta com alto índice PL/Ativos (45.24%).",
+  "pontos_fortes": [
+    "Excelente retorno sobre patrimônio (ROE: 67.3%)",
+    "Alta eficiência operacional (ROA: 30.85%)",
+    "Estrutura de capital robusta (PL/Ativos: 45.24%)"
+  ],
+  "pontos_atencao": []
+}
