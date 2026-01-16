@@ -1556,18 +1556,12 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
 
 def _calcular_dpa_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     """
-    CORREÇÃO v3.1: Calcula DPA LTM usando dividendos_detalhado.json
+    CORREÇÃO v3.0: Calcula DPA LTM usando dividendos_detalhado.json
     
     Metodologia alinhada com plataformas (StatusInvest, Fundamentus, Investidor10):
     1. Filtra últimos 12 meses baseado em data_com
-    2. Agrupa por (data_com, tipo) - um evento por data/tipo
-    3. Pega o MÁXIMO valor por evento (evita somar ON + PN que são o mesmo evento)
-    4. Soma os valores de cada evento único
-    
-    CORREÇÃO: Versão anterior somava TODOS valores únicos, incluindo valores
-    diferentes para ON e PN na mesma data. Isso causava DY ~56% maior que plataformas.
-    Agora agrupamos por (data_com, tipo) e pegamos o MÁXIMO, alinhando com metodologia
-    das plataformas de mercado.
+    2. Remove duplicatas (ON/PN tem valores idênticos)
+    3. Soma valores únicos
     
     Args:
         dados: Dados da empresa (deve ter dividendos_detalhado carregado)
@@ -1577,7 +1571,6 @@ def _calcular_dpa_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
         DPA LTM em R$/ação
     """
     from datetime import datetime, timedelta
-    from collections import defaultdict
     
     # Usar dividendos_detalhado.json se disponível
     if dados.dividendos_detalhado and len(dados.dividendos_detalhado) > 0:
@@ -1600,23 +1593,19 @@ def _calcular_dpa_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
         # Últimos 12 meses
         data_inicio = data_ref - timedelta(days=365)
         
-        # CORREÇÃO v3.1: Agrupar por (data_com, tipo) e pegar MÁXIMO
-        # Isso evita somar dividendos ON + PN (que são o mesmo evento de provento)
-        # Cada (data_com, tipo) representa UM evento de provento da empresa
-        por_evento = defaultdict(float)
+        # Coletar valores únicos (evita duplicatas ON/PN)
+        valores_unicos = set()
         for d in dados.dividendos_detalhado:
             try:
                 data_com = datetime.strptime(d['data_com'], '%Y-%m-%d')
                 if data_inicio < data_com <= data_ref:
-                    # Chave: (data_com, tipo) - um evento por data/tipo
-                    chave = (d['data_com'], d.get('tipo', ''))
-                    # Pegar o MÁXIMO valor para cada evento (ON e PN podem ter valores ligeiramente diferentes)
-                    por_evento[chave] = max(por_evento[chave], d['valor'])
+                    # Chave única: (data_com, valor, tipo)
+                    valores_unicos.add((d['data_com'], d['valor'], d.get('tipo', '')))
             except (ValueError, KeyError):
                 continue
         
-        # Somar valores de cada evento único
-        soma_dpa = sum(por_evento.values())
+        # Somar valores únicos
+        soma_dpa = sum(v[1] for v in valores_unicos)
         return soma_dpa if soma_dpa > 0 else np.nan
     
     # Fallback: usar dividendos_trimestrais.csv (método antigo)
@@ -1905,24 +1894,14 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     resultado: Dict[str, Optional[float]] = {}
     
     # ==================== MARKET CAP E EV ====================
-    
-    # Market Cap do TICKER específico (para VALOR_MERCADO individual)
+    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
-        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
-
-    # ✅ Expor Valor de Mercado (R$ mil) - individual do ticker
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
+    
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
-    
-    # Market Cap TOTAL da empresa (para EV) - soma ON + PN, sem ticker_preco
-    # EV deve usar o valor de mercado TOTAL da empresa, não de uma classe específica
-    if usar_preco_atual:
-        market_cap_total = _calcular_market_cap_atual(dados, ticker_preco=None)
-    else:
-        market_cap_total = _calcular_market_cap(dados, periodo, ticker_preco=None)
-    
-    ev = _calcular_ev(dados, periodo, market_cap_total)
+    ev = _calcular_ev(dados, periodo, market_cap)
 
     # ==================== LUCRO LÍQUIDO LTM (para PAYOUT) ====================
     
@@ -2421,14 +2400,12 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     pl_code = _detectar_codigo_pl_banco(dados.bpp)
     
     # ==================== MARKET CAP ====================
-    
+    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
-        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
 
-
-    # ✅ Expor Valor de Mercado (R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
     # ==================== VALORES BASE (CONTAS AGREGADAS) ====================
@@ -2523,24 +2500,14 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     ticker_upper = dados.ticker.upper().strip()
     
     # ==================== MARKET CAP E EV ====================
-    
-    # Market Cap do TICKER específico (para VALOR_MERCADO individual)
+    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
-        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
-
-    # ✅ Expor Valor de Mercado (R$ mil) - individual do ticker
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
+    
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
-    
-    # Market Cap TOTAL da empresa (para EV) - soma ON + PN, sem ticker_preco
-    # EV deve usar o valor de mercado TOTAL da empresa, não de uma classe específica
-    if usar_preco_atual:
-        market_cap_total = _calcular_market_cap_atual(dados, ticker_preco=None)
-    else:
-        market_cap_total = _calcular_market_cap(dados, periodo, ticker_preco=None)
-    
-    ev = _calcular_ev(dados, periodo, market_cap_total)
+    ev = _calcular_ev(dados, periodo, market_cap)
     
     # ==================== VALORES BASE - ESPECÍFICOS POR TICKER ====================
     
@@ -2668,14 +2635,12 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     ticker_upper = dados.ticker.upper().strip()
     
     # ==================== MARKET CAP ====================
-    
+    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
     if usar_preco_atual:
-        market_cap = _calcular_market_cap_atual(dados, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
-        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=ticker_preco)
+        market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
 
-
-    # ✅ Expor Valor de Mercado (R$ mil)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
     # ==================== LUCRO LÍQUIDO - SUPORTA 3.11 E 3.13 ====================
