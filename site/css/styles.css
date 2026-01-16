@@ -2758,23 +2758,32 @@ body {
     background: #f8fafc;
 }
 
-/* ========== Header da Seção (FORA do card, igual ao Focus) ========== */
-.mercado-secundario-header {
-    margin-bottom: 2rem;
-}
-
-.mercado-secundario-title-group {
+/* ========== Título da Seção (FORA do card, igual ao Focus) ========== */
+.mercado-secundario-title-wrapper {
     display: flex;
     align-items: center;
     gap: 1rem;
+    margin-bottom: 2rem;
 }
 
-.mercado-secundario-title-group > i {
-    font-size: 2rem;
-    color: var(--accent-color);
+.mercado-secundario-icon-wrapper {
     background: rgba(0, 217, 255, 0.1);
-    padding: 1rem;
+    color: var(--accent-color);
+    width: 60px;
+    height: 60px;
     border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.mercado-secundario-icon-wrapper i {
+    font-size: 2rem;
+}
+
+.mercado-secundario-text {
+    flex: 1;
 }
 
 .mercado-secundario-title {
@@ -2791,7 +2800,7 @@ body {
 }
 
 /* ========================================================================== */
-/* CARD SPREADS DE CRÉDITO ANBIMA
+/* CARD SPREADS DE CRÉDITO ANBIMA (SEPARADO)
 /* ========================================================================== */
 
 .spreads-anbima-card {
@@ -3107,7 +3116,7 @@ body {
         padding: 3rem 0;
     }
     
-    .mercado-secundario-title-group {
+    .mercado-secundario-title-wrapper {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.75rem;
@@ -3195,6 +3204,9 @@ body {
         max-height: 300px;
     }
 }
+
+
+
 
 
 
