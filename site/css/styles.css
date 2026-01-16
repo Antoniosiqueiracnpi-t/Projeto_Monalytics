@@ -876,15 +876,36 @@ body {
 }
 
 
+/* Badge - Internacional */
+.news-category-badge.internacional {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+/* Badge - Empresas */
+.news-category-badge.empresas {
+    background-color: rgba(168, 85, 247, 0.1);
+    color: #a855f7;
+}
+
+/* Badge - Economia */
+.news-category-badge.economia {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+/* Badge - Mercado (já existe) */
 .news-category-badge.mercado {
     background-color: rgba(245, 158, 11, 0.1);
     color: #f59e0b;
 }
 
+/* Badge - Política (já existe) */
 .news-category-badge.politica {
     background-color: rgba(236, 72, 153, 0.1);
     color: #ec4899;
 }
+
 
 
 .news-time {
