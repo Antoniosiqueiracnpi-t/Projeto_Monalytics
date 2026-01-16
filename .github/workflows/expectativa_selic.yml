@@ -3,7 +3,7 @@ name: 📈 Atualizar Expectativa Selic (BCB Olinda)
 on:
   workflow_dispatch:
   schedule:
-    # Terça 09:00 BRT (UTC-3) => 12:00 UTC
+    # GitHub cron em UTC. BRT (UTC-3): 09:00 => 12:00 UTC
     - cron: "0 12 * * 2"
 
 permissions:
@@ -36,24 +36,19 @@ jobs:
       - name: Gerar expectativa_selic.json
         run: |
           set -e
-          python src/expectativa_selic.py --saida site/data/expectativa_selic.json --base-calculo 0
+          python src/expectativa_selic.py --out-dir "site/data" --out-name "expectativa_selic.json" --top 5000 --timeout 30
 
-      - name: Commit e push (se houver mudança)
+      - name: Commit e push (se houver alterações)
         shell: bash
         run: |
           set -e
-
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "GitHub Actions Bot"
-
-          # Rebase leve para reduzir chance de conflito
-          git pull --rebase origin main || true
-
-          if git status --porcelain | grep -qE "site/data/expectativa_selic\.json"; then
-            TZ=America/Sao_Paulo
+          if [ -n "$(git status --porcelain)" ]; then
+            git config --local user.name "GitHub Actions Bot"
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
             git add site/data/expectativa_selic.json
-            git commit -m "📈 Expectativa Selic: $(date '+%Y-%m-%d %H:%M:%S %z') [skip netlify]" || true
-            git push origin main
+            git commit -m "📈 Atualiza expectativa Selic - $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            git pull --rebase origin main
+            git push
           else
-            echo "Nenhuma mudança em site/data/expectativa_selic.json"
+            echo "Sem mudanças para commitar."
           fi
