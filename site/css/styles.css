@@ -2354,7 +2354,7 @@ body {
     }
     
     #selicChart {
-        max-height: 300px;
+        max-height: 350px;
     }
     
     .toggle-btn span {
@@ -2403,7 +2403,7 @@ body {
     }
     
     #selicChart {
-        max-height: 250px;
+        max-height: 200px;
     }
     
     .selic-expand-btn {
@@ -2708,7 +2708,7 @@ body {
     }
     
     #curvaJurosChart {
-        max-height: 300px;
+        max-height: 350px;
     }
     
     /* Esconde texto dos botões no mobile */
@@ -2744,7 +2744,419 @@ body {
     }
     
     #curvaJurosChart {
-        max-height: 250px;
+        max-height: 300px;
+    }
+}
+
+
+/* ========================================================================== */
+/* MERCADO SECUNDÁRIO DE RENDA FIXA
+/* ========================================================================== */
+
+.mercado-secundario-section {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+/* ========== Header da Seção ========== */
+.mercado-secundario-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.mercado-secundario-title-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.mercado-secundario-title-group > i {
+    font-size: 3.5rem;
+    color: var(--accent-color);
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(59, 130, 246, 0.1));
+    padding: 2rem;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 217, 255, 0.2);
+}
+
+.mercado-secundario-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.mercado-secundario-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin: 0.5rem 0 0 0;
+}
+
+/* ========================================================================== */
+/* CARD SPREADS DE CRÉDITO ANBIMA
+/* ========================================================================== */
+
+.spreads-anbima-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 2.5rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ========== Header do Card ========== */
+.spreads-anbima-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.spreads-icon {
+    background: linear-gradient(135deg, var(--accent-color), #3b82f6);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.spreads-icon i {
+    font-size: 1.75rem;
+}
+
+.spreads-info {
+    flex: 1;
+    min-width: 200px;
+}
+
+.spreads-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.spreads-description {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.spreads-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    background: rgba(0, 217, 255, 0.1);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    white-space: nowrap;
+}
+
+.spreads-badge i {
+    font-size: 1rem;
+}
+
+/* ========== Loading ========== */
+.spreads-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem;
+    color: var(--text-secondary);
+}
+
+.spreads-loading i {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+}
+
+/* ========== Controles de Visualização ========== */
+.spreads-view-controls {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.spreads-view-toggle {
+    display: flex;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.35rem;
+    border-radius: var(--border-radius-sm);
+    border: 2px solid rgba(0, 180, 216, 0.15);
+}
+
+/* ========== Container de Views ========== */
+.spreads-view-container {
+    display: none;
+}
+
+.spreads-view-container.active {
+    display: block;
+}
+
+/* ========== TABELA ========== */
+.spreads-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
+.spreads-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.spreads-table thead {
+    background: linear-gradient(135deg, var(--accent-color), #3b82f6);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.spreads-table th {
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.spreads-table th:first-child {
+    text-align: left;
+    padding-left: 1.5rem;
+}
+
+.spreads-table th.rating-aaa {
+    color: #d1fae5;
+}
+
+.spreads-table th.rating-aa {
+    color: #fed7aa;
+}
+
+.spreads-table th.rating-a {
+    color: #fecaca;
+}
+
+.spreads-table tbody tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: background 0.2s ease;
+}
+
+.spreads-table tbody tr:hover {
+    background: rgba(0, 217, 255, 0.03);
+}
+
+.spreads-table td {
+    padding: 1rem;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.spreads-table td:first-child {
+    text-align: left;
+    padding-left: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.spread-value {
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.spread-value.aaa {
+    color: #10b981;
+}
+
+.spread-value.aa {
+    color: #f59e0b;
+}
+
+.spread-value.a {
+    color: #ef4444;
+}
+
+/* ========== GRÁFICO ========== */
+.spreads-chart-wrapper {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+#spreadsChart {
+    max-height: 450px;
+    width: 100% !important;
+    height: auto !important;
+}
+
+.spreads-chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+}
+
+/* ========== Rodapé ========== */
+.spreads-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid rgba(0, 180, 216, 0.1);
+}
+
+.spreads-footer-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.spreads-footer-info i {
+    color: var(--accent-color);
+    font-size: 1.125rem;
+}
+
+/* ========================================================================== */
+/* RESPONSIVO - MERCADO SECUNDÁRIO
+/* ========================================================================== */
+
+@media screen and (max-width: 968px) {
+    .mercado-secundario-section {
+        padding: 4rem 0;
+    }
+    
+    .mercado-secundario-header {
+        margin-bottom: 3rem;
+    }
+    
+    .mercado-secundario-title {
+        font-size: 2rem;
+    }
+    
+    .spreads-anbima-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .spreads-badge {
+        align-self: flex-start;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .mercado-secundario-section {
+        padding: 3rem 0;
+    }
+    
+    .mercado-secundario-title-group > i {
+        font-size: 2.5rem;
+        width: 80px;
+        height: 80px;
+        padding: 1.5rem;
+    }
+    
+    .mercado-secundario-title {
+        font-size: 1.75rem;
+    }
+    
+    .mercado-secundario-subtitle {
+        font-size: 1rem;
+    }
+    
+    .spreads-anbima-card {
+        padding: 1.5rem;
+    }
+    
+    .spreads-title {
+        font-size: 1.25rem;
+    }
+    
+    .spreads-table {
+        font-size: 0.85rem;
+    }
+    
+    .spreads-chart-wrapper {
+        padding: 1rem;
+    }
+    
+    #spreadsChart {
+        max-height: 350px;
+    }
+    
+    /* Esconde texto dos botões */
+    .spreads-view-toggle .toggle-btn span {
+        display: none;
+    }
+    
+    .spreads-view-toggle .toggle-btn {
+        padding: 0.75rem;
+        justify-content: center;
+    }
+    
+    .spreads-view-toggle .toggle-btn i {
+        font-size: 1.25rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .mercado-secundario-title {
+        font-size: 1.5rem;
+    }
+    
+    .mercado-secundario-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .spreads-anbima-card {
+        padding: 1.25rem;
+    }
+    
+    .spreads-table {
+        font-size: 0.8rem;
+    }
+    
+    .spreads-table th,
+    .spreads-table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .spread-value {
+        font-size: 1rem;
+    }
+    
+    .spreads-chart-wrapper {
+        padding: 0.75rem;
+    }
+    
+    #spreadsChart {
+        max-height: 300px;
     }
 }
 
