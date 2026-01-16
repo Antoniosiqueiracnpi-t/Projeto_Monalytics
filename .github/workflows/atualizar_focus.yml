@@ -1,0 +1,68 @@
+name: 📈 Atualizar Focus (BCB) - Seg 09h BRT
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub cron em UTC. BRT (UTC-3): 09:00 => 12:00 UTC (toda segunda)
+    - cron: "0 12 * * 1"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: focus-bcb
+  cancel-in-progress: true
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pdfplumber
+
+      - name: Pull/Rebase before generate
+        shell: bash
+        run: |
+          set -e
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git rebase origin/main || (git rebase --abort && exit 1)
+
+      - name: Generate Focus JSON
+        shell: bash
+        run: |
+          set -e
+          python src/capturar_focus.py --output site/data/focus.json
+
+      - name: Commit and push if changed
+        shell: bash
+        run: |
+          set -e
+          if git diff --quiet; then
+            echo "✅ Nenhuma mudança no Focus."
+            exit 0
+          fi
+
+          git add site/data/focus.json
+          TS="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          git commit -m "📈 Focus: atualização automática - ${TS} [skip netlify]" || exit 0
+
+          # Rebase final para reduzir chance de conflito
+          git fetch origin main
+          git rebase origin/main || (git rebase --abort && exit 1)
+
+          git push origin HEAD:main
