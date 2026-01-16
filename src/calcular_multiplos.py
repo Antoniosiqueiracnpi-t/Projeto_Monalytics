@@ -1556,56 +1556,55 @@ def _calcular_dividendos_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
 
 def _calcular_dpa_ltm(dados: DadosEmpresa, periodo_fim: str) -> float:
     """
-    CORREÇÃO v3.0: Calcula DPA LTM usando dividendos_detalhado.json
+    CORREÇÃO v3.2: Calcula DPA LTM usando dividendos_detalhado.json
     
     Metodologia alinhada com plataformas (StatusInvest, Fundamentus, Investidor10):
-    1. Filtra últimos 12 meses baseado em data_com
-    2. Remove duplicatas (ON/PN tem valores idênticos)
-    3. Soma valores únicos
+    1. Usa DATA ATUAL como referência (não o período do balanço)
+    2. Filtra últimos 12 meses baseado em data_com
+    3. Agrupa por (data_com, tipo) - um evento por data/tipo
+    4. Pega o MÁXIMO valor por evento (evita somar ON + PN que são o mesmo evento)
+    5. Soma os valores de cada evento único
+    
+    CORREÇÃO v3.2: Mudança de janela de 12 meses:
+    - ANTES: Usava período do balanço (ex: set/2024 - set/2025 para 2025T3)
+    - AGORA: Usa data atual (ex: jan/2025 - jan/2026)
+    Isso alinha com Fundamentus/StatusInvest que sempre usam janela rolling de 12 meses.
     
     Args:
         dados: Dados da empresa (deve ter dividendos_detalhado carregado)
-        periodo_fim: Período de referência (ex: "2025T3")
+        periodo_fim: Período de referência (não mais usado para janela, apenas fallback)
     
     Returns:
         DPA LTM em R$/ação
     """
     from datetime import datetime, timedelta
+    from collections import defaultdict
     
     # Usar dividendos_detalhado.json se disponível
     if dados.dividendos_detalhado and len(dados.dividendos_detalhado) > 0:
-        # Determinar data de referência baseada no período
-        ano_fim, tri_fim = _parse_periodo(periodo_fim)
-        if ano_fim == 0:
-            return np.nan
+        # CORREÇÃO v3.2: Usar DATA ATUAL como referência (como Fundamentus)
+        data_ref = datetime.now()
         
-        # Mapear trimestre para mês final
-        tri_mes_fim = {'T1': 3, 'T2': 6, 'T3': 9, 'T4': 12}.get(tri_fim, 12)
-        
-        # Data de referência: último dia do trimestre
-        if tri_mes_fim == 12:
-            data_ref = datetime(ano_fim, 12, 31)
-        else:
-            # Próximo mês, dia 1, menos 1 dia = último dia do mês atual
-            prox_mes = tri_mes_fim + 1
-            data_ref = datetime(ano_fim, prox_mes, 1) - timedelta(days=1)
-        
-        # Últimos 12 meses
+        # Últimos 12 meses a partir de HOJE
         data_inicio = data_ref - timedelta(days=365)
         
-        # Coletar valores únicos (evita duplicatas ON/PN)
-        valores_unicos = set()
+        # Agrupar por (data_com, tipo) e pegar MÁXIMO
+        # Isso evita somar dividendos ON + PN (que são o mesmo evento de provento)
+        # Cada (data_com, tipo) representa UM evento de provento da empresa
+        por_evento = defaultdict(float)
         for d in dados.dividendos_detalhado:
             try:
                 data_com = datetime.strptime(d['data_com'], '%Y-%m-%d')
                 if data_inicio < data_com <= data_ref:
-                    # Chave única: (data_com, valor, tipo)
-                    valores_unicos.add((d['data_com'], d['valor'], d.get('tipo', '')))
+                    # Chave: (data_com, tipo) - um evento por data/tipo
+                    chave = (d['data_com'], d.get('tipo', ''))
+                    # Pegar o MÁXIMO valor para cada evento (ON e PN podem ter valores ligeiramente diferentes)
+                    por_evento[chave] = max(por_evento[chave], d['valor'])
             except (ValueError, KeyError):
                 continue
         
-        # Somar valores únicos
-        soma_dpa = sum(v[1] for v in valores_unicos)
+        # Somar valores de cada evento único
+        soma_dpa = sum(por_evento.values())
         return soma_dpa if soma_dpa > 0 else np.nan
     
     # Fallback: usar dividendos_trimestrais.csv (método antigo)
@@ -1894,13 +1893,20 @@ def calcular_multiplos_periodo(dados: DadosEmpresa, periodo: str, usar_preco_atu
     resultado: Dict[str, Optional[float]] = {}
     
     # ==================== MARKET CAP E EV ====================
-    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
+    
+    # CORREÇÃO v3.1: Market Cap TOTAL da empresa (ON + PN)
+    # Metodologia alinhada com Fundamentus/StatusInvest/Investidor10:
+    # VM = (Preço_ON × Qtd_ON) + (Preço_PN × Qtd_PN)
+    # Todos os tickers da mesma empresa mostram o MESMO Valor de Mercado
     if usar_preco_atual:
         market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
         market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
-    
+
+    # ✅ Valor de Mercado TOTAL da empresa (não individual por classe)
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+    
+    # EV usa o mesmo market_cap total
     ev = _calcular_ev(dados, periodo, market_cap)
 
     # ==================== LUCRO LÍQUIDO LTM (para PAYOUT) ====================
@@ -2400,12 +2406,14 @@ def calcular_multiplos_banco(dados: DadosEmpresa, periodo: str, usar_preco_atual
     pl_code = _detectar_codigo_pl_banco(dados.bpp)
     
     # ==================== MARKET CAP ====================
-    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
+    
+    # CORREÇÃO v3.1: Market Cap TOTAL da empresa (ON + PN)
     if usar_preco_atual:
         market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
         market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
 
+    # ✅ Valor de Mercado TOTAL da empresa
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
     # ==================== VALORES BASE (CONTAS AGREGADAS) ====================
@@ -2500,13 +2508,17 @@ def calcular_multiplos_holding_seguros(dados: DadosEmpresa, periodo: str, usar_p
     ticker_upper = dados.ticker.upper().strip()
     
     # ==================== MARKET CAP E EV ====================
-    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
+    
+    # CORREÇÃO v3.1: Market Cap TOTAL da empresa (ON + PN)
     if usar_preco_atual:
         market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
         market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
-    
+
+    # ✅ Valor de Mercado TOTAL da empresa
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
+    
+    # EV usa o mesmo market_cap total
     ev = _calcular_ev(dados, periodo, market_cap)
     
     # ==================== VALORES BASE - ESPECÍFICOS POR TICKER ====================
@@ -2635,12 +2647,14 @@ def calcular_multiplos_seguradora(dados: DadosEmpresa, periodo: str, usar_preco_
     ticker_upper = dados.ticker.upper().strip()
     
     # ==================== MARKET CAP ====================
-    # Market Cap TOTAL da empresa (soma ON + PN) - padrão das plataformas
+    
+    # CORREÇÃO v3.1: Market Cap TOTAL da empresa (ON + PN)
     if usar_preco_atual:
         market_cap = _calcular_market_cap_atual(dados, ticker_preco=None)
     else:
         market_cap = _calcular_market_cap(dados, periodo, ticker_preco=None)
 
+    # ✅ Valor de Mercado TOTAL da empresa
     resultado["VALOR_MERCADO"] = _normalizar_valor(market_cap, decimals=2)
     
     # ==================== LUCRO LÍQUIDO - SUPORTA 3.11 E 3.13 ====================
