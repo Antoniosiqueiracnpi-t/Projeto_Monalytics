@@ -1206,6 +1206,86 @@
                         <span>Dados coletados do Relatório Focus - Sistema de Expectativas do Mercado (Banco Central)</span>
                     </div>
                 </div>
+
+                <!-- Expectativas Selic - COPOM -->
+                <div class="selic-expectativas-container" id="selicExpectativasContainer" style="display: none;">
+                    <!-- Header com Toggle -->
+                    <div class="selic-header">
+                        <div class="selic-title-group">
+                            <i class="fas fa-chart-bar"></i>
+                            <div>
+                                <h3 class="selic-title">Expectativas Selic - COPOM</h3>
+                                <p class="selic-subtitle">Projeções por reunião do Comitê de Política Monetária</p>
+                            </div>
+                        </div>
+                        
+                        <div class="selic-view-toggle">
+                            <button class="toggle-btn active" data-view="table" id="btnTableView">
+                                <i class="fas fa-table"></i>
+                                <span>Tabela</span>
+                            </button>
+                            <button class="toggle-btn" data-view="chart" id="btnChartView">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Gráfico</span>
+                            </button>
+                        </div>
+                    </div>
+    
+                    <!-- Loading -->
+                    <div class="selic-loading" id="selicLoading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Carregando expectativas...</span>
+                    </div>
+    
+                    <!-- View: Tabela -->
+                    <div class="selic-view-container active" id="selicTableView">
+                        <div class="selic-table-wrapper">
+                            <table class="selic-table">
+                                <thead>
+                                    <tr>
+                                        <th>Reunião</th>
+                                        <th>Semana Anterior</th>
+                                        <th>Atual</th>
+                                        <th>Variação</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="selicTableBody">
+                                    <!-- Preenchido via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+    
+                        <!-- Botão Ver Mais/Menos -->
+                        <div class="selic-expand-container" id="selicExpandContainer" style="display: none;">
+                            <button class="selic-expand-btn" id="selicExpandBtn">
+                                <span class="expand-text">Ver todas as reuniões</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+    
+                    <!-- View: Gráfico -->
+                    <div class="selic-view-container" id="selicChartView">
+                        <div class="selic-chart-wrapper">
+                            <canvas id="selicChart"></canvas>
+                        </div>
+                        
+                        <!-- Legenda do gráfico -->
+                        <div class="selic-chart-legend">
+                            <div class="legend-item">
+                                <span class="legend-dot" style="background: #3b82f6;"></span>
+                                <span>Semana Anterior</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot" style="background: #10b981;"></span>
+                                <span>Expectativa Atual</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                
             </div>
         </div>
     </section>
