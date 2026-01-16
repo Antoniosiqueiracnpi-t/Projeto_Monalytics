@@ -1444,6 +1444,148 @@ body {
     }
 }
 
+
+/* ========================================================================== */
+/* RENDA FIXA - INTRODUÇÃO (Bloco Separador)
+/* ========================================================================== */
+
+.renda-fixa-intro-section {
+    position: relative;
+    padding: 6rem 0;
+    overflow: hidden;
+    background-color: var(--bg-secondary);
+}
+
+.rf-intro-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e8f4f8 0%, #ffffff 50%, #f0f9ff 100%);
+    z-index: -1;
+}
+
+.rf-intro-pattern {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 25% 35%, rgba(0, 180, 216, 0.04) 0%, transparent 50%),
+        radial-gradient(circle at 75% 70%, rgba(0, 102, 204, 0.04) 0%, transparent 50%);
+}
+
+.rf-intro-content {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* ========== Logo 3D ========== */
+.rf-intro-image {
+    animation: fadeIn 1s ease 0.3s both;
+}
+
+.rf-logo-3d {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 20px 40px rgba(0, 180, 216, 0.3));
+    animation: float 6s ease-in-out infinite;
+}
+
+/* ========== Texto ========== */
+.rf-intro-text {
+    animation: fadeInUp 0.8s ease;
+}
+
+.rf-intro-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.rf-intro-subtitle {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* ========================================================================== */
+/* RENDA FIXA - RESPONSIVO
+/* ========================================================================== */
+
+@media screen and (max-width: 1024px) {
+    .rf-intro-content {
+        grid-template-columns: 320px 1fr;
+        gap: 3rem;
+    }
+    
+    .rf-intro-title {
+        font-size: 3rem;
+    }
+    
+    .rf-intro-subtitle {
+        font-size: 1.35rem;
+    }
+    
+    .rf-logo-3d {
+        max-width: 300px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .renda-fixa-intro-section {
+        padding: 4rem 0;
+    }
+    
+    .rf-intro-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .rf-intro-title {
+        font-size: 2.5rem;
+    }
+    
+    .rf-intro-subtitle {
+        font-size: 1.25rem;
+    }
+    
+    .rf-logo-3d {
+        max-width: 280px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .renda-fixa-intro-section {
+        padding: 3rem 0;
+    }
+    
+    .rf-intro-title {
+        font-size: 2rem;
+    }
+    
+    .rf-intro-subtitle {
+        font-size: 1.125rem;
+    }
+    
+    .rf-logo-3d {
+        max-width: 220px;
+    }
+}
+
+
+
 /* =========================== RESPONSIVE DESIGN =========================== */
 
 /* Tablet (768px - 1024px) */
