@@ -9214,7 +9214,7 @@ function selecionarTitulo(codigo, fonte, tabela) {
 // Exibir informações do título
 function exibirInformacoesTitulo(titulo) {
     const codigo = titulo.Código || titulo.Codigo || '-';
-    const emissor = titulo.Emissor || '-';
+    const emissor = (titulo.Emissor || '-').replace(/\s*\(\*\)\s*/g, '').trim();
     
     // Taxa indicativa
     let taxa = '-';
