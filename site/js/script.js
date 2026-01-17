@@ -523,7 +523,8 @@ async function loadAllData() {
         loadNoticiasMercado(),
         loadDividendosData(),
         loadMapeamentoB3(),
-        loadIbovData()
+        loadIbovData(),
+        loadEstatisticasMercado()
     ]);
 }
 
