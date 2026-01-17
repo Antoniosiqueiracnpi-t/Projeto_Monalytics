@@ -1662,6 +1662,242 @@
 
 
 
+            <!-- INÍCIO Card Precificação de Títulos -->
+            <div class="card precificacao-card" id="precificacaoCard">
+                <!-- Header -->
+                <div class="precificacao-header">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div class="precificacao-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 6v6l4 2"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="section-title" style="margin: 0;">Calculadora de Precificação</h2>
+                            <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: rgba(255,255,255,0.6);">Busque um título e calcule o PU com sua taxa desejada</p>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Campo de Busca -->
+                <div class="precificacao-search-section">
+                    <label for="tituloSearch" class="precificacao-label">Buscar Título (Código ou Emissor)</label>
+                    <div class="precificacao-search-wrapper">
+                        <input 
+                            type="text" 
+                            id="tituloSearch" 
+                            class="precificacao-search-input" 
+                            placeholder="Digite o código (ex: UTPS12) ou nome do emissor..."
+                            autocomplete="off"
+                        />
+                        <div class="precificacao-search-results" id="searchResults"></div>
+                    </div>
+                </div>
+            
+                <!-- Informações do Título Selecionado -->
+                <div class="precificacao-info-section" id="tituloInfo" style="display: none;">
+                    <h3 class="precificacao-subtitle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        Informações do Título
+                    </h3>
+                    <div class="precificacao-info-grid">
+                        <div class="precificacao-info-item">
+                            <span class="precificacao-info-label">Código</span>
+                            <span class="precificacao-info-value" id="infoCodigo">-</span>
+                        </div>
+                        <div class="precificacao-info-item">
+                            <span class="precificacao-info-label">Emissor</span>
+                            <span class="precificacao-info-value" id="infoEmissor">-</span>
+                        </div>
+                        <div class="precificacao-info-item">
+                            <span class="precificacao-info-label">Taxa Indicativa ANBIMA</span>
+                            <span class="precificacao-info-value" id="infoTaxa">-</span>
+                        </div>
+                        <div class="precificacao-info-item">
+                            <span class="precificacao-info-label">Data da Taxa</span>
+                            <span class="precificacao-info-value" id="infoDataTaxa">-</span>
+                        </div>
+                        <div class="precificacao-info-item">
+                            <span class="precificacao-info-label">Duration</span>
+                            <span class="precificacao-info-value" id="infoDuration">-</span>
+                        </div>
+                        <div class="precificacao-info-item">
+                            <span class="precificacao-info-label">Vencimento</span>
+                            <span class="precificacao-info-value" id="infoVencimento">-</span>
+                        </div>
+                        <div class="precificacao-info-item">
+                            <span class="precificacao-info-label">Índice/Correção</span>
+                            <span class="precificacao-info-value" id="infoIndice">-</span>
+                        </div>
+                        <div class="precificacao-info-item">
+                            <span class="precificacao-info-label">PU</span>
+                            <span class="precificacao-info-value" id="infoPU">-</span>
+                        </div>
+                        <div class="precificacao-info-item">
+                            <span class="precificacao-info-label">% PU Par</span>
+                            <span class="precificacao-info-value" id="infoPUPar">-</span>
+                        </div>
+                        <div class="precificacao-info-item">
+                            <span class="precificacao-info-label">Indexador</span>
+                            <span class="precificacao-info-value" id="infoIndexador">-</span>
+                        </div>
+                        <div class="precificacao-info-item" id="ntnbReferencia" style="display: none;">
+                            <span class="precificacao-info-label">Referência NTNB</span>
+                            <span class="precificacao-info-value" id="infoNTNB">-</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Calculadora -->
+                <div class="precificacao-calculator-section" id="calculatorSection" style="display: none;">
+                    <h3 class="precificacao-subtitle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+                            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                            <line x1="8" y1="6" x2="16" y2="6"></line>
+                            <line x1="8" y1="10" x2="16" y2="10"></line>
+                            <line x1="8" y1="14" x2="16" y2="14"></line>
+                            <line x1="8" y1="18" x2="10" y2="18"></line>
+                        </svg>
+                        Calculadora de Precificação
+                    </h3>
+                    <div class="precificacao-calculator-input">
+                        <label for="taxaUsuario" class="precificacao-label">Taxa Desejada (% a.a.)</label>
+                        <div style="display: flex; gap: 1rem; align-items: flex-end;">
+                            <div style="flex: 1;">
+                                <input 
+                                    type="number" 
+                                    id="taxaUsuario" 
+                                    class="precificacao-input" 
+                                    placeholder="Ex: 20.00"
+                                    step="0.01"
+                                    min="0"
+                                    max="100"
+                                />
+                            </div>
+                            <button id="calcularBtn" class="precificacao-calc-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="9 11 12 14 22 4"></polyline>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                                </svg>
+                                Calcular
+                            </button>
+                        </div>
+                    </div>
+            
+                    <!-- Resultados -->
+                    <div class="precificacao-results" id="calculatorResults" style="display: none;">
+                        <!-- Taxas -->
+                        <div class="precificacao-result-section">
+                            <h4 class="precificacao-result-title">💹 Taxas</h4>
+                            <div class="precificacao-result-row">
+                                <span>Taxa ANBIMA</span>
+                                <span id="resultTaxaAnbima">-</span>
+                            </div>
+                            <div class="precificacao-result-row">
+                                <span>Taxa Usuário</span>
+                                <span id="resultTaxaUsuario">-</span>
+                            </div>
+                            <div class="precificacao-result-row highlight">
+                                <span>Diferença</span>
+                                <span id="resultDiferenca">-</span>
+                            </div>
+                        </div>
+            
+                        <!-- Resultados -->
+                        <div class="precificacao-result-section">
+                            <h4 class="precificacao-result-title">💰 Resultados</h4>
+                            <table class="precificacao-result-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cenário</th>
+                                        <th>PU Operação</th>
+                                        <th>% PU Par</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>ANBIMA (original)</td>
+                                        <td id="resultPUAnbima">-</td>
+                                        <td id="resultPUParAnbima">-</td>
+                                    </tr>
+                                    <tr class="highlight-row">
+                                        <td>Calculado (nova taxa)</td>
+                                        <td id="resultPUCalculado">-</td>
+                                        <td id="resultPUParCalculado">-</td>
+                                    </tr>
+                                    <tr class="total-row">
+                                        <td>Diferença</td>
+                                        <td id="resultDifPU">-</td>
+                                        <td id="resultDifPUPar">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+            
+                        <!-- Interpretação -->
+                        <div class="precificacao-result-section">
+                            <h4 class="precificacao-result-title">📈 Interpretação</h4>
+                            <div class="precificacao-interpretation" id="interpretacao">
+                                <p id="interpretacaoTexto">-</p>
+                            </div>
+                        </div>
+            
+                        <!-- Detalhes Técnicos (Collapsible) -->
+                        <div class="precificacao-result-section">
+                            <button class="precificacao-details-toggle" id="detalhesToggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron-icon">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                                Detalhes Técnicos (Duration e Convexidade)
+                            </button>
+                            <div class="precificacao-details" id="detalhesContent" style="display: none;">
+                                <div class="precificacao-result-row">
+                                    <span>Modified Duration</span>
+                                    <span id="detailMD">-</span>
+                                </div>
+                                <div class="precificacao-result-row">
+                                    <span>Convexidade</span>
+                                    <span id="detailConv">-</span>
+                                </div>
+                                <div class="precificacao-result-row">
+                                    <span>Efeito Duration</span>
+                                    <span id="detailDurEffect">-</span>
+                                </div>
+                                <div class="precificacao-result-row">
+                                    <span>Efeito Convexidade</span>
+                                    <span id="detailConvEffect">-</span>
+                                </div>
+                                <div class="precificacao-result-row highlight">
+                                    <span>Total Esperado</span>
+                                    <span id="detailTotal">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Loading State -->
+                <div class="precificacao-loading" id="precificacaoLoading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Carregando dados...</p>
+                </div>
+            
+                <!-- Error State -->
+                <div class="precificacao-error" id="precificacaoError" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <p id="errorMessage">Erro ao carregar dados</p>
+                </div>
+            </div>
+            <!-- FIM Card Precificação de Títulos -->            
+
             
 
         </div> <!-- FIM Container mercado-secundario -->
