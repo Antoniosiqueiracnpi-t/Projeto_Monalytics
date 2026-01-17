@@ -1495,6 +1495,146 @@
                 </div>
             </div> <!-- FIM Card Spreads ANBIMA -->
 
+            <!-- Estatísticas do Mercado Secundário -->
+            <div class="estatisticas-mercado-card">
+                <div class="estatisticas-header">
+                    <div class="estatisticas-header-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="estatisticas-header-text">
+                        <h3>Estatísticas do Mercado Secundário</h3>
+                        <p>Análise quantitativa de spreads e duration do mercado de debêntures, CRIs e CRAs</p>
+                    </div>
+                    <div class="estatisticas-timestamp">
+                        <i class="fas fa-clock"></i>
+                        <span id="estatisticasTimestamp">Carregando...</span>
+                    </div>
+                </div>
+            
+                <!-- Resumo Geral -->
+                <div class="resumo-geral-section">
+                    <h4><i class="fas fa-table"></i> Resumo por Indexador</h4>
+                    <div class="table-responsive">
+                        <table class="resumo-table">
+                            <thead>
+                                <tr>
+                                    <th>Indexador</th>
+                                    <th>Distribuição</th>
+                                    <th>Qtd. Títulos</th>
+                                    <th>PU/Par Médio</th>
+                                    <th>Duration Média</th>
+                                    <th>Taxa Média</th>
+                                    <th>Maior Taxa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resumoGeralBody">
+                                <tr>
+                                    <td colspan="7" class="loading-cell">
+                                        <i class="fas fa-spinner fa-spin"></i> Carregando dados...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            
+                <!-- Top 10 Maiores Spreads -->
+                <div class="top-spreads-section">
+                    <div class="spreads-header">
+                        <h4><i class="fas fa-trophy"></i> Maiores Spreads Indicativos ANBIMA</h4>
+                        <div class="view-toggle">
+                            <button class="toggle-btn active" data-view="table">
+                                <i class="fas fa-table"></i> Tabela
+                            </button>
+                            <button class="toggle-btn" data-view="chart">
+                                <i class="fas fa-chart-scatter"></i> Gráfico
+                            </button>
+                        </div>
+                    </div>
+            
+                    <!-- Abas IPCA+ e DI+ -->
+                    <div class="spreads-tabs">
+                        <button class="spread-tab-btn active" data-tipo="ipca">
+                            <i class="fas fa-percentage"></i> IPCA+
+                        </button>
+                        <button class="spread-tab-btn" data-tipo="di">
+                            <i class="fas fa-chart-line"></i> DI+
+                        </button>
+                    </div>
+            
+                    <!-- Conteúdo - Tabela -->
+                    <div class="spreads-content-wrapper">
+                        <div class="spreads-view active" data-view="table">
+                            <!-- Tabela IPCA+ -->
+                            <div class="spread-tab-content active" data-tipo="ipca">
+                                <div class="table-responsive">
+                                    <table class="spreads-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Código</th>
+                                                <th>Indexador</th>
+                                                <th>Spread (%)</th>
+                                                <th>Duration (dias)</th>
+                                                <th>Duration (anos)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="topIpcaTableBody">
+                                            <tr>
+                                                <td colspan="6" class="loading-cell">
+                                                    <i class="fas fa-spinner fa-spin"></i> Carregando...
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button class="ver-mais-btn" id="verMaisIpca" style="display: none;">
+                                    <i class="fas fa-chevron-down"></i> Ver mais
+                                </button>
+                            </div>
+            
+                            <!-- Tabela DI+ -->
+                            <div class="spread-tab-content" data-tipo="di">
+                                <div class="table-responsive">
+                                    <table class="spreads-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Código</th>
+                                                <th>Indexador</th>
+                                                <th>Spread (%)</th>
+                                                <th>Duration (dias)</th>
+                                                <th>Duration (anos)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="topDiTableBody">
+                                            <tr>
+                                                <td colspan="6" class="loading-cell">
+                                                    <i class="fas fa-spinner fa-spin"></i> Carregando...
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button class="ver-mais-btn" id="verMaisDi" style="display: none;">
+                                    <i class="fas fa-chevron-down"></i> Ver mais
+                                </button>
+                            </div>
+                        </div>
+            
+                        <!-- Conteúdo - Gráfico -->
+                        <div class="spreads-view" data-view="chart">
+                            <div class="chart-wrapper-spreads">
+                                <canvas id="spreadsDurationChart"></canvas>
+                            </div>
+                            <div class="chart-legend-info">
+                                <p><i class="fas fa-info-circle"></i> Gráfico de dispersão: Duration (dias) vs Spread (%)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fim Estatísticas Mercado Secundário -->
 
 
 
