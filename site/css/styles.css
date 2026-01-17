@@ -2253,15 +2253,14 @@ body {
     border-radius: var(--border-radius);
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 1.5rem;
-    min-height: 450px;
+    min-height: 400px;
+    height: 400px;
     position: relative;
 }
 
 #selicChart {
-    max-height: 400px;
     width: 100% !important;
-    height: 400px !important;
-    display: block;
+    height: 100% !important;
 }
 
 .selic-chart-legend {
@@ -2354,10 +2353,13 @@ body {
     /* Gráfico mobile */
     .selic-chart-wrapper {
         padding: 1rem;
+        min-height: 300px;
+        height: 300px;
     }
     
     #selicChart {
-        max-height: 350px;
+        width: 100% !important;
+        height: 100% !important;
     }
     
     .toggle-btn span {
@@ -2403,10 +2405,13 @@ body {
     
     .selic-chart-wrapper {
         padding: 0.75rem;
+        min-height: 250px;
+        height: 250px;
     }
     
     #selicChart {
-        max-height: 200px;
+        width: 100% !important;
+        height: 100% !important;
     }
     
     .selic-expand-btn {
@@ -2605,15 +2610,14 @@ body {
     border-radius: var(--border-radius);
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 1.5rem;
-    min-height: 450px;
+    min-height: 400px;
+    height: 400px;
     position: relative;
 }
 
 #curvaJurosChart {
-    max-height: 400px;
     width: 100% !important;
-    height: 400px !important;
-    display: block;
+    height: 100% !important;
 }
 
 .curva-chart-legend {
@@ -2711,10 +2715,13 @@ body {
     /* Gráfico mobile */
     .curva-chart-wrapper {
         padding: 1rem;
+        min-height: 300px;
+        height: 300px;
     }
     
     #curvaJurosChart {
-        max-height: 350px;
+        width: 100% !important;
+        height: 100% !important;
     }
     
     /* Esconde texto dos botões no mobile */
@@ -2747,10 +2754,13 @@ body {
     
     .curva-chart-wrapper {
         padding: 0.75rem;
+        min-height: 250px;
+        height: 250px;
     }
     
     #curvaJurosChart {
-        max-height: 300px;
+        width: 100% !important;
+        height: 100% !important;
     }
 }
 
@@ -3060,15 +3070,14 @@ body {
     border-radius: var(--border-radius);
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 1.5rem;
-    min-height: 500px;
+    min-height: 400px;
+    height: 400px;
     position: relative;
 }
 
 #spreadsChart {
-    max-height: 450px;
     width: 100% !important;
-    height: 450px !important;
-    display: block;
+    height: 100% !important;
 }
 
 .spreads-chart-legend {
@@ -3156,10 +3165,13 @@ body {
     
     .spreads-chart-wrapper {
         padding: 1rem;
+        min-height: 300px;
+        height: 300px;
     }
     
     #spreadsChart {
-        max-height: 350px;
+        width: 100% !important;
+        height: 100% !important;
     }
     
     /* Esconde texto dos botões */
@@ -3210,10 +3222,13 @@ body {
     
     .spreads-chart-wrapper {
         padding: 0.75rem;
+        min-height: 250px;
+        height: 250px;
     }
     
     #spreadsChart {
-        max-height: 300px;
+        width: 100% !important;
+        height: 100% !important;
     }
 }
 
