@@ -9414,7 +9414,7 @@ function exibirResultadosCalculo(resultado) {
     document.getElementById('resultTaxaUsuario').textContent = resultado.taxa_usuario.toFixed(4) + '% a.a.';
     
     const difTaxa = resultado.diferenca_taxa;
-    const sinal = difTaxa > 0 ? '⬆️ SUBIU' : (difTaxa < 0 ? '⬇️ CAIU' : '=');
+    const sinal = difTaxa > 0 ? '▲ SUBIU' : (difTaxa < 0 ? '▼ CAIU' : '=');
     document.getElementById('resultDiferenca').textContent = `${sinal} ${Math.abs(difTaxa).toFixed(4)} p.p.`;
     
     // PUs
