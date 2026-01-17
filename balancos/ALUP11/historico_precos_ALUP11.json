@@ -1,22 +1,11 @@
 {
   "ticker": "ALUP11",
-  "ultima_atualizacao": "2026-01-16T23:02:22.832042",
+  "ultima_atualizacao": "2026-01-17T21:34:46.499441",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 19.01,
-      "maxima": 19.22,
-      "minima": 18.75,
-      "fechamento": 18.76,
-      "volume": 389990,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 18.64,
@@ -222,7 +211,7 @@
       "minima": 18.61,
       "fechamento": 18.65,
       "volume": 252194,
-      "mm20": 18.71,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 16.62,
       "volume": 477954,
       "mm20": 17.3,
-      "mm50": 18.02,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -945,7 +934,7 @@
       "data": "2021-04-29",
       "abertura": 18.96,
       "maxima": 19.6,
-      "minima": 18.68,
+      "minima": 18.67,
       "fechamento": 19.47,
       "volume": 2154452,
       "mm20": 18.41,
@@ -2204,7 +2193,7 @@
       "volume": 589878,
       "mm20": 17.91,
       "mm50": 18.06,
-      "mm200": 18.45
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 31.81,
       "mm50": 32.63,
       "mm200": 30.24
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 32.97,
+      "maxima": 33.3,
+      "minima": 32.45,
+      "fechamento": 32.64,
+      "volume": 2327900,
+      "mm20": 31.81,
+      "mm50": 32.65,
+      "mm200": 30.27
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 18.76,
-    "preco_atual": 32.76,
-    "variacao_periodo": 74.63,
+    "preco_inicial": 18.64,
+    "preco_atual": 32.64,
+    "variacao_periodo": 75.1,
     "maxima_periodo": 34.25,
     "minima_periodo": 16.26,
-    "volume_medio": 911667,
+    "volume_medio": 913201,
     "tendencia": "indefinida"
   }
 }

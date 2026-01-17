@@ -1,0 +1,43 @@
+{
+  "ticker": "EMAE4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.483582",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 0.5,
+      "variacao_total": 8.04,
+      "ultimo_valor": 154.26
+    },
+    "margens": {
+      "bruta": 10.52,
+      "operacional": -8.35,
+      "liquida": 16.08
+    },
+    "rentabilidade": {
+      "roe_medio": 8.56,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 9.61,
+      "ultimo": 122.96
+    },
+    "balanco": {
+      "ativo_total": 2444.36,
+      "patrimonio": 1550.46
+    }
+  },
+  "analise_critica": "EMAE4 mantém receita relativamente estável no período. Apresenta rentabilidade saudável com margem líquida de 16.08%. Retorno sobre patrimônio abaixo do esperado (ROE de 8.56%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (16.08%)"
+  ],
+  "pontos_atencao": []
+}

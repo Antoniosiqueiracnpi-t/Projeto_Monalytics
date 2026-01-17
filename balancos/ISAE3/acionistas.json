@@ -1,0 +1,64 @@
+{
+  "empresa": {
+    "cnpj": "02.998.611/0001-04",
+    "nome": "",
+    "ticker": "ISAE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 4,
+  "acionistas": [
+    {
+      "nome": "Isa Capital do Brasil S.A",
+      "cpf_cnpj": "08.075.006/0001-30",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 236001360,
+      "percentual_total": 35.818,
+      "acoes_ordinarias": 230856832,
+      "percentual_ordinarias": 89.501,
+      "acoes_preferenciais": 5144528,
+      "percentual_preferenciais": 1.283,
+      "posicao": 1
+    },
+    {
+      "nome": "CENTRAIS ELÉTRICAS BRASILEIRAS S.A.",
+      "cpf_cnpj": "00.001.180/0002-07",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 101030577,
+      "percentual_total": 15.334,
+      "acoes_ordinarias": 17081783,
+      "percentual_ordinarias": 6.622,
+      "acoes_preferenciais": 83948794,
+      "percentual_preferenciais": 20.938,
+      "posicao": 2
+    },
+    {
+      "nome": "CENTRAIS ELETRICAS BRASILEIRAS S/A",
+      "cpf_cnpj": "00.001.180/0001-26",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 36675288,
+      "percentual_total": 5.566,
+      "acoes_ordinarias": 8025046,
+      "percentual_ordinarias": 3.111,
+      "acoes_preferenciais": 28650242,
+      "percentual_preferenciais": 7.146,
+      "posicao": 3
+    },
+    {
+      "nome": "Eletrobras Participações S.A. - ELETROPAR",
+      "cpf_cnpj": "01.104.937/0001-70",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4800800,
+      "percentual_total": 0.729,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 4800800,
+      "percentual_preferenciais": 1.197,
+      "posicao": 4
+    }
+  ]
+}

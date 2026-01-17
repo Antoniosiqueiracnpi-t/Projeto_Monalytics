@@ -1,0 +1,46 @@
+{
+  "ticker": "REDE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.763038",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.33,
+      "variacao_total": 245.38,
+      "ultimo_valor": 5161.69
+    },
+    "margens": {
+      "bruta": 22.89,
+      "operacional": 13.41,
+      "liquida": -11.21
+    },
+    "rentabilidade": {
+      "roe_medio": 19.5,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 436.05,
+      "ultimo": 2501.37
+    },
+    "balanco": {
+      "ativo_total": 32780.95,
+      "patrimonio": 6242.8
+    }
+  },
+  "analise_critica": "REDE3 apresenta trajetória consistente de crescimento de receita no período analisado. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Gera excelente retorno sobre o patrimônio (ROE médio de 19.5%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Excelente retorno sobre patrimônio (ROE: 19.5%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (-11.21%)"
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "00.001.180/0001-26",
+    "nome": "",
+    "ticker": "AXIA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "União Federal",
+      "cpf_cnpj": "00.394.460/0001-41",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 883653160,
+      "percentual_total": 30.31,
+      "acoes_ordinarias": 699735529,
+      "percentual_ordinarias": 34.494,
+      "acoes_preferenciais": 183917631,
+      "percentual_preferenciais": 20.737,
+      "posicao": 1
+    },
+    {
+      "nome": "nan",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "nan",
+      "nacionalidade": "Brasil",
+      "acoes_total": 126933061,
+      "percentual_total": 4.354,
+      "acoes_ordinarias": 101513175,
+      "percentual_ordinarias": 5.004,
+      "acoes_preferenciais": 25419886,
+      "percentual_preferenciais": 2.866,
+      "posicao": 2
+    },
+    {
+      "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES",
+      "cpf_cnpj": "33.657.248/0001-89",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 117201376,
+      "percentual_total": 4.02,
+      "acoes_ordinarias": 74545264,
+      "percentual_ordinarias": 3.675,
+      "acoes_preferenciais": 42656112,
+      "percentual_preferenciais": 4.81,
+      "posicao": 3
+    },
+    {
+      "nome": "BNDES Participações S.A. - BNDESPAR",
+      "cpf_cnpj": "00.383.281/0001-09",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 114473144,
+      "percentual_total": 3.926,
+      "acoes_ordinarias": 71956435,
+      "percentual_ordinarias": 3.547,
+      "acoes_preferenciais": 42516709,
+      "percentual_preferenciais": 4.794,
+      "posicao": 4
+    },
+    {
+      "nome": "CAIXA ASSET",
+      "cpf_cnpj": "42.040.639/0001-40",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 56904096,
+      "percentual_total": 1.952,
+      "acoes_ordinarias": 44919935,
+      "percentual_ordinarias": 2.214,
+      "acoes_preferenciais": 11984161,
+      "percentual_preferenciais": 1.351,
+      "posicao": 5
+    },
+    {
+      "nome": "RADAR GESTORA DE RECURSOS",
+      "cpf_cnpj": "17.776.271/0001-36",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 52752408,
+      "percentual_total": 1.809,
+      "acoes_ordinarias": 10572832,
+      "percentual_ordinarias": 0.521,
+      "acoes_preferenciais": 42179576,
+      "percentual_preferenciais": 4.756,
+      "posicao": 6
+    },
+    {
+      "nome": "Geração Futuro L. Par FIA",
+      "cpf_cnpj": "08.935.128/0001-59",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 24658429,
+      "percentual_total": 0.846,
+      "acoes_ordinarias": 16931339,
+      "percentual_ordinarias": 0.835,
+      "acoes_preferenciais": 7727090,
+      "percentual_preferenciais": 0.871,
+      "posicao": 7
+    },
+    {
+      "nome": "BB ASSET",
+      "cpf_cnpj": "30.822.936/0002-40",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 22758791,
+      "percentual_total": 0.781,
+      "acoes_ordinarias": 17786229,
+      "percentual_ordinarias": 0.877,
+      "acoes_preferenciais": 4972562,
+      "percentual_preferenciais": 0.561,
+      "posicao": 8
+    },
+    {
+      "nome": "Caixa de Previdência dos Func. do Banco do Brasil",
+      "cpf_cnpj": "33.754.482/0001-24",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 3701858,
+      "percentual_total": 0.127,
+      "acoes_ordinarias": 2931381,
+      "percentual_ordinarias": 0.145,
+      "acoes_preferenciais": 770477,
+      "percentual_preferenciais": 0.087,
+      "posicao": 9
+    },
+    {
+      "nome": "Petros",
+      "cpf_cnpj": "34.081.202/0001-27",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 3493282,
+      "percentual_total": 0.12,
+      "acoes_ordinarias": 1813420,
+      "percentual_ordinarias": 0.089,
+      "acoes_preferenciais": 1679862,
+      "percentual_preferenciais": 0.189,
+      "posicao": 10
+    }
+  ]
+}

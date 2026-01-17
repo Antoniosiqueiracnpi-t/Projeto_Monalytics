@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "02.998.301/0001-81",
+    "nome": "",
+    "ticker": "GEPA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "Rio Paranapanema Participações S.A.",
+      "cpf_cnpj": "02.357.206/0001-07",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "nan",
+      "acoes_total": 90835997,
+      "percentual_total": 96.191,
+      "acoes_ordinarias": 31180725,
+      "percentual_ordinarias": 99.056,
+      "acoes_preferenciais": 59655272,
+      "percentual_preferenciais": 94.758,
+      "posicao": 1
+    }
+  ]
+}

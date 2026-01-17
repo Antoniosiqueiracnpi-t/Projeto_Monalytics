@@ -1,22 +1,11 @@
 {
   "ticker": "EMAE3",
-  "ultima_atualizacao": "2026-01-16T23:02:33.904010",
+  "ultima_atualizacao": "2026-01-17T21:34:55.443871",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 16.08,
-      "maxima": 16.08,
-      "minima": 16.08,
-      "fechamento": 16.08,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 16.08,
@@ -222,7 +211,7 @@
       "minima": 20.54,
       "fechamento": 20.54,
       "volume": 0,
-      "mm20": 18.53,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 20.54,
       "volume": 0,
       "mm20": 20.54,
-      "mm50": 19.74,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 21.52,
       "mm50": 21.52,
-      "mm200": 20.9
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,6 +13887,17 @@
       "mm20": 150.0,
       "mm50": 150.0,
       "mm200": 124.4
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 150.0,
+      "maxima": 150.0,
+      "minima": 150.0,
+      "fechamento": 150.0,
+      "volume": 0,
+      "mm20": 150.0,
+      "mm50": 150.0,
+      "mm200": 124.8
     }
   ],
   "estatisticas": {

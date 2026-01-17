@@ -1,0 +1,42 @@
+{
+  "ticker": "GPAR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.648855",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -22.66,
+      "variacao_total": -98.14,
+      "ultimo_valor": 9.43
+    },
+    "margens": {
+      "bruta": 41.45,
+      "operacional": -46.12,
+      "liquida": -71.14
+    },
+    "rentabilidade": {
+      "roe_medio": 3.95,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {},
+    "balanco": {
+      "ativo_total": 778.53,
+      "patrimonio": 738.92
+    }
+  },
+  "analise_critica": "GPAR3 enfrenta desafios no crescimento, com receita em tendência de queda. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Retorno sobre patrimônio abaixo do esperado (ROE de 3.95%).",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -22.66%)",
+    "Margem líquida comprimida (-71.14%)",
+    "Retorno sobre patrimônio baixo (ROE: 3.95%)"
+  ]
+}

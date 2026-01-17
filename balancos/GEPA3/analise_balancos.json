@@ -1,0 +1,46 @@
+{
+  "ticker": "GEPA4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.629958",
+  "periodo_analisado": {
+    "inicio": "2014T2",
+    "fim": "2024T4",
+    "total_trimestres": 43,
+    "anos": 10.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -11.02,
+      "variacao_total": -69.79,
+      "ultimo_valor": 0.0
+    },
+    "margens": {
+      "bruta": 43.06,
+      "operacional": 38.89,
+      "liquida": 20.25
+    },
+    "rentabilidade": {
+      "roe_medio": 15.61,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 85.51,
+      "ultimo": 0.0
+    },
+    "balanco": {
+      "ativo_total": 0.0,
+      "patrimonio": 0.0
+    }
+  },
+  "analise_critica": "GEPA4 enfrenta desafios no crescimento, com receita em tendência de queda. Destaca-se pela alta rentabilidade, com margem líquida média de 20.25%. Gera excelente retorno sobre o patrimônio (ROE médio de 15.61%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (20.25%)",
+    "Excelente retorno sobre patrimônio (ROE: 15.61%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -11.02%)"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "01.083.200/0001-18",
+    "nome": "",
+    "ticker": "NEOE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "Iberdrola Energia S.A.",
+      "cpf_cnpj": "05.470.823/0001-02",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Espanha",
+      "acoes_total": 974546208,
+      "percentual_total": 80.289,
+      "acoes_ordinarias": 974546208,
+      "percentual_ordinarias": 80.289,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "IBERDROLA, S.A.",
+      "cpf_cnpj": "34.148.133/0001-21",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Espanha",
+      "acoes_total": 42482904,
+      "percentual_total": 3.5,
+      "acoes_ordinarias": 42482904,
+      "percentual_ordinarias": 3.5,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    }
+  ]
+}

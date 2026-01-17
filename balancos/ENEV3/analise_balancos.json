@@ -1,0 +1,47 @@
+{
+  "ticker": "ENEV3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.506207",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 42.24,
+      "variacao_total": 23452.05,
+      "ultimo_valor": 4428.02
+    },
+    "margens": {
+      "bruta": 22.79,
+      "operacional": -23.15,
+      "liquida": -42.45
+    },
+    "rentabilidade": {
+      "roe_medio": -9.15,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 336.59,
+      "ultimo": 3936.73
+    },
+    "balanco": {
+      "ativo_total": 54448.94,
+      "patrimonio": 21317.79
+    }
+  },
+  "analise_critica": "ENEV3 apresenta trajetória consistente de crescimento de receita no período analisado. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 42.24%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (-42.45%)",
+    "Retorno sobre patrimônio baixo (ROE: -9.15%)"
+  ]
+}

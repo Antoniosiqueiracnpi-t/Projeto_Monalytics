@@ -1,0 +1,45 @@
+{
+  "ticker": "EQTL3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.586868",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 26.41,
+      "variacao_total": 3680.7,
+      "ultimo_valor": 14145.1
+    },
+    "margens": {
+      "bruta": 28.96,
+      "operacional": 17.22,
+      "liquida": 10.7
+    },
+    "rentabilidade": {
+      "roe_medio": 19.31,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 399.93,
+      "ultimo": 2733.37
+    },
+    "balanco": {
+      "ativo_total": 126167.1,
+      "patrimonio": 32796.5
+    }
+  },
+  "analise_critica": "EQTL3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 10.7%. Gera excelente retorno sobre o patrimônio (ROE médio de 19.31%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 26.41%)",
+    "Excelente retorno sobre patrimônio (ROE: 19.31%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

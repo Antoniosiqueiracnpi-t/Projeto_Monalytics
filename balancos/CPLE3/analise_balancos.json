@@ -1,0 +1,43 @@
+{
+  "ticker": "CPLE6",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.400272",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 9.62,
+      "variacao_total": 315.01,
+      "ultimo_valor": 6811.18
+    },
+    "margens": {
+      "bruta": 23.76,
+      "operacional": 16.47,
+      "liquida": 11.58
+    },
+    "rentabilidade": {
+      "roe_medio": 10.3,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 604.85,
+      "ultimo": 2509.25
+    },
+    "balanco": {
+      "ativo_total": 62048.42,
+      "patrimonio": 25947.67
+    }
+  },
+  "analise_critica": "CPLE6 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 11.58%. Retorno sobre patrimônio adequado (ROE de 10.3%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

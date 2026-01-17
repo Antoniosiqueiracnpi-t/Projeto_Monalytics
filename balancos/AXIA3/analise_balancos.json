@@ -1,0 +1,45 @@
+{
+  "ticker": "AXIA6",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.090057",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 3.18,
+      "variacao_total": 62.4,
+      "ultimo_valor": 10002.5
+    },
+    "margens": {
+      "bruta": 65.36,
+      "operacional": 16.53,
+      "liquida": 5.76
+    },
+    "rentabilidade": {
+      "roe_medio": 0.65,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 1868.35,
+      "ultimo": 11294.26
+    },
+    "balanco": {
+      "ativo_total": 266502.45,
+      "patrimonio": 109340.4
+    }
+  },
+  "analise_critica": "AXIA6 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 5.76%). Retorno sobre patrimônio abaixo do esperado (ROE de 0.65%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": [
+    "Retorno sobre patrimônio baixo (ROE: 0.65%)"
+  ]
+}

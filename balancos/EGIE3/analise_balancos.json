@@ -1,0 +1,45 @@
+{
+  "ticker": "EGIE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.423057",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.49,
+      "variacao_total": 253.59,
+      "ultimo_valor": 3343.26
+    },
+    "margens": {
+      "bruta": 47.71,
+      "operacional": 46.9,
+      "liquida": 25.99
+    },
+    "rentabilidade": {
+      "roe_medio": 28.89,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 674.58,
+      "ultimo": 2300.14
+    },
+    "balanco": {
+      "ativo_total": 56544.11,
+      "patrimonio": 13462.87
+    }
+  },
+  "analise_critica": "EGIE3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 25.99%. Gera excelente retorno sobre o patrimônio (ROE médio de 28.89%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (25.99%)",
+    "Excelente retorno sobre patrimônio (ROE: 28.89%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": []
+}

@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "76.483.817/0001-20",
+    "nome": "",
+    "ticker": "CPLE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "BNDES Participações S.A. - BNDESPAR",
+      "cpf_cnpj": "00.383.281/0001-09",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 655807810,
+      "percentual_total": 21.986,
+      "acoes_ordinarias": 655807810,
+      "percentual_ordinarias": 21.986,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "ESTADO DO PARANÁ",
+      "cpf_cnpj": "76.416.890/0001-89",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 474643912,
+      "percentual_total": 15.913,
+      "acoes_ordinarias": 474643911,
+      "percentual_ordinarias": 15.913,
+      "acoes_preferenciais": 1,
+      "percentual_preferenciais": 100.0,
+      "posicao": 2
+    }
+  ]
+}

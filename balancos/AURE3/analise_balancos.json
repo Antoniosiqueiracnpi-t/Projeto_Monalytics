@@ -1,0 +1,46 @@
+{
+  "ticker": "AURE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.016568",
+  "periodo_analisado": {
+    "inicio": "2020T1",
+    "fim": "2025T3",
+    "total_trimestres": 23,
+    "anos": 5.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 38.19,
+      "variacao_total": 492.39,
+      "ultimo_valor": 3537.39
+    },
+    "margens": {
+      "bruta": 30.0,
+      "operacional": 29.33,
+      "liquida": 10.29
+    },
+    "rentabilidade": {
+      "roe_medio": 2.9,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 575.74,
+      "ultimo": 1319.94
+    },
+    "balanco": {
+      "ativo_total": 48833.48,
+      "patrimonio": 13564.28
+    }
+  },
+  "analise_critica": "AURE3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 10.29%. Retorno sobre patrimônio abaixo do esperado (ROE de 2.9%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 38.19%)",
+    "Forte geração de caixa operacional"
+  ],
+  "pontos_atencao": [
+    "Retorno sobre patrimônio baixo (ROE: 2.9%)"
+  ]
+}

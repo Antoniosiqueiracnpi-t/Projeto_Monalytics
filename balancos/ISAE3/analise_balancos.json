@@ -1,0 +1,47 @@
+{
+  "ticker": "ISAE4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.695738",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 11.06,
+      "variacao_total": 408.66,
+      "ultimo_valor": 2558.97
+    },
+    "margens": {
+      "bruta": 59.34,
+      "operacional": 65.17,
+      "liquida": 48.35
+    },
+    "rentabilidade": {
+      "roe_medio": 17.74,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 142.87,
+      "ultimo": -617.11
+    },
+    "balanco": {
+      "ativo_total": 45643.76,
+      "patrimonio": 21395.87
+    }
+  },
+  "analise_critica": "ISAE4 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 48.35%. Gera excelente retorno sobre o patrimônio (ROE médio de 17.74%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 11.06%)",
+    "Alta margem de lucro líquido (48.35%)",
+    "Excelente retorno sobre patrimônio (ROE: 17.74%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

@@ -1,22 +1,11 @@
 {
   "ticker": "COCE5",
-  "ultima_atualizacao": "2026-01-16T23:02:30.086732",
+  "ultima_atualizacao": "2026-01-17T21:34:52.623719",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 48.09,
-      "maxima": 48.1,
-      "minima": 47.02,
-      "fechamento": 47.58,
-      "volume": 9000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 46.26,
@@ -222,7 +211,7 @@
       "minima": 47.6,
       "fechamento": 48.06,
       "volume": 6300,
-      "mm20": 48.09,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 43.24,
       "volume": 19700,
       "mm20": 43.85,
-      "mm50": 46.0,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 10700,
       "mm20": 49.0,
       "mm50": 49.82,
-      "mm200": 48.28
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 33.57,
       "mm50": 32.23,
       "mm200": 28.61
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 34.1,
+      "maxima": 34.5,
+      "minima": 33.99,
+      "fechamento": 34.1,
+      "volume": 4700,
+      "mm20": 33.66,
+      "mm50": 32.33,
+      "mm200": 28.66
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 47.58,
-    "preco_atual": 34.4,
-    "variacao_periodo": -27.7,
+    "preco_inicial": 46.75,
+    "preco_atual": 34.1,
+    "variacao_periodo": -27.06,
     "maxima_periodo": 53.21,
     "minima_periodo": 22.25,
-    "volume_medio": 27622,
+    "volume_medio": 27619,
     "tendencia": "alta"
   }
 }

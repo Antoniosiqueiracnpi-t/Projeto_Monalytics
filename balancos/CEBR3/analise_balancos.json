@@ -1,0 +1,43 @@
+{
+  "ticker": "CEBR6",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T21:43:17.161863",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -5.36,
+      "variacao_total": -57.44,
+      "ultimo_valor": 123.06
+    },
+    "margens": {
+      "bruta": 28.61,
+      "operacional": 68.51,
+      "liquida": 52.46
+    },
+    "rentabilidade": {
+      "roe_medio": 15.82,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {},
+    "balanco": {
+      "ativo_total": 1433.24,
+      "patrimonio": 1247.54
+    }
+  },
+  "analise_critica": "CEBR6 enfrenta desafios no crescimento, com receita em tendência de queda. Destaca-se pela alta rentabilidade, com margem líquida média de 52.46%. Gera excelente retorno sobre o patrimônio (ROE médio de 15.82%).",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (52.46%)",
+    "Excelente retorno sobre patrimônio (ROE: 15.82%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -5.36%)"
+  ]
+}
