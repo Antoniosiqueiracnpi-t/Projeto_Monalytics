@@ -1,0 +1,45 @@
+{
+  "ticker": "MTRE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:24.097453",
+  "periodo_analisado": {
+    "inicio": "2018T1",
+    "fim": "2025T3",
+    "total_trimestres": 31,
+    "anos": 7.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 41.22,
+      "variacao_total": 1231.3,
+      "ultimo_valor": 243.22
+    },
+    "margens": {
+      "bruta": 29.38,
+      "operacional": 8.92,
+      "liquida": 7.38
+    },
+    "rentabilidade": {
+      "roe_medio": 13.38,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": -43.19,
+      "ultimo": -30.08
+    },
+    "balanco": {
+      "ativo_total": 2253.32,
+      "patrimonio": 1038.19
+    }
+  },
+  "analise_critica": "MTRE3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 7.38%). Retorno sobre patrimônio adequado (ROE de 13.38%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 41.22%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "ticker": "TEND3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:24.247460",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 9.45,
+      "variacao_total": 305.2,
+      "ultimo_valor": 1135.36
+    },
+    "margens": {
+      "bruta": 16.89,
+      "operacional": -9.81,
+      "liquida": -4.84
+    },
+    "rentabilidade": {
+      "roe_medio": -2.76,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 3.19,
+      "ultimo": 176.37
+    },
+    "balanco": {
+      "ativo_total": 6190.36,
+      "patrimonio": 1241.58
+    }
+  },
+  "analise_critica": "TEND3 apresenta trajetória consistente de crescimento de receita no período analisado. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Margem líquida comprimida (-4.84%)",
+    "Retorno sobre patrimônio baixo (ROE: -2.76%)"
+  ]
+}

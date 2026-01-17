@@ -1,0 +1,47 @@
+{
+  "ticker": "LAVV3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:24.013834",
+  "periodo_analisado": {
+    "inicio": "2019T1",
+    "fim": "2025T3",
+    "total_trimestres": 27,
+    "anos": 6.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 91.04,
+      "variacao_total": 6618.82,
+      "ultimo_valor": 414.75
+    },
+    "margens": {
+      "bruta": 36.22,
+      "operacional": 22.95,
+      "liquida": 25.11
+    },
+    "rentabilidade": {
+      "roe_medio": 20.81,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": -23.46,
+      "ultimo": -86.82
+    },
+    "balanco": {
+      "ativo_total": 4015.73,
+      "patrimonio": 1811.1
+    }
+  },
+  "analise_critica": "LAVV3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 25.11%. Gera excelente retorno sobre o patrimônio (ROE médio de 20.81%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 91.04%)",
+    "Alta margem de lucro líquido (25.11%)",
+    "Excelente retorno sobre patrimônio (ROE: 20.81%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

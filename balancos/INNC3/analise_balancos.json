@@ -1,0 +1,46 @@
+{
+  "ticker": "INNC3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:23.926903",
+  "periodo_analisado": {
+    "inicio": "2017T3",
+    "fim": "2025T2",
+    "total_trimestres": 32,
+    "anos": 8.0
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 17.37,
+      "variacao_total": 246.08,
+      "ultimo_valor": 136.85
+    },
+    "margens": {
+      "bruta": 26.17,
+      "operacional": 10.86,
+      "liquida": 7.33
+    },
+    "rentabilidade": {
+      "roe_medio": 57.9,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": -7.78,
+      "ultimo": -46.12
+    },
+    "balanco": {
+      "ativo_total": 1457.85,
+      "patrimonio": 246.91
+    }
+  },
+  "analise_critica": "INNC3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 7.33%). Gera excelente retorno sobre o patrimônio (ROE médio de 57.9%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 17.37%)",
+    "Excelente retorno sobre patrimônio (ROE: 57.9%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

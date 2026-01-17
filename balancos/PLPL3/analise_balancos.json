@@ -1,0 +1,46 @@
+{
+  "ticker": "PLPL3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:24.138748",
+  "periodo_analisado": {
+    "inicio": "2019T1",
+    "fim": "2025T3",
+    "total_trimestres": 27,
+    "anos": 6.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 27.17,
+      "variacao_total": 377.04,
+      "ultimo_valor": 814.42
+    },
+    "margens": {
+      "bruta": 32.97,
+      "operacional": 14.64,
+      "liquida": 12.48
+    },
+    "rentabilidade": {
+      "roe_medio": 50.24,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 19.34,
+      "ultimo": -116.49
+    },
+    "balanco": {
+      "ativo_total": 3827.83,
+      "patrimonio": 1082.2
+    }
+  },
+  "analise_critica": "PLPL3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 12.48%. Gera excelente retorno sobre o patrimônio (ROE médio de 50.24%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 27.17%)",
+    "Excelente retorno sobre patrimônio (ROE: 50.24%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

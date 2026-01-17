@@ -1,0 +1,43 @@
+{
+  "ticker": "EZTC3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:23.839012",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 8.07,
+      "variacao_total": 233.12,
+      "ultimo_valor": 469.36
+    },
+    "margens": {
+      "bruta": 43.93,
+      "operacional": 29.87,
+      "liquida": 38.85
+    },
+    "rentabilidade": {
+      "roe_medio": 13.46,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 15.91,
+      "ultimo": 307.51
+    },
+    "balanco": {
+      "ativo_total": 7008.35,
+      "patrimonio": 5220.55
+    }
+  },
+  "analise_critica": "EZTC3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 38.85%. Retorno sobre patrimônio adequado (ROE de 13.46%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (38.85%)"
+  ],
+  "pontos_atencao": []
+}

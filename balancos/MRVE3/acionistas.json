@@ -1,0 +1,51 @@
+{
+  "empresa": {
+    "cnpj": "08.343.492/0001-20",
+    "nome": "",
+    "ticker": "MRVE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 3,
+  "acionistas": [
+    {
+      "nome": "RUBENS MENIN TEIXEIRA DE SOUZA",
+      "cpf_cnpj": "315.836.606-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 182615946,
+      "percentual_total": 32.446,
+      "acoes_ordinarias": 182615946,
+      "percentual_ordinarias": 32.446,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "REAL INVESTOR ASSET MANAGEMENT",
+      "cpf_cnpj": "11.570.951/0001-12",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 37658971,
+      "percentual_total": 6.691,
+      "acoes_ordinarias": 37658971,
+      "percentual_ordinarias": 6.691,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "XP INVESTIMENTOS CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+      "cpf_cnpj": "02.332.886/0001-04",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 34569647,
+      "percentual_total": 6.142,
+      "acoes_ordinarias": 34569647,
+      "percentual_ordinarias": 6.142,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    }
+  ]
+}

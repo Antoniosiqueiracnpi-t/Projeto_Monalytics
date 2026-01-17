@@ -1,22 +1,11 @@
 {
   "ticker": "MDNE3",
-  "ultima_atualizacao": "2026-01-16T23:02:05.768930",
+  "ultima_atualizacao": "2026-01-17T10:28:41.216071",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 8.84,
-      "maxima": 9.05,
-      "minima": 8.78,
-      "fechamento": 8.95,
-      "volume": 145400,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 8.72,
@@ -222,7 +211,7 @@
       "minima": 7.99,
       "fechamento": 8.1,
       "volume": 152900,
-      "mm20": 8.29,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 7.25,
       "volume": 257000,
       "mm20": 7.67,
-      "mm50": 7.91,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 284000,
       "mm20": 5.63,
       "mm50": 6.04,
-      "mm200": 7.0
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 23.7,
       "mm50": 23.91,
       "mm200": 19.86
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 24.82,
+      "maxima": 24.82,
+      "minima": 23.81,
+      "fechamento": 24.14,
+      "volume": 637800,
+      "mm20": 23.79,
+      "mm50": 23.94,
+      "mm200": 19.92
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 8.95,
-    "preco_atual": 24.8,
-    "variacao_periodo": 177.01,
+    "preco_inicial": 8.72,
+    "preco_atual": 24.14,
+    "variacao_periodo": 176.79,
     "maxima_periodo": 27.3,
     "minima_periodo": 3.42,
-    "volume_medio": 448260,
+    "volume_medio": 448650,
     "tendencia": "indefinida"
   }
 }

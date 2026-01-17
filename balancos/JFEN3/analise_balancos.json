@@ -1,0 +1,46 @@
+{
+  "ticker": "JFEN3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:23.952939",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -3.78,
+      "variacao_total": -44.96,
+      "ultimo_valor": 49.78
+    },
+    "margens": {
+      "bruta": -267.73,
+      "operacional": -380.08,
+      "liquida": -474.15
+    },
+    "rentabilidade": {
+      "roe_medio": -26332.55,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": -30.85,
+      "ultimo": -35.19
+    },
+    "balanco": {
+      "ativo_total": 748.69,
+      "patrimonio": -188.04
+    }
+  },
+  "analise_critica": "JFEN3 enfrenta desafios no crescimento, com receita em tendência de queda. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -3.78%)",
+    "Margem líquida comprimida (-474.15%)",
+    "Retorno sobre patrimônio baixo (ROE: -26332.55%)",
+    "Queima de caixa operacional"
+  ]
+}

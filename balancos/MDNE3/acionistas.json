@@ -1,0 +1,77 @@
+{
+  "empresa": {
+    "cnpj": "12.049.631/0001-84",
+    "nome": "",
+    "ticker": "MDNE3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 5,
+  "acionistas": [
+    {
+      "nome": "GUSTAVO JOSE MOURA DUBEUX",
+      "cpf_cnpj": "333.059.004-15",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 9898794,
+      "percentual_total": 11.658,
+      "acoes_ordinarias": 9898794,
+      "percentual_ordinarias": 11.658,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "ALUISIO JOSE MOURA DUBEUX",
+      "cpf_cnpj": "092.693.804-59",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 9369594,
+      "percentual_total": 11.035,
+      "acoes_ordinarias": 9369594,
+      "percentual_ordinarias": 11.035,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "MARCOS JOSE MOURA DUBEUX",
+      "cpf_cnpj": "062.540.044-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 8104294,
+      "percentual_total": 9.545,
+      "acoes_ordinarias": 8104294,
+      "percentual_ordinarias": 9.545,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "JOSE DO EGITO FIM CP INVESTIMENTO NO EXTERIOR",
+      "cpf_cnpj": "27.565.728/0001-17",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1664000,
+      "percentual_total": 1.96,
+      "acoes_ordinarias": 1664000,
+      "percentual_ordinarias": 1.96,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "REEF 1 RV FUNDO DE INVESTIMENTO MULTIMERCADO CRDITO PRIVADO",
+      "cpf_cnpj": "53.074.476/0001-33",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1458600,
+      "percentual_total": 1.718,
+      "acoes_ordinarias": 1458600,
+      "percentual_ordinarias": 1.718,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    }
+  ]
+}

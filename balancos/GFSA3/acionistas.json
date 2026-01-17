@@ -1,0 +1,25 @@
+{
+  "empresa": {
+    "cnpj": "01.545.826/0001-07",
+    "nome": "",
+    "ticker": "GFSA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 1,
+  "acionistas": [
+    {
+      "nome": "PERENNE INVESTIMENTOS",
+      "cpf_cnpj": "33.890.909/0001-11",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 563626,
+      "percentual_total": 5.049,
+      "acoes_ordinarias": 563626,
+      "percentual_ordinarias": 5.049,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    }
+  ]
+}

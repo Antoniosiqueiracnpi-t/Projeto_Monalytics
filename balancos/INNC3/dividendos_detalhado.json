@@ -1,0 +1,58 @@
+{
+  "ticker": "INNC3",
+  "total_dividendos": 0.9702,
+  "periodo": "2018-2019",
+  "quantidade_pagamentos": 5,
+  "dividendos": [
+    {
+      "data_com": "2018-05-18",
+      "valor": 0.308786,
+      "tipo": "DIVIDENDO",
+      "ano": 2018,
+      "mes": 5,
+      "dia": 18,
+      "trimestre": "T2",
+      "data_pagamento": "2018-05-14"
+    },
+    {
+      "data_com": "2018-08-20",
+      "valor": 0.23376,
+      "tipo": "DIVIDENDO",
+      "ano": 2018,
+      "mes": 8,
+      "dia": 20,
+      "trimestre": "T3",
+      "data_pagamento": "2018-08-14"
+    },
+    {
+      "data_com": "2018-11-19",
+      "valor": 0.15737,
+      "tipo": "DIVIDENDO",
+      "ano": 2018,
+      "mes": 11,
+      "dia": 19,
+      "trimestre": "T4",
+      "data_pagamento": "2018-11-13"
+    },
+    {
+      "data_com": "2019-02-28",
+      "valor": 0.247579,
+      "tipo": "DIVIDENDO",
+      "ano": 2019,
+      "mes": 2,
+      "dia": 28,
+      "trimestre": "T1",
+      "data_pagamento": "2019-02-20"
+    },
+    {
+      "data_com": "2019-05-07",
+      "valor": 0.022709,
+      "tipo": "DIVIDENDO",
+      "ano": 2019,
+      "mes": 5,
+      "dia": 7,
+      "trimestre": "T2",
+      "data_pagamento": "2019-04-29"
+    }
+  ]
+}

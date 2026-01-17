@@ -1,0 +1,44 @@
+{
+  "ticker": "JHSF3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:23.975346",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.47,
+      "variacao_total": 367.73,
+      "ultimo_valor": 516.71
+    },
+    "margens": {
+      "bruta": 50.99,
+      "operacional": 52.39,
+      "liquida": 26.25
+    },
+    "rentabilidade": {
+      "roe_medio": 11.4,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 15.15,
+      "ultimo": 20.1
+    },
+    "balanco": {
+      "ativo_total": 15658.34,
+      "patrimonio": 6718.18
+    }
+  },
+  "analise_critica": "JHSF3 apresenta trajetória consistente de crescimento de receita no período analisado. Destaca-se pela alta rentabilidade, com margem líquida média de 26.25%. Retorno sobre patrimônio adequado (ROE de 11.4%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.47%)",
+    "Alta margem de lucro líquido (26.25%)"
+  ],
+  "pontos_atencao": []
+}

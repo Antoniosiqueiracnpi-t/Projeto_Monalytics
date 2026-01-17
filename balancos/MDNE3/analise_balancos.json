@@ -1,0 +1,47 @@
+{
+  "ticker": "MDNE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:24.035877",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 12.33,
+      "variacao_total": 505.97,
+      "ultimo_valor": 548.35
+    },
+    "margens": {
+      "bruta": 12.14,
+      "operacional": -13.57,
+      "liquida": -30.29
+    },
+    "rentabilidade": {
+      "roe_medio": 0.06,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": -1.85,
+      "ultimo": -95.36
+    },
+    "balanco": {
+      "ativo_total": 5489.81,
+      "patrimonio": 1817.24
+    }
+  },
+  "analise_critica": "MDNE3 apresenta trajetória consistente de crescimento de receita no período analisado. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Retorno sobre patrimônio abaixo do esperado (ROE de 0.06%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 12.33%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (-30.29%)",
+    "Retorno sobre patrimônio baixo (ROE: 0.06%)",
+    "Queima de caixa operacional"
+  ]
+}

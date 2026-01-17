@@ -1,0 +1,78 @@
+{
+  "ticker": "PDGR3",
+  "total_dividendos": 0.9969,
+  "periodo": "2007-2012",
+  "quantidade_pagamentos": 7,
+  "dividendos": [
+    {
+      "data_com": "2007-04-30",
+      "valor": 0.044448,
+      "tipo": "DIVIDENDO",
+      "ano": 2007,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2007-04-30"
+    },
+    {
+      "data_com": "2008-04-29",
+      "valor": 0.11575,
+      "tipo": "DIVIDENDO",
+      "ano": 2008,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2008-04-29"
+    },
+    {
+      "data_com": "2008-12-23",
+      "valor": 0.111262,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2008,
+      "mes": 12,
+      "dia": 23,
+      "trimestre": "T4",
+      "data_pagamento": "2008-12-23"
+    },
+    {
+      "data_com": "2009-04-30",
+      "valor": 0.200847,
+      "tipo": "DIVIDENDO",
+      "ano": 2009,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2009-04-30"
+    },
+    {
+      "data_com": "2010-04-29",
+      "valor": 0.205977,
+      "tipo": "DIVIDENDO",
+      "ano": 2010,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2010-04-29"
+    },
+    {
+      "data_com": "2011-04-26",
+      "valor": 0.169185,
+      "tipo": "DIVIDENDO",
+      "ano": 2011,
+      "mes": 4,
+      "dia": 26,
+      "trimestre": "T2",
+      "data_pagamento": "2011-04-26"
+    },
+    {
+      "data_com": "2012-05-08",
+      "valor": 0.149384,
+      "tipo": "DIVIDENDO",
+      "ano": 2012,
+      "mes": 5,
+      "dia": 8,
+      "trimestre": "T2",
+      "data_pagamento": "2012-05-08"
+    }
+  ]
+}

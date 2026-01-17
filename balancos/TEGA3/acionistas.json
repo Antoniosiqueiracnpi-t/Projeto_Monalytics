@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "30.213.493/0001-09",
+    "nome": "",
+    "ticker": "TEGA3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "BRKB RE OPP Fund LLC",
+      "cpf_cnpj": "25.075.933/0001-79",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 333280510,
+      "percentual_total": 99.74,
+      "acoes_ordinarias": 333280510,
+      "percentual_ordinarias": 99.74,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Brookfield Brasil Ltda.",
+      "cpf_cnpj": "34.268.326/0001-16",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 870455,
+      "percentual_total": 0.26,
+      "acoes_ordinarias": 870455,
+      "percentual_ordinarias": 0.26,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    }
+  ]
+}

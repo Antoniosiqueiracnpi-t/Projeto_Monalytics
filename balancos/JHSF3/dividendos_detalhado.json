@@ -1,0 +1,538 @@
+{
+  "ticker": "JHSF3",
+  "total_dividendos": 3.2242,
+  "periodo": "2008-2025",
+  "quantidade_pagamentos": 53,
+  "dividendos": [
+    {
+      "data_com": "2008-03-13",
+      "valor": 0.035186,
+      "tipo": "DIVIDENDO",
+      "ano": 2008,
+      "mes": 3,
+      "dia": 13,
+      "trimestre": "T1",
+      "data_pagamento": "2008-03-13"
+    },
+    {
+      "data_com": "2009-04-28",
+      "valor": 0.105555,
+      "tipo": "DIVIDENDO",
+      "ano": 2009,
+      "mes": 4,
+      "dia": 28,
+      "trimestre": "T2",
+      "data_pagamento": "2009-04-28"
+    },
+    {
+      "data_com": "2009-12-23",
+      "valor": 0.122941,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2009,
+      "mes": 12,
+      "dia": 23,
+      "trimestre": "T4",
+      "data_pagamento": "2009-12-23"
+    },
+    {
+      "data_com": "2010-04-30",
+      "valor": 0.070386,
+      "tipo": "DIVIDENDO",
+      "ano": 2010,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2010-04-30"
+    },
+    {
+      "data_com": "2010-10-27",
+      "valor": 0.112618,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2010,
+      "mes": 10,
+      "dia": 27,
+      "trimestre": "T4",
+      "data_pagamento": "2010-10-27"
+    },
+    {
+      "data_com": "2011-04-29",
+      "valor": 0.234621,
+      "tipo": "DIVIDENDO",
+      "ano": 2011,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2011-04-29"
+    },
+    {
+      "data_com": "2012-01-24",
+      "valor": 0.139988,
+      "tipo": "DIVIDENDO",
+      "ano": 2012,
+      "mes": 1,
+      "dia": 24,
+      "trimestre": "T1",
+      "data_pagamento": "2012-01-24"
+    },
+    {
+      "data_com": "2012-03-26",
+      "valor": 0.046663,
+      "tipo": "DIVIDENDO",
+      "ano": 2012,
+      "mes": 3,
+      "dia": 26,
+      "trimestre": "T1",
+      "data_pagamento": "2012-03-26"
+    },
+    {
+      "data_com": "2013-04-12",
+      "valor": 0.069578,
+      "tipo": "DIVIDENDO",
+      "ano": 2013,
+      "mes": 4,
+      "dia": 12,
+      "trimestre": "T2",
+      "data_pagamento": "2013-04-12"
+    },
+    {
+      "data_com": "2013-04-30",
+      "valor": 0.115963,
+      "tipo": "DIVIDENDO",
+      "ano": 2013,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2013-04-30"
+    },
+    {
+      "data_com": "2014-04-30",
+      "valor": 0.046306,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2014-04-30"
+    },
+    {
+      "data_com": "2014-11-07",
+      "valor": 0.01157,
+      "tipo": "DIVIDENDO",
+      "ano": 2014,
+      "mes": 11,
+      "dia": 7,
+      "trimestre": "T4",
+      "data_pagamento": "2014-11-07"
+    },
+    {
+      "data_com": "2019-04-03",
+      "valor": 0.116415,
+      "tipo": "DIVIDENDO",
+      "ano": 2019,
+      "mes": 4,
+      "dia": 3,
+      "trimestre": "T2",
+      "data_pagamento": "2019-03-29"
+    },
+    {
+      "data_com": "2019-12-27",
+      "valor": 0.083152,
+      "tipo": "DIVIDENDO",
+      "ano": 2019,
+      "mes": 12,
+      "dia": 27,
+      "trimestre": "T4",
+      "data_pagamento": "2019-12-20"
+    },
+    {
+      "data_com": "2020-08-18",
+      "valor": 0.078771,
+      "tipo": "DIVIDENDO",
+      "ano": 2020,
+      "mes": 8,
+      "dia": 18,
+      "trimestre": "T3",
+      "data_pagamento": "2020-08-13"
+    },
+    {
+      "data_com": "2020-10-07",
+      "valor": 0.067137,
+      "tipo": "DIVIDENDO",
+      "ano": 2020,
+      "mes": 10,
+      "dia": 7,
+      "trimestre": "T4",
+      "data_pagamento": "2020-10-02"
+    },
+    {
+      "data_com": "2021-04-01",
+      "valor": 0.21037,
+      "tipo": "DIVIDENDO",
+      "ano": 2021,
+      "mes": 4,
+      "dia": 1,
+      "trimestre": "T2",
+      "data_pagamento": "2021-03-29"
+    },
+    {
+      "data_com": "2021-10-14",
+      "valor": 0.183472,
+      "tipo": "DIVIDENDO",
+      "ano": 2021,
+      "mes": 10,
+      "dia": 14,
+      "trimestre": "T4",
+      "data_pagamento": "2021-10-08"
+    },
+    {
+      "data_com": "2022-03-03",
+      "valor": 0.160656,
+      "tipo": "DIVIDENDO",
+      "ano": 2022,
+      "mes": 3,
+      "dia": 3,
+      "trimestre": "T1",
+      "data_pagamento": "2022-02-24"
+    },
+    {
+      "data_com": "2022-12-15",
+      "valor": 0.048048,
+      "tipo": "DIVIDENDO",
+      "ano": 2022,
+      "mes": 12,
+      "dia": 15,
+      "trimestre": "T4",
+      "data_pagamento": "2022-12-12"
+    },
+    {
+      "data_com": "2023-01-17",
+      "valor": 0.047941,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 1,
+      "dia": 17,
+      "trimestre": "T1",
+      "data_pagamento": "2022-12-12"
+    },
+    {
+      "data_com": "2023-02-14",
+      "valor": 0.047941,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 2,
+      "dia": 14,
+      "trimestre": "T1",
+      "data_pagamento": "2022-12-12"
+    },
+    {
+      "data_com": "2023-03-16",
+      "valor": 0.047941,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 3,
+      "dia": 16,
+      "trimestre": "T1",
+      "data_pagamento": "2022-12-12"
+    },
+    {
+      "data_com": "2023-04-19",
+      "valor": 0.047941,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 4,
+      "dia": 19,
+      "trimestre": "T2",
+      "data_pagamento": "2023-04-13"
+    },
+    {
+      "data_com": "2023-05-18",
+      "valor": 0.047941,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 5,
+      "dia": 18,
+      "trimestre": "T2",
+      "data_pagamento": "2023-04-13"
+    },
+    {
+      "data_com": "2023-06-19",
+      "valor": 0.047941,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 6,
+      "dia": 19,
+      "trimestre": "T2",
+      "data_pagamento": "2023-04-13"
+    },
+    {
+      "data_com": "2023-07-26",
+      "valor": 0.044253,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 7,
+      "dia": 26,
+      "trimestre": "T3",
+      "data_pagamento": "2023-07-21"
+    },
+    {
+      "data_com": "2023-08-10",
+      "valor": 0.044253,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 8,
+      "dia": 10,
+      "trimestre": "T3",
+      "data_pagamento": "2023-07-21"
+    },
+    {
+      "data_com": "2023-09-11",
+      "valor": 0.044253,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 9,
+      "dia": 11,
+      "trimestre": "T3",
+      "data_pagamento": "2023-07-21"
+    },
+    {
+      "data_com": "2023-12-27",
+      "valor": 0.030731,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 12,
+      "dia": 27,
+      "trimestre": "T4",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-01-31",
+      "valor": 0.030805,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 1,
+      "dia": 31,
+      "trimestre": "T1",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-02-29",
+      "valor": 0.030819,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 2,
+      "dia": 29,
+      "trimestre": "T1",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-03-28",
+      "valor": 0.030819,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 3,
+      "dia": 28,
+      "trimestre": "T1",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-04-29",
+      "valor": 0.030865,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-05-29",
+      "valor": 0.030887,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 5,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-06-28",
+      "valor": 0.030949,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 6,
+      "dia": 28,
+      "trimestre": "T2",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-07-31",
+      "valor": 0.030949,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-08-29",
+      "valor": 0.030949,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 8,
+      "dia": 29,
+      "trimestre": "T3",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-09-30",
+      "valor": 0.030977,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 9,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-10-31",
+      "valor": 0.030977,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 10,
+      "dia": 31,
+      "trimestre": "T4",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-11-28",
+      "valor": 0.030977,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 11,
+      "dia": 28,
+      "trimestre": "T4",
+      "data_pagamento": "2023-12-21"
+    },
+    {
+      "data_com": "2024-12-27",
+      "valor": 0.030977,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 12,
+      "dia": 27,
+      "trimestre": "T4",
+      "data_pagamento": "2024-12-20"
+    },
+    {
+      "data_com": "2025-01-30",
+      "valor": 0.031078,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 1,
+      "dia": 30,
+      "trimestre": "T1",
+      "data_pagamento": "2024-12-20"
+    },
+    {
+      "data_com": "2025-02-25",
+      "valor": 0.030986,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 2,
+      "dia": 25,
+      "trimestre": "T1",
+      "data_pagamento": "2024-12-20"
+    },
+    {
+      "data_com": "2025-04-03",
+      "valor": 0.030986,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 4,
+      "dia": 3,
+      "trimestre": "T2",
+      "data_pagamento": "2025-03-31"
+    },
+    {
+      "data_com": "2025-04-29",
+      "valor": 0.031034,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2025-03-31"
+    },
+    {
+      "data_com": "2025-05-29",
+      "valor": 0.031109,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 5,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2025-03-31"
+    },
+    {
+      "data_com": "2025-07-01",
+      "valor": 0.031161,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 7,
+      "dia": 1,
+      "trimestre": "T3",
+      "data_pagamento": "2025-03-31"
+    },
+    {
+      "data_com": "2025-07-31",
+      "valor": 0.031268,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 7,
+      "dia": 31,
+      "trimestre": "T3",
+      "data_pagamento": "2025-03-31"
+    },
+    {
+      "data_com": "2025-08-29",
+      "valor": 0.031268,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 8,
+      "dia": 29,
+      "trimestre": "T3",
+      "data_pagamento": "2025-03-31"
+    },
+    {
+      "data_com": "2025-09-30",
+      "valor": 0.031268,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 9,
+      "dia": 30,
+      "trimestre": "T3",
+      "data_pagamento": "2025-03-31"
+    },
+    {
+      "data_com": "2025-10-30",
+      "valor": 0.031268,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 10,
+      "dia": 30,
+      "trimestre": "T4",
+      "data_pagamento": "2025-03-31"
+    },
+    {
+      "data_com": "2025-11-28",
+      "valor": 0.031268,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 11,
+      "dia": 28,
+      "trimestre": "T4",
+      "data_pagamento": "2025-03-31"
+    }
+  ]
+}

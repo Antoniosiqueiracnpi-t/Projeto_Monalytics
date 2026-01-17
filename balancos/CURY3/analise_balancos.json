@@ -1,0 +1,45 @@
+{
+  "ticker": "CURY3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:23.749962",
+  "periodo_analisado": {
+    "inicio": "2019T1",
+    "fim": "2025T3",
+    "total_trimestres": 27,
+    "anos": 6.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 36.4,
+      "variacao_total": 652.2,
+      "ultimo_valor": 1416.93
+    },
+    "margens": {
+      "bruta": 37.25,
+      "operacional": 20.77,
+      "liquida": 17.49
+    },
+    "rentabilidade": {
+      "roe_medio": 49.48,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 97.84,
+      "ultimo": 434.71
+    },
+    "balanco": {
+      "ativo_total": 5632.0,
+      "patrimonio": 1642.13
+    }
+  },
+  "analise_critica": "CURY3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 17.49%. Gera excelente retorno sobre o patrimônio (ROE médio de 49.48%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 36.4%)",
+    "Alta margem de lucro líquido (17.49%)",
+    "Excelente retorno sobre patrimônio (ROE: 49.48%)"
+  ],
+  "pontos_atencao": []
+}

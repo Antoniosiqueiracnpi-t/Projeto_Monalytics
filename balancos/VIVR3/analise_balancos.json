@@ -1,0 +1,47 @@
+{
+  "ticker": "VIVR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:24.292582",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T2",
+    "total_trimestres": 62,
+    "anos": 15.5
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -16.98,
+      "variacao_total": -94.15,
+      "ultimo_valor": 9.38
+    },
+    "margens": {
+      "bruta": 18.35,
+      "operacional": -176.31,
+      "liquida": 200.45
+    },
+    "rentabilidade": {
+      "roe_medio": -203.86,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": -14.16,
+      "ultimo": -6.7
+    },
+    "balanco": {
+      "ativo_total": 236.92,
+      "patrimonio": 87.68
+    }
+  },
+  "analise_critica": "VIVR3 enfrenta desafios no crescimento, com receita em tendência de queda. Destaca-se pela alta rentabilidade, com margem líquida média de 200.45%. Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (200.45%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -16.98%)",
+    "Retorno sobre patrimônio baixo (ROE: -203.86%)",
+    "Queima de caixa operacional"
+  ]
+}

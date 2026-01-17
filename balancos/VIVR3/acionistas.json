@@ -1,0 +1,38 @@
+{
+  "empresa": {
+    "cnpj": "67.571.414/0001-41",
+    "nome": "",
+    "ticker": "VIVR3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 2,
+  "acionistas": [
+    {
+      "nome": "SCA EMPREENDIMENTOS E NEGÓCIOS LTDA.",
+      "cpf_cnpj": "48.928.813/0001-72",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 24463483,
+      "percentual_total": 50.167,
+      "acoes_ordinarias": 24463483,
+      "percentual_ordinarias": 50.167,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "CRIXUS SPECIAL RETURN FUNDO DE INVESTIMENTO EM PARTICIPAÇÃO MULTIESTRATEGIA",
+      "cpf_cnpj": "46.282.024/0001-81",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 3044255,
+      "percentual_total": 6.243,
+      "acoes_ordinarias": 3044255,
+      "percentual_ordinarias": 6.243,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    }
+  ]
+}

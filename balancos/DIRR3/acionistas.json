@@ -1,0 +1,103 @@
+{
+  "empresa": {
+    "cnpj": "16.614.075/0001-00",
+    "nome": "",
+    "ticker": "DIRR3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 7,
+  "acionistas": [
+    {
+      "nome": "PHPH HOLDING LTDA.",
+      "cpf_cnpj": "59.573.387/0001-18",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 66749166,
+      "percentual_total": 12.824,
+      "acoes_ordinarias": 66749166,
+      "percentual_ordinarias": 12.824,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "SHARE HOLDING LTDA",
+      "cpf_cnpj": "59.570.698/0001-23",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 66749166,
+      "percentual_total": 12.824,
+      "acoes_ordinarias": 66749166,
+      "percentual_ordinarias": 12.824,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "ALLIANCA FIA IE",
+      "cpf_cnpj": "13.593.258/0001-90",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 44156250,
+      "percentual_total": 8.483,
+      "acoes_ordinarias": 44156250,
+      "percentual_ordinarias": 8.483,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "DRIEHAUS CAPITAL MANAGEMENT LLC",
+      "cpf_cnpj": "00.000.000/0000-00",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 28056228,
+      "percentual_total": 5.39,
+      "acoes_ordinarias": 28056228,
+      "percentual_ordinarias": 5.39,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "RICARDO RIBEIRO VALADARES GONTIJO",
+      "cpf_cnpj": "050.843.996-56",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 7434180,
+      "percentual_total": 1.428,
+      "acoes_ordinarias": 7434180,
+      "percentual_ordinarias": 1.428,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    },
+    {
+      "nome": "ANA LUCIA RIBEIRO VALADARES GONTIJO",
+      "cpf_cnpj": "316.370.276-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 3417603,
+      "percentual_total": 0.657,
+      "acoes_ordinarias": 3417603,
+      "percentual_ordinarias": 0.657,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 6
+    },
+    {
+      "nome": "RICARDO VALADARES GONTIJO",
+      "cpf_cnpj": "155.017.286-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 1560000,
+      "percentual_total": 0.3,
+      "acoes_ordinarias": 1560000,
+      "percentual_ordinarias": 0.3,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 7
+    }
+  ]
+}

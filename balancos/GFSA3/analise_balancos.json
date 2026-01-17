@@ -1,0 +1,46 @@
+{
+  "ticker": "GFSA3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:23.884062",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -12.2,
+      "variacao_total": -86.69,
+      "ultimo_valor": 120.83
+    },
+    "margens": {
+      "bruta": 5.26,
+      "operacional": -26.42,
+      "liquida": -35.07
+    },
+    "rentabilidade": {
+      "roe_medio": -17.26,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": -12.27,
+      "ultimo": -143.38
+    },
+    "balanco": {
+      "ativo_total": 4984.01,
+      "patrimonio": 1989.36
+    }
+  },
+  "analise_critica": "GFSA3 enfrenta desafios no crescimento, com receita em tendência de queda. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -12.2%)",
+    "Margem líquida comprimida (-35.07%)",
+    "Retorno sobre patrimônio baixo (ROE: -17.26%)",
+    "Queima de caixa operacional"
+  ]
+}

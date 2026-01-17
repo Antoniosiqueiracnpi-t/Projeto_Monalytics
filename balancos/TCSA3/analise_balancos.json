@@ -1,0 +1,45 @@
+{
+  "ticker": "TCSA3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:24.205835",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T2",
+    "total_trimestres": 62,
+    "anos": 15.5
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -11.39,
+      "variacao_total": -84.18,
+      "ultimo_valor": 31.37
+    },
+    "margens": {
+      "bruta": -9.56,
+      "operacional": -81.85,
+      "liquida": -92.6
+    },
+    "rentabilidade": {
+      "roe_medio": -13.77,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": -7.71,
+      "ultimo": 19.06
+    },
+    "balanco": {
+      "ativo_total": 1147.15,
+      "patrimonio": 323.85
+    }
+  },
+  "analise_critica": "TCSA3 enfrenta desafios no crescimento, com receita em tendência de queda. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -11.39%)",
+    "Margem líquida comprimida (-92.6%)",
+    "Retorno sobre patrimônio baixo (ROE: -13.77%)"
+  ]
+}

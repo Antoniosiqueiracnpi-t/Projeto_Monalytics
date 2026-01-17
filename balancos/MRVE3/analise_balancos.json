@@ -1,0 +1,41 @@
+{
+  "ticker": "MRVE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:24.077442",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 9.49,
+      "variacao_total": 307.88,
+      "ultimo_valor": 2876.12
+    },
+    "margens": {
+      "bruta": 28.68,
+      "operacional": 11.77,
+      "liquida": 9.95
+    },
+    "rentabilidade": {
+      "roe_medio": 9.51,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 18.81,
+      "ultimo": 233.32
+    },
+    "balanco": {
+      "ativo_total": 28463.4,
+      "patrimonio": 6102.02
+    }
+  },
+  "analise_critica": "MRVE3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 9.95%). Retorno sobre patrimônio abaixo do esperado (ROE de 9.51%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": []
+}

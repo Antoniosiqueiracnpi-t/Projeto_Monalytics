@@ -1,0 +1,43 @@
+{
+  "ticker": "CYRE3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:23.772255",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 4.16,
+      "variacao_total": 87.95,
+      "ultimo_valor": 2128.45
+    },
+    "margens": {
+      "bruta": 31.68,
+      "operacional": 16.7,
+      "liquida": 14.99
+    },
+    "rentabilidade": {
+      "roe_medio": 12.2,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 64.27,
+      "ultimo": -360.43
+    },
+    "balanco": {
+      "ativo_total": 24950.41,
+      "patrimonio": 11488.95
+    }
+  },
+  "analise_critica": "CYRE3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 14.99%. Retorno sobre patrimônio adequado (ROE de 12.2%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

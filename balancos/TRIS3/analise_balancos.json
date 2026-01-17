@@ -1,0 +1,44 @@
+{
+  "ticker": "TRIS3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:24.270263",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 4.96,
+      "variacao_total": 111.72,
+      "ultimo_valor": 372.6
+    },
+    "margens": {
+      "bruta": 28.96,
+      "operacional": 13.46,
+      "liquida": 9.96
+    },
+    "rentabilidade": {
+      "roe_medio": 7.62,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 5.2,
+      "ultimo": -24.93
+    },
+    "balanco": {
+      "ativo_total": 3497.7,
+      "patrimonio": 1615.94
+    }
+  },
+  "analise_critica": "TRIS3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 9.96%). Retorno sobre patrimônio abaixo do esperado (ROE de 7.62%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Retorno sobre patrimônio baixo (ROE: 7.62%)",
+    "Queima de caixa operacional"
+  ]
+}

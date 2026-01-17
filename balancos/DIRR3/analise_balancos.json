@@ -1,0 +1,43 @@
+{
+  "ticker": "DIRR3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T10:32:23.794605",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 14.46,
+      "variacao_total": 711.15,
+      "ultimo_valor": 1157.82
+    },
+    "margens": {
+      "bruta": 27.6,
+      "operacional": 12.09,
+      "liquida": 10.23
+    },
+    "rentabilidade": {
+      "roe_medio": 12.82,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 30.67,
+      "ultimo": 268.78
+    },
+    "balanco": {
+      "ativo_total": 12415.73,
+      "patrimonio": 2720.18
+    }
+  },
+  "analise_critica": "DIRR3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 10.23%. Retorno sobre patrimônio adequado (ROE de 12.82%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 14.46%)"
+  ],
+  "pontos_atencao": []
+}
