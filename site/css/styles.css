@@ -3235,6 +3235,623 @@ body {
 
 
 
+/* ========================================================================== */
+/* ESTATÍSTICAS DO MERCADO SECUNDÁRIO
+/* ========================================================================== */
+
+.estatisticas-mercado-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: var(--border-radius);
+    padding: 2.5rem;
+    margin-top: 3rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Pattern de fundo sutil */
+.estatisticas-mercado-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(45deg, 
+            transparent,
+            transparent 10px,
+            rgba(255, 255, 255, 0.02) 10px,
+            rgba(255, 255, 255, 0.02) 20px);
+    pointer-events: none;
+}
+
+/* ========== HEADER ========== */
+.estatisticas-header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 2.5rem;
+}
+
+.estatisticas-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+.estatisticas-icon i {
+    font-size: 1.75rem;
+    color: white;
+}
+
+.estatisticas-title {
+    color: white;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.estatisticas-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* ========== LOADING ========== */
+.estatisticas-loading {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    color: rgba(255, 255, 255, 0.7);
+    gap: 1rem;
+}
+
+/* ========== CONTAINER ========== */
+.estatisticas-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* ========== SECTION SUBTITLE ========== */
+.section-subtitle {
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-subtitle i {
+    color: #10b981;
+    font-size: 1.125rem;
+}
+
+.section-header-with-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+/* ========== ESTATÍSTICAS GERAIS ========== */
+.estatisticas-gerais-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stats-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--border-radius-sm);
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--border-radius-sm);
+}
+
+.stats-table thead {
+    background: rgba(16, 185, 129, 0.15);
+}
+
+.stats-table th {
+    color: #10b981;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+.stats-table td {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.95rem;
+}
+
+.stats-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.stats-indexador {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: white;
+}
+
+.stats-value {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.stats-value.highlight {
+    color: #10b981;
+}
+
+/* ========== MAIORES SPREADS ========== */
+.maiores-spreads-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========== VIEW TOGGLE ========== */
+.view-toggle {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.25rem;
+    border-radius: var(--border-radius-sm);
+}
+
+.view-toggle .toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: transparent;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.view-toggle .toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.view-toggle .toggle-btn.active {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.view-toggle .toggle-btn i {
+    font-size: 1rem;
+}
+
+/* ========== SPREADS VIEW CONTAINERS ========== */
+.spreads-view-container {
+    display: none;
+}
+
+.spreads-view-container.active {
+    display: block;
+}
+
+/* ========== BLOCOS DE INDEXADOR ========== */
+.spreads-indexador-block {
+    margin-bottom: 2rem;
+}
+
+.spreads-indexador-block:last-child {
+    margin-bottom: 0;
+}
+
+.indexador-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.indexador-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.indexador-badge.ipca {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.indexador-badge.di {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.indexador-count {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* ========== TABELA DE SPREADS ========== */
+.spreads-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--border-radius-sm);
+}
+
+.spreads-ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.spreads-ranking-table thead {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.spreads-ranking-table th {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.875rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.spreads-ranking-table th:first-child {
+    width: 50px;
+    text-align: center;
+}
+
+.spreads-ranking-table td {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.9rem;
+}
+
+.spreads-ranking-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.spreads-ranking-table tbody tr.hidden-row {
+    display: none;
+}
+
+.spreads-ranking-table tbody tr.hidden-row.visible {
+    display: table-row;
+}
+
+.ranking-position {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 700;
+    font-size: 0.875rem;
+    margin: 0 auto;
+}
+
+.ranking-position.top3 {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+.spread-codigo {
+    font-weight: 600;
+    color: white;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+}
+
+.spread-value {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #10b981;
+}
+
+.duration-value {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+/* ========== BOTÃO EXPANDIR ========== */
+.spreads-expand-container {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.spreads-expand-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-sm);
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.spreads-expand-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.spreads-expand-btn.expanded .expand-text::after {
+    content: ' menos';
+}
+
+.spreads-expand-btn.expanded i {
+    transform: rotate(180deg);
+}
+
+.spreads-expand-btn i {
+    transition: transform 0.3s ease;
+}
+
+/* ========== GRÁFICO SCATTER ========== */
+.spreads-scatter-wrapper {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 400px;
+    height: 400px;
+    position: relative;
+}
+
+#spreadsScatterChart {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.spreads-scatter-legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.spreads-scatter-legend .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.spreads-scatter-legend .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+}
+
+/* ========== FOOTER ========== */
+.estatisticas-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.estatisticas-footer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+}
+
+.estatisticas-footer-info i {
+    color: #10b981;
+}
+
+.estatisticas-footer-date {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+}
+
+/* ========================================================================== */
+/* RESPONSIVO - TABLET
+/* ========================================================================== */
+
+@media screen and (max-width: 768px) {
+    .estatisticas-mercado-card {
+        padding: 1.5rem;
+    }
+
+    .estatisticas-title {
+        font-size: 1.375rem;
+    }
+
+    .estatisticas-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .estatisticas-gerais-section,
+    .maiores-spreads-section {
+        padding: 1.5rem;
+    }
+
+    .section-header-with-toggle {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .view-toggle {
+        width: 100%;
+    }
+
+    .view-toggle .toggle-btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .view-toggle .toggle-btn span {
+        display: none;
+    }
+
+    .stats-table,
+    .spreads-ranking-table {
+        font-size: 0.85rem;
+    }
+
+    .stats-table th,
+    .stats-table td,
+    .spreads-ranking-table th,
+    .spreads-ranking-table td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .spreads-scatter-wrapper {
+        min-height: 300px;
+        height: 300px;
+        padding: 1rem;
+    }
+
+    .estatisticas-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* ========================================================================== */
+/* RESPONSIVO - MOBILE
+/* ========================================================================== */
+
+@media screen and (max-width: 480px) {
+    .estatisticas-mercado-card {
+        padding: 1.25rem;
+        margin-top: 2rem;
+    }
+
+    .estatisticas-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .estatisticas-icon i {
+        font-size: 1.5rem;
+    }
+
+    .estatisticas-title {
+        font-size: 1.25rem;
+    }
+
+    .estatisticas-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .section-subtitle {
+        font-size: 1.125rem;
+    }
+
+    .estatisticas-gerais-section,
+    .maiores-spreads-section {
+        padding: 1.25rem;
+    }
+
+    .stats-table,
+    .spreads-ranking-table {
+        font-size: 0.8rem;
+    }
+
+    .stats-table th,
+    .stats-table td {
+        padding: 0.625rem 0.35rem;
+    }
+
+    .spreads-ranking-table th,
+    .spreads-ranking-table td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .ranking-position {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+
+    .spread-codigo {
+        font-size: 0.85rem;
+    }
+
+    .spread-value {
+        font-size: 0.9rem;
+    }
+
+    .spreads-scatter-wrapper {
+        min-height: 250px;
+        height: 250px;
+        padding: 0.75rem;
+    }
+
+    .spreads-expand-btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.875rem;
+    }
+
+    .estatisticas-footer-info,
+    .estatisticas-footer-date {
+        font-size: 0.8rem;
+    }
+}
+
+
 
 
 
