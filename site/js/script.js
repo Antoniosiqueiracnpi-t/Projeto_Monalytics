@@ -8587,8 +8587,8 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ESTATÍSTICAS DO MERCADO SECUNDÁRIO
 /* ========================================================================== */
 
-let spreadsScatterChartInstance = null;
-const MAX_VISIBLE_SPREADS = 5; // Mostra inicialmente 5 spreads
+let spreadsScatterMercadoChartInstance = null;
+const MAX_VISIBLE_SPREADS_MERCADO = 5; // Mostra inicialmente 5 spreads
 
 /**
  * Carrega dados do Portfolio Renda Fixa
@@ -8719,7 +8719,7 @@ function renderizarTabelaSpreads(tipo, spreads) {
     tbody.innerHTML = spreads.map((item, index) => {
         const position = index + 1;
         const isTop3 = position <= 3;
-        const isHidden = index >= MAX_VISIBLE_SPREADS;
+        const isHidden = index >= MAX_VISIBLE_SPREADS_MERCADO;
         
         return `
             <tr class="${isHidden ? 'hidden-row' : ''}">
@@ -8741,8 +8741,8 @@ function renderizarTabelaSpreads(tipo, spreads) {
         `;
     }).join('');
     
-    // Mostra botão "Ver mais" se tiver mais de MAX_VISIBLE_SPREADS
-    if (spreads.length > MAX_VISIBLE_SPREADS) {
+    // Mostra botão "Ver mais" se tiver mais de MAX_VISIBLE_SPREADS_MERCADO
+    if (spreads.length > MAX_VISIBLE_SPREADS_MERCADO) {
         const containerId = tipo === 'ipca' ? 'ipcaExpandContainer' : 'diExpandContainer';
         const btnId = tipo === 'ipca' ? 'ipcaExpandBtn' : 'diExpandBtn';
         
@@ -8796,8 +8796,8 @@ function renderizarGraficoScatter(top10) {
     const ctx = canvas.getContext('2d');
     
     // Destrói gráfico anterior
-    if (spreadsScatterChartInstance) {
-        spreadsScatterChartInstance.destroy();
+    if (spreadsScatterMercadoChartInstance) {
+        spreadsScatterMercadoChartInstance.destroy();
     }
     
     // Prepara datasets
@@ -8814,7 +8814,7 @@ function renderizarGraficoScatter(top10) {
     }));
     
     // Cria gráfico
-    spreadsScatterChartInstance = new Chart(ctx, {
+    spreadsScatterMercadoChartInstance = new Chart(ctx, {
         type: 'scatter',
         data: {
             datasets: [
