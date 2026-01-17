@@ -9216,14 +9216,11 @@ function exibirInformacoesTitulo(titulo) {
     const codigo = titulo.Código || titulo.Codigo || '-';
     const emissor = (titulo.Emissor || '-').replace(/\s*\(\*\)\s*/g, '').trim();
     
-    // Taxa indicativa
+    // Taxa indicativa (usando função helper)
     let taxa = '-';
-    if (titulo['Spread IPCA'] !== null && titulo['Spread IPCA'] !== undefined) {
-        taxa = parseFloat(titulo['Spread IPCA']).toFixed(4) + '% a.a.';
-    } else if (titulo['Spread DI'] !== null && titulo['Spread DI'] !== undefined) {
-        taxa = parseFloat(titulo['Spread DI']).toFixed(4) + '% a.a.';
-    } else if (titulo['Taxa Indicativa'] !== null && titulo['Taxa Indicativa'] !== undefined) {
-        taxa = parseFloat(titulo['Taxa Indicativa']).toFixed(4) + '% a.a.';
+    const spreadExtraido = extrairSpreadTitulo(titulo);
+    if (spreadExtraido !== null && !isNaN(spreadExtraido)) {
+        taxa = spreadExtraido.toFixed(4) + '% a.a.';
     }
     
     // Data da taxa
@@ -9311,15 +9308,11 @@ function executarCalculoPrecificacao(titulo, taxaUsuario) {
     const pu_anbima = parseFloat(titulo.PU);
     const pu_par_pct = parseFloat(titulo['% PU Par']);
     
-    // Taxa ANBIMA
-    let taxa_anbima;
-    if (titulo['Spread IPCA'] !== null && titulo['Spread IPCA'] !== undefined) {
-        taxa_anbima = parseFloat(titulo['Spread IPCA']);
-    } else if (titulo['Spread DI'] !== null && titulo['Spread DI'] !== undefined) {
-        taxa_anbima = parseFloat(titulo['Spread DI']);
-    } else if (titulo['Taxa Indicativa'] !== null && titulo['Taxa Indicativa'] !== undefined) {
-        taxa_anbima = parseFloat(titulo['Taxa Indicativa']);
-    } else {
+
+    // Taxa ANBIMA (usando função helper)
+    const taxa_anbima = extrairSpreadTitulo(titulo);
+    
+    if (taxa_anbima === null || isNaN(taxa_anbima)) {
         throw new Error('Taxa não encontrada no título');
     }
     
@@ -9461,6 +9454,47 @@ function exibirResultadosCalculo(resultado) {
     // Scroll suave até os resultados
     document.getElementById('calculatorResults').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
+
+
+// Extrair spread de qualquer título (Debêntures ou CRI/CRA)
+function extrairSpreadTitulo(titulo) {
+    // Tentar campo direto Spread IPCA (Debêntures IPCA+)
+    if (titulo['Spread IPCA'] !== null && titulo['Spread IPCA'] !== undefined) {
+        return parseFloat(titulo['Spread IPCA']);
+    }
+    
+    // Tentar campo direto Spread DI (Debêntures DI+)
+    if (titulo['Spread DI'] !== null && titulo['Spread DI'] !== undefined) {
+        return parseFloat(titulo['Spread DI']);
+    }
+    
+    // Tentar Taxa Indicativa (CRI/CRA)
+    if (titulo['Taxa Indicativa'] !== null && titulo['Taxa Indicativa'] !== undefined) {
+        const taxa = parseFloat(titulo['Taxa Indicativa']);
+        if (!isNaN(taxa)) return taxa;
+    }
+    
+    // Último recurso: extrair do campo Índice/Correção
+    let indiceCorrecao = titulo['Índice/Correção'];
+    if (indiceCorrecao) {
+        if (Array.isArray(indiceCorrecao)) {
+            indiceCorrecao = indiceCorrecao[0];
+        }
+        
+        // Regex para extrair número antes de %
+        const match = indiceCorrecao.match(/([\d,\.]+)\s*%/);
+        if (match) {
+            const valor = match[1].replace('.', '').replace(',', '.');
+            const spread = parseFloat(valor);
+            if (!isNaN(spread)) return spread;
+        }
+    }
+    
+    return null;
+}
+
+
+
 
 // Formatar data para padrão BR
 function formatarDataBR(data) {
