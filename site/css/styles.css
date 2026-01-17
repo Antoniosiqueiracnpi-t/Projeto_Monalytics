@@ -3658,6 +3658,12 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.precificacao-header .section-title {
+    color: white;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
 .precificacao-icon {
     width: 56px;
     height: 56px;
