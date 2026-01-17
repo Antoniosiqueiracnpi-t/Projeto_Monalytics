@@ -1495,6 +1495,183 @@
                 </div>
             </div> <!-- FIM Card Spreads ANBIMA -->
 
+            <!-- ========================================================================== -->
+            <!-- ESTATÍSTICAS DO MERCADO SECUNDÁRIO
+            <!-- ========================================================================== -->
+            
+            <div class="estatisticas-mercado-card">
+                <!-- Header -->
+                <div class="estatisticas-header">
+                    <div>
+                        <div class="estatisticas-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3 class="estatisticas-title">Estatísticas do Mercado Secundário</h3>
+                        <p class="estatisticas-subtitle">Análise consolidada de títulos IPCA+ e DI+ no mercado secundário</p>
+                    </div>
+                </div>
+            
+                <!-- Loading -->
+                <div class="estatisticas-loading" id="estatisticasLoading">
+                    <div class="loading-spinner"></div>
+                    <span>Carregando estatísticas do mercado...</span>
+                </div>
+            
+                <!-- Container Principal -->
+                <div class="estatisticas-container" id="estatisticasContainer" style="display: none;">
+                    
+                    <!-- ========== ESTATÍSTICAS GERAIS ========== -->
+                    <div class="estatisticas-gerais-section">
+                        <h4 class="section-subtitle">
+                            <i class="fas fa-table"></i>
+                            Estatísticas Consolidadas
+                        </h4>
+                        
+                        <div class="stats-table-wrapper">
+                            <table class="stats-table" id="statsGeneralTable">
+                                <thead>
+                                    <tr>
+                                        <th>Indexador</th>
+                                        <th>Total Títulos</th>
+                                        <th>Média</th>
+                                        <th>Mediana</th>
+                                        <th>Mínimo</th>
+                                        <th>Máximo</th>
+                                        <th>P90</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="statsGeneralBody">
+                                    <!-- Preenchido via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            
+                    <!-- ========== MAIORES SPREADS ========== -->
+                    <div class="maiores-spreads-section">
+                        <div class="section-header-with-toggle">
+                            <h4 class="section-subtitle">
+                                <i class="fas fa-trophy"></i>
+                                Maiores Spreads do Mercado
+                            </h4>
+                            
+                            <!-- Toggle Tabela/Gráfico -->
+                            <div class="view-toggle" id="spreadsViewToggle">
+                                <button class="toggle-btn active" id="btnSpreadsTable" data-view="table">
+                                    <i class="fas fa-table"></i>
+                                    <span>Tabela</span>
+                                </button>
+                                <button class="toggle-btn" id="btnSpreadsChart" data-view="chart">
+                                    <i class="fas fa-chart-scatter"></i>
+                                    <span>Gráfico</span>
+                                </button>
+                            </div>
+                        </div>
+            
+                        <!-- View: Tabela -->
+                        <div class="spreads-view-container active" id="spreadsTableView">
+                            <!-- Tabela IPCA+ -->
+                            <div class="spreads-indexador-block">
+                                <div class="indexador-header">
+                                    <span class="indexador-badge ipca">IPCA+</span>
+                                    <span class="indexador-count" id="ipcaSpreadCount">10 títulos</span>
+                                </div>
+                                
+                                <div class="spreads-table-wrapper">
+                                    <table class="spreads-ranking-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Código</th>
+                                                <th>Spread (%)</th>
+                                                <th>Duration (dias)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ipcaSpreadsBody">
+                                            <!-- Preenchido via JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Botão Ver Mais -->
+                                <div class="spreads-expand-container" id="ipcaExpandContainer" style="display: none;">
+                                    <button class="spreads-expand-btn" id="ipcaExpandBtn">
+                                        <span class="expand-text">Ver todos os spreads</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+            
+                            <!-- Tabela DI+ -->
+                            <div class="spreads-indexador-block">
+                                <div class="indexador-header">
+                                    <span class="indexador-badge di">DI+</span>
+                                    <span class="indexador-count" id="diSpreadCount">10 títulos</span>
+                                </div>
+                                
+                                <div class="spreads-table-wrapper">
+                                    <table class="spreads-ranking-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Código</th>
+                                                <th>Spread (%)</th>
+                                                <th>Duration (dias)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="diSpreadsBody">
+                                            <!-- Preenchido via JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Botão Ver Mais -->
+                                <div class="spreads-expand-container" id="diExpandContainer" style="display: none;">
+                                    <button class="spreads-expand-btn" id="diExpandBtn">
+                                        <span class="expand-text">Ver todos os spreads</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <!-- View: Gráfico -->
+                        <div class="spreads-view-container" id="spreadsChartView">
+                            <div class="spreads-scatter-wrapper">
+                                <canvas id="spreadsScatterChart"></canvas>
+                            </div>
+                            
+                            <!-- Legenda do gráfico -->
+                            <div class="spreads-scatter-legend">
+                                <div class="legend-item">
+                                    <span class="legend-dot" style="background: #10b981;"></span>
+                                    <span>IPCA+ (Inflação)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot" style="background: #3b82f6;"></span>
+                                    <span>DI+ (Pós-fixado)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Rodapé -->
+                    <div class="estatisticas-footer" id="estatisticasFooter" style="display: none;">
+                        <div class="estatisticas-footer-info">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Dados baseados em títulos negociados no mercado secundário (Debêntures, CRI e CRA)</span>
+                        </div>
+                        <div class="estatisticas-footer-date" id="estatisticasDataRef"></div>
+                    </div>
+            
+                </div> <!-- FIM estatisticas-container -->
+            </div> <!-- FIM estatisticas-mercado-card -->
+
+
+
+
+            
+
         </div> <!-- FIM Container mercado-secundario -->
     </section> <!-- FIM Section mercado-secundario -->
 
