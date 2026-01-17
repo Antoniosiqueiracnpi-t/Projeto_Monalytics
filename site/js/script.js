@@ -9026,3 +9026,521 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 console.log('✅ Portfolio Renda Fixa inicializado');
+
+
+
+
+// ===================================================================
+// CALCULADORA DE PRECIFICAÇÃO DE TÍTULOS
+// ===================================================================
+
+// Variáveis globais para armazenar dados
+let debentures_data = null;
+let cri_cra_data = null;
+let titulo_selecionado = null;
+let todos_titulos = [];
+
+// Carregar dados dos arquivos JSON
+async function carregarDadosPrecificacao() {
+    const loading = document.getElementById('precificacaoLoading');
+    const error = document.getElementById('precificacaoError');
+    
+    try {
+        loading.style.display = 'block';
+        error.style.display = 'none';
+        
+        // URLs dos arquivos JSON no GitHub (ajuste conforme necessário)
+        const urlDebentures = 'https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/debentures_anbima.json';
+        const urlCriCra = 'https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/cri_cra_anbima.json';
+        
+        // Carregar ambos os arquivos
+        const [responseDeb, responseCri] = await Promise.all([
+            fetch(urlDebentures + '?t=' + Date.now()),
+            fetch(urlCriCra + '?t=' + Date.now())
+        ]);
+        
+        if (!responseDeb.ok || !responseCri.ok) {
+            throw new Error('Erro ao carregar dados');
+        }
+        
+        debentures_data = await responseDeb.json();
+        cri_cra_data = await responseCri.json();
+        
+        // Processar todos os títulos em um array único
+        processarTodosTitulos();
+        
+        loading.style.display = 'none';
+        
+    } catch (err) {
+        console.error('Erro ao carregar dados:', err);
+        loading.style.display = 'none';
+        error.style.display = 'block';
+        document.getElementById('errorMessage').textContent = 'Erro ao carregar dados: ' + err.message;
+    }
+}
+
+// Processar todos os títulos em um array único para busca
+function processarTodosTitulos() {
+    todos_titulos = [];
+    
+    // Processar Debêntures
+    if (debentures_data && debentures_data.tabelas) {
+        ['di_spread', 'ipca_spread', 'igpm_spread', 'di_percentual'].forEach(tabela => {
+            if (debentures_data.tabelas[tabela]) {
+                debentures_data.tabelas[tabela].forEach(item => {
+                    todos_titulos.push({
+                        ...item,
+                        fonte: 'Debêntures',
+                        tabela: tabela
+                    });
+                });
+            }
+        });
+    }
+    
+    // Processar CRI/CRA
+    if (cri_cra_data && cri_cra_data.tabelas) {
+        ['di_spread', 'ipca_spread', 'di_percentual'].forEach(tabela => {
+            if (cri_cra_data.tabelas[tabela]) {
+                cri_cra_data.tabelas[tabela].forEach(item => {
+                    todos_titulos.push({
+                        ...item,
+                        fonte: 'CRI/CRA',
+                        tabela: tabela,
+                        tipo_titulo: item.Tipo || 'CRI/CRA'
+                    });
+                });
+            }
+        });
+    }
+    
+    console.log(`Total de ${todos_titulos.length} títulos carregados`);
+}
+
+// Buscar títulos
+function buscarTitulos(termo) {
+    if (!termo || termo.length < 2) return [];
+    
+    termo = termo.toUpperCase();
+    
+    // Buscar por código ou emissor
+    return todos_titulos.filter(titulo => {
+        const codigo = (titulo.Código || titulo.Codigo || '').toString().toUpperCase();
+        const emissor = (titulo.Emissor || '').toString().toUpperCase();
+        
+        return codigo.includes(termo) || emissor.includes(termo);
+    }).slice(0, 10); // Limitar a 10 resultados
+}
+
+// Exibir resultados da busca
+function exibirResultadosBusca(resultados) {
+    const container = document.getElementById('searchResults');
+    
+    if (resultados.length === 0) {
+        container.innerHTML = '<div class="precificacao-search-no-results">Nenhum título encontrado</div>';
+        container.classList.add('active');
+        return;
+    }
+    
+    container.innerHTML = resultados.map(titulo => {
+        const codigo = titulo.Código || titulo.Codigo || '';
+        const emissor = titulo.Emissor || '';
+        const indexador = titulo.Indexador || '';
+        const fonte = titulo.fonte || '';
+        const tipoTitulo = titulo.tipo_titulo || '';
+        
+        return `
+            <div class="precificacao-search-item" onclick="selecionarTitulo('${codigo}', '${fonte}', '${titulo.tabela}')">
+                <div class="precificacao-search-item-codigo">${codigo}</div>
+                <div class="precificacao-search-item-emissor">${emissor.substring(0, 60)}${emissor.length > 60 ? '...' : ''}</div>
+                <div class="precificacao-search-item-details">
+                    <span class="precificacao-search-item-badge">${fonte}</span>
+                    ${tipoTitulo ? `<span class="precificacao-search-item-badge">${tipoTitulo}</span>` : ''}
+                    <span>${indexador}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    container.classList.add('active');
+}
+
+// Selecionar título
+function selecionarTitulo(codigo, fonte, tabela) {
+    // Encontrar título nos dados
+    let titulo;
+    
+    if (fonte === 'Debêntures' && debentures_data) {
+        titulo = debentures_data.tabelas[tabela].find(t => 
+            (t.Código || t.Codigo) === codigo
+        );
+    } else if (fonte === 'CRI/CRA' && cri_cra_data) {
+        titulo = cri_cra_data.tabelas[tabela].find(t => 
+            (t.Código || t.Codigo) === codigo
+        );
+    }
+    
+    if (!titulo) {
+        console.error('Título não encontrado');
+        return;
+    }
+    
+    // Adicionar metadados
+    titulo.fonte = fonte;
+    titulo.tabela = tabela;
+    if (fonte === 'Debêntures') {
+        titulo.data_referencia = debentures_data.data_referencia;
+    } else {
+        titulo.data_referencia = cri_cra_data.data_referencia;
+    }
+    
+    titulo_selecionado = titulo;
+    
+    // Fechar dropdown
+    document.getElementById('searchResults').classList.remove('active');
+    document.getElementById('tituloSearch').value = codigo;
+    
+    // Exibir informações
+    exibirInformacoesTitulo(titulo);
+    
+    // Mostrar seções
+    document.getElementById('tituloInfo').style.display = 'block';
+    document.getElementById('calculatorSection').style.display = 'block';
+    
+    // Resetar resultados da calculadora
+    document.getElementById('calculatorResults').style.display = 'none';
+}
+
+// Exibir informações do título
+function exibirInformacoesTitulo(titulo) {
+    const codigo = titulo.Código || titulo.Codigo || '-';
+    const emissor = titulo.Emissor || '-';
+    
+    // Taxa indicativa
+    let taxa = '-';
+    if (titulo['Spread IPCA'] !== null && titulo['Spread IPCA'] !== undefined) {
+        taxa = parseFloat(titulo['Spread IPCA']).toFixed(4) + '% a.a.';
+    } else if (titulo['Spread DI'] !== null && titulo['Spread DI'] !== undefined) {
+        taxa = parseFloat(titulo['Spread DI']).toFixed(4) + '% a.a.';
+    } else if (titulo['Taxa Indicativa'] !== null && titulo['Taxa Indicativa'] !== undefined) {
+        taxa = parseFloat(titulo['Taxa Indicativa']).toFixed(4) + '% a.a.';
+    }
+    
+    // Data da taxa
+    const dataTaxa = titulo['Data de Referência'] || titulo.data_referencia || '-';
+    
+    // Duration
+    const duration = titulo.Duration ? parseFloat(titulo.Duration).toFixed(2) + ' dias' : '-';
+    
+    // Vencimento
+    const vencimento = titulo['Data Vencimento'] || titulo['Data de Vencimento'] || '-';
+    
+    // Índice/Correção
+    let indice = '-';
+    if (titulo['Índice/Correção']) {
+        if (Array.isArray(titulo['Índice/Correção'])) {
+            indice = titulo['Índice/Correção'][0];
+        } else {
+            indice = titulo['Índice/Correção'];
+        }
+    }
+    
+    // PU
+    const pu = titulo.PU ? 'R$ ' + parseFloat(titulo.PU).toFixed(6) : '-';
+    
+    // % PU Par
+    const puPar = titulo['% PU Par'] ? parseFloat(titulo['% PU Par']).toFixed(2) + '%' : '-';
+    
+    // Indexador
+    const indexador = titulo.Indexador || '-';
+    
+    // Referência NTNB (apenas para IPCA+)
+    const ntnb = titulo['Referência NTNB'] || '';
+    const mostrarNTNB = indexador.includes('IPCA') && ntnb;
+    
+    // Preencher campos
+    document.getElementById('infoCodigo').textContent = codigo;
+    document.getElementById('infoEmissor').textContent = emissor;
+    document.getElementById('infoTaxa').textContent = taxa;
+    document.getElementById('infoDataTaxa').textContent = formatarDataBR(dataTaxa);
+    document.getElementById('infoDuration').textContent = duration;
+    document.getElementById('infoVencimento').textContent = formatarDataBR(vencimento);
+    document.getElementById('infoIndice').textContent = indice;
+    document.getElementById('infoPU').textContent = pu;
+    document.getElementById('infoPUPar').textContent = puPar;
+    document.getElementById('infoIndexador').textContent = indexador;
+    
+    // Mostrar/ocultar NTNB
+    const ntnbElement = document.getElementById('ntnbReferencia');
+    if (mostrarNTNB) {
+        ntnbElement.style.display = 'block';
+        document.getElementById('infoNTNB').textContent = ntnb;
+    } else {
+        ntnbElement.style.display = 'none';
+    }
+}
+
+// Calcular precificação
+function calcularPrecificacao() {
+    if (!titulo_selecionado) {
+        alert('Selecione um título primeiro');
+        return;
+    }
+    
+    const taxaUsuarioInput = document.getElementById('taxaUsuario');
+    const taxaUsuario = parseFloat(taxaUsuarioInput.value);
+    
+    if (isNaN(taxaUsuario) || taxaUsuario < 0 || taxaUsuario > 100) {
+        alert('Digite uma taxa válida entre 0 e 100');
+        taxaUsuarioInput.focus();
+        return;
+    }
+    
+    try {
+        const resultado = executarCalculoPrecificacao(titulo_selecionado, taxaUsuario);
+        exibirResultadosCalculo(resultado);
+    } catch (error) {
+        console.error('Erro no cálculo:', error);
+        alert('Erro ao calcular: ' + error.message);
+    }
+}
+
+// Executar cálculo de precificação (adaptado da função Python)
+function executarCalculoPrecificacao(titulo, taxaUsuario) {
+    // Extrair dados necessários
+    const pu_anbima = parseFloat(titulo.PU);
+    const pu_par_pct = parseFloat(titulo['% PU Par']);
+    
+    // Taxa ANBIMA
+    let taxa_anbima;
+    if (titulo['Spread IPCA'] !== null && titulo['Spread IPCA'] !== undefined) {
+        taxa_anbima = parseFloat(titulo['Spread IPCA']);
+    } else if (titulo['Spread DI'] !== null && titulo['Spread DI'] !== undefined) {
+        taxa_anbima = parseFloat(titulo['Spread DI']);
+    } else if (titulo['Taxa Indicativa'] !== null && titulo['Taxa Indicativa'] !== undefined) {
+        taxa_anbima = parseFloat(titulo['Taxa Indicativa']);
+    } else {
+        throw new Error('Taxa não encontrada no título');
+    }
+    
+    // Validações
+    if (isNaN(pu_anbima) || isNaN(pu_par_pct) || isNaN(taxa_anbima)) {
+        throw new Error('Dados do título inválidos');
+    }
+    
+    // PU PAR
+    const pu_par = pu_anbima / (pu_par_pct / 100.0);
+    
+    // Duration
+    let duration_dias = parseFloat(titulo.Duration);
+    let macaulay_duration_years;
+    
+    if (isNaN(duration_dias)) {
+        // Calcular com base no vencimento
+        const vencimento = new Date(titulo['Data Vencimento'] || titulo['Data de Vencimento']);
+        const hoje = new Date();
+        const dias_ate_vencimento = Math.floor((vencimento - hoje) / (1000 * 60 * 60 * 24));
+        macaulay_duration_years = dias_ate_vencimento / 252.0;
+    } else {
+        macaulay_duration_years = duration_dias / 252.0;
+    }
+    
+    // Identificar tipo (% DI)
+    let indiceCorrecao = titulo['Índice/Correção'];
+    if (Array.isArray(indiceCorrecao)) {
+        indiceCorrecao = indiceCorrecao[0];
+    }
+    const is_percentual_di = indiceCorrecao && 
+        indiceCorrecao.includes('%') && 
+        indiceCorrecao.toUpperCase().includes('DI') && 
+        indiceCorrecao.toUpperCase().includes('DO');
+    
+    // Cálculo com Modified Duration e Convexidade
+    const y0 = taxa_anbima / 100.0;
+    const y1 = taxaUsuario / 100.0;
+    const delta_y = y1 - y0;
+    
+    // Modified Duration
+    const modified_duration = macaulay_duration_years / (1.0 + y0);
+    
+    // Convexidade (aproximação)
+    const convexity = (modified_duration ** 2) + modified_duration;
+    
+    // Fórmula de Taylor de 2ª ordem
+    const duration_effect = -modified_duration * delta_y;
+    const convexity_effect = 0.5 * convexity * (delta_y ** 2);
+    let price_change_pct = duration_effect + convexity_effect;
+    
+    // Ajuste empírico para % DI
+    if (is_percentual_di) {
+        price_change_pct = price_change_pct * 0.30;
+    }
+    
+    const price_ratio = 1.0 + price_change_pct;
+    
+    // Novo % PU Par
+    const p1_pct = pu_par_pct * price_ratio;
+    
+    // Novo PU
+    const pu_novo = pu_par * (p1_pct / 100.0);
+    
+    // Diferenças
+    const dif_pu = pu_novo - pu_anbima;
+    const dif_pu_par = p1_pct - pu_par_pct;
+    
+    return {
+        taxa_anbima: taxa_anbima,
+        taxa_usuario: taxaUsuario,
+        diferenca_taxa: taxaUsuario - taxa_anbima,
+        pu_anbima: pu_anbima,
+        pu_par_anbima: pu_par_pct,
+        pu_calculado: pu_novo,
+        pu_par_calculado: p1_pct,
+        dif_pu: dif_pu,
+        dif_pu_par: dif_pu_par,
+        modified_duration: modified_duration,
+        convexity: convexity,
+        duration_effect_pct: duration_effect * 100,
+        convexity_effect_pct: convexity_effect * 100,
+        total_effect_pct: price_change_pct * 100,
+        is_percentual_di: is_percentual_di
+    };
+}
+
+// Exibir resultados do cálculo
+function exibirResultadosCalculo(resultado) {
+    // Taxas
+    document.getElementById('resultTaxaAnbima').textContent = resultado.taxa_anbima.toFixed(4) + '% a.a.';
+    document.getElementById('resultTaxaUsuario').textContent = resultado.taxa_usuario.toFixed(4) + '% a.a.';
+    
+    const difTaxa = resultado.diferenca_taxa;
+    const sinal = difTaxa > 0 ? '⬆️ SUBIU' : (difTaxa < 0 ? '⬇️ CAIU' : '=');
+    document.getElementById('resultDiferenca').textContent = `${sinal} ${Math.abs(difTaxa).toFixed(4)} p.p.`;
+    
+    // PUs
+    document.getElementById('resultPUAnbima').textContent = 'R$ ' + resultado.pu_anbima.toFixed(6);
+    document.getElementById('resultPUParAnbima').textContent = resultado.pu_par_anbima.toFixed(2) + '%';
+    
+    document.getElementById('resultPUCalculado').textContent = 'R$ ' + resultado.pu_calculado.toFixed(6);
+    document.getElementById('resultPUParCalculado').textContent = resultado.pu_par_calculado.toFixed(2) + '%';
+    
+    document.getElementById('resultDifPU').textContent = 'R$ ' + resultado.dif_pu.toFixed(6);
+    document.getElementById('resultDifPUPar').textContent = resultado.dif_pu_par.toFixed(4) + ' p.p.';
+    
+    // Interpretação
+    let interpretacao = '';
+    if (difTaxa > 0) {
+        interpretacao = `Taxa aumentou ${Math.abs(difTaxa).toFixed(2)} p.p. → PU caiu R$ ${Math.abs(resultado.dif_pu).toFixed(2)}<br>`;
+        interpretacao += `Desvalorização de ${Math.abs(resultado.dif_pu_par).toFixed(2)} pontos percentuais`;
+    } else if (difTaxa < 0) {
+        interpretacao = `Taxa caiu ${Math.abs(difTaxa).toFixed(2)} p.p. → PU subiu R$ ${Math.abs(resultado.dif_pu).toFixed(2)}<br>`;
+        interpretacao += `Valorização de ${Math.abs(resultado.dif_pu_par).toFixed(2)} pontos percentuais`;
+    } else {
+        interpretacao = 'Taxa mantida → PU inalterado';
+    }
+    
+    document.getElementById('interpretacaoTexto').innerHTML = interpretacao;
+    
+    // Detalhes técnicos
+    document.getElementById('detailMD').textContent = resultado.modified_duration.toFixed(4);
+    document.getElementById('detailConv').textContent = resultado.convexity.toFixed(4);
+    document.getElementById('detailDurEffect').textContent = resultado.duration_effect_pct.toFixed(2) + '%';
+    document.getElementById('detailConvEffect').textContent = resultado.convexity_effect_pct.toFixed(2) + '%';
+    
+    let totalEsperado = resultado.total_effect_pct;
+    if (resultado.is_percentual_di) {
+        const semAjuste = (resultado.duration_effect_pct + resultado.convexity_effect_pct);
+        document.getElementById('detailTotal').innerHTML = `${totalEsperado.toFixed(2)}% <small>(com ajuste 0.30x para % DI)</small>`;
+    } else {
+        document.getElementById('detailTotal').textContent = totalEsperado.toFixed(2) + '%';
+    }
+    
+    // Mostrar resultados
+    document.getElementById('calculatorResults').style.display = 'block';
+    
+    // Scroll suave até os resultados
+    document.getElementById('calculatorResults').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Formatar data para padrão BR
+function formatarDataBR(data) {
+    if (!data || data === '-') return '-';
+    
+    // Se já está em formato dd/mm/yyyy, retorna
+    if (data.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+        return data;
+    }
+    
+    // Tenta converter de yyyy-mm-dd
+    try {
+        const partes = data.split('-');
+        if (partes.length === 3) {
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+    } catch (e) {
+        console.error('Erro ao formatar data:', e);
+    }
+    
+    return data;
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Carregar dados ao inicializar
+    carregarDadosPrecificacao();
+    
+    // Busca
+    const searchInput = document.getElementById('tituloSearch');
+    const searchResults = document.getElementById('searchResults');
+    
+    searchInput.addEventListener('input', function(e) {
+        const termo = e.target.value;
+        
+        if (termo.length < 2) {
+            searchResults.classList.remove('active');
+            return;
+        }
+        
+        const resultados = buscarTitulos(termo);
+        exibirResultadosBusca(resultados);
+    });
+    
+    // Fechar dropdown ao clicar fora
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.precificacao-search-wrapper')) {
+            searchResults.classList.remove('active');
+        }
+    });
+    
+    // Botão calcular
+    const calcularBtn = document.getElementById('calcularBtn');
+    if (calcularBtn) {
+        calcularBtn.addEventListener('click', calcularPrecificacao);
+    }
+    
+    // Enter no input de taxa
+    const taxaInput = document.getElementById('taxaUsuario');
+    if (taxaInput) {
+        taxaInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calcularPrecificacao();
+            }
+        });
+    }
+    
+    // Toggle detalhes técnicos
+    const detalhesToggle = document.getElementById('detalhesToggle');
+    const detalhesContent = document.getElementById('detalhesContent');
+    
+    if (detalhesToggle && detalhesContent) {
+        detalhesToggle.addEventListener('click', function() {
+            const isVisible = detalhesContent.style.display !== 'none';
+            detalhesContent.style.display = isVisible ? 'none' : 'block';
+            this.classList.toggle('active');
+        });
+    }
+});
+
+
+
+
