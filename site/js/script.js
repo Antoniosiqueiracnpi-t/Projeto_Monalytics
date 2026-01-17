@@ -7756,55 +7756,58 @@ function renderizarGraficoSelic(dados) {
             labels: labels,
             datasets: [
                 {
-                    label: 'Semana Anterior',
-                    data: mediasSemana,
-                    borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    borderWidth: 3,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    pointBackgroundColor: '#3b82f6',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    tension: 0.3,
-                    fill: false
-                },
-                {
                     label: 'Expectativa Atual',
                     data: mediasAtual,
                     borderColor: '#10b981',
                     backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    borderWidth: 3,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    pointBackgroundColor: '#10b981',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    tension: 0.3,
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    pointHoverBackgroundColor: '#10b981',
+                    tension: 0.1,
+                    fill: true
+                },
+                {
+                    label: 'Semana Anterior',
+                    data: mediasSemana,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'transparent',
+                    borderWidth: 1.5,
+                    pointRadius: 0,
+                    tension: 0.1,
                     fill: false
                 }
             ]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: window.innerWidth <= 768 ? 1.8 : 2.5, // ✅ Aumentado no mobile
+            maintainAspectRatio: false,
             animation: {
-                duration: 750, // ✅ Reduzido de 1000ms
-                easing: 'easeInOutQuart' // ✅ Easing mais suave
+                duration: 750,
+                easing: 'easeInOutQuart'
             },
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15,
+                        font: {
+                            size: 12
+                        }
+                    }
                 },
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleColor: '#fff',
-                    bodyColor: '#fff',
-                    borderColor: 'rgba(255, 255, 255, 0.2)',
-                    borderWidth: 1,
                     padding: 12,
-                    displayColors: true,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
                     callbacks: {
                         label: function(context) {
                             return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}%`;
@@ -7818,29 +7821,22 @@ function renderizarGraficoSelic(dados) {
                         display: false
                     },
                     ticks: {
+                        maxRotation: 45,
+                        minRotation: 45,
                         font: {
-                            weight: 600
-                        },
-                        color: '#666',
-                        maxRotation: 0, // ✅ Sem rotação (evita tremor)
-                        minRotation: 0
+                            size: 11
+                        }
                     }
                 },
                 y: {
                     beginAtZero: false,
                     grid: {
-                        color: 'rgba(0, 0, 0, 0.05)',
-                        drawBorder: false // ✅ Remove borda (mais limpo)
+                        color: 'rgba(0, 0, 0, 0.05)'
                     },
                     ticks: {
                         callback: function(value) {
                             return value.toFixed(1) + '%';
-                        },
-                        font: {
-                            weight: 600
-                        },
-                        color: '#666',
-                        precision: 1 // ✅ Precisão fixa
+                        }
                     }
                 }
             },
@@ -7851,7 +7847,7 @@ function renderizarGraficoSelic(dados) {
             hover: {
                 mode: 'index',
                 intersect: false,
-                animationDuration: 200 // ✅ Hover mais rápido
+                animationDuration: 200
             }
         }
 
@@ -8081,68 +8077,66 @@ function renderizarGraficoCurva(series) {
                     data: atual,
                     borderColor: '#10b981',
                     backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    borderWidth: 3,
-                    pointRadius: 6,
-                    pointHoverRadius: 8,
-                    pointBackgroundColor: '#10b981',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    tension: 0.4,
-                    fill: false,
-                    borderDash: [] // Linha sólida
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    pointHoverBackgroundColor: '#10b981',
+                    tension: 0.1,
+                    fill: true
                 },
                 {
                     label: '1 Semana Atrás',
                     data: semana,
                     borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.05)',
-                    borderWidth: 2,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    pointBackgroundColor: '#3b82f6',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 1.5,
-                    tension: 0.4,
+                    backgroundColor: 'transparent',
+                    borderWidth: 1.5,
+                    pointRadius: 0,
+                    tension: 0.1,
                     fill: false,
-                    borderDash: [5, 5] // Linha tracejada
+                    borderDash: [5, 5]
                 },
                 {
                     label: '1 Mês Atrás',
                     data: mes,
                     borderColor: '#9ca3af',
-                    backgroundColor: 'rgba(156, 163, 175, 0.05)',
-                    borderWidth: 2,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    pointBackgroundColor: '#9ca3af',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 1.5,
-                    tension: 0.4,
+                    backgroundColor: 'transparent',
+                    borderWidth: 1.5,
+                    pointRadius: 0,
+                    tension: 0.1,
                     fill: false,
-                    borderDash: [5, 5] // Linha tracejada
+                    borderDash: [5, 5]
                 }
             ]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: 2.5,
+            maintainAspectRatio: false,
             animation: {
                 duration: 750,
                 easing: 'easeInOutQuart'
             },
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15,
+                        font: {
+                            size: 12
+                        }
+                    }
                 },
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleColor: '#fff',
-                    bodyColor: '#fff',
-                    borderColor: 'rgba(255, 255, 255, 0.2)',
-                    borderWidth: 1,
                     padding: 12,
-                    displayColors: true,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
                     callbacks: {
                         label: function(context) {
                             return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}%`;
@@ -8156,11 +8150,11 @@ function renderizarGraficoCurva(series) {
                         display: false
                     },
                     ticks: {
+                        maxRotation: 45,
+                        minRotation: 45,
                         font: {
-                            weight: 600,
                             size: 11
-                        },
-                        color: '#666'
+                        }
                     }
                 },
                 y: {
@@ -8171,12 +8165,7 @@ function renderizarGraficoCurva(series) {
                     ticks: {
                         callback: function(value) {
                             return value.toFixed(1) + '%';
-                        },
-                        font: {
-                            weight: 600,
-                            size: 11
-                        },
-                        color: '#666'
+                        }
                     }
                 }
             },
@@ -8413,65 +8402,64 @@ function renderizarGraficoSpreads(curvas) {
                     data: spreadsAAA,
                     borderColor: '#10b981',
                     backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    borderWidth: 3,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    pointBackgroundColor: '#10b981',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    tension: 0.4,
-                    fill: false
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    pointHoverBackgroundColor: '#10b981',
+                    tension: 0.1,
+                    fill: true
                 },
                 {
                     label: 'AA (Risco Médio)',
                     data: spreadsAA,
                     borderColor: '#f59e0b',
-                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                    borderWidth: 3,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    pointBackgroundColor: '#f59e0b',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    tension: 0.4,
+                    backgroundColor: 'transparent',
+                    borderWidth: 1.5,
+                    pointRadius: 0,
+                    tension: 0.1,
                     fill: false
                 },
                 {
                     label: 'A (Maior Risco)',
                     data: spreadsA,
                     borderColor: '#ef4444',
-                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    borderWidth: 3,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    pointBackgroundColor: '#ef4444',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    tension: 0.4,
+                    backgroundColor: 'transparent',
+                    borderWidth: 1.5,
+                    pointRadius: 0,
+                    tension: 0.1,
                     fill: false
                 }
             ]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: window.innerWidth <= 768 ? 1.8 : 2.5,
+            maintainAspectRatio: false,
             animation: {
                 duration: 750,
                 easing: 'easeInOutQuart'
             },
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15,
+                        font: {
+                            size: 12
+                        }
+                    }
                 },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                    titleColor: '#fff',
-                    bodyColor: '#fff',
-                    borderColor: 'rgba(255, 255, 255, 0.2)',
-                    borderWidth: 1,
-                    padding: 14,
-                    displayColors: true,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
                     callbacks: {
                         title: function(context) {
                             return context[0].label;
@@ -8494,31 +8482,22 @@ function renderizarGraficoSpreads(curvas) {
                         display: false
                     },
                     ticks: {
-                        font: {
-                            weight: 600,
-                            size: 11
-                        },
-                        color: '#666',
                         maxRotation: 45,
-                        minRotation: 45
+                        minRotation: 45,
+                        font: {
+                            size: 11
+                        }
                     }
                 },
                 y: {
                     beginAtZero: true,
                     grid: {
-                        color: 'rgba(0, 0, 0, 0.05)',
-                        drawBorder: false
+                        color: 'rgba(0, 0, 0, 0.05)'
                     },
                     ticks: {
                         callback: function(value) {
                             return value.toFixed(1) + '%';
-                        },
-                        font: {
-                            weight: 600,
-                            size: 11
-                        },
-                        color: '#666',
-                        precision: 1
+                        }
                     }
                 }
             },
