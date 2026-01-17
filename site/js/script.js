@@ -8583,6 +8583,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
 /* ========================================================================== */
 /* ESTATÍSTICAS DO MERCADO SECUNDÁRIO
 /* ========================================================================== */
@@ -8655,16 +8657,29 @@ function renderizarEstatisticasGerais(estatisticas) {
     const tbody = document.getElementById('statsGeneralBody');
     if (!tbody) return;
     
+    // Validação de dados
+    if (!estatisticas) {
+        console.warn('⚠️ Estatísticas não disponíveis');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 2rem; color: rgba(255, 255, 255, 0.5);">
+                    Dados não disponíveis
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
     const dados = [
         {
             indexador: 'IPCA+',
             badge: 'ipca',
-            stats: estatisticas.ipca_spread
+            stats: estatisticas.ipca_spread || {}
         },
         {
             indexador: 'DI+',
             badge: 'di',
-            stats: estatisticas.di_spread
+            stats: estatisticas.di_spread || {}
         }
     ];
     
@@ -8692,9 +8707,24 @@ function renderizarEstatisticasGerais(estatisticas) {
  * Renderiza maiores spreads (tabela + gráfico)
  */
 function renderizarMaioresSpreads(top10) {
-    // Renderiza tabelas
-    renderizarTabelaSpreads('ipca', top10.ipca_spread);
-    renderizarTabelaSpreads('di', top10.di_spread);
+    // Validação de dados
+    if (!top10) {
+        console.warn('⚠️ Dados de top10 não disponíveis');
+        return;
+    }
+    
+    // Renderiza tabelas com validação
+    if (top10.ipca_spread && Array.isArray(top10.ipca_spread)) {
+        renderizarTabelaSpreads('ipca', top10.ipca_spread);
+    } else {
+        console.warn('⚠️ Dados IPCA+ não disponíveis');
+    }
+    
+    if (top10.di_spread && Array.isArray(top10.di_spread)) {
+        renderizarTabelaSpreads('di', top10.di_spread);
+    } else {
+        console.warn('⚠️ Dados DI+ não disponíveis');
+    }
     
     // Renderiza gráfico scatter
     renderizarGraficoScatter(top10);
@@ -8710,6 +8740,22 @@ function renderizarTabelaSpreads(tipo, spreads) {
     const countEl = document.getElementById(countId);
     
     if (!tbody) return;
+    
+    // Validação de dados
+    if (!spreads || !Array.isArray(spreads) || spreads.length === 0) {
+        console.warn(`⚠️ Sem dados de spreads para ${tipo.toUpperCase()}`);
+        if (countEl) {
+            countEl.textContent = '0 títulos';
+        }
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align: center; padding: 2rem; color: rgba(255, 255, 255, 0.5);">
+                    Nenhum dado disponível
+                </td>
+            </tr>
+        `;
+        return;
+    }
     
     // Atualiza contador
     if (countEl) {
@@ -8800,14 +8846,20 @@ function renderizarGraficoScatter(top10) {
         spreadsScatterMercadoChartInstance.destroy();
     }
     
-    // Prepara datasets
-    const datasetsIPCA = top10.ipca_spread.map(item => ({
+    // Validação de dados
+    if (!top10 || !top10.ipca_spread || !top10.di_spread) {
+        console.warn('⚠️ Dados insuficientes para gráfico scatter');
+        return;
+    }
+    
+    // Prepara datasets com validação
+    const datasetsIPCA = (Array.isArray(top10.ipca_spread) ? top10.ipca_spread : []).map(item => ({
         x: item.duration || 0,
         y: item.spread || 0,
         label: item.id || 'N/A'
     }));
     
-    const datasetsDI = top10.di_spread.map(item => ({
+    const datasetsDI = (Array.isArray(top10.di_spread) ? top10.di_spread : []).map(item => ({
         x: item.duration || 0,
         y: item.spread || 0,
         label: item.id || 'N/A'
