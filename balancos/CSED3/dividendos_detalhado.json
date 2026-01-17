@@ -1,0 +1,78 @@
+{
+  "ticker": "CSED3",
+  "total_dividendos": 1.2027,
+  "periodo": "2021-2025",
+  "quantidade_pagamentos": 7,
+  "dividendos": [
+    {
+      "data_com": "2021-04-30",
+      "valor": 0.18819,
+      "tipo": "DIVIDENDO",
+      "ano": 2021,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2021-04-30"
+    },
+    {
+      "data_com": "2022-04-29",
+      "valor": 0.130951,
+      "tipo": "DIVIDENDO",
+      "ano": 2022,
+      "mes": 4,
+      "dia": 29,
+      "trimestre": "T2",
+      "data_pagamento": "2022-04-29"
+    },
+    {
+      "data_com": "2023-04-28",
+      "valor": 0.068807,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 4,
+      "dia": 28,
+      "trimestre": "T2",
+      "data_pagamento": "2023-04-28"
+    },
+    {
+      "data_com": "2023-11-14",
+      "valor": 0.16459,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 11,
+      "dia": 14,
+      "trimestre": "T4",
+      "data_pagamento": "2023-11-09"
+    },
+    {
+      "data_com": "2024-08-27",
+      "valor": 0.16459,
+      "tipo": "DIVIDENDO",
+      "ano": 2024,
+      "mes": 8,
+      "dia": 27,
+      "trimestre": "T3",
+      "data_pagamento": "2024-08-22"
+    },
+    {
+      "data_com": "2025-04-30",
+      "valor": 0.211224,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 4,
+      "dia": 30,
+      "trimestre": "T2",
+      "data_pagamento": "2025-04-30"
+    },
+    {
+      "data_com": "2025-12-18",
+      "valor": 0.274316,
+      "tipo": "DIVIDENDO",
+      "ano": 2025,
+      "mes": 12,
+      "dia": 18,
+      "trimestre": "T4",
+      "data_pagamento": "2025-12-10"
+    }
+  ]
+}

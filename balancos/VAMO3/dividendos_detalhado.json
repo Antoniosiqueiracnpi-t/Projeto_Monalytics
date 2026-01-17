@@ -1,0 +1,78 @@
+{
+  "ticker": "VAMO3",
+  "total_dividendos": 1.203,
+  "periodo": "2021-2025",
+  "quantidade_pagamentos": 7,
+  "dividendos": [
+    {
+      "data_com": "2021-12-08",
+      "valor": 0.148402,
+      "tipo": "DIVIDENDO",
+      "ano": 2021,
+      "mes": 12,
+      "dia": 8,
+      "trimestre": "T4",
+      "data_pagamento": "2021-12-02"
+    },
+    {
+      "data_com": "2021-12-08",
+      "valor": 0.047679,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2021,
+      "mes": 12,
+      "dia": 8,
+      "trimestre": "T4",
+      "data_pagamento": "2021-12-02"
+    },
+    {
+      "data_com": "2022-12-26",
+      "valor": 0.261442,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2022,
+      "mes": 12,
+      "dia": 26,
+      "trimestre": "T4",
+      "data_pagamento": "2022-12-20"
+    },
+    {
+      "data_com": "2023-05-05",
+      "valor": 0.017298,
+      "tipo": "DIVIDENDO",
+      "ano": 2023,
+      "mes": 5,
+      "dia": 5,
+      "trimestre": "T2",
+      "data_pagamento": "2023-04-28"
+    },
+    {
+      "data_com": "2023-12-19",
+      "valor": 0.319217,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2023,
+      "mes": 12,
+      "dia": 19,
+      "trimestre": "T4",
+      "data_pagamento": "2023-12-14"
+    },
+    {
+      "data_com": "2024-11-29",
+      "valor": 0.268262,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2024,
+      "mes": 11,
+      "dia": 29,
+      "trimestre": "T4",
+      "data_pagamento": "2024-11-26"
+    },
+    {
+      "data_com": "2025-12-18",
+      "valor": 0.140702,
+      "tipo": "JRS CAP PROPRIO",
+      "ano": 2025,
+      "mes": 12,
+      "dia": 18,
+      "trimestre": "T4",
+      "data_pagamento": "2025-12-15"
+    }
+  ]
+}

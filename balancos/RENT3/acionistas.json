@@ -1,0 +1,142 @@
+{
+  "empresa": {
+    "cnpj": "16.670.085/0001-55",
+    "nome": "",
+    "ticker": "RENT3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 10,
+  "acionistas": [
+    {
+      "nome": "CAPITAL RESEARCH GLOBAL lNVESTORS",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Estados Unidos",
+      "acoes_total": 98810022,
+      "percentual_total": 8.789,
+      "acoes_ordinarias": 95151584,
+      "percentual_ordinarias": 8.789,
+      "acoes_preferenciais": 3658438,
+      "percentual_preferenciais": 8.786,
+      "posicao": 1
+    },
+    {
+      "nome": "EUGÊNIO PACELLI MATTAR",
+      "cpf_cnpj": "130.057.586-72",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 47011356,
+      "percentual_total": 4.182,
+      "acoes_ordinarias": 45269637,
+      "percentual_ordinarias": 4.181,
+      "acoes_preferenciais": 1741719,
+      "percentual_preferenciais": 4.183,
+      "posicao": 2
+    },
+    {
+      "nome": "DYNAMO ADMINISTRAÇÃO DE RECURSOS LTDA",
+      "cpf_cnpj": "72.116.353/0001-62",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 44570154,
+      "percentual_total": 3.964,
+      "acoes_ordinarias": 41610851,
+      "percentual_ordinarias": 3.844,
+      "acoes_preferenciais": 2959303,
+      "percentual_preferenciais": 7.107,
+      "posicao": 3
+    },
+    {
+      "nome": "JOSÉ SALIM MATTAR JÚNIOR",
+      "cpf_cnpj": "071.823.766-87",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 39847999,
+      "percentual_total": 3.544,
+      "acoes_ordinarias": 38372169,
+      "percentual_ordinarias": 3.544,
+      "acoes_preferenciais": 1475830,
+      "percentual_preferenciais": 3.544,
+      "posicao": 4
+    },
+    {
+      "nome": "ANTÔNIO CLÁUDIO BRANDÃO RESENDE",
+      "cpf_cnpj": "076.364.666-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 29593938,
+      "percentual_total": 2.632,
+      "acoes_ordinarias": 28497883,
+      "percentual_ordinarias": 2.632,
+      "acoes_preferenciais": 1096055,
+      "percentual_preferenciais": 2.632,
+      "posicao": 5
+    },
+    {
+      "nome": "FLÁVIO BRANDÃO RESENDE",
+      "cpf_cnpj": "186.119.316-53",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 26771260,
+      "percentual_total": 2.381,
+      "acoes_ordinarias": 25779762,
+      "percentual_ordinarias": 2.381,
+      "acoes_preferenciais": 991498,
+      "percentual_preferenciais": 2.381,
+      "posicao": 6
+    },
+    {
+      "nome": "SERGIO AUGUSTO GUERRA DE RESENDE",
+      "cpf_cnpj": "865.258.326-91",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 17983307,
+      "percentual_total": 1.6,
+      "acoes_ordinarias": 17300974,
+      "percentual_ordinarias": 1.598,
+      "acoes_preferenciais": 682333,
+      "percentual_preferenciais": 1.639,
+      "posicao": 7
+    },
+    {
+      "nome": "DIRLEY PINGNATTI RICCI",
+      "cpf_cnpj": "696.165.669-20",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 14782705,
+      "percentual_total": 1.315,
+      "acoes_ordinarias": 14235206,
+      "percentual_ordinarias": 1.315,
+      "acoes_preferenciais": 547499,
+      "percentual_preferenciais": 1.315,
+      "posicao": 8
+    },
+    {
+      "nome": "LUIS FERNANDO MEMORIA PORTO",
+      "cpf_cnpj": "915.133.326-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 12087179,
+      "percentual_total": 1.075,
+      "acoes_ordinarias": 11650000,
+      "percentual_ordinarias": 1.076,
+      "acoes_preferenciais": 437179,
+      "percentual_preferenciais": 1.05,
+      "posicao": 9
+    },
+    {
+      "nome": "DANIELA CARVALHO RESENDE ARGES",
+      "cpf_cnpj": "881.815.536-91",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 8394331,
+      "percentual_total": 0.747,
+      "acoes_ordinarias": 8083383,
+      "percentual_ordinarias": 0.747,
+      "acoes_preferenciais": 310948,
+      "percentual_preferenciais": 0.747,
+      "posicao": 10
+    }
+  ]
+}

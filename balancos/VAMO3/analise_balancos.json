@@ -1,0 +1,46 @@
+{
+  "ticker": "VAMO3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T20:37:26.689602",
+  "periodo_analisado": {
+    "inicio": "2018T1",
+    "fim": "2025T3",
+    "total_trimestres": 31,
+    "anos": 7.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 30.1,
+      "variacao_total": 619.71,
+      "ultimo_valor": 1529.01
+    },
+    "margens": {
+      "bruta": 40.04,
+      "operacional": 31.32,
+      "liquida": 12.94
+    },
+    "rentabilidade": {
+      "roe_medio": 19.05,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": -538.33,
+      "ultimo": -711.13
+    },
+    "balanco": {
+      "ativo_total": 23021.64,
+      "patrimonio": 2630.6
+    }
+  },
+  "analise_critica": "VAMO3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 12.94%. Gera excelente retorno sobre o patrimônio (ROE médio de 19.05%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 30.1%)",
+    "Excelente retorno sobre patrimônio (ROE: 19.05%)"
+  ],
+  "pontos_atencao": [
+    "Queima de caixa operacional"
+  ]
+}

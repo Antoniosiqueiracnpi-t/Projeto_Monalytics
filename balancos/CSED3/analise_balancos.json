@@ -1,0 +1,46 @@
+{
+  "ticker": "CSED3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T20:37:26.590950",
+  "periodo_analisado": {
+    "inicio": "2019T1",
+    "fim": "2025T3",
+    "total_trimestres": 27,
+    "anos": 6.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 10.6,
+      "variacao_total": 92.54,
+      "ultimo_valor": 694.22
+    },
+    "margens": {
+      "bruta": 47.65,
+      "operacional": 17.38,
+      "liquida": 4.54
+    },
+    "rentabilidade": {
+      "roe_medio": 6.7,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 157.35,
+      "ultimo": 729.59
+    },
+    "balanco": {
+      "ativo_total": 4778.54,
+      "patrimonio": 1656.11
+    }
+  },
+  "analise_critica": "CSED3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 4.54%). Retorno sobre patrimônio abaixo do esperado (ROE de 6.7%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 10.6%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (4.54%)",
+    "Retorno sobre patrimônio baixo (ROE: 6.7%)"
+  ]
+}

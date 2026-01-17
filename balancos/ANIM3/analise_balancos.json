@@ -1,0 +1,46 @@
+{
+  "ticker": "ANIM3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T20:37:26.549870",
+  "periodo_analisado": {
+    "inicio": "2012T1",
+    "fim": "2025T3",
+    "total_trimestres": 55,
+    "anos": 13.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 20.8,
+      "variacao_total": 1181.49,
+      "ultimo_valor": 1005.92
+    },
+    "margens": {
+      "bruta": 48.1,
+      "operacional": 11.68,
+      "liquida": 4.28
+    },
+    "rentabilidade": {
+      "roe_medio": 5.63,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 71.69,
+      "ultimo": 737.0
+    },
+    "balanco": {
+      "ativo_total": 10090.28,
+      "patrimonio": 2906.51
+    }
+  },
+  "analise_critica": "ANIM3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 4.28%). Retorno sobre patrimônio abaixo do esperado (ROE de 5.63%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 20.8%)"
+  ],
+  "pontos_atencao": [
+    "Margem líquida comprimida (4.28%)",
+    "Retorno sobre patrimônio baixo (ROE: 5.63%)"
+  ]
+}
