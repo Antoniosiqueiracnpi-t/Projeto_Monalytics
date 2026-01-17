@@ -1,22 +1,11 @@
 {
   "ticker": "PTBL3",
-  "ultima_atualizacao": "2026-01-16T23:02:14.553409",
+  "ultima_atualizacao": "2026-01-17T20:15:19.692637",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 5.69,
-      "maxima": 5.93,
-      "minima": 5.6,
-      "fechamento": 5.88,
-      "volume": 3418900,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 5.75,
@@ -222,7 +211,7 @@
       "minima": 5.62,
       "fechamento": 5.84,
       "volume": 3849400,
-      "mm20": 5.58,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 7.59,
       "volume": 4405000,
       "mm20": 7.77,
-      "mm50": 6.75,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1355500,
       "mm20": 10.07,
       "mm50": 11.18,
-      "mm200": 10.14
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 3.23,
       "mm50": 3.35,
       "mm200": 3.98
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 3.25,
+      "maxima": 3.28,
+      "minima": 3.24,
+      "fechamento": 3.25,
+      "volume": 133100,
+      "mm20": 3.23,
+      "mm50": 3.33,
+      "mm200": 3.98
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 5.88,
-    "preco_atual": 3.26,
-    "variacao_periodo": -44.55,
+    "preco_inicial": 5.74,
+    "preco_atual": 3.25,
+    "variacao_periodo": -43.36,
     "maxima_periodo": 16.67,
     "minima_periodo": 3.13,
-    "volume_medio": 1155337,
+    "volume_medio": 1152735,
     "tendencia": "indefinida"
   }
 }

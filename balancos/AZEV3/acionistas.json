@@ -1,0 +1,51 @@
+{
+  "empresa": {
+    "cnpj": "61.351.532/0001-68",
+    "nome": "",
+    "ticker": "AZEV3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 3,
+  "acionistas": [
+    {
+      "nome": "NEMESIS BRASIL PARTICIPACOES",
+      "cpf_cnpj": "10.234.348/0001-05",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 203130398,
+      "percentual_total": 34.269,
+      "acoes_ordinarias": 116751469,
+      "percentual_ordinarias": 57.804,
+      "acoes_preferenciais": 86378929,
+      "percentual_preferenciais": 22.104,
+      "posicao": 1
+    },
+    {
+      "nome": "nan",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "nan",
+      "nacionalidade": "Brasil",
+      "acoes_total": 50000000,
+      "percentual_total": 8.435,
+      "acoes_ordinarias": 0,
+      "percentual_ordinarias": 0.0,
+      "acoes_preferenciais": 50000000,
+      "percentual_preferenciais": 12.795,
+      "posicao": 2
+    },
+    {
+      "nome": "nan",
+      "cpf_cnpj": "",
+      "tipo_pessoa": "nan",
+      "nacionalidade": "Brasil",
+      "acoes_total": 44886847,
+      "percentual_total": 7.573,
+      "acoes_ordinarias": 20197769,
+      "percentual_ordinarias": 10.0,
+      "acoes_preferenciais": 24689078,
+      "percentual_preferenciais": 6.318,
+      "posicao": 3
+    }
+  ]
+}

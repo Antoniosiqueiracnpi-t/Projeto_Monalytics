@@ -1,0 +1,44 @@
+{
+  "ticker": "MILS3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T20:16:19.837814",
+  "periodo_analisado": {
+    "inicio": "2010T2",
+    "fim": "2025T3",
+    "total_trimestres": 62,
+    "anos": 15.5
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 7.34,
+      "variacao_total": 194.32,
+      "ultimo_valor": 482.67
+    },
+    "margens": {
+      "bruta": 42.62,
+      "operacional": 7.43,
+      "liquida": -1.73
+    },
+    "rentabilidade": {
+      "roe_medio": 11.16,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 16.14,
+      "ultimo": -13.67
+    },
+    "balanco": {
+      "ativo_total": 4479.35,
+      "patrimonio": 1681.77
+    }
+  },
+  "analise_critica": "MILS3 apresenta trajetória consistente de crescimento de receita no período analisado. Enfrenta dificuldades de rentabilidade, apresentando prejuízos recorrentes. Retorno sobre patrimônio adequado (ROE de 11.16%). Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Margem líquida comprimida (-1.73%)",
+    "Queima de caixa operacional"
+  ]
+}

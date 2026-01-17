@@ -1,0 +1,43 @@
+{
+  "ticker": "ARML3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T20:16:19.741448",
+  "periodo_analisado": {
+    "inicio": "2020T3",
+    "fim": "2025T3",
+    "total_trimestres": 21,
+    "anos": 5.2
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 75.93,
+      "variacao_total": 1585.45,
+      "ultimo_valor": 494.58
+    },
+    "margens": {
+      "bruta": 44.32,
+      "operacional": 31.99,
+      "liquida": 12.19
+    },
+    "rentabilidade": {
+      "roe_medio": 11.86,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": -10.39,
+      "ultimo": 360.4
+    },
+    "balanco": {
+      "ativo_total": 4633.47,
+      "patrimonio": 1319.4
+    }
+  },
+  "analise_critica": "ARML3 apresenta trajetória consistente de crescimento de receita no período analisado. Apresenta rentabilidade saudável com margem líquida de 12.19%. Retorno sobre patrimônio adequado (ROE de 11.86%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [
+    "Forte crescimento de receita (CAGR: 75.93%)"
+  ],
+  "pontos_atencao": []
+}

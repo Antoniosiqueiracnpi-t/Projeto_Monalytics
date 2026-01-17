@@ -1,0 +1,47 @@
+{
+  "ticker": "AZEV4",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T20:16:19.791704",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": -0.26,
+      "variacao_total": -3.93,
+      "ultimo_valor": 116.1
+    },
+    "margens": {
+      "bruta": -23.68,
+      "operacional": 1028.37,
+      "liquida": 987.08
+    },
+    "rentabilidade": {
+      "roe_medio": -85.19,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": -7.35,
+      "ultimo": -30.76
+    },
+    "balanco": {
+      "ativo_total": 1046.49,
+      "patrimonio": 159.35
+    }
+  },
+  "analise_critica": "AZEV4 enfrenta desafios no crescimento, com receita em tendência de queda. Destaca-se pela alta rentabilidade, com margem líquida média de 987.08%. Apresenta queima de caixa operacional, requerendo atenção.",
+  "pontos_fortes": [
+    "Alta margem de lucro líquido (987.08%)"
+  ],
+  "pontos_atencao": [
+    "Receita em queda (CAGR: -0.26%)",
+    "Retorno sobre patrimônio baixo (ROE: -85.19%)",
+    "Queima de caixa operacional"
+  ]
+}

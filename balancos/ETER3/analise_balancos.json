@@ -1,0 +1,44 @@
+{
+  "ticker": "ETER3",
+  "tipo_empresa": "nao_financeira",
+  "ultima_atualizacao": "2026-01-17T20:16:19.815810",
+  "periodo_analisado": {
+    "inicio": "2010T1",
+    "fim": "2025T3",
+    "total_trimestres": 63,
+    "anos": 15.8
+  },
+  "metricas": {
+    "receita": {
+      "cagr": 3.86,
+      "variacao_total": 79.8,
+      "ultimo_valor": 319.32
+    },
+    "margens": {
+      "bruta": 31.96,
+      "operacional": 7.53,
+      "liquida": 3.41
+    },
+    "rentabilidade": {
+      "roe_medio": -27.39,
+      "roa_medio": null
+    },
+    "estrutura": {
+      "pl_ativos": null
+    },
+    "caixa": {
+      "media": 21.04,
+      "ultimo": 14.64
+    },
+    "balanco": {
+      "ativo_total": 1415.2,
+      "patrimonio": 845.79
+    }
+  },
+  "analise_critica": "ETER3 apresenta trajetória consistente de crescimento de receita no período analisado. Opera com margens comprimidas (margem líquida de 3.41%). Geração de caixa operacional positiva.",
+  "pontos_fortes": [],
+  "pontos_atencao": [
+    "Margem líquida comprimida (3.41%)",
+    "Retorno sobre patrimônio baixo (ROE: -27.39%)"
+  ]
+}

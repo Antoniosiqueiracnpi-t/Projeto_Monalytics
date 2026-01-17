@@ -1,0 +1,77 @@
+{
+  "empresa": {
+    "cnpj": "18.593.815/0001-97",
+    "nome": "",
+    "ticker": "PRNR3"
+  },
+  "data_referencia": "2025-12-31",
+  "ano_fre": 2025,
+  "top_acionistas": 5,
+  "acionistas": [
+    {
+      "nome": "Leblon Equities Gestão de Recursos Ltda.",
+      "cpf_cnpj": "10.240.925/0001-63",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 6230476,
+      "percentual_total": 10.984,
+      "acoes_ordinarias": 6230476,
+      "percentual_ordinarias": 10.984,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 1
+    },
+    {
+      "nome": "Absolute Gestão de Investimentos LTDA.",
+      "cpf_cnpj": "17.285.755/0001-82",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 6171831,
+      "percentual_total": 10.881,
+      "acoes_ordinarias": 6171831,
+      "percentual_ordinarias": 10.881,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 2
+    },
+    {
+      "nome": "TOBIAS CEPELOWICZ",
+      "cpf_cnpj": "006.527.337-00",
+      "tipo_pessoa": "PF",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4494472,
+      "percentual_total": 7.924,
+      "acoes_ordinarias": 4494472,
+      "percentual_ordinarias": 7.924,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 3
+    },
+    {
+      "nome": "ALPHA KEY CAPITAL MANAGEMENT INVESTIMENTOS LTDA.",
+      "cpf_cnpj": "31.340.246/0001-36",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4293400,
+      "percentual_total": 7.569,
+      "acoes_ordinarias": 4293400,
+      "percentual_ordinarias": 7.569,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 4
+    },
+    {
+      "nome": "Safra Asset Management Ltda.",
+      "cpf_cnpj": "62.180.047/0001-31",
+      "tipo_pessoa": "PJ",
+      "nacionalidade": "Brasil",
+      "acoes_total": 4153156,
+      "percentual_total": 7.322,
+      "acoes_ordinarias": 4153156,
+      "percentual_ordinarias": 7.322,
+      "acoes_preferenciais": 0,
+      "percentual_preferenciais": 0.0,
+      "posicao": 5
+    }
+  ]
+}
