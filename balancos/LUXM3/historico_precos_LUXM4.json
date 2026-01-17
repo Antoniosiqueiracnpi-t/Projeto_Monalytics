@@ -1,22 +1,11 @@
 {
   "ticker": "LUXM4",
-  "ultima_atualizacao": "2026-01-16T23:04:22.268955",
+  "ultima_atualizacao": "2026-01-17T23:04:21.220370",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 6.98,
-      "maxima": 7.09,
-      "minima": 6.98,
-      "fechamento": 7.09,
-      "volume": 9600,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 7.01,
@@ -222,7 +211,7 @@
       "minima": 7.38,
       "fechamento": 7.38,
       "volume": 800,
-      "mm20": 7.16,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 7.83,
       "volume": 800,
       "mm20": 7.59,
-      "mm50": 7.37,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 9.4,
       "mm50": 9.22,
-      "mm200": 8.22
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 4.23,
       "mm50": 3.95,
       "mm200": 4.45
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 4.49,
+      "maxima": 4.49,
+      "minima": 4.11,
+      "fechamento": 4.11,
+      "volume": 2600,
+      "mm20": 4.24,
+      "mm50": 3.96,
+      "mm200": 4.44
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 7.09,
-    "preco_atual": 4.2,
-    "variacao_periodo": -40.78,
+    "preco_atual": 4.11,
+    "variacao_periodo": -42.05,
     "maxima_periodo": 10.87,
     "minima_periodo": 3.09,
-    "volume_medio": 4287,
+    "volume_medio": 4282,
     "tendencia": "indefinida"
   }
 }

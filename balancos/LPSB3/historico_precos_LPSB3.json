@@ -1,22 +1,11 @@
 {
   "ticker": "LPSB3",
-  "ultima_atualizacao": "2026-01-16T23:02:51.033923",
+  "ultima_atualizacao": "2026-01-17T23:02:43.162221",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 4.15,
-      "maxima": 4.16,
-      "minima": 4.04,
-      "fechamento": 4.15,
-      "volume": 1114300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 4.04,
@@ -222,7 +211,7 @@
       "minima": 3.74,
       "fechamento": 3.89,
       "volume": 709600,
-      "mm20": 3.95,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 2.78,
       "volume": 1453300,
       "mm20": 3.27,
-      "mm50": 3.65,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 829000,
       "mm20": 2.47,
       "mm50": 2.93,
-      "mm200": 3.4
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -5233,7 +5222,7 @@
     },
     {
       "data": "2022-11-21",
-      "abertura": 1.93,
+      "abertura": 1.92,
       "maxima": 1.97,
       "minima": 1.82,
       "fechamento": 1.94,
@@ -13898,16 +13887,27 @@
       "mm20": 1.73,
       "mm50": 1.67,
       "mm200": 1.42
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 1.61,
+      "maxima": 1.61,
+      "minima": 1.49,
+      "fechamento": 1.52,
+      "volume": 1120700,
+      "mm20": 1.71,
+      "mm50": 1.67,
+      "mm200": 1.42
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 4.15,
-    "preco_atual": 1.58,
-    "variacao_periodo": -61.89,
+    "preco_inicial": 3.96,
+    "preco_atual": 1.52,
+    "variacao_periodo": -61.64,
     "maxima_periodo": 4.16,
     "minima_periodo": 0.97,
-    "volume_medio": 477241,
+    "volume_medio": 477246,
     "tendencia": "indefinida"
   }
 }

@@ -1,9 +1,9 @@
 {
   "ticker": "BSLI4",
-  "ultima_atualizacao": "2026-01-16T23:03:03.964991",
+  "ultima_atualizacao": "2026-01-17T23:02:58.383351",
   "periodo": {
     "inicio": "2024-12-09",
-    "fim": "2026-01-15"
+    "fim": "2026-01-16"
   },
   "dados": [
     {
@@ -2700,16 +2700,27 @@
       "mm20": 7.18,
       "mm50": 7.62,
       "mm200": 8.65
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 7.41,
+      "maxima": 7.84,
+      "minima": 7.41,
+      "fechamento": 7.41,
+      "volume": 1800,
+      "mm20": 7.18,
+      "mm50": 7.59,
+      "mm200": 8.66
     }
   ],
   "estatisticas": {
-    "total_dias": 245,
+    "total_dias": 246,
     "preco_inicial": 7.73,
-    "preco_atual": 7.24,
-    "variacao_periodo": -6.32,
+    "preco_atual": 7.41,
+    "variacao_periodo": -4.12,
     "maxima_periodo": 12.49,
     "minima_periodo": 5.79,
-    "volume_medio": 6406,
+    "volume_medio": 6388,
     "tendencia": "indefinida"
   }
 }

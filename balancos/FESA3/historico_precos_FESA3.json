@@ -1,22 +1,11 @@
 {
   "ticker": "FESA3",
-  "ultima_atualizacao": "2026-01-16T23:03:57.194178",
+  "ultima_atualizacao": "2026-01-17T23:03:52.997338",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 6.32,
-      "maxima": 6.32,
-      "minima": 6.32,
-      "fechamento": 6.32,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 6.32,
@@ -222,7 +211,7 @@
       "minima": 6.3,
       "fechamento": 6.78,
       "volume": 6400,
-      "mm20": 6.9,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 7.01,
       "volume": 3200,
       "mm20": 7.03,
-      "mm50": 6.87,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 3600,
       "mm20": 10.79,
       "mm50": 10.85,
-      "mm200": 9.33
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -3409,8 +3398,8 @@
       "data": "2022-03-23",
       "abertura": 10.02,
       "maxima": 10.02,
-      "minima": 10.01,
-      "fechamento": 10.01,
+      "minima": 10.02,
+      "fechamento": 10.02,
       "volume": 800,
       "mm20": 9.93,
       "mm50": 10.12,
@@ -13898,6 +13887,17 @@
       "mm20": 11.58,
       "mm50": 11.59,
       "mm200": 11.23
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 12.05,
+      "maxima": 12.05,
+      "minima": 12.05,
+      "fechamento": 12.05,
+      "volume": 0,
+      "mm20": 11.58,
+      "mm50": 11.62,
+      "mm200": 11.24
     }
   ],
   "estatisticas": {

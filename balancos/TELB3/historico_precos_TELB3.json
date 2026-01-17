@@ -1,22 +1,11 @@
 {
   "ticker": "TELB3",
-  "ultima_atualizacao": "2026-01-16T23:04:17.899705",
+  "ultima_atualizacao": "2026-01-17T23:04:13.958403",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 89.55,
-      "maxima": 89.55,
-      "minima": 89.46,
-      "fechamento": 89.46,
-      "volume": 201,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 89.46,
@@ -222,7 +211,7 @@
       "minima": 78.52,
       "fechamento": 78.52,
       "volume": 804,
-      "mm20": 83.77,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 68.68,
       "volume": 301,
       "mm20": 76.05,
-      "mm50": 80.1,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1307,
       "mm20": 52.89,
       "mm50": 57.31,
-      "mm200": 69.99
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,6 +13887,17 @@
       "mm20": 11.09,
       "mm50": 10.94,
       "mm200": 12.02
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 10.83,
+      "maxima": 10.83,
+      "minima": 10.83,
+      "fechamento": 10.83,
+      "volume": 0,
+      "mm20": 11.08,
+      "mm50": 10.93,
+      "mm200": 12.0
     }
   ],
   "estatisticas": {

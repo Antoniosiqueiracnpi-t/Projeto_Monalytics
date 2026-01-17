@@ -1,22 +1,11 @@
 {
   "ticker": "RPMG3",
-  "ultima_atualizacao": "2026-01-16T23:03:33.999878",
+  "ultima_atualizacao": "2026-01-17T23:03:29.689093",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 2.94,
-      "maxima": 2.95,
-      "minima": 2.89,
-      "fechamento": 2.89,
-      "volume": 77100,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 2.89,
@@ -222,7 +211,7 @@
       "minima": 2.9,
       "fechamento": 2.93,
       "volume": 394200,
-      "mm20": 2.85,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 2.84,
       "volume": 68600,
       "mm20": 3.04,
-      "mm50": 2.98,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 61900,
       "mm20": 3.4,
       "mm50": 3.63,
-      "mm200": 3.76
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 2.1,
       "mm50": 2.11,
       "mm200": 2.62
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 2.1,
+      "maxima": 2.1,
+      "minima": 2.1,
+      "fechamento": 2.1,
+      "volume": 0,
+      "mm20": 2.1,
+      "mm50": 2.11,
+      "mm200": 2.62
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 2.89,
+    "preco_inicial": 2.8,
     "preco_atual": 2.1,
-    "variacao_periodo": -27.34,
+    "variacao_periodo": -25.0,
     "maxima_periodo": 6.32,
     "minima_periodo": 1.52,
-    "volume_medio": 55103,
+    "volume_medio": 55042,
     "tendencia": "baixa"
   }
 }

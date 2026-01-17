@@ -1,22 +1,11 @@
 {
   "ticker": "VALE3",
-  "ultima_atualizacao": "2026-01-16T23:03:28.638276",
+  "ultima_atualizacao": "2026-01-17T23:03:22.407581",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 50.64,
-      "maxima": 51.08,
-      "minima": 50.53,
-      "fechamento": 50.74,
-      "volume": 23843100,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 49.79,
@@ -222,7 +211,7 @@
       "minima": 52.5,
       "fechamento": 53.36,
       "volume": 20480000,
-      "mm20": 53.9,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 60.2,
       "volume": 39677300,
       "mm20": 56.14,
-      "mm50": 54.48,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -1451,7 +1440,7 @@
       "data": "2021-07-05",
       "abertura": 70.15,
       "maxima": 70.19,
-      "minima": 69.16,
+      "minima": 69.15,
       "fechamento": 69.7,
       "volume": 13732900,
       "mm20": 67.85,
@@ -2204,7 +2193,7 @@
       "volume": 28327900,
       "mm20": 53.13,
       "mm50": 59.17,
-      "mm200": 61.37
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 73.43,
       "mm50": 67.64,
       "mm200": 55.53
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 78.39,
+      "maxima": 78.88,
+      "minima": 77.57,
+      "fechamento": 78.88,
+      "volume": 45910100,
+      "mm20": 73.92,
+      "mm50": 67.98,
+      "mm200": 55.67
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 50.74,
-    "preco_atual": 78.85,
-    "variacao_periodo": 55.39,
+    "preco_inicial": 50.2,
+    "preco_atual": 78.88,
+    "variacao_periodo": 57.13,
     "maxima_periodo": 78.92,
     "minima_periodo": 42.38,
-    "volume_medio": 26195849,
+    "volume_medio": 26213321,
     "tendencia": "alta"
   }
 }

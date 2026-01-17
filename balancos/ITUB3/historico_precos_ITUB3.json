@@ -1,22 +1,11 @@
 {
   "ticker": "ITUB3",
-  "ultima_atualizacao": "2026-01-16T23:03:04.299037",
+  "ultima_atualizacao": "2026-01-17T23:02:58.710512",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 17.27,
-      "maxima": 17.43,
-      "minima": 17.11,
-      "fechamento": 17.23,
-      "volume": 881700,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 17.02,
@@ -222,7 +211,7 @@
       "minima": 16.59,
       "fechamento": 16.7,
       "volume": 343978,
-      "mm20": 17.24,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 14.87,
       "volume": 1013581,
       "mm20": 15.12,
-      "mm50": 16.15,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1703012,
       "mm20": 15.89,
       "mm50": 16.82,
-      "mm200": 16.35
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 36.15,
       "mm50": 34.58,
       "mm200": 30.57
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 37.04,
+      "maxima": 37.24,
+      "minima": 36.63,
+      "fechamento": 36.95,
+      "volume": 1034700,
+      "mm20": 36.21,
+      "mm50": 34.67,
+      "mm200": 30.63
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 17.23,
-    "preco_atual": 37.04,
-    "variacao_periodo": 114.91,
+    "preco_inicial": 16.85,
+    "preco_atual": 36.95,
+    "variacao_periodo": 119.32,
     "maxima_periodo": 37.43,
     "minima_periodo": 12.15,
-    "volume_medio": 807133,
+    "volume_medio": 807254,
     "tendencia": "alta"
   }
 }

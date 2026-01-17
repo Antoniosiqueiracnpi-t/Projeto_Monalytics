@@ -1,9 +1,9 @@
 {
   "ticker": "MATD3",
-  "ultima_atualizacao": "2026-01-16T23:03:52.587042",
+  "ultima_atualizacao": "2026-01-17T23:03:47.748317",
   "periodo": {
     "inicio": "2021-05-13",
-    "fim": "2026-01-15"
+    "fim": "2026-01-16"
   },
   "dados": [
     {
@@ -12853,16 +12853,27 @@
       "mm20": 5.24,
       "mm50": 4.81,
       "mm200": 4.44
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 5.21,
+      "maxima": 5.24,
+      "minima": 5.15,
+      "fechamento": 5.21,
+      "volume": 45200,
+      "mm20": 5.26,
+      "mm50": 4.83,
+      "mm200": 4.45
     }
   ],
   "estatisticas": {
-    "total_dias": 1168,
+    "total_dias": 1169,
     "preco_inicial": 14.58,
-    "preco_atual": 5.16,
-    "variacao_periodo": -64.6,
+    "preco_atual": 5.21,
+    "variacao_periodo": -64.25,
     "maxima_periodo": 19.94,
     "minima_periodo": 3.31,
-    "volume_medio": 521678,
+    "volume_medio": 521271,
     "tendencia": "indefinida"
   }
 }

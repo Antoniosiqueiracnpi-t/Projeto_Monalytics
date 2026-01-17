@@ -1,22 +1,11 @@
 {
   "ticker": "TXRX3",
-  "ultima_atualizacao": "2026-01-16T23:04:14.567529",
+  "ultima_atualizacao": "2026-01-17T23:04:10.503980",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 64.87,
-      "maxima": 64.87,
-      "minima": 64.87,
-      "fechamento": 64.87,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 64.87,
@@ -222,7 +211,7 @@
       "minima": 54.4,
       "fechamento": 54.4,
       "volume": 300,
-      "mm20": 62.94,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 40.08,
       "volume": 100,
       "mm20": 49.99,
-      "mm50": 59.11,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 30.0,
       "mm50": 30.01,
-      "mm200": 40.27
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,6 +13887,17 @@
       "mm20": 9.97,
       "mm50": 9.98,
       "mm200": 9.57
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 9.97,
+      "maxima": 9.97,
+      "minima": 9.97,
+      "fechamento": 9.97,
+      "volume": 0,
+      "mm20": 9.97,
+      "mm50": 9.98,
+      "mm200": 9.58
     }
   ],
   "estatisticas": {

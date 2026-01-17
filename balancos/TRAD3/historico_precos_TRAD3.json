@@ -1,9 +1,9 @@
 {
   "ticker": "TRAD3",
-  "ultima_atualizacao": "2026-01-16T23:03:44.878419",
+  "ultima_atualizacao": "2026-01-17T23:03:39.441025",
   "periodo": {
     "inicio": "2021-07-28",
-    "fim": "2026-01-15"
+    "fim": "2026-01-16"
   },
   "dados": [
     {
@@ -12281,16 +12281,27 @@
       "mm20": 3.95,
       "mm50": 4.48,
       "mm200": 6.19
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 3.71,
+      "maxima": 3.75,
+      "minima": 3.63,
+      "fechamento": 3.74,
+      "volume": 3900,
+      "mm20": 3.93,
+      "mm50": 4.43,
+      "mm200": 6.18
     }
   ],
   "estatisticas": {
-    "total_dias": 1116,
+    "total_dias": 1117,
     "preco_inicial": 88.2,
-    "preco_atual": 3.7,
-    "variacao_periodo": -95.8,
+    "preco_atual": 3.74,
+    "variacao_periodo": -95.76,
     "maxima_periodo": 92.47,
     "minima_periodo": 2.43,
-    "volume_medio": 211773,
+    "volume_medio": 211587,
     "tendencia": "baixa"
   }
 }

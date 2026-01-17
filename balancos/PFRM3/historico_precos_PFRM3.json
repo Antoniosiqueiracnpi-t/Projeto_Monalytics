@@ -1,22 +1,11 @@
 {
   "ticker": "PFRM3",
-  "ultima_atualizacao": "2026-01-16T23:01:50.469253",
+  "ultima_atualizacao": "2026-01-17T23:01:54.500354",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 3.88,
-      "maxima": 3.97,
-      "minima": 3.86,
-      "fechamento": 3.86,
-      "volume": 499300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 3.78,
@@ -222,7 +211,7 @@
       "minima": 4.64,
       "fechamento": 4.83,
       "volume": 683400,
-      "mm20": 4.6,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 4.1,
       "volume": 453200,
       "mm20": 4.23,
-      "mm50": 4.44,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 165900,
       "mm20": 4.08,
       "mm50": 4.2,
-      "mm200": 4.39
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -11033,7 +11022,7 @@
       "abertura": 5.61,
       "maxima": 5.81,
       "minima": 5.45,
-      "fechamento": 5.75,
+      "fechamento": 5.76,
       "volume": 376000,
       "mm20": 5.8,
       "mm50": 5.8,
@@ -13898,16 +13887,27 @@
       "mm20": 8.42,
       "mm50": 8.12,
       "mm200": 7.47
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 8.41,
+      "maxima": 8.41,
+      "minima": 8.01,
+      "fechamento": 8.1,
+      "volume": 131700,
+      "mm20": 8.4,
+      "mm50": 8.12,
+      "mm200": 7.48
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 3.86,
-    "preco_atual": 8.26,
-    "variacao_periodo": 114.11,
+    "preco_inicial": 3.84,
+    "preco_atual": 8.1,
+    "variacao_periodo": 110.75,
     "maxima_periodo": 8.95,
     "minima_periodo": 2.33,
-    "volume_medio": 253511,
+    "volume_medio": 253220,
     "tendencia": "indefinida"
   }
 }

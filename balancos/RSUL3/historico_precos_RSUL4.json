@@ -1,22 +1,11 @@
 {
   "ticker": "RSUL4",
-  "ultima_atualizacao": "2026-01-16T23:03:23.546006",
+  "ultima_atualizacao": "2026-01-17T23:03:18.788134",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 18.39,
-      "maxima": 18.39,
-      "minima": 18.39,
-      "fechamento": 18.39,
-      "volume": 0,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 18.39,
@@ -222,7 +211,7 @@
       "minima": 16.66,
       "fechamento": 16.66,
       "volume": 0,
-      "mm20": 16.19,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 16.08,
       "volume": 0,
       "mm20": 15.95,
-      "mm50": 16.01,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 602,
       "mm20": 72.34,
       "mm50": 75.46,
-      "mm200": 35.3
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -7621,7 +7610,7 @@
     {
       "data": "2023-10-02",
       "abertura": 60.77,
-      "maxima": 63.39,
+      "maxima": 63.38,
       "minima": 60.37,
       "fechamento": 61.91,
       "volume": 2900,
@@ -13898,13 +13887,24 @@
       "mm20": 66.14,
       "mm50": 65.26,
       "mm200": 65.06
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 63.11,
+      "maxima": 63.11,
+      "minima": 62.0,
+      "fechamento": 62.89,
+      "volume": 300,
+      "mm20": 66.01,
+      "mm50": 65.18,
+      "mm200": 65.05
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 18.39,
-    "preco_atual": 62.51,
-    "variacao_periodo": 239.83,
+    "preco_atual": 62.89,
+    "variacao_periodo": 241.89,
     "maxima_periodo": 83.34,
     "minima_periodo": 15.15,
     "volume_medio": 2594,

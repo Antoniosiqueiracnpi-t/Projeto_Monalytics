@@ -1,22 +1,11 @@
 {
   "ticker": "CASH3",
-  "ultima_atualizacao": "2026-01-16T23:03:39.785716",
+  "ultima_atualizacao": "2026-01-17T23:03:36.483428",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 26.4,
-      "maxima": 26.4,
-      "minima": 24.14,
-      "fechamento": 25.11,
-      "volume": 724326,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 24.61,
@@ -222,7 +211,7 @@
       "minima": 41.88,
       "fechamento": 46.41,
       "volume": 2690886,
-      "mm20": 32.8,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 37.51,
       "volume": 2501571,
       "mm20": 46.56,
-      "mm50": 41.38,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 3281201,
       "mm20": 64.35,
       "mm50": 72.92,
-      "mm200": 61.34
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 4.02,
       "mm50": 4.07,
       "mm200": 5.29
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 4.29,
+      "maxima": 4.29,
+      "minima": 4.14,
+      "fechamento": 4.22,
+      "volume": 1384400,
+      "mm20": 4.04,
+      "mm50": 4.06,
+      "mm200": 5.29
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 25.11,
-    "preco_atual": 4.29,
-    "variacao_periodo": -82.91,
+    "preco_inicial": 25.27,
+    "preco_atual": 4.22,
+    "variacao_periodo": -83.3,
     "maxima_periodo": 121.56,
     "minima_periodo": 2.52,
-    "volume_medio": 2849989,
+    "volume_medio": 2850512,
     "tendencia": "indefinida"
   }
 }

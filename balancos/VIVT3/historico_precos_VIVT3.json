@@ -1,22 +1,11 @@
 {
   "ticker": "VIVT3",
-  "ultima_atualizacao": "2026-01-16T23:04:18.813926",
+  "ultima_atualizacao": "2026-01-17T23:04:15.901876",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 16.74,
-      "maxima": 16.99,
-      "minima": 16.49,
-      "fechamento": 16.54,
-      "volume": 5328000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 16.5,
@@ -222,7 +211,7 @@
       "minima": 15.91,
       "fechamento": 16.19,
       "volume": 6112200,
-      "mm20": 16.52,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 16.26,
       "volume": 8452200,
       "mm20": 16.9,
-      "mm50": 16.76,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 4869800,
       "mm20": 16.53,
       "mm50": 16.41,
-      "mm200": 16.58
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 32.93,
       "mm50": 33.58,
       "mm200": 31.15
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 32.83,
+      "maxima": 32.99,
+      "minima": 32.21,
+      "fechamento": 32.47,
+      "volume": 6133700,
+      "mm20": 32.86,
+      "mm50": 33.59,
+      "mm200": 31.2
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 16.54,
-    "preco_atual": 32.71,
-    "variacao_periodo": 97.74,
+    "preco_inicial": 16.33,
+    "preco_atual": 32.47,
+    "variacao_periodo": 98.81,
     "maxima_periodo": 35.31,
     "minima_periodo": 15.2,
-    "volume_medio": 4889261,
+    "volume_medio": 4889899,
     "tendencia": "indefinida"
   }
 }

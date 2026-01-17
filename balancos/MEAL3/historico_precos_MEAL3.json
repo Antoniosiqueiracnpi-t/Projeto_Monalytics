@@ -1,22 +1,11 @@
 {
   "ticker": "MEAL3",
-  "ultima_atualizacao": "2026-01-16T23:02:57.337117",
+  "ultima_atualizacao": "2026-01-17T23:02:50.813741",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 4.87,
-      "maxima": 5.01,
-      "minima": 4.81,
-      "fechamento": 4.87,
-      "volume": 15854300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 4.61,
@@ -222,7 +211,7 @@
       "minima": 3.5,
       "fechamento": 3.67,
       "volume": 12957500,
-      "mm20": 4.06,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 3.09,
       "volume": 8367600,
       "mm20": 3.35,
-      "mm50": 3.69,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1862000,
       "mm20": 3.3,
       "mm50": 3.48,
-      "mm200": 3.74
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 1.24,
       "mm50": 1.24,
       "mm200": 1.27
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 1.23,
+      "maxima": 1.24,
+      "minima": 1.21,
+      "fechamento": 1.24,
+      "volume": 298100,
+      "mm20": 1.24,
+      "mm50": 1.23,
+      "mm200": 1.27
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 4.87,
-    "preco_atual": 1.25,
-    "variacao_periodo": -74.33,
-    "maxima_periodo": 4.87,
+    "preco_inicial": 4.62,
+    "preco_atual": 1.24,
+    "variacao_periodo": -73.16,
+    "maxima_periodo": 4.62,
     "minima_periodo": 0.91,
-    "volume_medio": 1841499,
+    "volume_medio": 1829182,
     "tendencia": "indefinida"
   }
 }

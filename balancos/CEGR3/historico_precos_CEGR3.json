@@ -1,22 +1,11 @@
 {
   "ticker": "CEGR3",
-  "ultima_atualizacao": "2026-01-16T23:02:53.228082",
+  "ultima_atualizacao": "2026-01-17T23:02:47.891926",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 54.8,
-      "maxima": 54.8,
-      "minima": 45.7,
-      "fechamento": 54.56,
-      "volume": 300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 54.56,
@@ -222,7 +211,7 @@
       "minima": 54.81,
       "fechamento": 54.81,
       "volume": 5400,
-      "mm20": 55.39,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 54.8,
       "volume": 500,
       "mm20": 59.14,
-      "mm50": 56.78,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 55.91,
       "mm50": 55.97,
-      "mm200": 56.2
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 85.4,
       "mm50": 91.8,
       "mm200": 93.35
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 53.5,
+      "maxima": 53.5,
+      "minima": 53.5,
+      "fechamento": 53.5,
+      "volume": 100,
+      "mm20": 83.27,
+      "mm50": 90.94,
+      "mm200": 93.34
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
     "preco_inicial": 54.56,
-    "preco_atual": 58.0,
-    "variacao_periodo": 6.31,
+    "preco_atual": 53.5,
+    "variacao_periodo": -1.94,
     "maxima_periodo": 105.95,
-    "minima_periodo": 54.03,
-    "volume_medio": 54,
+    "minima_periodo": 53.5,
+    "volume_medio": 53,
     "tendencia": "baixa"
   }
 }

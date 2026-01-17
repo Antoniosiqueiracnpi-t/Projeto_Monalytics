@@ -1,9 +1,9 @@
 {
   "ticker": "VVEO3",
-  "ultima_atualizacao": "2026-01-16T23:01:51.748115",
+  "ultima_atualizacao": "2026-01-17T23:01:55.677055",
   "periodo": {
     "inicio": "2021-08-09",
-    "fim": "2026-01-15"
+    "fim": "2026-01-16"
   },
   "dados": [
     {
@@ -12193,16 +12193,27 @@
       "mm20": 1.42,
       "mm50": 1.48,
       "mm200": 1.24
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 1.38,
+      "maxima": 1.45,
+      "minima": 1.32,
+      "fechamento": 1.43,
+      "volume": 2335900,
+      "mm20": 1.42,
+      "mm50": 1.48,
+      "mm200": 1.24
     }
   ],
   "estatisticas": {
-    "total_dias": 1108,
+    "total_dias": 1109,
     "preco_inicial": 20.29,
-    "preco_atual": 1.38,
-    "variacao_periodo": -93.2,
+    "preco_atual": 1.43,
+    "variacao_periodo": -92.95,
     "maxima_periodo": 25.26,
     "minima_periodo": 0.83,
-    "volume_medio": 1093775,
+    "volume_medio": 1094895,
     "tendencia": "indefinida"
   }
 }

@@ -1,22 +1,11 @@
 {
   "ticker": "CTNM3",
-  "ultima_atualizacao": "2026-01-16T23:04:09.583789",
+  "ultima_atualizacao": "2026-01-17T23:04:04.577578",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 12.5,
-      "maxima": 12.53,
-      "minima": 12.5,
-      "fechamento": 12.5,
-      "volume": 500,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 12.35,
@@ -222,7 +211,7 @@
       "minima": 11.7,
       "fechamento": 11.7,
       "volume": 6400,
-      "mm20": 11.92,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 10.85,
       "volume": 300,
       "mm20": 11.58,
-      "mm50": 11.84,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 0,
       "mm20": 9.92,
       "mm50": 10.28,
-      "mm200": 11.49
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,13 +13887,24 @@
       "mm20": 7.13,
       "mm50": 7.13,
       "mm200": 7.13
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 7.13,
+      "maxima": 7.13,
+      "minima": 7.13,
+      "fechamento": 7.13,
+      "volume": 0,
+      "mm20": 7.13,
+      "mm50": 7.13,
+      "mm200": 7.13
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 12.5,
+    "preco_inicial": 12.0,
     "preco_atual": 7.13,
-    "variacao_periodo": -42.96,
+    "variacao_periodo": -40.58,
     "maxima_periodo": 15.49,
     "minima_periodo": 3.85,
     "volume_medio": 567,

@@ -1,22 +1,11 @@
 {
   "ticker": "ITSA3",
-  "ultima_atualizacao": "2026-01-16T23:02:54.537908",
+  "ultima_atualizacao": "2026-01-17T23:02:49.080452",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 6.28,
-      "maxima": 6.34,
-      "minima": 6.26,
-      "fechamento": 6.29,
-      "volume": 105241,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 6.29,
@@ -222,7 +211,7 @@
       "minima": 6.09,
       "fechamento": 6.16,
       "volume": 167888,
-      "mm20": 6.33,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 5.62,
       "volume": 467230,
       "mm20": 5.84,
-      "mm50": 6.08,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 206682,
       "mm20": 5.88,
       "mm50": 5.96,
-      "mm200": 6.0
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 11.97,
       "mm50": 11.43,
       "mm200": 10.18
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 12.33,
+      "maxima": 12.33,
+      "minima": 12.1,
+      "fechamento": 12.14,
+      "volume": 237200,
+      "mm20": 11.99,
+      "mm50": 11.46,
+      "mm200": 10.2
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 6.29,
-    "preco_atual": 12.25,
-    "variacao_periodo": 94.83,
+    "preco_inicial": 6.28,
+    "preco_atual": 12.14,
+    "variacao_periodo": 93.4,
     "maxima_periodo": 12.5,
     "minima_periodo": 4.95,
-    "volume_medio": 200963,
+    "volume_medio": 201067,
     "tendencia": "alta"
   }
 }

@@ -1,22 +1,11 @@
 {
   "ticker": "CRPG5",
-  "ultima_atualizacao": "2026-01-16T23:03:47.493266",
+  "ultima_atualizacao": "2026-01-17T23:03:41.921647",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 22.79,
-      "maxima": 23.12,
-      "minima": 22.23,
-      "fechamento": 23.05,
-      "volume": 19000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 22.63,
@@ -75,9 +64,9 @@
     {
       "data": "2020-12-30",
       "abertura": 23.9,
-      "maxima": 24.35,
+      "maxima": 24.36,
       "minima": 23.57,
-      "fechamento": 24.35,
+      "fechamento": 24.36,
       "volume": 17300,
       "mm20": null,
       "mm50": null,
@@ -222,7 +211,7 @@
       "minima": 32.65,
       "fechamento": 34.78,
       "volume": 13700,
-      "mm20": 28.28,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -319,7 +308,7 @@
       "abertura": 32.52,
       "maxima": 32.69,
       "minima": 32.28,
-      "fechamento": 32.35,
+      "fechamento": 32.34,
       "volume": 7800,
       "mm20": 31.9,
       "mm50": null,
@@ -553,7 +542,7 @@
       "fechamento": 33.7,
       "volume": 19500,
       "mm20": 34.13,
-      "mm50": 31.42,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 46700,
       "mm20": 62.78,
       "mm50": 70.54,
-      "mm200": 52.42
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -5377,7 +5366,7 @@
     {
       "data": "2022-12-08",
       "abertura": 24.77,
-      "maxima": 25.31,
+      "maxima": 25.32,
       "minima": 23.46,
       "fechamento": 24.61,
       "volume": 26200,
@@ -13898,16 +13887,27 @@
       "mm20": 18.67,
       "mm50": 19.31,
       "mm200": 17.38
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 19.01,
+      "maxima": 19.49,
+      "minima": 18.51,
+      "fechamento": 19.2,
+      "volume": 2900,
+      "mm20": 18.6,
+      "mm50": 19.25,
+      "mm200": 17.38
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 23.05,
-    "preco_atual": 19.3,
-    "variacao_periodo": -16.26,
+    "preco_inicial": 23.4,
+    "preco_atual": 19.2,
+    "variacao_periodo": -17.95,
     "maxima_periodo": 88.71,
     "minima_periodo": 11.71,
-    "volume_medio": 10102,
+    "volume_medio": 10089,
     "tendencia": "indefinida"
   }
 }

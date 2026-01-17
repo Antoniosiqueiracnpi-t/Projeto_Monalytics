@@ -1,9 +1,9 @@
 {
   "ticker": "SOJA3",
-  "ultima_atualizacao": "2026-01-16T23:01:41.106168",
+  "ultima_atualizacao": "2026-01-17T23:01:45.691785",
   "periodo": {
     "inicio": "2021-04-30",
-    "fim": "2026-01-15"
+    "fim": "2026-01-16"
   },
   "dados": [
     {
@@ -7258,7 +7258,7 @@
     {
       "data": "2023-12-19",
       "abertura": 13.21,
-      "maxima": 13.46,
+      "maxima": 13.45,
       "minima": 13.18,
       "fechamento": 13.4,
       "volume": 220918,
@@ -12952,16 +12952,27 @@
       "mm20": 8.69,
       "mm50": 8.61,
       "mm200": 9.54
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 8.73,
+      "maxima": 8.81,
+      "minima": 8.71,
+      "fechamento": 8.79,
+      "volume": 284500,
+      "mm20": 8.71,
+      "mm50": 8.59,
+      "mm200": 9.54
     }
   ],
   "estatisticas": {
-    "total_dias": 1177,
+    "total_dias": 1178,
     "preco_inicial": 13.42,
-    "preco_atual": 8.73,
-    "variacao_periodo": -34.94,
+    "preco_atual": 8.79,
+    "variacao_periodo": -34.49,
     "maxima_periodo": 16.97,
     "minima_periodo": 7.88,
-    "volume_medio": 456912,
+    "volume_medio": 456766,
     "tendencia": "indefinida"
   }
 }

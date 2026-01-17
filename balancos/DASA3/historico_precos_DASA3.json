@@ -1,22 +1,11 @@
 {
   "ticker": "DASA3",
-  "ultima_atualizacao": "2026-01-16T23:03:51.727509",
+  "ultima_atualizacao": "2026-01-17T23:03:44.879295",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 66.88,
-      "maxima": 68.16,
-      "minima": 66.88,
-      "fechamento": 67.68,
-      "volume": 1300,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 69.15,
@@ -222,7 +211,7 @@
       "minima": 158.56,
       "fechamento": 173.42,
       "volume": 10300,
-      "mm20": 93.87,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 144.68,
       "volume": 900,
       "mm20": 155.41,
-      "mm50": 132.11,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 141600,
       "mm20": 43.58,
       "mm50": 47.61,
-      "mm200": 83.4
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 4.1,
       "mm50": 3.26,
       "mm200": 1.92
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 3.81,
+      "maxima": 3.88,
+      "minima": 3.61,
+      "fechamento": 3.8,
+      "volume": 2513500,
+      "mm20": 4.1,
+      "mm50": 3.3,
+      "mm200": 1.93
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 67.68,
-    "preco_atual": 3.81,
-    "variacao_periodo": -94.37,
+    "preco_inicial": 68.41,
+    "preco_atual": 3.8,
+    "variacao_periodo": -94.45,
     "maxima_periodo": 197.2,
     "minima_periodo": 1.2,
-    "volume_medio": 710546,
+    "volume_medio": 712535,
     "tendencia": "indefinida"
   }
 }

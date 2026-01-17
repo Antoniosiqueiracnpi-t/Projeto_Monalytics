@@ -1,22 +1,11 @@
 {
   "ticker": "WIZC3",
-  "ultima_atualizacao": "2026-01-16T23:03:38.173507",
+  "ultima_atualizacao": "2026-01-17T23:03:32.865833",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 6.21,
-      "maxima": 6.34,
-      "minima": 6.21,
-      "fechamento": 6.28,
-      "volume": 890800,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 6.17,
@@ -222,7 +211,7 @@
       "minima": 5.52,
       "fechamento": 5.56,
       "volume": 478000,
-      "mm20": 5.68,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 4.51,
       "volume": 4685900,
       "mm20": 5.01,
-      "mm50": 5.4,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1312500,
       "mm20": 9.66,
       "mm50": 10.73,
-      "mm200": 8.55
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 8.84,
       "mm50": 8.37,
       "mm200": 7.49
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 9.38,
+      "maxima": 9.38,
+      "minima": 9.16,
+      "fechamento": 9.29,
+      "volume": 339300,
+      "mm20": 8.89,
+      "mm50": 8.39,
+      "mm200": 7.51
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 6.28,
-    "preco_atual": 9.3,
-    "variacao_periodo": 48.11,
+    "preco_inicial": 6.14,
+    "preco_atual": 9.29,
+    "variacao_periodo": 51.4,
     "maxima_periodo": 14.27,
     "minima_periodo": 4.32,
-    "volume_medio": 1247129,
+    "volume_medio": 1246693,
     "tendencia": "alta"
   }
 }

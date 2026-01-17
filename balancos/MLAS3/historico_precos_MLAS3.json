@@ -1,9 +1,9 @@
 {
   "ticker": "MLAS3",
-  "ultima_atualizacao": "2026-01-16T23:01:59.698165",
+  "ultima_atualizacao": "2026-01-17T23:02:01.136321",
   "periodo": {
     "inicio": "2021-07-22",
-    "fim": "2026-01-15"
+    "fim": "2026-01-16"
   },
   "dados": [
     {
@@ -12325,16 +12325,27 @@
       "mm20": 1.35,
       "mm50": 1.28,
       "mm200": 1.1
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 1.39,
+      "maxima": 1.41,
+      "minima": 1.34,
+      "fechamento": 1.38,
+      "volume": 786800,
+      "mm20": 1.35,
+      "mm50": 1.28,
+      "mm200": 1.1
     }
   ],
   "estatisticas": {
-    "total_dias": 1120,
+    "total_dias": 1121,
     "preco_inicial": 12.2,
-    "preco_atual": 1.39,
-    "variacao_periodo": -88.6,
+    "preco_atual": 1.38,
+    "variacao_periodo": -88.68,
     "maxima_periodo": 12.22,
     "minima_periodo": 0.86,
-    "volume_medio": 2448939,
+    "volume_medio": 2447456,
     "tendencia": "alta"
   }
 }

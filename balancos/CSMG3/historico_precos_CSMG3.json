@@ -1,22 +1,11 @@
 {
   "ticker": "CSMG3",
-  "ultima_atualizacao": "2026-01-16T23:01:42.635837",
+  "ultima_atualizacao": "2026-01-17T23:01:47.093587",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 10.13,
-      "maxima": 10.23,
-      "minima": 10.02,
-      "fechamento": 10.2,
-      "volume": 1746700,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 10.02,
@@ -222,7 +211,7 @@
       "minima": 9.93,
       "fechamento": 9.99,
       "volume": 2603900,
-      "mm20": 10.35,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 8.86,
       "volume": 3190200,
       "mm20": 9.56,
-      "mm50": 9.95,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1895300,
       "mm20": 9.48,
       "mm50": 9.3,
-      "mm200": 10.0
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 43.32,
       "mm50": 40.88,
       "mm200": 29.92
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 44.01,
+      "maxima": 45.34,
+      "minima": 43.93,
+      "fechamento": 45.25,
+      "volume": 5176500,
+      "mm20": 43.44,
+      "mm50": 41.04,
+      "mm200": 30.05
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 10.2,
-    "preco_atual": 44.14,
-    "variacao_periodo": 332.89,
-    "maxima_periodo": 44.51,
+    "preco_inicial": 10.07,
+    "preco_atual": 45.25,
+    "variacao_periodo": 349.37,
+    "maxima_periodo": 45.25,
     "minima_periodo": 7.71,
-    "volume_medio": 1981185,
+    "volume_medio": 1983901,
     "tendencia": "alta"
   }
 }

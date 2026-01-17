@@ -1,22 +1,11 @@
 {
   "ticker": "RDOR3",
-  "ultima_atualizacao": "2026-01-16T23:03:53.877826",
+  "ultima_atualizacao": "2026-01-17T23:03:50.936452",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 58.49,
-      "maxima": 59.91,
-      "minima": 57.25,
-      "fechamento": 57.25,
-      "volume": 9740255,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 56.16,
@@ -30,7 +19,7 @@
     },
     {
       "data": "2020-12-22",
-      "abertura": 55.9,
+      "abertura": 55.91,
       "maxima": 56.42,
       "minima": 55.38,
       "fechamento": 56.41,
@@ -76,7 +65,7 @@
       "data": "2020-12-30",
       "abertura": 57.0,
       "maxima": 57.25,
-      "minima": 55.91,
+      "minima": 55.9,
       "fechamento": 57.25,
       "volume": 1305192,
       "mm20": null,
@@ -222,7 +211,7 @@
       "minima": 56.86,
       "fechamento": 57.11,
       "volume": 2119574,
-      "mm20": 55.4,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 52.2,
       "volume": 3243215,
       "mm20": 59.64,
-      "mm50": 57.39,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1805100,
       "mm20": 58.11,
       "mm50": 59.57,
-      "mm200": 58.01
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -3001,7 +2990,7 @@
     {
       "data": "2022-01-27",
       "abertura": 37.99,
-      "maxima": 38.12,
+      "maxima": 38.11,
       "minima": 36.66,
       "fechamento": 37.73,
       "volume": 3125000,
@@ -13898,16 +13887,27 @@
       "mm20": 41.2,
       "mm50": 41.51,
       "mm200": 35.08
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 40.48,
+      "maxima": 40.49,
+      "minima": 39.81,
+      "fechamento": 40.25,
+      "volume": 8040600,
+      "mm20": 41.05,
+      "mm50": 41.52,
+      "mm200": 35.16
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 57.25,
-    "preco_atual": 40.32,
-    "variacao_periodo": -29.58,
+    "preco_inicial": 55.47,
+    "preco_atual": 40.25,
+    "variacao_periodo": -27.44,
     "maxima_periodo": 64.24,
     "minima_periodo": 17.39,
-    "volume_medio": 4987464,
+    "volume_medio": 4986118,
     "tendencia": "indefinida"
   }
 }

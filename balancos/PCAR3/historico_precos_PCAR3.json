@@ -1,22 +1,11 @@
 {
   "ticker": "PCAR3",
-  "ultima_atualizacao": "2026-01-16T23:01:50.152861",
+  "ultima_atualizacao": "2026-01-17T23:01:54.203424",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 9.14,
-      "maxima": 9.3,
-      "minima": 9.13,
-      "fechamento": 9.22,
-      "volume": 5272274,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 9.08,
@@ -222,7 +211,7 @@
       "minima": 9.51,
       "fechamento": 9.59,
       "volume": 10166933,
-      "mm20": 9.33,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 21.41,
       "volume": 8470600,
       "mm20": 13.93,
-      "mm50": 11.24,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 5005100,
       "mm20": 25.6,
       "mm50": 27.52,
-      "mm200": 26.95
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 3.82,
       "mm50": 3.85,
       "mm200": 3.58
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 3.63,
+      "maxima": 3.74,
+      "minima": 3.55,
+      "fechamento": 3.66,
+      "volume": 18602700,
+      "mm20": 3.81,
+      "mm50": 3.85,
+      "mm200": 3.59
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 9.22,
-    "preco_atual": 3.63,
-    "variacao_periodo": -60.62,
+    "preco_inicial": 8.96,
+    "preco_atual": 3.66,
+    "variacao_periodo": -59.14,
     "maxima_periodo": 41.13,
     "minima_periodo": 2.25,
-    "volume_medio": 8327082,
+    "volume_medio": 8337637,
     "tendencia": "indefinida"
   }
 }

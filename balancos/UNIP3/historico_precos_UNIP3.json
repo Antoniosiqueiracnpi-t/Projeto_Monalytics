@@ -1,22 +1,11 @@
 {
   "ticker": "UNIP3",
-  "ultima_atualizacao": "2026-01-16T23:03:50.282997",
+  "ultima_atualizacao": "2026-01-17T23:03:43.519061",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 20.4,
-      "maxima": 20.4,
-      "minima": 19.96,
-      "fechamento": 20.4,
-      "volume": 15125,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 20.33,
@@ -222,7 +211,7 @@
       "minima": 22.33,
       "fechamento": 24.25,
       "volume": 40777,
-      "mm20": 22.7,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 24.21,
       "volume": 7623,
       "mm20": 24.92,
-      "mm50": 23.87,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 47311,
       "mm20": 41.96,
       "mm50": 44.68,
-      "mm200": 35.83
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -10845,7 +10834,7 @@
       "data": "2024-12-03",
       "abertura": 40.61,
       "maxima": 41.64,
-      "minima": 39.96,
+      "minima": 39.95,
       "fechamento": 41.04,
       "volume": 7300,
       "mm20": 38.07,
@@ -13898,16 +13887,27 @@
       "mm20": 57.78,
       "mm50": 54.37,
       "mm200": 49.53
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 57.33,
+      "maxima": 59.0,
+      "minima": 56.04,
+      "fechamento": 56.04,
+      "volume": 14100,
+      "mm20": 57.89,
+      "mm50": 54.41,
+      "mm200": 49.58
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 20.4,
-    "preco_atual": 58.23,
-    "variacao_periodo": 185.39,
+    "preco_inicial": 19.95,
+    "preco_atual": 56.04,
+    "variacao_periodo": 180.95,
     "maxima_periodo": 63.49,
     "minima_periodo": 19.95,
-    "volume_medio": 24611,
-    "tendencia": "alta"
+    "volume_medio": 24610,
+    "tendencia": "indefinida"
   }
 }

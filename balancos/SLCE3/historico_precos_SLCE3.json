@@ -1,22 +1,11 @@
 {
   "ticker": "SLCE3",
-  "ultima_atualizacao": "2026-01-16T23:01:40.807069",
+  "ultima_atualizacao": "2026-01-17T23:01:45.430257",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 7.56,
-      "maxima": 7.71,
-      "minima": 7.51,
-      "fechamento": 7.51,
-      "volume": 1839593,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 7.4,
@@ -222,7 +211,7 @@
       "minima": 9.43,
       "fechamento": 9.69,
       "volume": 3117262,
-      "mm20": 8.59,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 12.01,
       "volume": 2458145,
       "mm20": 11.64,
-      "mm50": 10.08,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 5531847,
       "mm20": 12.78,
       "mm50": 12.59,
-      "mm200": 12.52
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 14.57,
       "mm50": 14.21,
       "mm200": 14.8
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 15.44,
+      "maxima": 15.5,
+      "minima": 15.08,
+      "fechamento": 15.22,
+      "volume": 1803400,
+      "mm20": 14.6,
+      "mm50": 14.24,
+      "mm200": 14.8
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 7.51,
-    "preco_atual": 15.44,
-    "variacao_periodo": 105.54,
+    "preco_inicial": 7.64,
+    "preco_atual": 15.22,
+    "variacao_periodo": 99.25,
     "maxima_periodo": 19.11,
-    "minima_periodo": 7.51,
-    "volume_medio": 3329677,
+    "minima_periodo": 7.64,
+    "volume_medio": 3329648,
     "tendencia": "indefinida"
   }
 }

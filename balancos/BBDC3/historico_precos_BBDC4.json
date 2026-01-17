@@ -1,22 +1,11 @@
 {
   "ticker": "BBDC4",
-  "ultima_atualizacao": "2026-01-16T23:02:58.670086",
+  "ultima_atualizacao": "2026-01-17T23:02:53.150685",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 15.55,
-      "maxima": 15.81,
-      "minima": 15.48,
-      "fechamento": 15.6,
-      "volume": 54097164,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 15.25,
@@ -222,7 +211,7 @@
       "minima": 15.01,
       "fechamento": 15.05,
       "volume": 41861039,
-      "mm20": 15.68,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 14.09,
       "volume": 70396348,
       "mm20": 14.17,
-      "mm50": 14.87,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 39408270,
       "mm20": 13.57,
       "mm50": 14.47,
-      "mm200": 15.39
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 18.33,
       "mm50": 18.43,
       "mm200": 15.97
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 18.9,
+      "maxima": 19.07,
+      "minima": 18.67,
+      "fechamento": 18.91,
+      "volume": 28353400,
+      "mm20": 18.35,
+      "mm50": 18.45,
+      "mm200": 16.01
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 15.6,
-    "preco_atual": 18.9,
-    "variacao_periodo": 21.15,
+    "preco_inicial": 15.22,
+    "preco_atual": 18.91,
+    "variacao_periodo": 24.22,
     "maxima_periodo": 19.2,
     "minima_periodo": 9.87,
-    "volume_medio": 41873950,
+    "volume_medio": 41853567,
     "tendencia": "indefinida"
   }
 }

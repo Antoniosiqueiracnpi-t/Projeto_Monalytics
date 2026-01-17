@@ -1,22 +1,11 @@
 {
   "ticker": "PETR3",
-  "ultima_atualizacao": "2026-01-16T23:03:31.500020",
+  "ultima_atualizacao": "2026-01-17T23:03:28.350850",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 8.52,
-      "maxima": 8.59,
-      "minima": 8.45,
-      "fechamento": 8.47,
-      "volume": 9994200,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 8.18,
@@ -222,7 +211,7 @@
       "minima": 8.46,
       "fechamento": 8.47,
       "volume": 9105100,
-      "mm20": 8.73,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 6.21,
       "volume": 40592700,
       "mm20": 7.41,
-      "mm50": 8.13,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 14617900,
       "mm20": 9.0,
       "mm50": 8.92,
-      "mm200": 8.19
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -2442,7 +2431,7 @@
       "abertura": 8.81,
       "maxima": 9.01,
       "minima": 8.71,
-      "fechamento": 9.0,
+      "fechamento": 9.01,
       "volume": 12622800,
       "mm20": 9.18,
       "mm50": 9.05,
@@ -13898,16 +13887,27 @@
       "mm20": 32.14,
       "mm50": 32.54,
       "mm200": 32.2
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 33.96,
+      "maxima": 34.32,
+      "minima": 33.95,
+      "fechamento": 33.98,
+      "volume": 10025300,
+      "mm20": 32.23,
+      "mm50": 32.61,
+      "mm200": 32.18
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 8.47,
-    "preco_atual": 33.89,
-    "variacao_periodo": 300.21,
+    "preco_inicial": 8.15,
+    "preco_atual": 33.98,
+    "variacao_periodo": 316.71,
     "maxima_periodo": 38.43,
     "minima_periodo": 6.2,
-    "volume_medio": 15137198,
+    "volume_medio": 15137223,
     "tendencia": "indefinida"
   }
 }

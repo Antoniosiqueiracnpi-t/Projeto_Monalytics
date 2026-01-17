@@ -1,22 +1,11 @@
 {
   "ticker": "USIM3",
-  "ultima_atualizacao": "2026-01-16T23:04:04.745713",
+  "ultima_atualizacao": "2026-01-17T23:04:00.464688",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 11.81,
-      "maxima": 12.69,
-      "minima": 11.76,
-      "fechamento": 12.69,
-      "volume": 683000,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 12.51,
@@ -222,7 +211,7 @@
       "minima": 12.26,
       "fechamento": 12.45,
       "volume": 555700,
-      "mm20": 13.13,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 14.12,
       "volume": 715700,
       "mm20": 13.07,
-      "mm50": 12.86,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 425100,
       "mm20": 13.24,
       "mm50": 14.63,
-      "mm200": 15.22
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -2551,7 +2540,7 @@
       "data": "2021-11-29",
       "abertura": 11.4,
       "maxima": 11.59,
-      "minima": 11.19,
+      "minima": 11.18,
       "fechamento": 11.53,
       "volume": 634600,
       "mm20": 10.95,
@@ -13898,16 +13887,27 @@
       "mm20": 6.17,
       "mm50": 5.74,
       "mm200": 5.03
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 6.55,
+      "maxima": 6.55,
+      "minima": 6.26,
+      "fechamento": 6.28,
+      "volume": 654800,
+      "mm20": 6.18,
+      "mm50": 5.75,
+      "mm200": 5.03
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 12.69,
-    "preco_atual": 6.55,
-    "variacao_periodo": -48.38,
+    "preco_inicial": 12.44,
+    "preco_atual": 6.28,
+    "variacao_periodo": -49.53,
     "maxima_periodo": 19.71,
     "minima_periodo": 4.0,
-    "volume_medio": 527141,
+    "volume_medio": 527119,
     "tendencia": "alta"
   }
 }

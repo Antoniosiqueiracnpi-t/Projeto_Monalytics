@@ -1,22 +1,11 @@
 {
   "ticker": "IRBR3",
-  "ultima_atualizacao": "2026-01-16T23:03:37.525658",
+  "ultima_atualizacao": "2026-01-17T23:03:31.179991",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 182.71,
-      "maxima": 185.19,
-      "minima": 181.21,
-      "fechamento": 183.95,
-      "volume": 1053025,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 178.47,
@@ -222,7 +211,7 @@
       "minima": 185.69,
       "fechamento": 190.67,
       "volume": 1537319,
-      "mm20": 192.06,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 145.62,
       "volume": 1350217,
       "mm20": 157.17,
-      "mm50": 175.25,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 489118,
       "mm20": 123.54,
       "mm50": 129.87,
-      "mm200": 151.41
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 52.53,
       "mm50": 51.39,
       "mm200": 48.13
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 51.38,
+      "maxima": 53.41,
+      "minima": 51.38,
+      "fechamento": 52.42,
+      "volume": 917000,
+      "mm20": 52.41,
+      "mm50": 51.45,
+      "mm200": 48.14
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 183.95,
-    "preco_atual": 51.45,
-    "variacao_periodo": -72.03,
+    "preco_inicial": 177.98,
+    "preco_atual": 52.42,
+    "variacao_periodo": -70.55,
     "maxima_periodo": 204.36,
     "minima_periodo": 18.45,
-    "volume_medio": 1435923,
-    "tendencia": "indefinida"
+    "volume_medio": 1435815,
+    "tendencia": "alta"
   }
 }

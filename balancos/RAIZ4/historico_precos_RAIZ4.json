@@ -1,9 +1,9 @@
 {
   "ticker": "RAIZ4",
-  "ultima_atualizacao": "2026-01-16T23:03:33.441150",
+  "ultima_atualizacao": "2026-01-17T23:03:29.153824",
   "periodo": {
     "inicio": "2021-08-05",
-    "fim": "2026-01-15"
+    "fim": "2026-01-16"
   },
   "dados": [
     {
@@ -12215,16 +12215,27 @@
       "mm20": 0.83,
       "mm50": 0.85,
       "mm200": 1.31
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 0.86,
+      "maxima": 0.86,
+      "minima": 0.82,
+      "fechamento": 0.82,
+      "volume": 33088800,
+      "mm20": 0.82,
+      "mm50": 0.85,
+      "mm200": 1.31
     }
   ],
   "estatisticas": {
-    "total_dias": 1110,
+    "total_dias": 1111,
     "preco_inicial": 6.38,
-    "preco_atual": 0.86,
-    "variacao_periodo": -86.53,
+    "preco_atual": 0.82,
+    "variacao_periodo": -87.16,
     "maxima_periodo": 6.54,
     "minima_periodo": 0.8,
-    "volume_medio": 17638949,
-    "tendencia": "indefinida"
+    "volume_medio": 17652856,
+    "tendencia": "baixa"
   }
 }

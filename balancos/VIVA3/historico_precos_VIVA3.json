@@ -1,22 +1,11 @@
 {
   "ticker": "VIVA3",
-  "ultima_atualizacao": "2026-01-16T23:04:16.155291",
+  "ultima_atualizacao": "2026-01-17T23:04:11.027222",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 25.01,
-      "maxima": 25.43,
-      "minima": 24.53,
-      "fechamento": 24.81,
-      "volume": 1105900,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 24.46,
@@ -222,7 +211,7 @@
       "minima": 23.59,
       "fechamento": 23.85,
       "volume": 312700,
-      "mm20": 24.43,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 20.73,
       "volume": 1680600,
       "mm20": 22.57,
-      "mm50": 23.47,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 791300,
       "mm20": 27.27,
       "mm50": 27.92,
-      "mm200": 25.58
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -3187,7 +3176,7 @@
     },
     {
       "data": "2022-02-21",
-      "abertura": 24.08,
+      "abertura": 24.07,
       "maxima": 24.31,
       "minima": 23.48,
       "fechamento": 23.66,
@@ -3541,7 +3530,7 @@
       "data": "2022-04-08",
       "abertura": 24.6,
       "maxima": 24.96,
-      "minima": 24.07,
+      "minima": 24.08,
       "fechamento": 24.6,
       "volume": 620200,
       "mm20": 24.3,
@@ -13898,16 +13887,27 @@
       "mm20": 31.66,
       "mm50": 32.22,
       "mm200": 26.94
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 27.4,
+      "maxima": 27.61,
+      "minima": 26.62,
+      "fechamento": 26.92,
+      "volume": 8884900,
+      "mm20": 31.26,
+      "mm50": 32.15,
+      "mm200": 26.98
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 24.81,
-    "preco_atual": 27.37,
-    "variacao_periodo": 10.33,
+    "preco_inicial": 24.11,
+    "preco_atual": 26.92,
+    "variacao_periodo": 11.66,
     "maxima_periodo": 35.35,
     "minima_periodo": 15.77,
-    "volume_medio": 2281294,
+    "volume_medio": 2287453,
     "tendencia": "indefinida"
   }
 }

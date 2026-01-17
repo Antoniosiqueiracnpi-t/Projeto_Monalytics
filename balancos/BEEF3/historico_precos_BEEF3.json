@@ -1,22 +1,11 @@
 {
   "ticker": "BEEF3",
-  "ultima_atualizacao": "2026-01-16T23:01:44.657470",
+  "ultima_atualizacao": "2026-01-17T23:01:48.994533",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 8.22,
-      "maxima": 8.55,
-      "minima": 8.2,
-      "fechamento": 8.39,
-      "volume": 12332100,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 8.21,
@@ -222,7 +211,7 @@
       "minima": 7.65,
       "fechamento": 7.72,
       "volume": 6227200,
-      "mm20": 8.08,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 7.81,
       "volume": 11737000,
       "mm20": 7.77,
-      "mm50": 7.85,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 8999100,
       "mm20": 8.87,
       "mm50": 7.96,
-      "mm200": 8.17
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 5.51,
       "mm50": 5.95,
       "mm200": 5.71
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 5.45,
+      "maxima": 5.67,
+      "minima": 5.42,
+      "fechamento": 5.52,
+      "volume": 14392700,
+      "mm20": 5.49,
+      "mm50": 5.92,
+      "mm200": 5.71
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 8.39,
-    "preco_atual": 5.44,
-    "variacao_periodo": -35.17,
+    "preco_inicial": 8.27,
+    "preco_atual": 5.52,
+    "variacao_periodo": -33.25,
     "maxima_periodo": 14.83,
     "minima_periodo": 4.17,
-    "volume_medio": 9856036,
+    "volume_medio": 9857668,
     "tendencia": "indefinida"
   }
 }

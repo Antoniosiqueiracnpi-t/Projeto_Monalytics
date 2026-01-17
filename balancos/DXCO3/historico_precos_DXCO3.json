@@ -1,22 +1,11 @@
 {
   "ticker": "DXCO3",
-  "ultima_atualizacao": "2026-01-16T23:03:07.680355",
+  "ultima_atualizacao": "2026-01-17T23:03:02.924028",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 11.8,
-      "maxima": 12.38,
-      "minima": 11.78,
-      "fechamento": 12.35,
-      "volume": 4518372,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 12.1,
@@ -222,7 +211,7 @@
       "minima": 12.66,
       "fechamento": 13.16,
       "volume": 3486116,
-      "mm20": 12.08,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 10.84,
       "volume": 5087962,
       "mm20": 11.67,
-      "mm50": 11.96,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 1829248,
       "mm20": 11.22,
       "mm50": 12.35,
-      "mm200": 12.68
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 5.09,
       "mm50": 4.87,
       "mm200": 4.91
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 5.3,
+      "maxima": 5.31,
+      "minima": 5.13,
+      "fechamento": 5.26,
+      "volume": 1665200,
+      "mm20": 5.11,
+      "mm50": 4.88,
+      "mm200": 4.92
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 12.35,
-    "preco_atual": 5.31,
-    "variacao_periodo": -57.01,
+    "preco_inicial": 12.31,
+    "preco_atual": 5.26,
+    "variacao_periodo": -57.27,
     "maxima_periodo": 14.88,
     "minima_periodo": 4.44,
-    "volume_medio": 4112374,
+    "volume_medio": 4110115,
     "tendencia": "indefinida"
   }
 }

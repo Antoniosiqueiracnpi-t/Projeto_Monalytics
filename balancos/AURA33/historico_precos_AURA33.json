@@ -1,22 +1,11 @@
 {
   "ticker": "AURA33",
-  "ultima_atualizacao": "2026-01-16T23:03:24.873585",
+  "ultima_atualizacao": "2026-01-17T23:03:20.925848",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 13.52,
-      "maxima": 13.75,
-      "minima": 13.44,
-      "fechamento": 13.49,
-      "volume": 139815,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 13.5,
@@ -222,7 +211,7 @@
       "minima": 14.47,
       "fechamento": 14.83,
       "volume": 315534,
-      "mm20": 14.53,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 13.98,
       "volume": 251829,
       "mm20": 13.65,
-      "mm50": 14.19,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 269124,
       "mm20": 14.53,
       "mm50": 15.17,
-      "mm200": 15.5
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 94.75,
       "mm50": 78.09,
       "mm200": 55.33
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 110.0,
+      "maxima": 110.45,
+      "minima": 105.64,
+      "fechamento": 108.0,
+      "volume": 812337,
+      "mm20": 95.92,
+      "mm50": 79.1,
+      "mm200": 55.69
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 13.49,
-    "preco_atual": 109.7,
-    "variacao_periodo": 713.25,
+    "preco_inicial": 13.36,
+    "preco_atual": 108.0,
+    "variacao_periodo": 708.08,
     "maxima_periodo": 109.7,
     "minima_periodo": 7.35,
-    "volume_medio": 382568,
+    "volume_medio": 383100,
     "tendencia": "alta"
   }
 }

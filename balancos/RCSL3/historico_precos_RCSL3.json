@@ -1,22 +1,11 @@
 {
   "ticker": "RCSL3",
-  "ultima_atualizacao": "2026-01-16T23:03:21.572045",
+  "ultima_atualizacao": "2026-01-17T23:03:16.944591",
   "periodo": {
-    "inicio": "2020-12-18",
-    "fim": "2026-01-15"
+    "inicio": "2020-12-21",
+    "fim": "2026-01-16"
   },
   "dados": [
-    {
-      "data": "2020-12-18",
-      "abertura": 55.49,
-      "maxima": 57.56,
-      "minima": 55.49,
-      "fechamento": 57.16,
-      "volume": 72054,
-      "mm20": null,
-      "mm50": null,
-      "mm200": null
-    },
     {
       "data": "2020-12-21",
       "abertura": 57.09,
@@ -222,7 +211,7 @@
       "minima": 53.03,
       "fechamento": 60.55,
       "volume": 187236,
-      "mm20": 64.04,
+      "mm20": null,
       "mm50": null,
       "mm200": null
     },
@@ -553,7 +542,7 @@
       "fechamento": 55.42,
       "volume": 186936,
       "mm20": 61.3,
-      "mm50": 61.04,
+      "mm50": null,
       "mm200": null
     },
     {
@@ -2204,7 +2193,7 @@
       "volume": 715426,
       "mm20": 34.61,
       "mm50": 34.27,
-      "mm200": 48.86
+      "mm200": null
     },
     {
       "data": "2021-10-13",
@@ -13898,16 +13887,27 @@
       "mm20": 2.61,
       "mm50": 2.43,
       "mm200": 2.26
+    },
+    {
+      "data": "2026-01-16",
+      "abertura": 3.03,
+      "maxima": 3.49,
+      "minima": 3.02,
+      "fechamento": 3.28,
+      "volume": 818600,
+      "mm20": 2.68,
+      "mm50": 2.46,
+      "mm200": 2.26
     }
   ],
   "estatisticas": {
     "total_dias": 1263,
-    "preco_inicial": 57.16,
-    "preco_atual": 3.06,
-    "variacao_periodo": -94.65,
+    "preco_inicial": 57.96,
+    "preco_atual": 3.28,
+    "variacao_periodo": -94.34,
     "maxima_periodo": 75.41,
     "minima_periodo": 1.47,
-    "volume_medio": 575177,
+    "volume_medio": 575768,
     "tendencia": "alta"
   }
 }
