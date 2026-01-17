@@ -1399,317 +1399,102 @@
                 </div>
             </div>
 
-            <!-- CARD SPREADS DE CRÉDITO ANBIMA -->
+            <!-- Card Spreads de Crédito ANBIMA (SEPARADO) -->
             <div class="spreads-anbima-card">
                 <!-- Header do Card -->
                 <div class="spreads-anbima-header">
                     <div class="spreads-icon">
-                        <i class="fas fa-chart-line"></i>
+                        <i class="fas fa-chart-area"></i>
                     </div>
                     <div class="spreads-info">
-                        <h3 class="spreads-title">Maiores Spreads Indicativos ANBIMA</h3>
-                        <p class="spreads-description">Top 10 títulos de crédito privado por indexador</p>
+                        <h3 class="spreads-title">Spreads de Crédito ANBIMA</h3>
+                        <p class="spreads-description">Curvas de spread por rating de crédito (AAA, AA, A)</p>
                     </div>
-                    <div class="spreads-badge">
-                        <i class="fas fa-clock"></i>
-                        <span id="estatisticasTimestamp">Carregando...</span>
+                    <div class="spreads-badge" id="spreadsDataBadge">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Carregando...</span>
                     </div>
                 </div>
-            
-                <!-- Loading State -->
-                <div class="spreads-loading" id="estatisticasLoading">
+
+                <!-- Loading -->
+                <div class="spreads-loading" id="spreadsLoading">
                     <i class="fas fa-spinner fa-spin"></i>
-                    <span>Carregando estatísticas...</span>
+                    <span>Carregando spreads de crédito...</span>
                 </div>
-            
-                <!-- Conteúdo Principal -->
-                <div id="estatisticasContent" style="display: none;">
-                    
-                    <!-- Controles de Visualização -->
-                    <div class="spreads-view-controls">
-                        <div class="view-toggle">
-                            <button class="toggle-btn active" data-view="table">
-                                <i class="fas fa-table"></i>
-                                <span>Tabela</span>
-                            </button>
-                            <button class="toggle-btn" data-view="chart">
-                                <i class="fas fa-chart-scatter"></i>
-                                <span>Gráfico</span>
-                            </button>
-                        </div>
-                    </div>
-            
-                    <!-- Conteúdo - Tabela -->
-                    <div class="spreads-view active" data-view="table">
-                        
-                        <!-- Abas IPCA+ e DI+ -->
-                        <div class="spread-tabs">
-                            <button class="spread-tab-btn active" data-tipo="ipca">
-                                <i class="fas fa-arrow-trend-up"></i>
-                                IPCA+
-                            </button>
-                            <button class="spread-tab-btn" data-tipo="di">
-                                <i class="fas fa-percent"></i>
-                                DI+
-                            </button>
-                        </div>
-            
-                        <!-- Tabela IPCA+ -->
-                        <div class="spread-tab-content active" data-tipo="ipca">
-                            <div class="spreads-table-wrapper">
-                                <table class="spreads-table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Código</th>
-                                            <th>Indexador</th>
-                                            <th>Spread (%)</th>
-                                            <th>Duration (dias)</th>
-                                            <th>Duration (anos)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="topIpcaTableBody">
-                                        <tr>
-                                            <td colspan="6" style="text-align: center; padding: 40px;">
-                                                <i class="fas fa-spinner fa-spin"></i> Carregando...
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <div class="spreads-expand-container">
-                                <button class="spreads-expand-btn" id="verMaisIpca" style="display: none;">
-                                    <i class="fas fa-chevron-down"></i>
-                                    Ver mais
-                                </button>
-                            </div>
-                        </div>
-            
-                        <!-- Tabela DI+ -->
-                        <div class="spread-tab-content" data-tipo="di">
-                            <div class="spreads-table-wrapper">
-                                <table class="spreads-table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Código</th>
-                                            <th>Indexador</th>
-                                            <th>Spread (%)</th>
-                                            <th>Duration (dias)</th>
-                                            <th>Duration (anos)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="topDiTableBody">
-                                        <tr>
-                                            <td colspan="6" style="text-align: center; padding: 40px;">
-                                                <i class="fas fa-spinner fa-spin"></i> Carregando...
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <div class="spreads-expand-container">
-                                <button class="spreads-expand-btn" id="verMaisDi" style="display: none;">
-                                    <i class="fas fa-chevron-down"></i>
-                                    Ver mais
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-            
-                    <!-- Conteúdo - Gráfico -->
-                    <div class="spreads-view" data-view="chart">
-                        
-                        <!-- Abas IPCA+ e DI+ -->
-                        <div class="spread-tabs">
-                            <button class="spread-tab-btn active" data-tipo="ipca">
-                                <i class="fas fa-arrow-trend-up"></i>
-                                IPCA+
-                            </button>
-                            <button class="spread-tab-btn" data-tipo="di">
-                                <i class="fas fa-percent"></i>
-                                DI+
-                            </button>
-                        </div>
-                        
-                        <!-- Gráfico IPCA+ -->
-                        <div class="spread-chart-content active" data-tipo="ipca">
-                            <div class="chart-wrapper-spreads">
-                                <canvas id="spreadsIpcaChart"></canvas>
-                            </div>
-                            <div class="chart-legend-info">
-                                <i class="fas fa-info-circle"></i>
-                                <p>Gráfico de dispersão IPCA+: Duration (dias) vs Spread (%)</p>
-                            </div>
-                        </div>
-            
-                        <!-- Gráfico DI+ -->
-                        <div class="spread-chart-content" data-tipo="di">
-                            <div class="chart-wrapper-spreads">
-                                <canvas id="spreadsDiChart"></canvas>
-                            </div>
-                            <div class="chart-legend-info">
-                                <i class="fas fa-info-circle"></i>
-                                <p>Gráfico de dispersão DI+: Duration (dias) vs Spread (%)</p>
-                            </div>
-                        </div>
-                    </div>
-            
-                    <!-- Rodapé -->
-                    <div class="spreads-footer">
-                        <div class="spreads-footer-info">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Spreads de crédito corporativo calculados pela ANBIMA sobre a curva livre de risco</span>
-                        </div>
-                    </div>
-            
-                </div>
-            </div>
-            <!-- FIM CARD SPREADS -->
 
-
-            <!-- Estatísticas do Mercado Secundário -->
-            <div class="estatisticas-mercado-card">
-                <div class="estatisticas-header">
-                    <div class="estatisticas-header-icon">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
-                    <div class="estatisticas-header-text">
-                        <h3>Estatísticas do Mercado Secundário</h3>
-                        <p>Análise quantitativa de spreads e duration do mercado de debêntures, CRIs e CRAs</p>
-                    </div>
-                    <div class="estatisticas-timestamp">
-                        <i class="fas fa-clock"></i>
-                        <span id="estatisticasTimestamp">Carregando...</span>
+                <!-- Toggle Tabela/Gráfico -->
+                <div class="spreads-view-controls" id="spreadsViewControls" style="display: none;">
+                    <div class="spreads-view-toggle">
+                        <button class="toggle-btn active" data-view="table" id="btnSpreadsTableView">
+                            <i class="fas fa-table"></i>
+                            <span>Tabela</span>
+                        </button>
+                        <button class="toggle-btn" data-view="chart" id="btnSpreadsChartView">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Gráfico</span>
+                        </button>
                     </div>
                 </div>
-            
-                <!-- Resumo Geral -->
-                <div class="resumo-geral-section">
-                    <h4><i class="fas fa-table"></i> Resumo por Indexador</h4>
-                    <div class="table-responsive">
-                        <table class="resumo-table">
+
+                <!-- View: Tabela -->
+                <div class="spreads-view-container active" id="spreadsTableView">
+                    <div class="spreads-table-wrapper">
+                        <table class="spreads-table">
                             <thead>
                                 <tr>
-                                    <th>Indexador</th>
-                                    <th>Distribuição</th>
-                                    <th>Qtd. Títulos</th>
-                                    <th>PU/Par Médio</th>
-                                    <th>Duration Média</th>
-                                    <th>Taxa Média</th>
-                                    <th>Maior Taxa</th>
+                                    <th>Vértice</th>
+                                    <th class="rating-aaa">AAA</th>
+                                    <th class="rating-aa">AA</th>
+                                    <th class="rating-a">A</th>
                                 </tr>
                             </thead>
-                            <tbody id="resumoGeralBody">
-                                <tr>
-                                    <td colspan="7" class="loading-cell">
-                                        <i class="fas fa-spinner fa-spin"></i> Carregando dados...
-                                    </td>
-                                </tr>
+                            <tbody id="spreadsTableBody">
+                                <!-- Preenchido via JS -->
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- Botão Ver Mais/Menos -->
+                    <div class="spreads-expand-container" id="spreadsExpandContainer" style="display: none;">
+                        <button class="spreads-expand-btn" id="spreadsExpandBtn">
+                            <span class="expand-text">Ver todos os vértices</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
                 </div>
-            
-                <!-- Top 10 Maiores Spreads -->
-                <div class="top-spreads-section">
-                    <div class="spreads-header">
-                        <h4><i class="fas fa-trophy"></i> Maiores Spreads Indicativos ANBIMA</h4>
-                        <div class="view-toggle">
-                            <button class="toggle-btn active" data-view="table">
-                                <i class="fas fa-table"></i> Tabela
-                            </button>
-                            <button class="toggle-btn" data-view="chart">
-                                <i class="fas fa-chart-scatter"></i> Gráfico
-                            </button>
-                        </div>
+
+                <!-- View: Gráfico -->
+                <div class="spreads-view-container" id="spreadsChartView">
+                    <div class="spreads-chart-wrapper">
+                        <canvas id="spreadsChart"></canvas>
                     </div>
-            
-                    <!-- Abas IPCA+ e DI+ -->
-                    <div class="spreads-tabs">
-                        <button class="spread-tab-btn active" data-tipo="ipca">
-                            <i class="fas fa-percentage"></i> IPCA+
-                        </button>
-                        <button class="spread-tab-btn" data-tipo="di">
-                            <i class="fas fa-chart-line"></i> DI+
-                        </button>
-                    </div>
-            
-                    <!-- Conteúdo - Tabela -->
-                    <div class="spreads-content-wrapper">
-                        <div class="spreads-view active" data-view="table">
-                            <!-- Tabela IPCA+ -->
-                            <div class="spread-tab-content active" data-tipo="ipca">
-                                <div class="table-responsive">
-                                    <table class="spreads-table">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Código</th>
-                                                <th>Indexador</th>
-                                                <th>Spread (%)</th>
-                                                <th>Duration (dias)</th>
-                                                <th>Duration (anos)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="topIpcaTableBody">
-                                            <tr>
-                                                <td colspan="6" class="loading-cell">
-                                                    <i class="fas fa-spinner fa-spin"></i> Carregando...
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <button class="ver-mais-btn" id="verMaisIpca" style="display: none;">
-                                    <i class="fas fa-chevron-down"></i> Ver mais
-                                </button>
-                            </div>
-            
-                            <!-- Tabela DI+ -->
-                            <div class="spread-tab-content" data-tipo="di">
-                                <div class="table-responsive">
-                                    <table class="spreads-table">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Código</th>
-                                                <th>Indexador</th>
-                                                <th>Spread (%)</th>
-                                                <th>Duration (dias)</th>
-                                                <th>Duration (anos)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="topDiTableBody">
-                                            <tr>
-                                                <td colspan="6" class="loading-cell">
-                                                    <i class="fas fa-spinner fa-spin"></i> Carregando...
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <button class="ver-mais-btn" id="verMaisDi" style="display: none;">
-                                    <i class="fas fa-chevron-down"></i> Ver mais
-                                </button>
-                            </div>
+                    
+                    <!-- Legenda do gráfico -->
+                    <div class="spreads-chart-legend">
+                        <div class="legend-item">
+                            <span class="legend-dot" style="background: #10b981;"></span>
+                            <span>AAA (Menor Risco)</span>
                         </div>
-            
-                        <!-- Conteúdo - Gráfico -->
-                        <div class="spreads-view" data-view="chart">
-                            <div class="chart-wrapper-spreads">
-                                <canvas id="spreadsDurationChart"></canvas>
-                            </div>
-                            <div class="chart-legend-info">
-                                <p><i class="fas fa-info-circle"></i> Gráfico de dispersão: Duration (dias) vs Spread (%)</p>
-                            </div>
+                        <div class="legend-item">
+                            <span class="legend-dot" style="background: #f59e0b;"></span>
+                            <span>AA (Risco Médio)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot" style="background: #ef4444;"></span>
+                            <span>A (Maior Risco)</span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Fim Estatísticas Mercado Secundário -->
+
+                <!-- Rodapé -->
+                <div class="spreads-footer" id="spreadsFooter" style="display: none;">
+                    <div class="spreads-footer-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Spreads de crédito corporativo calculados pela ANBIMA sobre a curva livre de risco</span>
+                    </div>
+                </div>
+            </div> <!-- FIM Card Spreads ANBIMA -->
+
 
 
 
