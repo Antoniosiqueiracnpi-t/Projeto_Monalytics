@@ -9174,10 +9174,15 @@ function exibirResultadosBusca(resultados) {
         // Escapar aspas no código para evitar problemas no onclick
         const codigoEscapado = codigo.replace(/'/g, "\\'");
         
+        // Para CRI/CRA, mostrar também Risco de Crédito
+        const emissorExibir = fonte === 'CRI/CRA' && titulo['Risco de Crédito'] 
+            ? titulo['Risco de Crédito'] 
+            : emissor;
+        
         return `
             <div class="precificacao-search-item" onclick="selecionarTitulo('${codigoEscapado}', '${fonte}', '${titulo.tabela}')">
                 <div class="precificacao-search-item-codigo">${codigo}</div>
-                <div class="precificacao-search-item-emissor">${emissor.substring(0, 60)}${emissor.length > 60 ? '...' : ''}</div>
+                <div class="precificacao-search-item-emissor">${emissorExibir.substring(0, 60)}${emissorExibir.length > 60 ? '...' : ''}</div>
                 <div class="precificacao-search-item-details">
                     <span class="precificacao-search-item-badge">${fonte}</span>
                     ${tipoTitulo ? `<span class="precificacao-search-item-badge">${tipoTitulo}</span>` : ''}
