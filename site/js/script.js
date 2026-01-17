@@ -8579,3 +8579,456 @@ function inicializarMercadoSecundario() {
 document.addEventListener('DOMContentLoaded', () => {
     inicializarMercadoSecundario();
 });
+
+
+
+
+/* ========================================================================== */
+/* ESTATÍSTICAS DO MERCADO SECUNDÁRIO
+/* ========================================================================== */
+
+let spreadsScatterChartInstance = null;
+const MAX_VISIBLE_SPREADS = 5; // Mostra inicialmente 5 spreads
+
+/**
+ * Carrega dados do Portfolio Renda Fixa
+ */
+async function carregarEstatisticasMercado() {
+    try {
+        console.log('📡 Carregando Estatísticas do Mercado Secundário...');
+        
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/site/data/portfolio_renda_fixa.json?t=${Date.now()}`;
+        
+        const response = await fetch(url, {
+            cache: 'no-store',
+            mode: 'cors'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('✅ Estatísticas carregadas:', data);
+        
+        renderizarEstatisticasMercado(data);
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar estatísticas:', error);
+        mostrarErroEstatisticas();
+    }
+}
+
+/**
+ * Renderiza todas as seções
+ */
+function renderizarEstatisticasMercado(data) {
+    // Esconde loading
+    document.getElementById('estatisticasLoading').style.display = 'none';
+    
+    // Mostra container
+    document.getElementById('estatisticasContainer').style.display = 'block';
+    
+    // Renderiza cada seção
+    renderizarEstatisticasGerais(data.estatisticas);
+    renderizarMaioresSpreads(data.top10);
+    
+    // Atualiza data de referência
+    const footerEl = document.getElementById('estatisticasFooter');
+    const dataRefEl = document.getElementById('estatisticasDataRef');
+    if (footerEl && dataRefEl && data.fontes) {
+        footerEl.style.display = 'flex';
+        const dataRef = data.fontes.debentures_anbima?.data_referencia || 
+                       data.fontes.cri_cra_anbima?.data_referencia || 
+                       'N/A';
+        dataRefEl.textContent = `Data de referência: ${dataRef}`;
+    }
+    
+    // Inicializa toggles
+    inicializarToggleSpreadsView();
+}
+
+/**
+ * Renderiza estatísticas gerais (tabela consolidada)
+ */
+function renderizarEstatisticasGerais(estatisticas) {
+    const tbody = document.getElementById('statsGeneralBody');
+    if (!tbody) return;
+    
+    const dados = [
+        {
+            indexador: 'IPCA+',
+            badge: 'ipca',
+            stats: estatisticas.ipca_spread
+        },
+        {
+            indexador: 'DI+',
+            badge: 'di',
+            stats: estatisticas.di_spread
+        }
+    ];
+    
+    tbody.innerHTML = dados.map(item => {
+        const s = item.stats;
+        return `
+            <tr>
+                <td>
+                    <span class="stats-indexador">
+                        <span class="indexador-badge ${item.badge}">${item.indexador}</span>
+                    </span>
+                </td>
+                <td><span class="stats-value">${formatarNumero(s.count, 0)}</span></td>
+                <td><span class="stats-value highlight">${formatarPercentual(s.mean)}</span></td>
+                <td><span class="stats-value">${formatarPercentual(s.median)}</span></td>
+                <td><span class="stats-value">${formatarPercentual(s.min)}</span></td>
+                <td><span class="stats-value">${formatarPercentual(s.max)}</span></td>
+                <td><span class="stats-value">${formatarPercentual(s.p90)}</span></td>
+            </tr>
+        `;
+    }).join('');
+}
+
+/**
+ * Renderiza maiores spreads (tabela + gráfico)
+ */
+function renderizarMaioresSpreads(top10) {
+    // Renderiza tabelas
+    renderizarTabelaSpreads('ipca', top10.ipca_spread);
+    renderizarTabelaSpreads('di', top10.di_spread);
+    
+    // Renderiza gráfico scatter
+    renderizarGraficoScatter(top10);
+}
+
+/**
+ * Renderiza tabela de spreads (IPCA ou DI)
+ */
+function renderizarTabelaSpreads(tipo, spreads) {
+    const bodyId = tipo === 'ipca' ? 'ipcaSpreadsBody' : 'diSpreadsBody';
+    const countId = tipo === 'ipca' ? 'ipcaSpreadCount' : 'diSpreadCount';
+    const tbody = document.getElementById(bodyId);
+    const countEl = document.getElementById(countId);
+    
+    if (!tbody) return;
+    
+    // Atualiza contador
+    if (countEl) {
+        countEl.textContent = `${spreads.length} títulos`;
+    }
+    
+    tbody.innerHTML = spreads.map((item, index) => {
+        const position = index + 1;
+        const isTop3 = position <= 3;
+        const isHidden = index >= MAX_VISIBLE_SPREADS;
+        
+        return `
+            <tr class="${isHidden ? 'hidden-row' : ''}">
+                <td>
+                    <div class="ranking-position ${isTop3 ? 'top3' : ''}">
+                        ${position}
+                    </div>
+                </td>
+                <td>
+                    <span class="spread-codigo">${item.id || 'N/A'}</span>
+                </td>
+                <td>
+                    <span class="spread-value">${formatarPercentual(item.spread)}</span>
+                </td>
+                <td>
+                    <span class="duration-value">${formatarDuration(item.duration)}</span>
+                </td>
+            </tr>
+        `;
+    }).join('');
+    
+    // Mostra botão "Ver mais" se tiver mais de MAX_VISIBLE_SPREADS
+    if (spreads.length > MAX_VISIBLE_SPREADS) {
+        const containerId = tipo === 'ipca' ? 'ipcaExpandContainer' : 'diExpandContainer';
+        const btnId = tipo === 'ipca' ? 'ipcaExpandBtn' : 'diExpandBtn';
+        
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.style.display = 'block';
+            inicializarExpandirSpreads(btnId, bodyId);
+        }
+    }
+}
+
+/**
+ * Inicializa botão de expandir/colapsar spreads
+ */
+function inicializarExpandirSpreads(btnId, bodyId) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    
+    // Remove listeners anteriores
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    
+    const expandText = newBtn.querySelector('.expand-text');
+    
+    newBtn.addEventListener('click', () => {
+        const tbody = document.getElementById(bodyId);
+        const hiddenRows = tbody.querySelectorAll('.hidden-row');
+        const isExpanded = newBtn.classList.contains('expanded');
+        
+        if (isExpanded) {
+            // Colapsar
+            hiddenRows.forEach(row => row.classList.remove('visible'));
+            expandText.textContent = 'Ver todos os spreads';
+            newBtn.classList.remove('expanded');
+        } else {
+            // Expandir
+            hiddenRows.forEach(row => row.classList.add('visible'));
+            expandText.textContent = 'Ver';
+            newBtn.classList.add('expanded');
+        }
+    });
+}
+
+/**
+ * Renderiza gráfico de dispersão (scatter plot)
+ */
+function renderizarGraficoScatter(top10) {
+    const canvas = document.getElementById('spreadsScatterChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destrói gráfico anterior
+    if (spreadsScatterChartInstance) {
+        spreadsScatterChartInstance.destroy();
+    }
+    
+    // Prepara datasets
+    const datasetsIPCA = top10.ipca_spread.map(item => ({
+        x: item.duration || 0,
+        y: item.spread || 0,
+        label: item.id || 'N/A'
+    }));
+    
+    const datasetsDI = top10.di_spread.map(item => ({
+        x: item.duration || 0,
+        y: item.spread || 0,
+        label: item.id || 'N/A'
+    }));
+    
+    // Cria gráfico
+    spreadsScatterChartInstance = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [
+                {
+                    label: 'IPCA+',
+                    data: datasetsIPCA,
+                    backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                    borderColor: '#10b981',
+                    borderWidth: 2,
+                    pointRadius: 8,
+                    pointHoverRadius: 12,
+                    pointHoverBackgroundColor: '#10b981',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 3
+                },
+                {
+                    label: 'DI+',
+                    data: datasetsDI,
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    borderColor: '#3b82f6',
+                    borderWidth: 2,
+                    pointRadius: 8,
+                    pointHoverRadius: 12,
+                    pointHoverBackgroundColor: '#3b82f6',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 750,
+                easing: 'easeInOutQuart'
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15,
+                        font: {
+                            size: 12,
+                            weight: 600
+                        },
+                        color: 'rgba(255, 255, 255, 0.9)'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    padding: 12,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
+                    callbacks: {
+                        title: function(context) {
+                            return context[0].raw.label || 'Título';
+                        },
+                        label: function(context) {
+                            return [
+                                `Spread: ${context.parsed.y.toFixed(2)}%`,
+                                `Duration: ${Math.round(context.parsed.x)} dias`
+                            ];
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    title: {
+                        display: true,
+                        text: 'Duration (dias)',
+                        color: 'rgba(255, 255, 255, 0.8)',
+                        font: {
+                            size: 13,
+                            weight: 600
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        font: {
+                            size: 11
+                        },
+                        callback: function(value) {
+                            return Math.round(value);
+                        }
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Spread (%)',
+                        color: 'rgba(255, 255, 255, 0.8)',
+                        font: {
+                            size: 13,
+                            weight: 600
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        font: {
+                            size: 11
+                        },
+                        callback: function(value) {
+                            return value.toFixed(1) + '%';
+                        }
+                    }
+                }
+            },
+            interaction: {
+                mode: 'point',
+                intersect: true
+            }
+        }
+    });
+}
+
+/**
+ * Inicializa toggle entre Tabela e Gráfico
+ */
+function inicializarToggleSpreadsView() {
+    const btnTable = document.getElementById('btnSpreadsTable');
+    const btnChart = document.getElementById('btnSpreadsChart');
+    const tableView = document.getElementById('spreadsTableView');
+    const chartView = document.getElementById('spreadsChartView');
+    
+    if (!btnTable || !btnChart) return;
+    
+    btnTable.addEventListener('click', () => {
+        btnTable.classList.add('active');
+        btnChart.classList.remove('active');
+        tableView.classList.add('active');
+        chartView.classList.remove('active');
+    });
+    
+    btnChart.addEventListener('click', () => {
+        btnChart.classList.add('active');
+        btnTable.classList.remove('active');
+        chartView.classList.add('active');
+        tableView.classList.remove('active');
+    });
+}
+
+/**
+ * Mostra erro ao carregar
+ */
+function mostrarErroEstatisticas() {
+    const loadingEl = document.getElementById('estatisticasLoading');
+    if (loadingEl) {
+        loadingEl.innerHTML = `
+            <i class="fas fa-exclamation-triangle" style="color: #ef4444; font-size: 2rem;"></i>
+            <span style="color: rgba(255, 255, 255, 0.7);">Erro ao carregar estatísticas. Tente novamente mais tarde.</span>
+        `;
+    }
+}
+
+/**
+ * Funções auxiliares de formatação
+ */
+function formatarPercentual(valor) {
+    if (valor == null || isNaN(valor)) return 'N/A';
+    return parseFloat(valor).toFixed(2) + '%';
+}
+
+function formatarNumero(valor, decimais = 0) {
+    if (valor == null || isNaN(valor)) return 'N/A';
+    return parseFloat(valor).toLocaleString('pt-BR', {
+        minimumFractionDigits: decimais,
+        maximumFractionDigits: decimais
+    });
+}
+
+function formatarDuration(dias) {
+    if (dias == null || isNaN(dias)) return 'N/A';
+    const valor = Math.round(dias);
+    return `${valor} dias`;
+}
+
+/**
+ * Inicializa quando a seção entrar no viewport
+ */
+function inicializarEstatisticasMercado() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                carregarEstatisticasMercado();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        rootMargin: '100px'
+    });
+    
+    const section = document.querySelector('.estatisticas-mercado-card');
+    if (section) {
+        observer.observe(section);
+    }
+}
+
+// Inicializa quando o DOM carregar
+document.addEventListener('DOMContentLoaded', () => {
+    inicializarEstatisticasMercado();
+});
