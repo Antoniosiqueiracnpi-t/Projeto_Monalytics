@@ -3647,6 +3647,7 @@ body {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     border-radius: 16px;
     padding: 2rem;
+    margin-top: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -3921,6 +3922,10 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.precificacao-result-row span {
+    color: rgba(255, 255, 255, 0.9);  /* ← ADICIONAR todo este bloco */
+}
+
 .precificacao-result-row:last-child {
     border-bottom: none;
 }
@@ -3949,6 +3954,7 @@ body {
 .precificacao-result-table td {
     padding: 0.875rem 0.75rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9); 
 }
 
 .precificacao-result-table .highlight-row {
@@ -4007,6 +4013,10 @@ body {
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.precificacao-details .precificacao-result-row span {
+    color: rgba(255, 255, 255, 0.9);  /* ← ADICIONAR todo este bloco */
 }
 
 /* Loading e Error States */
