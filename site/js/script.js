@@ -8579,3 +8579,450 @@ function inicializarMercadoSecundario() {
 document.addEventListener('DOMContentLoaded', () => {
     inicializarMercadoSecundario();
 });
+
+
+
+
+/* ========================================================================== */
+/* PORTFOLIO RENDA FIXA - ESTATÍSTICAS MERCADO SECUNDÁRIO
+/* ========================================================================== */
+
+let ipcaChartInstance = null;
+let diChartInstance = null;
+
+/**
+ * Carrega dados do Portfolio de Renda Fixa
+ */
+async function carregarPortfolioRendaFixa() {
+    try {
+        console.log('📡 Carregando Portfolio Renda Fixa...');
+        
+        const url = `https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/site/data/portfolio_renda_fixa.json?t=${Date.now()}`;
+        
+        const response = await fetch(url, {
+            cache: 'no-store',
+            mode: 'cors'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('✅ Portfolio Renda Fixa carregado:', data);
+        
+        renderizarPortfolioRendaFixa(data);
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar Portfolio Renda Fixa:', error);
+        mostrarErroPortfolioRF();
+    }
+}
+
+/**
+ * Renderiza Portfolio Renda Fixa
+ */
+function renderizarPortfolioRendaFixa(data) {
+    // Esconde loading
+    document.getElementById('portfolioRFLoading').style.display = 'none';
+    
+    // Mostra seções
+    document.getElementById('portfolioRFResumo').style.display = 'block';
+    document.getElementById('portfolioIPCASection').style.display = 'block';
+    document.getElementById('portfolioDISection').style.display = 'block';
+    document.getElementById('portfolioRFFooter').style.display = 'block';
+    
+    // Atualiza badge de data
+    const badge = document.getElementById('portfolioRFDataBadge');
+    if (badge && data.gerado_em) {
+        badge.innerHTML = `
+            <i class="fas fa-calendar-alt"></i>
+            <span>${formatarDataPortfolio(data.gerado_em)}</span>
+        `;
+    }
+    
+    // Renderiza cada seção
+    renderizarResumoPortfolio(data.resumo);
+    renderizarTopIPCA(data.top10.ipca_spread);
+    renderizarTopDI(data.top10.di_spread);
+    
+    // Inicializa toggles
+    inicializarTogglesPortfolio();
+    inicializarExpandPortfolio();
+}
+
+/**
+ * Renderiza tabela de resumo
+ */
+function renderizarResumoPortfolio(resumo) {
+    const tbody = document.getElementById('portfolioRFResumoBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = resumo.map(item => {
+        // Pula linha TOTAL
+        if (item.Indexador === 'TOTAL') return '';
+        
+        const distribuicao = item['Distribuição (%)'];
+        const puPar = item['PU/Par Médio (%)'];
+        const duration = item['Duration Média (dias)'];
+        const taxa = item['Taxa Indicativa Média (%)'];
+        
+        return `
+            <tr>
+                <td><strong>${item.Indexador}</strong></td>
+                <td>${item['Quantidade Títulos']}</td>
+                <td>${distribuicao ? distribuicao.toFixed(2) + '%' : '-'}</td>
+                <td>${puPar ? puPar.toFixed(2) + '%' : '-'}</td>
+                <td>${duration ? Math.round(duration) + ' dias' : '-'}</td>
+                <td>${taxa ? taxa.toFixed(2) + '%' : '-'}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+/**
+ * Renderiza Top 10 IPCA+
+ */
+function renderizarTopIPCA(top10) {
+    const tbody = document.getElementById('ipcaTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = top10.map((item, index) => `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${item.id}</td>
+            <td>${item.spread.toFixed(2)}%</td>
+            <td>${Math.round(item.duration)}</td>
+        </tr>
+    `).join('');
+    
+    // Mostra botão expandir se tiver mais de 5
+    if (top10.length > 5) {
+        document.getElementById('ipcaExpandContainer').style.display = 'flex';
+    }
+    
+    // Renderiza gráfico
+    renderizarGraficoIPCA(top10);
+}
+
+/**
+ * Renderiza Top 10 DI+
+ */
+function renderizarTopDI(top10) {
+    const tbody = document.getElementById('diTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = top10.map((item, index) => `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${item.id}</td>
+            <td>${item.spread.toFixed(2)}%</td>
+            <td>${Math.round(item.duration)}</td>
+        </tr>
+    `).join('');
+    
+    // Mostra botão expandir se tiver mais de 5
+    if (top10.length > 5) {
+        document.getElementById('diExpandContainer').style.display = 'flex';
+    }
+    
+    // Renderiza gráfico
+    renderizarGraficoDI(top10);
+}
+
+/**
+ * Renderiza gráfico IPCA+
+ */
+function renderizarGraficoIPCA(top10) {
+    const canvas = document.getElementById('ipcaChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destrói gráfico anterior
+    if (ipcaChartInstance) {
+        ipcaChartInstance.destroy();
+    }
+    
+    // Prepara dados
+    const labels = top10.map(item => item.id);
+    const spreads = top10.map(item => item.spread);
+    
+    // Cria gráfico
+    ipcaChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Spread IPCA+ (%)',
+                data: spreads,
+                backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                borderColor: 'rgba(16, 185, 129, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    titleFont: { size: 14, weight: 'bold' },
+                    bodyFont: { size: 13 },
+                    callbacks: {
+                        label: function(context) {
+                            return `Spread: ${context.parsed.y.toFixed(2)}%`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false, color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { 
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        font: { size: 11 }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { 
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        callback: function(value) {
+                            return value.toFixed(1) + '%';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+/**
+ * Renderiza gráfico DI+
+ */
+function renderizarGraficoDI(top10) {
+    const canvas = document.getElementById('diChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destrói gráfico anterior
+    if (diChartInstance) {
+        diChartInstance.destroy();
+    }
+    
+    // Prepara dados
+    const labels = top10.map(item => item.id);
+    const spreads = top10.map(item => item.spread);
+    
+    // Cria gráfico
+    diChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Spread DI+ (%)',
+                data: spreads,
+                backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    titleFont: { size: 14, weight: 'bold' },
+                    bodyFont: { size: 13 },
+                    callbacks: {
+                        label: function(context) {
+                            return `Spread: ${context.parsed.y.toFixed(2)}%`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false, color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { 
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        font: { size: 11 }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { 
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        callback: function(value) {
+                            return value.toFixed(1) + '%';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+/**
+ * Inicializa toggles de visualização
+ */
+function inicializarTogglesPortfolio() {
+    // Toggle IPCA+
+    const btnIPCATable = document.getElementById('btnIPCATableView');
+    const btnIPCAChart = document.getElementById('btnIPCAChartView');
+    const ipcaTableView = document.getElementById('ipcaTableView');
+    const ipcaChartView = document.getElementById('ipcaChartView');
+    
+    if (btnIPCATable && btnIPCAChart) {
+        btnIPCATable.addEventListener('click', () => {
+            btnIPCATable.classList.add('active');
+            btnIPCAChart.classList.remove('active');
+            ipcaTableView.classList.add('active');
+            ipcaChartView.classList.remove('active');
+        });
+        
+        btnIPCAChart.addEventListener('click', () => {
+            btnIPCAChart.classList.add('active');
+            btnIPCATable.classList.remove('active');
+            ipcaChartView.classList.add('active');
+            ipcaTableView.classList.remove('active');
+        });
+    }
+    
+    // Toggle DI+
+    const btnDITable = document.getElementById('btnDITableView');
+    const btnDIChart = document.getElementById('btnDIChartView');
+    const diTableView = document.getElementById('diTableView');
+    const diChartView = document.getElementById('diChartView');
+    
+    if (btnDITable && btnDIChart) {
+        btnDITable.addEventListener('click', () => {
+            btnDITable.classList.add('active');
+            btnDIChart.classList.remove('active');
+            diTableView.classList.add('active');
+            diChartView.classList.remove('active');
+        });
+        
+        btnDIChart.addEventListener('click', () => {
+            btnDIChart.classList.add('active');
+            btnDITable.classList.remove('active');
+            diChartView.classList.add('active');
+            diTableView.classList.remove('active');
+        });
+    }
+}
+
+/**
+ * Inicializa botões de expandir/colapsar
+ */
+function inicializarExpandPortfolio() {
+    // Expandir IPCA+
+    const ipcaExpandBtn = document.getElementById('ipcaExpandBtn');
+    const ipcaTableBody = document.getElementById('ipcaTableBody');
+    
+    if (ipcaExpandBtn && ipcaTableBody) {
+        ipcaExpandBtn.addEventListener('click', () => {
+            const isExpanded = ipcaExpandBtn.classList.contains('expanded');
+            
+            if (isExpanded) {
+                ipcaTableBody.classList.add('collapsed');
+                ipcaExpandBtn.classList.remove('expanded');
+                ipcaExpandBtn.querySelector('.expand-text').textContent = 'Ver todos os 10 títulos';
+            } else {
+                ipcaTableBody.classList.remove('collapsed');
+                ipcaExpandBtn.classList.add('expanded');
+                ipcaExpandBtn.querySelector('.expand-text').textContent = 'todos os 10 títulos';
+            }
+        });
+    }
+    
+    // Expandir DI+
+    const diExpandBtn = document.getElementById('diExpandBtn');
+    const diTableBody = document.getElementById('diTableBody');
+    
+    if (diExpandBtn && diTableBody) {
+        diExpandBtn.addEventListener('click', () => {
+            const isExpanded = diExpandBtn.classList.contains('expanded');
+            
+            if (isExpanded) {
+                diTableBody.classList.add('collapsed');
+                diExpandBtn.classList.remove('expanded');
+                diExpandBtn.querySelector('.expand-text').textContent = 'Ver todos os 10 títulos';
+            } else {
+                diTableBody.classList.remove('collapsed');
+                diExpandBtn.classList.add('expanded');
+                diExpandBtn.querySelector('.expand-text').textContent = 'todos os 10 títulos';
+            }
+        });
+    }
+}
+
+/**
+ * Formata data do portfolio
+ */
+function formatarDataPortfolio(dataStr) {
+    try {
+        const data = new Date(dataStr.replace(' ', 'T'));
+        return data.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+        });
+    } catch (error) {
+        return dataStr;
+    }
+}
+
+/**
+ * Mostra erro ao carregar Portfolio
+ */
+function mostrarErroPortfolioRF() {
+    const loadingEl = document.getElementById('portfolioRFLoading');
+    if (loadingEl) {
+        loadingEl.innerHTML = `
+            <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+            <span>Erro ao carregar estatísticas. Tente novamente mais tarde.</span>
+        `;
+    }
+}
+
+/**
+ * Inicializa carregamento do Portfolio quando seção entrar na viewport
+ */
+function inicializarPortfolioRendaFixa() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                carregarPortfolioRendaFixa();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        rootMargin: '100px'
+    });
+    
+    const card = document.querySelector('.portfolio-rf-card');
+    if (card) {
+        observer.observe(card);
+    }
+}
+
+// Inicializa quando DOM carregar
+document.addEventListener('DOMContentLoaded', () => {
+    inicializarPortfolioRendaFixa();
+});
+
+console.log('✅ Portfolio Renda Fixa inicializado');
