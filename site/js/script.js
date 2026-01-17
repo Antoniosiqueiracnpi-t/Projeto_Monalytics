@@ -9079,6 +9079,19 @@ async function carregarDadosPrecificacao() {
     }
 }
 
+processarTodosTitulos();
+
+// DEBUG - Remover depois de testar
+console.log('=== DEBUG TÍTULOS CARREGADOS ===');
+console.log('Total de títulos:', todos_titulos.length);
+console.log('Primeiros 5 CRI/CRA:', todos_titulos.filter(t => t.fonte === 'CRI/CRA').slice(0, 5));
+console.log('Códigos CRI/CRA:', todos_titulos
+    .filter(t => t.fonte === 'CRI/CRA')
+    .slice(0, 10)
+    .map(t => t.Código || t.Codigo)
+);
+console.log('================================');
+
 // Processar todos os títulos em um array único para busca
 function processarTodosTitulos() {
     todos_titulos = [];
@@ -9121,15 +9134,24 @@ function processarTodosTitulos() {
 function buscarTitulos(termo) {
     if (!termo || termo.length < 2) return [];
     
-    termo = termo.toUpperCase();
+    // Normalizar termo de busca
+    termo = termo.toString().toUpperCase().trim().replace(/\s+/g, '');
     
     // Buscar por código ou emissor
     return todos_titulos.filter(titulo => {
-        const codigo = (titulo.Código || titulo.Codigo || '').toString().toUpperCase();
-        const emissor = (titulo.Emissor || '').toString().toUpperCase();
+        // Normalizar código (remove espaços, uppercase)
+        const codigo = (titulo.Código || titulo.Codigo || '').toString().toUpperCase().trim().replace(/\s+/g, '');
         
-        return codigo.includes(termo) || emissor.includes(termo);
-    }).slice(0, 10); // Limitar a 10 resultados
+        // Normalizar emissor
+        const emissor = (titulo.Emissor || '').toString().toUpperCase().trim();
+        
+        // Buscar também no Risco de Crédito (CRI/CRA)
+        const riscoCredito = (titulo['Risco de Crédito'] || '').toString().toUpperCase().trim();
+        
+        return codigo.includes(termo) || 
+               emissor.includes(termo) || 
+               riscoCredito.includes(termo);
+    }).slice(0, 10);
 }
 
 // Exibir resultados da busca
@@ -9149,8 +9171,11 @@ function exibirResultadosBusca(resultados) {
         const fonte = titulo.fonte || '';
         const tipoTitulo = titulo.tipo_titulo || '';
         
+        // Escapar aspas no código para evitar problemas no onclick
+        const codigoEscapado = codigo.replace(/'/g, "\\'");
+        
         return `
-            <div class="precificacao-search-item" onclick="selecionarTitulo('${codigo}', '${fonte}', '${titulo.tabela}')">
+            <div class="precificacao-search-item" onclick="selecionarTitulo('${codigoEscapado}', '${fonte}', '${titulo.tabela}')">
                 <div class="precificacao-search-item-codigo">${codigo}</div>
                 <div class="precificacao-search-item-emissor">${emissor.substring(0, 60)}${emissor.length > 60 ? '...' : ''}</div>
                 <div class="precificacao-search-item-details">
@@ -9167,17 +9192,22 @@ function exibirResultadosBusca(resultados) {
 
 // Selecionar título
 function selecionarTitulo(codigo, fonte, tabela) {
+    // Normalizar código de busca
+    const codigoNormalizado = codigo.toString().toUpperCase().trim();
+    
     // Encontrar título nos dados
     let titulo;
     
     if (fonte === 'Debêntures' && debentures_data) {
-        titulo = debentures_data.tabelas[tabela].find(t => 
-            (t.Código || t.Codigo) === codigo
-        );
+        titulo = debentures_data.tabelas[tabela].find(t => {
+            const tCodigo = (t.Código || t.Codigo || '').toString().toUpperCase().trim();
+            return tCodigo === codigoNormalizado;
+        });
     } else if (fonte === 'CRI/CRA' && cri_cra_data) {
-        titulo = cri_cra_data.tabelas[tabela].find(t => 
-            (t.Código || t.Codigo) === codigo
-        );
+        titulo = cri_cra_data.tabelas[tabela].find(t => {
+            const tCodigo = (t.Código || t.Codigo || '').toString().toUpperCase().trim();
+            return tCodigo === codigoNormalizado;
+        });
     }
     
     if (!titulo) {
