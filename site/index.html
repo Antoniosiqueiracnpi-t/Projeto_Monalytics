@@ -1495,6 +1495,170 @@
                 </div>
             </div> <!-- FIM Card Spreads ANBIMA -->
 
+            <!-- Card Estatísticas do Mercado Secundário -->
+            <div class="portfolio-rf-card">
+                <!-- Header do Card -->
+                <div class="portfolio-rf-header">
+                    <div class="portfolio-rf-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="portfolio-rf-info">
+                        <h3 class="portfolio-rf-title">Estatísticas do Mercado Secundário</h3>
+                        <p class="portfolio-rf-description">Análise consolidada de debêntures e CRI/CRA</p>
+                    </div>
+                    <div class="portfolio-rf-badge" id="portfolioRFDataBadge">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Carregando...</span>
+                    </div>
+                </div>
+
+                <!-- Loading -->
+                <div class="portfolio-rf-loading" id="portfolioRFLoading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Carregando estatísticas...</span>
+                </div>
+
+                <!-- Resumo Geral -->
+                <div class="portfolio-rf-resumo" id="portfolioRFResumo" style="display: none;">
+                    <h4 class="portfolio-rf-subtitle">
+                        <i class="fas fa-table"></i>
+                        Resumo por Indexador
+                    </h4>
+                    <div class="portfolio-rf-table-wrapper">
+                        <table class="portfolio-rf-table">
+                            <thead>
+                                <tr>
+                                    <th>Indexador</th>
+                                    <th>Títulos</th>
+                                    <th>Distribuição</th>
+                                    <th>PU/Par Médio</th>
+                                    <th>Duration</th>
+                                    <th>Taxa Média</th>
+                                </tr>
+                            </thead>
+                            <tbody id="portfolioRFResumoBody">
+                                <!-- Preenchido via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Seção IPCA+ -->
+                <div class="portfolio-rf-section" id="portfolioIPCASection" style="display: none;">
+                    <div class="portfolio-rf-section-header">
+                        <h4 class="portfolio-rf-subtitle">
+                            <i class="fas fa-fire"></i>
+                            Top 10 Maiores Spreads IPCA+
+                        </h4>
+                        <div class="portfolio-rf-toggle">
+                            <button class="toggle-btn active" data-view="table" id="btnIPCATableView">
+                                <i class="fas fa-table"></i>
+                                <span>Tabela</span>
+                            </button>
+                            <button class="toggle-btn" data-view="chart" id="btnIPCAChartView">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>Gráfico</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- View: Tabela IPCA -->
+                    <div class="portfolio-rf-view-container active" id="ipcaTableView">
+                        <div class="portfolio-rf-table-wrapper">
+                            <table class="portfolio-rf-table portfolio-rf-table-compact">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Spread (%)</th>
+                                        <th>Duration (dias)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ipcaTableBody" class="collapsed">
+                                    <!-- Preenchido via JS - Inicia com 5 linhas -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Botão Expandir -->
+                        <div class="portfolio-rf-expand-container" id="ipcaExpandContainer" style="display: none;">
+                            <button class="portfolio-rf-expand-btn" id="ipcaExpandBtn">
+                                <span class="expand-text">Ver todos os 10 títulos</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- View: Gráfico IPCA -->
+                    <div class="portfolio-rf-view-container" id="ipcaChartView">
+                        <div class="portfolio-rf-chart-wrapper">
+                            <canvas id="ipcaChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção DI+ -->
+                <div class="portfolio-rf-section" id="portfolioDISection" style="display: none;">
+                    <div class="portfolio-rf-section-header">
+                        <h4 class="portfolio-rf-subtitle">
+                            <i class="fas fa-fire"></i>
+                            Top 10 Maiores Spreads DI+
+                        </h4>
+                        <div class="portfolio-rf-toggle">
+                            <button class="toggle-btn active" data-view="table" id="btnDITableView">
+                                <i class="fas fa-table"></i>
+                                <span>Tabela</span>
+                            </button>
+                            <button class="toggle-btn" data-view="chart" id="btnDIChartView">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>Gráfico</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- View: Tabela DI -->
+                    <div class="portfolio-rf-view-container active" id="diTableView">
+                        <div class="portfolio-rf-table-wrapper">
+                            <table class="portfolio-rf-table portfolio-rf-table-compact">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Spread (%)</th>
+                                        <th>Duration (dias)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="diTableBody" class="collapsed">
+                                    <!-- Preenchido via JS - Inicia com 5 linhas -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Botão Expandir -->
+                        <div class="portfolio-rf-expand-container" id="diExpandContainer" style="display: none;">
+                            <button class="portfolio-rf-expand-btn" id="diExpandBtn">
+                                <span class="expand-text">Ver todos os 10 títulos</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- View: Gráfico DI -->
+                    <div class="portfolio-rf-view-container" id="diChartView">
+                        <div class="portfolio-rf-chart-wrapper">
+                            <canvas id="diChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rodapé -->
+                <div class="portfolio-rf-footer" id="portfolioRFFooter" style="display: none;">
+                    <div class="portfolio-rf-footer-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Dados consolidados de debêntures e CRI/CRA negociados no mercado secundário</span>
+                    </div>
+                </div>
+            </div> <!-- FIM Card Estatísticas do Mercado Secundário -->
 
 
 
