@@ -325,6 +325,7 @@ def _pick_ident_col(df: pd.DataFrame) -> Optional[str]:
 def _top10_spreads(df: pd.DataFrame, spread_candidates, label: str) -> list:
     """
     Retorna lista de 10 maiores spreads com campos estáveis.
+    Inclui: tipo, id, spread, duration
     """
     if df is None or df.empty:
         return []
@@ -332,10 +333,12 @@ def _top10_spreads(df: pd.DataFrame, spread_candidates, label: str) -> list:
     df2 = _dedup_coalesce_cols(_normalize_cols(df))
 
     s_spread = _coalesce_series(df2, spread_candidates)
+    s_duration = _coalesce_series(df2, ['Duration', 'Duration (dias)'])
     ident_col = _pick_ident_col(df2)
 
     out = df2.copy()
     out["_spread"] = s_spread
+    out["_duration"] = s_duration
 
     if ident_col:
         out["_id"] = out[ident_col].astype(str)
@@ -351,6 +354,7 @@ def _top10_spreads(df: pd.DataFrame, spread_candidates, label: str) -> list:
             "tipo": label,
             "id": str(r.get("_id", "")),
             "spread": float(r["_spread"]),
+            "duration": float(r["_duration"]) if pd.notna(r.get("_duration")) else None,
         })
     return rows
 
