@@ -3593,6 +3593,105 @@ body {
 
 
 
+/* Mercado Secundário - Responsividade */
+@media screen and (max-width: 1024px) {
+    .mercado-secundario-container {
+        padding: 2rem;
+    }
+    
+    .top10-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .top10-controls {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .top10-tabs {
+        width: 100%;
+    }
+    
+    .top10-tab {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .mercado-secundario-container {
+        padding: 1.5rem;
+    }
+    
+    .mercado-secundario-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .mercado-secundario-title {
+        font-size: 1.5rem;
+    }
+    
+    .mercado-secundario-update {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .mercado-secundario-table th,
+    .mercado-secundario-table td,
+    .top10-table th,
+    .top10-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .view-toggle {
+        width: 100%;
+    }
+    
+    .view-btn {
+        flex: 1;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .mercado-secundario-container {
+        padding: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .mercado-secundario-title-group > i {
+        font-size: 2rem;
+    }
+    
+    .mercado-secundario-title {
+        font-size: 1.25rem;
+    }
+    
+    .mercado-secundario-subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .mercado-secundario-table th,
+    .mercado-secundario-table td {
+        padding: 0.625rem 0.375rem;
+        font-size: 0.75rem;
+    }
+    
+    .top10-tab {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+    
+    .expand-table-btn {
+        font-size: 0.85rem;
+        padding: 0.875rem;
+    }
+}
+
+
+
 /* =========================== RESPONSIVE DESIGN =========================== */
 
 /* Tablet (768px - 1024px) */
