@@ -7436,10 +7436,10 @@ function renderizarTabelaFocus(indicadores) {
         const valor2027 = formatarValorIndicador(ind.indicador, ind.valor_2027);
         
         // Variação 2026
-        const var2026 = gerarCelulaVariacao(ind.delta_2026, ind.var_sem_2026);
+        const var2026 = gerarCelulaVariacao(ind.delta_2026, ind.indicador);
         
         // Variação 2027
-        const var2027 = gerarCelulaVariacao(ind.delta_2027, ind.var_sem_2027);
+        const var2027 = gerarCelulaVariacao(ind.delta_2027, ind.indicador);
         
         return `
             <tr>
@@ -7510,17 +7510,37 @@ function formatarValorIndicador(indicador, valor) {
 /**
  * Gera célula de variação com cor e ícone
  */
-function gerarCelulaVariacao(delta, simbolo) {
+function gerarCelulaVariacao(delta, indicador) {
     let classe = 'neutral';
     let icone = 'fa-minus';
     let sinal = '';
     
+    // Lógica de cores baseada no indicador:
+    // IPCA: queda = verde (positive) | alta = vermelho (negative)
+    // PIB: alta = verde (positive) | queda = vermelho (negative)
+    // Câmbio: queda = verde (positive) | alta = vermelho (negative)
+    // Selic: queda = verde (positive) | alta = vermelho (negative)
+    
     if (delta > 0) {
-        classe = 'positive';
+        // Delta positivo (alta)
+        if (indicador === 'PIB') {
+            // PIB subindo é bom = verde
+            classe = 'positive';
+        } else {
+            // IPCA, Câmbio, Selic subindo é ruim = vermelho
+            classe = 'negative';
+        }
         icone = 'fa-arrow-up';
         sinal = '+';
     } else if (delta < 0) {
-        classe = 'negative';
+        // Delta negativo (queda)
+        if (indicador === 'PIB') {
+            // PIB caindo é ruim = vermelho
+            classe = 'negative';
+        } else {
+            // IPCA, Câmbio, Selic caindo é bom = verde
+            classe = 'positive';
+        }
         icone = 'fa-arrow-down';
         sinal = '';
     }
@@ -7660,12 +7680,15 @@ function gerarVariacaoSelic(delta) {
     let icone = 'fa-minus';
     let sinal = '';
     
+    // Lógica: Selic caindo = verde (positivo) | Selic subindo = vermelho (negativo)
     if (delta > 0) {
-        classe = 'positive';
+        // Selic subindo = ruim = vermelho
+        classe = 'negative';
         icone = 'fa-arrow-up';
         sinal = '+';
     } else if (delta < 0) {
-        classe = 'negative';
+        // Selic caindo = bom = verde
+        classe = 'positive';
         icone = 'fa-arrow-down';
         sinal = '';
     }
@@ -8004,12 +8027,15 @@ function gerarCelulaBps(bps) {
     let icone = 'fa-minus';
     let sinal = '';
     
+    // Lógica: Juros caindo = verde (positivo) | Juros subindo = vermelho (negativo)
     if (bps > 0.5) {
-        classe = 'positive';
+        // Juros subindo = ruim = vermelho
+        classe = 'negative';
         icone = 'fa-arrow-up';
         sinal = '+';
     } else if (bps < -0.5) {
-        classe = 'negative';
+        // Juros caindo = bom = verde
+        classe = 'positive';
         icone = 'fa-arrow-down';
         sinal = '';
     }
@@ -8574,4 +8600,3 @@ function inicializarMercadoSecundario() {
 document.addEventListener('DOMContentLoaded', () => {
     inicializarMercadoSecundario();
 });
-
