@@ -172,7 +172,7 @@ def analisar_portfolios(deb_ipca_spread, deb_di_spread, deb_di_percentual,
         }
 
     def _safe_round(x, ndigits):
-        return (round(float(x), ndigits) if pd.notna(x) else np.nan)
+        return (round(float(x), ndigits) if pd.notna(x) else None)
 
     # ---------- Normalizar + deduplicar cada DF ----------
     def _prep(df):
@@ -446,9 +446,28 @@ def build_payload(
 
 
 def save_json(payload: dict, out_path: str) -> None:
+    """
+    Salva payload em JSON, convertendo NaN/inf para null
+    """
+    import math
+    
+    def convert_nan_to_null(obj):
+        """Converte NaN e infinitos para None (null no JSON)"""
+        if isinstance(obj, float):
+            if math.isnan(obj) or math.isinf(obj):
+                return None
+        elif isinstance(obj, dict):
+            return {k: convert_nan_to_null(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [convert_nan_to_null(item) for item in obj]
+        return obj
+    
+    # Limpa NaN antes de serializar
+    payload_clean = convert_nan_to_null(payload)
+    
     p = Path(out_path)
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    p.write_text(json.dumps(payload_clean, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def build_parser() -> argparse.ArgumentParser:
