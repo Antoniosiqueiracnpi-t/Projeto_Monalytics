@@ -3234,6 +3234,502 @@ body {
 
 
 
+/* ========================================
+   ESTATÍSTICAS DO MERCADO SECUNDÁRIO
+   ======================================== */
+
+.estatisticas-mercado-card {
+    background: linear-gradient(135deg, #1a2332 0%, #0a1929 100%);
+    border-radius: 20px;
+    padding: 40px;
+    margin-top: 30px;
+    border: 2px solid rgba(0, 180, 216, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 102, 204, 0.15);
+}
+
+.estatisticas-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(0, 180, 216, 0.2);
+}
+
+.estatisticas-header-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #00b4d8, #00d9ff);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    box-shadow: 0 4px 20px rgba(0, 180, 216, 0.4);
+}
+
+.estatisticas-header-text h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 5px 0;
+}
+
+.estatisticas-header-text p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.estatisticas-timestamp {
+    margin-left: auto;
+    text-align: right;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+}
+
+.estatisticas-timestamp i {
+    color: #00d9ff;
+    margin-right: 5px;
+}
+
+/* Resumo Geral */
+.resumo-geral-section {
+    margin-bottom: 40px;
+}
+
+.resumo-geral-section h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.resumo-geral-section h4 i {
+    color: #00d9ff;
+}
+
+.resumo-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.resumo-table thead {
+    background: rgba(0, 180, 216, 0.15);
+}
+
+.resumo-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #00d9ff;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.resumo-table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.resumo-table tbody tr:hover {
+    background: rgba(0, 180, 216, 0.1);
+}
+
+.resumo-table tbody tr:last-child {
+    border-bottom: none;
+    background: rgba(0, 180, 216, 0.1);
+    font-weight: 700;
+}
+
+.resumo-table td {
+    padding: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+}
+
+.resumo-table td:first-child {
+    font-weight: 600;
+    color: #00d9ff;
+}
+
+/* Top Spreads Section */
+.top-spreads-section {
+    margin-top: 30px;
+}
+
+.spreads-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.spreads-header h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.spreads-header h4 i {
+    color: #f59e0b;
+}
+
+.view-toggle {
+    display: flex;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.toggle-btn.active {
+    background: linear-gradient(135deg, #0066cc, #00b4d8);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.toggle-btn i {
+    font-size: 1rem;
+}
+
+/* Abas IPCA+ e DI+ */
+.spreads-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.spread-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(0, 180, 216, 0.2);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.spread-tab-btn:hover {
+    border-color: #00b4d8;
+    background: rgba(0, 180, 216, 0.1);
+    transform: translateY(-2px);
+}
+
+.spread-tab-btn.active {
+    background: linear-gradient(135deg, #10b981, #34d399);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+.spread-tab-btn i {
+    font-size: 1.1rem;
+}
+
+/* Conteúdo dos Spreads */
+.spreads-content-wrapper {
+    position: relative;
+}
+
+.spreads-view {
+    display: none;
+}
+
+.spreads-view.active {
+    display: block;
+}
+
+.spread-tab-content {
+    display: none;
+}
+
+.spread-tab-content.active {
+    display: block;
+}
+
+/* Tabela de Spreads */
+.spreads-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.spreads-table thead {
+    background: rgba(16, 185, 129, 0.15);
+}
+
+.spreads-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #34d399;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.spreads-table th:first-child {
+    text-align: center;
+    width: 60px;
+}
+
+.spreads-table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.spreads-table tbody tr:hover {
+    background: rgba(16, 185, 129, 0.1);
+    transform: translateX(5px);
+}
+
+.spreads-table tbody tr.hidden-row {
+    display: none;
+}
+
+.spreads-table td {
+    padding: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+}
+
+.spreads-table td:first-child {
+    text-align: center;
+    font-weight: 700;
+    color: #00d9ff;
+}
+
+.spreads-table td:nth-child(2) {
+    font-weight: 600;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+}
+
+.spreads-table td:nth-child(4) {
+    font-weight: 700;
+    color: #f59e0b;
+}
+
+.loading-cell {
+    text-align: center;
+    padding: 40px !important;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1rem;
+}
+
+.loading-cell i {
+    margin-right: 10px;
+    color: #00d9ff;
+}
+
+/* Botão Ver Mais */
+.ver-mais-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    background: rgba(0, 180, 216, 0.1);
+    border: 2px solid rgba(0, 180, 216, 0.3);
+    border-radius: 12px;
+    color: #00d9ff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ver-mais-btn:hover {
+    background: rgba(0, 180, 216, 0.2);
+    border-color: #00b4d8;
+    transform: translateY(-2px);
+}
+
+.ver-mais-btn i {
+    transition: transform 0.3s ease;
+}
+
+.ver-mais-btn.expanded i {
+    transform: rotate(180deg);
+}
+
+/* Gráfico de Spreads */
+.chart-wrapper-spreads {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+
+.chart-wrapper-spreads canvas {
+    max-height: 500px;
+}
+
+.chart-legend-info {
+    text-align: center;
+    padding: 15px;
+    background: rgba(0, 180, 216, 0.1);
+    border-radius: 12px;
+    border-left: 4px solid #00d9ff;
+}
+
+.chart-legend-info p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.chart-legend-info i {
+    color: #00d9ff;
+    font-size: 1.1rem;
+}
+
+/* Responsividade */
+@media (max-width: 968px) {
+    .estatisticas-mercado-card {
+        padding: 30px 20px;
+    }
+
+    .estatisticas-header {
+        flex-wrap: wrap;
+    }
+
+    .estatisticas-header-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .estatisticas-header-text h3 {
+        font-size: 1.4rem;
+    }
+
+    .estatisticas-timestamp {
+        width: 100%;
+        text-align: left;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .spreads-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .view-toggle {
+        width: 100%;
+    }
+
+    .toggle-btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .spreads-tabs {
+        width: 100%;
+    }
+
+    .spread-tab-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .resumo-table,
+    .spreads-table {
+        font-size: 0.85rem;
+    }
+
+    .resumo-table th,
+    .resumo-table td,
+    .spreads-table th,
+    .spreads-table td {
+        padding: 10px 8px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .chart-wrapper-spreads {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .estatisticas-mercado-card {
+        padding: 20px 15px;
+    }
+
+    .spread-tab-btn {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .spread-tab-btn i {
+        font-size: 1rem;
+    }
+
+    .toggle-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+
 
 
 
@@ -9232,3 +9728,7 @@ textarea:focus {
         top: -1rem;
     }
 }
+
+
+
+
