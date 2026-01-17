@@ -9050,8 +9050,8 @@ async function carregarDadosPrecificacao() {
         error.style.display = 'none';
         
         // URLs dos arquivos JSON no GitHub (ajuste conforme necessário)
-        const urlDebentures = 'https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/debentures_anbima.json';
-        const urlCriCra = 'https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/cri_cra_anbima.json';
+        const urlDebentures = 'https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/site/data/debentures_anbima.json';
+        const urlCriCra = 'https://raw.githubusercontent.com/Antoniosiqueiracnpi-t/Projeto_Monalytics/main/site/data/curva_pre_di.json';
         
         // Carregar ambos os arquivos
         const [responseDeb, responseCri] = await Promise.all([
