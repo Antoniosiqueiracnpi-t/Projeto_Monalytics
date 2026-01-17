@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-01-16 14:16:05",
+  "gerado_em": "2026-01-17 11:25:43",
   "fontes": {
     "debentures_anbima": {
       "arquivo": "site/data/debentures_anbima.json",
@@ -79,104 +79,124 @@
       {
         "tipo": "IPCA+",
         "id": "RESA14",
-        "spread": 16.0954
+        "spread": 16.0954,
+        "duration": 658.43
       },
       {
         "tipo": "IPCA+",
         "id": "RESA15",
-        "spread": 15.4076
+        "spread": 15.4076,
+        "duration": 756.24
       },
       {
         "tipo": "IPCA+",
         "id": "RESA17",
-        "spread": 15.1775
+        "spread": 15.1775,
+        "duration": 694.04
       },
       {
         "tipo": "IPCA+",
         "id": "RESA27",
-        "spread": 14.8449
+        "spread": 14.8449,
+        "duration": 1031.76
       },
       {
         "tipo": "IPCA+",
         "id": "RAIZ13",
-        "spread": 14.8332
+        "spread": 14.8332,
+        "duration": 1497.02
       },
       {
         "tipo": "IPCA+",
         "id": "RAIZ23",
-        "spread": 14.2485
+        "spread": 14.2485,
+        "duration": 1799.71
       },
       {
         "tipo": "IPCA+",
         "id": "JSMLB5",
-        "spread": 13.9237
+        "spread": 13.9237,
+        "duration": 938.98
       },
       {
         "tipo": "IPCA+",
         "id": "SUMI19",
-        "spread": 13.4627
+        "spread": 13.4627,
+        "duration": 1088.2
       },
       {
         "tipo": "IPCA+",
         "id": "VAMO33",
-        "spread": 13.4551
+        "spread": 13.4551,
+        "duration": 943.64
       },
       {
         "tipo": "IPCA+",
         "id": "SUMI37",
-        "spread": 13.1508
+        "spread": 13.1508,
+        "duration": 1377.8
       }
     ],
     "di_spread": [
       {
         "tipo": "DI+",
         "id": "CBRDB8",
-        "spread": 26.563
+        "spread": 26.563,
+        "duration": 376.49
       },
       {
         "tipo": "DI+",
         "id": "KRSA12",
-        "spread": 22.9885
+        "spread": 22.9885,
+        "duration": 583.53
       },
       {
         "tipo": "DI+",
         "id": "CBRDA8",
-        "spread": 18.5888
+        "spread": 18.5888,
+        "duration": 77.0
       },
       {
         "tipo": "DI+",
         "id": "SUMI15",
-        "spread": 14.1795
+        "spread": 14.1795,
+        "duration": 315.21
       },
       {
         "tipo": "DI+",
         "id": "KRSA11",
-        "spread": 9.0313
+        "spread": 9.0313,
+        "duration": 179.4
       },
       {
         "tipo": "DI+",
         "id": "AALR13",
-        "spread": 6.9993
+        "spread": 6.9993,
+        "duration": 234.99
       },
       {
         "tipo": "DI+",
         "id": "JSMLA5",
-        "spread": 6.7994
+        "spread": 6.7994,
+        "duration": 748.11
       },
       {
         "tipo": "DI+",
         "id": "SIMH16",
-        "spread": 6.7553
+        "spread": 6.7553,
+        "duration": 743.23
       },
       {
         "tipo": "DI+",
         "id": "CSNAA2",
-        "spread": 6.6169
+        "spread": 6.6169,
+        "duration": 323.11
       },
       {
         "tipo": "DI+",
         "id": "SUMI39",
-        "spread": 6.6047
+        "spread": 6.6047,
+        "duration": 600.27
       }
     ]
   }
