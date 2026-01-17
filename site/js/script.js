@@ -8586,7 +8586,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // =========================== ESTATÍSTICAS MERCADO SECUNDÁRIO ===========================
 
-let chartSpreadsDuration = null;
+let chartSpreadsIpca = null;
+let chartSpreadsDi = null;
 let dadosEstatisticasMercado = null;
 
 /**
@@ -8604,8 +8605,13 @@ async function loadEstatisticasMercado() {
         }
         
         dadosEstatisticasMercado = await response.json();
-        console.log('✅ Dados carregados:', dadosEstatisticasMercado);
+        console.log('✅ Dados de estatísticas carregados:', dadosEstatisticasMercado);
         
+        // Esconde loading e mostra conteúdo
+        document.getElementById('estatisticasLoading').style.display = 'none';
+        document.getElementById('estatisticasContent').style.display = 'block';
+        
+        // Renderiza todas as seções
         renderEstatisticasMercado();
         setupEstatisticasEventListeners();
         
@@ -8621,20 +8627,12 @@ async function loadEstatisticasMercado() {
 function renderEstatisticasMercado() {
     if (!dadosEstatisticasMercado) return;
     
-    // Atualiza timestamp
     atualizarTimestampEstatisticas();
-    
-    // Renderiza resumo geral
     renderResumoGeral();
-    
-    // Renderiza Top 10 IPCA+
     renderTopSpreads('ipca', dadosEstatisticasMercado.top10.ipca_spread);
-    
-    // Renderiza Top 10 DI+
     renderTopSpreads('di', dadosEstatisticasMercado.top10.di_spread);
-    
-    // Inicializa gráfico
-    renderGraficoSpreadsDuration();
+    renderGraficoSpreadsIndividual('ipca');
+    renderGraficoSpreadsIndividual('di');
 }
 
 /**
@@ -8668,13 +8666,8 @@ function renderResumoGeral() {
     
     tbody.innerHTML = '';
     
-    dadosEstatisticasMercado.resumo.forEach((row, index) => {
+    dadosEstatisticasMercado.resumo.forEach((row) => {
         const tr = document.createElement('tr');
-        
-        // Destaca linha TOTAL
-        if (row.Indexador === 'TOTAL') {
-            tr.style.fontWeight = '700';
-        }
         
         tr.innerHTML = `
             <td>${row.Indexador}</td>
@@ -8707,7 +8700,7 @@ function renderTopSpreads(tipo, dados) {
     dados.forEach((item, index) => {
         const tr = document.createElement('tr');
         
-        // Oculta linhas após a 5ª
+        // Esconde linhas após a 5ª
         if (index >= 5) {
             tr.classList.add('hidden-row');
         }
@@ -8724,64 +8717,58 @@ function renderTopSpreads(tipo, dados) {
         tbody.appendChild(tr);
     });
     
-    // Mostra botão Ver Mais se houver mais de 5 itens
+    // Mostra botão "Ver mais" se houver mais de 5 itens
     if (dados.length > 5 && verMaisBtn) {
-        verMaisBtn.style.display = 'flex';
+        verMaisBtn.style.display = 'inline-flex';
     }
 }
 
 /**
- * Renderiza gráfico de dispersão Duration vs Spread
+ * Renderiza gráfico individual por tipo (IPCA+ ou DI+)
  */
-function renderGraficoSpreadsDuration() {
-    const canvas = document.getElementById('spreadsDurationChart');
+function renderGraficoSpreadsIndividual(tipo) {
+    const canvasId = tipo === 'ipca' ? 'spreadsIpcaChart' : 'spreadsDiChart';
+    const canvas = document.getElementById(canvasId);
     if (!canvas) return;
     
     const ctx = canvas.getContext('2d');
     
     // Destrói gráfico anterior se existir
-    if (chartSpreadsDuration) {
-        chartSpreadsDuration.destroy();
+    if (tipo === 'ipca' && chartSpreadsIpca) {
+        chartSpreadsIpca.destroy();
+    } else if (tipo === 'di' && chartSpreadsDi) {
+        chartSpreadsDi.destroy();
     }
     
-    // Prepara dados
-    const dadosIpca = dadosEstatisticasMercado.top10.ipca_spread.map(item => ({
+    const dados = tipo === 'ipca' 
+        ? dadosEstatisticasMercado.top10.ipca_spread
+        : dadosEstatisticasMercado.top10.di_spread;
+    
+    const pontos = dados.map(item => ({
         x: item.duration,
         y: item.spread,
         label: item.id
     }));
     
-    const dadosDi = dadosEstatisticasMercado.top10.di_spread.map(item => ({
-        x: item.duration,
-        y: item.spread,
-        label: item.id
-    }));
+    const cor = tipo === 'ipca' 
+        ? { bg: 'rgba(16, 185, 129, 0.6)', border: '#10b981' }
+        : { bg: 'rgba(59, 130, 246, 0.6)', border: '#3b82f6' };
     
-    chartSpreadsDuration = new Chart(ctx, {
+    const titulo = tipo === 'ipca' ? 'IPCA+' : 'DI+';
+    
+    const chart = new Chart(ctx, {
         type: 'scatter',
         data: {
-            datasets: [
-                {
-                    label: 'IPCA+',
-                    data: dadosIpca,
-                    backgroundColor: 'rgba(16, 185, 129, 0.6)',
-                    borderColor: '#10b981',
-                    borderWidth: 2,
-                    pointRadius: 8,
-                    pointHoverRadius: 12,
-                    pointStyle: 'circle'
-                },
-                {
-                    label: 'DI+',
-                    data: dadosDi,
-                    backgroundColor: 'rgba(59, 130, 246, 0.6)',
-                    borderColor: '#3b82f6',
-                    borderWidth: 2,
-                    pointRadius: 8,
-                    pointHoverRadius: 12,
-                    pointStyle: 'triangle'
-                }
-            ]
+            datasets: [{
+                label: titulo,
+                data: pontos,
+                backgroundColor: cor.bg,
+                borderColor: cor.border,
+                borderWidth: 2,
+                pointRadius: 8,
+                pointHoverRadius: 12,
+                pointStyle: 'circle'
+            }]
         },
         options: {
             responsive: true,
@@ -8789,8 +8776,8 @@ function renderGraficoSpreadsDuration() {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Relação Duration vs Spread - Top 10 Títulos',
-                    color: '#ffffff',
+                    text: `Relação Duration vs Spread - Top 10 ${titulo}`,
+                    color: '#1a1a1a',
                     font: {
                         size: 16,
                         weight: 'bold',
@@ -8799,18 +8786,7 @@ function renderGraficoSpreadsDuration() {
                     padding: 20
                 },
                 legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        color: '#ffffff',
-                        font: {
-                            family: 'Inter',
-                            size: 12,
-                            weight: '600'
-                        },
-                        padding: 20,
-                        usePointStyle: true
-                    }
+                    display: false
                 },
                 tooltip: {
                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
@@ -8819,7 +8795,7 @@ function renderGraficoSpreadsDuration() {
                     borderColor: '#00b4d8',
                     borderWidth: 2,
                     padding: 15,
-                    displayColors: true,
+                    displayColors: false,
                     titleFont: {
                         family: 'Inter',
                         size: 14,
@@ -8834,11 +8810,9 @@ function renderGraficoSpreadsDuration() {
                             return context[0].raw.label;
                         },
                         label: function(context) {
-                            const dataset = context.dataset.label;
                             const duration = context.parsed.x;
                             const spread = context.parsed.y;
                             return [
-                                `${dataset}`,
                                 `Duration: ${Math.round(duration)} dias (${(duration/365).toFixed(2)} anos)`,
                                 `Spread: ${spread.toFixed(4)}%`
                             ];
@@ -8862,7 +8836,7 @@ function renderGraficoSpreadsDuration() {
                         padding: 10
                     },
                     ticks: {
-                        color: 'rgba(255, 255, 255, 0.7)',
+                        color: '#666666',
                         font: {
                             family: 'Inter',
                             size: 11
@@ -8872,7 +8846,7 @@ function renderGraficoSpreadsDuration() {
                         }
                     },
                     grid: {
-                        color: 'rgba(255, 255, 255, 0.1)',
+                        color: 'rgba(0, 0, 0, 0.05)',
                         drawBorder: false
                     }
                 },
@@ -8889,7 +8863,7 @@ function renderGraficoSpreadsDuration() {
                         padding: 10
                     },
                     ticks: {
-                        color: 'rgba(255, 255, 255, 0.7)',
+                        color: '#666666',
                         font: {
                             family: 'Inter',
                             size: 11
@@ -8899,50 +8873,66 @@ function renderGraficoSpreadsDuration() {
                         }
                     },
                     grid: {
-                        color: 'rgba(255, 255, 255, 0.1)',
+                        color: 'rgba(0, 0, 0, 0.05)',
                         drawBorder: false
                     }
                 }
             }
         }
     });
+    
+    // Armazena referência do gráfico
+    if (tipo === 'ipca') {
+        chartSpreadsIpca = chart;
+    } else {
+        chartSpreadsDi = chart;
+    }
 }
 
 /**
- * Configura event listeners
+ * Configura event listeners para interatividade
  */
 function setupEstatisticasEventListeners() {
-    // Toggle Tabela/Gráfico
+    
+    // ===== Toggle Tabela/Gráfico =====
     document.querySelectorAll('.toggle-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const view = this.dataset.view;
             
-            // Atualiza botões
+            // Atualiza botões ativos
             document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             
-            // Atualiza views
+            // Atualiza views visíveis
             document.querySelectorAll('.spreads-view').forEach(v => v.classList.remove('active'));
             document.querySelector(`.spreads-view[data-view="${view}"]`).classList.add('active');
         });
     });
     
-    // Toggle Abas IPCA+/DI+
+    // ===== Toggle Abas IPCA+/DI+ =====
     document.querySelectorAll('.spread-tab-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const tipo = this.dataset.tipo;
+            const parentView = this.closest('.spreads-view');
             
-            // Atualiza botões
-            document.querySelectorAll('.spread-tab-btn').forEach(b => b.classList.remove('active'));
+            // Atualiza botões ativos dentro da view atual
+            parentView.querySelectorAll('.spread-tab-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             
-            // Atualiza conteúdo
-            document.querySelectorAll('.spread-tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelector(`.spread-tab-content[data-tipo="${tipo}"]`).classList.add('active');
+            // Atualiza conteúdo (tabelas ou gráficos) dentro da view atual
+            if (parentView.dataset.view === 'table') {
+                // Modo Tabela
+                parentView.querySelectorAll('.spread-tab-content').forEach(c => c.classList.remove('active'));
+                parentView.querySelector(`.spread-tab-content[data-tipo="${tipo}"]`).classList.add('active');
+            } else if (parentView.dataset.view === 'chart') {
+                // Modo Gráfico
+                parentView.querySelectorAll('.spread-chart-content').forEach(c => c.classList.remove('active'));
+                parentView.querySelector(`.spread-chart-content[data-tipo="${tipo}"]`).classList.add('active');
+            }
         });
     });
     
-    // Botão Ver Mais IPCA+
+    // ===== Botão Ver Mais IPCA+ =====
     const verMaisIpca = document.getElementById('verMaisIpca');
     if (verMaisIpca) {
         verMaisIpca.addEventListener('click', function() {
@@ -8950,18 +8940,21 @@ function setupEstatisticasEventListeners() {
             const hiddenRows = tbody.querySelectorAll('.hidden-row');
             const isExpanded = this.classList.contains('expanded');
             
-            hiddenRows.forEach(row => {
-                row.classList.toggle('hidden-row');
-            });
-            
-            this.classList.toggle('expanded');
-            this.innerHTML = isExpanded 
-                ? '<i class="fas fa-chevron-down"></i> Ver mais'
-                : '<i class="fas fa-chevron-up"></i> Ver menos';
+            if (isExpanded) {
+                // Colapsar: adiciona classe hidden-row
+                hiddenRows.forEach(row => row.classList.add('hidden-row'));
+                this.innerHTML = '<i class="fas fa-chevron-down"></i> Ver mais';
+                this.classList.remove('expanded');
+            } else {
+                // Expandir: remove classe hidden-row
+                hiddenRows.forEach(row => row.classList.remove('hidden-row'));
+                this.innerHTML = '<i class="fas fa-chevron-up"></i> Ver menos';
+                this.classList.add('expanded');
+            }
         });
     }
     
-    // Botão Ver Mais DI+
+    // ===== Botão Ver Mais DI+ =====
     const verMaisDi = document.getElementById('verMaisDi');
     if (verMaisDi) {
         verMaisDi.addEventListener('click', function() {
@@ -8969,31 +8962,29 @@ function setupEstatisticasEventListeners() {
             const hiddenRows = tbody.querySelectorAll('.hidden-row');
             const isExpanded = this.classList.contains('expanded');
             
-            hiddenRows.forEach(row => {
-                row.classList.toggle('hidden-row');
-            });
-            
-            this.classList.toggle('expanded');
-            this.innerHTML = isExpanded 
-                ? '<i class="fas fa-chevron-down"></i> Ver mais'
-                : '<i class="fas fa-chevron-up"></i> Ver menos';
+            if (isExpanded) {
+                // Colapsar: adiciona classe hidden-row
+                hiddenRows.forEach(row => row.classList.add('hidden-row'));
+                this.innerHTML = '<i class="fas fa-chevron-down"></i> Ver mais';
+                this.classList.remove('expanded');
+            } else {
+                // Expandir: remove classe hidden-row
+                hiddenRows.forEach(row => row.classList.remove('hidden-row'));
+                this.innerHTML = '<i class="fas fa-chevron-up"></i> Ver menos';
+                this.classList.add('expanded');
+            }
         });
     }
 }
 
 /**
- * Exibe mensagem de erro
+ * Exibe mensagem de erro caso falhe o carregamento
  */
 function exibirErroEstatisticas() {
-    const tbody = document.getElementById('resumoGeralBody');
-    if (tbody) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="7" style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.5);">
-                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #ef4444; margin-bottom: 10px;"></i>
-                    <p>Erro ao carregar dados. Tente novamente mais tarde.</p>
-                </td>
-            </tr>
-        `;
-    }
+    document.getElementById('estatisticasLoading').innerHTML = `
+        <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+        <span>Erro ao carregar estatísticas. Tente novamente mais tarde.</span>
+    `;
 }
+
+
